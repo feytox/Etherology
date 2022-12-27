@@ -1,0 +1,10 @@
+{
+  "type": "lotyh:alchemy_recipe",
+  "inputs": [
+    {"item": "minecraft:stick"},
+    {"item": "minecraft:stone"},
+    {"item": "lotyh:mix_yellow"},
+    {"item": "minecraft:diamond"}
+  ],
+  "outputItem": "minecraft:netherite_ingot"
+}

@@ -1,0 +1,36 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "lotyh:block/armillary_matrix_base",
+		"armillary_matrix_base": "lotyh:block/armillary_matrix_base",
+		"ether_stone_bricks": "lotyh:block/polished_ether_stone",
+		"pedestal_ether_stone_top": "lotyh:block/pedestal_ether_stone_top"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#armillary_matrix_base"},
+				"east": {"uv": [0, 8, 16, 16], "texture": "#armillary_matrix_base"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#armillary_matrix_base"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#armillary_matrix_base"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#ether_stone_bricks"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#ether_stone_bricks"}
+			}
+		},
+		{
+			"from": [2, 8, 2],
+			"to": [14, 12, 14],
+			"faces": {
+				"north": {"uv": [2, 4, 14, 8], "texture": "#armillary_matrix_base"},
+				"east": {"uv": [2, 4, 14, 8], "texture": "#armillary_matrix_base"},
+				"south": {"uv": [2, 4, 14, 8], "texture": "#armillary_matrix_base"},
+				"west": {"uv": [2, 4, 14, 8], "texture": "#armillary_matrix_base"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#pedestal_ether_stone_top"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#pedestal_ether_stone_top"}
+			}
+		}
+	]
+}

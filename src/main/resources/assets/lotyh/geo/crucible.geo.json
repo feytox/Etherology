@@ -1,0 +1,109 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Model",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-5.5, 3, -5.5], "size": [11, 3, 11], "uv": [0, 34]},
+						{"origin": [-5.5, 12, -5.5], "size": [11, 1, 11], "uv": [52, 0]},
+						{"origin": [-6.5, 6, -6.5], "size": [13, 6, 13], "uv": [0, 15]},
+						{"origin": [-6.5, 13, -6.5], "size": [13, 2, 13], "uv": [0, 0]},
+						{"origin": [-7.5, 9, -1], "size": [3, 2, 1], "pivot": [-6.5, 10, 0], "rotation": [0, 90, 0], "uv": [38, 51]},
+						{"origin": [5, 9, -1], "size": [3, 2, 1], "pivot": [6.5, 10, 0], "rotation": [0, -90, 0], "uv": [38, 48]},
+						{"origin": [-4.5, 6, -4.5], "size": [9, 9, 9], "uv": [52, 12]}
+					]
+				},
+				{
+					"name": "LegFront",
+					"parent": "Model",
+					"pivot": [0, 3, -5],
+					"rotation": [-45, 0, 0],
+					"cubes": [
+						{"origin": [-2, -1, -6], "size": [4, 5, 2], "uv": [0, 48]}
+					]
+				},
+				{
+					"name": "LegBack",
+					"parent": "Model",
+					"pivot": [0, 3, 5],
+					"rotation": [-45, 180, 0],
+					"cubes": [
+						{"origin": [-2, -1, 4], "size": [4, 5, 2], "uv": [12, 48]}
+					]
+				},
+				{
+					"name": "LegLeft",
+					"parent": "Model",
+					"pivot": [5, 3, 0],
+					"rotation": [-45, -90, 0],
+					"cubes": [
+						{"origin": [3, -1, -1], "size": [4, 5, 2], "uv": [12, 55]}
+					]
+				},
+				{
+					"name": "LegRight",
+					"parent": "Model",
+					"pivot": [-5, 3, 0],
+					"rotation": [-45, 90, 0],
+					"cubes": [
+						{"origin": [-7, -1, -1], "size": [4, 5, 2], "uv": [0, 55]}
+					]
+				},
+				{
+					"name": "HandleLeft",
+					"parent": "Model",
+					"pivot": [6.5, 10, 0],
+					"rotation": [0, 0, -15],
+					"cubes": [
+						{"origin": [3.5, 6.5, -0.5], "size": [6, 4, 1], "pivot": [6.5, 10, 0], "rotation": [0, -90, 0], "uv": [24, 48]},
+						{"origin": [4.5, 7.5, -0.5], "size": [4, 2, 1], "pivot": [6.5, 10, 0], "rotation": [0, -90, 0], "uv": [24, 58]}
+					]
+				},
+				{
+					"name": "HandleRight",
+					"parent": "Model",
+					"pivot": [-6.5, 10, 0],
+					"rotation": [0, 0, 15],
+					"cubes": [
+						{"origin": [-9, 6.5, -0.5], "size": [6, 4, 1], "pivot": [-6.5, 10, 0], "rotation": [0, 90, 0], "uv": [24, 53]},
+						{"origin": [-8, 7.5, -0.5], "size": [4, 2, 1], "pivot": [-6.5, 10, 0], "rotation": [0, 90, 0], "uv": [24, 61]}
+					]
+				},
+				{
+					"name": "SpoonRotate",
+					"parent": "Model",
+					"pivot": [0, 6, 0],
+					"rotation": [0, -45, 0]
+				},
+				{
+					"name": "Spoon",
+					"parent": "SpoonRotate",
+					"pivot": [4.25, 13, 0],
+					"rotation": [0, 0, 15],
+					"cubes": [
+						{"origin": [3.25, 6, -0.5], "size": [2, 14, 1], "pivot": [4.25, 13, 0], "rotation": [0, -90, 0], "uv": [0, 62]}
+					]
+				},
+				{
+					"name": "Water",
+					"parent": "Model",
+					"pivot": [0, 13, 0],
+					"cubes": [
+						{"origin": [-4.5, 13, -4.5], "size": [9, 0.1, 9], "uv": [-9, 119]}
+					]
+				}
+			]
+		}
+	]
+}

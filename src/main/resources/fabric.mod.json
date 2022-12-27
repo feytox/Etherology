@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "lotyh",
+  "version": "${version}",
+  "name": "Legend of the Yellow Hills",
+  "description": "",
+  "authors": [
+    "Faradey"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/lotyh/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "name.uwu.feytox.lotyh.client.LotyhClient"
+    ],
+    "main": [
+      "name.uwu.feytox.lotyh.Lotyh"
+    ],
+    "cardinal-components": [
+      "name.uwu.feytox.lotyh.LotyhComponents"
+    ]
+  },
+  "mixins": [
+    "lotyh.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  },
+  "custom": {
+    "cardinal-components": [
+      "lotyh:ether_max",
+      "lotyh:ether_regen",
+      "lotyh:ether_points"
+    ]
+  },
+  "accessWidener" : "lotyh.accesswidener"
+}

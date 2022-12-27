@@ -1,0 +1,66 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 256,
+				"texture_height": 256,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 5,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "base",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "ring5",
+					"parent": "base",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-32, -32, -4.5], "size": [64, 64, 9], "uv": [0, 0]},
+						{"origin": [-28, -28, -4.5], "size": [56, 56, 9], "uv": [0, 73]}
+					]
+				},
+				{
+					"name": "ring4",
+					"parent": "ring5",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-32, -32, -4.5], "size": [64, 64, 9], "uv": [0, 0]},
+						{"origin": [-28, -28, -4.5], "size": [56, 56, 9], "uv": [0, 73]}
+					]
+				},
+				{
+					"name": "ring3",
+					"parent": "ring4",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-32, -32, -4.5], "size": [64, 64, 9], "uv": [0, 0]},
+						{"origin": [-28, -28, -4.5], "size": [56, 56, 9], "uv": [0, 73]}
+					]
+				},
+				{
+					"name": "ring2",
+					"parent": "ring3",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-32, -32, -4.5], "size": [64, 64, 9], "uv": [0, 0]},
+						{"origin": [-28, -28, -4.5], "size": [56, 56, 9], "uv": [0, 73]}
+					]
+				},
+				{
+					"name": "ring1",
+					"parent": "ring2",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-32, -32, -4.5], "size": [64, 64, 9], "uv": [0, 0]},
+						{"origin": [-28, -28, -4.5], "size": [56, 56, 9], "uv": [0, 73]}
+					]
+				}
+			]
+		}
+	]
+}
