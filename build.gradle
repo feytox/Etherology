@@ -91,5 +91,5 @@ publishing {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/lotyh.accesswidener")
+    accessWidenerPath = file("src/main/resources/etherology.accesswidener")
 }

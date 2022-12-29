@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "name.uwu.feytox.etherology.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AnimatedGeoModelAccessor",
+    "ItemEntityAccessor",
+    "ServerPlayerEntityMixin"
+  ],
+  "client": [
+    "InGameHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

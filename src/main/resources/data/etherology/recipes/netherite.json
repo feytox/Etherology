@@ -1,0 +1,10 @@
+{
+  "type": "etherology:alchemy_recipe",
+  "inputs": [
+    {"item": "minecraft:stick"},
+    {"item": "minecraft:stone"},
+    {"item": "etherology:mix_yellow"},
+    {"item": "minecraft:diamond"}
+  ],
+  "outputItem": "minecraft:netherite_ingot"
+}

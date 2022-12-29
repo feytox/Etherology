@@ -1,0 +1,19 @@
+{
+  "item.etherology.teldecore": "Телдекор",
+  "item.etherology.deep_shard": "Глубинный осколок",
+  "item.etherology.aquatic_shard": "Водный осколок",
+  "item.etherology.heavenly_shard": "Небесный осколок",
+  "item.etherology.terrestrial_shard": "Земельный осколок",
+
+  "block.etherology.crucible": "Варочный тигель",
+  "block.etherology.ether_workbench": "Эфирный верстак",
+  "block.etherology.pedestal": "Пьедестал",
+  "block.etherology.armillary_matrix_base": "Пьедестал для Армиллярной Матрицы",
+
+  "etherology.mix_red": "Замешать до красной эссенции",
+  "etherology.mix_yellow": "Замешать до желтой эссенции",
+  "etherology.mix_magenta": "Замешать до фиолетовой эссенции",
+  "etherology.mix_green": "Замешать до зелёной эссенции",
+  "etherology.mix_blue": "Замешать до синей эссенции",
+  "etherology.mix_cyan": "Замешать до голубой эссенции"
+}

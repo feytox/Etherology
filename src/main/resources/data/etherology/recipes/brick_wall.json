@@ -1,0 +1,19 @@
+{
+  "type": "etherology:ether_recipe",
+  "key": {
+    "#": {
+      "item": "minecraft:bricks"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "minecraft:brick_wall"
+  },
+  "heavenlyCount": 12,
+  "aquaticCount": 1,
+  "deepCount": 64
+}

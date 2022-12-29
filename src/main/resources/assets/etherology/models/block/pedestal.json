@@ -1,0 +1,47 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "etherology:block/pedestal_ether_stone_side",
+		"pedestal_ether_stone_side": "etherology:block/pedestal_ether_stone_side",
+		"pedestal_ether_stone_top": "etherology:block/pedestal_ether_stone_top"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 3, 13],
+			"faces": {
+				"north": {"uv": [3, 13, 13, 16], "texture": "#pedestal_ether_stone_side"},
+				"east": {"uv": [3, 13, 13, 16], "texture": "#pedestal_ether_stone_side"},
+				"south": {"uv": [3, 13, 13, 16], "texture": "#pedestal_ether_stone_side"},
+				"west": {"uv": [3, 13, 13, 16], "texture": "#pedestal_ether_stone_side"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#pedestal_ether_stone_top"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#pedestal_ether_stone_top"}
+			}
+		},
+		{
+			"from": [2, 11, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 5], "texture": "#pedestal_ether_stone_side"},
+				"east": {"uv": [2, 0, 14, 5], "texture": "#pedestal_ether_stone_side"},
+				"south": {"uv": [2, 0, 14, 5], "texture": "#pedestal_ether_stone_side"},
+				"west": {"uv": [2, 0, 14, 5], "texture": "#pedestal_ether_stone_side"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#pedestal_ether_stone_top"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#pedestal_ether_stone_top"}
+			}
+		},
+		{
+			"from": [4, 3, 4],
+			"to": [12, 11, 12],
+			"faces": {
+				"north": {"uv": [4, 5, 12, 13], "texture": "#pedestal_ether_stone_side"},
+				"east": {"uv": [4, 5, 12, 13], "texture": "#pedestal_ether_stone_side"},
+				"south": {"uv": [4, 5, 12, 13], "texture": "#pedestal_ether_stone_side"},
+				"west": {"uv": [4, 5, 12, 13], "texture": "#pedestal_ether_stone_side"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#pedestal_ether_stone_top"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#pedestal_ether_stone_top"}
+			}
+		}
+	]
+}
