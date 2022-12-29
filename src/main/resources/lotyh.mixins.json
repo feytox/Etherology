@@ -4,6 +4,7 @@
   "package": "name.uwu.feytox.lotyh.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnimatedGeoModelAccessor",
     "ItemEntityAccessor",
     "ServerPlayerEntityMixin"
   ],

@@ -1,18 +1,15 @@
 package name.uwu.feytox.lotyh.blocks.armillar;
 
-import name.uwu.feytox.lotyh.blocks.pedestal.PedestalBlockEntity;
-import name.uwu.feytox.lotyh.blocks.ringMatrix.RingMatrixBlock;
 import name.uwu.feytox.lotyh.util.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -24,9 +21,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-import static name.uwu.feytox.lotyh.BlocksRegistry.*;
+import static name.uwu.feytox.lotyh.BlocksRegistry.ARMILLARY_MATRIX_BLOCK_ENTITY;
+import static name.uwu.feytox.lotyh.BlocksRegistry.RING_MATRIX_BLOCK;
 
 public class ArmillaryMatrixBlock extends SimpleBlock implements BlockEntityProvider {
     private static final VoxelShape BOTTOM_CUBOID =
@@ -61,7 +57,7 @@ public class ArmillaryMatrixBlock extends SimpleBlock implements BlockEntityProv
         if (!world.isClient) {
             ArmillaryMatrixBlockEntity blockEntity = (ArmillaryMatrixBlockEntity) world.getBlockEntity(pos);
             if (blockEntity != null) {
-                blockEntity.interact(player, hand);
+                blockEntity.interact((ServerWorld) world, player, hand);
 
                 world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
             }
@@ -85,12 +81,10 @@ public class ArmillaryMatrixBlock extends SimpleBlock implements BlockEntityProv
             return;
         }
 
-        world.setBlockState(new BlockPos(pos.getX(), pos.getY()+1, pos.getZ()), Blocks.AIR.getDefaultState());
-
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof ArmillaryMatrixBlockEntity) {
             ItemScatterer.spawn(world, pos, ((ArmillaryMatrixBlockEntity) blockEntity));
-            ((ArmillaryMatrixBlockEntity) blockEntity).onBreak(world);
+            ((ArmillaryMatrixBlockEntity) blockEntity).onBreak((ServerWorld) world);
         }
         super.onBreak(world, pos, state, player);
     }

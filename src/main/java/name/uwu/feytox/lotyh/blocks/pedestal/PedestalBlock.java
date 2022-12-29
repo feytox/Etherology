@@ -1,19 +1,17 @@
 package name.uwu.feytox.lotyh.blocks.pedestal;
 
+import name.uwu.feytox.lotyh.Lotyh;
+import name.uwu.feytox.lotyh.util.NbtCoord;
 import name.uwu.feytox.lotyh.util.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -21,8 +19,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
 import static name.uwu.feytox.lotyh.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
@@ -56,6 +52,22 @@ public class PedestalBlock extends SimpleBlock implements BlockEntityProvider {
         }
 
         return ActionResult.CONSUME;
+    }
+
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (!world.isClient) return;
+
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof PedestalBlockEntity pedestal) {
+            if (!pedestal.isConsuming()) return;
+
+            double x = pos.getX() + 0.5;
+            double y = pos.getY() + 1.5;
+            double z = pos.getZ() + 0.5;
+            NbtCoord center = pedestal.getCenterCoord();
+            world.addParticle(Lotyh.CONSUMING, x, y, z, center.x, center.y, center.z);
+        }
     }
 
     @Nullable

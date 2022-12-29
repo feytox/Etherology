@@ -1,17 +1,14 @@
 package name.uwu.feytox.lotyh.blocks.ringMatrix;
 
-import name.uwu.feytox.lotyh.ItemsRegistry;
 import name.uwu.feytox.lotyh.util.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,5 +38,15 @@ public class RingMatrixBlock extends SimpleBlock implements BlockEntityProvider 
         if (ringMatrix != null) ringMatrix.setWorld(world);
 
         super.onPlaced(world, pos, state, placer, itemStack);
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return Block.createCuboidShape(0, 0, 0, 0, 0, 0);
+    }
+
+    @Override
+    public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
+        return Block.createCuboidShape(0, 0, 0, 0, 0, 0);
     }
 }

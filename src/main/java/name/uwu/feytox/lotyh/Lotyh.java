@@ -2,7 +2,6 @@ package name.uwu.feytox.lotyh;
 
 import name.uwu.feytox.lotyh.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
 import name.uwu.feytox.lotyh.commands.DevCommands;
-import name.uwu.feytox.lotyh.effects.ExhaustionEffect;
 import name.uwu.feytox.lotyh.enums.MixTypes;
 import name.uwu.feytox.lotyh.recipes.alchemy.AlchemyRecipe;
 import name.uwu.feytox.lotyh.recipes.alchemy.AlchemyRecipeSerializer;
@@ -12,8 +11,9 @@ import name.uwu.feytox.lotyh.recipes.ether.EtherRecipe;
 import name.uwu.feytox.lotyh.recipes.ether.EtherRecipeSerializer;
 import name.uwu.feytox.lotyh.util.LIdentifier;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.registry.Registry;
 
 public class Lotyh implements ModInitializer {
@@ -22,7 +22,8 @@ public class Lotyh implements ModInitializer {
     public static final ExtendedScreenHandlerType<EtherWorkbenchScreenHandler> ETHER_SCREEN_HANDLER =
             new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
                     new EtherWorkbenchScreenHandler(syncId, inventory)));
-    public static final StatusEffect ETHER_EXHAUSTION = new ExhaustionEffect();
+    public static final DefaultParticleType CONSUMING = FabricParticleTypes.simple();
+
 
     @Override
     public void onInitialize() {
@@ -44,7 +45,7 @@ public class Lotyh implements ModInitializer {
                 ArmillaryRecipeSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, new LIdentifier(ArmillaryRecipe.Type.ID), ArmillaryRecipe.Type.INSTANCE);
 
-        Registry.register(Registry.STATUS_EFFECT, new LIdentifier("ether_exhaustion"), ETHER_EXHAUSTION);
+        Registry.register(Registry.PARTICLE_TYPE, new LIdentifier("consuming"), CONSUMING);
     }
 
     static {

@@ -6,23 +6,27 @@ import name.uwu.feytox.lotyh.Lotyh;
 import name.uwu.feytox.lotyh.blocks.crucible.CrucibleBlockItemRenderer;
 import name.uwu.feytox.lotyh.blocks.crucible.CrucibleBlockRenderer;
 import name.uwu.feytox.lotyh.blocks.etherWorkbench.EtherWorkbenchScreen;
-import name.uwu.feytox.lotyh.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
-import name.uwu.feytox.lotyh.blocks.ringMatrix.RingMatrixBlockEntity;
 import name.uwu.feytox.lotyh.blocks.ringMatrix.RingMatrixBlockRenderer;
 import name.uwu.feytox.lotyh.gui.teldecore.Chapters;
 import name.uwu.feytox.lotyh.gui.teldecore.chapters.ExampleChapter;
+import name.uwu.feytox.lotyh.particle.MovingParticle;
+import name.uwu.feytox.lotyh.util.LIdentifier;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.screen.PlayerScreenHandler;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import static name.uwu.feytox.lotyh.Lotyh.CONSUMING;
 
 @Environment(EnvType.CLIENT)
 public class LotyhClient implements ClientModInitializer {
@@ -37,6 +41,12 @@ public class LotyhClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(BlocksRegistry.CRUCIBLE_BLOCK_ENTITY, CrucibleBlockRenderer::new);
         BlockEntityRendererRegistry.register(BlocksRegistry.RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
         HandledScreens.register(Lotyh.ETHER_SCREEN_HANDLER, EtherWorkbenchScreen::new);
+
+        ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
+                registry.register(new LIdentifier("particle/consuming"))));
+
+
+        ParticleFactoryRegistry.getInstance().register(CONSUMING, MovingParticle.Factory::new);
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (chapters == null && client.textRenderer != null) {

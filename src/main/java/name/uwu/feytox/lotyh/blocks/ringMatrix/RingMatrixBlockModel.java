@@ -10,6 +10,28 @@ public class RingMatrixBlockModel extends AnimatedGeoModel<RingMatrixBlockEntity
         return new LIdentifier("geo/ring_matrix.geo.json");
     }
 
+    // uncomment and дополнить after rename
+//    @Override
+//    public GeoModel getModel(Identifier location) {
+//        // короче, далее сделай генерацию и кэширование моделек. Для этого ВЫШЕ передавай какой-то другой идентифаер
+//        // потом тут проверяй, точно ли это тот идентифаер и всё же производи генерацию по полученным данным
+//        // после этого заменяй модельку прямо тут и - готово (наверное)
+//
+//        GeoModel currentModel = ((AnimatedGeoModelAccessor) this).getCurrentModel();
+//        AnimationProcessor animationProcessor = ((AnimatedGeoModelAccessor) this).getAnimationProcessor();
+//
+//        if (model != currentModel) {
+//            animationProcessor.clearModelRendererList();
+//            currentModel = model;
+//
+//            for (GeoBone bone : model.topLevelBones) {
+//                registerBone(bone);
+//            }
+//        }
+//
+//        return model;
+//    }
+
     @Override
     public Identifier getTextureResource(RingMatrixBlockEntity object) {
         return new LIdentifier("textures/machines/ethril_ring_1.png");
