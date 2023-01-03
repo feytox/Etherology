@@ -1,6 +1,7 @@
 package name.uwu.feytox.etherology.blocks.pedestal;
 
 import io.wispforest.owo.util.ImplementedInventory;
+import name.uwu.feytox.etherology.Etherology;
 import name.uwu.feytox.etherology.mixin.ItemEntityAccessor;
 import name.uwu.feytox.etherology.util.NbtCoord;
 import net.minecraft.block.Block;
@@ -22,6 +23,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,10 +66,32 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         }
     }
 
-    public static void tick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
+    public static void serverTick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if (!world.isClient) {
             blockEntity.tickItem((ServerWorld) world);
             blockEntity.tickConsuming((ServerWorld) world);
+        }
+    }
+
+    public static void clientTick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
+        if (world.isClient) {
+            blockEntity.tickConsumingParticles(world);
+        }
+    }
+
+    public void tickConsumingParticles(World world) {
+        if (!isConsuming()) return;
+
+        Random random = Random.create();
+        if (itemConsumingTicks % 5 != 0) return;
+
+        NbtCoord center = getCenterCoord();
+
+        for (int i = 0; i < random.nextBetween(1, 5); i++) {
+            double x = pos.getX() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
+            double y = pos.getY() + 1.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
+            double z = pos.getZ() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
+            world.addParticle(Etherology.SPARK, x, y, z, center.x, center.y, center.z);
         }
     }
 
@@ -100,11 +124,11 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         double y = pos.getY() + 1.0;
         double z = pos.getZ() + 0.5;
         if (itemConsumingTicks > 0 && this.world != null) {
-//            world.spawnParticles(Etherology.CONSUMING, x, y, z, 1,
+//            world.spawnParticles(Etherology.SPARK, x, y, z, 1,
 //                    centerCoord.x-x, centerCoord.y-y, centerCoord.z-z, 1);
         } else if(itemConsumingTicks == 0) {
             world.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, items.get(0)), x, y, z,
-                    10, 0, 1, 0, 0.01);
+                    10, 0, 2, 0, 0.01);
             centerCoord = null;
             itemConsumingTicks = 0;
             clear();

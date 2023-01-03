@@ -22,7 +22,12 @@ public class Etherology implements ModInitializer {
     public static final ExtendedScreenHandlerType<EtherWorkbenchScreenHandler> ETHER_SCREEN_HANDLER =
             new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
                     new EtherWorkbenchScreenHandler(syncId, inventory)));
-    public static final DefaultParticleType CONSUMING = FabricParticleTypes.simple();
+
+    public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
+    public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
+    public static final DefaultParticleType SPARK = FabricParticleTypes.simple();
+    public static final DefaultParticleType STEAM = FabricParticleTypes.simple();
+    public static final DefaultParticleType VITAL_ENERGY = FabricParticleTypes.simple();
 
 
     @Override
@@ -45,7 +50,11 @@ public class Etherology implements ModInitializer {
                 ArmillaryRecipeSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, new EIdentifier(ArmillaryRecipe.Type.ID), ArmillaryRecipe.Type.INSTANCE);
 
-        Registry.register(Registry.PARTICLE_TYPE, new EIdentifier("consuming"), CONSUMING);
+        Registry.register(Registry.PARTICLE_TYPE, new EIdentifier("electricity1"), ELECTRICITY1);
+        Registry.register(Registry.PARTICLE_TYPE, new EIdentifier("electricity2"), ELECTRICITY2);
+        Registry.register(Registry.PARTICLE_TYPE, new EIdentifier("spark"), SPARK);
+        Registry.register(Registry.PARTICLE_TYPE, new EIdentifier("steam"), STEAM);
+        Registry.register(Registry.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);
     }
 
     static {

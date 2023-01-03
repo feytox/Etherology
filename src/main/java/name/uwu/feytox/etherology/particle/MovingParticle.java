@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 public class MovingParticle extends SpriteBillboardParticle {
@@ -14,8 +15,10 @@ public class MovingParticle extends SpriteBillboardParticle {
     private final double endX;
     private final double endY;
     private final double endZ;
+    private final SpriteProvider spriteProvider;
 
-    public MovingParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+    public MovingParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i,
+                          SpriteProvider spriteProvider) {
         // end coords = velocity
         super(clientWorld, d, e, f, g, h, i);
         this.x = d;
@@ -28,7 +31,11 @@ public class MovingParticle extends SpriteBillboardParticle {
         this.endY = h;
         this.endZ = i;
         this.maxAge = 80;
-        this.scale(0.25f);
+        this.spriteProvider = spriteProvider;
+//        float scale = (float) Math.min(Math.random() + 0.5f, 1);
+//        this.scale(scale);
+//        this.setSpriteForAge(spriteProvider);
+        this.setSprite(spriteProvider);
     }
 
     @Override
@@ -36,23 +43,31 @@ public class MovingParticle extends SpriteBillboardParticle {
         prevPosX = x;
         prevPosY = y;
         prevPosZ = z;
-        if (endX == x && endY == y && endZ == z) {
-            markDead();
-        } else {
-            double f = (double) age / maxAge;
-            f = f * f;
-            double deltaC = 1.3 / 20f;
-            x = changeCoord(x, deltaC, endX);
-            y = changeCoord(y, deltaC, endY);
-            z = changeCoord(z, deltaC, endZ);
-        }
-    }
 
-    public static double changeCoord(double c, double deltaC, double endC) {
-        if (c <= endC) {
-            return Math.min(endC, c + deltaC);
+        Vec3d vec = new Vec3d(endX-x, endY-y, endZ-z);
+        double vecLength = vec.length();
+
+        double fullPath = new Vec3d(endX-startX, endY-startY, endZ-startZ).length();
+//        age = MathHelper.ceil(maxAge * (fullPath - vec.length()) / fullPath);
+
+        if (this.age++ >= this.maxAge) {
+            this.markDead();
+        } else {
+//            double f = (double) age / maxAge;
+            double f = (fullPath - vec.length()) / fullPath;
+            double deltaC = f*f * 0.5 + 0.06;
+
+            if (vecLength <= 0.5f) {
+                this.markDead();
+                return;
+            }
+
+            Vec3d deltaVec = vec.multiply(deltaC / vecLength);
+            x += deltaVec.x;
+            y += deltaVec.y;
+            z += deltaVec.z;
         }
-        return Math.max(endC, c - deltaC);
+//        this.setSpriteForAge(this.spriteProvider);
     }
 
     @Override
@@ -71,9 +86,8 @@ public class MovingParticle extends SpriteBillboardParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            MovingParticle movingParticle = new MovingParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-            movingParticle.setSprite(this.spriteProvider);
-            return movingParticle;
+            return new MovingParticle(world, x, y, z, velocityX, velocityY, velocityZ,
+                    this.spriteProvider);
         }
     }
 }

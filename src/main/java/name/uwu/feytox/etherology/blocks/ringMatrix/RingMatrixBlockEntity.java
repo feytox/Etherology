@@ -1,19 +1,15 @@
 package name.uwu.feytox.etherology.blocks.ringMatrix;
 
-import io.wispforest.owo.util.ImplementedInventory;
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -24,9 +20,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, ImplementedInventory {
+public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
     public RingMatrixBlockEntity(BlockPos pos, BlockState state) {
         super(BlocksRegistry.RING_MATRIX_BLOCK_ENTITY, pos, state);
@@ -48,11 +43,6 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, I
         BlockPos newPos = this.pos.add(0, dy, 0);
         world.setBlockState(newPos, this.getCachedState());
         world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
-    }
-
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        return items;
     }
 
     @Override
@@ -95,16 +85,12 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, I
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, items);
-
         super.writeNbt(nbt);
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-
-        Inventories.readNbt(nbt, items);
     }
 
     @Override

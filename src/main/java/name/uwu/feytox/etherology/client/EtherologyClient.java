@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static name.uwu.feytox.etherology.Etherology.CONSUMING;
+import static name.uwu.feytox.etherology.Etherology.*;
 
 @Environment(EnvType.CLIENT)
 public class EtherologyClient implements ClientModInitializer {
@@ -42,11 +42,20 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(BlocksRegistry.RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
         HandledScreens.register(Etherology.ETHER_SCREEN_HANDLER, EtherWorkbenchScreen::new);
 
-        ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
-                registry.register(new EIdentifier("particle/consuming"))));
+        ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) -> {
+                registry.register(new EIdentifier("particle/electricity1"));
+                registry.register(new EIdentifier("particle/electricity2"));
+                registry.register(new EIdentifier("particle/spark"));
+                registry.register(new EIdentifier("particle/steam"));
+                registry.register(new EIdentifier("particle/vital_energy"));
+        }));
 
 
-        ParticleFactoryRegistry.getInstance().register(CONSUMING, MovingParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, MovingParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, MovingParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(SPARK, MovingParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(STEAM, MovingParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, MovingParticle.Factory::new);
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (chapters == null && client.textRenderer != null) {

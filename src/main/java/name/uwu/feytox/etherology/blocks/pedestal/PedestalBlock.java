@@ -1,7 +1,5 @@
 package name.uwu.feytox.etherology.blocks.pedestal;
 
-import name.uwu.feytox.etherology.Etherology;
-import name.uwu.feytox.etherology.util.NbtCoord;
 import name.uwu.feytox.etherology.util.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -14,7 +12,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -54,28 +51,14 @@ public class PedestalBlock extends SimpleBlock implements BlockEntityProvider {
         return ActionResult.CONSUME;
     }
 
-    @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        if (!world.isClient) return;
-
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof PedestalBlockEntity pedestal) {
-            if (!pedestal.isConsuming()) return;
-
-            double x = pos.getX() + 0.5;
-            double y = pos.getY() + 1.5;
-            double z = pos.getZ() + 0.5;
-            NbtCoord center = pedestal.getCenterCoord();
-            world.addParticle(Etherology.CONSUMING, x, y, z, center.x, center.y, center.z);
-        }
-    }
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return !world.isClient && type == PEDESTAL_BLOCK_ENTITY ?
-                ((world1, pos, state1, be) -> PedestalBlockEntity.tick(world1, pos, state1, (PedestalBlockEntity) be))
-                : null;
+        if (type != PEDESTAL_BLOCK_ENTITY) return null;
+
+        return !world.isClient ?
+                ((world1, pos, state1, be) -> PedestalBlockEntity.serverTick(world1, pos, state1, (PedestalBlockEntity) be))
+                : ((world1, pos, state1, be) -> PedestalBlockEntity.clientTick(world1, pos, state1, (PedestalBlockEntity) be));
     }
 
     @Override

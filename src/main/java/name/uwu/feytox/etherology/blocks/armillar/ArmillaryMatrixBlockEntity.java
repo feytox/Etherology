@@ -5,10 +5,13 @@ import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockEntity;
 import name.uwu.feytox.etherology.components.IFloatComponent;
 import name.uwu.feytox.etherology.enums.InstabTypes;
+import name.uwu.feytox.etherology.enums.RingType;
+import name.uwu.feytox.etherology.items.MatrixRing;
 import name.uwu.feytox.etherology.mixin.ItemEntityAccessor;
 import name.uwu.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import name.uwu.feytox.etherology.recipes.armillary.EArmillaryRecipe;
 import name.uwu.feytox.etherology.util.UwuLib;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -46,7 +49,7 @@ import static name.uwu.feytox.etherology.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
 import static name.uwu.feytox.etherology.EtherologyComponents.ETHER_POINTS;
 
 public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory {
-    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     private UUID displayedItemUUID = null;
     private boolean activated = false;
     private boolean isDamaging = false;
@@ -77,6 +80,15 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
             return;
         }
 
+        if (this.getRingsNum() < 5 && handStack.getItem() instanceof MatrixRing) {
+            ItemStack copyStack = handStack.copy();
+            copyStack.setCount(1);
+            this.setStack(this.getRingsNum()+1, copyStack);
+            handStack.decrement(1);
+            markDirty();
+            return;
+        }
+
         if (this.isEmpty() && !handStack.isEmpty()) {
             ItemStack copyStack = handStack.copy();
             copyStack.setCount(1);
@@ -93,6 +105,23 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
             player.setStackInHand(hand, pedestalStack);
             markDirty();
         }
+    }
+
+    public List<RingType> getRingTypes() {
+        List<RingType> ringTypes = new ArrayList<>();
+        if (getRingsNum() == 0) return ringTypes;
+
+        for (ItemStack itemStack : items) {
+            if (itemStack.getItem() instanceof MatrixRing ring) ringTypes.add(ring.getRingType());
+        }
+        return ringTypes;
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+
+        if (world != null) world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
     }
 
     public boolean isActivated() {
@@ -239,7 +268,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
                 IFloatComponent ether_points = ETHER_POINTS.get(player);
                 if (ether_points.getValue() >= 0.75f) {
                     ether_points.decrement(0.75f);
-                    storedEther += 0.5f;
+                    storedEther += 0.75f;
                 }
                 return;
             }
@@ -284,6 +313,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     }
 
     public boolean checkStructure(World world, BlockPos pos, BlockState state) {
+        // TODO: как-то использовать проверку структуры
         return getPedestals(world, pos, state).size() >= 9;
     }
 
@@ -347,6 +377,19 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
         BlockPos ringsPos = getRingMatrix().getPos();
         return new Vec3d(ringsPos.getX()+0.5, ringsPos.getY()-0.3, ringsPos.getZ()+0.5);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return items.get(0).isEmpty();
+    }
+
+    public int getRingsNum() {
+        int i = 0;
+        for (; i < 5; i++) {
+            if (this.items.get(i+1).isEmpty()) break;
+        }
+        return i;
     }
 
     @Override
