@@ -1,5 +1,9 @@
 {
   "textures": [
-    "etherology:vital_energy_0"
+    "etherology:vital_energy_0",
+    "etherology:vital_energy_1",
+    "etherology:vital_energy_2",
+    "etherology:vital_energy_3",
+    "etherology:vital_energy_4"
   ]
 }

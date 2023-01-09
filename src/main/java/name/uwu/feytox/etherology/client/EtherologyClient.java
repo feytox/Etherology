@@ -9,7 +9,11 @@ import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockRenderer;
 import name.uwu.feytox.etherology.gui.teldecore.Chapters;
 import name.uwu.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
-import name.uwu.feytox.etherology.particle.MovingParticle;
+import name.uwu.feytox.etherology.particle.ElectricityParticle;
+import name.uwu.feytox.etherology.particle.SparkParticle;
+import name.uwu.feytox.etherology.particle.SteamParticle;
+import name.uwu.feytox.etherology.particle.VitalParticle;
+import name.uwu.feytox.etherology.particle.utility.SmallLightning;
 import name.uwu.feytox.etherology.util.EIdentifier;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -51,11 +55,13 @@ public class EtherologyClient implements ClientModInitializer {
         }));
 
 
-        ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, MovingParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, MovingParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(SPARK, MovingParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(STEAM, MovingParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, MovingParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, ElectricityParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(SPARK, SparkParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(STEAM, SteamParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, VitalParticle.Factory::new);
+
+        SmallLightning.registerPacket();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (chapters == null && client.textRenderer != null) {

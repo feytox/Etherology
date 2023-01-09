@@ -32,30 +32,32 @@ public class ArmillaryRecipeSerializer implements RecipeSerializer<ArmillaryReci
         if (recipeJson.outputAmount == 0) recipeJson.outputAmount = 1;
 
         List<Ingredient> inputs = new ArrayList<>();
-        recipeJson.inputs.forEach(jsonElement -> {
-            inputs.add(Ingredient.fromJson(jsonElement.getAsJsonObject()));
-        });
+        recipeJson.inputs.forEach(jsonElement ->
+                inputs.add(Ingredient.fromJson(jsonElement.getAsJsonObject())));
+
         Ingredient centerInput = Ingredient.fromJson(recipeJson.center_input);
         Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.outputItem));
         ItemStack output = new ItemStack(outputItem, recipeJson.outputAmount);
 
-        return new ArmillaryRecipe(inputs, centerInput, recipeJson.ether_points, output, id);
+        return new ArmillaryRecipe(inputs, centerInput, recipeJson.instability, recipeJson.ether_points, output, id);
     }
 
     @Override
     public ArmillaryRecipe read(Identifier id, PacketByteBuf buf) {
         List<Ingredient> inputs = buf.readList(Ingredient::fromPacket);
         Ingredient centerInput = Ingredient.fromPacket(buf);
-        float etherPoints = buf.readInt();
+        int instability = buf.readInt();
+        float etherPoints = buf.readFloat();
         ItemStack output = buf.readItemStack();
-        return new ArmillaryRecipe(inputs, centerInput, etherPoints, output, id);
+        return new ArmillaryRecipe(inputs, centerInput, instability, etherPoints, output, id);
     }
 
     @Override
     public void write(PacketByteBuf buf, ArmillaryRecipe recipe) {
         buf.writeCollection(recipe.getInputs(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
         recipe.getCenterInput().write(buf);
+        buf.writeInt(recipe.getInstability().getIndex());
         buf.writeFloat(recipe.getEtherPoints());
         buf.writeItemStack(recipe.getOutput());
     }

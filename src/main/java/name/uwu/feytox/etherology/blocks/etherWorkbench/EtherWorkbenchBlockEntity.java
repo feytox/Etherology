@@ -1,9 +1,12 @@
 package name.uwu.feytox.etherology.blocks.etherWorkbench;
 
 import io.wispforest.owo.util.ImplementedInventory;
+import name.uwu.feytox.etherology.recipes.ether.EtherRecipe;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -14,11 +17,15 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHER_WORKBENCH_BLOCK_ENTITY;
 
@@ -29,6 +36,33 @@ public class EtherWorkbenchBlockEntity extends BlockEntity implements Implemente
 
     public EtherWorkbenchBlockEntity(BlockPos pos, BlockState state) {
         super(ETHER_WORKBENCH_BLOCK_ENTITY, pos, state);
+    }
+
+    public static void clientTick(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+        EtherWorkbenchBlockEntity etherWorkbench = (EtherWorkbenchBlockEntity) blockEntity;
+        ClientWorld clientWorld = (ClientWorld) world;
+    }
+
+    public static void serverTick(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+        EtherWorkbenchBlockEntity etherWorkbench = (EtherWorkbenchBlockEntity) blockEntity;
+        ServerWorld serverWorld = (ServerWorld) world;
+
+        etherWorkbench.tickResult(serverWorld);
+
+        etherWorkbench.markDirty();
+    }
+
+    public void tickResult(ServerWorld world) {
+        ItemStack result = ItemStack.EMPTY;
+        Optional<EtherRecipe> match = world.getRecipeManager().getFirstMatch(EtherRecipe.Type.INSTANCE, this, world);
+
+        EtherRecipe recipe;
+        if (match.isPresent()) {
+            recipe = match.get();
+            result = recipe.getOutput();
+        }
+
+        this.setStack(13, result);
     }
 
     @Override
@@ -69,6 +103,13 @@ public class EtherWorkbenchBlockEntity extends BlockEntity implements Implemente
         Inventories.writeNbt(nbt, this.items);
 
         super.writeNbt(nbt);
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+
+        if (world != null) world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
     }
 
     @Override

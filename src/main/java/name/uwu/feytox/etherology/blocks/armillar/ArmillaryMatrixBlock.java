@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -69,9 +70,13 @@ public class ArmillaryMatrixBlock extends SimpleBlock implements BlockEntityProv
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return !world.isClient && type == ARMILLARY_MATRIX_BLOCK_ENTITY ?
-                ((world1, pos, state1, be) -> ArmillaryMatrixBlockEntity.tick(world1, pos, state1, (ArmillaryMatrixBlockEntity) be))
-                : null;
+        if (type != ARMILLARY_MATRIX_BLOCK_ENTITY) return null;
+
+        return !world.isClient ?
+                ((world1, pos, state1, be) ->
+                        ArmillaryMatrixBlockEntity.serverTick((ServerWorld) world1, pos, state1, (ArmillaryMatrixBlockEntity) be))
+                : ((world1, pos, state1, be) ->
+                ArmillaryMatrixBlockEntity.clientTick((ClientWorld) world1, pos, state1, (ArmillaryMatrixBlockEntity) be));
     }
 
     @Override

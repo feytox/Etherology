@@ -61,7 +61,7 @@ public class AlchemyRecipe implements Recipe<ImplementedInventory> {
 
     @Override
     public ItemStack getOutput() {
-        return outputStack;
+        return outputStack.copy();
     }
 
     @Override

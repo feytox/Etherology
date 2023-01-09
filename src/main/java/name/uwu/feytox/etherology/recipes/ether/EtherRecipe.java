@@ -121,7 +121,7 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
         inventory.getStack(11).decrement(this.getDeepCount());
         inventory.getStack(12).decrement(this.getTerrestrialCount());
         inventory.markDirty();
-        return getOutput().copy();
+        return getOutput();
     }
 
     @Override
@@ -131,7 +131,7 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
 
     @Override
     public ItemStack getOutput() {
-        return output;
+        return output.copy();
     }
 
     @Override

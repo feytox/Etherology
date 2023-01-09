@@ -2,6 +2,7 @@ package name.uwu.feytox.etherology.blocks.ringMatrix;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
+import name.uwu.feytox.etherology.enums.ArmillarStateType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,7 +12,9 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -20,7 +23,9 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable {
+import static name.uwu.feytox.etherology.enums.ArmillarStateType.*;
+
+public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, IAnimationTickable {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public RingMatrixBlockEntity(BlockPos pos, BlockState state) {
@@ -30,14 +35,12 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable {
     public ArmillaryMatrixBlockEntity getBaseBlock() {
         if (this.world == null) return null;
 
-        BlockPos armPos = this.pos.add(0, -3, 0);
-        BlockEntity blockEntity = world.getBlockEntity(armPos);
-        if (blockEntity instanceof ArmillaryMatrixBlockEntity) return (ArmillaryMatrixBlockEntity) blockEntity;
-
-        armPos = this.pos.add(0, -1, 0);
+        BlockPos armPos = this.pos.add(0, -1, 0);
         return (ArmillaryMatrixBlockEntity) world.getBlockEntity(armPos);
     }
 
+    // TODO: delete
+    @Deprecated
     public void moveRings(ServerWorld world, boolean isActivating) {
         int dy = isActivating ? 2 : -2;
         BlockPos newPos = this.pos.add(0, dy, 0);
@@ -53,7 +56,7 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable {
                             .loop("animation.ring_matrix.base"));
                     return PlayState.CONTINUE;
                 }));
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             animationData.addAnimationController(new AnimationController<>
                     (this, String.valueOf(i), 1, this::predicate));
         }
@@ -61,19 +64,37 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         ArmillaryMatrixBlockEntity armBlock = getBaseBlock();
-        if (armBlock == null || !armBlock.isActivated()) return PlayState.STOP;
+        if (armBlock == null) return PlayState.CONTINUE;
+
+        ArmillarStateType stateType = armBlock.getArmillarStateType();
 
         String animationName = null;
         switch (event.getController().getName()) {
-            case "0" -> animationName = "animation.ring_matrix.flying_loop";
-            case "1" -> animationName = "animation.ring_matrix.work_1";
+            case "0" -> {
+//                if (!stateType.equals(OFF)) animationName = "animation.ring_matrix.flying_loop";
+            }
+            case "1" -> {
+                if (stateType.equals(OFF)) animationName = "animation.ring_matrix.inactively_loop";
+            }
             case "2" -> {
-                // TODO: add instability anim
+                if (!stateType.equalsAny(LOWERING, OFF)) animationName = "animation.ring_matrix.work_startloop";
+            }
+            case "3" -> {
+                if (stateType.equals(DAMAGING)) animationName = "animation.ring_matrix.instability_loop";
+            }
+            case "4" -> {
+                if (stateType.equals(LOWERING)) animationName = "animation.ring_matrix.work_end";
             }
         }
 
-        if (animationName != null) event.getController().setAnimation(new AnimationBuilder()
-                .loop(animationName));
+        if (animationName == null) return PlayState.STOP;
+
+        AnimationState animationState = event.getController().getAnimationState();
+        event.getController().setAnimation(new AnimationBuilder().loop(animationName));
+
+        if (animationName == "animation.ring_matrix.work_startloop") {
+            int x = 1 + 2;
+        }
 
         return PlayState.CONTINUE;
     }
@@ -101,5 +122,14 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable {
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
+    }
+
+    @Override
+    public void tick() {
+    }
+
+    @Override
+    public int tickTimer() {
+        return 0;
     }
 }

@@ -6,7 +6,8 @@ import com.google.gson.JsonObject;
 public class ArmillaryRecipeJsonFormat {
     JsonArray inputs;
     JsonObject center_input;
-    int ether_points;
+    int instability;
+    float ether_points;
     String outputItem;
     int outputAmount;
 }

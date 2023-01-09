@@ -10,5 +10,6 @@
     "item": "minecraft:iron_ingot"
   },
   "ether_points": 6.9,
+  "instability": 1,
   "outputItem": "minecraft:bedrock"
 }

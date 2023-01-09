@@ -7,6 +7,8 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -14,6 +16,9 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import static name.uwu.feytox.etherology.BlocksRegistry.ETHER_WORKBENCH_BLOCK_ENTITY;
 
 public class EtherWorkbench extends SimpleBlock implements BlockEntityProvider {
 
@@ -49,4 +54,11 @@ public class EtherWorkbench extends SimpleBlock implements BlockEntityProvider {
         }
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (type != ETHER_WORKBENCH_BLOCK_ENTITY) return null;
+
+        return !world.isClient ? EtherWorkbenchBlockEntity::serverTick : EtherWorkbenchBlockEntity::clientTick;
+    }
 }

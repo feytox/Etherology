@@ -17,8 +17,7 @@ import static name.uwu.feytox.etherology.EtherologyComponents.ETHER_POINTS;
 public class IdkLib {
     public static boolean isExhaustion(PlayerEntity player) {
         Optional<IFloatComponent> component = ETHER_POINTS.maybeGet(player);
-        if (component.isEmpty()) return false;
-        return component.get().getValue() < 5;
+        return component.filter(iFloatComponent -> iFloatComponent.getValue() < 5).isPresent();
     }
 
     public static void tickExhaustion(PlayerEntity player) {

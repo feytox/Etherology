@@ -4,16 +4,16 @@ import io.wispforest.owo.ui.core.Color;
 import name.uwu.feytox.etherology.Etherology;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
+import name.uwu.feytox.etherology.particle.utility.SmallLightning;
 import name.uwu.feytox.etherology.util.FakeItem;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.explosion.Explosion;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ import java.util.Random;
 
 public enum InstabTypes {
     NULL(0.0D, Color.GREEN),
-    VERY_LOW(0.05D, 0.02D, Color.GREEN),
+    VERY_LOW(0.05D, 0.2D, Color.GREEN),
     LOW(0.1D, 0.05D, 0.03D, Color.GREEN),
     MEDIUM(0.1D, 0.1D, 0.06D, 0.02D, Color.GREEN),
     HIGH(0.15D, 0.2D, 0.1D, 0.05D, 0.01D, Color.BLUE),
@@ -63,31 +63,6 @@ public enum InstabTypes {
 
     InstabTypes(double chance1, double chance2, double chance3, double chance4, Color textColor) {
         this(chance1, chance2, chance3, chance4, 0.0d, textColor);
-    }
-
-    // выброс нестабильности в мир
-    public double getChance1() {
-        return chance1;
-    }
-
-    // микро-молнии
-    public double getChance2() {
-        return chance2;
-    }
-
-    // выпад предмета
-    public double getChance3() {
-        return chance3;
-    }
-
-    // микро-взрывы
-    public double getChance4() {
-        return chance4;
-    }
-
-    // удаление предмета
-    public double getChance5() {
-        return chance5;
     }
 
     public String getLangKey() {
@@ -146,13 +121,18 @@ public enum InstabTypes {
     public boolean event2(float multi, ServerWorld world, BlockPos pos, BlockState state) {
         if (!checkRandom(chance2, multi)) return false;
 
+        // TODO: replace to Minecraft Random
         Random rand = new Random();
 
-        LightningEntity boltEntity = EntityType.LIGHTNING_BOLT.create(world);
-        if (boltEntity == null) return false;
-        boltEntity.setPos(pos.getX() + rand.nextInt(-8, 9),
-                pos.getY(), pos.getZ() + rand.nextInt(-8, 9));
-        world.spawnEntity(boltEntity);
+        ArmillaryMatrixBlockEntity block = (ArmillaryMatrixBlockEntity) world.getBlockEntity(pos);
+        if (block == null) return false;
+
+        Vec3d randomPos = new Vec3d(pos.getX() + rand.nextInt(-8, 9), pos.getY(),
+                pos.getZ() + rand.nextInt(-8, 9));
+
+        SmallLightning smallLightning = new SmallLightning(block.getCenterPos(world), randomPos, 3);
+        smallLightning.spawn(world);
+
         return true;
     }
 

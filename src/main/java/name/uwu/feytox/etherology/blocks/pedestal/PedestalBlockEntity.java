@@ -1,12 +1,15 @@
 package name.uwu.feytox.etherology.blocks.pedestal;
 
 import io.wispforest.owo.util.ImplementedInventory;
-import name.uwu.feytox.etherology.Etherology;
 import name.uwu.feytox.etherology.mixin.ItemEntityAccessor;
+import name.uwu.feytox.etherology.particle.ItemMovingParticle;
+import name.uwu.feytox.etherology.particle.MovingParticle;
 import name.uwu.feytox.etherology.util.NbtCoord;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,8 +19,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.particle.ItemStackParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.Etherology.SPARK;
 
 public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -75,24 +77,29 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
 
     public static void clientTick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if (world.isClient) {
-            blockEntity.tickConsumingParticles(world);
+            blockEntity.tickConsumingParticles((ClientWorld) world);
         }
     }
 
-    public void tickConsumingParticles(World world) {
+    public void tickConsumingParticles(ClientWorld world) {
         if (!isConsuming()) return;
 
         Random random = Random.create();
-        if (itemConsumingTicks % 5 != 0) return;
-
         NbtCoord center = getCenterCoord();
 
-        for (int i = 0; i < random.nextBetween(1, 5); i++) {
+        if (itemConsumingTicks % 5 != 0) return;
+
+        for (int i = 0; i < 5; i++) {
             double x = pos.getX() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
             double y = pos.getY() + 1.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
             double z = pos.getZ() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
-            world.addParticle(Etherology.SPARK, x, y, z, center.x, center.y, center.z);
+            ItemMovingParticle particle = new ItemMovingParticle(world, x, y, z, center.x, center.y, center.z,
+                    getItems().get(0).copy());
+            MinecraftClient.getInstance().particleManager.addParticle(particle);
         }
+
+        MovingParticle.spawnParticles(world, SPARK, random.nextBetween(1, 5), 0.35,
+                pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
     }
 
     public void consumeItem(int ticks, Vec3d centerPos) {
@@ -127,10 +134,10 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
 //            world.spawnParticles(Etherology.SPARK, x, y, z, 1,
 //                    centerCoord.x-x, centerCoord.y-y, centerCoord.z-z, 1);
         } else if(itemConsumingTicks == 0) {
-            world.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, items.get(0)), x, y, z,
-                    10, 0, 2, 0, 0.01);
+//            world.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, items.get(0)), x, y, z,
+//                    10, 0, 2, 0, 0.01);
+
             centerCoord = null;
-            itemConsumingTicks = 0;
             clear();
         }
 

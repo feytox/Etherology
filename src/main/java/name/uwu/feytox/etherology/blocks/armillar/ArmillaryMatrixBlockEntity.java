@@ -4,10 +4,13 @@ import io.wispforest.owo.util.ImplementedInventory;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockEntity;
 import name.uwu.feytox.etherology.components.IFloatComponent;
+import name.uwu.feytox.etherology.enums.ArmillarStateType;
 import name.uwu.feytox.etherology.enums.InstabTypes;
 import name.uwu.feytox.etherology.enums.RingType;
 import name.uwu.feytox.etherology.items.MatrixRing;
 import name.uwu.feytox.etherology.mixin.ItemEntityAccessor;
+import name.uwu.feytox.etherology.particle.ElectricityParticle;
+import name.uwu.feytox.etherology.particle.MovingParticle;
 import name.uwu.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import name.uwu.feytox.etherology.recipes.armillary.EArmillaryRecipe;
 import name.uwu.feytox.etherology.util.UwuLib;
@@ -15,6 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -28,14 +32,15 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,14 +49,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static name.uwu.feytox.etherology.BlocksRegistry.ARMILLARY_MATRIX_BLOCK_ENTITY;
-import static name.uwu.feytox.etherology.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.BlocksRegistry.*;
+import static name.uwu.feytox.etherology.Etherology.STEAM;
+import static name.uwu.feytox.etherology.Etherology.VITAL_ENERGY;
 import static name.uwu.feytox.etherology.EtherologyComponents.ETHER_POINTS;
+import static name.uwu.feytox.etherology.enums.ArmillarStateType.*;
 
 public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     private UUID displayedItemUUID = null;
     private boolean activated = false;
+    // TODO: replace all isDamaging -> ArmillarStateType.DAMAGING
     private boolean isDamaging = false;
     private InstabTypes instability = InstabTypes.NULL;
     private float instabilityMulti = 0.0f;
@@ -60,6 +68,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     private int craftStepTicks = 0;
     private int randomTicks = 0;
     private EArmillaryRecipe currentRecipe = null;
+    private ArmillarStateType armillarStateType = ArmillarStateType.OFF;
 
 
     public ArmillaryMatrixBlockEntity(BlockPos pos, BlockState state) {
@@ -128,13 +137,23 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         return activated;
     }
 
-    public RingMatrixBlockEntity getRingMatrix() {
-        if (this.world == null) return null;
+    public ArmillarStateType getArmillarStateType() {
+        return armillarStateType;
+    }
 
-        int y = isActivated() ? 3 : 1;
+    public RingMatrixBlockEntity getRingMatrix(World world) {
+        BlockPos ringPos = this.pos.add(0, 1, 0);
+        RingMatrixBlockEntity result = (RingMatrixBlockEntity) world.getBlockEntity(ringPos);
+        if (world.isClient) return result;
+        return result == null ? repairRingMatrix((ServerWorld) world, ringPos) : result;
+    }
 
-        BlockPos ringPos = this.pos.add(0, y, 0);
-        return (RingMatrixBlockEntity) world.getBlockEntity(ringPos);
+    public RingMatrixBlockEntity repairRingMatrix(ServerWorld world, BlockPos pos) {
+        RingMatrixBlockEntity result = (RingMatrixBlockEntity) world.getBlockEntity(pos);
+        if (result != null) return result;
+
+        world.setBlockState(pos, RING_MATRIX_BLOCK.getDefaultState());
+        return (RingMatrixBlockEntity) world.getBlockEntity(pos);
     }
 
     public boolean startCrafting(ServerWorld world, PlayerEntity player) {
@@ -161,20 +180,31 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     }
 
     public void activate(ServerWorld world) {
-        getRingMatrix().moveRings(world, true);
+        armillarStateType = RAISING;
+        storingTicks = -58; // TODO: check raising time
+
+        ItemEntity displayedItem = getDisplayedItemEntity(world);
+        if (displayedItem != null) displayedItem.setVelocity(0, 1 / 16.9d, 0);
+
         activated = true;
         tickItem(world);
     }
 
     public void deactivate(ServerWorld world) {
-        getRingMatrix().moveRings(world, false);
+        armillarStateType = LOWERING;
+        storingTicks = -58; // TODO: check raising time
+
+        ItemEntity displayedItem = getDisplayedItemEntity(world);
+
+        if (displayedItem != null) displayedItem.setVelocity(0, -1 / 16.9d, 0);
+
         activated = false;
     }
 
     public boolean craft(ServerWorld world) {
         if (currentRecipe == null) return false;
 
-        UwuLib.drawParticleLine(world, getCenterPos(), getCenterPos().add(0, 0.2, 0), ParticleTypes.LARGE_SMOKE, 0.1f);
+        UwuLib.drawParticleLine(world, getCenterPos(world), getCenterPos(world).add(0, 0.2, 0), STEAM, 0.1f);
 
         ItemEntity displayedItem = getDisplayedItemEntity(world);
         if (displayedItem != null) displayedItem.kill();
@@ -196,6 +226,8 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
         if (storedEther < currentRecipe.getEtherPoints()) return false;
 
+        armillarStateType = CRAFTING;
+
         craftStepTicks++;
         if (craftStepTicks < 6*20) return false;
         craftStepTicks = 0;
@@ -210,17 +242,17 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         if (result == -621) {
             this.instabilityMulti += this.instabilityMulti * 0.1f;
             this.isDamaging = true;
+            this.armillarStateType = DAMAGING;
             return false;
         }
         this.isDamaging = false;
-        // TODO: добавить какие-то эффекты для забирания предмета
         if (result == -1) {
             this.clear();
             if (currentRecipe.isFinished()) return craft(world);
         } else {
             List<PedestalBlockEntity> pedestals = getNotEmptyPedestals(world, pos, world.getBlockState(pos));
             PedestalBlockEntity pedestal = pedestals.get(result);
-            pedestal.consumeItem(3*20, getCenterPos());
+            pedestal.consumeItem(3*20, getCenterPos(world));
 //            if (itemEntity != null) UwuLib.drawParticleLine(world, getCenterPos(), itemEntity, ParticleTypes.EFFECT, 0.1f);
         }
 
@@ -228,11 +260,30 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     }
 
     // TODO: static -> class method
-    public static void tick(World world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
-        blockEntity.tickItem((ServerWorld) world);
-        blockEntity.tickStore((ServerWorld) world, pos);
-        blockEntity.craftStep((ServerWorld) world);
-        blockEntity.tickInstability((ServerWorld) world, pos, state);
+    public static void serverTick(ServerWorld world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
+        blockEntity.tickItem(world);
+        blockEntity.serverTickStore(world, pos);
+        blockEntity.craftStep(world);
+        blockEntity.tickInstability(world, pos, state);
+
+        blockEntity.markDirty();
+    }
+
+    public static void clientTick(ClientWorld world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
+        blockEntity.clientTickStore(world);
+        blockEntity.clientTickWorking(world);
+    }
+
+    public void clientTickWorking(ClientWorld world) {
+        if (armillarStateType.equalsAny(OFF, RAISING, LOWERING)) return;
+
+        Random rand = Random.create();
+        if (rand.nextDouble() > 0.075) return;
+
+        Vec3d center = getCenterPos(world);
+
+        MovingParticle.spawnParticles(world, ElectricityParticle.getParticleType(rand), rand.nextBetween(1, 3), 3.5,
+                center.x, center.y, center.z, center.x, center.y, center.z, rand);
     }
 
     public void tickInstability(ServerWorld world, BlockPos pos, BlockState state) {
@@ -248,23 +299,34 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         instability.event5(instabilityMulti, world, this);
     }
 
-    public void tickStore(ServerWorld world, BlockPos pos) {
+    public void serverTickStore(ServerWorld world, BlockPos pos) {
+        if (storingTicks < 0 && armillarStateType.equals(LOWERING)) storingTicks++;
+        if (armillarStateType.equals(LOWERING) && storingTicks == 0) {
+            armillarStateType = OFF;
+        }
+
         if (!activated || currentRecipe == null) return;
-        storingTicks += 1;
+        storingTicks++;
+
+        if (armillarStateType.equals(RAISING) && storingTicks == 0) {
+            armillarStateType = STORING;
+        }
+
         if (storingTicks < 20) return;
         storingTicks = 0;
         if (storedEther < currentRecipe.getEtherPoints()) {
-            List<? extends LivingEntity> allEntities = world
-                    .getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), livingEntity -> !livingEntity.isPlayer());
-            List<LivingEntity> nearestEntities = new ArrayList<>();
-            allEntities.forEach(livingEntity -> {
-                if (livingEntity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= 64) nearestEntities.add(livingEntity);
-            });
+            Box entitiesBox = new Box(pos.getX()-8, pos.getY()-1, pos.getZ()-8, pos.getX()+8,
+                    pos.getY()+8, pos.getZ()+8);
+            List<? extends LivingEntity> nearestEntities = world
+                    .getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), entitiesBox,
+                            livingEntity -> !livingEntity.isPlayer());
+
             if (nearestEntities.isEmpty()) {
                 // player ether damage
+                // TODO: replace 100 -> 8
                 PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, false);
                 if (player == null) return;
-                UwuLib.drawParticleLine(world, getCenterPos(), player, ParticleTypes.GLOW, 0.1f);
+//                UwuLib.drawParticleLine(world, getCenterPos(), player, ParticleTypes.GLOW, 0.1f);
                 IFloatComponent ether_points = ETHER_POINTS.get(player);
                 if (ether_points.getValue() >= 0.75f) {
                     ether_points.decrement(0.75f);
@@ -272,20 +334,62 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
                 }
                 return;
             }
-            UwuLib.drawParticleLine(world, getCenterPos(), nearestEntities.get(0), ParticleTypes.CRIT, 0.1f);
+//            UwuLib.drawParticleLine(world, getCenterPos(), nearestEntities.get(0), ParticleTypes.CRIT, 0.1f);
             nearestEntities.get(0).damage(DamageSource.MAGIC, 0.5f);
             storedEther += 0.5f;
         } else if (isDamaging) {
             PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
             if (player == null) return;
-            UwuLib.drawParticleLine(world, getCenterPos(), player, ParticleTypes.GLOW, 0.1f);
+//            UwuLib.drawParticleLine(world, getCenterPos(), player, ParticleTypes.GLOW, 0.1f);
             ETHER_POINTS.get(player).decrement(0.3f);
         }
     }
 
+    public void clientTickStore(ClientWorld world) {
+        if (!armillarStateType.equals(STORING)) return;
+
+        Random rand = Random.create();
+
+        if (rand.nextDouble() > 0.2) return;
+
+        Vec3d center = getCenterPos(world);
+
+        if (!armillarStateType.equals(DAMAGING)) {
+            Box entitiesBox = new Box(pos.getX()-8, pos.getY()-1, pos.getZ()-8, pos.getX()+8,
+                    pos.getY()+8, pos.getZ()+8);
+            List<? extends LivingEntity> nearestEntities = world
+                    .getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), entitiesBox,
+                            livingEntity -> !livingEntity.isPlayer());
+
+            if (nearestEntities.isEmpty()) {
+                // TODO: replace 100 -> 8
+                PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, false);
+                if (player == null) return;
+
+                MovingParticle.spawnParticles(world, VITAL_ENERGY, rand.nextBetween(1, 4), 0.6, player,
+                        center.x, center.y, center.z, rand);
+
+                return;
+            }
+
+            Entity nearestEntity = nearestEntities.get(0);
+            MovingParticle.spawnParticles(world, VITAL_ENERGY, rand.nextBetween(1, 4), 0.6, nearestEntity,
+                    center.x, center.y, center.z, rand);
+
+        } else {
+            PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
+            if (player == null) return;
+
+            MovingParticle.spawnParticles(world, VITAL_ENERGY, rand.nextBetween(1, 4), 0.6, player,
+                    center.x, center.y, center.z, rand);
+        }
+    }
+
     public void tickItem(ServerWorld world) {
+        if (armillarStateType.equalsAny(RAISING, LOWERING)) return;
+
         ItemEntity displayedItem = getDisplayedItemEntity(world);
-        Vec3d mustPos = getCenterPos();
+        Vec3d mustPos = getCenterPos(world);
 
         if (displayedItem != null && displayedItem.isAlive()) {
             displayedItem.setVelocity(0.0, 0.0, 0.0);
@@ -365,18 +469,18 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     }
 
     public void onBreak(ServerWorld world) {
-        world.setBlockState(getRingMatrix().getPos(), Blocks.AIR.getDefaultState());
+        world.setBlockState(getRingMatrix(world).getPos(), Blocks.AIR.getDefaultState());
 
         ItemEntity displayedItem = getDisplayedItemEntity((ServerWorld) world);
         if (displayedItem != null && displayedItem.isAlive()) displayedItem.kill();
         markRemoved();
     }
 
-    public Vec3d getCenterPos() {
-        if (!activated) return new Vec3d(this.pos.getX()+0.5, this.pos.getY()+0.75, this.pos.getZ()+0.5);
+    public Vec3d getCenterPos(World world) {
+        Vec3d notActivated = new Vec3d(this.pos.getX()+0.5, this.pos.getY()+0.75, this.pos.getZ()+0.5);
+        if (!activated) return notActivated;
 
-        BlockPos ringsPos = getRingMatrix().getPos();
-        return new Vec3d(ringsPos.getX()+0.5, ringsPos.getY()-0.3, ringsPos.getZ()+0.5);
+        return notActivated.add(0, 2.5, 0);
     }
 
     @Override
@@ -408,6 +512,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         nbt.putInt("craftStepTicks", craftStepTicks);
         nbt.putBoolean("activated", activated);
         nbt.putBoolean("isDamaging", isDamaging);
+        armillarStateType.writeNbt(nbt);
 
         super.writeNbt(nbt);
     }
@@ -425,6 +530,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         craftStepTicks = nbt.getInt("craftStepTicks");
         isDamaging = nbt.getBoolean("isDamaging");
         activated = nbt.getBoolean("activated");
+        armillarStateType = ArmillarStateType.readNbt(nbt);
         Inventories.readNbt(nbt, items);
     }
 

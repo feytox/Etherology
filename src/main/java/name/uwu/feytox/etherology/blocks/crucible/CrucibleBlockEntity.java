@@ -147,7 +147,7 @@ public class CrucibleBlockEntity extends BlockEntity implements IAnimatable, Imp
 
             if (match.isPresent()) {
                 world.spawnEntity(new ItemEntity(world, this.pos.getX(), this.pos.getY()+2, this.pos.getZ(),
-                        match.get().getOutput().copy()));
+                        match.get().getOutput()));
                 this.clear();
                 this.is_filled = false;
                 this.currentMix = 0;

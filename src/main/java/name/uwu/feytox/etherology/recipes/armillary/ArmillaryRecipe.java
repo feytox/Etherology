@@ -16,13 +16,16 @@ import java.util.List;
 public class ArmillaryRecipe implements Recipe<Inventory> {
     private final List<Ingredient> inputs;
     private final Ingredient centerInput;
+    private final InstabTypes instability;
     private final float etherPoints;
     private final ItemStack outputStack;
     private final Identifier id;
 
-    public ArmillaryRecipe(List<Ingredient> inputs, Ingredient centerInput, float etherPoints, ItemStack outputStack, Identifier id) {
+    public ArmillaryRecipe(List<Ingredient> inputs, Ingredient centerInput, int instability,
+                           float etherPoints, ItemStack outputStack, Identifier id) {
         this.inputs = inputs;
         this.centerInput = centerInput;
+        this.instability = InstabTypes.getFromIndex(instability);
         this.etherPoints = etherPoints;
         this.outputStack = outputStack;
         this.id = id;
@@ -34,9 +37,7 @@ public class ArmillaryRecipe implements Recipe<Inventory> {
 
 
     public InstabTypes getInstability() {
-        // TODO: add instability to recipe
-        int instability = 0;
-        return InstabTypes.getFromIndex(instability);
+        return instability;
     }
 
     public float getEtherPoints() {
@@ -85,7 +86,7 @@ public class ArmillaryRecipe implements Recipe<Inventory> {
 
     @Override
     public ItemStack getOutput() {
-        return outputStack;
+        return outputStack.copy();
     }
 
     @Override
