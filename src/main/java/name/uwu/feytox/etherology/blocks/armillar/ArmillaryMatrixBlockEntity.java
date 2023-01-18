@@ -13,6 +13,10 @@ import name.uwu.feytox.etherology.particle.ElectricityParticle;
 import name.uwu.feytox.etherology.particle.MovingParticle;
 import name.uwu.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import name.uwu.feytox.etherology.recipes.armillary.EArmillaryRecipe;
+import name.uwu.feytox.etherology.tickers.ITicker;
+import name.uwu.feytox.etherology.tickers.Ticker;
+import name.uwu.feytox.etherology.tickers.Tickers;
+import name.uwu.feytox.etherology.util.EGeoNetwork;
 import name.uwu.feytox.etherology.util.UwuLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -55,7 +59,8 @@ import static name.uwu.feytox.etherology.Etherology.VITAL_ENERGY;
 import static name.uwu.feytox.etherology.EtherologyComponents.ETHER_POINTS;
 import static name.uwu.feytox.etherology.enums.ArmillarStateType.*;
 
-public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory {
+public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory, ITicker {
+    List<Ticker> tickers = new ArrayList<>();
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     private UUID displayedItemUUID = null;
     private boolean activated = false;
@@ -66,7 +71,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     private float storedEther = 0.0f;
     private int storingTicks = 0;
     private int craftStepTicks = 0;
-    private int randomTicks = 0;
+    private int randomTicks = -1;
     private EArmillaryRecipe currentRecipe = null;
     private ArmillarStateType armillarStateType = ArmillarStateType.OFF;
 
@@ -83,7 +88,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     public void interact(ServerWorld world, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
 
-        if (handStack.isItemEqual(Items.ARROW.getDefaultStack())) {
+        if (handStack.isItemEqual(Items.ARROW.getDefaultStack()) && !activated) {
             boolean result = startCrafting(world, player);
             player.sendMessage(Text.of(result ? "началось" : "не началось"));
             return;
@@ -157,7 +162,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     }
 
     public boolean startCrafting(ServerWorld world, PlayerEntity player) {
-        // TODO: check player stats and etc.
+        // TODO: check player stats etc.
         if (this.world == null || this.world.isClient) return false;
         List<ItemStack> allItems = getAllItems(this.world, this.pos, this.world.getBlockState(this.pos));
         SimpleInventory fakeInventory = new SimpleInventory(allItems.size());
@@ -179,9 +184,18 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         return true;
     }
 
+    public void tryActivate(ServerWorld world) {
+        Ticker ticker = getDefaultTickers().get("starter");
+        if (ticker == null) return;
+        addTicker(ticker.copy(0));
+        getRingMatrix(world).triggerAnim("accepted");
+    }
+
     public void activate(ServerWorld world) {
         armillarStateType = RAISING;
-        storingTicks = -58; // TODO: check raising time
+        EGeoNetwork.sendStartMatrix(world, this);
+
+        storingTicks = -42; // TODO: check raising time
 
         ItemEntity displayedItem = getDisplayedItemEntity(world);
         if (displayedItem != null) displayedItem.setVelocity(0, 1 / 16.9d, 0);
@@ -192,7 +206,10 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
     public void deactivate(ServerWorld world) {
         armillarStateType = LOWERING;
-        storingTicks = -58; // TODO: check raising time
+        EGeoNetwork.sendStopAnim(world, pos, "work");
+        getRingMatrix(world).triggerAnim("end");
+        getRingMatrix(world).triggerAnim("inactively");
+        storingTicks = -40; // TODO: check raising time
 
         ItemEntity displayedItem = getDisplayedItemEntity(world);
 
@@ -240,7 +257,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         int result = currentRecipe.findMatchAndRemove(pedestalItems, this.items.get(0));
 
         if (result == -621) {
-            this.instabilityMulti += this.instabilityMulti * 0.1f;
+            this.instabilityMulti += this.instabilityMulti * 0.42f;
             this.isDamaging = true;
             this.armillarStateType = DAMAGING;
             return false;
@@ -259,14 +276,22 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         return true;
     }
 
-    // TODO: static -> class method
+    // TODO: simplify getter method
     public static void serverTick(ServerWorld world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
         blockEntity.tickItem(world);
-        blockEntity.serverTickStore(world, pos);
+        blockEntity.serverTickStore(world);
         blockEntity.craftStep(world);
         blockEntity.tickInstability(world, pos, state);
 
+        blockEntity.plsDeleteMe(world);
+        blockEntity.tickTickers(world);
+
         blockEntity.markDirty();
+    }
+
+    // FIXME: TODO: пожалуйста, сделай это без таких костылей, прошу тебя
+    public void plsDeleteMe(ServerWorld world) {
+        if (randomTicks == -1) getRingMatrix(world).triggerAnim("inactively");
     }
 
     public static void clientTick(ClientWorld world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
@@ -282,8 +307,8 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
         Vec3d center = getCenterPos(world);
 
-        MovingParticle.spawnParticles(world, ElectricityParticle.getParticleType(rand), rand.nextBetween(1, 3), 3.5,
-                center.x, center.y, center.z, center.x, center.y, center.z, rand);
+        MovingParticle.spawnParticles(world, ElectricityParticle.getParticleType(rand), rand.nextBetween(1, 3), 1,
+                center.x, center.y, center.z, instabilityMulti, center.y, center.z, rand);
     }
 
     public void tickInstability(ServerWorld world, BlockPos pos, BlockState state) {
@@ -299,7 +324,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         instability.event5(instabilityMulti, world, this);
     }
 
-    public void serverTickStore(ServerWorld world, BlockPos pos) {
+    public void serverTickStore(ServerWorld world) {
         if (storingTicks < 0 && armillarStateType.equals(LOWERING)) storingTicks++;
         if (armillarStateType.equals(LOWERING) && storingTicks == 0) {
             armillarStateType = OFF;
@@ -310,6 +335,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
         if (armillarStateType.equals(RAISING) && storingTicks == 0) {
             armillarStateType = STORING;
+            getRingMatrix(world).triggerAnim("work");
         }
 
         if (storingTicks < 20) return;
@@ -480,7 +506,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         Vec3d notActivated = new Vec3d(this.pos.getX()+0.5, this.pos.getY()+0.75, this.pos.getZ()+0.5);
         if (!activated) return notActivated;
 
-        return notActivated.add(0, 2.5, 0);
+        return notActivated.add(0, 2, 0);
     }
 
     @Override
@@ -514,6 +540,8 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         nbt.putBoolean("isDamaging", isDamaging);
         armillarStateType.writeNbt(nbt);
 
+        writeTNbt(nbt);
+
         super.writeNbt(nbt);
     }
 
@@ -524,7 +552,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         storedEther = nbt.getFloat("storedEther");
         instabilityMulti = nbt.getFloat("instabilityMulti");
         instability = InstabTypes.readNbt(nbt);
-        currentRecipe = EArmillaryRecipe.readNbt(nbt, this.world);
+        currentRecipe = EArmillaryRecipe.readNbt(nbt);
         storingTicks = nbt.getInt("storingTicks");
         randomTicks = nbt.getInt("randomTicks");
         craftStepTicks = nbt.getInt("craftStepTicks");
@@ -532,6 +560,8 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         activated = nbt.getBoolean("activated");
         armillarStateType = ArmillarStateType.readNbt(nbt);
         Inventories.readNbt(nbt, items);
+
+        readTNbt(nbt);
     }
 
     @Override
@@ -548,5 +578,23 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
+    }
+
+    @Override
+    public List<Ticker> getTickers() {
+        return tickers;
+    }
+
+    @Override
+    public void setTickers(List<Ticker> tickers) {
+        this.tickers = tickers;
+    }
+
+    @Override
+    public Tickers getDefaultTickers() {
+        // TODO: добавить функционал
+        return new Tickers().register(
+                new Ticker("ender", world1 -> deactivate((ServerWorld) world1), 15, false)
+        );
     }
 }

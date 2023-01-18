@@ -4,6 +4,8 @@ import name.uwu.feytox.etherology.util.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -11,6 +13,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import static name.uwu.feytox.etherology.BlocksRegistry.RING_MATRIX_BLOCK_ENTITY;
 
 public class RingMatrixBlock extends SimpleBlock implements BlockEntityProvider {
     public RingMatrixBlock() {
@@ -48,5 +52,13 @@ public class RingMatrixBlock extends SimpleBlock implements BlockEntityProvider 
     @Override
     public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
         return Block.createCuboidShape(0, 0, 0, 0, 0, 0);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (type != RING_MATRIX_BLOCK_ENTITY) return null;
+
+        return world.isClient ? null : RingMatrixBlockEntity::serverTick;
     }
 }

@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class AlchemyRecipeSerializer implements RecipeSerializer<AlchemyRecipe> 
         recipeJson.inputs.forEach(jsonElement -> {
             inputs.add(Ingredient.fromJson(jsonElement.getAsJsonObject()));
         });
-        Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
+        Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.outputItem));
         ItemStack output = new ItemStack(outputItem, recipeJson.outputAmount);
 

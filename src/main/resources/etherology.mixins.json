@@ -4,8 +4,8 @@
   "package": "name.uwu.feytox.etherology.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AnimatedGeoModelAccessor",
     "ClientWorldAccessor",
+    "GeoModelAccessor",
     "ItemEntityAccessor",
     "ServerPlayerEntityMixin",
     "WorldRendererAccessor"

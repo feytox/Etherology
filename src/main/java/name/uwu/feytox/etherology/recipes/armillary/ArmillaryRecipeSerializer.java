@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ArmillaryRecipeSerializer implements RecipeSerializer<ArmillaryReci
                 inputs.add(Ingredient.fromJson(jsonElement.getAsJsonObject())));
 
         Ingredient centerInput = Ingredient.fromJson(recipeJson.center_input);
-        Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
+        Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.outputItem));
         ItemStack output = new ItemStack(outputItem, recipeJson.outputAmount);
 

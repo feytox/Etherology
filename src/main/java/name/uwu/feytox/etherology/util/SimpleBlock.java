@@ -7,8 +7,9 @@ import net.minecraft.block.Material;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 
@@ -40,13 +41,13 @@ public abstract class SimpleBlock extends Block {
     }
 
     public SimpleBlock registerBlock() {
-        Registry.register(Registry.BLOCK, new EIdentifier(this.blockId), this);
+        Registry.register(Registries.BLOCK, new EIdentifier(this.blockId), this);
         return this;
     }
 
     // TODO: Custom ItemGroup
     public BlockItem registerItem() {
-        return Registry.register(Registry.ITEM, new EIdentifier(this.blockId), this.blockItem);
+        return Registry.register(Registries.ITEM, new EIdentifier(this.blockId), this.blockItem);
     }
 
     public ItemStack asStack(int count) {

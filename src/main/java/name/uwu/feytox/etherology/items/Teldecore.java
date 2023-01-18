@@ -2,11 +2,8 @@ package name.uwu.feytox.etherology.items;
 
 import name.uwu.feytox.etherology.gui.teldecore.TestScreen;
 import name.uwu.feytox.etherology.util.SimpleItem;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -18,11 +15,7 @@ import static name.uwu.feytox.etherology.EtherologyComponents.*;
 public class Teldecore extends SimpleItem {
 
     public Teldecore() {
-        super("teldecore", getSettings());
-    }
-
-    private static Item.Settings getSettings() {
-        return new FabricItemSettings().group(ItemGroup.MISC).maxCount(1);
+        super("teldecore");
     }
 
     @Override

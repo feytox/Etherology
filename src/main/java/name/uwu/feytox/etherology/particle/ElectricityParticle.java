@@ -16,13 +16,14 @@ import static name.uwu.feytox.etherology.Etherology.ELECTRICITY2;
 public class ElectricityParticle extends MovingParticle {
     protected final SpriteProvider spriteProvider;
 
-    public ElectricityParticle(ClientWorld clientWorld, double d, double e, double f, SpriteProvider spriteProvider) {
+    public ElectricityParticle(ClientWorld clientWorld, double d, double e, double f, double instability, SpriteProvider spriteProvider) {
+        // (normal - 1.0, max 60s = 33.33369)
         super(clientWorld, d, e, f, d, e, f);
         this.spriteProvider = spriteProvider;
         this.maxAge = 10;
         this.age = random.nextBetween(0, maxAge - 5);
         this.setSpriteForAge(spriteProvider);
-        this.setRGB(151, 115, 255);
+        this.setRGB(255 - (104 * instability / 33.33369d), 115, 255);
         this.setAngle(Random.create().nextBetween(0, 360));
     }
 
@@ -51,7 +52,8 @@ public class ElectricityParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ElectricityParticle(world, x, y, z, this.spriteProvider);
+            // velocityX = instability
+            return new ElectricityParticle(world, x, y, z, velocityX, this.spriteProvider);
         }
     }
 

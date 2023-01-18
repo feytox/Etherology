@@ -32,7 +32,7 @@ public class TransPage extends EmptyPage {
                 Components.item(recipe.getResult())
                         .showOverlay(true)
                         .tooltip(recipe.getResult()
-                                .getTooltip(MinecraftClient.getInstance().player, TooltipContext.Default.NORMAL))
+                                .getTooltip(MinecraftClient.getInstance().player, TooltipContext.BASIC))
                         .positioning(Positioning.absolute(61+dx, 35))
         );
 

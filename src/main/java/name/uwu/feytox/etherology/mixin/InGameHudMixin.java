@@ -24,7 +24,7 @@ public class InGameHudMixin {
         if (type != InGameHud.HeartType.CONTAINER && player != null && IdkLib.isExhaustion(player)) {
             int u = halfHeart ? 9 : 0;
             u += blinking ? 18 : 0;
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderTexture(0, new EIdentifier("textures/hud/ether_hearts.png"));
             DrawableHelper.drawTexture(matrices, x, y, u, v, 9, 9, 256, 256);
             RenderSystem.setShaderTexture(0, new Identifier("minecraft", "textures/gui/icons.png"));

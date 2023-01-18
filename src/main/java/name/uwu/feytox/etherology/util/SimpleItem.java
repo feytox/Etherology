@@ -2,9 +2,9 @@ package name.uwu.feytox.etherology.util;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 
 public class SimpleItem extends Item {
     public String itemId;
@@ -16,11 +16,11 @@ public class SimpleItem extends Item {
 
     // TODO: Custom ItemGroup
     public SimpleItem(String itemId) {
-        this(itemId, new FabricItemSettings().group(ItemGroup.MISC));
+        this(itemId, new FabricItemSettings());
     }
 
     public SimpleItem register() {
-        Registry.register(Registry.ITEM, new EIdentifier(this.itemId), this);
+        Registry.register(Registries.ITEM, new EIdentifier(this.itemId), this);
         return this;
     }
 

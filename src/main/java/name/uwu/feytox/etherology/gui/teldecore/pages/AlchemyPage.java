@@ -31,7 +31,7 @@ public class AlchemyPage extends EmptyPage {
                 Components.item(recipe.getResult())
                         .showOverlay(true)
                         .tooltip(recipe.getResult()
-                                .getTooltip(MinecraftClient.getInstance().player, TooltipContext.Default.NORMAL))
+                                .getTooltip(MinecraftClient.getInstance().player, TooltipContext.BASIC))
                         .positioning(Positioning.absolute(51+dx, 71))
         );
 

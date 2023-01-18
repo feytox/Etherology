@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
@@ -159,7 +159,7 @@ public enum InstabTypes {
         Random rand = new Random();
 
         world.createExplosion(null, pos.getX() + rand.nextInt(-8, 9),
-                pos.getY(), pos.getZ() + rand.nextInt(-8, 9), 1, Explosion.DestructionType.NONE);
+                pos.getY(), pos.getZ() + rand.nextInt(-8, 9), 1, World.ExplosionSourceType.NONE);
 
         return true;
     }

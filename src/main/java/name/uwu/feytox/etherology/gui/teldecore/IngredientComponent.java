@@ -22,7 +22,7 @@ public class IngredientComponent extends ItemComponent {
     public IngredientComponent ingredient(ItemStack itemStack) {
         this.stack(itemStack);
         this.tooltip(itemStack
-                .getTooltip(MinecraftClient.getInstance().player, TooltipContext.Default.NORMAL));
+                .getTooltip(MinecraftClient.getInstance().player, TooltipContext.BASIC));
         return this;
     }
 

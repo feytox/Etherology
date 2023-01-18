@@ -1,37 +1,42 @@
 package name.uwu.feytox.etherology.blocks.ringMatrix;
 
+import com.google.gson.JsonObject;
 import name.uwu.feytox.etherology.enums.RingType;
 import name.uwu.feytox.etherology.util.RingIdentifier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.ResourceManager;
-import software.bernie.geckolib3.file.AnimationFileLoader;
-import software.bernie.geckolib3.geo.exception.GeckoLibException;
-import software.bernie.geckolib3.geo.raw.pojo.Converter;
-import software.bernie.geckolib3.geo.raw.pojo.FormatVersion;
-import software.bernie.geckolib3.geo.raw.pojo.RawGeoModel;
-import software.bernie.geckolib3.geo.raw.tree.RawGeometryTree;
-import software.bernie.geckolib3.geo.render.GeoBuilder;
-import software.bernie.geckolib3.geo.render.built.GeoModel;
+import net.minecraft.util.JsonHelper;
+import software.bernie.geckolib.GeckoLibException;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.loading.json.FormatVersion;
+import software.bernie.geckolib.loading.json.raw.Model;
+import software.bernie.geckolib.loading.object.BakedModelFactory;
+import software.bernie.geckolib.loading.object.GeometryTree;
+import software.bernie.geckolib.util.JsonUtil;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static software.bernie.geckolib.loading.FileLoader.getFileContents;
 
 public class RingsModelProvider {
     public static final RingsModelProvider INSTANCE = new RingsModelProvider();
 
-    Map<RingIdentifier, GeoModel> cachedModels = new HashMap<>();
+    Map<RingIdentifier, BakedGeoModel> cachedModels = new HashMap<>();
 
     private RingsModelProvider() {
     }
 
-    public GeoModel generateModel(RingIdentifier location) {
+    @Nullable
+    public BakedGeoModel generateModel(RingIdentifier location) {
+        // TODO: clear after reload
+        if (cachedModels.containsKey(location)) return cachedModels.get(location);
+
         try {
-            // TODO: clear cache after reload
-            if (cachedModels.containsKey(location)) return cachedModels.get(location);
-
             ResourceManager resourceManager = MinecraftClient.getInstance().getResourceManager();
+            String jsonString = getFileContents(location, resourceManager);
 
-            String jsonString = AnimationFileLoader.getResourceAsString(location, resourceManager);
             if (location.getRingsNum() != 0) {
                 for (int i = 1; i <= location.getRingsNum(); i++) {
                     RingType ringType = location.getRingsTypes().get(i - 1);
@@ -44,20 +49,12 @@ public class RingsModelProvider {
                 }
             }
 
-            RawGeoModel rawModel = Converter
-                    .fromJsonString(jsonString);
-            if (rawModel.getFormatVersion() != FormatVersion.VERSION_1_12_0) {
-                throw new GeckoLibException(location, "Wrong geometry json version, expected 1.12.0");
-            }
+            Model model = JsonUtil.GEO_GSON.fromJson(JsonHelper.deserialize(JsonUtil.GEO_GSON, jsonString, JsonObject.class), Model.class);
 
-            // Parse the flat list of bones into a raw hierarchical tree of "BoneGroup"s
-            RawGeometryTree rawGeometryTree = RawGeometryTree.parseHierarchy(rawModel);
+            if (model.formatVersion() != FormatVersion.V_1_12_0)
+                throw new GeckoLibException(location, "Unsupported geometry json version. Supported versions: 1.12.0");
 
-            // Build the quads and cubes from the raw tree into a built and ready to be
-            // rendered GeoModel
-            GeoModel geoModel = GeoBuilder.getGeoBuilder(location.getNamespace()).constructGeoModel(rawGeometryTree);
-            cachedModels.put(location, geoModel);
-            return geoModel;
+            return BakedModelFactory.getForNamespace(location.getNamespace()).constructGeoModel(GeometryTree.fromModel(model));
         } catch (Exception e) {
             e.printStackTrace();
         }

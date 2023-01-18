@@ -5,6 +5,7 @@ import io.wispforest.owo.util.ImplementedInventory;
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.enums.MixTypes;
 import name.uwu.feytox.etherology.recipes.alchemy.AlchemyRecipe;
+import name.uwu.feytox.etherology.util.EGeoBlockEntity;
 import name.uwu.feytox.etherology.util.EIdentifier;
 import name.uwu.feytox.etherology.util.EVec3d;
 import net.minecraft.block.BlockState;
@@ -19,30 +20,32 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class CrucibleBlockEntity extends BlockEntity implements IAnimatable, ImplementedInventory {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class CrucibleBlockEntity extends BlockEntity implements EGeoBlockEntity, ImplementedInventory {
+    private static final RawAnimation MIXING_ANIM = RawAnimation.begin()
+            .thenPlay("animation.brewingCauldron.mixing");
+    private static final RawAnimation FAILED_ANIM = RawAnimation.begin()
+            .thenPlay("animation.brewingCauldron.failed");
+    private static final RawAnimation IDLE_ANIM = RawAnimation.begin()
+            .thenPlay("animation.brewingCauldron.idle");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean is_filled = false;
     private boolean is_mixing = false;
     private int mixingTicks = -1;
@@ -108,13 +111,14 @@ public class CrucibleBlockEntity extends BlockEntity implements IAnimatable, Imp
 
     public void mix(World world, List<ItemEntity> itemEntities) {
         if (!this.is_mixing) {
+            triggerAnim("mixing_controller", "mixing");
             this.mixingTicks = 18;
             int currentMix = MixTypes.getNextMixId(this.currentMix);
             this.currentMix = currentMix;
 
             if (!itemEntities.isEmpty()) {
                 List<ItemStack> itemStacks = new ArrayList<>(Lists.transform(itemEntities, ItemEntity::getStack));
-                itemStacks.sort(Comparator.comparing(itemStack -> Registry.ITEM.getId(itemStack.getItem()).getPath()));
+                itemStacks.sort(Comparator.comparing(itemStack -> Registries.ITEM.getId(itemStack.getItem()).getPath()));
                 itemEntities.forEach(Entity::kill);
 
                 for (ItemStack itemStack : itemStacks) {
@@ -127,11 +131,11 @@ public class CrucibleBlockEntity extends BlockEntity implements IAnimatable, Imp
 
                 if (this.checkRecipe(world)) return;
 
-                this.addStack(Registry.ITEM.get(new EIdentifier(MixTypes.getByNum(currentMix).getLangKey()))
+                this.addStack(Registries.ITEM.get(new EIdentifier(MixTypes.getByNum(currentMix).getLangKey()))
                         .getDefaultStack());
             } else {
                 this.items.set(this.lastSlotNum,
-                        Registry.ITEM.get(new EIdentifier(MixTypes.getByNum(currentMix).getLangKey()))
+                        Registries.ITEM.get(new EIdentifier(MixTypes.getByNum(currentMix).getLangKey()))
                                 .getDefaultStack());
             }
             this.is_mixing = true;
@@ -195,29 +199,6 @@ public class CrucibleBlockEntity extends BlockEntity implements IAnimatable, Imp
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>
-                (this, "controller", 1, this::predicate));
-    }
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.is_mixing) {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .loop("animation.brewingCauldron.mixing"));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .playOnce("animation.brewingCauldron.idle"));
-        }
-
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    @Override
     public DefaultedList<ItemStack> getItems() {
         return this.items;
     }
@@ -234,5 +215,16 @@ public class CrucibleBlockEntity extends BlockEntity implements IAnimatable, Imp
             this.setStack(this.lastSlotNum, oneStack);
         }
         return true;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(getTriggerController("mixing", MIXING_ANIM));
+        controllers.add(getTriggerController("failed", FAILED_ANIM));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

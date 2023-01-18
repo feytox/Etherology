@@ -11,7 +11,7 @@ import name.uwu.feytox.etherology.gui.teldecore.pages.*;
 import name.uwu.feytox.etherology.recipes.visual.*;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.ItemTags;
+import net.minecraft.registry.tag.ItemTags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

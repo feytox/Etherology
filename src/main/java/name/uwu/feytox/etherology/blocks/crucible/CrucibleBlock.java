@@ -1,7 +1,6 @@
 package name.uwu.feytox.etherology.blocks.crucible;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
-import name.uwu.feytox.etherology.ItemsRegistry;
 import name.uwu.feytox.etherology.util.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -9,7 +8,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -28,8 +26,7 @@ public class CrucibleBlock extends SimpleBlock implements BlockEntityProvider {
     protected static final VoxelShape OUTLINE_SHAPE;
 
     public CrucibleBlock() {
-        super("crucible", (BlockItem) ItemsRegistry.CRUCIBLE_BLOCK_ITEM,
-                FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
+        super("crucible", FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
     }
 
     @Override
@@ -44,11 +41,6 @@ public class CrucibleBlock extends SimpleBlock implements BlockEntityProvider {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new CrucibleBlockEntity(pos, state);
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override

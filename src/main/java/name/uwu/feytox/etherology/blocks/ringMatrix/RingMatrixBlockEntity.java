@@ -2,7 +2,7 @@ package name.uwu.feytox.etherology.blocks.ringMatrix;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
-import name.uwu.feytox.etherology.enums.ArmillarStateType;
+import name.uwu.feytox.etherology.util.EGeoBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,21 +12,34 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import net.minecraft.world.World;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static name.uwu.feytox.etherology.enums.ArmillarStateType.*;
+public class RingMatrixBlockEntity extends BlockEntity implements EGeoBlockEntity {
+    private static final RawAnimation BASE_ANIM = RawAnimation.begin()
+            .thenLoop("animation.ring_matrix.base");
+    private static final RawAnimation INACTIVELY_ANIM = RawAnimation.begin()
+            .thenLoop("animation.ring_matrix.inactively_loop");
+    private static final RawAnimation FLYING_ANIM = RawAnimation.begin()
+            .thenLoop("animation.ring_matrix.flying_loop");
+    private static final RawAnimation ACCEPTED_ANIM = RawAnimation.begin()
+            .thenPlay("animation.ring_matrix.work_accepted");
+    private static final RawAnimation STARTLOOP_ANIM = RawAnimation.begin()
+            .thenPlay("animation.ring_matrix.work_accepted")
+            .thenLoop("animation.ring_matrix.work_startloop");
+    private static final RawAnimation START_ANIM = RawAnimation.begin()
+            .thenPlay("animation.ring_matrix.work_start");
+    private static final RawAnimation WORK_ANIM = RawAnimation.begin()
+            .thenLoop("animation.ring_matrix.work_loop");
+    private static final RawAnimation END_ANIM = RawAnimation.begin()
+            .thenPlay("animation.ring_matrix.work_end");
+    private static final RawAnimation INSTABILITY_ANIM = RawAnimation.begin()
+            .thenLoop("animation.ring_matrix.instability_loop");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, IAnimationTickable {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public RingMatrixBlockEntity(BlockPos pos, BlockState state) {
         super(BlocksRegistry.RING_MATRIX_BLOCK_ENTITY, pos, state);
@@ -48,60 +61,17 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, I
         world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
     }
 
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>
-                (this, "base", 1, event -> {
-                    event.getController().setAnimation(new AnimationBuilder()
-                            .loop("animation.ring_matrix.base"));
-                    return PlayState.CONTINUE;
-                }));
-        for (int i = 0; i < 5; i++) {
-            animationData.addAnimationController(new AnimationController<>
-                    (this, String.valueOf(i), 1, this::predicate));
-        }
+    public static void serverTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
+        ServerWorld serverWorld = (ServerWorld) world;
+        RingMatrixBlockEntity ringMatrix = (RingMatrixBlockEntity) blockEntity;
+
+        ringMatrix.checkBase(serverWorld);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        ArmillaryMatrixBlockEntity armBlock = getBaseBlock();
-        if (armBlock == null) return PlayState.CONTINUE;
+    public void checkBase(ServerWorld world) {
+        BlockEntity be = world.getBlockEntity(this.pos.down(1));
 
-        ArmillarStateType stateType = armBlock.getArmillarStateType();
-
-        String animationName = null;
-        switch (event.getController().getName()) {
-            case "0" -> {
-//                if (!stateType.equals(OFF)) animationName = "animation.ring_matrix.flying_loop";
-            }
-            case "1" -> {
-                if (stateType.equals(OFF)) animationName = "animation.ring_matrix.inactively_loop";
-            }
-            case "2" -> {
-                if (!stateType.equalsAny(LOWERING, OFF)) animationName = "animation.ring_matrix.work_startloop";
-            }
-            case "3" -> {
-                if (stateType.equals(DAMAGING)) animationName = "animation.ring_matrix.instability_loop";
-            }
-            case "4" -> {
-                if (stateType.equals(LOWERING)) animationName = "animation.ring_matrix.work_end";
-            }
-        }
-
-        if (animationName == null) return PlayState.STOP;
-
-        AnimationState animationState = event.getController().getAnimationState();
-        event.getController().setAnimation(new AnimationBuilder().loop(animationName));
-
-        if (animationName == "animation.ring_matrix.work_startloop") {
-            int x = 1 + 2;
-        }
-
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+        if (!(be instanceof ArmillaryMatrixBlockEntity)) world.breakBlock(this.pos, false);
     }
 
     @Override
@@ -125,11 +95,20 @@ public class RingMatrixBlockEntity extends BlockEntity implements IAnimatable, I
     }
 
     @Override
-    public void tick() {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(getController(BASE_ANIM));
+        controllers.add(getTriggerController("inactively", INACTIVELY_ANIM));
+        controllers.add(getTriggerController("flying", FLYING_ANIM));
+        controllers.add(getTriggerController("startloop", STARTLOOP_ANIM));
+        controllers.add(getTriggerController("start", START_ANIM));
+        controllers.add(getTriggerController("work", WORK_ANIM));
+        controllers.add(getTriggerController("end", END_ANIM));
+        controllers.add(getTriggerController("accepted", ACCEPTED_ANIM));
+        controllers.add(getTriggerController("instability", INSTABILITY_ANIM));
     }
 
     @Override
-    public int tickTimer() {
-        return 0;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

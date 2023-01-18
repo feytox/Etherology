@@ -3,9 +3,9 @@ package name.uwu.feytox.etherology.util;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class EIngredient {
     }
 
     public static Ingredient fromId(Identifier id) {
-        TagKey<Item> tagKey = TagKey.of(Registry.ITEM_KEY, id);
+        TagKey<Item> tagKey = TagKey.of(Registries.ITEM.getKey(), id);
         return Ingredient.fromTag(tagKey);
     }
 }

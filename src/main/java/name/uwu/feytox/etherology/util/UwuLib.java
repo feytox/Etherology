@@ -26,7 +26,7 @@ public class UwuLib {
         return (matrices, button, delta) -> {
             RenderSystem.enableDepthTest();
             RenderSystem.setShaderTexture(0, texture);
-            Drawer.drawTexture(matrices, button.x, button.y, u1, v1, u2-u1+1, v2-v1+1, textureWidth, textureHeight);
+            Drawer.drawTexture(matrices, button.getX(), button.getY(), u1, v1, u2-u1+1, v2-v1+1, textureWidth, textureHeight);
         };
     }
 
@@ -41,7 +41,7 @@ public class UwuLib {
             }
             RenderSystem.enableDepthTest();
             RenderSystem.setShaderTexture(0, texture);
-            Drawer.drawTexture(matrices, button.x, button.y, u1, renderV1, u2 - u1 + 1, renderV2 - renderV1 + 1, textureWidth, textureHeight);
+            Drawer.drawTexture(matrices, button.getX(), button.getY(), u1, renderV1, u2 - u1 + 1, renderV2 - renderV1 + 1, textureWidth, textureHeight);
         };
     }
 
