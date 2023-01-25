@@ -6,10 +6,7 @@ import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockRenderer;
 import name.uwu.feytox.etherology.gui.teldecore.Chapters;
 import name.uwu.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
-import name.uwu.feytox.etherology.particle.ElectricityParticle;
-import name.uwu.feytox.etherology.particle.SparkParticle;
-import name.uwu.feytox.etherology.particle.SteamParticle;
-import name.uwu.feytox.etherology.particle.VitalParticle;
+import name.uwu.feytox.etherology.particle.*;
 import name.uwu.feytox.etherology.particle.utility.SmallLightning;
 import name.uwu.feytox.etherology.util.EGeoNetwork;
 import net.fabricmc.api.ClientModInitializer;
@@ -46,7 +43,9 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SPARK, SparkParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(STEAM, SteamParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(LIGHT, SteamParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(LIGHT, LightParticle.SimpleFactory::new);
+        ParticleFactoryRegistry.getInstance().register(LIGHT_VITAL, LightVitalParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(LIGHT_SPARK, LightParticle.SparkFactory::new);
         ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, VitalParticle.Factory::new);
 
         SmallLightning.registerPacket();

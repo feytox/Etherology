@@ -20,15 +20,6 @@ public class SparkParticle extends MovingParticle {
     public SparkParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, SpriteProvider spriteProvider) {
         super(clientWorld, d, e, f, g, h, i);
         this.spriteProvider = spriteProvider;
-        // random scale + sprite for age
-//        float scale = (float) Math.min(Math.random() + 0.5f, 1);
-//        this.scale(scale);
-//        this.setSpriteForAge(spriteProvider);
-
-// random sprite
-//        this.setSprite(spriteProvider);
-
-        // random sprite, but with animation of it (comment last in tick() to off)
         this.age = random.nextBetween(0, 70);
         this.setSpriteForAge(spriteProvider);
 //        this.setRGB(255, 215, 0);
@@ -53,17 +44,7 @@ public class SparkParticle extends MovingParticle {
 
     @Override
     protected int getBrightness(float tint) {
-        float f = ((float)this.age + tint) / (float)this.maxAge;
-        f = MathHelper.clamp(f, 0.0F, 1.0F);
-        int i = super.getBrightness(tint);
-        int j = i & 255;
-        int k = i >> 16 & 255;
-        j += (int)(f * 15.0F * 16.0F);
-        if (j > 240) {
-            j = 240;
-        }
-
-        return j | k << 16;
+        return 255;
     }
 
     @Environment(EnvType.CLIENT)

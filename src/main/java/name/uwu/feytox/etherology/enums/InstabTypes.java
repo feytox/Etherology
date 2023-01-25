@@ -7,6 +7,7 @@ import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import name.uwu.feytox.etherology.particle.utility.SmallLightning;
 import name.uwu.feytox.etherology.util.FakeItem;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -124,13 +125,14 @@ public enum InstabTypes {
         // TODO: replace to Minecraft Random
         Random rand = new Random();
 
-        ArmillaryMatrixBlockEntity block = (ArmillaryMatrixBlockEntity) world.getBlockEntity(pos);
-        if (block == null) return false;
+        BlockEntity be = world.getBlockEntity(pos);
+        if (!(be instanceof ArmillaryMatrixBlockEntity armBlock)) return false;
 
         Vec3d randomPos = new Vec3d(pos.getX() + rand.nextInt(-8, 9), pos.getY(),
                 pos.getZ() + rand.nextInt(-8, 9));
 
-        SmallLightning smallLightning = new SmallLightning(block.getCenterPos(world), randomPos, 3);
+        SmallLightning smallLightning = new SmallLightning(armBlock.getCenterPos(), randomPos, 3,
+                armBlock.getInstabilityMulti());
         smallLightning.spawn(world);
 
         return true;

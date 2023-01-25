@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.Etherology.LIGHT_SPARK;
 import static name.uwu.feytox.etherology.Etherology.SPARK;
 
 public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory {
@@ -98,6 +99,8 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
             MinecraftClient.getInstance().particleManager.addParticle(particle);
         }
 
+        MovingParticle.spawnParticles(world, LIGHT_SPARK, random.nextBetween(10, 25), 0.35,
+                pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
         MovingParticle.spawnParticles(world, SPARK, random.nextBetween(1, 5), 0.35,
                 pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
     }

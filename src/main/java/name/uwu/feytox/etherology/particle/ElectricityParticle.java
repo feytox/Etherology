@@ -16,9 +16,12 @@ import static name.uwu.feytox.etherology.Etherology.ELECTRICITY2;
 public class ElectricityParticle extends MovingParticle {
     protected final SpriteProvider spriteProvider;
 
-    public ElectricityParticle(ClientWorld clientWorld, double d, double e, double f, double instability, SpriteProvider spriteProvider) {
+    public ElectricityParticle(ClientWorld clientWorld, double d, double e, double f, double instability, double isCenter, SpriteProvider spriteProvider) {
         // (normal - 1.0, max 60s = 33.33369)
         super(clientWorld, d, e, f, d, e, f);
+        if (isCenter < 25 && isCenter > 15) {
+            this.scale(1.4f);
+        }
         this.spriteProvider = spriteProvider;
         this.maxAge = 10;
         this.age = random.nextBetween(0, maxAge - 5);
@@ -53,7 +56,8 @@ public class ElectricityParticle extends MovingParticle {
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             // velocityX = instability
-            return new ElectricityParticle(world, x, y, z, velocityX, this.spriteProvider);
+            // velocityY = is_center
+            return new ElectricityParticle(world, x, y, z, velocityX, velocityY, this.spriteProvider);
         }
     }
 
@@ -61,6 +65,9 @@ public class ElectricityParticle extends MovingParticle {
         return random.nextDouble() <= 0.5d ? ELECTRICITY1 : ELECTRICITY2;
     }
 
+    /**
+     * recommended for single particle
+     */
     public static DefaultParticleType getParticleType() {
         return getParticleType(Random.create());
     }

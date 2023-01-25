@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -54,8 +55,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.*;
+import static name.uwu.feytox.etherology.Etherology.LIGHT_VITAL;
 import static name.uwu.feytox.etherology.Etherology.STEAM;
-import static name.uwu.feytox.etherology.Etherology.VITAL_ENERGY;
 import static name.uwu.feytox.etherology.EtherologyComponents.ETHER_POINTS;
 import static name.uwu.feytox.etherology.enums.ArmillarStateType.*;
 
@@ -74,6 +75,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     private int randomTicks = -1;
     private EArmillaryRecipe currentRecipe = null;
     private ArmillarStateType armillarStateType = ArmillarStateType.OFF;
+    private MatrixWorkSoundInstance soundInstance = null;
 
 
     public ArmillaryMatrixBlockEntity(BlockPos pos, BlockState state) {
@@ -221,7 +223,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     public boolean craft(ServerWorld world) {
         if (currentRecipe == null) return false;
 
-        UwuLib.drawParticleLine(world, getCenterPos(world), getCenterPos(world).add(0, 0.2, 0), STEAM, 0.1f);
+        UwuLib.drawParticleLine(world, getCenterPos(), getCenterPos().add(0, 0.2, 0), STEAM, 0.1f);
 
         ItemEntity displayedItem = getDisplayedItemEntity(world);
         if (displayedItem != null) displayedItem.kill();
@@ -269,7 +271,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         } else {
             List<PedestalBlockEntity> pedestals = getNotEmptyPedestals(world, pos, world.getBlockState(pos));
             PedestalBlockEntity pedestal = pedestals.get(result);
-            pedestal.consumeItem(3*20, getCenterPos(world));
+            pedestal.consumeItem(3*20, getCenterPos());
 //            if (itemEntity != null) UwuLib.drawParticleLine(world, getCenterPos(), itemEntity, ParticleTypes.EFFECT, 0.1f);
         }
 
@@ -294,9 +296,29 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         if (randomTicks == -1) getRingMatrix(world).triggerAnim("inactively");
     }
 
+    public float getInstabilityMulti() {
+        return instabilityMulti;
+    }
+
     public static void clientTick(ClientWorld world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
         blockEntity.clientTickStore(world);
         blockEntity.clientTickWorking(world);
+        blockEntity.clientTickSound(world, pos);
+    }
+
+    public void clientTickSound(ClientWorld world, BlockPos pos) {
+        MinecraftClient client = MinecraftClient.getInstance();
+
+        if (client.player == null) return;
+
+        if (soundInstance == null && !armillarStateType.equalsAny(OFF, RAISING, LOWERING)
+                && client.player.squaredDistanceTo(getCenterPos()) < 36) {
+            soundInstance = new MatrixWorkSoundInstance(this, client.player);
+            client.getSoundManager().play(soundInstance);
+        }
+
+        if (soundInstance != null && (armillarStateType.equalsAny(OFF, RAISING, LOWERING)
+                || soundInstance.isDone())) soundInstance = null;
     }
 
     public void clientTickWorking(ClientWorld world) {
@@ -305,14 +327,14 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         Random rand = Random.create();
         if (rand.nextDouble() > 0.075) return;
 
-        Vec3d center = getCenterPos(world);
+        Vec3d center = getCenterPos();
 
         MovingParticle.spawnParticles(world, ElectricityParticle.getParticleType(rand), rand.nextBetween(1, 3), 1,
-                center.x, center.y, center.z, instabilityMulti, center.y, center.z, rand);
+                center.x, center.y, center.z, instabilityMulti, 20, 0, rand);
     }
 
     public void tickInstability(ServerWorld world, BlockPos pos, BlockState state) {
-        if (!activated || currentRecipe == null) return;
+        if (armillarStateType.equalsAny(OFF, RAISING, LOWERING)) return;
         randomTicks++;
         if (randomTicks < 10) return;
         randomTicks = 0;
@@ -376,9 +398,9 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
         Random rand = Random.create();
 
-        if (rand.nextDouble() > 0.2) return;
+//        if (rand.nextDouble() > 0.2) return;
 
-        Vec3d center = getCenterPos(world);
+        Vec3d center = getCenterPos();
 
         if (!armillarStateType.equals(DAMAGING)) {
             Box entitiesBox = new Box(pos.getX()-8, pos.getY()-1, pos.getZ()-8, pos.getX()+8,
@@ -392,21 +414,21 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
                 PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, false);
                 if (player == null) return;
 
-                MovingParticle.spawnParticles(world, VITAL_ENERGY, rand.nextBetween(1, 4), 0.6, player,
+                MovingParticle.spawnParticles(world, LIGHT_VITAL, 30, 0, player,
                         center.x, center.y, center.z, rand);
 
                 return;
             }
 
             Entity nearestEntity = nearestEntities.get(0);
-            MovingParticle.spawnParticles(world, VITAL_ENERGY, rand.nextBetween(1, 4), 0.6, nearestEntity,
+            MovingParticle.spawnParticles(world, LIGHT_VITAL, 30, 0, nearestEntity,
                     center.x, center.y, center.z, rand);
 
         } else {
             PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
             if (player == null) return;
 
-            MovingParticle.spawnParticles(world, VITAL_ENERGY, rand.nextBetween(1, 4), 0.6, player,
+            MovingParticle.spawnParticles(world, LIGHT_VITAL, 30, 0, player,
                     center.x, center.y, center.z, rand);
         }
     }
@@ -415,7 +437,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         if (armillarStateType.equalsAny(RAISING, LOWERING)) return;
 
         ItemEntity displayedItem = getDisplayedItemEntity(world);
-        Vec3d mustPos = getCenterPos(world);
+        Vec3d mustPos = getCenterPos();
 
         if (displayedItem != null && displayedItem.isAlive()) {
             displayedItem.setVelocity(0.0, 0.0, 0.0);
@@ -497,12 +519,12 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     public void onBreak(ServerWorld world) {
         world.setBlockState(getRingMatrix(world).getPos(), Blocks.AIR.getDefaultState());
 
-        ItemEntity displayedItem = getDisplayedItemEntity((ServerWorld) world);
+        ItemEntity displayedItem = getDisplayedItemEntity(world);
         if (displayedItem != null && displayedItem.isAlive()) displayedItem.kill();
         markRemoved();
     }
 
-    public Vec3d getCenterPos(World world) {
+    public Vec3d getCenterPos() {
         Vec3d notActivated = new Vec3d(this.pos.getX()+0.5, this.pos.getY()+0.75, this.pos.getZ()+0.5);
         if (!activated) return notActivated;
 

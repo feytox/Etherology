@@ -13,12 +13,16 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static name.uwu.feytox.etherology.Etherology.ELECTRICITY_SOUND_EVENT;
 
 public class SmallLightning {
     public static final EIdentifier SMALL_LIGHTNING_PACKET_ID = new EIdentifier("small_lightning_packet");
@@ -27,25 +31,28 @@ public class SmallLightning {
     private List<ParticleLine> particleLines = new ArrayList<>();
     private final FVec3d endPos;
     private final int lineCount;
+    private final float instability;
     private boolean shouldDamage = false;
     private Entity target = null;
 
-    public SmallLightning(Vec3d startPos, Vec3d endPos, int lineCount) {
+    public SmallLightning(Vec3d startPos, Vec3d endPos, int lineCount, float instability) {
         this.startPos = FVec3d.of(startPos);
         this.endPos = FVec3d.of(endPos);
         this.lineCount = lineCount;
+        this.instability = instability;
     }
 
-    public SmallLightning(Vec3d startPos, Vec3d endPos, int lineCount, List<ParticleLine> particleLines) {
-        this(startPos, endPos, lineCount);
+    public SmallLightning(Vec3d startPos, Vec3d endPos, int lineCount, float instability, List<ParticleLine> particleLines) {
+        this(startPos, endPos, lineCount, instability);
         this.particleLines = particleLines;
     }
 
-    public SmallLightning(Vec3d startPos, Entity target, int lineCount, boolean shouldDamage) {
+    public SmallLightning(Vec3d startPos, Entity target, int lineCount, boolean shouldDamage, float instability) {
         this.startPos = FVec3d.of(startPos);
         this.lineCount = lineCount;
         this.shouldDamage = shouldDamage;
         this.target = target;
+        this.instability = instability;
 
         Box box = target.getBoundingBox();
         double targetX = (box.minX + box.maxX) / 2;
@@ -109,12 +116,22 @@ public class SmallLightning {
         }
 
         tryDamage(world);
+
+        world.playSound(
+                null,
+                new BlockPos(startPos),
+                ELECTRICITY_SOUND_EVENT,
+                SoundCategory.BLOCKS,
+                0.1f,
+                1f
+        );
     }
 
     public void write(PacketByteBuf buf) {
         startPos.write(buf);
         endPos.write(buf);
         buf.writeInt(lineCount);
+        buf.writeFloat(instability);
         particleLines.forEach(particleLine -> particleLine.write(buf));
     }
 
@@ -122,25 +139,27 @@ public class SmallLightning {
         FVec3d startPos = FVec3d.read(buf);
         FVec3d endPos = FVec3d.read(buf);
         int lineCount = buf.readInt();
+        float instability = buf.readFloat();
 
         List<ParticleLine> particleLines = new ArrayList<>();
         for (int i = 0; i < lineCount; i++) {
-            ParticleLine particleLine = ParticleLine.read(buf, ElectricityParticle.getParticleType());
+            Random random = Random.create();
+            ParticleLine particleLine = ParticleLine.read(buf, ElectricityParticle.getParticleType(random));
             particleLines.add(particleLine);
         }
 
-        return new SmallLightning(startPos, endPos, lineCount, particleLines);
+        return new SmallLightning(startPos, endPos, lineCount, instability, particleLines);
     }
 
     public static void registerPacket() {
         ClientPlayNetworking.registerGlobalReceiver(SMALL_LIGHTNING_PACKET_ID, ((client, handler, buf, responseSender) -> {
             SmallLightning smallLightning = SmallLightning.read(buf);
-
-            client.execute(() -> smallLightning.spawnLines(client.world));
+            if (client.world == null) return;
+            smallLightning.spawnLines(client.world);
         }));
     }
 
     public void spawnLines(ClientWorld world) {
-        particleLines.forEach(particleLine -> particleLine.spawn(world));
+        particleLines.forEach(particleLine -> particleLine.spawn(world, instability, 20, 0));
     }
 }

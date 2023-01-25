@@ -20,7 +20,7 @@ public class ParticleLine {
         this.step = step;
     }
 
-    public void spawn(ClientWorld world) {
+    public void spawn(ClientWorld world, float velocityX, float velocityY, float velocityZ) {
         double vx = endPos.x - startPos.x;
         double vy = endPos.y - startPos.y;
         double vz = endPos.z - startPos.z;
@@ -32,8 +32,12 @@ public class ParticleLine {
             Vec3d particlePos = stepVec.multiply(i);
 
             world.addParticle(particleType, startPos.x + particlePos.x, startPos.y + particlePos.y,
-                    startPos.z + particlePos.z, 0, 0, 0);
+                    startPos.z + particlePos.z, velocityX, velocityY, velocityZ);
         }
+    }
+
+    public void spawn(ClientWorld world) {
+        spawn(world, 0, 0, 0);
     }
 
     public void write(PacketByteBuf buf) {

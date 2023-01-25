@@ -1,0 +1,16 @@
+{
+  "electricity_sound": {
+    "subtitle": "subtitles.etherology.small_lightning",
+    "sounds": [
+      "etherology:electricity_1",
+      "etherology:electricity_2",
+      "etherology:electricity_3"
+    ]
+  },
+  "matrix_work_sound": {
+    "subtitle": "subtitles.etherology.armillary_matrix_work",
+    "sounds": [
+      "etherology:armillary_matrix_work_loop"
+    ]
+  }
+}

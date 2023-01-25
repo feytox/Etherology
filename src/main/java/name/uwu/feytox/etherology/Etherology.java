@@ -20,7 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.*;
 import static name.uwu.feytox.etherology.ItemsRegistry.*;
@@ -37,6 +39,8 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType STEAM = FabricParticleTypes.simple();
     public static final DefaultParticleType LIGHT = FabricParticleTypes.simple();
+    public static final DefaultParticleType LIGHT_VITAL = FabricParticleTypes.simple();
+    public static final DefaultParticleType LIGHT_SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType VITAL_ENERGY = FabricParticleTypes.simple();
 
     public static final ItemGroup ETHER_GROUP = FabricItemGroup.builder(new EIdentifier("ether_group"))
@@ -44,6 +48,10 @@ public class Etherology implements ModInitializer {
             .displayName(Text.of("Etherology"))
             .build();
 
+    public static final Identifier ELECTRICITY_SOUND_ID = new EIdentifier("electricity_sound");
+    public static SoundEvent ELECTRICITY_SOUND_EVENT = SoundEvent.of(ELECTRICITY_SOUND_ID);
+    public static final Identifier MATRIX_WORK_SOUND_ID = new EIdentifier("matrix_work_sound");
+    public static SoundEvent MATRIX_WORK_SOUND_EVENT = SoundEvent.of(MATRIX_WORK_SOUND_ID);
 
     @Override
     public void onInitialize() {
@@ -70,6 +78,8 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("spark"), SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("steam"), STEAM);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light"), LIGHT);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_vital"), LIGHT_VITAL);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_spark"), LIGHT_SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);
 
         ItemGroupEvents.modifyEntriesEvent(ETHER_GROUP).register(content -> {
@@ -86,6 +96,9 @@ public class Etherology implements ModInitializer {
             content.add(TELDECORE);
             content.add(TERRESTRIAL_SHARD);
         });
+
+        Registry.register(Registries.SOUND_EVENT, ELECTRICITY_SOUND_ID, ELECTRICITY_SOUND_EVENT);
+        Registry.register(Registries.SOUND_EVENT, MATRIX_WORK_SOUND_ID, MATRIX_WORK_SOUND_EVENT);
     }
 
     static {
