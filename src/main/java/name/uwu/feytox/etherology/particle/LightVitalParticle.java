@@ -21,7 +21,10 @@ public class LightVitalParticle extends MovingParticle {
     private final float angleX;
     private final float angleY;
     private final float angleZ;
+    private final float vecYaw;
     private final SpriteProvider spriteProvider;
+    private final double spiralDX;
+    private final double spiralDY;
     private int lastSpriteId = -1;
 
     public LightVitalParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i,
@@ -34,9 +37,19 @@ public class LightVitalParticle extends MovingParticle {
         this.alpha *= 0.78f * randFloat;
 
         this.fullPath = new FVec3d(endX - startX, endY - startY, endZ - startZ);
-        this.angleX = this.fullPath.getAngleX();
-        this.angleY = this.fullPath.getAngleY();
-        this.angleZ = this.fullPath.getAngleZ();
+
+        // определение угла альфа для формулы, мною выведенной
+        double alphaAngle = MathHelper.HALF_PI -
+                Math.acos(MathHelper.sqrt((float) (fullPath.x * fullPath.x + fullPath.z * fullPath.z)) / fullPath.length());
+        double a = 0.3 * MathHelper.sqrt(2 * (1 - MathHelper.cos((float) alphaAngle)));
+        this.spiralDX = MathHelper.cos((float) (0.5 * alphaAngle));
+        this.spiralDY = MathHelper.sin((float) (0.5 * alphaAngle));
+
+        this.angleX = fullPath.getAngleX();
+        this.angleY = fullPath.getAngleY();
+        this.angleZ = fullPath.getAngleZ();
+
+        this.vecYaw = (float) MathHelper.atan2(fullPath.x, fullPath.z);
 
         this.spriteProvider = spriteProvider;
 //        this.nextSprite();
@@ -45,6 +58,8 @@ public class LightVitalParticle extends MovingParticle {
         int randWaves = random.nextBetween(0, 1);
 //        this.wavesType = randWaves < 2 ? randWaves - 2 : randWaves - 1;
         this.wavesType = randWaves < 1 ? randWaves - 1 : randWaves;
+
+        this.maxAge = 500;
     }
 
     @Override
@@ -63,29 +78,23 @@ public class LightVitalParticle extends MovingParticle {
 
         // длина вектора прямого пути от начала до конца
         double fullLen = fullPath.length();
-        double speed = 0.4 * fullLen / maxAge * (1 + wayLen / fullLen);
-
-        // значение функции
-        double z = (wavesType < 0 ? -1 : 1)
-                * 0.2 * MathHelper.sin((float) (passedWay * (4 - MathHelper.abs(wavesType)) * MathHelper.PI / fullLen));
-
-        // двумерный вектор с x - аргументом, а z - значением функции
-        Vec3d vecXZ = new Vec3d(passedWay, 0, z);
-        double vecXZLen = vecXZ.length();
+        double speed = 0.04;
 
         // вектор длины вектора vecXZ, сонаправленный с вектором прямого пути
-        Vec3d stepVec = fullPath.multiply(vecXZLen / fullLen);
-        // вектор выше поворачивается на угол между OX и vecXZ
-        Vec3d vecXYZ = stepVec.rotateY((z >= 0 ? 1 : -1) * (float) (Math.acos(passedWay / vecXZLen)));
+        Vec3d stepVec = fullPath.multiply(passedWay / fullLen);
 
-//        // определение угла поворота плоскости, где первый множитель - количество оборотов (в радианах)
-//        float DNAangle = (float) (10 * 2 * MathHelper.PI * (wayLen / fullLen)) % 360;
-//        // поворот на угол выше (в радианах)
-//        vecXYZ = vecXYZ.add(MathHelper.cos(DNAangle) * 0.25 - (wavesType * 0.0625),
-//                MathHelper.sin(DNAangle) * 0.25, 0);
+        // определение угла поворота плоскости, где первый множитель - количество оборотов (в радианах)
+        float DNAangle = (float) (4 * 2 * MathHelper.PI * (wayLen / fullLen)) % 2 * MathHelper.PI;
+        DNAangle = wavesType < 0 ? 2 * MathHelper.PI - DNAangle : DNAangle;
+        // поворот на угол выше (в радианах)
+        Vec3d diffVec = new Vec3d(MathHelper.sin(DNAangle) * 0.2 * 0.3, MathHelper.cos(DNAangle) * 0.2, 0);
+        diffVec = diffVec.rotateZ(MathHelper.HALF_PI / 2 - vecYaw);
+        diffVec = diffVec.rotateY(-angleY);
+        stepVec = stepVec.add(diffVec);
+
 
         // конвертация векторов в координатную форму
-        Vec3d coords = vecXYZ.add(startX, startY, startZ);
+        Vec3d coords = stepVec.add(startX, startY, startZ);
 
         this.x = coords.x;
         this.y = coords.y;

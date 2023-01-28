@@ -414,21 +414,21 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
                 PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, false);
                 if (player == null) return;
 
-                MovingParticle.spawnParticles(world, LIGHT_VITAL, 30, 0, player,
+                MovingParticle.spawnParticles(world, LIGHT_VITAL, 4, 0, player,
                         center.x, center.y, center.z, rand);
 
                 return;
             }
 
             Entity nearestEntity = nearestEntities.get(0);
-            MovingParticle.spawnParticles(world, LIGHT_VITAL, 30, 0, nearestEntity,
+            MovingParticle.spawnParticles(world, LIGHT_VITAL, 4, 0, nearestEntity,
                     center.x, center.y, center.z, rand);
 
         } else {
             PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
             if (player == null) return;
 
-            MovingParticle.spawnParticles(world, LIGHT_VITAL, 30, 0, player,
+            MovingParticle.spawnParticles(world, LIGHT_VITAL, 4, 0, player,
                     center.x, center.y, center.z, rand);
         }
     }
