@@ -4,7 +4,7 @@ import io.wispforest.owo.util.ImplementedInventory;
 import name.uwu.feytox.etherology.mixin.ItemEntityAccessor;
 import name.uwu.feytox.etherology.particle.ItemMovingParticle;
 import name.uwu.feytox.etherology.particle.MovingParticle;
-import name.uwu.feytox.etherology.util.NbtCoord;
+import name.uwu.feytox.etherology.util.nbt.NbtCoord;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

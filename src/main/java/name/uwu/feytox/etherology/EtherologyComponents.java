@@ -8,7 +8,7 @@ import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import name.uwu.feytox.etherology.components.EtherComponent;
 import name.uwu.feytox.etherology.components.FloatComponent;
 import name.uwu.feytox.etherology.components.IFloatComponent;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EtherologyComponents implements EntityComponentInitializer {
     public static final ComponentKey<IFloatComponent> ETHER_MAX =

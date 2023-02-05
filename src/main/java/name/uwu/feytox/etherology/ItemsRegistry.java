@@ -4,7 +4,7 @@ import name.uwu.feytox.etherology.items.*;
 import name.uwu.feytox.etherology.items.MatrixRing.EthrilRing;
 import name.uwu.feytox.etherology.items.MatrixRing.NetheriteRing;
 import name.uwu.feytox.etherology.items.MatrixRing.TelderSteelRing;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;

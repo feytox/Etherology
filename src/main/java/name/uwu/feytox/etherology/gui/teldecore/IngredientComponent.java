@@ -3,7 +3,7 @@ package name.uwu.feytox.etherology.gui.teldecore;
 import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.core.Sizing;
 import name.uwu.feytox.etherology.client.EtherologyClient;
-import name.uwu.feytox.etherology.util.EIngredient;
+import name.uwu.feytox.etherology.util.feyapi.EIngredient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;

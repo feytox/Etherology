@@ -1,7 +1,7 @@
 package name.uwu.feytox.etherology.mixin;
 
 import name.uwu.feytox.etherology.components.IFloatComponent;
-import name.uwu.feytox.etherology.util.IdkLib;
+import name.uwu.feytox.etherology.util.feyapi.IdkLib;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

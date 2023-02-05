@@ -4,7 +4,7 @@ import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;

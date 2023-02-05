@@ -8,7 +8,7 @@ import name.uwu.feytox.etherology.gui.teldecore.Chapters;
 import name.uwu.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
 import name.uwu.feytox.etherology.particle.*;
 import name.uwu.feytox.etherology.particle.utility.SmallLightning;
-import name.uwu.feytox.etherology.util.EGeoNetwork;
+import name.uwu.feytox.etherology.util.gecko.EGeoNetwork;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -47,6 +47,7 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(LIGHT_VITAL, LightVitalParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(LIGHT_SPARK, LightParticle.SparkFactory::new);
         ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, VitalParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ZONE_PARTICLE, ZoneParticle.Factory::new);
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();

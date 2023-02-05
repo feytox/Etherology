@@ -1,6 +1,6 @@
 package name.uwu.feytox.etherology.enums;
 
-import name.uwu.feytox.etherology.util.EEquality;
+import name.uwu.feytox.etherology.util.feyapi.EEquality;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.Arrays;

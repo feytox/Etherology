@@ -1,7 +1,7 @@
 package name.uwu.feytox.etherology.blocks.crucible;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
-import name.uwu.feytox.etherology.util.SimpleBlock;
+import name.uwu.feytox.etherology.util.registry.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

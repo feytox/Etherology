@@ -9,7 +9,7 @@ import name.uwu.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import name.uwu.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import name.uwu.feytox.etherology.recipes.ether.EtherRecipe;
 import name.uwu.feytox.etherology.recipes.ether.EtherRecipeSerializer;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -42,6 +42,7 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType LIGHT_VITAL = FabricParticleTypes.simple();
     public static final DefaultParticleType LIGHT_SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType VITAL_ENERGY = FabricParticleTypes.simple();
+    public static final DefaultParticleType ZONE_PARTICLE = FabricParticleTypes.simple();
 
     public static final ItemGroup ETHER_GROUP = FabricItemGroup.builder(new EIdentifier("ether_group"))
             .icon(() -> new ItemStack(TELDECORE))
@@ -81,6 +82,7 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_vital"), LIGHT_VITAL);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_spark"), LIGHT_SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("zone_particle"), ZONE_PARTICLE);
 
         ItemGroupEvents.modifyEntriesEvent(ETHER_GROUP).register(content -> {
             content.add(ARMILLARY_MATRIX_BASE);

@@ -5,7 +5,7 @@ import name.uwu.feytox.etherology.Etherology;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import name.uwu.feytox.etherology.particle.utility.SmallLightning;
-import name.uwu.feytox.etherology.util.FakeItem;
+import name.uwu.feytox.etherology.util.registry.FakeItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;

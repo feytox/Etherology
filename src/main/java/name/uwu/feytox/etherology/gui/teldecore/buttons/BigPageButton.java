@@ -4,8 +4,8 @@ import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
 import name.uwu.feytox.etherology.client.EtherologyClient;
-import name.uwu.feytox.etherology.util.EIdentifier;
-import name.uwu.feytox.etherology.util.UwuLib;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.UwuLib;
 import net.minecraft.text.Text;
 
 import java.util.function.Consumer;

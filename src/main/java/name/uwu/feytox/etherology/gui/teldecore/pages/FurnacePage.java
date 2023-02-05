@@ -7,7 +7,7 @@ import io.wispforest.owo.ui.core.Sizing;
 import name.uwu.feytox.etherology.gui.teldecore.IngredientComponent;
 import name.uwu.feytox.etherology.gui.teldecore.TitleComponent;
 import name.uwu.feytox.etherology.recipes.visual.TFurnaceRecipe;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.text.Text;

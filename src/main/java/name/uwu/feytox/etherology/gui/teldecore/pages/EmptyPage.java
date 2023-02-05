@@ -5,8 +5,8 @@ import io.wispforest.owo.ui.container.VerticalFlowLayout;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
 import name.uwu.feytox.etherology.gui.teldecore.buttons.PageButton;
-import name.uwu.feytox.etherology.util.EIdentifier;
-import name.uwu.feytox.etherology.util.UwuLib;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.UwuLib;
 import net.minecraft.util.Identifier;
 
 public class EmptyPage extends VerticalFlowLayout {

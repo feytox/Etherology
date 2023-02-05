@@ -1,7 +1,7 @@
 package name.uwu.feytox.etherology.gui.teldecore.pages;
 
 import name.uwu.feytox.etherology.gui.teldecore.TitleComponent;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 
 
 public class MainPage extends DoublePage {

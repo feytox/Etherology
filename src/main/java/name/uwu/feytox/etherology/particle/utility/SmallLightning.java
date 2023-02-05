@@ -1,8 +1,8 @@
 package name.uwu.feytox.etherology.particle.utility;
 
 import name.uwu.feytox.etherology.particle.ElectricityParticle;
-import name.uwu.feytox.etherology.util.EIdentifier;
-import name.uwu.feytox.etherology.util.FVec3d;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.FVec3d;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;

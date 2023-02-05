@@ -5,8 +5,8 @@ import io.wispforest.owo.ui.core.Positioning;
 import name.uwu.feytox.etherology.gui.teldecore.IngredientComponent;
 import name.uwu.feytox.etherology.gui.teldecore.TitleComponent;
 import name.uwu.feytox.etherology.recipes.visual.TCraftRecipe;
-import name.uwu.feytox.etherology.util.EIdentifier;
-import name.uwu.feytox.etherology.util.EIngredient;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIngredient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 

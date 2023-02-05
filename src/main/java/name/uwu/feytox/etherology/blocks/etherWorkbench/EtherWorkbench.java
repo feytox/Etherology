@@ -1,6 +1,6 @@
 package name.uwu.feytox.etherology.blocks.etherWorkbench;
 
-import name.uwu.feytox.etherology.util.SimpleBlock;
+import name.uwu.feytox.etherology.util.registry.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockEntityProvider;

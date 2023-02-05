@@ -1,6 +1,6 @@
 package name.uwu.feytox.etherology.recipes.visual;
 
-import name.uwu.feytox.etherology.util.EIngredient;
+import name.uwu.feytox.etherology.util.feyapi.EIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 

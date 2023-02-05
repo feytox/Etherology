@@ -1,8 +1,8 @@
 package name.uwu.feytox.etherology.enums;
 
 import name.uwu.feytox.etherology.Etherology;
-import name.uwu.feytox.etherology.util.EIdentifier;
-import name.uwu.feytox.etherology.util.FakeItem;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
+import name.uwu.feytox.etherology.util.registry.FakeItem;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 

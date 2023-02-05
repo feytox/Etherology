@@ -1,6 +1,6 @@
 package name.uwu.feytox.etherology.particle.utility;
 
-import name.uwu.feytox.etherology.util.FVec3d;
+import name.uwu.feytox.etherology.util.feyapi.FVec3d;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;

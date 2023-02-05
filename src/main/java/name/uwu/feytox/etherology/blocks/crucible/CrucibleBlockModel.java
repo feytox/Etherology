@@ -1,6 +1,6 @@
 package name.uwu.feytox.etherology.blocks.crucible;
 
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib.model.GeoModel;
 

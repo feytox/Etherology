@@ -1,6 +1,6 @@
 package name.uwu.feytox.etherology.particle;
 
-import name.uwu.feytox.etherology.util.FVec3d;
+import name.uwu.feytox.etherology.util.feyapi.FVec3d;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.Particle;

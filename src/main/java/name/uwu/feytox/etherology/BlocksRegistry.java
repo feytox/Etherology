@@ -6,11 +6,14 @@ import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlock;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlockEntity;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbench;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchBlockEntity;
+import name.uwu.feytox.etherology.blocks.example_consumer.ConsumerBlock;
+import name.uwu.feytox.etherology.blocks.example_consumer.ConsumerBlockEntity;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlock;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlock;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockEntity;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.blocks.zone_blocks.*;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -53,6 +56,30 @@ public class BlocksRegistry {
             FabricBlockEntityTypeBuilder.create(RingMatrixBlockEntity::new, RING_MATRIX_BLOCK).build()
     );
 
+    public static final RelaZoneBlock RELA_ZONE_BLOCK = (RelaZoneBlock) new RelaZoneBlock().registerAll();
+    public static final ClosZoneBlock CLOS_ZONE_BLOCK = (ClosZoneBlock) new ClosZoneBlock().registerAll();
+    public static final ViaZoneBlock VIA_ZONE_BLOCK = (ViaZoneBlock) new ViaZoneBlock().registerAll();
+    public static final KetaZoneBlock KETA_ZONE_BLOCK = (KetaZoneBlock) new KetaZoneBlock().registerAll();
+    public static final ZoneCoreBlock ZONE_CORE_BLOCK = (ZoneCoreBlock) new ZoneCoreBlock().registerAll();
+    public static final BlockEntityType<ZoneCoreBlockEntity> ZONE_CORE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("zone_core_block_entity"),
+            FabricBlockEntityTypeBuilder.create(ZoneCoreBlockEntity::new, ZONE_CORE_BLOCK).build()
+    );
+    public static final BlockEntityType<ZoneBlockEntity> ZONE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("zone_block_entity"),
+            FabricBlockEntityTypeBuilder.create(ZoneBlockEntity::new,
+                    RELA_ZONE_BLOCK, CLOS_ZONE_BLOCK, VIA_ZONE_BLOCK, KETA_ZONE_BLOCK).build()
+    );
+
+    // TODO: 02/02/2023 clear test feature
+    public static final ConsumerBlock CONSUMER_BLOCK = (ConsumerBlock) new ConsumerBlock().registerAll();
+    public static final BlockEntityType<ConsumerBlockEntity> CONSUMER_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("consumer_block_entity"),
+            FabricBlockEntityTypeBuilder.create(ConsumerBlockEntity::new, CONSUMER_BLOCK).build()
+    );
 
     public static void register() {
     }

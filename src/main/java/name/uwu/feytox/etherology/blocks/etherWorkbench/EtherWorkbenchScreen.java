@@ -1,7 +1,7 @@
 package name.uwu.feytox.etherology.blocks.etherWorkbench;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import name.uwu.feytox.etherology.util.EIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;

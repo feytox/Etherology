@@ -1,7 +1,7 @@
 package name.uwu.feytox.etherology.items;
 
 import name.uwu.feytox.etherology.gui.teldecore.TestScreen;
-import name.uwu.feytox.etherology.util.SimpleItem;
+import name.uwu.feytox.etherology.util.registry.SimpleItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

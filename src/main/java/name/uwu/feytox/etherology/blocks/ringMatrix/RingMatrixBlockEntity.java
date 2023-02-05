@@ -2,7 +2,7 @@ package name.uwu.feytox.etherology.blocks.ringMatrix;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
-import name.uwu.feytox.etherology.util.EGeoBlockEntity;
+import name.uwu.feytox.etherology.util.gecko.EGeoBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;

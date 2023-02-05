@@ -2,7 +2,7 @@ package name.uwu.feytox.etherology.blocks.ringMatrix;
 
 import com.google.gson.JsonObject;
 import name.uwu.feytox.etherology.enums.RingType;
-import name.uwu.feytox.etherology.util.RingIdentifier;
+import name.uwu.feytox.etherology.util.feyapi.RingIdentifier;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.JsonHelper;
