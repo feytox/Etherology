@@ -2,7 +2,7 @@ package name.uwu.feytox.etherology.blocks.zone_blocks;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
-import name.uwu.feytox.etherology.particle.MovingParticle;
+import name.uwu.feytox.etherology.particle.ZoneParticle;
 import name.uwu.feytox.etherology.util.nbt.NbtBlockPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -14,7 +14,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.*;
-import static name.uwu.feytox.etherology.Etherology.ZONE_PARTICLE;
 
 public class ZoneCoreBlockEntity extends BlockEntity {
     private BlockPos corePos;
@@ -59,6 +57,13 @@ public class ZoneCoreBlockEntity extends BlockEntity {
 
     public float getPoints() {
         return points;
+    }
+
+    public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
+        ClientWorld clientWorld = (ClientWorld) world;
+        ZoneCoreBlockEntity zoneCore = (ZoneCoreBlockEntity) blockEntity;
+
+        zoneCore.particleTick(clientWorld);
     }
 
     public static void serverTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
@@ -110,19 +115,10 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         }
     }
 
-    public void randomDisplayTick(ClientWorld world, Random random) {
+    public void particleTick(ClientWorld world) {
 //        if (particleTicks++ < 120) return;
         particleTicks = 0;
-
-        float k = points / 128;
-
-        if (random.nextDouble() > k) return;
-
-        int count = MathHelper.ceil(5 * k);
-
-        MovingParticle.spawnParticles(world, ZONE_PARTICLE, count, 0.5,
-                pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5,
-                pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, random);
+        ZoneParticle.spawnParticles(world, points, pos);
     }
 
     private List<BlockPos> getFillingZone(ServerWorld world, float blockPoints) {

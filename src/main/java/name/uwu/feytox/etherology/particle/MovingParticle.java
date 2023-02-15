@@ -16,9 +16,9 @@ public class MovingParticle extends SpriteBillboardParticle {
     protected final double startX;
     protected final double startY;
     protected final double startZ;
-    protected final double endX;
-    protected final double endY;
-    protected final double endZ;
+    protected double endX;
+    protected double endY;
+    protected double endZ;
 
 
     public MovingParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
@@ -39,6 +39,15 @@ public class MovingParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
+        acceleratedMovingTick(0.4f, 0.5f);
+    }
+
+    public void acceleratedMovingTick(float speed_k, float start_speed) {
+        if (this.age++ >= this.maxAge) {
+            this.markDead();
+            return;
+        }
+
         prevPosX = x;
         prevPosY = y;
         prevPosZ = z;
@@ -47,24 +56,18 @@ public class MovingParticle extends SpriteBillboardParticle {
         double vecLength = vec.length();
 
         double fullPath = new Vec3d(endX-startX, endY-startY, endZ-startZ).length();
+        double f = (fullPath - vecLength) / fullPath;
+        double deltaC = speed_k * Math.pow(f+start_speed, 3);
 
-        if (this.age++ >= this.maxAge) {
+        if (vecLength <= 0.5f) {
             this.markDead();
-        } else {
-            double f = (fullPath - vecLength) / fullPath;
-            double deltaC = 0.4 * Math.pow(f+0.5, 3);
-
-
-            if (vecLength <= 0.5f) {
-                this.markDead();
-                return;
-            }
-
-            Vec3d deltaVec = vec.multiply(Math.min(deltaC / vecLength, 1));
-            x += deltaVec.x;
-            y += deltaVec.y;
-            z += deltaVec.z;
+            return;
         }
+
+        Vec3d deltaVec = vec.multiply(Math.min(deltaC / vecLength, 1));
+        x += deltaVec.x;
+        y += deltaVec.y;
+        z += deltaVec.z;
     }
 
     @Override

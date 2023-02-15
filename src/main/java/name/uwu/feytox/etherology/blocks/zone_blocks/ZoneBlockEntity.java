@@ -1,7 +1,7 @@
 package name.uwu.feytox.etherology.blocks.zone_blocks;
 
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
-import name.uwu.feytox.etherology.particle.MovingParticle;
+import name.uwu.feytox.etherology.particle.ZoneParticle;
 import name.uwu.feytox.etherology.util.nbt.NbtBlockPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -9,14 +9,11 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_BLOCK_ENTITY;
-import static name.uwu.feytox.etherology.Etherology.ZONE_PARTICLE;
 
 public class ZoneBlockEntity extends BlockEntity {
     private final EssenceZones zone;
@@ -38,22 +35,20 @@ public class ZoneBlockEntity extends BlockEntity {
         markDirty();
     }
 
-    public void randomDisplayTick(ClientWorld world, Random random) {
+    public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
+        ClientWorld clientWorld = (ClientWorld) world;
+        ZoneBlockEntity zoneBlock = (ZoneBlockEntity) blockEntity;
+
+        zoneBlock.particleTick(clientWorld);
+    }
+
+    public void particleTick(ClientWorld world) {
 //        if (particleTicks++ < 120) return;
         particleTicks = 0;
 
         ZoneCoreBlockEntity zoneCore = getCore(world);
         if (zoneCore == null) return;
-
-        float k = zoneCore.getPoints() / 128;
-
-        if (random.nextDouble() > k) return;
-
-        int count = MathHelper.ceil(5 * k);
-
-        MovingParticle.spawnParticles(world, ZONE_PARTICLE, count, 0.5,
-                pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5,
-                pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, random);
+        ZoneParticle.spawnParticles(world, zoneCore.getPoints(), pos);
     }
 
     @Nullable

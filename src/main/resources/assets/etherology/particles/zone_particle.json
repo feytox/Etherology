@@ -1,5 +1,13 @@
 {
   "textures": [
-    "etherology:zone_particle"
+    "etherology:zone_particle_0",
+    "etherology:zone_particle_1",
+    "etherology:zone_particle_2",
+    "etherology:zone_particle_3",
+    "etherology:zone_particle_4",
+    "etherology:zone_particle_5",
+    "etherology:zone_particle_6",
+    "etherology:zone_particle_7",
+    "etherology:zone_particle_8"
   ]
 }

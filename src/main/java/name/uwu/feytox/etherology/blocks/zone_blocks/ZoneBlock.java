@@ -9,19 +9,17 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_BLOCK_ENTITY;
 
@@ -38,10 +36,12 @@ public class ZoneBlock extends AirBlock implements BlockEntityProvider {
         this.blockId = blockId;
     }
 
+    @Nullable
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        Optional<ZoneBlockEntity> match = world.getBlockEntity(pos, ZONE_BLOCK_ENTITY);
-        match.ifPresent(zoneBlockEntity -> zoneBlockEntity.randomDisplayTick((ClientWorld) world, random));
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (type != ZONE_BLOCK_ENTITY) return null;
+
+        return world.isClient ? ZoneBlockEntity::clientTick : null;
     }
 
     // TODO: implement as SimpleBlock methods

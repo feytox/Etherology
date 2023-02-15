@@ -7,15 +7,11 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK_ENTITY;
 
@@ -34,18 +30,12 @@ public class ZoneCoreBlock extends ZoneBlock implements BlockEntityProvider {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
     }
 
-    @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        Optional<ZoneCoreBlockEntity> match = world.getBlockEntity(pos, ZONE_CORE_BLOCK_ENTITY);
-        match.ifPresent(zoneCore -> zoneCore.randomDisplayTick((ClientWorld) world, random));
-    }
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (type != ZONE_CORE_BLOCK_ENTITY) return null;
 
-        return world.isClient ? null : ZoneCoreBlockEntity::serverTick;
+        return world.isClient ? ZoneCoreBlockEntity::clientTick : ZoneCoreBlockEntity::serverTick;
     }
 
     @Override
