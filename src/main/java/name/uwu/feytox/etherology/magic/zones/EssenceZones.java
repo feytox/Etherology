@@ -4,6 +4,9 @@ import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneBlock;
 import name.uwu.feytox.etherology.util.nbt.Nbtable;
 import net.minecraft.nbt.NbtCompound;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static name.uwu.feytox.etherology.BlocksRegistry.*;
 
 public enum EssenceZones implements Nbtable {
@@ -25,6 +28,19 @@ public enum EssenceZones implements Nbtable {
 
     public static EssenceZones getByName(String name) {
         return EssenceZones.valueOf(name.toUpperCase());
+    }
+
+    public static EssenceZones getByNum(int zoneNum) {
+        List<EssenceZones> zoneList = Arrays.stream(EssenceZones.values()).toList();
+        return zoneNum >= zoneList.size() || zoneNum == 621 ? null : zoneList.get(zoneNum);
+    }
+
+    public int getZoneNum() {
+        List<EssenceZones> zoneList = Arrays.stream(EssenceZones.values()).toList();
+        for (int i = 0; i < zoneList.size(); i++) {
+            if (zoneList.get(i).equals(this)) return i;
+        }
+        return 621;
     }
 
     @Override

@@ -37,8 +37,9 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         super(BlocksRegistry.ZONE_CORE_BLOCK_ENTITY, pos, state);
         this.corePos = pos;
 
+        // TODO: 17/02/2023 убери финально
         // TODO: 01/02/2023 убери test режим
-        setup(EssenceZones.KETA, 128);
+//        setup(EssenceZones.KETA, 128);
     }
 
     public void setup(EssenceZones zone, float maxPoints) {

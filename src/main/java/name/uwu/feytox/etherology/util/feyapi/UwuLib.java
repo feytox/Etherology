@@ -6,12 +6,19 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.Surface;
 import io.wispforest.owo.ui.util.Drawer;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.StructureWorldAccess;
+
+import javax.annotation.Nullable;
 
 public class UwuLib {
 
@@ -72,5 +79,27 @@ public class UwuLib {
         return new Vec3d(entity.getX() + entity.getWidth() * 0.5,
                 entity.getY() + entity.getHeight() * 0.5,
                 entity.getZ() + entity.getWidth() * 0.5);
+    }
+
+    @Nullable
+    public static BlockPos getSurfacePos(BlockPos startPos, StructureWorldAccess world) {
+        BlockPos testPos = new BlockPos(startPos);
+        for (int y = 0; y < world.getHeight(); y++) {
+            if (!world.getBlockState(testPos).isOf(Blocks.CAVE_AIR) && world.getBlockState(testPos).isOf(Blocks.AIR)) {
+                return testPos;
+            }
+            testPos = testPos.up();
+        }
+        return null;
+    }
+
+    @Nullable
+    public static BlockEntity getOrCreateBlockEntity(StructureWorldAccess world, Block block, BlockPos pos) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity == null) {
+            world.setBlockState(pos, block.getDefaultState(), Block.NOTIFY_ALL);
+            blockEntity = world.getBlockEntity(pos);
+        }
+        return blockEntity;
     }
 }

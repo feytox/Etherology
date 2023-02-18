@@ -11,6 +11,8 @@ import name.uwu.feytox.etherology.recipes.ether.EtherRecipe;
 import name.uwu.feytox.etherology.recipes.ether.EtherRecipeSerializer;
 import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
@@ -20,12 +22,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.gen.GenerationStep;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.*;
 import static name.uwu.feytox.etherology.ItemsRegistry.*;
+import static name.uwu.feytox.etherology.generations.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE;
+import static name.uwu.feytox.etherology.generations.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE_ID;
 
 public class Etherology implements ModInitializer {
 
@@ -101,6 +109,15 @@ public class Etherology implements ModInitializer {
 
         Registry.register(Registries.SOUND_EVENT, ELECTRICITY_SOUND_ID, ELECTRICITY_SOUND_EVENT);
         Registry.register(Registries.SOUND_EVENT, MATRIX_WORK_SOUND_ID, MATRIX_WORK_SOUND_EVENT);
+
+        Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld()
+                        .and(BiomeSelectors.tag(BiomeTags.IS_OCEAN).negate())
+                        .and(BiomeSelectors.tag(BiomeTags.IS_MOUNTAIN).negate()),
+                GenerationStep.Feature.VEGETAL_DECORATION,
+                RegistryKey.of(RegistryKeys.PLACED_FEATURE, ESSENCE_ZONE_FEATURE_ID)
+        );
     }
 
     static {
