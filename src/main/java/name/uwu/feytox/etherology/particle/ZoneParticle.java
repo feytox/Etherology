@@ -31,7 +31,7 @@ public class ZoneParticle extends MovingParticle {
         this.spriteProvider = spriteProvider;
         this.setSpriteForAge(spriteProvider);
         this.maxAge = 20 * this.random.nextBetween(1, 2);
-        scale(0.3f);
+        scale(0.15f);
         this.setRGB(15, 161, 207);
     }
 
@@ -70,7 +70,7 @@ public class ZoneParticle extends MovingParticle {
         float k = points / 128;
         Random random = Random.create();
 
-        if (random.nextDouble() > k * 1/160) return;
+        if (random.nextDouble() > k * 1/320) return;
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null || player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) > MathHelper.square(PARTICLE_RADIUS)) return;

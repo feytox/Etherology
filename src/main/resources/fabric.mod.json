@@ -13,6 +13,9 @@
   "icon": "assets/etherology/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      "name.uwu.feytox.etherology.datagen.DataGeneration"
+    ],
     "client": [
       "name.uwu.feytox.etherology.client.EtherologyClient"
     ],

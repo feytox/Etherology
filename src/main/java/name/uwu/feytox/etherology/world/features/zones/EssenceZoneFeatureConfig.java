@@ -1,4 +1,4 @@
-package name.uwu.feytox.etherology.generations.features.zones;
+package name.uwu.feytox.etherology.world.features.zones;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
