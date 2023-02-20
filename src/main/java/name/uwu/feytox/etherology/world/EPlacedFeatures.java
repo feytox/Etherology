@@ -24,13 +24,13 @@ public class EPlacedFeatures {
         var configuredFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
         register(context, KETA_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(EConfiguredFeatures.KETA_ZONE_KEY),
-                RarityFilterPlacementModifier.of(42), BiomePlacementModifier.of());
+                RarityFilterPlacementModifier.of(5), CountPlacementModifier.of(1), BiomePlacementModifier.of());
         register(context, RELA_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(EConfiguredFeatures.RELA_ZONE_KEY),
-                RarityFilterPlacementModifier.of(42), BiomePlacementModifier.of());
+                RarityFilterPlacementModifier.of(5), CountPlacementModifier.of(1), BiomePlacementModifier.of());
         register(context, CLOS_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(EConfiguredFeatures.CLOS_ZONE_KEY),
-                RarityFilterPlacementModifier.of(42), BiomePlacementModifier.of());
+                RarityFilterPlacementModifier.of(5), CountPlacementModifier.of(1), BiomePlacementModifier.of());
         register(context, VIA_PLACED_KEY, configuredFeatureRegistryEntryLookup.getOrThrow(EConfiguredFeatures.VIA_ZONE_KEY),
-                RarityFilterPlacementModifier.of(42), BiomePlacementModifier.of());
+                RarityFilterPlacementModifier.of(5), CountPlacementModifier.of(1), BiomePlacementModifier.of());
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

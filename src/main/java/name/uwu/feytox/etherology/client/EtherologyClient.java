@@ -47,7 +47,11 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(LIGHT_VITAL, LightVitalParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(LIGHT_SPARK, LightParticle.SparkFactory::new);
         ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, VitalParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ZONE_PARTICLE, ZoneParticle.Factory::new);
+
+        ParticleFactoryRegistry.getInstance().register(KETA_PARTICLE, ZoneParticle.KetaFactory::new);
+        ParticleFactoryRegistry.getInstance().register(RELA_PARTICLE, ZoneParticle.RelaFactory::new);
+        ParticleFactoryRegistry.getInstance().register(CLOS_PARTICLE, ZoneParticle.ClosFactory::new);
+        ParticleFactoryRegistry.getInstance().register(VIA_PARTICLE, ZoneParticle.ViaFactory::new);
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();

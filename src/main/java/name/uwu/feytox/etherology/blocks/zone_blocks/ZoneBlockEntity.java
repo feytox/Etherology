@@ -16,18 +16,17 @@ import javax.annotation.Nullable;
 import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_BLOCK_ENTITY;
 
 public class ZoneBlockEntity extends BlockEntity {
-    private final EssenceZones zone;
+    private EssenceZones zoneType;
     private BlockPos currentCorePos = null;
-    private int particleTicks = 121;
 
     public ZoneBlockEntity(BlockPos pos, BlockState state) {
         super(ZONE_BLOCK_ENTITY, pos, state);
-        zone = EssenceZones.NULL;
+        zoneType = EssenceZones.NULL;
     }
 
     public ZoneBlockEntity(EssenceZones zone, BlockPos pos, BlockState state) {
         super(ZONE_BLOCK_ENTITY, pos, state);
-        this.zone = zone;
+        zoneType = zone;
     }
 
     public void setCurrentCorePos(BlockPos currentCorePos) {
@@ -43,12 +42,9 @@ public class ZoneBlockEntity extends BlockEntity {
     }
 
     public void particleTick(ClientWorld world) {
-//        if (particleTicks++ < 120) return;
-        particleTicks = 0;
-
         ZoneCoreBlockEntity zoneCore = getCore(world);
         if (zoneCore == null) return;
-        ZoneParticle.spawnParticles(world, zoneCore.getPoints(), pos);
+        ZoneParticle.spawnParticles(world, zoneCore.getPoints(), zoneType, pos);
     }
 
     @Nullable
@@ -71,6 +67,7 @@ public class ZoneBlockEntity extends BlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt) {
         if (currentCorePos != null) new NbtBlockPos("current_core_pos", currentCorePos).writeNbt(nbt);
+        zoneType.writeNbt(nbt);
 
         super.writeNbt(nbt);
     }
@@ -80,6 +77,7 @@ public class ZoneBlockEntity extends BlockEntity {
         super.readNbt(nbt);
 
         currentCorePos = NbtBlockPos.readFromNbt("current_core_pos", nbt);
+        zoneType = EssenceZones.readFromNbt(nbt);
     }
 
     @Override

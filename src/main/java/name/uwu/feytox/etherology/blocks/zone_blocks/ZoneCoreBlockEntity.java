@@ -27,25 +27,22 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     private BlockPos corePos;
     private float maxPoints;
     private float points;
+    private EssenceZones zoneType = EssenceZones.NULL;
     private ZoneBlock fillBlock = null;
     private List<BlockPos> cachedFilledBlocks = new ArrayList<>();
     private boolean shouldRegenerate = false;
     private int serverTicks;
-    private int particleTicks = 121;
 
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
         super(BlocksRegistry.ZONE_CORE_BLOCK_ENTITY, pos, state);
         this.corePos = pos;
-
-        // TODO: 17/02/2023 убери финально
-        // TODO: 01/02/2023 убери test режим
-//        setup(EssenceZones.KETA, 128);
     }
 
     public void setup(EssenceZones zone, float maxPoints) {
         setType(zone);
         this.maxPoints = maxPoints;
         this.points = maxPoints;
+        this.shouldRegenerate = true;
     }
 
     public boolean isTruePos() {
@@ -117,9 +114,7 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     }
 
     public void particleTick(ClientWorld world) {
-//        if (particleTicks++ < 120) return;
-        particleTicks = 0;
-        ZoneParticle.spawnParticles(world, points, pos);
+        ZoneParticle.spawnParticles(world, points, zoneType, pos);
     }
 
     private List<BlockPos> getFillingZone(ServerWorld world, float blockPoints) {
@@ -167,6 +162,7 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     }
 
     public void setType(EssenceZones zone) {
+        zoneType = zone;
         fillBlock = zone.getFillBlock();
         markDirty();
     }
@@ -186,6 +182,7 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         nbt.putFloat("points", points);
         nbt.putString("fill_block", Registries.BLOCK.getId(fillBlock).toString());
         nbt.putBoolean("should_regenerate", shouldRegenerate);
+        zoneType.writeNbt(nbt);
 
         super.writeNbt(nbt);
     }
@@ -194,6 +191,7 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        zoneType = EssenceZones.readFromNbt(nbt);
         corePos = NbtBlockPos.readFromNbt("core_pos", nbt);
         points = nbt.getFloat("points");
         fillBlock = (ZoneBlock) Registries.BLOCK.get(new Identifier(nbt.getString("fill_block")));

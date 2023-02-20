@@ -45,7 +45,10 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType LIGHT_VITAL = FabricParticleTypes.simple();
     public static final DefaultParticleType LIGHT_SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType VITAL_ENERGY = FabricParticleTypes.simple();
-    public static final DefaultParticleType ZONE_PARTICLE = FabricParticleTypes.simple();
+    public static final DefaultParticleType KETA_PARTICLE = FabricParticleTypes.simple();
+    public static final DefaultParticleType RELA_PARTICLE = FabricParticleTypes.simple();
+    public static final DefaultParticleType CLOS_PARTICLE = FabricParticleTypes.simple();
+    public static final DefaultParticleType VIA_PARTICLE = FabricParticleTypes.simple();
 
     public static final ItemGroup ETHER_GROUP = FabricItemGroup.builder(new EIdentifier("ether_group"))
             .icon(() -> new ItemStack(TELDECORE))
@@ -85,7 +88,11 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_vital"), LIGHT_VITAL);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_spark"), LIGHT_SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("zone_particle"), ZONE_PARTICLE);
+
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("keta_particle"), KETA_PARTICLE);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("rela_particle"), RELA_PARTICLE);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("clos_particle"), CLOS_PARTICLE);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("via_particle"), VIA_PARTICLE);
 
         ItemGroupEvents.modifyEntriesEvent(ETHER_GROUP).register(content -> {
             content.add(ARMILLARY_MATRIX_BASE);

@@ -81,14 +81,37 @@ public class UwuLib {
                 entity.getZ() + entity.getWidth() * 0.5);
     }
 
+    public static BlockPos getAirPos(BlockPos startPos, StructureWorldAccess world) {
+        BlockPos testPos = new BlockPos(startPos);
+        while (testPos.getY() < world.getTopY()) {
+            if (world.isAir(testPos)) {
+                return testPos;
+            }
+            testPos = testPos.up();
+        }
+        return null;
+    }
+
     @Nullable
     public static BlockPos getSurfacePos(BlockPos startPos, StructureWorldAccess world) {
         BlockPos testPos = new BlockPos(startPos);
-        for (int y = 0; y < world.getHeight(); y++) {
+        while (testPos.getY() < world.getTopY()) {
             if (!world.getBlockState(testPos).isOf(Blocks.CAVE_AIR) && world.getBlockState(testPos).isOf(Blocks.AIR)) {
                 return testPos;
             }
             testPos = testPos.up();
+        }
+        return null;
+    }
+
+    @Nullable
+    public static BlockPos getDeeperPos(BlockPos startPos, StructureWorldAccess world) {
+        BlockPos testPos = new BlockPos(startPos);
+        while (testPos.getY() > world.getBottomY()) {
+            if (world.isAir(testPos)) {
+                return testPos;
+            }
+            testPos = testPos.down();
         }
         return null;
     }
