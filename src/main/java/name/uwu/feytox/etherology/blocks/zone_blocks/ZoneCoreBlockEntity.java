@@ -36,6 +36,9 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
         super(BlocksRegistry.ZONE_CORE_BLOCK_ENTITY, pos, state);
         this.corePos = pos;
+
+        // FIXME: 21/02/2023 УБРАТЬ ПОСЛЕ ТЕСТОВ!!!!!!!!!!!!!!!
+        setup(EssenceZones.RELA, 128);
     }
 
     public void setup(EssenceZones zone, float maxPoints) {
@@ -103,6 +106,8 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     public void generateZone(ServerWorld world, boolean isForceGenerate) {
         List<BlockPos> blocksForFill = getFillingZone(world, 256 * maxPoints);
 
+        if (fillBlock == null || zoneType.equals(EssenceZones.NULL)) return;
+
         if (isForceGenerate || shouldRegenerate || !blocksForFill.equals(cachedFilledBlocks)) {
             blocksForFill.forEach(blockPos -> {
                 world.setBlockState(blockPos, fillBlock.getDefaultState());
@@ -110,6 +115,7 @@ public class ZoneCoreBlockEntity extends BlockEntity {
                 match.ifPresent(zoneBlock -> zoneBlock.setCurrentCorePos(pos));
             });
             cachedFilledBlocks = blocksForFill;
+            shouldRegenerate = false;
         }
     }
 

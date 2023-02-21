@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "essence_state=empty,essence_level=0": {
+      "model": "etherology:block/sedimentary_block"
+    },
+    "essence_state=rela,essence_level=1": {
+      "model": "etherology:block/sedimentary_block_rela_1"
+    },
+    "essence_state=rela,essence_level=2": {
+      "model": "etherology:block/sedimentary_block_rela_2"
+    },
+    "essence_state=rela,essence_level=3": {
+      "model": "etherology:block/sedimentary_block_rela_3"
+    }
+  }
+}

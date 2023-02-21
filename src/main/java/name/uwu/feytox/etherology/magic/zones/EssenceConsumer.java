@@ -16,6 +16,8 @@ public interface EssenceConsumer {
     @Nullable
     BlockPos getCachedZonePos();
     void setCachedCorePos(BlockPos blockPos);
+    EssenceZones getZoneType();
+    void setZoneType(EssenceZones zoneType);
     void increment(float value);
 
     @Nullable
@@ -31,11 +33,15 @@ public interface EssenceConsumer {
 
         BlockPos minPos = consumerPos.add(-radius, 0, -radius);
         BlockPos maxPos = consumerPos.add(radius, radius, radius);
+        EssenceZones zoneType = getZoneType();
+        // TODO: 21/02/2023 проверить, нужно ли доп. условие
+        boolean is_empty = zoneType.equals(EssenceZones.NULL);
 
         for (BlockPos blockPos : BlockPos.iterate(minPos, maxPos)) {
             Optional<ZoneBlockEntity> match = world.getBlockEntity(blockPos, ZONE_BLOCK_ENTITY);
-            if (match.isPresent()) {
+            if (match.isPresent() && (is_empty || match.get().getZoneType().equals(zoneType))) {
                 setCachedCorePos(blockPos);
+                setZoneType(match.get().getZoneType());
                 return match.get();
             }
         }
@@ -49,6 +55,19 @@ public interface EssenceConsumer {
 
         float consumedPoints = zoneBlock.decrement(world, getConsumingValue());
         increment(consumedPoints);
+
+        if (consumedPoints == 0) {
+            setEmpty();
+        }
+
         return true;
+    }
+
+    default void setEmpty() {
+        setZoneType(EssenceZones.NULL);
+    }
+
+    default boolean isEmpty() {
+        return getZoneType().equals(EssenceZones.NULL);
     }
 }

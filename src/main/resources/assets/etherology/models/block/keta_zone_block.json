@@ -1,12 +1,2 @@
 {
-  "parent": "minecraft:block/cube",
-  "textures": {
-    "down": "etherology:block/ether_planks",
-    "east": "etherology:block/ether_workbench_side",
-    "north": "etherology:block/ether_workbench_front",
-    "particle": "etherology:block/ether_workbench_front",
-    "south": "etherology:block/ether_workbench_side",
-    "up": "etherology:block/ether_workbench_top",
-    "west": "etherology:block/ether_workbench_front"
-  }
 }

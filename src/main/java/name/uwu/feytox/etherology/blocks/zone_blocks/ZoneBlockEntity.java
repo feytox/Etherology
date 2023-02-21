@@ -29,6 +29,10 @@ public class ZoneBlockEntity extends BlockEntity {
         zoneType = zone;
     }
 
+    public EssenceZones getZoneType() {
+        return zoneType;
+    }
+
     public void setCurrentCorePos(BlockPos currentCorePos) {
         this.currentCorePos = currentCorePos;
         markDirty();
