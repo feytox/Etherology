@@ -6,6 +6,11 @@ import net.minecraft.util.math.BlockPos;
 public class NbtBlockPos extends BlockPos implements Nbtable {
     private final String name;
 
+    public NbtBlockPos() {
+        super(new BlockPos(0, 0, 0));
+        this.name = "NOT_FOR_NBT";
+    }
+
     public NbtBlockPos(String name, BlockPos blockPos) {
         super(blockPos);
         this.name = name;
@@ -43,5 +48,9 @@ public class NbtBlockPos extends BlockPos implements Nbtable {
     @Override
     public Nbtable readNbt(NbtCompound nbt) {
         return readFromNbt(nbt);
+    }
+
+    public BlockPos toBlockPos() {
+        return this;
     }
 }

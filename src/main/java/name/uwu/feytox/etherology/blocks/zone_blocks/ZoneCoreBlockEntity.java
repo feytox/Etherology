@@ -1,10 +1,12 @@
 package name.uwu.feytox.etherology.blocks.zone_blocks;
 
+import com.google.common.collect.Lists;
 import name.uwu.feytox.etherology.BlocksRegistry;
 import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
 import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
 import name.uwu.feytox.etherology.particle.ZoneParticle;
+import name.uwu.feytox.etherology.util.nbt.FeyNbtList;
 import name.uwu.feytox.etherology.util.nbt.NbtBlockPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -36,7 +38,8 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
     private List<BlockPos> cachedFillingZone = new ArrayList<>();
     private int particleRenewTicks = 0;
     private int refreshTicks = 0;
-    private List<EssenceConsumer> cachedConsumers;
+    private List<EssenceConsumer> cachedConsumers = new ArrayList<>();
+    private List<BlockPos> consumersPos = new ArrayList<>();
 
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
         super(BlocksRegistry.ZONE_CORE_BLOCK_ENTITY, pos, state);
@@ -78,6 +81,9 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
     @Override
     public void setCachedConsumers(List<EssenceConsumer> consumers) {
         cachedConsumers = consumers;
+
+        consumersPos = new ArrayList<>();
+        cachedConsumers.forEach(consumer -> consumersPos.add(consumer.getConsumerPos()));
     }
 
     public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
@@ -110,7 +116,16 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
     public void particleTick(ClientWorld world) {
         List<BlockPos> particleBlocks = getFillingZone(world);
         Random random = Random.create();
-        particleBlocks.forEach(blockPos -> ZoneParticle.spawnParticles(world, points, zoneType, blockPos, random));
+
+        particleBlocks.forEach(blockPos -> {
+            for (BlockPos consumerPos: consumersPos) {
+                if (consumerPos.isWithinDistance(blockPos, 2)) {
+                    ZoneParticle.spawnParticles(world, points*1.4f, zoneType, blockPos, consumerPos, random);
+                    return;
+                }
+            }
+            ZoneParticle.spawnParticles(world, points, zoneType, blockPos, random);
+        });
     }
 
     public List<BlockPos> getFillingZone(ClientWorld world) {
@@ -180,6 +195,9 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
         nbt.putFloat("points", points);
         zoneType.writeNbt(nbt);
 
+        List<NbtBlockPos> nbtConsumersPos = Lists.transform(consumersPos, NbtBlockPos::new);
+        new FeyNbtList<>("consumers_pos", nbtConsumersPos).writeNbt(nbt);
+
         super.writeNbt(nbt);
     }
 
@@ -190,6 +208,11 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
         zoneType = EssenceZones.readFromNbt(nbt);
         corePos = NbtBlockPos.readFromNbt("core_pos", nbt);
         points = nbt.getFloat("points");
+
+        FeyNbtList<NbtBlockPos> feyNbtList = FeyNbtList.readFromNbt("consumers_pos", NbtBlockPos.class, nbt);
+        if (feyNbtList != null) {
+            consumersPos = Lists.transform(feyNbtList.getList(), NbtBlockPos::toBlockPos);
+        }
     }
 
     @Override

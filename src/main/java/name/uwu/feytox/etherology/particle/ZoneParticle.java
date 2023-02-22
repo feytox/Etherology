@@ -22,12 +22,15 @@ public class ZoneParticle extends MovingParticle {
     public static final int PARTICLE_RADIUS = 8;
     private final SpriteProvider spriteProvider;
 
-    protected ZoneParticle(ClientWorld clientWorld, double d, double e, double f, SpriteProvider spriteProvider,
-                           EssenceZones zoneType) {
-        super(clientWorld, d, e, f, d, e, f);
-        this.endX += FeyRandom.getValueSign(this.random) * this.random.nextDouble() * 3;
-        this.endY += FeyRandom.getValueSign(this.random) * this.random.nextDouble() * 2;
-        this.endZ += FeyRandom.getValueSign(this.random) * this.random.nextDouble() * 3;
+    protected ZoneParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i,
+                           SpriteProvider spriteProvider, EssenceZones zoneType) {
+        super(clientWorld, d, e, f, g, h, i);
+
+        if (h < -4000) {
+            this.endX = d + FeyRandom.getValueSign(this.random) * this.random.nextDouble() * 3;
+            this.endY = e + FeyRandom.getValueSign(this.random) * this.random.nextDouble() * 2;
+            this.endZ = f + FeyRandom.getValueSign(this.random) * this.random.nextDouble() * 3;
+        }
 
         this.spriteProvider = spriteProvider;
         this.setSpriteForAge(spriteProvider);
@@ -38,10 +41,10 @@ public class ZoneParticle extends MovingParticle {
         RGBColor endColor = zoneType.getSecondColor();
         int gradientLength = Math.abs(endColor.r() - startColor.r()) + Math.abs(endColor.g() - startColor.g()) + Math.abs(endColor.b() - startColor.b());
         int randomPos = this.random.nextInt(gradientLength + 1);
-        int r = getColorComponent(startColor.r(), endColor.r(), randomPos);
-        int g = getColorComponent(startColor.g(), endColor.g(), randomPos);
-        int b = getColorComponent(startColor.b(), endColor.b(), randomPos);
-        this.setRGB(r, g, b);
+        int rc = getColorComponent(startColor.r(), endColor.r(), randomPos);
+        int gc = getColorComponent(startColor.g(), endColor.g(), randomPos);
+        int bc = getColorComponent(startColor.b(), endColor.b(), randomPos);
+        this.setRGB(rc, gc, bc);
     }
 
     public static int getColorComponent(int startValue, int endValue, int pos) {
@@ -86,7 +89,7 @@ public class ZoneParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ZoneParticle(world, x, y, z, spriteProvider, EssenceZones.KETA);
+            return new ZoneParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider, EssenceZones.KETA);
         }
     }
 
@@ -101,7 +104,7 @@ public class ZoneParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ZoneParticle(world, x, y, z, spriteProvider, EssenceZones.RELA);
+            return new ZoneParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider, EssenceZones.RELA);
         }
     }
 
@@ -116,7 +119,7 @@ public class ZoneParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ZoneParticle(world, x, y, z, spriteProvider, EssenceZones.CLOS);
+            return new ZoneParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider, EssenceZones.CLOS);
         }
     }
 
@@ -131,26 +134,30 @@ public class ZoneParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ZoneParticle(world, x, y, z, spriteProvider, EssenceZones.VIA);
+            return new ZoneParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider, EssenceZones.VIA);
         }
     }
 
-    public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos pos, Random random) {
+    public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos startPos, BlockPos endPos, Random random) {
         float k = points / 128;
 
         if (random.nextDouble() > k * 1/300) return;
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null || player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) > MathHelper.square(PARTICLE_RADIUS)) return;
+        if (player == null || player.squaredDistanceTo(startPos.getX(), startPos.getY(), startPos.getZ()) > MathHelper.square(PARTICLE_RADIUS)) return;
 
         int count = MathHelper.ceil(5 * k);
 
         MovingParticle.spawnParticles(world, zoneType.getParticleType(), count, 0.5,
-                pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5,
-                pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, random);
+                startPos.getX()+0.5, startPos.getY()+0.5, startPos.getZ()+0.5,
+                endPos.getX()+0.5, endPos.getY()+0.5, endPos.getZ()+0.5, random);
+    }
+
+    public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos pos, Random random) {
+        spawnParticles(world, points, zoneType, pos, new BlockPos(0, -5000, 0), random);
     }
 
     public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos pos) {
-        spawnParticles(world, points, zoneType, pos, Random.create());
+        spawnParticles(world, points, zoneType, pos, new BlockPos(0, -5000, 0), Random.create());
     }
 }

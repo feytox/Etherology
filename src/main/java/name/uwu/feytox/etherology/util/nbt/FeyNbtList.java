@@ -38,6 +38,7 @@ public class FeyNbtList<T extends Nbtable> {
 
     public static <M extends Nbtable> FeyNbtList<M> readFromNbt(String name, Class<M> cls, NbtCompound nbt) {
         try {
+            // TODO: 22/02/2023 Сделать так, чтобы можно было использовать любой конструктор
             M reader = cls.getConstructor().newInstance();
 
             NbtCompound subNbt = nbt.getCompound(name);
