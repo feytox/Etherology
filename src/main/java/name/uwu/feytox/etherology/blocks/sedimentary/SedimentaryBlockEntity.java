@@ -2,6 +2,7 @@ package name.uwu.feytox.etherology.blocks.sedimentary;
 
 import name.uwu.feytox.etherology.enums.SedimentaryStates;
 import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
+import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,7 +18,7 @@ import static name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlock.ESS
 import static name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlock.ESSENCE_STATE;
 
 public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsumer {
-    private BlockPos cachedZonePos = null;
+    EssenceSupplier cachedSupplier = null;
     private int consumingTicks = 0;
     private EssenceZones zoneType = EssenceZones.NULL;
     private int points = 0;
@@ -40,7 +41,8 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
     public void consumingTick(ServerWorld world) {
         if (consumingTicks++ % 20 != 0) return;
 
-        tickConsume(world);
+        tickConsume();
+        markDirty();
 
         float k = points / 128f;
         BlockState state = SEDIMENTARY_BLOCK.getDefaultState();
@@ -74,14 +76,15 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
 
     @Nullable
     @Override
-    public BlockPos getCachedZonePos() {
-        return cachedZonePos;
+    public EssenceSupplier getCachedSupplier() {
+        return cachedSupplier;
     }
 
     @Override
-    public void setCachedCorePos(BlockPos blockPos) {
-        cachedZonePos = blockPos;
+    public void setCachedSupplier(EssenceSupplier supplier) {
+        cachedSupplier = supplier;
     }
+
 
     @Override
     public EssenceZones getZoneType() {
@@ -123,5 +126,15 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
     @Override
     public boolean isEmpty() {
         return points == 0;
+    }
+
+    @Override
+    public boolean isDead() {
+        return isRemoved();
+    }
+
+    @Override
+    public void markDead() {
+        markRemoved();
     }
 }

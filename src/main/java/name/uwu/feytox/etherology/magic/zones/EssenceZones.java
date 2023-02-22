@@ -1,6 +1,7 @@
 package name.uwu.feytox.etherology.magic.zones;
 
 import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneBlock;
+import name.uwu.feytox.etherology.util.feyapi.EEquality;
 import name.uwu.feytox.etherology.util.feyapi.RGBColor;
 import name.uwu.feytox.etherology.util.nbt.Nbtable;
 import net.minecraft.nbt.NbtCompound;
@@ -12,7 +13,7 @@ import java.util.List;
 import static name.uwu.feytox.etherology.BlocksRegistry.*;
 import static name.uwu.feytox.etherology.Etherology.*;
 
-public enum EssenceZones implements Nbtable {
+public enum EssenceZones implements Nbtable, EEquality {
     KETA(KETA_ZONE_BLOCK, KETA_PARTICLE, new RGBColor(183, 0, 244), new RGBColor(15, 161, 207)),
     RELA(RELA_ZONE_BLOCK, RELA_PARTICLE, new RGBColor(83, 221,10), new RGBColor(240, 240, 20)),
     CLOS(CLOS_ZONE_BLOCK, CLOS_PARTICLE, new RGBColor(240, 240, 20), new RGBColor(255, 170, 170)),

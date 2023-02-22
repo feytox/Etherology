@@ -47,4 +47,10 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
 
         return world.isClient ? SedimentaryBlockEntity::clientTick : SedimentaryBlockEntity::serverTick;
     }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        super.onStateReplaced(state, world, pos, newState, moved);
+//        world.updateComparators(pos,this);
+    }
 }

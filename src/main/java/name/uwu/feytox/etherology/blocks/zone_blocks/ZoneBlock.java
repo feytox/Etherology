@@ -11,10 +11,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +24,7 @@ public class ZoneBlock extends AirBlock implements BlockEntityProvider {
     private final String blockId;
 
     public ZoneBlock(String blockId) {
-        super(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().blockVision(getPredicate()));
+        super(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing());
         this.blockId = blockId;
     }
 
@@ -49,15 +46,6 @@ public class ZoneBlock extends AirBlock implements BlockEntityProvider {
         Registry.register(Registries.BLOCK, new EIdentifier(this.blockId), this);
         Registry.register(Registries.ITEM, new EIdentifier(this.blockId + "_item"), new BlockItem(this, new FabricItemSettings()));
         return this;
-    }
-
-    public static ContextPredicate getPredicate() {
-        return (state, world, pos) -> {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player == null) return false;
-
-            return player.getStackInHand(player.getActiveHand()).isItemEqual(Items.ACACIA_LEAVES.getDefaultStack());
-        };
     }
 
     @Nullable

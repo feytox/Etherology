@@ -135,9 +135,8 @@ public class ZoneParticle extends MovingParticle {
         }
     }
 
-    public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos pos) {
+    public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos pos, Random random) {
         float k = points / 128;
-        Random random = Random.create();
 
         if (random.nextDouble() > k * 1/300) return;
 
@@ -149,5 +148,9 @@ public class ZoneParticle extends MovingParticle {
         MovingParticle.spawnParticles(world, zoneType.getParticleType(), count, 0.5,
                 pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5,
                 pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, random);
+    }
+
+    public static void spawnParticles(ClientWorld world, float points, EssenceZones zoneType, BlockPos pos) {
+        spawnParticles(world, points, zoneType, pos, Random.create());
     }
 }

@@ -1,6 +1,8 @@
 package name.uwu.feytox.etherology.blocks.zone_blocks;
 
 import name.uwu.feytox.etherology.BlocksRegistry;
+import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
+import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
 import name.uwu.feytox.etherology.particle.ZoneParticle;
 import name.uwu.feytox.etherology.util.nbt.NbtBlockPos;
@@ -9,29 +11,28 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
-import static name.uwu.feytox.etherology.BlocksRegistry.*;
+import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK;
 
-public class ZoneCoreBlockEntity extends BlockEntity {
+public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier {
+    public static final int ZONE_RADIUS = 16;
     private BlockPos corePos;
     private float maxPoints;
     private float points;
     private EssenceZones zoneType = EssenceZones.NULL;
-    private ZoneBlock fillBlock = null;
-    private List<BlockPos> cachedFilledBlocks = new ArrayList<>();
-    private boolean shouldRegenerate = false;
-    private int serverTicks;
+    private List<BlockPos> cachedFillingZone = new ArrayList<>();
+    private int particleRenewTicks = 0;
+    private int refreshTicks = 0;
+    private List<EssenceConsumer> cachedConsumers;
 
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
         super(BlocksRegistry.ZONE_CORE_BLOCK_ENTITY, pos, state);
@@ -45,19 +46,34 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         setType(zone);
         this.maxPoints = maxPoints;
         this.points = maxPoints;
-        this.shouldRegenerate = true;
     }
 
     public boolean isTruePos() {
         return corePos.equals(pos);
     }
 
-    public boolean isServerTick() {
-        return serverTicks++ % 100 == 0;
-    }
-
     public float getPoints() {
         return points;
+    }
+
+    @Override
+    public int getCheckRadius() {
+        return ZONE_RADIUS + EssenceConsumer.MAX_RADIUS - 1;
+    }
+
+    @Override
+    public BlockPos getSupplierPos() {
+        return corePos;
+    }
+
+    @Override
+    public List<EssenceConsumer> getCachedConsumers() {
+        return cachedConsumers;
+    }
+
+    @Override
+    public void setCachedConsumers(List<EssenceConsumer> consumers) {
+        cachedConsumers = consumers;
     }
 
     public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
@@ -71,81 +87,47 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         ServerWorld serverWorld = (ServerWorld) world;
         ZoneCoreBlockEntity zoneCore = (ZoneCoreBlockEntity) blockEntity;
 
+        zoneCore.checkExisting(serverWorld);
+        zoneCore.tickRefresh(serverWorld);
+    }
 
-        if (zoneCore.isServerTick()) {
-            zoneCore.checkExisting(serverWorld);
-            zoneCore.generateZone(serverWorld, false);
-        }
+    @Override
+    public void tickRefresh(ServerWorld world) {
+        if (refreshTicks++ % 3 * 20 == 0) refreshConsumers(world);
     }
 
     public void checkExisting(ServerWorld world) {
-        boolean isEmpty = maxPoints != 0 && points == 0;
-        if (!corePos.equals(pos) || isEmpty) {
-            BlockState state = world.getBlockState(corePos);
-            if (isEmpty || (state.isAir() && !state.isOf(ZONE_CORE_BLOCK))) {
-                world.setBlockState(corePos, ZONE_CORE_BLOCK.getDefaultState());
-                ZoneCoreBlockEntity newBlock = (ZoneCoreBlockEntity) world.getBlockEntity(pos);
-                if (newBlock != null) newBlock.copy(this);
-
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
-                markRemoved();
-                clearZone(world);
-            }
-        }
-    }
-
-    public void clearZone(ServerWorld world) {
-        cachedFilledBlocks.forEach(blockPos -> {
-            BlockState state = world.getBlockState(blockPos);
-            if (state.isOf(KETA_ZONE_BLOCK) && state.isOf(RELA_ZONE_BLOCK) && state.isOf(CLOS_ZONE_BLOCK) && state.isOf(VIA_ZONE_BLOCK)) {
-                world.breakBlock(blockPos, false);
-            }
-        });
-    }
-
-    public void generateZone(ServerWorld world, boolean isForceGenerate) {
-        List<BlockPos> blocksForFill = getFillingZone(world, 256 * maxPoints);
-
-        if (fillBlock == null || zoneType.equals(EssenceZones.NULL)) return;
-
-        if (isForceGenerate || shouldRegenerate || !blocksForFill.equals(cachedFilledBlocks)) {
-            blocksForFill.forEach(blockPos -> {
-                world.setBlockState(blockPos, fillBlock.getDefaultState());
-                Optional<ZoneBlockEntity> match = world.getBlockEntity(blockPos, ZONE_BLOCK_ENTITY);
-                match.ifPresent(zoneBlock -> zoneBlock.setCurrentCorePos(pos));
-            });
-            cachedFilledBlocks = blocksForFill;
-            shouldRegenerate = false;
+        if (maxPoints != 0 && points == 0) {
+            world.setBlockState(this.pos, Blocks.AIR.getDefaultState());
+            markRemoved();
         }
     }
 
     public void particleTick(ClientWorld world) {
-        ZoneParticle.spawnParticles(world, points, zoneType, pos);
+        List<BlockPos> particleBlocks = getFillingZone(world);
+        Random random = Random.create();
+        particleBlocks.forEach(blockPos -> ZoneParticle.spawnParticles(world, points, zoneType, blockPos, random));
     }
 
-    private List<BlockPos> getFillingZone(ServerWorld world, float blockPoints) {
-        int height = 32;
-        while (height > 8 && blockPoints / height < height * height) {
-            height--;
-        }
+    public List<BlockPos> getFillingZone(ClientWorld world) {
+        // TODO: 22/02/2023 рассмотреть вопрос с различными настройками оптимизации
+        if (cachedFillingZone.isEmpty() || particleRenewTicks++ % 2 * 20 == 0) {
+            Vec3i radiusVec = new Vec3i(ZONE_RADIUS, ZONE_RADIUS, ZONE_RADIUS);
+            BlockPos minPos = corePos.subtract(radiusVec);
+            BlockPos maxPos = corePos.add(radiusVec);
+            Iterator<BlockPos> blockIter = BlockPos.iterate(minPos, maxPos).iterator();
 
-        int width = MathHelper.floor(MathHelper.sqrt(blockPoints / height));
-        int length = MathHelper.floor(blockPoints / (height * width));
-
-        BlockPos minPos = corePos.add(-width / 2, -height / 2, -length / 2);
-        BlockPos maxPos = corePos.add(width / 2 - 1, height / 2 - 1, length / 2 - 1);
-        Iterator<BlockPos> blockIter = BlockPos.iterate(minPos, maxPos).iterator();
-
-        List<BlockPos> result = new ArrayList<>();
-        while (blockIter.hasNext()) {
-            BlockPos blockPos = blockIter.next();
-            BlockState state = world.getBlockState(blockPos);
-            if (state.isAir() && !state.isOf(ZONE_CORE_BLOCK)) {
-                result.add(new BlockPos(blockPos));
+            List<BlockPos> result = new ArrayList<>();
+            while (blockIter.hasNext()) {
+                BlockPos blockPos = blockIter.next();
+                BlockState state = world.getBlockState(blockPos);
+                if (state.isAir() || state.isOf(ZONE_CORE_BLOCK)) {
+                    result.add(new BlockPos(blockPos));
+                }
             }
+            cachedFillingZone = result;
         }
-
-        return result;
+        return cachedFillingZone;
     }
 
     public void setCorePos(BlockPos corePos) {
@@ -161,24 +143,26 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         setPoints(points + value);
     }
 
+    @Override
     public float decrement(float value) {
         float min = Math.min(value, points);
         setPoints(points - min);
         return min;
     }
 
+    @Override
+    public EssenceZones getZoneType() {
+        return zoneType;
+    }
+
     public void setType(EssenceZones zone) {
         zoneType = zone;
-        fillBlock = zone.getFillBlock();
         markDirty();
     }
 
     public void copy(ZoneCoreBlockEntity oldBlock) {
         corePos = oldBlock.corePos;
         points = oldBlock.points;
-        fillBlock = oldBlock.fillBlock;
-        cachedFilledBlocks = oldBlock.cachedFilledBlocks;
-        shouldRegenerate = true;
         markDirty();
     }
 
@@ -186,8 +170,6 @@ public class ZoneCoreBlockEntity extends BlockEntity {
     protected void writeNbt(NbtCompound nbt) {
         new NbtBlockPos("core_pos", corePos).writeNbt(nbt);
         nbt.putFloat("points", points);
-        nbt.putString("fill_block", Registries.BLOCK.getId(fillBlock).toString());
-        nbt.putBoolean("should_regenerate", shouldRegenerate);
         zoneType.writeNbt(nbt);
 
         super.writeNbt(nbt);
@@ -200,12 +182,20 @@ public class ZoneCoreBlockEntity extends BlockEntity {
         zoneType = EssenceZones.readFromNbt(nbt);
         corePos = NbtBlockPos.readFromNbt("core_pos", nbt);
         points = nbt.getFloat("points");
-        fillBlock = (ZoneBlock) Registries.BLOCK.get(new Identifier(nbt.getString("fill_block")));
-        shouldRegenerate = nbt.getBoolean("should_regenerate");
     }
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
+    }
+
+    @Override
+    public boolean isDead() {
+        return isRemoved();
+    }
+
+    @Override
+    public void markDead() {
+        markRemoved();
     }
 }

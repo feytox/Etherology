@@ -17,8 +17,7 @@ import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK_ENTITY;
 
 public class ZoneCoreBlock extends ZoneBlock implements BlockEntityProvider {
     public ZoneCoreBlock() {
-        super("zone_core_block", FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing()
-                .blockVision(getPredicate()).ticksRandomly());
+        super("zone_core_block", FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing());
     }
 
     @Override
@@ -42,6 +41,7 @@ public class ZoneCoreBlock extends ZoneBlock implements BlockEntityProvider {
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (world.isClient) {
             super.onStateReplaced(state, world, pos, newState, moved);
+            world.updateComparators(pos,this);
             return;
         }
 
@@ -57,5 +57,6 @@ public class ZoneCoreBlock extends ZoneBlock implements BlockEntityProvider {
         }
 
         super.onStateReplaced(state, world, pos, newState, moved);
+        world.updateComparators(pos,this);
     }
 }

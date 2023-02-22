@@ -1,64 +1,30 @@
 package name.uwu.feytox.etherology.magic.zones;
 
-import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneBlockEntity;
-import net.minecraft.server.world.ServerWorld;
+import name.uwu.feytox.etherology.util.feyapi.Deadable;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
-import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_BLOCK_ENTITY;
+public interface EssenceConsumer extends Deadable {
+    // TODO: 22/02/2023 Изменять по мере необходимости
+    int MAX_RADIUS = 15;
 
-public interface EssenceConsumer {
     float getConsumingValue();
     float getRadius();
     BlockPos getConsumerPos();
     @Nullable
-    BlockPos getCachedZonePos();
-    void setCachedCorePos(BlockPos blockPos);
+    EssenceSupplier getCachedSupplier();
+    void setCachedSupplier(EssenceSupplier supplier);
     EssenceZones getZoneType();
     void setZoneType(EssenceZones zoneType);
     void increment(float value);
 
-    @Nullable
-    default ZoneBlockEntity getZoneCore(ServerWorld world) {
-        BlockPos zonePos = getCachedZonePos();
-        if (zonePos != null) {
-            Optional<ZoneBlockEntity> match = world.getBlockEntity(zonePos, ZONE_BLOCK_ENTITY);
-            if (match.isPresent()) return match.get();
-        }
+    default boolean tickConsume() {
+        EssenceSupplier supplier = getCachedSupplier();
+        if (supplier == null || supplier.isDead()) return false;
 
-        BlockPos consumerPos = getConsumerPos();
-        float radius = getRadius();
-
-        BlockPos minPos = consumerPos.add(-radius, 0, -radius);
-        BlockPos maxPos = consumerPos.add(radius, radius, radius);
-        EssenceZones zoneType = getZoneType();
-        // TODO: 21/02/2023 проверить, нужно ли доп. условие
-        boolean is_empty = zoneType.equals(EssenceZones.NULL);
-
-        for (BlockPos blockPos : BlockPos.iterate(minPos, maxPos)) {
-            Optional<ZoneBlockEntity> match = world.getBlockEntity(blockPos, ZONE_BLOCK_ENTITY);
-            if (match.isPresent() && (is_empty || match.get().getZoneType().equals(zoneType))) {
-                setCachedCorePos(blockPos);
-                setZoneType(match.get().getZoneType());
-                return match.get();
-            }
-        }
-
-        return null;
-    }
-
-    default boolean tickConsume(ServerWorld world) {
-        ZoneBlockEntity zoneBlock = getZoneCore(world);
-        if (zoneBlock == null) return false;
-
-        float consumedPoints = zoneBlock.decrement(world, getConsumingValue());
+        float consumedPoints = supplier.decrement(getConsumingValue());
         increment(consumedPoints);
-
-        if (consumedPoints == 0) {
-            setEmpty();
-        }
 
         return true;
     }
@@ -69,5 +35,28 @@ public interface EssenceConsumer {
 
     default boolean isEmpty() {
         return getZoneType().equals(EssenceZones.NULL);
+    }
+
+    default boolean checkZoneType(EssenceZones zoneType) {
+        EssenceZones consumerZoneType = getZoneType();
+        return consumerZoneType.equalsAny(EssenceZones.NULL, zoneType);
+    }
+
+    default boolean isTaken() {
+        EssenceSupplier cachedSupplier = getCachedSupplier();
+        return cachedSupplier != null && !cachedSupplier.isDead();
+    }
+
+    default boolean sync(EssenceSupplier supplier) {
+        if (isTaken() || !checkZoneType(supplier.getZoneType())) return false;
+        setCachedSupplier(supplier);
+        setZoneType(supplier.getZoneType());
+        return true;
+    }
+
+    default void unsync(EssenceSupplier supplier) {
+        if (getCachedSupplier() == supplier) {
+            setCachedSupplier(null);
+        }
     }
 }
