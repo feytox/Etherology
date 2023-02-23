@@ -21,10 +21,11 @@ import static name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlock.ESS
 import static name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlock.ESSENCE_STATE;
 
 public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsumer {
+    private static final float MAX_POINTS = 32.0f;
     EssenceSupplier cachedSupplier = null;
     private int consumingTicks = 0;
     private EssenceZones zoneType = EssenceZones.NULL;
-    private int points = 0;
+    private float points = 0;
 
     public SedimentaryBlockEntity(BlockPos pos, BlockState state) {
         super(SEDIMENTARY_BLOCK_ENTITY, pos, state);
@@ -42,12 +43,9 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
     }
 
     public void consumingTick(ServerWorld world) {
-        if (consumingTicks++ % 20 != 0) return;
+        if (consumingTicks++ % 10*20 != 0 || points >= MAX_POINTS) return;
 
-        tickConsume();
-        markDirty();
-
-        float k = points / 128f;
+        float k = points / MAX_POINTS;
         BlockState state = SEDIMENTARY_BLOCK.getDefaultState();
         SedimentaryStates sedState = SedimentaryStates.getFromZone(zoneType);
 
@@ -64,7 +62,7 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
 
     @Override
     public float getConsumingValue() {
-        return 5;
+        return 0.5f;
     }
 
     @Override
@@ -102,13 +100,14 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
     @Override
     public void increment(float value) {
         points += value;
+        points = Math.min(MAX_POINTS, points);
         System.out.println(value);
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
         zoneType.writeNbt(nbt);
-        nbt.putInt("points", points);
+        nbt.putFloat("points", points);
 
         super.writeNbt(nbt);
     }
@@ -118,7 +117,7 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
         super.readNbt(nbt);
 
         zoneType = EssenceZones.readFromNbt(nbt);
-        points = nbt.getInt("points");
+        points = nbt.getFloat("points");
     }
 
     @Override
