@@ -1,5 +1,6 @@
 package name.uwu.feytox.etherology.blocks.zone_blocks;
 
+import name.uwu.feytox.etherology.util.registry.SimpleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK_ENTITY;
 
-public class ZoneCoreBlock extends ZoneBlock implements BlockEntityProvider {
+public class ZoneCoreBlock extends SimpleBlock implements BlockEntityProvider {
     public ZoneCoreBlock() {
         super("zone_core_block", FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing());
     }

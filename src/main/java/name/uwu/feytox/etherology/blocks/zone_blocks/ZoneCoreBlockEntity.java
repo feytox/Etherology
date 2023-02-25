@@ -2,6 +2,9 @@ package name.uwu.feytox.etherology.blocks.zone_blocks;
 
 import com.google.common.collect.Lists;
 import name.uwu.feytox.etherology.BlocksRegistry;
+import name.uwu.feytox.etherology.feyperms.Permissible;
+import name.uwu.feytox.etherology.feyperms.Permission;
+import name.uwu.feytox.etherology.feyperms.PermissionManager;
 import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
 import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
@@ -11,6 +14,7 @@ import name.uwu.feytox.etherology.util.nbt.NbtBlockPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -29,7 +33,7 @@ import java.util.List;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK;
 
-public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier {
+public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier, Permissible {
     public static final int ZONE_RADIUS = 16;
     private BlockPos corePos;
     private float maxPoints;
@@ -114,6 +118,8 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
     }
 
     public void particleTick(ClientWorld world) {
+        if (!permTest(world, MinecraftClient.getInstance().player)) return;
+
         List<BlockPos> particleBlocks = getFillingZone(world);
         Random random = Random.create();
 
@@ -234,5 +240,10 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier 
     @Override
     public void markDead() {
         markRemoved();
+    }
+
+    @Override
+    public List<Permission> getPermissions() {
+        return PermissionManager.INSTANCE.get("essence_visual");
     }
 }
