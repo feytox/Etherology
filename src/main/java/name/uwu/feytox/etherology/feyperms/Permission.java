@@ -1,14 +1,15 @@
 package name.uwu.feytox.etherology.feyperms;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public abstract class Permission {
-    private String name;
-    private boolean isClient;
+    private final Identifier id;
+    private final boolean isClient;
 
-    public Permission(String name, boolean isClient) {
-        this.name = name;
+    public Permission(Identifier id, boolean isClient) {
+        this.id = id;
         this.isClient = isClient;
     }
 
@@ -16,8 +17,8 @@ public abstract class Permission {
         return isClient;
     }
 
-    public String getName() {
-        return name;
+    public Identifier getId() {
+        return id;
     }
 
     public abstract boolean test(World world, PlayerEntity player);

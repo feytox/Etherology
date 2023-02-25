@@ -1,5 +1,18 @@
 package name.uwu.feytox.etherology.feyperms;
 
-public class PermissionDeserializer {
-    // TODO: 23/02/2023 deserialize yeah
+import com.google.gson.JsonElement;
+import net.minecraft.util.Identifier;
+
+public abstract class PermissionDeserializer<T extends Permission> {
+    private final String name;
+
+    public PermissionDeserializer(String name) {
+        this.name = name;
+    }
+
+    public abstract T deserialize(Identifier id, JsonElement json);
+
+    public String getName() {
+        return name;
+    }
 }

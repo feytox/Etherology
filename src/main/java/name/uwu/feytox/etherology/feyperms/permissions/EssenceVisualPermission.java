@@ -1,6 +1,7 @@
 package name.uwu.feytox.etherology.feyperms.permissions;
 
 import name.uwu.feytox.etherology.feyperms.Permission;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -8,7 +9,7 @@ import net.minecraft.world.World;
 
 public class EssenceVisualPermission extends Permission {
     public EssenceVisualPermission() {
-        super("essence_visual", true);
+        super(new EIdentifier("essence_visual"), true);
     }
 
     @Override
