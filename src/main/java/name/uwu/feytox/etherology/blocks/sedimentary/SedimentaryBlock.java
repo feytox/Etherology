@@ -10,9 +10,15 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +33,25 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
     public SedimentaryBlock() {
         super("sedimentary_block", FabricBlockSettings.of(Material.STONE));
         setDefaultState(getDefaultState().with(ESSENCE_STATE, EMPTY).with(ESSENCE_LEVEL, 0));
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        boolean iterResult = false;
+        for (ItemStack itemStack : player.getHandItems()) {
+            if (itemStack.getItem() instanceof AxeItem) {
+                iterResult = true;
+                break;
+            }
+        }
+        if (!iterResult) return super.onUse(state, world, pos, player, hand, hit);
+
+        boolean result = false;
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof SedimentaryBlockEntity sedimentaryBlock) {
+            result = sedimentaryBlock.onUseAxe(world, player);
+        }
+        return result ? ActionResult.SUCCESS : super.onUse(state, world, pos, player, hand, hit);
     }
 
     @Nullable

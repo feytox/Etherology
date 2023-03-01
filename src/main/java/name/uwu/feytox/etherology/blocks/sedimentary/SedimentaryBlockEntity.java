@@ -4,16 +4,28 @@ import name.uwu.feytox.etherology.enums.SedimentaryStates;
 import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
 import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
+import name.uwu.feytox.etherology.particle.ZoneParticle;
+import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.SEDIMENTARY_BLOCK;
 import static name.uwu.feytox.etherology.BlocksRegistry.SEDIMENTARY_BLOCK_ENTITY;
@@ -31,6 +43,23 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
         super(SEDIMENTARY_BLOCK_ENTITY, pos, state);
     }
 
+    public boolean onUseAxe(World world, PlayerEntity player) {
+        if (points < MAX_POINTS) return false;
+        if (!world.isClient) {
+            points = 0;
+            markDirty();
+            checkState((ServerWorld) world);
+
+            Optional<Item> match = Registries.ITEM.getOrEmpty(new EIdentifier("primoshard_" + zoneType.name().toLowerCase()));
+            match.ifPresent(item ->
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
+        } else {
+            ZoneParticle.spawnParticles((ClientWorld) world, points*1.4f, zoneType, pos, Random.create());
+        }
+        world.playSound(player, pos, SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        return true;
+    }
+
     public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
 
     }
@@ -44,7 +73,11 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
 
     public void consumingTick(ServerWorld world) {
         if (consumingTicks++ % 10*20 != 0 || points >= MAX_POINTS) return;
+        tickConsume();
+        checkState(world);
+    }
 
+    public void checkState(ServerWorld world) {
         float k = points / MAX_POINTS;
         BlockState state = SEDIMENTARY_BLOCK.getDefaultState();
         SedimentaryStates sedState = SedimentaryStates.getFromZone(zoneType);
