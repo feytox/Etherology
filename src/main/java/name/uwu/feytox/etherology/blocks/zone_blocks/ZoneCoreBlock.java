@@ -18,7 +18,7 @@ import static name.uwu.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK_ENTITY;
 
 public class ZoneCoreBlock extends SimpleBlock implements BlockEntityProvider {
     public ZoneCoreBlock() {
-        super("zone_core_block", FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing()
+        super("zone_core_block", FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().air()
                 .blockVision((a, b, c) -> false));
     }
 
