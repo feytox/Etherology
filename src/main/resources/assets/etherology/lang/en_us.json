@@ -6,6 +6,12 @@
   "item.etherology.terrestrial_shard": "Земельный осколок",
   "item.etherology.ethril_ring": "Эфриловое матричное кольцо",
   "item.etherology.gold_ring": "Золотое матричное кольцо",
+  "item.etherology.primoshard_keta": "Первичный осколок",
+  "item.etherology.primoshard_rela": "Первичный осколок",
+  "item.etherology.primoshard_clos": "Первичный осколок",
+  "item.etherology.primoshard_via": "Первичный осколок",
+
+  "lore.etherology.primoshard": "%s",
 
   "block.etherology.crucible": "Варочный тигель",
   "block.etherology.ether_workbench": "Эфирный верстак",
