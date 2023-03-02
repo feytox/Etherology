@@ -21,6 +21,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -82,14 +83,10 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
         BlockState state = SEDIMENTARY_BLOCK.getDefaultState();
         SedimentaryStates sedState = SedimentaryStates.getFromZone(zoneType);
 
-        if (k == 0 || sedState.equals(SedimentaryStates.EMPTY)) {
+        if (k < 1/4f) {
             world.setBlockState(pos, state);
-        } else if (k < 1/3f) {
-            world.setBlockState(pos, state.with(ESSENCE_STATE, sedState).with(ESSENCE_LEVEL, 1));
-        } else if (k < 2/3f) {
-            world.setBlockState(pos, state.with(ESSENCE_STATE, sedState).with(ESSENCE_LEVEL, 2));
-        } else {
-            world.setBlockState(pos, state.with(ESSENCE_STATE, sedState).with(ESSENCE_LEVEL, 3));
+        } else if (k > 0) {
+            world.setBlockState(pos, state.with(ESSENCE_STATE, sedState).with(ESSENCE_LEVEL, MathHelper.floor(4*k)));
         }
     }
 

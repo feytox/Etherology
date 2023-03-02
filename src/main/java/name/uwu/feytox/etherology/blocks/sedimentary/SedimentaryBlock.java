@@ -28,7 +28,7 @@ import static name.uwu.feytox.etherology.enums.SedimentaryStates.EMPTY;
 
 public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider {
     public static final EnumProperty<SedimentaryStates> ESSENCE_STATE = EnumProperty.of("essence_state", SedimentaryStates.class);
-    public static final IntProperty ESSENCE_LEVEL = IntProperty.of("essence_level", 0, 3);
+    public static final IntProperty ESSENCE_LEVEL = IntProperty.of("essence_level", 0, 4);
 
     public SedimentaryBlock() {
         super("sedimentary_block", FabricBlockSettings.of(Material.STONE));

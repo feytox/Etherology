@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "etherology:block/sedimentary_stone_keta_4"
+  }
+}
