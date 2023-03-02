@@ -4,7 +4,7 @@ import name.uwu.feytox.etherology.enums.SedimentaryStates;
 import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
 import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
-import name.uwu.feytox.etherology.particle.ZoneParticle;
+import name.uwu.feytox.etherology.particle.SparkParticle;
 import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,7 +22,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,7 +54,8 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
             match.ifPresent(item ->
                     ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
         } else {
-            ZoneParticle.spawnParticles((ClientWorld) world, points*1.4f, zoneType, pos.up(), Random.create());
+            EssenceZones essenceZone = state.get(ESSENCE_STATE).getZoneType();
+            SparkParticle.spawnSedimentaryParticle((ClientWorld) world, pos, essenceZone);
         }
         world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f, true);
         return true;

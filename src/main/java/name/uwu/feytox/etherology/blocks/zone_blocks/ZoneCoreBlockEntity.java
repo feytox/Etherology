@@ -50,7 +50,7 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier,
         this.corePos = pos;
 
         // FIXME: 21/02/2023 УБРАТЬ ПОСЛЕ ТЕСТОВ!!!!!!!!!!!!!!!
-        setup(EssenceZones.RELA, 128);
+        setup(EssenceZones.VIA, 128);
     }
 
     public void setup(EssenceZones zone, float maxPoints) {

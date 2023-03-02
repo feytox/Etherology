@@ -64,7 +64,7 @@ public class ZoneParticle extends MovingParticle {
 
     @Override
     public void tick() {
-        acceleratedMovingTick(0.2f, 0.3f);
+        acceleratedMovingTick(0.2f, 0.3f, true);
         this.setSpriteForAge(spriteProvider);
     }
 

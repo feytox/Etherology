@@ -39,10 +39,10 @@ public class MovingParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
-        acceleratedMovingTick(0.4f, 0.5f);
+        acceleratedMovingTick(0.4f, 0.5f, true);
     }
 
-    public void acceleratedMovingTick(float speed_k, float start_speed) {
+    public void acceleratedMovingTick(float speed_k, float start_speed, boolean deadOnEnd) {
         if (this.age++ >= this.maxAge) {
             this.markDead();
             return;
@@ -59,7 +59,7 @@ public class MovingParticle extends SpriteBillboardParticle {
         double f = (fullPath - vecLength) / fullPath;
         double deltaC = speed_k * Math.pow(f+start_speed, 3);
 
-        if (vecLength <= 0.5f) {
+        if (deadOnEnd && vecLength <= 0.5f) {
             this.markDead();
             return;
         }
