@@ -49,7 +49,7 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
         boolean result = false;
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof SedimentaryBlockEntity sedimentaryBlock) {
-            result = sedimentaryBlock.onUseAxe(world, player);
+            result = sedimentaryBlock.onUseAxe(state, world, player);
         }
         return result ? ActionResult.SUCCESS : super.onUse(state, world, pos, player, hand, hit);
     }

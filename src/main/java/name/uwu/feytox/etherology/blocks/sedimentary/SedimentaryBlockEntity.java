@@ -44,8 +44,8 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
         super(SEDIMENTARY_BLOCK_ENTITY, pos, state);
     }
 
-    public boolean onUseAxe(World world, PlayerEntity player) {
-        if (points < MAX_POINTS) return false;
+    public boolean onUseAxe(BlockState state, World world, PlayerEntity player) {
+        if (state.get(ESSENCE_LEVEL) < 4) return false;
         if (!world.isClient) {
             points = 0;
             markDirty();
@@ -55,9 +55,9 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
             match.ifPresent(item ->
                     ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
         } else {
-            ZoneParticle.spawnParticles((ClientWorld) world, points*1.4f, zoneType, pos, Random.create());
+            ZoneParticle.spawnParticles((ClientWorld) world, points*1.4f, zoneType, pos.up(), Random.create());
         }
-        world.playSound(player, pos, SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f, true);
         return true;
     }
 
