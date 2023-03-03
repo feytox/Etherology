@@ -12,7 +12,6 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
@@ -30,10 +29,10 @@ public class SparkParticle extends MovingParticle {
         super(clientWorld, d, e, f, g, h, i);
         this.maxAge = 80;
         this.age = random.nextBetween(0, 70);
-//        this.setRGB(255, 215, 0);
-        this.startRed = MathHelper.floor(this.red * 255);
-        this.startGreen = MathHelper.floor(this.green * 255);
-        this.startBlue = MathHelper.floor(this.blue * 255);
+        this.startRed = 244;
+        this.startGreen = 194;
+        this.startBlue = 133;
+        this.setRGB(startRed, startGreen, startBlue);
         this.setSpriteForAge(spriteProvider);
     }
 
