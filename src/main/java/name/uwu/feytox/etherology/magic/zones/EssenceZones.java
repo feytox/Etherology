@@ -12,10 +12,10 @@ import java.util.List;
 import static name.uwu.feytox.etherology.Etherology.*;
 
 public enum EssenceZones implements Nbtable, EEquality {
-    KETA(KETA_PARTICLE, new RGBColor(183, 0, 244), new RGBColor(15, 161, 207)),
-    RELA(RELA_PARTICLE, new RGBColor(83, 221,10), new RGBColor(240, 240, 20)),
-    CLOS(CLOS_PARTICLE, new RGBColor(240, 240, 20), new RGBColor(255, 170, 170)),
-    VIA(VIA_PARTICLE, new RGBColor(182, 27, 21), new RGBColor(255, 170, 170)),
+    KETA(KETA_PARTICLE, new RGBColor(128, 205, 247), new RGBColor(105, 128, 231)),
+    RELA(RELA_PARTICLE, new RGBColor(177, 229,106), new RGBColor(106, 182, 81)),
+    CLOS(CLOS_PARTICLE, new RGBColor(106, 182, 81), new RGBColor(208, 158, 89)),
+    VIA(VIA_PARTICLE, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
     NULL(null, null, null);
 
     private final RGBColor firstColor;
