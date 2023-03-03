@@ -2,6 +2,7 @@ package name.uwu.feytox.etherology.particle;
 
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
 import name.uwu.feytox.etherology.util.feyapi.EVec3d;
+import name.uwu.feytox.etherology.util.feyapi.RGBColor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -23,32 +24,26 @@ public class SparkParticle extends MovingParticle {
     private int startRed;
     private int startGreen;
     private int startBlue;
-    private int endRed = 83;
-    private int endGreen = 14;
-    private int endBlue = 255;
     private boolean isSedimentary = false;
 
     public SparkParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
         super(clientWorld, d, e, f, g, h, i);
         this.maxAge = 80;
         this.age = random.nextBetween(0, 70);
-        this.setSpriteForAge(spriteProvider);
 //        this.setRGB(255, 215, 0);
         this.startRed = MathHelper.floor(this.red * 255);
         this.startGreen = MathHelper.floor(this.green * 255);
         this.startBlue = MathHelper.floor(this.blue * 255);
+        this.setSpriteForAge(spriteProvider);
     }
 
     public SparkParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, EssenceZones zoneType) {
-        this(clientWorld, d, e, f, g, h, i);
+        super(clientWorld, d, e, f, g, h, i);
         this.maxAge = 20;
         this.age = random.nextBetween(0, 10);
-        this.startRed = zoneType.getFirstColor().r();
-        this.startGreen = zoneType.getFirstColor().g();
-        this.startBlue = zoneType.getFirstColor().b();
-        this.endRed = zoneType.getSecondColor().r();
-        this.endGreen = zoneType.getSecondColor().g();
-        this.endBlue = zoneType.getSecondColor().b();
+        RGBColor gradientColor = ZoneParticle.getGradientColor(zoneType.getFirstColor(), zoneType.getSecondColor(), this.random);
+        this.setRGB(gradientColor);
+        this.setSpriteForAge(spriteProvider);
         isSedimentary = true;
     }
 
@@ -61,6 +56,12 @@ public class SparkParticle extends MovingParticle {
         double vecLength = vec.length();
         double fullPath = new Vec3d(endX-startX, endY-startY, endZ-startZ).length();
 
+
+        if (isSedimentary) return;
+
+        int endRed = 83;
+        int endGreen = 14;
+        int endBlue = 255;
         this.setRGB(startRed + (endRed - startRed) * ((fullPath - vecLength) / fullPath),
                 startGreen + (endGreen - startGreen) * ((fullPath - vecLength) / fullPath),
                 startBlue + (endBlue - startBlue) * ((fullPath - vecLength) / fullPath));
