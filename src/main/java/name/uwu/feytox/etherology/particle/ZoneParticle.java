@@ -37,14 +37,17 @@ public class ZoneParticle extends MovingParticle {
         this.maxAge = 20 * this.random.nextBetween(1, 2);
         scale(0.15f);
 
-        RGBColor startColor = zoneType.getFirstColor();
-        RGBColor endColor = zoneType.getSecondColor();
+        RGBColor gradientColor = getGradientColor(zoneType.getFirstColor(), zoneType.getSecondColor(), this.random);
+        this.setRGB(gradientColor);
+    }
+
+    public static RGBColor getGradientColor(RGBColor startColor, RGBColor endColor, Random random) {
         int gradientLength = Math.abs(endColor.r() - startColor.r()) + Math.abs(endColor.g() - startColor.g()) + Math.abs(endColor.b() - startColor.b());
-        int randomPos = this.random.nextInt(gradientLength + 1);
-        int rc = getColorComponent(startColor.r(), endColor.r(), randomPos);
-        int gc = getColorComponent(startColor.g(), endColor.g(), randomPos);
-        int bc = getColorComponent(startColor.b(), endColor.b(), randomPos);
-        this.setRGB(rc, gc, bc);
+        int randomPos = random.nextInt(gradientLength + 1);
+        int r = getColorComponent(startColor.r(), endColor.r(), randomPos);
+        int g = getColorComponent(startColor.g(), endColor.g(), randomPos);
+        int b = getColorComponent(startColor.b(), endColor.b(), randomPos);
+        return new RGBColor(r, g, b);
     }
 
     public static int getColorComponent(int startValue, int endValue, int pos) {

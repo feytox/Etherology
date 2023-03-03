@@ -1,5 +1,6 @@
 package name.uwu.feytox.etherology.particle;
 
+import name.uwu.feytox.etherology.util.feyapi.RGBColor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
@@ -111,6 +112,10 @@ public class MovingParticle extends SpriteBillboardParticle {
 
     public void setRGB(double red, double green, double blue) {
         super.setColor((float) (red / 255d), (float) (green / 255d), (float) (blue / 255d));
+    }
+
+    public void setRGB(RGBColor rgbColor) {
+        setRGB(rgbColor.r(), rgbColor.g(), rgbColor.b());
     }
 
     public void setAngle(float degrees) {
