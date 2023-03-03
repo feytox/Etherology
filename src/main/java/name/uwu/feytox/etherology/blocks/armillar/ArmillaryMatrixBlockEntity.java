@@ -243,7 +243,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     public boolean craftStep(ServerWorld world) {
         if (currentRecipe == null) return false;
 
-        if (storedEther < currentRecipe.getEtherPoints() || true) return false;
+        if (storedEther < currentRecipe.getEtherPoints()) return false;
 
         armillarStateType = CRAFTING;
 
