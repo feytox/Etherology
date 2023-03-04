@@ -5,13 +5,13 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public interface EssenceConsumer extends Deadable {
+public interface EssenceConsumer extends Deadable, EssenceDetectable {
     // TODO: 22/02/2023 Изменять по мере необходимости
     int MAX_RADIUS = 15;
 
     float getConsumingValue();
     float getRadius();
-    BlockPos getConsumerPos();
+    BlockPos getDetectablePos();
     @Nullable
     EssenceSupplier getCachedSupplier();
     void setCachedSupplier(EssenceSupplier supplier);
