@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_daylight_detector",
+  "textures": {
+    "side": "etherology:block/essence_detector_side",
+    "top": "etherology:block/essence_detector_top"
+  }
+}

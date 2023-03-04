@@ -4,6 +4,8 @@ import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlock;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlock;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlockEntity;
+import name.uwu.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlock;
+import name.uwu.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlockEntity;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbench;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchBlockEntity;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlock;
@@ -69,6 +71,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("sedimentary_block_entity"),
             FabricBlockEntityTypeBuilder.create(SedimentaryBlockEntity::new, SEDIMENTARY_BLOCK).build()
+    );
+
+    public static final EssenceDetectorBlock ESSENCE_DETECTOR_BLOCK = (EssenceDetectorBlock) new EssenceDetectorBlock().registerAll();
+    public static final BlockEntityType<EssenceDetectorBlockEntity> ESSENCE_DETECTOR_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("essence_detector_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EssenceDetectorBlockEntity::new, ESSENCE_DETECTOR_BLOCK).build()
     );
 
     public static void register() {}
