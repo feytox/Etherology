@@ -70,7 +70,7 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (type != SEDIMENTARY_BLOCK_ENTITY) return null;
 
-        return world.isClient ? SedimentaryBlockEntity::clientTick : SedimentaryBlockEntity::serverTick;
+        return world.isClient ? null : SedimentaryBlockEntity::serverTick;
     }
 
     @Override

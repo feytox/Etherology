@@ -6,6 +6,7 @@ import name.uwu.feytox.etherology.feyperms.Permissible;
 import name.uwu.feytox.etherology.feyperms.Permission;
 import name.uwu.feytox.etherology.feyperms.PermissionManager;
 import name.uwu.feytox.etherology.magic.zones.EssenceConsumer;
+import name.uwu.feytox.etherology.magic.zones.EssenceDetectable;
 import name.uwu.feytox.etherology.magic.zones.EssenceSupplier;
 import name.uwu.feytox.etherology.magic.zones.EssenceZones;
 import name.uwu.feytox.etherology.particle.ZoneParticle;
@@ -42,7 +43,7 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier,
     private List<BlockPos> cachedFillingZone = new ArrayList<>();
     private int particleRenewTicks = 0;
     private int refreshTicks = 0;
-    private List<EssenceConsumer> cachedConsumers = new ArrayList<>();
+    private List<EssenceDetectable> cachedDetectable = new ArrayList<>();
     private List<BlockPos> consumersPos = new ArrayList<>();
 
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
@@ -78,16 +79,16 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier,
     }
 
     @Override
-    public List<EssenceConsumer> getCachedConsumers() {
-        return cachedConsumers;
+    public List<EssenceDetectable> getCachedDetectable() {
+        return cachedDetectable;
     }
 
     @Override
-    public void setCachedConsumers(List<EssenceConsumer> consumers) {
-        cachedConsumers = consumers;
+    public void setCachedDetectable(List<EssenceDetectable> detectable) {
+        cachedDetectable = detectable;
 
         consumersPos = new ArrayList<>();
-        cachedConsumers.forEach(consumer -> consumersPos.add(consumer.getConsumerPos()));
+        cachedDetectable.forEach(consumer -> consumersPos.add(consumer.getDetectablePos()));
     }
 
     public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
@@ -107,7 +108,7 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier,
 
     @Override
     public void tickRefresh(ServerWorld world) {
-        if (refreshTicks++ % 3 * 20 == 0) refreshConsumers(world);
+        if (refreshTicks++ % 3 * 20 == 0) refreshDetectable(world);
     }
 
     public void checkExisting(ServerWorld world) {

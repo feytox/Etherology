@@ -61,10 +61,6 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
         return true;
     }
 
-    public static void clientTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
-
-    }
-
     public static void serverTick(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
         ServerWorld serverWorld = (ServerWorld) world;
         SedimentaryBlockEntity sedimentaryBlockEntity = (SedimentaryBlockEntity) blockEntity;
@@ -101,7 +97,7 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
     }
 
     @Override
-    public BlockPos getConsumerPos() {
+    public BlockPos getDetectablePos() {
         return pos;
     }
 
