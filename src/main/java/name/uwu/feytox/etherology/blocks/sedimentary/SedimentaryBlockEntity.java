@@ -171,4 +171,9 @@ public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsum
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
     }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
+    }
 }
