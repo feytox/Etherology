@@ -1,0 +1,148 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "etherology:block/furniture_slab" },
+      "when": { "bottom_type": "furniture" }
+    },
+    {
+      "apply": { "model": "etherology:block/furniture_slab_top" },
+      "when": { "top_type": "furniture" }
+    },
+
+
+    {
+      "apply": { "model": "etherology:block/closet_slab" },
+      "when": {
+        "bottom_active": "false",
+        "bottom_type": "closet",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_open" },
+      "when": {
+        "bottom_active": "true",
+        "bottom_type": "closet",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top" },
+      "when": {
+        "top_active": "false",
+        "top_type": "closet",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top_open" },
+      "when": {
+        "top_active": "true",
+        "top_type": "closet",
+        "facing": "north"
+      }
+    },
+
+
+    {
+      "apply": { "model": "etherology:block/closet_slab", "uvlock": true, "y": 90 },
+      "when": {
+        "bottom_active": "false",
+        "bottom_type": "closet",
+        "facing": "east"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_open", "uvlock": true, "y": 90 },
+      "when": {
+        "bottom_active": "true",
+        "bottom_type": "closet",
+        "facing": "east"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top", "uvlock": true, "y": 90 },
+      "when": {
+        "top_active": "false",
+        "top_type": "closet",
+        "facing": "east"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top_open", "uvlock": true, "y": 90 },
+      "when": {
+        "top_active": "true",
+        "top_type": "closet",
+        "facing": "east"
+      }
+    },
+
+
+    {
+      "apply": { "model": "etherology:block/closet_slab", "uvlock": true, "y": 180 },
+      "when": {
+        "bottom_active": "false",
+        "bottom_type": "closet",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_open", "uvlock": true, "y": 180 },
+      "when": {
+        "bottom_active": "true",
+        "bottom_type": "closet",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top", "uvlock": true, "y": 180 },
+      "when": {
+        "top_active": "false",
+        "top_type": "closet",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top_open", "uvlock": true, "y": 180 },
+      "when": {
+        "top_active": "true",
+        "top_type": "closet",
+        "facing": "south"
+      }
+    },
+
+
+    {
+      "apply": { "model": "etherology:block/closet_slab", "uvlock": true, "y": 270 },
+      "when": {
+        "bottom_active": "false",
+        "bottom_type": "closet",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_open", "uvlock": true, "y": 270 },
+      "when": {
+        "bottom_active": "true",
+        "bottom_type": "closet",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top", "uvlock": true, "y": 270 },
+      "when": {
+        "top_active": "false",
+        "top_type": "closet",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/closet_slab_top_open", "uvlock": true, "y": 270 },
+      "when": {
+        "top_active": "true",
+        "top_type": "closet",
+        "facing": "west"
+      }
+    }
+  ]
+}

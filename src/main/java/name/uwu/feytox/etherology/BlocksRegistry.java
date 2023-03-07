@@ -2,12 +2,14 @@ package name.uwu.feytox.etherology;
 
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlock;
 import name.uwu.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
+import name.uwu.feytox.etherology.blocks.closet.ClosetSlabBlock;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlock;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlockEntity;
 import name.uwu.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlock;
 import name.uwu.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlockEntity;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbench;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchBlockEntity;
+import name.uwu.feytox.etherology.blocks.furniture.FurSlabBlock;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlock;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlock;
@@ -16,6 +18,7 @@ import name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlock;
 import name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlockEntity;
 import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneCoreBlock;
 import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneCoreBlockEntity;
+import name.uwu.feytox.etherology.furniture.FurSlabBlockEntity;
 import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
@@ -79,6 +82,15 @@ public class BlocksRegistry {
             new EIdentifier("essence_detector_block_entity"),
             FabricBlockEntityTypeBuilder.create(EssenceDetectorBlockEntity::new, ESSENCE_DETECTOR_BLOCK).build()
     );
+
+    public static final FurSlabBlock FURNITURE_SLAB = (FurSlabBlock) new FurSlabBlock().registerAll();
+    public static final BlockEntityType<FurSlabBlockEntity> FURNITURE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("furniture_block_entity"),
+            FabricBlockEntityTypeBuilder.create(FurSlabBlockEntity::new, FURNITURE_SLAB).build()
+    );
+
+    public static final ClosetSlabBlock CLOSET_SLAB = (ClosetSlabBlock) new ClosetSlabBlock().registerAll();
 
     public static void register() {}
 }

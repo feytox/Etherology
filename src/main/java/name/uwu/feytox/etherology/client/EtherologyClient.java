@@ -1,6 +1,7 @@
 package name.uwu.feytox.etherology.client;
 
 import name.uwu.feytox.etherology.Etherology;
+import name.uwu.feytox.etherology.blocks.closet.ClosetScreen;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockRenderer;
@@ -38,6 +39,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
 
         HandledScreens.register(Etherology.ETHER_SCREEN_HANDLER, EtherWorkbenchScreen::new);
+        HandledScreens.register(Etherology.CLOSET_SCREEN_HANDLER, ClosetScreen::new);
 
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, ElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);

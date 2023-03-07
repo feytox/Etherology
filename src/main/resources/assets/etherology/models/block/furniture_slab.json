@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "etherology:block/furniture_top",
+    "side": "etherology:block/furniture_side",
+    "top": "etherology:block/furniture_top"
+  }
+}

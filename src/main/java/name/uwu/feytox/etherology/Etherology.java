@@ -1,5 +1,6 @@
 package name.uwu.feytox.etherology;
 
+import name.uwu.feytox.etherology.blocks.closet.ClosetScreenHandler;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
 import name.uwu.feytox.etherology.commands.DevCommands;
 import name.uwu.feytox.etherology.enums.MixTypes;
@@ -36,6 +37,9 @@ public class Etherology implements ModInitializer {
     public static final ExtendedScreenHandlerType<EtherWorkbenchScreenHandler> ETHER_SCREEN_HANDLER =
             new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
                     new EtherWorkbenchScreenHandler(syncId, inventory)));
+    public static final ExtendedScreenHandlerType<ClosetScreenHandler> CLOSET_SCREEN_HANDLER =
+            new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
+                    new ClosetScreenHandler(syncId, inventory)));
 
     public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();

@@ -1,0 +1,9 @@
+{
+  "parent": "etherology:block/slab_top",
+  "textures": {
+    "bottom": "etherology:block/furniture_top",
+    "side_n": "etherology:block/closet_close",
+    "side": "etherology:block/furniture_side",
+    "top": "etherology:block/furniture_top"
+  }
+}
