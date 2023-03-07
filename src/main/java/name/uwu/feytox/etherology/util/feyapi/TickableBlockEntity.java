@@ -13,8 +13,8 @@ public abstract class TickableBlockEntity extends BlockEntity {
         super(type, pos, state);
     }
 
-    public abstract void clientTick(ClientWorld world, BlockPos blockPos, BlockState state);
-    public abstract void serverTick(ServerWorld world, BlockPos blockPos, BlockState state);
+    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {}
+    public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {}
 
     public static void clientTicker(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
         if (blockEntity instanceof TickableBlockEntity be) {
