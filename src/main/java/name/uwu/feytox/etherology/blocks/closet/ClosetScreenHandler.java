@@ -80,6 +80,6 @@ public class ClosetScreenHandler extends ScreenHandler {
     @Override
     public void close(PlayerEntity player) {
         super.close(player);
-        this.inventory.onClose(player);
+//        this.inventory.onClose(player);
     }
 }

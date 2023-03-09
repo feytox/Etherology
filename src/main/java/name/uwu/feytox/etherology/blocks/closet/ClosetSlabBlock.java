@@ -20,11 +20,10 @@ public class ClosetSlabBlock extends AbstractFurSlabBlock {
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         BlockEntity be = world.getBlockEntity(pos);
-        if (!(be instanceof FurSlabBlockEntity furniture)) {
+        if (!(be instanceof FurSlabBlockEntity furniture) || !(newState.getBlock() instanceof AbstractFurSlabBlock)) {
             super.onStateReplaced(state, world, pos, newState, moved);
             return;
         }
-        System.out.println("aboba");
 
         FurnitureType bottom1 = state.get(BOTTOM_TYPE);
         FurnitureType bottom2 = newState.get(BOTTOM_TYPE);

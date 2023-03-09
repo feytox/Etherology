@@ -73,6 +73,8 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
     }
 
     private void onUse(FurnitureData furData, World world, BlockState state, PlayerEntity player, Hand hand) {
+        if (furData == null) return;
+
         if (world.isClient) {
             furData.clientUse((ClientWorld) world, state, pos, player, hand);
         } else {

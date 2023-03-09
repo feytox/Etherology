@@ -63,6 +63,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
             } else {
                 furBlockEntity.bottomUse(world, state, player, hand);
             }
+            return ActionResult.SUCCESS;
         }
 
         return ActionResult.PASS;
