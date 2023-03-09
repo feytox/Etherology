@@ -1,5 +1,6 @@
 package name.uwu.feytox.etherology.furniture;
 
+import io.wispforest.owo.util.ImplementedInventory;
 import name.uwu.feytox.etherology.enums.FurnitureType;
 import name.uwu.feytox.etherology.util.feyapi.IdkLib;
 import name.uwu.feytox.etherology.util.registry.RegistrableBlock;
@@ -15,6 +16,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -83,10 +85,16 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        BlockEntity be = world.getBlockEntity(pos);
         if (!(newState.getBlock() instanceof AbstractFurSlabBlock)) {
+            if (be instanceof FurSlabBlockEntity furniture) {
+                ImplementedInventory bottomInv = furniture.getInventory(false);
+                ImplementedInventory topInv = furniture.getInventory(true);
+                if (bottomInv != null) ItemScatterer.spawn(world, pos, bottomInv);
+                if (topInv != null) ItemScatterer.spawn(world, pos, topInv);
+            }
             world.removeBlockEntity(pos);
         } else {
-            BlockEntity be = world.getBlockEntity(pos);
             if (be instanceof FurSlabBlockEntity furniture) {
                 furniture.onUpdateState(newState);
             }
