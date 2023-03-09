@@ -13,6 +13,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -64,21 +65,21 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
         markDirty();
     }
 
-    public void bottomUse(World world, BlockState state, PlayerEntity player, Hand hand) {
-        onUse(bottomData, world, state, player, hand);
+    public void bottomUse(World world, BlockState state, PlayerEntity player, Vec2f hitPos, Hand hand) {
+        onUse(bottomData, world, state, player, hitPos, hand);
     }
 
-    public void topUse(World world, BlockState state, PlayerEntity player, Hand hand) {
-        onUse(topData, world, state, player, hand);
+    public void topUse(World world, BlockState state, PlayerEntity player, Vec2f hitPos, Hand hand) {
+        onUse(topData, world, state, player, hitPos, hand);
     }
 
-    private void onUse(FurnitureData furData, World world, BlockState state, PlayerEntity player, Hand hand) {
+    private void onUse(FurnitureData furData, World world, BlockState state, PlayerEntity player, Vec2f hitPos, Hand hand) {
         if (furData == null) return;
 
         if (world.isClient) {
-            furData.clientUse((ClientWorld) world, state, pos, player, hand);
+            furData.clientUse((ClientWorld) world, state, pos, player, hitPos, hand);
         } else {
-            furData.serverUse((ServerWorld) world, state, pos, player, hand);
+            furData.serverUse((ServerWorld) world, state, pos, player, hitPos, hand);
         }
     }
 

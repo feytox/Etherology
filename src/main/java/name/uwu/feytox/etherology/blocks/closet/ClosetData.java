@@ -23,6 +23,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.CLOSET_SLAB;
@@ -40,12 +41,12 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, N
     }
 
     @Override
-    public void clientUse(ClientWorld world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
+    public void clientUse(ClientWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
         cache(world, state, pos);
     }
 
     @Override
-    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
+    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
         cache(world, state, pos);
         NamedScreenHandlerFactory factory = createScreenFactory(this, isBottom);
         player.openHandledScreen(factory);

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec2f;
 
 public abstract class FurnitureData implements Nbtable {
     public final boolean isBottom;
@@ -19,7 +20,7 @@ public abstract class FurnitureData implements Nbtable {
 
     public void clientTick(ClientWorld world) {}
 
-    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {}
+    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {}
 
-    public void clientUse(ClientWorld world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {}
+    public void clientUse(ClientWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {}
 }

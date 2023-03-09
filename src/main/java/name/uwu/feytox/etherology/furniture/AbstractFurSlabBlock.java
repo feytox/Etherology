@@ -62,10 +62,11 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
             Optional<Vec2f> match = IdkLib.getHitPos(hit, state.get(HorizontalFacingBlock.FACING));
             if (match.isEmpty()) return ActionResult.PASS;
 
-            if (match.get().y >= 0.5f) {
-                furBlockEntity.topUse(world, state, player, hand);
+            Vec2f hitPos = match.get();
+            if (hitPos.y >= 0.5f) {
+                furBlockEntity.topUse(world, state, player, hitPos, hand);
             } else {
-                furBlockEntity.bottomUse(world, state, player, hand);
+                furBlockEntity.bottomUse(world, state, player, hitPos, hand);
             }
             return ActionResult.SUCCESS;
         }
