@@ -32,18 +32,18 @@ public class ClosetScreenHandler extends ScreenHandler {
         //Our inventory
         for (m = 0; m < 2; ++m) {
             for (l = 0; l < 5; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 3, 62 + l * 18, 17 + m * 18));
+                this.addSlot(new Slot(inventory, l + m * 3, 44 + l * 18, 28 + m * 18));
             }
         }
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 77 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 135));
         }
     }
 
@@ -80,6 +80,6 @@ public class ClosetScreenHandler extends ScreenHandler {
     @Override
     public void close(PlayerEntity player) {
         super.close(player);
-//        this.inventory.onClose(player);
+        this.inventory.onClose(player);
     }
 }

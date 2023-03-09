@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/container/closet.png");
+    private static final Identifier TEXTURE = new EIdentifier("textures/gui/closet.png");
 
     public ClosetScreen(ClosetScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -37,5 +37,7 @@ public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleY += 7;
+        playerInventoryTitleY -= 6;
     }
 }
