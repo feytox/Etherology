@@ -27,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static name.uwu.feytox.etherology.BlocksRegistry.FURNITURE_BLOCK_ENTITY;
+
 public abstract class AbstractFurSlabBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public static final BooleanProperty BOTTOM_ACTIVE = BooleanProperty.of("bottom_active");
     public static final BooleanProperty TOP_ACTIVE = BooleanProperty.of("top_active");
@@ -94,12 +96,19 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockPos blockPos = ctx.getBlockPos();
-        BlockState state = ctx.getWorld().getBlockState(blockPos);
+        World world = ctx.getWorld();
+        BlockState state = world.getBlockState(blockPos);
 
         if (state.getBlock() instanceof AbstractFurSlabBlock && !isFull(state)) {
             FurnitureType topType = state.get(TOP_TYPE);
-            if (topType.isEmpty()) return state.with(TOP_TYPE, this.furType);
-            return state.with(BOTTOM_TYPE, this.furType);
+            BlockState newState = state.with(BOTTOM_TYPE, this.furType);
+            if (topType.isEmpty()) newState = state.with(TOP_TYPE, this.furType);
+
+            if (world.getBlockEntity(blockPos, FURNITURE_BLOCK_ENTITY).isEmpty()) {
+                BlockEntity newBlockEntity = createBlockEntity(blockPos, newState);
+                if (newBlockEntity != null) world.addBlockEntity(newBlockEntity);
+            }
+            return newState;
         }
 
         Direction facing = ctx.getPlayerFacing().getOpposite();
@@ -140,8 +149,6 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        if (isFull(state)) return null;
-
         FurnitureType bottomType = state.get(BOTTOM_TYPE);
         FurnitureType topType = state.get(TOP_TYPE);
 

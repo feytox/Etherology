@@ -44,6 +44,4 @@ public class ClosetSlabBlock extends AbstractFurSlabBlock {
 
         super.onStateReplaced(state, world, pos, newState, moved);
     }
-
-
 }

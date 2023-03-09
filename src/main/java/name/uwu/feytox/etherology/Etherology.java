@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -37,9 +38,7 @@ public class Etherology implements ModInitializer {
     public static final ExtendedScreenHandlerType<EtherWorkbenchScreenHandler> ETHER_SCREEN_HANDLER =
             new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
                     new EtherWorkbenchScreenHandler(syncId, inventory)));
-    public static final ExtendedScreenHandlerType<ClosetScreenHandler> CLOSET_SCREEN_HANDLER =
-            new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
-                    new ClosetScreenHandler(syncId, inventory)));
+    public static final ScreenHandlerType<ClosetScreenHandler> CLOSET_SCREEN_HANDLER = new ScreenHandlerType<>(ClosetScreenHandler::new);
 
     public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
@@ -118,11 +117,10 @@ public class Etherology implements ModInitializer {
 
         Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
 
-        EWorldGeneration.generateWorldGen();
-    }
-
-    static {
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ether_screen_handler"), ETHER_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("closet_screen_handler"), CLOSET_SCREEN_HANDLER);
+
+        EWorldGeneration.generateWorldGen();
     }
 }
 

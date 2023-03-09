@@ -3,17 +3,17 @@ package name.uwu.feytox.etherology.blocks.closet;
 import io.wispforest.owo.util.ImplementedInventory;
 import name.uwu.feytox.etherology.furniture.FurnitureData;
 import name.uwu.feytox.etherology.util.nbt.Nbtable;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -24,13 +24,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.CLOSET_SLAB;
 import static name.uwu.feytox.etherology.furniture.AbstractFurSlabBlock.BOTTOM_ACTIVE;
 import static name.uwu.feytox.etherology.furniture.AbstractFurSlabBlock.TOP_ACTIVE;
 
-public class ClosetData extends FurnitureData implements ImplementedInventory, ExtendedScreenHandlerFactory {
+public class ClosetData extends FurnitureData implements ImplementedInventory, NamedScreenHandlerFactory {
     private World cachedWorld = null;
     private BlockState cachedState = null;
     private BlockPos cachedPos = null;
@@ -48,7 +47,8 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, E
     @Override
     public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
         cache(world, state, pos);
-        player.openHandledScreen(this);
+        NamedScreenHandlerFactory factory = createScreenFactory(this, isBottom);
+        player.openHandledScreen(factory);
     }
 
     @Override
@@ -96,17 +96,16 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, E
 
     @Override
     public Text getDisplayName() {
+        return getTitle();
+    }
+
+    public static Text getTitle() {
         return Text.translatable(CLOSET_SLAB.getTranslationKey());
     }
 
-    @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new ClosetScreenHandler(syncId, inv, this, isBottom);
-    }
-
-    @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
     }
 
     public void cache(World world, BlockState state, BlockPos pos) {
@@ -117,5 +116,10 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, E
 
     public boolean checkCache() {
         return cachedWorld != null && cachedState != null && cachedPos != null;
+    }
+
+    public static NamedScreenHandlerFactory createScreenFactory(Inventory blockInv, boolean isBottom) {
+        return new SimpleNamedScreenHandlerFactory(((syncId, inv, player) ->
+                new ClosetScreenHandler(syncId, inv, blockInv, isBottom)), ClosetData.getTitle());
     }
 }
