@@ -19,6 +19,10 @@ public abstract class FurnitureData implements Nbtable {
         this.isBottom = isBottom;
     }
 
+    public static void updateData(ServerWorld world, BlockPos pos) {
+        world.getChunkManager().markForUpdate(pos);
+    }
+
     public void serverTick(ServerWorld world) {}
 
     public void clientTick(ClientWorld world) {}
