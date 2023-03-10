@@ -5,6 +5,7 @@ import name.uwu.feytox.etherology.blocks.closet.ClosetScreen;
 import name.uwu.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockRenderer;
+import name.uwu.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import name.uwu.feytox.etherology.gui.teldecore.Chapters;
 import name.uwu.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
 import name.uwu.feytox.etherology.particle.*;
@@ -22,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static name.uwu.feytox.etherology.BlocksRegistry.CRUCIBLE_BLOCK_ENTITY;
-import static name.uwu.feytox.etherology.BlocksRegistry.RING_MATRIX_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.BlocksRegistry.*;
 import static name.uwu.feytox.etherology.Etherology.*;
 
 @Environment(EnvType.CLIENT)
@@ -37,6 +37,7 @@ public class EtherologyClient implements ClientModInitializer {
     public void onInitializeClient() {
         BlockEntityRendererFactories.register(CRUCIBLE_BLOCK_ENTITY, CrucibleBlockRenderer::new);
         BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
+        BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
 
         HandledScreens.register(Etherology.ETHER_SCREEN_HANDLER, EtherWorkbenchScreen::new);
         HandledScreens.register(Etherology.CLOSET_SCREEN_HANDLER, ClosetScreen::new);

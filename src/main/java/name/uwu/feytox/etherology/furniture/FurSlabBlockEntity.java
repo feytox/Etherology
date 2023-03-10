@@ -65,6 +65,16 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
         markDirty();
     }
 
+    @Nullable
+    public FurnitureData getBottomData() {
+        return bottomData;
+    }
+
+    @Nullable
+    public FurnitureData getTopData() {
+        return topData;
+    }
+
     public void bottomUse(World world, BlockState state, PlayerEntity player, Vec2f hitPos, Hand hand) {
         onUse(bottomData, world, state, player, hitPos, hand);
     }
