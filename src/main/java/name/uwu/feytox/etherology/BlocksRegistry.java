@@ -16,6 +16,7 @@ import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlock;
 import name.uwu.feytox.etherology.blocks.ringMatrix.RingMatrixBlockEntity;
 import name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlock;
 import name.uwu.feytox.etherology.blocks.sedimentary.SedimentaryBlockEntity;
+import name.uwu.feytox.etherology.blocks.shelf.ShelfSlabBlock;
 import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneCoreBlock;
 import name.uwu.feytox.etherology.blocks.zone_blocks.ZoneCoreBlockEntity;
 import name.uwu.feytox.etherology.furniture.FurSlabBlockEntity;
@@ -84,13 +85,13 @@ public class BlocksRegistry {
     );
 
     public static final FurSlabBlock FURNITURE_SLAB = (FurSlabBlock) new FurSlabBlock().registerAll();
+    public static final ClosetSlabBlock CLOSET_SLAB = (ClosetSlabBlock) new ClosetSlabBlock().registerAll();
+    public static final ShelfSlabBlock SHELF_SLAB = (ShelfSlabBlock) new ShelfSlabBlock().registerAll();
     public static final BlockEntityType<FurSlabBlockEntity> FURNITURE_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("furniture_block_entity"),
-            FabricBlockEntityTypeBuilder.create(FurSlabBlockEntity::new, FURNITURE_SLAB).build()
+            FabricBlockEntityTypeBuilder.create(FurSlabBlockEntity::new, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB).build()
     );
-
-    public static final ClosetSlabBlock CLOSET_SLAB = (ClosetSlabBlock) new ClosetSlabBlock().registerAll();
 
     public static void register() {}
 }

@@ -143,6 +143,67 @@
         "top_type": "closet",
         "facing": "west"
       }
+    },
+
+
+    {
+      "apply": { "model": "etherology:block/shelf_bottom"},
+      "when": {
+        "bottom_type": "shelf",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/shelf_top"},
+      "when": {
+        "top_type": "shelf",
+        "facing": "north"
+      }
+    },
+
+    {
+      "apply": { "model": "etherology:block/shelf_bottom", "uvlock": true, "y": 90},
+      "when": {
+        "bottom_type": "shelf",
+        "facing": "east"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/shelf_top", "uvlock": true, "y": 90},
+      "when": {
+        "top_type": "shelf",
+        "facing": "east"
+      }
+    },
+
+    {
+      "apply": { "model": "etherology:block/shelf_bottom", "uvlock": true, "y": 180},
+      "when": {
+        "bottom_type": "shelf",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/shelf_top", "uvlock": true, "y": 180},
+      "when": {
+        "top_type": "shelf",
+        "facing": "south"
+      }
+    },
+
+    {
+      "apply": { "model": "etherology:block/shelf_bottom", "uvlock": true, "y": 270},
+      "when": {
+        "bottom_type": "shelf",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": { "model": "etherology:block/shelf_top", "uvlock": true, "y": 270},
+      "when": {
+        "top_type": "shelf",
+        "facing": "west"
+      }
     }
   ]
 }

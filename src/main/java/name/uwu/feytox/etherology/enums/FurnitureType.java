@@ -1,6 +1,7 @@
 package name.uwu.feytox.etherology.enums;
 
 import name.uwu.feytox.etherology.blocks.closet.ClosetData;
+import name.uwu.feytox.etherology.blocks.shelf.ShelfData;
 import name.uwu.feytox.etherology.furniture.FurnitureData;
 import name.uwu.feytox.etherology.util.nbt.Nbtable;
 import net.minecraft.nbt.NbtCompound;
@@ -12,8 +13,9 @@ import java.util.List;
 
 public enum FurnitureType implements StringIdentifiable, Nbtable {
     EMPTY(null),
+    FURNITURE(null),
     CLOSET(ClosetData::new),
-    FURNITURE(null);
+    SHELF(ShelfData::new);
 
     private final Factory<? extends FurnitureData> factory;
 

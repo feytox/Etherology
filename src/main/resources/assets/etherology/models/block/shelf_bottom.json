@@ -1,0 +1,73 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "etherology:block/shelf",
+		"front": "etherology:block/shelf",
+		"top": "etherology:block/furniture_top",
+		"side": "etherology:block/furniture_side"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 1],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#front"},
+				"east": {"uv": [0, 8, 15, 16], "texture": "#side"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"west": {"uv": [1, 8, 16, 16], "texture": "#side"},
+				"up": {"uv": [0, 1, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 15], "texture": "#top"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 1, 1],
+			"faces": {
+				"north": {"uv": [0, 15, 16, 16], "texture": "#front"},
+				"east": {"uv": [15, 15, 16, 16], "texture": "#side"},
+				"west": {"uv": [0, 15, 1, 16], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 1], "texture": "#top"},
+				"down": {"uv": [0, 15, 16, 16], "texture": "#top"}
+			}
+		},
+		{
+			"from": [0, 7, 0],
+			"to": [16, 8, 1],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 9], "texture": "#front"},
+				"east": {"uv": [15, 8, 16, 9], "texture": "#side"},
+				"west": {"uv": [0, 8, 1, 9], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 1], "texture": "#top"},
+				"down": {"uv": [0, 15, 16, 16], "texture": "#top"}
+			}
+		},
+		{
+			"from": [15, 1, 0],
+			"to": [16, 7, 1],
+			"faces": {
+				"north": {"uv": [0, 9, 1, 15], "texture": "#front"},
+				"east": {"uv": [15, 9, 16, 15], "texture": "#side"},
+				"west": {"uv": [0, 9, 1, 15], "texture": "#side"}
+			}
+		},
+		{
+			"from": [0, 1, 0],
+			"to": [1, 7, 1],
+			"faces": {
+				"north": {"uv": [15, 9, 16, 15], "texture": "#front"},
+				"east": {"uv": [15, 9, 16, 15], "texture": "#side"},
+				"west": {"uv": [0, 9, 1, 15], "texture": "#side"}
+			}
+		},
+		{
+			"from": [7, 1, 0],
+			"to": [9, 7, 1],
+			"faces": {
+				"north": {"uv": [7, 9, 9, 15], "texture": "#front"},
+				"east": {"uv": [15, 9, 16, 15], "texture": "#front"},
+				"west": {"uv": [0, 9, 1, 15], "texture": "#side"}
+			}
+		}
+	]
+}
