@@ -33,20 +33,16 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
         boolean isLeft = hitPos.x < 0.5;
         int slot = isLeft ? 0 : 1;
         ItemStack currentStack = getStack(slot);
-
+        hand = player.getActiveHand();
         ItemStack playerStack = player.getStackInHand(hand);
         boolean isSameItem = playerStack.isOf(currentStack.getItem());
 
         if (!isSameItem && !playerStack.isEmpty()) {
             // замена предмета на предмет
             ItemStack takingStack = playerStack.copy();
-            if (player.isSneaking() && currentStack.isEmpty()) {
-                takingStack.setCount(1);
-                playerStack.decrement(1);
-            } else {
-                playerStack = currentStack;
-                currentStack = takingStack;
-            }
+            playerStack = currentStack;
+            currentStack = takingStack;
+
             player.setStackInHand(hand, playerStack);
             setStack(slot, currentStack);
             world.markDirty(pos);
@@ -57,25 +53,17 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             ItemStack takingStack = playerStack.copy();
             takingStack.setCount(currentStack.getMaxCount() - currentStack.getCount());
 
-            if (player.isSneaking()) {
-                takingStack.setCount(1);
-                playerStack.decrement(1);
-            } else {
-                playerStack.decrement(takingStack.getCount());
-            }
+            playerStack.decrement(takingStack.getCount());
             currentStack.increment(takingStack.getCount());
+
             world.markDirty(pos);
             updateData(world, pos);
 
         } else if (!currentStack.isEmpty() && playerStack.isEmpty()) {
             // берём предмет ПУСТОЙ рукой с НЕПУСТОЙ полки
             ItemStack takingStack = currentStack.copy();
-            if (player.isSneaking()) {
-                takingStack.setCount(1);
-                currentStack.decrement(1);
-            } else {
-                currentStack.setCount(0);
-            }
+            currentStack.setCount(0);
+
             player.setStackInHand(hand, takingStack);
             world.markDirty(pos);
             updateData(world, pos);
