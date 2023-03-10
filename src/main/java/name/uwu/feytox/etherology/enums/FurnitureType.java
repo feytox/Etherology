@@ -3,6 +3,7 @@ package name.uwu.feytox.etherology.enums;
 import name.uwu.feytox.etherology.blocks.closet.ClosetData;
 import name.uwu.feytox.etherology.blocks.shelf.ShelfData;
 import name.uwu.feytox.etherology.furniture.FurnitureData;
+import name.uwu.feytox.etherology.util.feyapi.EEquality;
 import name.uwu.feytox.etherology.util.nbt.Nbtable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.StringIdentifiable;
@@ -11,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public enum FurnitureType implements StringIdentifiable, Nbtable {
+public enum FurnitureType implements StringIdentifiable, Nbtable, EEquality {
     EMPTY(null),
     FURNITURE(null),
     CLOSET(ClosetData::new),

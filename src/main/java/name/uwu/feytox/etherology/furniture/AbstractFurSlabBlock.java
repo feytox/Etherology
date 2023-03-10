@@ -30,6 +30,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.FURNITURE_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.enums.FurnitureType.EMPTY;
+import static name.uwu.feytox.etherology.enums.FurnitureType.SHELF;
 
 public abstract class AbstractFurSlabBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public static final BooleanProperty BOTTOM_ACTIVE = BooleanProperty.of("bottom_active");
@@ -48,7 +50,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
         this.furType = furType;
         setDefaultState(getDefaultState()
                 .with(BOTTOM_TYPE, furType)
-                .with(TOP_TYPE, FurnitureType.EMPTY)
+                .with(TOP_TYPE, EMPTY)
                 .with(BOTTOM_ACTIVE, false)
                 .with(TOP_ACTIVE, false)
                 .with(HorizontalFacingBlock.FACING, Direction.NORTH));
@@ -81,7 +83,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.onBreak(world, pos, state.with(BOTTOM_TYPE, FurnitureType.EMPTY), player);
+        super.onBreak(world, pos, state.with(BOTTOM_TYPE, EMPTY), player);
     }
 
     @Override
@@ -122,8 +124,8 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
 
         Direction facing = ctx.getPlayerFacing().getOpposite();
         BlockState bottomState = getDefaultState().with(BOTTOM_TYPE, this.furType)
-                .with(TOP_TYPE, FurnitureType.EMPTY).with(HorizontalFacingBlock.FACING, facing);
-        BlockState topState = getDefaultState().with(BOTTOM_TYPE, FurnitureType.EMPTY)
+                .with(TOP_TYPE, EMPTY).with(HorizontalFacingBlock.FACING, facing);
+        BlockState topState = getDefaultState().with(BOTTOM_TYPE, EMPTY)
                 .with(TOP_TYPE, this.furType).with(HorizontalFacingBlock.FACING, facing);
         Direction direction = ctx.getSide();
         return direction != Direction.DOWN && (direction == Direction.UP || !(ctx.getHitPos().y - (double)blockPos.getY() > 0.5)) ? bottomState : topState;
@@ -166,7 +168,10 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
 
     @Override
     public boolean hasSidedTransparency(BlockState state) {
-        return !isFull(state);
+        FurnitureType bottomType = state.get(BOTTOM_TYPE);
+        FurnitureType topType = state.get(TOP_TYPE);
+
+        return bottomType.equalsAny(EMPTY, SHELF) || topType.equalsAny(EMPTY, SHELF);
     }
 
     @Override

@@ -92,8 +92,6 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
         float degrees = 180 - facing.asRotation();
         float rads = degrees * MathHelper.PI / 180;
 
-        light = 255;
-
         // нахождение "уголка"
         Vec3d northPoint = new Vec3d(-0.5, 0, -0.5);
         Vec3d diffVec = northPoint.rotateY(rads).subtract(northPoint);
