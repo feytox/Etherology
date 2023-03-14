@@ -13,14 +13,19 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
@@ -33,6 +38,14 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     protected static final EnumProperty<PipeSide> SOUTH = EnumProperty.of("south", PipeSide.class);
     protected static final EnumProperty<PipeSide> UP = EnumProperty.of("up", PipeSide.class);
     protected static final EnumProperty<PipeSide> DOWN = EnumProperty.of("down", PipeSide.class);
+
+    private static final VoxelShape CENTER_SHAPE;
+    private static final VoxelShape NORTH_SHAPE;
+    private static final VoxelShape SOUTH_SHAPE;
+    private static final VoxelShape EAST_SHAPE;
+    private static final VoxelShape WEST_SHAPE;
+    private static final VoxelShape DOWN_SHAPE;
+    private static final VoxelShape UP_SHAPE;
 
     public EtherealChannelBlock() {
         super(FabricBlockSettings.of(Material.METAL).nonOpaque());
@@ -50,6 +63,20 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, ACTIVATED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        List<VoxelShape> shapes = new ArrayList<>();
+        if (!state.get(NORTH).equals(PipeSide.EMPTY)) shapes.add(NORTH_SHAPE);
+        if (!state.get(SOUTH).equals(PipeSide.EMPTY)) shapes.add(SOUTH_SHAPE);
+        if (!state.get(EAST).equals(PipeSide.EMPTY)) shapes.add(EAST_SHAPE);
+        if (!state.get(WEST).equals(PipeSide.EMPTY)) shapes.add(WEST_SHAPE);
+        if (!state.get(UP).equals(PipeSide.EMPTY)) shapes.add(UP_SHAPE);
+        if (!state.get(DOWN).equals(PipeSide.EMPTY)) shapes.add(DOWN_SHAPE);
+        VoxelShape branchShape = shapes.stream().reduce(CENTER_SHAPE, VoxelShapes::union);
+
+        return VoxelShapes.combineAndSimplify(CENTER_SHAPE, branchShape, BooleanBiFunction.OR);
     }
 
     @Nullable
@@ -187,5 +214,15 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new EtherealChannelBlockEntity(pos, state);
+    }
+
+    static {
+        CENTER_SHAPE = createCuboidShape(5, 5, 5, 11, 11, 11);
+        NORTH_SHAPE = createCuboidShape(5, 5, 0, 11, 11, 5);
+        SOUTH_SHAPE = createCuboidShape(5, 5, 11, 11, 11, 16);
+        WEST_SHAPE = createCuboidShape(0, 5, 5, 5, 11, 11);
+        EAST_SHAPE = createCuboidShape(11, 5, 5, 16, 11, 11);
+        UP_SHAPE = createCuboidShape(5, 11, 5, 11, 16, 11);
+        DOWN_SHAPE = createCuboidShape(5, 0, 5, 11, 5, 11);
     }
 }
