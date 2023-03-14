@@ -41,20 +41,20 @@
     },
 
     {
-      "apply": { "model": "etherology:block/ethereal_channel_input", "x": 90 },
+      "apply": { "model": "etherology:block/ethereal_channel_input", "x": 270 },
       "when": { "up": "in" }
     },
     {
-      "apply": { "model": "etherology:block/ethereal_channel_output", "x": 90 },
+      "apply": { "model": "etherology:block/ethereal_channel_output", "x": 270 },
       "when": { "up": "out" }
     },
 
     {
-      "apply": { "model": "etherology:block/ethereal_channel_input", "x": 270 },
+      "apply": { "model": "etherology:block/ethereal_channel_input", "x": 90 },
       "when": { "down": "in" }
     },
     {
-      "apply": { "model": "etherology:block/ethereal_channel_output", "x": 270 },
+      "apply": { "model": "etherology:block/ethereal_channel_output", "x": 90 },
       "when": { "down": "out" }
     }
   ]
