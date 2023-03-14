@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "etherology:block/ethereal_channel_central_cross",
+		"channel": "etherology:block/ethereal_channel_central_cross"
+	},
+	"elements": [
+		{
+			"from": [5, 5, 5],
+			"to": [11, 11, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [5, 5, 11, 11], "texture": "#channel"},
+				"east": {"uv": [5, 5, 11, 11], "texture": "#channel"},
+				"south": {"uv": [5, 5, 11, 11], "texture": "#channel"},
+				"west": {"uv": [5, 5, 11, 11], "texture": "#channel"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#channel"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#channel"}
+			}
+		}
+	]
+}

@@ -9,6 +9,10 @@ import name.uwu.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlock;
 import name.uwu.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlockEntity;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbench;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchBlockEntity;
+import name.uwu.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock;
+import name.uwu.feytox.etherology.blocks.etherealChannel.EtherealChannelBlockEntity;
+import name.uwu.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock;
+import name.uwu.feytox.etherology.blocks.etherealStorage.EtherealStorageBlockEntity;
 import name.uwu.feytox.etherology.blocks.furniture.FurSlabBlock;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlock;
 import name.uwu.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
@@ -91,6 +95,20 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("furniture_block_entity"),
             FabricBlockEntityTypeBuilder.create(FurSlabBlockEntity::new, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB).build()
+    );
+
+    public static final EtherealStorageBlock ETHEREAL_STORAGE = (EtherealStorageBlock) new EtherealStorageBlock().registerAll();
+    public static final BlockEntityType<EtherealStorageBlockEntity> ETHEREAL_STORAGE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("ethereal_storage_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EtherealStorageBlockEntity::new, ETHEREAL_STORAGE).build()
+    );
+
+    public static final EtherealChannelBlock ETHEREAL_CHANNEL = (EtherealChannelBlock) new EtherealChannelBlock().registerAll();
+    public static final BlockEntityType<EtherealChannelBlockEntity> ETHEREAL_CHANNEL_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("ethereal_channel_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EtherealChannelBlockEntity::new, ETHEREAL_CHANNEL).build()
     );
 
     public static void register() {}

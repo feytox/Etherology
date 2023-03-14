@@ -1,0 +1,61 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central" }
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_input" },
+      "when": { "north": "in" }
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_output" },
+      "when": { "north": "out" }
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_input", "uvlock": true, "y": 90 },
+      "when": { "east": "in" }
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_output", "uvlock": true, "y": 90 },
+      "when": { "east": "out" }
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_input", "uvlock": true, "y": 180 },
+      "when": { "south": "in" }
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_output", "uvlock": true, "y": 180 },
+      "when": { "south": "out" }
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_input", "uvlock": true, "y": 270 },
+      "when": { "west": "in" }
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_output", "uvlock": true, "y": 270 },
+      "when": { "west": "out" }
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_input", "uvlock": true, "x": 90 },
+      "when": { "up": "in" }
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_output", "uvlock": true, "x": 90 },
+      "when": { "up": "out" }
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_input", "uvlock": true, "x": 270 },
+      "when": { "down": "in" }
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_output", "uvlock": true, "x": 270 },
+      "when": { "down": "out" }
+    }
+  ]
+}
