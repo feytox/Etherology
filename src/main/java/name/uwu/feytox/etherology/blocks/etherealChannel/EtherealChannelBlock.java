@@ -37,6 +37,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public EtherealChannelBlock() {
         super(FabricBlockSettings.of(Material.METAL).nonOpaque());
         setDefaultState(getDefaultState()
+                .with(ACTIVATED, false)
                 .with(FACING, Direction.NORTH)
                 .with(NORTH, PipeSide.EMPTY)
                 .with(SOUTH, PipeSide.EMPTY)
@@ -48,7 +49,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+        builder.add(FACING, ACTIVATED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
     }
 
     @Nullable
@@ -56,44 +57,57 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         Direction playerDirection = ctx.getPlayerLookDirection();
         BlockState playerPlacementState = this.getDefaultState().with(FACING, playerDirection);
-        BlockState facingState = getFacingState(playerPlacementState);
 
-        return getChannelState(ctx.getWorld(), facingState, ctx.getBlockPos());
+        return getChannelState(ctx.getWorld(), playerPlacementState, ctx.getBlockPos());
     }
 
     public BlockState getChannelState(BlockView world, BlockState state, BlockPos pos) {
+        Direction pipeDirection = state.get(FACING);
+        state = this.getDefaultState().with(FACING, pipeDirection);
         Iterator<Direction> horizontal = Direction.Type.HORIZONTAL.iterator();
         Iterator<Direction> vertical = Direction.Type.VERTICAL.iterator();
 
+        int inputCount = 0;
         while (horizontal.hasNext()) {
             Direction direction = horizontal.next();
-            state = getDirectionState(world, state, pos, direction);
+            boolean result = isNeighborOutput(world, pos, direction);
+            if (!result) continue;
+
+            inputCount++;
+            EnumProperty<PipeSide> inSide = getAsIn(direction.getOpposite());
+            state = state.with(inSide, PipeSide.IN);
         }
         while (vertical.hasNext()) {
             Direction direction = vertical.next();
-            state = getDirectionState(world, state, pos, direction);
+            boolean result = isNeighborOutput(world, pos, direction);
+            if (!result) continue;
+
+            inputCount++;
+            EnumProperty<PipeSide> inSide = getAsIn(direction.getOpposite());
+            state = state.with(inSide, PipeSide.IN);
         }
 
-        return state;
+        return getFacingState(state, inputCount == 0);
     }
 
-    public BlockState getDirectionState(BlockView world, BlockState state, BlockPos pos, Direction direction) {
+    public boolean isNeighborOutput(BlockView world, BlockPos pos, Direction direction) {
         BlockPos checkPos = pos.add(direction.getVector());
-        if (!(world.getBlockEntity(checkPos) instanceof EtherStorage storage)) return state;
+        if (!(world.getBlockEntity(checkPos) instanceof EtherStorage storage)) return false;
 
-        if (!storage.isOutputSide(direction.getOpposite())) return state;
-
-        EnumProperty<PipeSide> inSide = getAsIn(direction);
-        return state.with(inSide, PipeSide.IN);
+        return storage.isOutputSide(direction.getOpposite());
     }
 
-    public BlockState getFacingState(BlockState state) {
+    public BlockState getFacingState(BlockState state, boolean withInput) {
         Direction pipeDirection = state.get(FACING);
-
-        EnumProperty<PipeSide> inSide = getAsIn(pipeDirection);
         EnumProperty<PipeSide> outSide = getAsOut(pipeDirection);
+        BlockState blockState = state.with(outSide, PipeSide.OUT);
 
-        return this.getDefaultState().with(inSide, PipeSide.IN).with(outSide, PipeSide.OUT);
+        if (withInput) {
+            EnumProperty<PipeSide> inSide = getAsIn(pipeDirection);
+            blockState = blockState.with(inSide, PipeSide.IN);
+        }
+
+        return blockState;
     }
 
     private static EnumProperty<PipeSide> getAsIn(Direction direction) {
@@ -144,17 +158,11 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        return getChannelState(world, state, pos);
-    }
+        int weak = neighborState.getWeakRedstonePower(world, neighborPos, direction);
+        int strong = neighborState.getStrongRedstonePower(world, neighborPos, direction);
+        boolean result = weak > 0 || strong > 0;
 
-    @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        if (world.isClient) return;
-
-        boolean result = world.isReceivingRedstonePower(pos);
-        world.setBlockState(pos, state.with(ACTIVATED, result));
-
-        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
+        return getChannelState(world, state, pos).with(ACTIVATED, result);
     }
 
     @Nullable
