@@ -32,6 +32,7 @@ import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_CHANNEL_BLOCK_E
 public class EtherealChannelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     protected static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
     protected static final DirectionProperty FACING = FacingBlock.FACING;
+    protected static final BooleanProperty IS_CROSS = BooleanProperty.of("is_cross");
     protected static final EnumProperty<PipeSide> NORTH = EnumProperty.of("north", PipeSide.class);
     protected static final EnumProperty<PipeSide> EAST = EnumProperty.of("east", PipeSide.class);
     protected static final EnumProperty<PipeSide> WEST = EnumProperty.of("west", PipeSide.class);
@@ -52,6 +53,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(FACING, Direction.NORTH)
+                .with(IS_CROSS, false)
                 .with(NORTH, PipeSide.EMPTY)
                 .with(SOUTH, PipeSide.EMPTY)
                 .with(WEST, PipeSide.EMPTY)
@@ -62,7 +64,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ACTIVATED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+        builder.add(FACING, ACTIVATED, IS_CROSS, NORTH, SOUTH, WEST, EAST, UP, DOWN);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
             state = state.with(inSide, PipeSide.IN);
         }
 
-        return getFacingState(state, inputCount == 0);
+        return getFacingState(state, inputCount);
     }
 
     public boolean isNeighborOutput(BlockView world, BlockPos pos, Direction direction) {
@@ -124,14 +126,16 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
         return storage.isOutputSide(direction.getOpposite());
     }
 
-    public BlockState getFacingState(BlockState state, boolean withInput) {
+    public BlockState getFacingState(BlockState state, int inputCount) {
         Direction pipeDirection = state.get(FACING);
         EnumProperty<PipeSide> outSide = getAsOut(pipeDirection);
         BlockState blockState = state.with(outSide, PipeSide.OUT);
 
-        if (withInput) {
-            EnumProperty<PipeSide> inSide = getAsIn(pipeDirection);
+        EnumProperty<PipeSide> inSide = getAsIn(pipeDirection);
+        if (inputCount == 0) {
             blockState = blockState.with(inSide, PipeSide.IN);
+        } else if (inputCount > 1 || !blockState.get(inSide).isInput()) {
+            blockState = blockState.with(IS_CROSS, true);
         }
 
         return blockState;

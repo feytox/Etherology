@@ -1,10 +1,6 @@
 {
   "multipart": [
     {
-      "apply": { "model": "etherology:block/ethereal_channel_central" }
-    },
-
-    {
       "apply": { "model": "etherology:block/ethereal_channel_input"},
       "when": { "north": "in" }
     },
@@ -56,6 +52,51 @@
     {
       "apply": { "model": "etherology:block/ethereal_channel_output", "x": 90 },
       "when": { "down": "out" }
+    },
+
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central_line" },
+      "when": { "OR": [
+        { "facing": "north", "is_cross": "false" },
+        { "facing": "south", "is_cross": "false" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central_line", "y": 90 },
+      "when": { "OR": [
+        { "facing": "east", "is_cross": "false" },
+        { "facing": "west", "is_cross": "false" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central_line", "x": 90 },
+      "when": { "OR": [
+        { "facing": "down", "is_cross": "false" },
+        { "facing": "up", "is_cross": "false" }
+      ]}
+    },
+
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central_cross" },
+      "when": { "OR": [
+        { "facing": "north", "is_cross": "true" },
+        { "facing": "south", "is_cross": "true" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central_cross", "y": 90 },
+      "when": { "OR": [
+        { "facing": "east", "is_cross": "true" },
+        { "facing": "west", "is_cross": "true" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/ethereal_channel_central_cross", "x": 90 },
+      "when": { "OR": [
+        { "facing": "down", "is_cross": "true" },
+        { "facing": "up", "is_cross": "true" }
+      ]}
     }
   ]
 }
