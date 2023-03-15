@@ -6,14 +6,9 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -62,18 +57,5 @@ public class EtherealStorageBlock extends Block implements RegistrableBlock, Blo
         if (type != ETHEREAL_STORAGE_BLOCK_ENTITY) return null;
 
         return world.isClient ? null : EtherealStorageBlockEntity::serverTicker;
-    }
-
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            BlockEntity be = world.getBlockEntity(pos);
-            if (be instanceof EtherealStorageBlockEntity storage) {
-                storage.onUse((ServerWorld) world);
-                return ActionResult.SUCCESS;
-            }
-        }
-
-        return super.onUse(state, world, pos, player, hand, hit);
     }
 }

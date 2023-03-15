@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "etherology:block/ethereal_fork",
+		"channel": "etherology:block/ethereal_fork"
+	},
+	"elements": [
+		{
+			"from": [4, 4, 4],
+			"to": [12, 12, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [4, 4, 12, 12], "texture": "#channel"},
+				"east": {"uv": [4, 4, 12, 12], "texture": "#channel"},
+				"south": {"uv": [4, 4, 12, 12], "texture": "#channel"},
+				"west": {"uv": [4, 4, 12, 12], "texture": "#channel"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#channel"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#channel"}
+			}
+		}
+	]
+}

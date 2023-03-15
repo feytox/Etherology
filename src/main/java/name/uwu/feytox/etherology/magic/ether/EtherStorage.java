@@ -35,13 +35,11 @@ public interface EtherStorage {
         return consumer instanceof EtherPipe;
     }
 
-    default boolean isActive() {
-        return true;
-    }
+    boolean isActivated();
 
     default void transfer(ServerWorld world) {
         float storedEther = getStoredEther();
-        if (storedEther == 0 || isActive()) return;
+        if (storedEther == 0 || isActivated()) return;
 
         Direction outputSide = getOutputSide();
         if (outputSide != null) transferTo(world, outputSide);

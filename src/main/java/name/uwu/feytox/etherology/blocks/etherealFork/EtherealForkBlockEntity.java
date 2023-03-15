@@ -1,20 +1,25 @@
-package name.uwu.feytox.etherology.blocks.etherealStorage;
+package name.uwu.feytox.etherology.blocks.etherealFork;
 
-import name.uwu.feytox.etherology.magic.ether.EtherStorage;
+import name.uwu.feytox.etherology.magic.ether.EtherFork;
 import name.uwu.feytox.etherology.util.feyapi.TickableBlockEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
-import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EtherealStorageBlockEntity extends TickableBlockEntity implements EtherStorage {
+import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_FORK_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock.ACTIVATED;
+
+public class EtherealForkBlockEntity extends TickableBlockEntity implements EtherFork {
     private float storedEther = 0;
+    private List<Direction> cachedOutputSides = new ArrayList<>();
 
-    public EtherealStorageBlockEntity(BlockPos pos, BlockState state) {
-        super(ETHEREAL_STORAGE_BLOCK_ENTITY, pos, state);
+    public EtherealForkBlockEntity(BlockPos pos, BlockState state) {
+        super(ETHEREAL_FORK_BLOCK_ENTITY, pos, state);
     }
 
     @Override
@@ -23,8 +28,18 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity implements E
     }
 
     @Override
+    public List<Direction> getCachedOutputSides() {
+        return cachedOutputSides;
+    }
+
+    @Override
+    public void setCachedOutputSides(List<Direction> outputSides) {
+        cachedOutputSides = outputSides;
+    }
+
+    @Override
     public float getMaxEther() {
-        return 64;
+        return 8;
     }
 
     @Override
@@ -42,14 +57,10 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity implements E
         storedEther = value;
     }
 
-    @Override
-    public boolean isInputSide(Direction side) {
-        return !side.equals(Direction.DOWN);
-    }
-
+    @Nullable
     @Override
     public Direction getOutputSide() {
-        return Direction.DOWN;
+        return null;
     }
 
     @Override
@@ -64,20 +75,6 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity implements E
 
     @Override
     public boolean isActivated() {
-        return false;
-    }
-
-    @Override
-    protected void writeNbt(NbtCompound nbt) {
-        nbt.putFloat("stored_ether", storedEther);
-
-        super.writeNbt(nbt);
-    }
-
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-
-        storedEther = nbt.getFloat("stored_ether");
+        return getCachedState().get(ACTIVATED);
     }
 }

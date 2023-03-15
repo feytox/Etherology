@@ -11,6 +11,8 @@ import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbench;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchBlockEntity;
 import name.uwu.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock;
 import name.uwu.feytox.etherology.blocks.etherealChannel.EtherealChannelBlockEntity;
+import name.uwu.feytox.etherology.blocks.etherealFork.EtherealForkBlock;
+import name.uwu.feytox.etherology.blocks.etherealFork.EtherealForkBlockEntity;
 import name.uwu.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock;
 import name.uwu.feytox.etherology.blocks.etherealStorage.EtherealStorageBlockEntity;
 import name.uwu.feytox.etherology.blocks.furniture.FurSlabBlock;
@@ -109,6 +111,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_channel_block_entity"),
             FabricBlockEntityTypeBuilder.create(EtherealChannelBlockEntity::new, ETHEREAL_CHANNEL).build()
+    );
+
+    public static final EtherealForkBlock ETHEREAL_FORK = (EtherealForkBlock) new EtherealForkBlock().registerAll();
+    public static final BlockEntityType<EtherealForkBlockEntity> ETHEREAL_FORK_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("ethereal_fork_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EtherealForkBlockEntity::new, ETHEREAL_FORK).build()
     );
 
     public static void register() {}

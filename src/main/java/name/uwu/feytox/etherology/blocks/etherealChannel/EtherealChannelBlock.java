@@ -8,17 +8,12 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -29,29 +24,28 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
 public class EtherealChannelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
-    protected static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
-    protected static final DirectionProperty FACING = FacingBlock.FACING;
-    protected static final BooleanProperty IS_CROSS = BooleanProperty.of("is_cross");
-    protected static final EnumProperty<PipeSide> NORTH = EnumProperty.of("north", PipeSide.class);
-    protected static final EnumProperty<PipeSide> EAST = EnumProperty.of("east", PipeSide.class);
-    protected static final EnumProperty<PipeSide> WEST = EnumProperty.of("west", PipeSide.class);
-    protected static final EnumProperty<PipeSide> SOUTH = EnumProperty.of("south", PipeSide.class);
-    protected static final EnumProperty<PipeSide> UP = EnumProperty.of("up", PipeSide.class);
-    protected static final EnumProperty<PipeSide> DOWN = EnumProperty.of("down", PipeSide.class);
+    public static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
+    public static final DirectionProperty FACING = FacingBlock.FACING;
+    public static final BooleanProperty IS_CROSS = BooleanProperty.of("is_cross");
+    public static final EnumProperty<PipeSide> NORTH = EnumProperty.of("north", PipeSide.class);
+    public static final EnumProperty<PipeSide> EAST = EnumProperty.of("east", PipeSide.class);
+    public static final EnumProperty<PipeSide> WEST = EnumProperty.of("west", PipeSide.class);
+    public static final EnumProperty<PipeSide> SOUTH = EnumProperty.of("south", PipeSide.class);
+    public static final EnumProperty<PipeSide> UP = EnumProperty.of("up", PipeSide.class);
+    public static final EnumProperty<PipeSide> DOWN = EnumProperty.of("down", PipeSide.class);
 
     private static final VoxelShape CENTER_SHAPE;
-    private static final VoxelShape NORTH_SHAPE;
-    private static final VoxelShape SOUTH_SHAPE;
-    private static final VoxelShape EAST_SHAPE;
-    private static final VoxelShape WEST_SHAPE;
-    private static final VoxelShape DOWN_SHAPE;
-    private static final VoxelShape UP_SHAPE;
+    public static final VoxelShape NORTH_SHAPE;
+    public static final VoxelShape SOUTH_SHAPE;
+    public static final VoxelShape EAST_SHAPE;
+    public static final VoxelShape WEST_SHAPE;
+    public static final VoxelShape DOWN_SHAPE;
+    public static final VoxelShape UP_SHAPE;
 
     public EtherealChannelBlock() {
         super(FabricBlockSettings.of(Material.METAL).nonOpaque());
@@ -86,19 +80,6 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
         return VoxelShapes.combineAndSimplify(CENTER_SHAPE, branchShape, BooleanBiFunction.OR);
     }
 
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            BlockEntity be = world.getBlockEntity(pos);
-            if (be instanceof EtherealChannelBlockEntity channel) {
-                channel.onUse((ServerWorld) world);
-                return ActionResult.SUCCESS;
-            }
-        }
-
-        return super.onUse(state, world, pos, player, hand, hit);
-    }
-
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
@@ -111,21 +92,12 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public BlockState getChannelState(BlockView world, BlockState state, BlockPos pos) {
         Direction pipeDirection = state.get(FACING);
         state = this.getDefaultState().with(FACING, pipeDirection);
-        Iterator<Direction> horizontal = Direction.Type.HORIZONTAL.iterator();
-        Iterator<Direction> vertical = Direction.Type.VERTICAL.iterator();
+        List<Direction> directions = new ArrayList<>();
+        directions.addAll(Direction.Type.HORIZONTAL.stream().toList());
+        directions.addAll(Direction.Type.VERTICAL.stream().toList());
 
         int inputCount = 0;
-        while (horizontal.hasNext()) {
-            Direction direction = horizontal.next();
-            boolean result = isNeighborOutput(world, pos, direction);
-            if (!result) continue;
-
-            inputCount++;
-            EnumProperty<PipeSide> inSide = getAsIn(direction.getOpposite());
-            state = state.with(inSide, PipeSide.IN);
-        }
-        while (vertical.hasNext()) {
-            Direction direction = vertical.next();
+        for (Direction direction: directions) {
             boolean result = isNeighborOutput(world, pos, direction);
             if (!result) continue;
 
@@ -159,7 +131,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
         return blockState;
     }
 
-    private static EnumProperty<PipeSide> getAsIn(Direction direction) {
+    public static EnumProperty<PipeSide> getAsIn(Direction direction) {
         switch (direction) {
             case SOUTH -> {
                 return NORTH;
@@ -182,7 +154,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
         }
     }
 
-    private static EnumProperty<PipeSide> getAsOut(Direction direction) {
+    public static EnumProperty<PipeSide> getAsOut(Direction direction) {
         switch (direction) {
             case SOUTH -> {
                 return SOUTH;

@@ -5,7 +5,6 @@ import name.uwu.feytox.etherology.util.feyapi.TickableBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -21,19 +20,14 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         super(ETHEREAL_CHANNEL_BLOCK_ENTITY, pos, state);
     }
 
-    // TODO: 15/03/2023 delete after test
-    public void onUse(ServerWorld world) {
-        world.getPlayers().forEach(player -> player.sendMessage(Text.of("Stored Ether: " + storedEther)));
-    }
-
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         transferTick(world);
     }
 
     @Override
-    public boolean isActive() {
-        return !getCachedState().get(ACTIVATED);
+    public boolean isActivated() {
+        return getCachedState().get(ACTIVATED);
     }
 
     @Override
