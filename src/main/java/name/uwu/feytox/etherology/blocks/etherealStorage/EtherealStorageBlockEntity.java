@@ -5,13 +5,15 @@ import name.uwu.feytox.etherology.util.feyapi.TickableBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
 
 public class EtherealStorageBlockEntity extends TickableBlockEntity implements EtherStorage {
-    private float storedEther = 0;
+    // TODO: 15/03/2023 change after test
+    private float storedEther = 64;
 
     public EtherealStorageBlockEntity(BlockPos pos, BlockState state) {
         super(ETHEREAL_STORAGE_BLOCK_ENTITY, pos, state);
@@ -59,7 +61,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity implements E
 
     @Override
     public void transferTick(ServerWorld world) {
-        transfer(world);
+        if (world.getTime() % 20 == 0) transfer(world);
     }
 
     @Override
@@ -74,5 +76,10 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity implements E
         super.readNbt(nbt);
 
         storedEther = nbt.getFloat("stored_ether");
+    }
+
+    // TODO: 15/03/2023 delete after test
+    public void onUse(ServerWorld world) {
+        world.getPlayers().forEach(player -> player.sendMessage(Text.of("Stored Ether: " + storedEther)));
     }
 }

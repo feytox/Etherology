@@ -8,12 +8,17 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -79,6 +84,19 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
         VoxelShape branchShape = shapes.stream().reduce(CENTER_SHAPE, VoxelShapes::union);
 
         return VoxelShapes.combineAndSimplify(CENTER_SHAPE, branchShape, BooleanBiFunction.OR);
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (!world.isClient) {
+            BlockEntity be = world.getBlockEntity(pos);
+            if (be instanceof EtherealChannelBlockEntity channel) {
+                channel.onUse((ServerWorld) world);
+                return ActionResult.SUCCESS;
+            }
+        }
+
+        return super.onUse(state, world, pos, player, hand, hit);
     }
 
     @Nullable
