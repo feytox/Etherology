@@ -17,6 +17,7 @@ import name.uwu.feytox.etherology.tickers.ITicker;
 import name.uwu.feytox.etherology.tickers.Ticker;
 import name.uwu.feytox.etherology.tickers.Tickers;
 import name.uwu.feytox.etherology.util.feyapi.UwuLib;
+import name.uwu.feytox.etherology.util.gecko.EGeoBlockEntity;
 import name.uwu.feytox.etherology.util.gecko.EGeoNetwork;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -48,6 +49,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +63,7 @@ import static name.uwu.feytox.etherology.Etherology.STEAM;
 import static name.uwu.feytox.etherology.EtherologyComponents.ETHER_POINTS;
 import static name.uwu.feytox.etherology.enums.ArmillarStateType.*;
 
-public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory, ITicker {
+public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory, ITicker, EGeoBlockEntity {
     List<Ticker> tickers = new ArrayList<>();
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     private UUID displayedItemUUID = null;
@@ -618,5 +621,23 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         return new Tickers().register(
                 new Ticker("ender", world1 -> deactivate((ServerWorld) world1), 15, false)
         );
+    }
+
+    @Override
+    public void stopAnim(String animName) {
+        if (this.world == null) return;
+        getRingMatrix(this.world).stopAnim(animName);
+    }
+
+    @Deprecated
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+
+    }
+
+    @Deprecated
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
     }
 }
