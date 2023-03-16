@@ -4,6 +4,9 @@ import name.uwu.feytox.etherology.magic.ether.EtherPipe;
 import name.uwu.feytox.etherology.util.feyapi.TickableBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -91,5 +94,16 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         super.readNbt(nbt);
 
         storedEther = nbt.getFloat("stored_ether");
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 }
