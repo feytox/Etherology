@@ -1,0 +1,15 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "etherology:item/extinct_glint"
+  },
+
+  "overrides": [
+    {
+      "predicate": {
+        "ether_percentage": 0.5
+      },
+      "model": "etherology:item/filled_glint_shard"
+    }
+  ]
+}

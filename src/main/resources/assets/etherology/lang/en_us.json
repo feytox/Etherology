@@ -10,6 +10,9 @@
   "item.etherology.primoshard_rela": "Первичный осколок",
   "item.etherology.primoshard_clos": "Первичный осколок",
   "item.etherology.primoshard_via": "Первичный осколок",
+  "item.etherology.glint_shard": "Погасший огонёк",
+  "item.etherology.filled_glint_shard": "Огонёк",
+  "item.etherology.ether_shard": "Эфир",
 
   "lore.etherology.primoshard": "%s",
 
