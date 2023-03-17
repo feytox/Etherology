@@ -2,6 +2,8 @@ package name.uwu.feytox.etherology.blocks.etherealStorage;
 
 import name.uwu.feytox.etherology.Etherology;
 import name.uwu.feytox.etherology.items.glints.AbstractGlintItem;
+import name.uwu.feytox.etherology.util.feyapi.ClosedSlot;
+import name.uwu.feytox.etherology.util.feyapi.TypedSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -28,12 +30,13 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
         //Glints inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 3; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 3, 79 + l * 19, 17 + m * 18));
+                this.addSlot(new TypedSlot<>(AbstractGlintItem.class, inventory,
+                        l + m * 3, 79 + l * 19, 17 + m * 18));
             }
         }
         //Ether inventory
         for (m = 0; m < 3; ++m) {
-            this.addSlot(new Slot(this.inventory, m + 9, 35, 17 + m * 18));
+            this.addSlot(new ClosedSlot(this.inventory, m + 9, 35, 17 + m * 18));
         }
 
         //The player inventory

@@ -23,7 +23,7 @@ public class EtherealStorageScreen extends HandledScreen<EtherealStorageScreenHa
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - 175) / 2;
         int y = (height - 171) / 2;
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        drawTexture(matrices, x, y, 0, 0, 175, 171);
     }
 
     @Override
