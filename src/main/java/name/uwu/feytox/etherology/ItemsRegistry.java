@@ -27,6 +27,7 @@ public class ItemsRegistry {
     public static final PrimoShard.ClosPrimoShard PRIMOSHARD_CLOS = (PrimoShard.ClosPrimoShard) new PrimoShard.ClosPrimoShard().register();
     public static final PrimoShard.ViaPrimoShard PRIMOSHARD_VIA = (PrimoShard.ViaPrimoShard) new PrimoShard.ViaPrimoShard().register();
     public static final GlintItem GLINT = (GlintItem) new GlintItem().register();
+    public static final EtherShard ETHER_SHARD = (EtherShard) new EtherShard().register();
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);
