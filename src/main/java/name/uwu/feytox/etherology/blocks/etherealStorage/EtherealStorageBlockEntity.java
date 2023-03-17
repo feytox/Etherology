@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
+import static name.uwu.feytox.etherology.ItemsRegistry.ETHER_SHARD;
+import static name.uwu.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock.FACING;
 
 public class EtherealStorageBlockEntity extends TickableBlockEntity
         implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory {
@@ -42,6 +45,8 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     private static final RawAnimation CLOSE_ANIM;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(12, ItemStack.EMPTY);
+    private static final float MAX_ETHER = 64f * 3;
+    private float storageEther;
     private int viewers = 0;
     private boolean isOpen = false;
 
@@ -52,28 +57,32 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         transferTick(world);
+        glintTick(world);
+        etherItemTick(world);
     }
 
     @Override
     public float getMaxEther() {
-        List<EtherGlint> glints = getGlints();
-        float maxEther = 0;
-        for (EtherGlint glint : glints) {
-            maxEther += glint.getMaxEther();
-        }
-
-        return maxEther;
+        return MAX_ETHER;
     }
 
     @Override
     public float getStoredEther() {
-        List<EtherGlint> glints = getGlints();
-        float storedEther = 0;
-        for (EtherGlint glint : glints) {
-            storedEther += glint.getStoredEther();
-        }
+        return storageEther;
+    }
 
-        return storedEther;
+    @Override
+    public float getTransportableEther() {
+        return storageEther + getGlintEther();
+    }
+
+    public float getGlintEther() {
+        List<EtherGlint> glints = getGlints();
+        float glintEther = 0;
+        for (EtherGlint glint : glints) {
+            glintEther += glint.getStoredEther();
+        }
+        return glintEther;
     }
 
     @Override
@@ -82,38 +91,47 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    public float increment(float value) {
-        List<EtherGlint> glints = getGlints();
-        float tipValue = 0;
-        for (EtherGlint glint : glints) {
-            if (glint.isFull()) {
-                tipValue = glint.increment(value);
-                break;
-            }
-        }
-
-        return tipValue;
+    public void setStoredEther(float value) {
+        storageEther = value;
+        markDirty();
     }
 
     @Override
     public float decrement(float value) {
+        if (storageEther >= value) return EtherStorage.super.decrement(value);
+        if (getGlintEther() >= value) return decrementGlint(value);
+        return EtherStorage.super.decrement(value);
+    }
+
+    public float incrementGlint(float value) {
         List<EtherGlint> glints = getGlints();
-        float tipValue = 0;
+        for (EtherGlint glint : glints) {
+            if (!glint.isFull()) {
+                value = glint.increment(value);
+            }
+            if (value == 0) break;
+        }
+
+        return value;
+    }
+
+    public float decrementGlint(float value) {
+        List<EtherGlint> glints = getGlints();
+        float needValue = value;
         for (int i = glints.size()-1; i > -1; i--) {
             EtherGlint glint = glints.get(i);
             if (glint.getStoredEther() > 0) {
-                tipValue = glint.decrement(value);
-                break;
+                needValue -= glint.decrement(value);
             }
+            if (needValue == 0) break;
         }
 
-        return tipValue;
+        return value - needValue;
     }
 
     @Override
     public boolean isInputSide(Direction side) {
-        // TODO: 16/03/2023 добавить определение сайда
-        return !side.equals(Direction.DOWN);
+        return !side.equals(Direction.DOWN) && !side.equals(Direction.UP) && !side.equals(getCachedState().get(FACING));
     }
 
     @Override
@@ -128,7 +146,38 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
 
     @Override
     public void transferTick(ServerWorld world) {
-        if (world.getTime() % 20 == 0) transfer(world);
+        if (world.getTime() % 5 == 0) transfer(world);
+    }
+
+    public void glintTick(ServerWorld world) {
+        if (world.getTime() % 5 != 0 || storageEther == 0) return;
+
+        if (storageEther <= 1) {
+            System.out.println("das");
+        }
+
+        float newEther = Math.max(0, storageEther - 1);
+        float value = storageEther - newEther;
+        storageEther = newEther;
+
+        float tipValue = incrementGlint(value);
+        storageEther = Math.min(MAX_ETHER, storageEther + tipValue);
+    }
+
+    public void etherItemTick(ServerWorld world) {
+        if (world.getTime() % 5 != 0) return;
+
+        int etherValue = MathHelper.floor(storageEther);
+        setStack(9, ItemStack.EMPTY);
+        setStack(10, ItemStack.EMPTY);
+        setStack(11, ItemStack.EMPTY);
+        for (int i = 0; i < 3 && etherValue > 0; i++) {
+            int count = Math.min(64, etherValue);
+            etherValue -= count;
+            ItemStack stack = ETHER_SHARD.getDefaultStack();
+            stack.setCount(count);
+            setStack(9 + i, stack);
+        }
     }
 
     @Override
@@ -139,6 +188,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     @Override
     protected void writeNbt(NbtCompound nbt) {
         Inventories.writeNbt(nbt, inventory);
+        nbt.putFloat("storage_ether", storageEther);
 
         super.writeNbt(nbt);
     }
@@ -146,6 +196,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
+        storageEther = nbt.getFloat("storage_ether");
 
         Inventories.readNbt(nbt, inventory);
     }
@@ -209,10 +260,6 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new EtherealStorageScreenHandler(syncId, inv, this);
     }
-
-    @Deprecated
-    @Override
-    public void setStoredEther(float value) {}
 
     static {
         OPEN_ANIM = RawAnimation.begin().thenPlayAndHold("animation.ether_storage.open");

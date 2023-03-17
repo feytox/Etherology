@@ -26,7 +26,7 @@ import java.util.List;
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
 
 public class EtherealStorageBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
-    private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    protected static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
     public EtherealStorageBlock() {
         super(FabricBlockSettings.of(Material.METAL).nonOpaque());
