@@ -79,7 +79,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
 
     @Override
     public void transferTick(ServerWorld world) {
-        if (world.getTime() % 20 == 0) transfer(world);
+        if (world.getTime() % 5 == 0) transfer(world);
     }
 
     @Override

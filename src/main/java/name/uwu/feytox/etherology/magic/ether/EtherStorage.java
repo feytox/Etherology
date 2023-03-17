@@ -22,6 +22,10 @@ public interface EtherStorage {
     BlockPos getStoragePos();
     void transferTick(ServerWorld world);
 
+    default float getTransportableEther() {
+        return getStoredEther();
+    }
+
     default boolean isOutputSide(Direction direction) {
         Direction outputSide = getOutputSide();
         return outputSide != null && outputSide.equals(direction);
@@ -38,8 +42,8 @@ public interface EtherStorage {
     boolean isActivated();
 
     default void transfer(ServerWorld world) {
-        float storedEther = getStoredEther();
-        if (storedEther == 0 || isActivated()) return;
+        float etherValue = getTransportableEther();
+        if (etherValue == 0 || isActivated()) return;
 
         Direction outputSide = getOutputSide();
         if (outputSide != null) transferTo(world, outputSide);
