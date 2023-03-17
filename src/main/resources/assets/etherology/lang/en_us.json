@@ -22,6 +22,8 @@
   "block.etherology.armillary_matrix_base": "Пьедестал для Армиллярной Матрицы",
   "block.etherology.ethereal_channel": "Эфирный канал",
   "block.etherology.ethereal_fork": "Эфирная развилка",
+  "block.etherology.ethereal_storage": "Эфирное хранилище",
+  "block.etherology.ethereal_storage.title": "Хранилище",
 
   "etherology.mix_red": "Замешать до красной эссенции",
   "etherology.mix_yellow": "Замешать до желтой эссенции",

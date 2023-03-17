@@ -6,22 +6,63 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static name.uwu.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
 
-public class EtherealStorageBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+public class EtherealStorageBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
     private static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
     public EtherealStorageBlock() {
-        super(FabricBlockSettings.of(Material.METAL));
+        super(FabricBlockSettings.of(Material.METAL).nonOpaque());
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (!world.isClient) {
+            NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
+            if (screenHandlerFactory != null) {
+                player.openHandledScreen(screenHandlerFactory);
+            }
+        }
+        return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity be = world.getBlockEntity(pos);
+            if (be instanceof EtherealStorageBlockEntity etherStorage) {
+                List<ItemStack> stacks = etherStorage.getItems().subList(0, 9);
+                for (int i = 0; i < 9; i++) {
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), stacks.get(i));
+                }
+                etherStorage.clear();
+            }
+
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
     }
 
     @Override

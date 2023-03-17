@@ -2,6 +2,7 @@ package name.uwu.feytox.etherology;
 
 import name.uwu.feytox.etherology.blocks.closet.ClosetScreenHandler;
 import name.uwu.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
+import name.uwu.feytox.etherology.blocks.etherealStorage.EtherealStorageScreenHandler;
 import name.uwu.feytox.etherology.commands.DevCommands;
 import name.uwu.feytox.etherology.enums.MixTypes;
 import name.uwu.feytox.etherology.recipes.alchemy.AlchemyRecipe;
@@ -39,6 +40,7 @@ public class Etherology implements ModInitializer {
             new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
                     new EtherWorkbenchScreenHandler(syncId, inventory)));
     public static final ScreenHandlerType<ClosetScreenHandler> CLOSET_SCREEN_HANDLER = new ScreenHandlerType<>(ClosetScreenHandler::new);
+    public static final ScreenHandlerType<EtherealStorageScreenHandler> ETHEREAL_STORAGE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealStorageScreenHandler::new);
 
     public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
@@ -119,6 +121,7 @@ public class Etherology implements ModInitializer {
 
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ether_screen_handler"), ETHER_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("closet_screen_handler"), CLOSET_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_storage_screen_handler"), ETHEREAL_STORAGE_SCREEN_HANDLER);
 
         EWorldGeneration.generateWorldGen();
     }

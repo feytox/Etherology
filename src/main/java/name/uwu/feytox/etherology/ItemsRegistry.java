@@ -4,6 +4,7 @@ import name.uwu.feytox.etherology.items.*;
 import name.uwu.feytox.etherology.items.MatrixRing.EthrilRing;
 import name.uwu.feytox.etherology.items.MatrixRing.NetheriteRing;
 import name.uwu.feytox.etherology.items.MatrixRing.TelderSteelRing;
+import name.uwu.feytox.etherology.items.glints.GlintItem;
 import name.uwu.feytox.etherology.util.feyapi.EIdentifier;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -25,6 +26,7 @@ public class ItemsRegistry {
     public static final PrimoShard.RelaPrimoShard PRIMOSHARD_RELA = (PrimoShard.RelaPrimoShard) new PrimoShard.RelaPrimoShard().register();
     public static final PrimoShard.ClosPrimoShard PRIMOSHARD_CLOS = (PrimoShard.ClosPrimoShard) new PrimoShard.ClosPrimoShard().register();
     public static final PrimoShard.ViaPrimoShard PRIMOSHARD_VIA = (PrimoShard.ViaPrimoShard) new PrimoShard.ViaPrimoShard().register();
+    public static final GlintItem GLINT = (GlintItem) new GlintItem().register();
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);
