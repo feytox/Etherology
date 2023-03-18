@@ -14,16 +14,16 @@
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "name.uwu.feytox.etherology.datagen.DataGeneration"
+      "ru.feytox.etherology.datagen.DataGeneration"
     ],
     "client": [
-      "name.uwu.feytox.etherology.client.EtherologyClient"
+      "ru.feytox.etherology.client.EtherologyClient"
     ],
     "main": [
-      "name.uwu.feytox.etherology.Etherology"
+      "ru.feytox.etherology.Etherology"
     ],
     "cardinal-components": [
-      "name.uwu.feytox.etherology.EtherologyComponents"
+      "ru.feytox.etherology.EtherologyComponents"
     ]
   },
   "mixins": [
