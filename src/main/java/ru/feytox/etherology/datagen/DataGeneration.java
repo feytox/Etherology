@@ -14,6 +14,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         pack.addProvider(WorldGeneration::new);
+        pack.addProvider(ModelGeneration::new);
     }
 
     @Override

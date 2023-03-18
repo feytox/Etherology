@@ -1,15 +1,26 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "etherology:item/extinct_glint"
+    "layer0": "etherology:item/glint_shard_0"
   },
 
   "overrides": [
-    {
-      "predicate": {
-        "ether_percentage": 0.5
-      },
-      "model": "etherology:item/filled_glint_shard"
-    }
+    { "predicate": {"ether_percentage": 0.0000}, "model": "etherology:item/glint_shard" },
+    { "predicate": {"ether_percentage": 0.0625}, "model": "etherology:item/glint_shard_1" },
+    { "predicate": {"ether_percentage": 0.1250}, "model": "etherology:item/glint_shard_2" },
+    { "predicate": {"ether_percentage": 0.1875}, "model": "etherology:item/glint_shard_3" },
+    { "predicate": {"ether_percentage": 0.2500}, "model": "etherology:item/glint_shard_4" },
+    { "predicate": {"ether_percentage": 0.3125}, "model": "etherology:item/glint_shard_5" },
+    { "predicate": {"ether_percentage": 0.3750}, "model": "etherology:item/glint_shard_6" },
+    { "predicate": {"ether_percentage": 0.4375}, "model": "etherology:item/glint_shard_7" },
+    { "predicate": {"ether_percentage": 0.5000}, "model": "etherology:item/glint_shard_8" },
+    { "predicate": {"ether_percentage": 0.5625}, "model": "etherology:item/glint_shard_9" },
+    { "predicate": {"ether_percentage": 0.6250}, "model": "etherology:item/glint_shard_10" },
+    { "predicate": {"ether_percentage": 0.6875}, "model": "etherology:item/glint_shard_11" },
+    { "predicate": {"ether_percentage": 0.7500}, "model": "etherology:item/glint_shard_12" },
+    { "predicate": {"ether_percentage": 0.8125}, "model": "etherology:item/glint_shard_13" },
+    { "predicate": {"ether_percentage": 0.8750}, "model": "etherology:item/glint_shard_14" },
+    { "predicate": {"ether_percentage": 0.9375}, "model": "etherology:item/glint_shard_15" },
+    { "predicate": {"ether_percentage": 1.0000}, "model": "etherology:item/glint_shard_16" }
   ]
 }
