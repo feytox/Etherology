@@ -35,7 +35,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
 
     @Override
     public float getMaxEther() {
-        return 8;
+        return 1;
     }
 
     @Override
