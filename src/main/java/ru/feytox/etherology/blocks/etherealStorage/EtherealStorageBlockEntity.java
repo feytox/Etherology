@@ -152,10 +152,6 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     public void glintTick(ServerWorld world) {
         if (world.getTime() % 5 != 0 || storageEther == 0) return;
 
-        if (storageEther <= 1) {
-            System.out.println("das");
-        }
-
         float newEther = Math.max(0, storageEther - 1);
         float value = storageEther - newEther;
         storageEther = newEther;

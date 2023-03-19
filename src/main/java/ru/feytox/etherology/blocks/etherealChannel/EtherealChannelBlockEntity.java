@@ -24,9 +24,14 @@ import static ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock.*
 
 public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe {
     private float storedEther = 0;
+    private boolean isUseless = false;
 
     public EtherealChannelBlockEntity(BlockPos pos, BlockState state) {
         super(ETHEREAL_CHANNEL_BLOCK_ENTITY, pos, state);
+    }
+
+    public void setUseless(boolean useless) {
+        isUseless = useless;
     }
 
     @Override
@@ -36,11 +41,17 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
+        if (state.get(ACTIVATED)) return;
+
         Direction outputDirection = getOutputSide();
         if (outputDirection == null) return;
         if (world.getBlockEntity(pos.add(outputDirection.getVector())) instanceof EtherStorage) return;
 
-        Vector3f vec = outputDirection.getUnitVector();
+        if (isUseless) spawnParticles(world, outputDirection);
+    }
+
+    public void spawnParticles(ClientWorld world, Direction direction) {
+        Vector3f vec = direction.getUnitVector();
         Vec3d startPos = new Vec3d(vec.mul(0.5f)).add(pos.toCenterPos());
         Vector3f endVec = vec.mul(3f).add(0, world.getRandom().nextFloat()*0.5f, 0);
         Vec3d endPos = new Vec3d(endVec).add(pos.toCenterPos());
@@ -108,6 +119,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     @Override
     protected void writeNbt(NbtCompound nbt) {
         nbt.putFloat("stored_ether", storedEther);
+        nbt.putBoolean("is_useless", isUseless);
 
         super.writeNbt(nbt);
     }
@@ -117,6 +129,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         super.readNbt(nbt);
 
         storedEther = nbt.getFloat("stored_ether");
+        isUseless = nbt.getBoolean("is_useless");
     }
 
     @Override

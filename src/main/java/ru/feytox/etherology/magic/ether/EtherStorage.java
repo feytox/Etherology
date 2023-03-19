@@ -4,6 +4,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
+import ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlockEntity;
 
 import javax.annotation.Nullable;
 
@@ -43,7 +44,10 @@ public interface EtherStorage {
 
     default void transfer(ServerWorld world) {
         float etherValue = getTransportableEther();
-        if (etherValue == 0 || isActivated()) return;
+        if (etherValue == 0 || isActivated()) {
+            if (this instanceof EtherealChannelBlockEntity channel) channel.setUseless(false);
+            return;
+        }
 
         Direction outputSide = getOutputSide();
         if (outputSide != null) transferTo(world, outputSide);
@@ -55,6 +59,8 @@ public interface EtherStorage {
         BlockPos nextPos = pos.add(outputVec);
 
         if (world.getBlockEntity(nextPos) instanceof EtherStorage consumer) {
+            if (this instanceof EtherealChannelBlockEntity channel) channel.setUseless(false);
+
             if (!consumer.isInputSide(outputSide.getOpposite())) return;
             if (!consumer.canInputFrom(this)) return;
             if (!canOutputTo(consumer)) return;
@@ -63,6 +69,9 @@ public interface EtherStorage {
             float points = decrement(transferSize);
             float excess = consumer.increment(points);
             increment(excess);
+        } else if (this instanceof EtherealChannelBlockEntity channel) {
+            channel.setUseless(getStoredEther() != 0);
+            decrement(1);
         }
     }
 
