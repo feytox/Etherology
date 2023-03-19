@@ -25,7 +25,8 @@ public class LightParticle extends MovingParticle {
         this.isVital = isVital;
         this.isSpark = isSpark;
 
-        if (!isVital) this.scale(0.1f);
+        if (!isVital && !isSpark) this.scale(0.05f);
+        else if (!isVital) this.scale(0.1f);
         else {
             Random random = Random.create();
             float randFloat = random.nextFloat();
@@ -45,6 +46,9 @@ public class LightParticle extends MovingParticle {
 
     @Override
     public void tick() {
+        if (!isVital && !isSpark) {
+            acceleratedMovingTick(0.3f, 0.2f, true);
+        }
         if (isVital | isSpark) super.tick();
         if (isSpark) {
             Vec3d vec = new Vec3d(endX-x, endY-y, endZ-z);
@@ -69,23 +73,6 @@ public class LightParticle extends MovingParticle {
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, false, false);
-            particle.setSprite(this.spriteProvider);
-            return particle;
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class VitalFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public VitalFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, true, false);
             particle.setSprite(this.spriteProvider);
             return particle;
         }

@@ -191,7 +191,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (type != ETHEREAL_CHANNEL_BLOCK_ENTITY) return null;
 
-        return world.isClient ? null : EtherealChannelBlockEntity::serverTicker;
+        return world.isClient ? EtherealChannelBlockEntity::clientTicker : EtherealChannelBlockEntity::serverTicker;
     }
 
     @Override
