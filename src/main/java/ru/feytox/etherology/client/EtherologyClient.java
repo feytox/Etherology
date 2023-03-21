@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -13,6 +14,7 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.blocks.closet.ClosetScreen;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
 import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
+import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreen;
 import ru.feytox.etherology.blocks.ringMatrix.RingMatrixBlockRenderer;
@@ -68,6 +70,8 @@ public class EtherologyClient implements ClientModInitializer {
             EtherGlint glint = new EtherGlint(stack);
             return glint.getStoredEther() / glint.getMaxEther();
         }));
+
+        ColorProviderRegistry.BLOCK.register(EtherealSocketBlock::getColor, ETHEREAL_SOCKET);
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();

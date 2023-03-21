@@ -76,7 +76,7 @@ public interface EtherStorage {
     }
 
     /**
-     * @return излишек, которые не поместился
+     * @return излишек, который не поместился
      */
     default float increment(float value) {
         float storedEther = getStoredEther();

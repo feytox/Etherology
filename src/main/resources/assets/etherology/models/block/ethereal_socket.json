@@ -1,0 +1,53 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"top": "etherology:block/ethereal_socket_top",
+		"bottom": "etherology:block/ethereal_socket_bottom",
+		"side": "etherology:block/ethereal_socket_side"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 4, 14],
+			"faces": {
+				"north": {"uv": [2, 12, 14, 16], "texture": "#side"},
+				"east": {"uv": [2, 12, 14, 16], "texture": "#side"},
+				"south": {"uv": [2, 12, 14, 16], "texture": "#side"},
+				"west": {"uv": [2, 12, 14, 16], "texture": "#side"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#top"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [5, 4, 8],
+			"to": [11, 12, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [2, 4, 8, 12], "texture": "#side"},
+				"south": {"uv": [2, 4, 8, 12], "texture": "#side"}
+			}
+		},
+		{
+			"from": [5, 4, 8],
+			"to": [11, 12, 8],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [2, 4, 8, 12], "texture": "#side"},
+				"south": {"uv": [2, 4, 8, 12], "texture": "#side"}
+			}
+		},
+		{
+			"from": [4.75, 7.75, 4.75],
+			"to": [11.25, 9.25, 11.25],
+			"faces": {
+				"north": {"uv": [8, 5, 14, 6], "texture": "#side"},
+				"east": {"uv": [8, 5, 14, 6], "texture": "#side"},
+				"south": {"uv": [8, 5, 14, 6], "texture": "#side"},
+				"west": {"uv": [8, 5, 14, 6], "texture": "#side"},
+				"up": {"uv": [8, 6, 14, 12], "texture": "#side"},
+				"down": {"uv": [8, 6, 14, 12], "texture": "#side"}
+			}
+		}
+	]
+}
