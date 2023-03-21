@@ -10,6 +10,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import org.joml.Vector3f;
 import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.magic.ether.EtherStorage;
@@ -51,13 +52,18 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     }
 
     public void spawnParticles(ClientWorld world, Direction direction) {
+        if (world.getTime() % 2 != 0) return;
+        Random random = world.getRandom();
+
         Vector3f vec = direction.getUnitVector();
         Vec3d startPos = new Vec3d(vec.mul(0.5f)).add(pos.toCenterPos());
-        Vector3f endVec = vec.mul(3f).add(0, world.getRandom().nextFloat()*0.5f, 0);
+        Vector3f endVec = vec.mul(2 + random.nextFloat() * 1.5f)
+                .rotateY(random.nextFloat() - 0.5f)
+                .add(0, random.nextFloat()*0.5f, 0);
         Vec3d endPos = new Vec3d(endVec).add(pos.toCenterPos());
 
-        MovingParticle.spawnParticles(world, LIGHT, 10, 0.07d,
-                startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, world.random);
+        MovingParticle.spawnParticles(world, LIGHT, 1, 0.07d,
+                startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, random);
     }
 
     @Override

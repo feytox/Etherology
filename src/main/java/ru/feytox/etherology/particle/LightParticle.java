@@ -11,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class LightParticle extends MovingParticle {
     private final int startRed;
@@ -25,7 +26,7 @@ public class LightParticle extends MovingParticle {
         this.isVital = isVital;
         this.isSpark = isSpark;
 
-        if (!isVital && !isSpark) this.scale(0.05f);
+        if (!isVital && !isSpark) this.scale(0.3f);
         else if (!isVital) this.scale(0.1f);
         else {
             Random random = Random.create();
@@ -33,6 +34,8 @@ public class LightParticle extends MovingParticle {
             this.scale(0.05f + randFloat * 0.1f);
             this.alpha *= 0.78f * randFloat;
         }
+
+        if (!isVital && !isSpark) setRGB(new RGBColor(244, 194, 133));
 
         this.startRed = MathHelper.floor(this.red * 255);
         this.startGreen = MathHelper.floor(this.green * 255);
@@ -47,7 +50,7 @@ public class LightParticle extends MovingParticle {
     @Override
     public void tick() {
         if (!isVital && !isSpark) {
-            acceleratedMovingTick(0.3f, 0.2f, true);
+            acceleratedMovingTick(0.1f, 0.5f, true);
         }
         if (isVital | isSpark) super.tick();
         if (isSpark) {
