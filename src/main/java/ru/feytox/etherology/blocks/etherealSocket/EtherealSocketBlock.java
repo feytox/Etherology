@@ -12,9 +12,13 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
@@ -23,6 +27,12 @@ import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
 public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
     protected static final BooleanProperty WITH_GLINT = BooleanProperty.of("with_glint");
+    private static final VoxelShape DOWN_SHAPE;
+    private static final VoxelShape UP_SHAPE;
+    private static final VoxelShape NORTH_SHAPE;
+    private static final VoxelShape EAST_SHAPE;
+    private static final VoxelShape SOUTH_SHAPE;
+    private static final VoxelShape WEST_SHAPE;
 
     public EtherealSocketBlock() {
         super(FabricBlockSettings.of(Material.METAL).nonOpaque());
@@ -45,6 +55,20 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, WITH_GLINT);
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        Direction facing = state.get(FACING);
+        VoxelShape shape = DOWN_SHAPE;
+        switch (facing) {
+            case NORTH -> shape = NORTH_SHAPE;
+            case SOUTH -> shape = SOUTH_SHAPE;
+            case WEST -> shape = WEST_SHAPE;
+            case EAST -> shape = EAST_SHAPE;
+            case UP -> shape = UP_SHAPE;
+        }
+        return shape;
     }
 
     @Nullable
@@ -77,5 +101,38 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new EtherealSocketBlockEntity(pos, state);
+    }
+
+    static {
+        DOWN_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(2, 0, 2, 14, 4, 14),
+                createCuboidShape(5, 4, 5, 11, 9, 11),
+                BooleanBiFunction.OR
+        );
+        UP_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(2, 12, 2, 14, 16, 14),
+                createCuboidShape(5, 7, 5, 11, 12, 11),
+                BooleanBiFunction.OR
+        );
+        SOUTH_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(2, 2, 0, 14, 14, 4),
+                createCuboidShape(5, 5, 4, 11, 11, 9),
+                BooleanBiFunction.OR
+        );
+        NORTH_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(2, 2, 12, 14, 14, 16),
+                createCuboidShape(5, 5, 7, 11, 11, 12),
+                BooleanBiFunction.OR
+        );
+        EAST_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(0, 2, 2, 4, 14, 14),
+                createCuboidShape(4, 5, 5, 9, 11, 11),
+                BooleanBiFunction.OR
+        );
+        WEST_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(12, 2, 2, 16, 14, 14),
+                createCuboidShape(7, 5, 5, 12, 11, 11),
+                BooleanBiFunction.OR
+        );
     }
 }
