@@ -106,32 +106,32 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     static {
         DOWN_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(2, 0, 2, 14, 4, 14),
-                createCuboidShape(5, 4, 5, 11, 9, 11),
+                createCuboidShape(4.5, 4, 4.5, 11.5, 9.5, 11.5),
                 BooleanBiFunction.OR
         );
         UP_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(2, 12, 2, 14, 16, 14),
-                createCuboidShape(5, 7, 5, 11, 12, 11),
+                createCuboidShape(4.5, 6.5, 4.5, 11.5, 12, 11.5),
                 BooleanBiFunction.OR
         );
         SOUTH_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(2, 2, 0, 14, 14, 4),
-                createCuboidShape(5, 5, 4, 11, 11, 9),
+                createCuboidShape(4.5, 4.5, 4, 11.5, 11.5, 9.5),
                 BooleanBiFunction.OR
         );
         NORTH_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(2, 2, 12, 14, 14, 16),
-                createCuboidShape(5, 5, 7, 11, 11, 12),
+                createCuboidShape(4.5, 4.5, 6.5, 11.5, 11.5, 12),
                 BooleanBiFunction.OR
         );
         EAST_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(0, 2, 2, 4, 14, 14),
-                createCuboidShape(4, 5, 5, 9, 11, 11),
+                createCuboidShape(4, 4.5, 4.5, 9.5, 11.5, 11.5),
                 BooleanBiFunction.OR
         );
         WEST_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(12, 2, 2, 16, 14, 14),
-                createCuboidShape(7, 5, 5, 12, 11, 11),
+                createCuboidShape(6.5, 4.5, 4.5, 12, 11.5, 11.5),
                 BooleanBiFunction.OR
         );
     }
