@@ -2,52 +2,27 @@
   "multipart": [
     {
       "apply": { "model": "etherology:block/ethereal_socket" },
-      "when": { "facing": "down", "with_glint": "false" }
+      "when": { "facing": "down" }
     },
     {
       "apply": { "model": "etherology:block/ethereal_socket", "x": 180 },
-      "when": { "facing": "up", "with_glint": "false" }
+      "when": { "facing": "up" }
     },
     {
       "apply": { "model": "etherology:block/ethereal_socket", "x": 90 },
-      "when": { "facing": "north", "with_glint": "false" }
+      "when": { "facing": "north" }
     },
     {
       "apply": { "model": "etherology:block/ethereal_socket", "x": 90, "y": 90 },
-      "when": { "facing": "east", "with_glint": "false" }
+      "when": { "facing": "east" }
     },
     {
       "apply": { "model": "etherology:block/ethereal_socket", "x": 90, "y": 180 },
-      "when": { "facing": "south", "with_glint": "false" }
+      "when": { "facing": "south" }
     },
     {
       "apply": { "model": "etherology:block/ethereal_socket", "x": 90, "y": 270 },
-      "when": { "facing": "west", "with_glint": "false" }
-    },
-
-    {
-      "apply": { "model": "etherology:block/ethereal_socket_glint" },
-      "when": { "facing": "down", "with_glint": "true" }
-    },
-    {
-      "apply": { "model": "etherology:block/ethereal_socket_glint", "x": 180 },
-      "when": { "facing": "up", "with_glint": "true" }
-    },
-    {
-      "apply": { "model": "etherology:block/ethereal_socket_glint", "x": 90 },
-      "when": { "facing": "north", "with_glint": "true" }
-    },
-    {
-      "apply": { "model": "etherology:block/ethereal_socket_glint", "x": 90, "y": 90 },
-      "when": { "facing": "east", "with_glint": "true" }
-    },
-    {
-      "apply": { "model": "etherology:block/ethereal_socket_glint", "x": 90, "y": 180 },
-      "when": { "facing": "south", "with_glint": "true" }
-    },
-    {
-      "apply": { "model": "etherology:block/ethereal_socket_glint", "x": 90, "y": 270 },
-      "when": { "facing": "west", "with_glint": "true" }
+      "when": { "facing": "west" }
     }
   ]
 }

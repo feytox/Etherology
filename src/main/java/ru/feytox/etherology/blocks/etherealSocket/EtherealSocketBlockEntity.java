@@ -1,7 +1,6 @@
 package ru.feytox.etherology.blocks.etherealSocket;
 
 import io.wispforest.owo.util.ImplementedInventory;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.client.world.ClientWorld;
@@ -29,7 +28,7 @@ import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_SOCKET_BLOCK_ENTITY;
 import static ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 
-public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, RenderAttachmentBlockEntity{
+public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private boolean isUpdated = false;
     private float cachedPercent = 0;
@@ -62,18 +61,26 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
         ItemStack useStack = player.getMainHandStack();
 
         if (glintStack.isEmpty() && useStack.getItem() instanceof AbstractGlintItem) {
-            setStack(0, useStack);
-            player.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+            ItemStack takingStack = useStack.copy();
+            useStack = glintStack;
+            glintStack = takingStack;
+            player.setStackInHand(Hand.MAIN_HAND, useStack);
+            setStack(0, glintStack);
+
             world.setBlockState(pos, state.with(WITH_GLINT, true));
             markDirty();
+            isUpdated = true;
             world.playSound(null, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 0.6f, 0.95f);
             return ActionResult.CONSUME;
 
         } else if (glintStack.getItem() instanceof AbstractGlintItem && useStack.isEmpty()) {
-            player.setStackInHand(Hand.MAIN_HAND, glintStack);
-            setStack(0, useStack);
+            ItemStack takingStack = glintStack.copy();
+            glintStack.setCount(0);
+            player.setStackInHand(Hand.MAIN_HAND, takingStack);
+
             world.setBlockState(pos, state.with(WITH_GLINT, false));
             markDirty();
+            isUpdated = true;
             world.playSound(null, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, 0.8f, 0.95f);
             return ActionResult.SUCCESS;
         }
@@ -138,7 +145,9 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
     @Nullable
     @Override
     public Direction getOutputSide() {
-        return getCachedState().get(FacingBlock.FACING);
+        // FIXME: 22/03/2023 исправить баг с определением оутпут сайда
+        Direction output = getCachedState().get(FacingBlock.FACING);
+        return !output.equals(Direction.DOWN) && !output.equals(Direction.UP) ? output.getOpposite() : output;
     }
 
     @Override
@@ -193,8 +202,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
-    @Override
-    public Object getRenderAttachmentData() {
+    public float getCachedPercent() {
         return cachedPercent;
     }
 }

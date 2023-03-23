@@ -1,12 +1,12 @@
 package ru.feytox.etherology.blocks.etherealSocket;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachedBlockView;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -15,11 +15,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_SOCKET_BLOCK_ENTITY;
@@ -50,6 +47,14 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
         builder.add(FACING, WITH_GLINT);
     }
 
+    @Nullable
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        Direction side = ctx.getSide();
+        Direction facing = side.equals(Direction.DOWN) || side.equals(Direction.UP) ? side.getOpposite() : side;
+        return getDefaultState().with(FACING, facing);
+    }
+
     @Override
     public Block getBlockInstance() {
         return this;
@@ -58,19 +63,6 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     @Override
     public String getBlockId() {
         return "ethereal_socket";
-    }
-
-    public static int getColor(BlockState state, BlockRenderView world, BlockPos pos, int tintIndex) {
-        RGBColor startColor = new RGBColor(210, 211, 214);
-        RGBColor endColor = new RGBColor(255, 233, 127);
-
-        RenderAttachedBlockView view = (RenderAttachedBlockView) world;
-        Object obj = view.getBlockEntityRenderAttachment(pos);
-        Float fullness = (Float) view.getBlockEntityRenderAttachment(pos);
-
-        if (fullness == null || fullness == 0) return startColor.asHex();
-
-        return FeyColor.getGradientColor(endColor, startColor, fullness).asHex();
     }
 
     @Nullable
