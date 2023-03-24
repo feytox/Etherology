@@ -3,22 +3,26 @@ package ru.feytox.etherology.blocks.etherealSocket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import org.joml.Matrix4f;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import static ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 
 public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocketBlockEntity> {
-    private static final float SCALE = 0.06692f;
+    private static final float SCALE = 0.0625f;
+    private static final String GLINT_SIDE_PATH = "textures/block/socket_glint_side.png";
+    private static final String GLINT_TOP_PATH = "textures/block/socket_glint_top.png";
 
     public EtherealSocketRenderer(BlockEntityRendererFactory.Context ctx) {}
 
@@ -51,14 +55,11 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
             case UP -> angleX = 180;
         }
 
-        vertexConsumers.getBuffer(RenderLayer.getSolid()).light(0);
-
         // side north
         matrices.push();
         prepareRender(matrices, angleX, angleY, angleZ);
         prepareTranslate(matrices);
-        setTexture("textures/block/socket_glint_side.png", percent);
-        drawTexture(matrices, 4, 8);
+        renderTexture(matrices, vertexConsumers, GLINT_SIDE_PATH, light, overlay, 4, 8, percent);
         matrices.pop();
 
         //side south
@@ -66,8 +67,7 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
         prepareRender(matrices, angleX, angleY, angleZ);
         centerRotation(matrices, RotationAxis.POSITIVE_Y, 180);
         prepareTranslate(matrices);
-        setTexture("textures/block/socket_glint_side.png", percent);
-        drawTexture(matrices, 4, 8);
+        renderTexture(matrices, vertexConsumers, GLINT_SIDE_PATH, light, overlay, 4, 8, percent);
         matrices.pop();
 
         //side west
@@ -75,8 +75,7 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
         prepareRender(matrices, angleX, angleY, angleZ);
         centerRotation(matrices, RotationAxis.POSITIVE_Y, 90);
         prepareTranslate(matrices);
-        setTexture("textures/block/socket_glint_side.png", percent);
-        drawTexture(matrices, 4, 8);
+        renderTexture(matrices, vertexConsumers, GLINT_SIDE_PATH, light, overlay, 4, 8, percent);
         matrices.pop();
 
         //side east
@@ -84,8 +83,7 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
         prepareRender(matrices, angleX, angleY, angleZ);
         centerRotation(matrices, RotationAxis.POSITIVE_Y, 270);
         prepareTranslate(matrices);
-        setTexture("textures/block/socket_glint_side.png", percent);
-        drawTexture(matrices, 4, 8);
+        renderTexture(matrices, vertexConsumers, GLINT_SIDE_PATH, light, overlay, 4, 8, percent);
         matrices.pop();
 
         //side top
@@ -93,9 +91,8 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
         prepareRender(matrices, angleX, angleY, angleZ);
         centerRotation(matrices, RotationAxis.POSITIVE_X, 90);
         prepareTranslate(matrices);
-        matrices.translate(0, 1.85, -1.89);
-        setTexture("textures/block/socket_glint_top.png", percent);
-        drawTexture(matrices, 4, 4);
+        matrices.translate(0, 2, -2);
+        renderTexture(matrices, vertexConsumers, GLINT_TOP_PATH, light, overlay, 4, 4, percent);
         matrices.pop();
     }
 
@@ -122,16 +119,34 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
         matrices.translate(0.375 * k, 0.25 * k, 0.375 * k);
     }
 
-    private static void setTexture(String texturePath, float percent) {
+    public static void renderTexture(MatrixStack matrices, VertexConsumerProvider vertexConsumers, String texturePath, int light, int overlay, int width, int height, float percent) {
         int textNum = MathHelper.floor(percent * 16);
         texturePath = texturePath.replace(".png", "_" + textNum + ".png");
+        Identifier texture = new EIdentifier(texturePath);
 
-        RenderSystem.setShader(GameRenderer::getBlockProgram);
-        RenderSystem.setShaderTexture(0, new EIdentifier(texturePath));
-        RenderSystem.enableDepthTest();
-    }
+        float u2 = width / 16f;
+        float v2 = height / 16f;
+        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(texture));
+        Matrix4f modelMatrix = matrices.peek().getPositionMatrix();
+        RenderSystem.setShaderTexture(0, texture);
 
-    private static void drawTexture(MatrixStack matrices, int width, int height) {
-        DrawableHelper.drawTexture(matrices, 0, 0, 0, width/16f, height/16f, width, height, 16, 16);
+        int blockLight = LightmapTextureManager.getBlockLightCoordinates(light);
+        int skyLight = LightmapTextureManager.getSkyLightCoordinates(light);
+        light = LightmapTextureManager.pack(
+                blockLight + MathHelper.floor(15 * percent - blockLight),
+                skyLight);
+
+        vertexConsumer.vertex(modelMatrix, 0.0f, (float) height, 0.0f)
+                .color(255, 255, 255, 255).texture(0.0f, v2)
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+        vertexConsumer.vertex(modelMatrix, (float) width, (float) height, 0.0f)
+                .color(255, 255, 255, 255).texture(u2, v2)
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+        vertexConsumer.vertex(modelMatrix, (float) width, 0.0f, 0.0f)
+                .color(255, 255, 255, 255).texture(u2, 0.0f)
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+        vertexConsumer.vertex(modelMatrix, 0.0f, 0.0f, 0.0f)
+                .color(255, 255, 255, 255).texture(0.0f, 0.0f)
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
     }
 }
