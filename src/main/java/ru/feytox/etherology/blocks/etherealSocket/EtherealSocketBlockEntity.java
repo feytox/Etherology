@@ -49,8 +49,11 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (world.getTime() % 5 != 0) return;
+        cachePercent();
+    }
 
+    public void cachePercent() {
+        // TODO: 24/03/2023 как-то изменить, чтобы не моргало
         float storedEther = getStoredEther();
         float maxEther = getMaxEther();
         cachedPercent = maxEther == 0 ? cachedPercent : storedEther / maxEther;
