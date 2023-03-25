@@ -1,8 +1,12 @@
 package ru.feytox.etherology.util.feyapi;
 
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 
 public class FeyColor {
+    public static RGBColor getRandomColor(RGBColor startColor, RGBColor endColor, Random random) {
+        return getGradientColor(startColor, endColor, random.nextFloat());
+    }
 
     public static RGBColor getGradientColor(RGBColor startColor, RGBColor endColor, float percent) {
         int gradientLength = Math.abs(endColor.r() - startColor.r()) + Math.abs(endColor.g() - startColor.g()) + Math.abs(endColor.b() - startColor.b());

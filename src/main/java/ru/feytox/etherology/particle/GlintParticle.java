@@ -12,6 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.EVec3d;
+import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 import java.util.List;
@@ -27,10 +28,12 @@ public class GlintParticle extends SpriteBillboardParticle {
 
     public GlintParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
         super(clientWorld, x0, y0, z0, x1, y1, z1);
+        scale(0.1f);
+        maxAge = 40 + this.random.nextInt(15);
         updateVec(x0, y0, z0, x1, y1, z1);
-        this.scale(0.1f);
-        setRGB(new RGBColor(244, 194, 133));
-        this.maxAge = 60 + this.random.nextInt(6);
+
+        RGBColor color = FeyColor.getRandomColor(RGBColor.of(0xffc900), RGBColor.of(0xff8c00), random);
+        setRGB(color);
     }
 
     @Override
@@ -45,20 +48,20 @@ public class GlintParticle extends SpriteBillboardParticle {
             return;
         }
 
-        if (age < 10) {
-            acceleratedMoveOnVec(0.1f, 0.5f, false, false);
-        } else if (age < 30) {
+        if (age < maxAge / 4) {
+            acceleratedMoveOnVec(0.1f, 0.85f, false, false);
+        } else if (age < maxAge / 2) {
             currentVec = currentVec
-                    .rotateX((0.5f - random.nextFloat()) * MathHelper.PI / 6)
-                    .rotateY((0.5f - random.nextFloat()) * MathHelper.PI / 6)
-                    .rotateZ((0.5f - random.nextFloat()) * MathHelper.PI / 6);
-            acceleratedMoveOnVec(0.2f, 0.4f, false, false);
-        } else if (age == 30) {
-            currentVec = currentVec.multiply(0.01);
+                    .rotateX((0.5f - random.nextFloat()) * MathHelper.PI / 7)
+                    .rotateY((0.5f - random.nextFloat()) * MathHelper.PI / 7)
+                    .rotateZ((0.5f - random.nextFloat()) * MathHelper.PI / 7);
+            acceleratedMoveOnVec(0.05f, 0.8f, false, false);
+        } else if (age == maxAge / 2) {
+            currentVec = currentVec.multiply(0.05);
             secondComplete = true;
         }
         if (secondComplete) {
-            acceleratedMoveOnVec(0.2f, 0.3f, false, true);
+            acceleratedMoveOnVec(0.2f, 0.9f, false, true);
         }
     }
 
@@ -107,44 +110,49 @@ public class GlintParticle extends SpriteBillboardParticle {
     public static void spawnParticles(ClientWorld world, BlockPos blockPos, Direction facing, float percent) {
         Random random = world.getRandom();
         Vec3d pos = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-        Vec3d centerPos = blockPos.toCenterPos();
+        Vec3d centerPos = blockPos.toCenterPos().subtract(0, 0.5, 0);
 
         double dxz = 6/16d;
         double dy = 0.25;
         // down direction
         Vec3d start = new Vec3d(dxz, dy, dxz);
-        Vec3d end = new Vec3d(0.25 + dxz, 0.5 + dy, 0.25 + dxz);
+        Vec3d end = new Vec3d(0.25 + dxz, dy, 0.25 + dxz);
         switch (facing) {
             case UP -> {
                 start = new Vec3d(dxz, 0.5 + dy, dxz);
-                end = new Vec3d(0.25 + dxz, dy, 0.25 + dxz);
+                end = new Vec3d(0.25 + dxz, 0.5 + dy, 0.25 + dxz);
             }
             case NORTH -> {
                 start = new Vec3d(dxz, dxz, dy);
-                end = new Vec3d(0.25 + dxz, 0.25 + dxz, 0.5 + dy);
+                end = new Vec3d(0.25 + dxz, 0.25 + dxz, dy);
             }
             case SOUTH -> {
                 start = new Vec3d(dxz, dxz, 0.5 + dy);
-                end = new Vec3d(0.25 + dxz, 0.25 + dxz, dy);
+                end = new Vec3d(0.25 + dxz, 0.25 + dxz, 0.5 + dy);
             }
             case WEST -> {
                 start = new Vec3d(dy, dxz, dxz);
-                end = new Vec3d(0.5 + dy, 0.25 + dxz, 0.25 + dxz);
+                end = new Vec3d(dy, 0.25 + dxz, 0.25 + dxz);
             }
             case EAST -> {
                 start = new Vec3d(0.5 + dy, dxz, dxz);
-                end = new Vec3d(dy, 0.25 + dxz, 0.25 + dxz);
+                end = new Vec3d(0.5 + dy, 0.25 + dxz, 0.25 + dxz);
             }
         }
 
-        List<Vec3d> particlePoses = EVec3d.boxOf(pos.add(start), pos.add(end), 0.05d, facing);
+        List<Vec3d> particlePoses = EVec3d.aroundSquareOf(pos.add(start), pos.add(end), 0.05d);
 
         int count = MathHelper.floor(50f * percent);
         for (int i = 0; i < count; i++) {
             int j = random.nextInt(particlePoses.size()-1);
             Vec3d particlePos = particlePoses.get(j);
-            Vec3d path = particlePos.subtract(centerPos);
-            path = particlePos.add(path.multiply(1 + random.nextDouble() * 5));
+            Vec3d path = particlePos
+                    .subtract(centerPos)
+                    .multiply(1 + random.nextDouble())
+                    .rotateX((0.5f - random.nextFloat()) * MathHelper.PI / 2)
+                    .rotateY((0.5f - random.nextFloat()) * MathHelper.PI / 2)
+                    .rotateZ((0.5f - random.nextFloat()) * MathHelper.PI / 2);
+            path = particlePos.add(path);
             world.addParticle(GLINT_PARTICLE, particlePos.x, particlePos.y, particlePos.z, path.x, path.y, path.z);
         }
     }
