@@ -25,6 +25,7 @@ import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
+import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.gecko.EGeoNetwork;
 
 import java.util.ArrayList;
@@ -68,6 +69,8 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(CLOS_PARTICLE, ZoneParticle.ClosFactory::new);
         ParticleFactoryRegistry.getInstance().register(VIA_PARTICLE, ZoneParticle.ViaFactory::new);
 
+        ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
+
         ModelPredicateProviderRegistry.register(GLINT, new Identifier("ether_percentage"), ((stack, world, entity, seed) -> {
             EtherGlint glint = new EtherGlint(stack);
             return glint.getStoredEther() / glint.getMaxEther();
@@ -77,6 +80,7 @@ public class EtherologyClient implements ClientModInitializer {
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();
+        EtherNetwork.registerPackets();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (chapters == null && client.textRenderer != null) {

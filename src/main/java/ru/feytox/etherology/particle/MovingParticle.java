@@ -22,18 +22,18 @@ public class MovingParticle extends SpriteBillboardParticle {
     protected double endZ;
 
 
-    public MovingParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+    public MovingParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
         // end coords = velocity
-        super(clientWorld, d, e, f, g, h, i);
-        this.x = d;
-        this.y = e;
-        this.z = f;
+        super(clientWorld, x0, y0, z0, x1, y1, z1);
+        this.x = x0;
+        this.y = y0;
+        this.z = z0;
         this.startX = this.x;
         this.startY = this.y;
         this.startZ = this.z;
-        this.endX = g;
-        this.endY = h;
-        this.endZ = i;
+        this.endX = x1;
+        this.endY = y1;
+        this.endZ = z1;
         this.maxAge = 80;
     }
 

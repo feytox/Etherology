@@ -23,12 +23,16 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.items.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
+import ru.feytox.etherology.particle.GlintParticle;
+import ru.feytox.etherology.util.feyapi.EtherNetwork;
+import ru.feytox.etherology.util.feyapi.PacketUpdatable;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
+import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_SOCKET_BLOCK_ENTITY;
 import static ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 
-public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory {
+public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, PacketUpdatable {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private boolean isUpdated = false;
     private float cachedPercent = 0;
@@ -50,6 +54,10 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         cachePercent();
+        if (isUpdated) {
+            GlintParticle.spawnParticles(world, pos, state.get(FACING), cachedPercent);
+            isUpdated = false;
+        }
     }
 
     public void cachePercent() {
@@ -64,6 +72,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
         ItemStack useStack = player.getMainHandStack();
 
         if (glintStack.isEmpty() && useStack.getItem() instanceof AbstractGlintItem) {
+            // вставка глинта
             ItemStack takingStack = useStack.copy();
             useStack = glintStack;
             glintStack = takingStack;
@@ -74,9 +83,11 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
             markDirty();
             isUpdated = true;
             world.playSound(null, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 0.6f, 0.95f);
+            EtherNetwork.sendBlockUpdate(world, this);
             return ActionResult.CONSUME;
 
         } else if (glintStack.getItem() instanceof AbstractGlintItem && useStack.isEmpty()) {
+            // забирание глинта
             ItemStack takingStack = glintStack.copy();
             glintStack.setCount(0);
             player.setStackInHand(Hand.MAIN_HAND, takingStack);
@@ -207,5 +218,10 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
 
     public float getCachedPercent() {
         return cachedPercent;
+    }
+
+    @Override
+    public void onPacketUpdate(ClientWorld world) {
+        isUpdated = true;
     }
 }
