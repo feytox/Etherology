@@ -30,12 +30,12 @@ public class GlintParticle extends SpriteBillboardParticle {
     public GlintParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
         super(clientWorld, x0, y0, z0, x1, y1, z1);
         scale(0.1f);
-        maxAge = 35 + this.random.nextInt(15);
+        maxAge = 25 + this.random.nextInt(15);
         updateVec(x0, y0, z0, x1, y1, z1);
 
         firstAge = MathHelper.floor(random.nextDouble() * maxAge / 4f);
 
-        RGBColor color = FeyColor.getRandomColor(RGBColor.of(0xffc900), RGBColor.of(0xff8c00), random);
+        RGBColor color = FeyColor.getRandomColor(RGBColor.of(0xFFFFA8), RGBColor.of(0xF1AE75), random);
         setRGB(color);
     }
 
@@ -52,17 +52,17 @@ public class GlintParticle extends SpriteBillboardParticle {
         }
 
         if (age < firstAge) {
-            acceleratedMoveOnVec(0.1f, 0.66f, false, false);
+            acceleratedMoveOnVec(0.1f, 0.6f, false, false);
         } else if (age < maxAge / 2) {
             randomRotateVec(MathHelper.PI / 7);
-            acceleratedMoveOnVec(0.05f, 0.8f, false, false);
+            acceleratedMoveOnVec(0.05f, 0.6f, false, false);
         } else if (age == maxAge / 2) {
-            currentVec = currentVec.multiply(0.3);
+            currentVec = currentVec.multiply(0.09);
             secondComplete = true;
         }
         if (secondComplete) {
             randomRotateVec(MathHelper.PI / 9);
-            acceleratedMoveOnVec(0.1f, 1f, false, true);
+            acceleratedMoveOnVec(0.04f, 0.4f, false, true);
         }
     }
 
@@ -150,13 +150,13 @@ public class GlintParticle extends SpriteBillboardParticle {
 
         List<Vec3d> particlePoses = EVec3d.aroundSquareOf(pos.add(start), pos.add(end), 0.05d);
 
-        int count = MathHelper.floor(50f * percent);
+        int count = MathHelper.floor(25f * percent);
         for (int i = 0; i < count; i++) {
             int j = random.nextInt(particlePoses.size()-1);
             Vec3d particlePos = particlePoses.get(j);
             Vec3d path = particlePos
                     .subtract(centerPos)
-                    .multiply(random.nextDouble() * 0.13);
+                    .multiply(random.nextDouble() * 1);
             path = particlePos.add(path);
             world.addParticle(GLINT_PARTICLE, particlePos.x, particlePos.y, particlePos.z, path.x, path.y, path.z);
         }
