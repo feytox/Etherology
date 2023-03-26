@@ -1,7 +1,6 @@
 package ru.feytox.etherology.items.glints;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.BundleTooltipData;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.item.ItemStack;
@@ -46,8 +45,9 @@ public abstract class AbstractGlintItem extends SimpleItem {
         float storedEther = nbt.getFloat("stored_ether");
         int etherValue = MathHelper.floor(storedEther);
 
+        int slots = MathHelper.floor(maxEther / 64);
         DefaultedList<ItemStack> defaultedList = DefaultedList.of();
-        for (int i = 0; i < 3 && etherValue > 0; i++) {
+        for (int i = 0; i < slots && etherValue > 0; i++) {
             int count = Math.min(64, etherValue);
             etherValue -= count;
             ItemStack etherStack = ETHER_SHARD.getDefaultStack();
@@ -55,7 +55,7 @@ public abstract class AbstractGlintItem extends SimpleItem {
             defaultedList.add(etherStack);
         }
 
-        return Optional.of(new BundleTooltipData(defaultedList, MathHelper.floor(storedEther)));
+        return Optional.of(new GlintTooltipData(defaultedList, MathHelper.floor(storedEther), MathHelper.floor(maxEther)));
     }
 
     @Override

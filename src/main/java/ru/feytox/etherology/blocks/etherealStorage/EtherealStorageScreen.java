@@ -22,7 +22,7 @@ public class EtherealStorageScreen extends HandledScreen<EtherealStorageScreenHa
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - 175) / 2;
-        int y = (height - 171) / 2;
+        int y = (height - 135) / 2;
         drawTexture(matrices, x, y, 0, 0, 175, 171);
     }
 
@@ -37,7 +37,7 @@ public class EtherealStorageScreen extends HandledScreen<EtherealStorageScreenHa
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY -= 5;
-        playerInventoryTitleY += 4;
+        titleY += 13;
+        playerInventoryTitleY -= 14;
     }
 }

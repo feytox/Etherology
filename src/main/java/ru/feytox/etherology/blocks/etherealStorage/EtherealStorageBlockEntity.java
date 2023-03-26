@@ -44,8 +44,8 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     private static final RawAnimation OPEN_ANIM;
     private static final RawAnimation CLOSE_ANIM;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(12, ItemStack.EMPTY);
-    private static final float MAX_ETHER = 64f * 3;
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
+    private static final float MAX_ETHER = 64f;
     private float storageEther;
     private int viewers = 0;
     private boolean isOpen = false;
@@ -164,16 +164,9 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
         if (world.getTime() % 5 != 0) return;
 
         int etherValue = MathHelper.floor(storageEther);
-        setStack(9, ItemStack.EMPTY);
-        setStack(10, ItemStack.EMPTY);
-        setStack(11, ItemStack.EMPTY);
-        for (int i = 0; i < 3 && etherValue > 0; i++) {
-            int count = Math.min(64, etherValue);
-            etherValue -= count;
-            ItemStack stack = ETHER_SHARD.getDefaultStack();
-            stack.setCount(count);
-            setStack(9 + i, stack);
-        }
+        ItemStack stack = ETHER_SHARD.getDefaultStack();
+        stack.setCount(etherValue);
+        setStack(3, stack);
     }
 
     @Override
@@ -237,7 +230,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
 
     public List<EtherGlint> getGlints() {
         List<EtherGlint> glints = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 3; i++) {
             ItemStack glintStack = getItems().get(i);
             if (!(glintStack.getItem() instanceof AbstractGlintItem)) continue;
             glints.add(new EtherGlint(glintStack));

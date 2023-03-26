@@ -54,8 +54,8 @@ public class EtherealStorageBlock extends HorizontalFacingBlock implements Regis
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity be = world.getBlockEntity(pos);
             if (be instanceof EtherealStorageBlockEntity etherStorage) {
-                List<ItemStack> stacks = etherStorage.getItems().subList(0, 9);
-                for (int i = 0; i < 9; i++) {
+                List<ItemStack> stacks = etherStorage.getItems().subList(0, 4);
+                for (int i = 0; i < 4; i++) {
                     ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), stacks.get(i));
                 }
                 etherStorage.clear();

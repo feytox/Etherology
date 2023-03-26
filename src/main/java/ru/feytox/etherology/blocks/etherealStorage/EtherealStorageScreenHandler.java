@@ -16,12 +16,12 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
     public EtherealStorageScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(12));
+        this(syncId, playerInventory, new SimpleInventory(4));
     }
 
     public EtherealStorageScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(Etherology.ETHEREAL_STORAGE_SCREEN_HANDLER, syncId);
-        checkSize(inventory, 12);
+        checkSize(inventory, 4);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
 
@@ -29,25 +29,20 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
         int l;
         //Glints inventory
         for (m = 0; m < 3; ++m) {
-            for (l = 0; l < 3; ++l) {
-                this.addSlot(new TypedSlot<>(AbstractGlintItem.class, inventory,
-                        l + m * 3, 79 + l * 19, 17 + m * 18));
-            }
+            this.addSlot(new TypedSlot<>(AbstractGlintItem.class, inventory, m, 79 + m * 19, 35));
         }
         //Ether inventory
-        for (m = 0; m < 3; ++m) {
-            this.addSlot(new ClosedSlot(this.inventory, m + 9, 35, 17 + m * 18));
-        }
+        this.addSlot(new ClosedSlot(this.inventory, 3, 35, 35));
 
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 87 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 69 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 145));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 127));
         }
     }
 

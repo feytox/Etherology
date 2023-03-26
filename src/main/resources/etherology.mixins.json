@@ -11,7 +11,8 @@
     "WorldRendererAccessor"
   ],
   "client": [
-    "InGameHudMixin"
+    "InGameHudMixin",
+    "TooltipComponentMixin"
   ],
   "injectors": {
     "defaultRequire": 1

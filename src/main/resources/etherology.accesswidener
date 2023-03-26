@@ -1,2 +1,7 @@
 accessWidener v1 named
 accessible class net/minecraft/client/gui/hud/InGameHud$HeartType
+
+accessible method net/minecraft/client/gui/tooltip/BundleTooltipComponent getColumns ()I
+accessible method net/minecraft/client/gui/tooltip/BundleTooltipComponent getRows ()I
+extendable method net/minecraft/client/gui/tooltip/BundleTooltipComponent getColumns ()I
+extendable method net/minecraft/client/gui/tooltip/BundleTooltipComponent getRows ()I
