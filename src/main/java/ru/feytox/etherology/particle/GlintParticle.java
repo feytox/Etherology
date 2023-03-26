@@ -24,13 +24,16 @@ public class GlintParticle extends SpriteBillboardParticle {
     private double endX;
     private double endY;
     private double endZ;
+    private final int firstAge;
     private boolean secondComplete = false;
 
     public GlintParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
         super(clientWorld, x0, y0, z0, x1, y1, z1);
         scale(0.1f);
-        maxAge = 40 + this.random.nextInt(15);
+        maxAge = 35 + this.random.nextInt(15);
         updateVec(x0, y0, z0, x1, y1, z1);
+
+        firstAge = MathHelper.floor(random.nextDouble() * maxAge / 4f);
 
         RGBColor color = FeyColor.getRandomColor(RGBColor.of(0xffc900), RGBColor.of(0xff8c00), random);
         setRGB(color);
@@ -48,20 +51,18 @@ public class GlintParticle extends SpriteBillboardParticle {
             return;
         }
 
-        if (age < maxAge / 4) {
-            acceleratedMoveOnVec(0.1f, 0.85f, false, false);
+        if (age < firstAge) {
+            acceleratedMoveOnVec(0.1f, 0.66f, false, false);
         } else if (age < maxAge / 2) {
-            currentVec = currentVec
-                    .rotateX((0.5f - random.nextFloat()) * MathHelper.PI / 7)
-                    .rotateY((0.5f - random.nextFloat()) * MathHelper.PI / 7)
-                    .rotateZ((0.5f - random.nextFloat()) * MathHelper.PI / 7);
+            randomRotateVec(MathHelper.PI / 7);
             acceleratedMoveOnVec(0.05f, 0.8f, false, false);
         } else if (age == maxAge / 2) {
-            currentVec = currentVec.multiply(0.05);
+            currentVec = currentVec.multiply(0.3);
             secondComplete = true;
         }
         if (secondComplete) {
-            acceleratedMoveOnVec(0.2f, 0.9f, false, true);
+            randomRotateVec(MathHelper.PI / 9);
+            acceleratedMoveOnVec(0.1f, 1f, false, true);
         }
     }
 
@@ -87,6 +88,13 @@ public class GlintParticle extends SpriteBillboardParticle {
         z += deltaVec.z;
     }
 
+    private void randomRotateVec(float angle) {
+        currentVec = currentVec
+                .rotateX((0.5f - random.nextFloat()) * angle)
+                .rotateY((0.5f - random.nextFloat()) * angle)
+                .rotateZ((0.5f - random.nextFloat()) * angle);
+    }
+
     private void updateVec(double x0, double y0, double z0, double x1, double y1, double z1) {
         currentVec = new Vec3d(x1-x0, y1-y0, z1-z0);
         endX = x1;
@@ -110,7 +118,7 @@ public class GlintParticle extends SpriteBillboardParticle {
     public static void spawnParticles(ClientWorld world, BlockPos blockPos, Direction facing, float percent) {
         Random random = world.getRandom();
         Vec3d pos = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-        Vec3d centerPos = blockPos.toCenterPos().subtract(0, 0.5, 0);
+        Vec3d centerPos = blockPos.toCenterPos().subtract(0, 0.3, 0);
 
         double dxz = 6/16d;
         double dy = 0.25;
@@ -148,10 +156,7 @@ public class GlintParticle extends SpriteBillboardParticle {
             Vec3d particlePos = particlePoses.get(j);
             Vec3d path = particlePos
                     .subtract(centerPos)
-                    .multiply(1 + random.nextDouble())
-                    .rotateX((0.5f - random.nextFloat()) * MathHelper.PI / 2)
-                    .rotateY((0.5f - random.nextFloat()) * MathHelper.PI / 2)
-                    .rotateZ((0.5f - random.nextFloat()) * MathHelper.PI / 2);
+                    .multiply(random.nextDouble() * 0.13);
             path = particlePos.add(path);
             world.addParticle(GLINT_PARTICLE, particlePos.x, particlePos.y, particlePos.z, path.x, path.y, path.z);
         }
