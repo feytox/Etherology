@@ -26,8 +26,10 @@ public class GlintParticle extends SpriteBillboardParticle {
     private double endZ;
     private final int firstAge;
     private boolean secondComplete = false;
+    private final SpriteProvider spriteProvider;
+    private int currentSprite;
 
-    public GlintParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
+    public GlintParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1, SpriteProvider spriteProvider) {
         super(clientWorld, x0, y0, z0, x1, y1, z1);
         scale(0.1f);
         maxAge = 25 + this.random.nextInt(15);
@@ -37,6 +39,10 @@ public class GlintParticle extends SpriteBillboardParticle {
 
         RGBColor color = FeyColor.getRandomColor(RGBColor.of(0xFFFFA8), RGBColor.of(0xF1AE75), random);
         setRGB(color);
+
+        this.spriteProvider = spriteProvider;
+        currentSprite = 9 * (40 - maxAge) / 40;
+        setSprite(currentSprite, 9);
     }
 
     @Override
@@ -49,6 +55,11 @@ public class GlintParticle extends SpriteBillboardParticle {
         if (this.age++ >= this.maxAge) {
             this.markDead();
             return;
+        }
+
+        if (this.age % 4 == 0) {
+            currentSprite += 1;
+            setSprite(currentSprite, 9);
         }
 
         if (age < firstAge) {
@@ -100,6 +111,11 @@ public class GlintParticle extends SpriteBillboardParticle {
         endX = x1;
         endY = y1;
         endZ = z1;
+    }
+
+    public void setSprite(int i, int spriteCount) {
+        if (!isAlive()) return;
+        setSprite(spriteProvider.getSprite(Math.min(i, spriteCount-1), spriteCount-1));
     }
 
     @Override
@@ -173,9 +189,7 @@ public class GlintParticle extends SpriteBillboardParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            GlintParticle particle = new GlintParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-            particle.setSprite(this.spriteProvider);
-            return particle;
+            return new GlintParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider);
         }
     }
 }
