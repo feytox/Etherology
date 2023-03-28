@@ -17,6 +17,8 @@ import ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock;
 import ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlockEntity;
 import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlock;
 import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlockEntity;
+import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnace;
+import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceBlockEntity;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlockEntity;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock;
@@ -127,6 +129,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_socket_block_entity"),
             FabricBlockEntityTypeBuilder.create(EtherealSocketBlockEntity::new, ETHEREAL_SOCKET).build()
+    );
+
+    public static final EtherealFurnace ETHEREAL_FURNACE = (EtherealFurnace) new EtherealFurnace().registerAll();
+    public static final BlockEntityType<EtherealFurnaceBlockEntity> ETHEREAL_FURNACE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("ethereal_furnace_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EtherealFurnaceBlockEntity::new, ETHEREAL_FURNACE).build()
     );
 
     public static void register() {}

@@ -15,6 +15,7 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.blocks.closet.ClosetScreen;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
 import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
+import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreen;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreen;
@@ -54,6 +55,7 @@ public class EtherologyClient implements ClientModInitializer {
         HandledScreens.register(Etherology.ETHER_SCREEN_HANDLER, EtherWorkbenchScreen::new);
         HandledScreens.register(Etherology.CLOSET_SCREEN_HANDLER, ClosetScreen::new);
         HandledScreens.register(ETHEREAL_STORAGE_SCREEN_HANDLER, EtherealStorageScreen::new);
+        HandledScreens.register(ETHEREAL_FURNACE_SCREEN_HANDLER, EtherealFurnaceScreen::new);
 
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, ElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);

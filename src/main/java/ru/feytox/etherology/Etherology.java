@@ -16,6 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.blocks.closet.ClosetScreenHandler;
 import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
+import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreenHandler;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreenHandler;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.enums.MixTypes;
@@ -41,6 +42,7 @@ public class Etherology implements ModInitializer {
                     new EtherWorkbenchScreenHandler(syncId, inventory)));
     public static final ScreenHandlerType<ClosetScreenHandler> CLOSET_SCREEN_HANDLER = new ScreenHandlerType<>(ClosetScreenHandler::new);
     public static final ScreenHandlerType<EtherealStorageScreenHandler> ETHEREAL_STORAGE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealStorageScreenHandler::new);
+    public static final ScreenHandlerType<EtherealFurnaceScreenHandler> ETHEREAL_FURNACE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealFurnaceScreenHandler::new);
 
     public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
