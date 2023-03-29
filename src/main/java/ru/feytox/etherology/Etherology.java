@@ -1,5 +1,6 @@
 package ru.feytox.etherology;
 
+import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -14,6 +15,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.slf4j.Logger;
 import ru.feytox.etherology.blocks.closet.ClosetScreenHandler;
 import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreenHandler;
@@ -36,6 +38,7 @@ import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSEN
 
 public class Etherology implements ModInitializer {
 
+    public static final Logger ELOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "etherology";
     public static final ExtendedScreenHandlerType<EtherWorkbenchScreenHandler> ETHER_SCREEN_HANDLER =
             new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->

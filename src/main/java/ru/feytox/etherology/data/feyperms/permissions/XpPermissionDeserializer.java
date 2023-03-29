@@ -1,9 +1,9 @@
-package ru.feytox.etherology.feyperms.permissions;
+package ru.feytox.etherology.data.feyperms.permissions;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import ru.feytox.etherology.feyperms.PermissionDeserializer;
 import net.minecraft.util.Identifier;
+import ru.feytox.etherology.data.feyperms.PermissionDeserializer;
 
 public class XpPermissionDeserializer extends PermissionDeserializer<XpPermission> {
     public XpPermissionDeserializer() {

@@ -1,17 +1,16 @@
-package ru.feytox.etherology.feyperms;
+package ru.feytox.etherology.data.feyperms;
 
 import com.google.common.collect.Lists;
-import com.mojang.logging.LogUtils;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import ru.feytox.etherology.feyperms.permissions.EssenceVisualPermission;
-import ru.feytox.etherology.feyperms.permissions.XpPermissionDeserializer;
+import ru.feytox.etherology.data.feyperms.permissions.EssenceVisualPermission;
+import ru.feytox.etherology.data.feyperms.permissions.XpPermissionDeserializer;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.*;
 
+import static ru.feytox.etherology.Etherology.ELOGGER;
+
 public class PermissionManager {
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final PermissionManager INSTANCE = new PermissionManager();
 
     private Map<Identifier, Permission> registeredPermissions = new HashMap<>();
@@ -49,7 +48,7 @@ public class PermissionManager {
             if (registeredPermissions.containsKey(id)) {
                 result.add(registeredPermissions.get(id));
             } else {
-                LOGGER.error("Unexpected permission identifier {}", id);
+                ELOGGER.error("Unexpected permission identifier {}", id);
             }
         });
         return result;

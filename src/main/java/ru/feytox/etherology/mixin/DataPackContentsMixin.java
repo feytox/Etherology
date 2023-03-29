@@ -5,7 +5,7 @@ import net.minecraft.server.DataPackContents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import ru.feytox.etherology.feyperms.FeyPermissionLoader;
+import ru.feytox.etherology.data.feyperms.FeyPermissionLoader;
 
 import java.util.ArrayList;
 import java.util.List;

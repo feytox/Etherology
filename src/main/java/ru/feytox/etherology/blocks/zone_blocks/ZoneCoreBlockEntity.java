@@ -1,17 +1,6 @@
 package ru.feytox.etherology.blocks.zone_blocks;
 
 import com.google.common.collect.Lists;
-import ru.feytox.etherology.BlocksRegistry;
-import ru.feytox.etherology.feyperms.Permissible;
-import ru.feytox.etherology.feyperms.Permission;
-import ru.feytox.etherology.feyperms.PermissionManager;
-import ru.feytox.etherology.magic.zones.EssenceConsumer;
-import ru.feytox.etherology.magic.zones.EssenceDetectable;
-import ru.feytox.etherology.magic.zones.EssenceSupplier;
-import ru.feytox.etherology.magic.zones.EssenceZones;
-import ru.feytox.etherology.particle.ZoneParticle;
-import ru.feytox.etherology.util.nbt.FeyNbtList;
-import ru.feytox.etherology.util.nbt.NbtBlockPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,6 +16,17 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.BlocksRegistry;
+import ru.feytox.etherology.data.feyperms.Permissible;
+import ru.feytox.etherology.data.feyperms.Permission;
+import ru.feytox.etherology.data.feyperms.PermissionManager;
+import ru.feytox.etherology.magic.zones.EssenceConsumer;
+import ru.feytox.etherology.magic.zones.EssenceDetectable;
+import ru.feytox.etherology.magic.zones.EssenceSupplier;
+import ru.feytox.etherology.magic.zones.EssenceZones;
+import ru.feytox.etherology.particle.ZoneParticle;
+import ru.feytox.etherology.util.nbt.FeyNbtList;
+import ru.feytox.etherology.util.nbt.NbtBlockPos;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,15 +1,13 @@
-package ru.feytox.etherology.feyperms;
+package ru.feytox.etherology.data.feyperms;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.logging.LogUtils;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -17,8 +15,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static ru.feytox.etherology.Etherology.ELOGGER;
+
 public class FeyPermissionLoader extends JsonDataLoader {
-    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
     public static final FeyPermissionLoader INSTANCE = new FeyPermissionLoader();
@@ -33,7 +32,7 @@ public class FeyPermissionLoader extends JsonDataLoader {
 
     public Map<Identifier, Permission> getPermissions() {
         if (!loaded) {
-            LOGGER.error("FeyPermissions didn't reloaded!");
+            ELOGGER.error("FeyPermissions didn't reloaded!");
             return new HashMap<>();
         }
         return permissions;
@@ -51,10 +50,10 @@ public class FeyPermissionLoader extends JsonDataLoader {
                 PermissionDeserializer<?> deserializer = getDeserializer(deserializerName);
                 assert deserializer != null;
                 Permission permission = deserializer.deserialize(id, json);
-                LOGGER.info("{} has been loaded!", id);
+                ELOGGER.info("{} has been loaded!", id);
                 builder.put(id, permission);
             } catch (Exception e) {
-                LOGGER.error("Couldn't parse permission {}", id, e);
+                ELOGGER.error("Couldn't parse permission {}", id, e);
             }
         });
 

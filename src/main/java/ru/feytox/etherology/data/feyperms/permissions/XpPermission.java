@@ -1,9 +1,9 @@
-package ru.feytox.etherology.feyperms.permissions;
+package ru.feytox.etherology.data.feyperms.permissions;
 
-import ru.feytox.etherology.feyperms.Permission;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import ru.feytox.etherology.data.feyperms.Permission;
 
 public class XpPermission extends Permission {
     private final int xp_level;

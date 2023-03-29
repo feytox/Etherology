@@ -1,10 +1,10 @@
-package ru.feytox.etherology.feyperms.permissions;
+package ru.feytox.etherology.data.feyperms.permissions;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
-import ru.feytox.etherology.feyperms.Permission;
+import ru.feytox.etherology.data.feyperms.Permission;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EssenceVisualPermission extends Permission {

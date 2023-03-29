@@ -1,4 +1,4 @@
-package ru.feytox.etherology.feyperms;
+package ru.feytox.etherology.data.feyperms;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;

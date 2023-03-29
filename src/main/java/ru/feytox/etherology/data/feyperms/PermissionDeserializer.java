@@ -1,4 +1,4 @@
-package ru.feytox.etherology.feyperms;
+package ru.feytox.etherology.data.feyperms;
 
 import com.google.gson.JsonElement;
 import net.minecraft.util.Identifier;
