@@ -34,8 +34,7 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
         this.addProperties(propertyDelegate);
 
         // fuel slot
-        // FIXME: 28/03/2023 убрать и заменить!
-        this.addSlot(new SpecificSlot(inventory, Items.COAL, 0, 8, 32));
+        this.addSlot(new SpecificSlot(inventory, Items.BLAZE_POWDER, 0, 8, 32));
 
         // item slot
         this.addSlot(new Slot(inventory, 1, 38, 35));

@@ -5,6 +5,7 @@ import net.minecraft.server.DataPackContents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import ru.feytox.etherology.data.ethersource.EtherSourceLoader;
 import ru.feytox.etherology.data.feyperms.FeyPermissionLoader;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class DataPackContentsMixin {
     private static List<ResourceReloader> injectContents(DataPackContents instance) {
         List<ResourceReloader> contents = new ArrayList<>(instance.getContents());
         contents.add(FeyPermissionLoader.INSTANCE);
+        contents.add(EtherSourceLoader.INSTANCE);
         return contents;
     }
 

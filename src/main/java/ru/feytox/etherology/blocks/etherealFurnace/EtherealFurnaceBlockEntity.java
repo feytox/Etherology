@@ -6,7 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -22,13 +22,19 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.data.ethersource.EtherSources;
+import ru.feytox.etherology.magic.ether.EtherCounter;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+
+import java.util.Collections;
+import java.util.List;
 
 import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_FURNACE_BLOCK_ENTITY;
 import static ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnace.LIT;
 
-public class EtherealFurnaceBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory {
+public class EtherealFurnaceBlockEntity extends TickableBlockEntity
+        implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter {
     public static final int MAX_FUEL = 8;
     // TODO: 28/03/2023 спросить, точно ли одинаково у всех
     private static final int DEFAULT_COOK_TIME = 20*10;
@@ -77,6 +83,7 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity implements E
 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
+        tickEtherCount(world);
         cookingTick(world, state);
         transferTick(world);
 
@@ -89,31 +96,39 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity implements E
     public void cookingTick(ServerWorld world, BlockState state) {
         if (fuel == 0) tryConsumeFuel();
         boolean isCooking = isCooking();
+        boolean stateChanged = false;
         if (isCooking) cookTime++;
 
         if (!isCooking && isCookingValid()) {
+            // старт эфирования
             totalCookTime = DEFAULT_COOK_TIME;
             cookTime = 1;
+            stateChanged = true;
             markDirty();
         } else if (isCooking && !isCookingValid()) {
+            // остановка эфирования
             totalCookTime = 0;
             cookTime = 0;
+            stateChanged = true;
             markDirty();
         }
 
-        if (isCooking && cookTime >= totalCookTime && isEnoughSpace()) {
+        if (isCooking && cookTime >= totalCookTime && totalCookTime != 0 && isEnoughSpace()) {
+            // завершение эфирования
             ItemStack consumedItem = getStack(1);
-            float etherPoints = getEtherFuel(consumedItem.getItem());
+            float etherPoints = EtherSources.getEtherFuel(consumedItem.getItem());
             increment(etherPoints);
             consumedItem.decrement(1);
 
             cookTime = 0;
             totalCookTime = 0;
             fuel--;
+            stateChanged = !isCookingValid();
+            updateCount();
             markDirty();
         }
 
-        if (isCooking != isCooking()) {
+        if (stateChanged) {
             BlockState newState = state.with(LIT, isCooking());
             world.setBlockState(pos, newState, Block.NOTIFY_ALL);
             markDirty();
@@ -131,27 +146,20 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity implements E
     }
 
     public boolean isCookingValid() {
-        return fuel != 0 && getEtherFuel(getStack(1).getItem()) != 0;
+        return fuel != 0 && EtherSources.isEtherSource(getStack(1).getItem());
     }
 
     public void tryConsumeFuel() {
         ItemStack fuelStack = getStack(0);
-        if (!fuelStack.isOf(Items.COAL)) return;
+        if (!fuelStack.isOf(Items.BLAZE_POWDER)) return;
 
         fuel = MAX_FUEL;
         fuelStack.decrement(1);
         markDirty();
     }
 
-    public static float getEtherFuel(Item item) {
-        // TODO: 28/03/2023 добавить определение того, что предмет лежит переделываемый
-        if (!item.equals(Items.ACACIA_BUTTON)) return 0;
-
-        return 4;
-    }
-
     public boolean isEnoughSpace() {
-        return getEtherFuel(getStack(0).getItem()) + storedEther <= getMaxEther();
+        return EtherSources.getEtherFuel(getStack(0).getItem()) + storedEther <= getMaxEther();
     }
 
     @Override
@@ -247,5 +255,25 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity implements E
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new EtherealFurnaceScreenHandler(syncId, inv, this, propertyDelegate);
+    }
+
+    @Override
+    public float getEtherCount() {
+        return storedEther;
+    }
+
+    @Override
+    public List<Integer> getCounterSlots() {
+        return Collections.singletonList(2);
+    }
+
+    @Override
+    public Inventory getInventoryForCounter() {
+        return this;
+    }
+
+    @Override
+    public void tickEtherCount(ServerWorld world) {
+        if (world.getTime() % 5 == 0) updateCount();
     }
 }

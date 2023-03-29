@@ -25,12 +25,16 @@ public class EtherealFurnaceScreen extends HandledScreen<EtherealFurnaceScreenHa
         int x = (width - 175) / 2;
         int y = (height - 135) / 2;
         drawTexture(matrices, x, y, 0, 0, 175, 171);
+
+        float cookingPercent = 0;
         if (handler.isCooking()) {
-            int i = MathHelper.floor(62 * handler.getCookingPercent());
+            cookingPercent = handler.getCookingPercent();
+            int i = MathHelper.floor(62 * cookingPercent);
             drawTexture(matrices, x+57, y+21, 176, 0, i, 12);
         }
 
-        int j = MathHelper.floor(18 * handler.getFuelPercent());
+        float fullFuelPercent = handler.getFuelPercent() - (0.7f * cookingPercent / EtherealFurnaceBlockEntity.MAX_FUEL);
+        int j = MathHelper.floor(18 * fullFuelPercent);
         drawTexture(matrices, x+7, y+36, 176, 12, j, 4);
     }
 
