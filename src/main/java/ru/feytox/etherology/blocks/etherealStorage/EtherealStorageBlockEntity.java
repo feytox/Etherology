@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -19,9 +20,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.items.glints.AbstractGlintItem;
+import ru.feytox.etherology.magic.ether.EtherCounter;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
@@ -33,14 +34,14 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
-import static ru.feytox.etherology.ItemsRegistry.ETHER_SHARD;
 import static ru.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock.FACING;
 
 public class EtherealStorageBlockEntity extends TickableBlockEntity
-        implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory {
+        implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter {
     private static final RawAnimation OPEN_ANIM;
     private static final RawAnimation CLOSE_ANIM;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -58,7 +59,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         transferTick(world);
         glintTick(world);
-        etherItemTick(world);
+        tickEtherCount(world);
     }
 
     @Override
@@ -160,13 +161,9 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
         storageEther = Math.min(MAX_ETHER, storageEther + tipValue);
     }
 
-    public void etherItemTick(ServerWorld world) {
-        if (world.getTime() % 5 != 0) return;
-
-        int etherValue = MathHelper.floor(storageEther);
-        ItemStack stack = ETHER_SHARD.getDefaultStack();
-        stack.setCount(etherValue);
-        setStack(3, stack);
+    @Override
+    public void tickEtherCount(ServerWorld world) {
+        if (world.getTime() % 5 == 0) updateCount();
     }
 
     @Override
@@ -264,5 +261,20 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public float getEtherCount() {
+        return storageEther;
+    }
+
+    @Override
+    public List<Integer> getCounterSlots() {
+        return Collections.singletonList(3);
+    }
+
+    @Override
+    public Inventory getInventoryForCounter() {
+        return this;
     }
 }
