@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -34,10 +35,9 @@ import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_FURNACE_BLOCK_ENTITY;
 import static ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnace.LIT;
 
 public class EtherealFurnaceBlockEntity extends TickableBlockEntity
-        implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter {
+        implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {
     public static final int MAX_FUEL = 8;
-    // TODO: 28/03/2023 спросить, точно ли одинаково у всех
-    private static final int DEFAULT_COOK_TIME = 20*10;
+    public static final int DEFAULT_COOK_TIME = 20*15;
     private float storedEther;
     // 0 - fuel, 1 - item, 2 - ether
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
@@ -108,8 +108,14 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         } else if (isCooking && !isCookingValid()) {
             // остановка эфирования
             totalCookTime = 0;
-            cookTime = 0;
             stateChanged = true;
+            markDirty();
+        }
+
+        if (isDegrade()) {
+            // уменьшение шкалы после остановки
+            cookTime = Math.max(0, cookTime - 2);
+            if (cookTime == 0) stateChanged = true;
             markDirty();
         }
 
@@ -129,7 +135,7 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         }
 
         if (stateChanged) {
-            BlockState newState = state.with(LIT, isCooking());
+            BlockState newState = state.with(LIT, isCooking() || isDegrade());
             world.setBlockState(pos, newState, Block.NOTIFY_ALL);
             markDirty();
         }
@@ -141,8 +147,12 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         super.markDirty();
     }
 
+    public boolean isDegrade() {
+        return totalCookTime == 0 && cookTime > 0;
+    }
+
     public boolean isCooking() {
-        return cookTime != 0;
+        return totalCookTime != 0;
     }
 
     public boolean isCookingValid() {
@@ -275,5 +285,38 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
     @Override
     public void tickEtherCount(ServerWorld world) {
         if (world.getTime() % 5 == 0) updateCount();
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        switch (side) {
+            case UP -> {
+                return new int[]{1};
+            }
+            case NORTH, SOUTH, EAST, WEST -> {
+                return new int[]{0};
+            }
+        }
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+        if (dir == null) return false;
+
+        switch (dir) {
+            case UP -> {
+                return true;
+            }
+            case NORTH, SOUTH, EAST, WEST -> {
+                return stack.isOf(Items.BLAZE_POWDER);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+        return false;
     }
 }

@@ -27,7 +27,7 @@ public class EtherealFurnaceScreen extends HandledScreen<EtherealFurnaceScreenHa
         drawTexture(matrices, x, y, 0, 0, 175, 171);
 
         float cookingPercent = 0;
-        if (handler.isCooking()) {
+        if (handler.isCooking() || handler.isDegrade()) {
             cookingPercent = handler.getCookingPercent();
             int i = MathHelper.floor(62 * cookingPercent);
             drawTexture(matrices, x+57, y+21, 176, 0, i, 12);

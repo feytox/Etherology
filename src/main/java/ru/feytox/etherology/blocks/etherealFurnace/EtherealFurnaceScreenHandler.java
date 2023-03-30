@@ -84,7 +84,11 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
     }
 
     public boolean isCooking() {
-        return propertyDelegate.get(1) != 0;
+        return propertyDelegate.get(2) != 0;
+    }
+
+    public boolean isDegrade() {
+        return propertyDelegate.get(2) == 0 && propertyDelegate.get(1) != 0;
     }
 
     public float getFuelPercent() {
@@ -92,6 +96,6 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
     }
 
     public float getCookingPercent() {
-        return propertyDelegate.get(2) == 0 ? 0 : Math.min(1, (float) propertyDelegate.get(1) / propertyDelegate.get(2));
+        return Math.min(1.0f, (float) propertyDelegate.get(1) / EtherealFurnaceBlockEntity.DEFAULT_COOK_TIME);
     }
 }
