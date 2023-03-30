@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -41,7 +42,7 @@ import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
 import static ru.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock.FACING;
 
 public class EtherealStorageBlockEntity extends TickableBlockEntity
-        implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter {
+        implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {
     private static final RawAnimation OPEN_ANIM;
     private static final RawAnimation CLOSE_ANIM;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -276,5 +277,20 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     @Override
     public Inventory getInventoryForCounter() {
         return this;
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        return new int[]{0,1,2};
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+        return true;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+        return false;
     }
 }
