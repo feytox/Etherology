@@ -16,6 +16,7 @@ import ru.feytox.etherology.blocks.closet.ClosetScreen;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
 import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreen;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreen;
+import ru.feytox.etherology.blocks.etherealGenerators.spinner.EtherealSpinnerRenderer;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreen;
@@ -51,6 +52,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_STORAGE_BLOCK_ENTITY, EtherealStorageRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_SOCKET_BLOCK_ENTITY, EtherealSocketRenderer::new);
+        BlockEntityRendererFactories.register(ETHEREAL_SPINNER_BLOCK_ENTITY, EtherealSpinnerRenderer::new);
 
         HandledScreens.register(Etherology.ETHER_SCREEN_HANDLER, EtherWorkbenchScreen::new);
         HandledScreens.register(Etherology.CLOSET_SCREEN_HANDLER, ClosetScreen::new);

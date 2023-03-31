@@ -19,6 +19,8 @@ import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlock;
 import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlockEntity;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnace;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceBlockEntity;
+import ru.feytox.etherology.blocks.etherealGenerators.spinner.EtherealSpinnerBlock;
+import ru.feytox.etherology.blocks.etherealGenerators.spinner.EtherealSpinnerBlockEntity;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlockEntity;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageBlock;
@@ -136,6 +138,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_furnace_block_entity"),
             FabricBlockEntityTypeBuilder.create(EtherealFurnaceBlockEntity::new, ETHEREAL_FURNACE).build()
+    );
+
+    public static final EtherealSpinnerBlock ETHEREAL_SPINNER = (EtherealSpinnerBlock) new EtherealSpinnerBlock().registerAll();
+    public static final BlockEntityType<EtherealSpinnerBlockEntity> ETHEREAL_SPINNER_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("ethereal_spinner_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EtherealSpinnerBlockEntity::new, ETHEREAL_SPINNER).build()
     );
 
     public static void register() {}
