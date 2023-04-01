@@ -11,6 +11,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherStorage;
@@ -33,31 +34,71 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     private int nextGenTime = 40*20;
     private boolean isInZone = false;
     private boolean isLaunched = false;
+    private boolean isMess = false;
 
     public AbstractEtherealGeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public void unstall(ServerWorld world, BlockState state) {
-        world.setBlockState(pos, state.with(STALLED, false));
-
+    public void spinAnim(ServerWorld world) {
         EGeoNetwork.sendStopAnim(world, pos, "stalled");
         EGeoNetwork.sendStartAnim(world, pos, "spin");
     }
 
+    public void unstall(ServerWorld world, BlockState state) {
+        world.setBlockState(pos, state.with(STALLED, false));
+        spinAnim(world);
+    }
+
+    public void stallAnim(ServerWorld world) {
+        EGeoNetwork.sendStopAnim(world, pos, "spin");
+        EGeoNetwork.sendStartAnim(world, pos, "stalled");
+    }
+
+    public void stall(ServerWorld world, BlockState state) {
+        world.setBlockState(pos, state.with(STALLED, true));
+        stallAnim(world);
+    }
+
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (!isLaunched) triggerAnim("spin");
+        if (!isLaunched) {
+            triggerAnim(state.get(STALLED) ? "stalled" : "spin");
+            isLaunched = true;
+        }
     }
 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         transferTick(world);
-        generateTick(world);
+        generateTick(world, state);
+        tickMessCheck(world);
     }
 
-    public void generateTick(ServerWorld world) {
-        if (getCachedState().get(STALLED)) return;
+    public void tickMessCheck(ServerWorld world) {
+        if (world.getTime() % 20 != 0) return;
+
+        Vec3i radiusVec = new Vec3i(3, 3, 3);
+        Iterable<BlockPos> blockPoses = BlockPos.iterate(pos.subtract(radiusVec), pos.add(radiusVec));
+
+        boolean result = true;
+        for (BlockPos blockPos : blockPoses) {
+            if (blockPos.equals(pos)) continue;
+            BlockState blockState = world.getBlockState(blockPos);
+            if (blockState.getBlock() instanceof AbstractEtherealGenerator && !blockState.get(STALLED)) {
+                result = false;
+                break;
+            }
+        }
+
+        if (result == isMess) {
+            isMess = !result;
+            markDirty();
+        }
+    }
+
+    public void generateTick(ServerWorld world, BlockState state) {
+        if (state.get(STALLED) || isMess) return;
 
         Random random = world.getRandom();
         if (nextGenTime-- > 0) {
@@ -72,7 +113,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
             nextGenTime = random.nextBetween(min, max);
 
             if (random.nextDouble() <= generator.getStopChance(isInZone)) {
-                world.setBlockState(pos, world.getBlockState(pos).with(STALLED, true));
+                stall(world, state);
             }
         }
     }
@@ -161,6 +202,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
         nbt.putFloat("stored_ether", storedEther);
         nbt.putBoolean("is_in_zone", isInZone);
         nbt.putInt("next_gen_time", nextGenTime);
+        nbt.putBoolean("is_mess", isMess);
 
         super.writeNbt(nbt);
     }
@@ -172,6 +214,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
         storedEther = nbt.getFloat("stored_ether");
         isInZone = nbt.getBoolean("is_in_zone");
         nextGenTime = nbt.getInt("next_gen_time");
+        isMess = nbt.getBoolean("is_mess");
     }
 
     public abstract RawAnimation getSpinAnimation();

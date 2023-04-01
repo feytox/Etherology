@@ -29,6 +29,8 @@
   "block.etherology.ethereal_storage.title": "Хранилище",
   "block.etherology.ethereal_socket": "Эфирный сокет",
   "block.etherology.ethereal_furnace": "Эфирная печь",
+  "block.etherology.ethereal_spinner": "Волчок",
+  "block.etherology.ethereal_metronome": "Метроном",
 
   "etherology.mix_red": "Замешать до красной эссенции",
   "etherology.mix_yellow": "Замешать до желтой эссенции",

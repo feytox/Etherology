@@ -6,15 +6,19 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +26,12 @@ import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 
 public abstract class AbstractEtherealGenerator extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
+    private static final VoxelShape DOWN_SHAPE;
+    private static final VoxelShape UP_SHAPE;
+    private static final VoxelShape NORTH_SHAPE;
+    private static final VoxelShape EAST_SHAPE;
+    private static final VoxelShape SOUTH_SHAPE;
+    private static final VoxelShape WEST_SHAPE;
     public static final BooleanProperty STALLED = BooleanProperty.of("stalled");
     private final String blockId;
     private final int minCooldown;
@@ -29,7 +39,7 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     private final float stopChance;
 
     protected AbstractEtherealGenerator(Settings settings, String blockId, int minCooldown, int maxCooldown, float stopChance) {
-        super(settings);
+        super(settings.nonOpaque());
         this.blockId = blockId;
         this.minCooldown = minCooldown;
         this.maxCooldown = maxCooldown;
@@ -41,15 +51,24 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient) return super.onUse(state, world, pos, player, hand, hit);
+        if (world.isClient || !state.get(STALLED)) return super.onUse(state, world, pos, player, hand, hit);
 
         // TODO: 31/03/2023 добавить более логичную очистку
+        ItemStack handStack = player.getStackInHand(Hand.MAIN_HAND);
+        if (!handStack.isOf(Items.PHANTOM_MEMBRANE)) return ActionResult.FAIL;
+
         if (world.getBlockEntity(pos) instanceof AbstractEtherealGeneratorBlockEntity generator) {
+            handStack.decrement(1);
             generator.unstall((ServerWorld) world, state);
-            return ActionResult.CONSUME_PARTIAL;
+            return ActionResult.SUCCESS;
         }
 
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.INVISIBLE;
     }
 
     @Override
@@ -88,19 +107,29 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     }
 
     public abstract BlockEntityType<?> getBlockEntityType();
-    public abstract VoxelShape getDownShape();
-    public abstract VoxelShape getUpShape();
-    public abstract VoxelShape getNorthShape();
-    public abstract VoxelShape getSouthShape();
-    public abstract VoxelShape getEastShape();
-    public abstract VoxelShape getWestShape();
 
-    @Override
+    public VoxelShape getDownShape() {
+        return DOWN_SHAPE;
+    }
+    public VoxelShape getUpShape() {
+        return UP_SHAPE;
+    }
+    public VoxelShape getNorthShape() {
+        return NORTH_SHAPE;
+    }
+    public VoxelShape getSouthShape() {
+        return SOUTH_SHAPE;
+    }
+    public VoxelShape getEastShape() {
+        return EAST_SHAPE;
+    }
+    public VoxelShape getWestShape() {
+        return WEST_SHAPE;
+    }
+
     public Block getBlockInstance() {
         return this;
     }
-
-    @Override
     public String getBlockId() {
         return blockId;
     }
@@ -115,5 +144,38 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
 
     public float getStopChance(boolean isInZone) {
         return isInZone ? stopChance * 1.5f : stopChance;
+    }
+
+    static {
+        DOWN_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(0, 0, 0, 16, 6, 16),
+                createCuboidShape(5, 6, 5, 11, 8, 11),
+                BooleanBiFunction.OR
+        );
+        UP_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(0, 10, 0, 16, 16, 16),
+                createCuboidShape(5, 8, 5, 11, 10, 11),
+                BooleanBiFunction.OR
+        );
+        NORTH_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(0, 0, 10, 16, 16, 16),
+                createCuboidShape(5, 5, 8, 11, 11, 10),
+                BooleanBiFunction.OR
+        );
+        SOUTH_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(0, 0, 0, 16, 16, 6),
+                createCuboidShape(5, 5, 6, 11, 11, 8),
+                BooleanBiFunction.OR
+        );
+        EAST_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(0, 0, 0, 6, 16, 16),
+                createCuboidShape(6, 5, 5, 8, 11, 11),
+                BooleanBiFunction.OR
+        );
+        WEST_SHAPE = VoxelShapes.combineAndSimplify(
+                createCuboidShape(10, 0, 0, 16, 16, 16),
+                createCuboidShape(8, 5, 5, 10, 11, 11),
+                BooleanBiFunction.OR
+        );
     }
 }

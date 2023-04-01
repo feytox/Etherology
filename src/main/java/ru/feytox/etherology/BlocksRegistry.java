@@ -19,6 +19,8 @@ import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlock;
 import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlockEntity;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnace;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceBlockEntity;
+import ru.feytox.etherology.blocks.etherealGenerators.metronome.EtherealMetronomeBlock;
+import ru.feytox.etherology.blocks.etherealGenerators.metronome.EtherealMetronomeBlockEntity;
 import ru.feytox.etherology.blocks.etherealGenerators.spinner.EtherealSpinnerBlock;
 import ru.feytox.etherology.blocks.etherealGenerators.spinner.EtherealSpinnerBlockEntity;
 import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketBlock;
@@ -145,6 +147,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_spinner_block_entity"),
             FabricBlockEntityTypeBuilder.create(EtherealSpinnerBlockEntity::new, ETHEREAL_SPINNER).build()
+    );
+
+    public static final EtherealMetronomeBlock ETHEREAL_METRONOME = (EtherealMetronomeBlock) new EtherealMetronomeBlock().registerAll();
+    public static final BlockEntityType<EtherealMetronomeBlockEntity> ETHEREAL_METRONOME_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("ethereal_metronome_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EtherealMetronomeBlockEntity::new, ETHEREAL_METRONOME).build()
     );
 
     public static void register() {}

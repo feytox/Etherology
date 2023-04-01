@@ -8,8 +8,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_SPINNER_BLOCK_ENTITY;
 
 public class EtherealSpinnerBlockEntity extends AbstractEtherealGeneratorBlockEntity {
-    public static final RawAnimation SPIN_ANIM = RawAnimation.begin().thenLoop("animation.spinner.spin");
-    public static final RawAnimation STALLED_ANIM = RawAnimation.begin().thenLoop("animation.spinner.stalled");
+    private static final RawAnimation SPIN_ANIM = RawAnimation.begin().thenLoop("animation.spinner.spin");
+    private static final RawAnimation STALLED_ANIM = RawAnimation.begin().thenLoop("animation.spinner.stalled");
 
     public EtherealSpinnerBlockEntity(BlockPos pos, BlockState state) {
         super(ETHEREAL_SPINNER_BLOCK_ENTITY, pos, state);
