@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import ru.feytox.etherology.blocks.closet.ClosetScreenHandler;
 import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreenHandler;
+import ru.feytox.etherology.blocks.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreenHandler;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.enums.MixTypes;
@@ -130,6 +131,8 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ether_screen_handler"), ETHER_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("closet_screen_handler"), CLOSET_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_storage_screen_handler"), ETHEREAL_STORAGE_SCREEN_HANDLER);
+
+        EtherealGeneratorDispenserBehavior.register();
 
         EWorldGeneration.generateWorldGen();
     }

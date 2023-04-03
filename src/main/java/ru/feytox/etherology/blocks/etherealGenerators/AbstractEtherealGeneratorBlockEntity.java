@@ -25,6 +25,8 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.concurrent.CompletableFuture;
+
 import static ru.feytox.etherology.blocks.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
 public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlockEntity
@@ -35,6 +37,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     private boolean isInZone = false;
     private boolean isLaunched = false;
     private boolean isMess = false;
+    private CompletableFuture<Boolean> messCheck = null;
 
     public AbstractEtherealGeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -70,14 +73,28 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
-        transferTick(world);
-        generateTick(world, state);
         tickMessCheck(world);
+        generateTick(world, state);
+        transferTick(world);
     }
 
     public void tickMessCheck(ServerWorld world) {
-        if (world.getTime() % 20 != 0) return;
+        if (messCheck != null && !messCheck.isDone()) return;
+        if (messCheck != null) {
+            boolean result = messCheck.join();
+            if (result != isMess) {
+                isMess = result;
+                markDirty();
+                messCheck = null;
+                return;
+            }
+        }
 
+        if (world.getTime() % 20 != 0) return;
+        messCheck = CompletableFuture.supplyAsync(() -> messChecker(world));
+    }
+
+    public boolean messChecker(ServerWorld world) {
         Vec3i radiusVec = new Vec3i(3, 3, 3);
         Iterable<BlockPos> blockPoses = BlockPos.iterate(pos.subtract(radiusVec), pos.add(radiusVec));
 
@@ -89,12 +106,15 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
                 result = false;
                 break;
             }
+            if (world.getBlockEntity(pos) instanceof AbstractEtherealGeneratorBlockEntity generator) {
+                if (!generator.isFull()) {
+                    result = false;
+                    break;
+                }
+            }
         }
 
-        if (result == isMess) {
-            isMess = !result;
-            markDirty();
-        }
+        return !result;
     }
 
     public void generateTick(ServerWorld world, BlockState state) {
@@ -102,7 +122,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
 
         Random random = world.getRandom();
         if (nextGenTime-- > 0) {
-            if (isInZone) nextGenTime -= random.nextBetween(0, 1);
+            if (isInZone && random.nextDouble() <= 0.5) nextGenTime -= random.nextBetween(0, 1);
             return;
         }
         increment(1);
@@ -121,6 +141,10 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     @Override
     public float getMaxEther() {
         return 1;
+    }
+
+    public boolean isFull() {
+        return getStoredEther() >= getMaxEther();
     }
 
     @Override

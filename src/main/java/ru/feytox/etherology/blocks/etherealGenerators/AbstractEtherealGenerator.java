@@ -7,7 +7,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -22,6 +21,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.ItemsRegistry;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 
@@ -55,7 +55,7 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
 
         // TODO: 31/03/2023 добавить более логичную очистку
         ItemStack handStack = player.getStackInHand(Hand.MAIN_HAND);
-        if (!handStack.isOf(Items.PHANTOM_MEMBRANE)) return ActionResult.FAIL;
+        if (!handStack.isOf(ItemsRegistry.ETHEREAL_OIL)) return ActionResult.FAIL;
 
         if (world.getBlockEntity(pos) instanceof AbstractEtherealGeneratorBlockEntity generator) {
             handStack.decrement(1);

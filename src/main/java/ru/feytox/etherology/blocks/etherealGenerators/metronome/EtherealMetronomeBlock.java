@@ -14,7 +14,7 @@ import static ru.feytox.etherology.BlocksRegistry.ETHEREAL_METRONOME_BLOCK_ENTIT
 public class EtherealMetronomeBlock extends AbstractEtherealGenerator {
     public EtherealMetronomeBlock() {
         super(FabricBlockSettings.copyOf(Blocks.GOLD_BLOCK),
-                "ethereal_metronome", 20, 60, 0.05f);
+                "ethereal_metronome", 20*20, 60*20, 0.05f);
     }
 
     @Override
