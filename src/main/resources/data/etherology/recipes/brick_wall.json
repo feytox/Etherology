@@ -6,8 +6,9 @@
     }
   },
   "pattern": [
+    " # ",
     "###",
-    "###"
+    " # "
   ],
   "result": {
     "count": 6,
@@ -15,5 +16,5 @@
   },
   "heavenlyCount": 12,
   "aquaticCount": 1,
-  "deepCount": 64
+  "deepCount": 3
 }

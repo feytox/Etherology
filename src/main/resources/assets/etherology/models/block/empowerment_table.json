@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "etherology:block/ethereal_planks",
+    "east": "etherology:block/empowerment_table_side",
+    "north": "etherology:block/empowerment_table_front",
+    "particle": "etherology:block/empowerment_table_front",
+    "south": "etherology:block/empowerment_table_side",
+    "up": "etherology:block/empowerment_table_top",
+    "west": "etherology:block/empowerment_table_front"
+  }
+}

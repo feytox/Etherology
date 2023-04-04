@@ -1,7 +1,6 @@
 package ru.feytox.etherology.recipes.ether;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -58,33 +57,34 @@ public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
 
     @Override
     public void write(PacketByteBuf buf, EtherRecipe recipe) {
-        buf.writeInt(recipe.getWidth());
-        buf.writeInt(recipe.getHeight());
-        buf.writeCollection(recipe.getGridInput(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
-        buf.writeInt(recipe.getHeavenlyCount());
-        buf.writeInt(recipe.getAquaticCount());
-        buf.writeInt(recipe.getDeepCount());
-        buf.writeInt(recipe.getTerrestrialCount());
+        buf.writeInt(recipe.width());
+        buf.writeInt(recipe.height());
+        buf.writeCollection(recipe.gridInput(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
+        buf.writeInt(recipe.relaCount());
+        buf.writeInt(recipe.viaCount());
+        buf.writeInt(recipe.closCount());
+        buf.writeInt(recipe.ketaCount());
         buf.writeItemStack(recipe.getOutput());
     }
 
     /**
      * from minecraft sources
+     * but simplified
      */
     private static Map<String, Ingredient> readSymbols(JsonObject json) {
         Map<String, Ingredient> map = Maps.newHashMap();
 
         for (Map.Entry<String, JsonElement> stringJsonElementEntry : json.entrySet()) {
-            Map.Entry entry = stringJsonElementEntry;
-            if (((String) entry.getKey()).length() != 1) {
-                throw new JsonSyntaxException("Invalid key entry: '" + (String) entry.getKey() + "' is an invalid symbol (must be 1 character only).");
+            String symbol = stringJsonElementEntry.getKey();
+            if (symbol.length() != 1) {
+                throw new JsonSyntaxException("Invalid key entry: '" + stringJsonElementEntry.getKey() + "' is an invalid symbol (must be 1 character only).");
             }
 
-            if (" ".equals(entry.getKey())) {
+            if (" ".equals(symbol)) {
                 throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
             }
 
-            map.put((String) entry.getKey(), Ingredient.fromJson((JsonElement) entry.getValue()));
+            map.put(symbol, Ingredient.fromJson(stringJsonElementEntry.getValue()));
         }
 
         map.put(" ", Ingredient.EMPTY);
@@ -168,24 +168,24 @@ public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
 
     private static DefaultedList<Ingredient> createPatternMatrix(String[] pattern, Map<String, Ingredient> symbols, int width, int height) {
         DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
-        Set<String> set = Sets.newHashSet((Iterable)symbols.keySet());
-        set.remove(" ");
+        Set<String> symSet = symbols.keySet();
+        symSet.remove(" ");
 
         for(int i = 0; i < pattern.length; ++i) {
             for(int j = 0; j < pattern[i].length(); ++j) {
                 String string = pattern[i].substring(j, j + 1);
-                Ingredient ingredient = (Ingredient)symbols.get(string);
+                Ingredient ingredient = symbols.get(string);
                 if (ingredient == null) {
                     throw new JsonSyntaxException("Pattern references symbol '" + string + "' but it's not defined in the key");
                 }
 
-                set.remove(string);
+                symSet.remove(string);
                 defaultedList.set(j + width * i, ingredient);
             }
         }
 
-        if (!set.isEmpty()) {
-            throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
+        if (!symSet.isEmpty()) {
+            throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + symSet);
         } else {
             return defaultedList;
         }

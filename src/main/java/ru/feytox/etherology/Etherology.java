@@ -5,7 +5,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
@@ -17,7 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import ru.feytox.etherology.blocks.closet.ClosetScreenHandler;
-import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchScreenHandler;
+import ru.feytox.etherology.blocks.empowerTable.EmpowerTableScreenHandler;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreenHandler;
 import ru.feytox.etherology.blocks.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreenHandler;
@@ -41,12 +40,10 @@ public class Etherology implements ModInitializer {
 
     public static final Logger ELOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "etherology";
-    public static final ExtendedScreenHandlerType<EtherWorkbenchScreenHandler> ETHER_SCREEN_HANDLER =
-            new ExtendedScreenHandlerType<>(((syncId, inventory, buf) ->
-                    new EtherWorkbenchScreenHandler(syncId, inventory)));
     public static final ScreenHandlerType<ClosetScreenHandler> CLOSET_SCREEN_HANDLER = new ScreenHandlerType<>(ClosetScreenHandler::new);
     public static final ScreenHandlerType<EtherealStorageScreenHandler> ETHEREAL_STORAGE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealStorageScreenHandler::new);
     public static final ScreenHandlerType<EtherealFurnaceScreenHandler> ETHEREAL_FURNACE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealFurnaceScreenHandler::new);
+    public static final ScreenHandlerType<EmpowerTableScreenHandler> EMPOWER_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(EmpowerTableScreenHandler::new);
 
     public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
@@ -111,7 +108,6 @@ public class Etherology implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(ETHER_GROUP).register(content -> {
             content.add(ARMILLARY_MATRIX_BASE);
             content.add(CRUCIBLE);
-            content.add(ETHER_WORKBENCH);
             content.add(PEDESTAL_BLOCK);
             content.add(AQUATIC_SHARD);
             content.add(DEEP_SHARD);
@@ -128,9 +124,10 @@ public class Etherology implements ModInitializer {
 
         Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
 
-        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ether_screen_handler"), ETHER_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("closet_screen_handler"), CLOSET_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_storage_screen_handler"), ETHEREAL_STORAGE_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_furnace_screen_handler"), ETHEREAL_FURNACE_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("empower_table_screen_handler"), EMPOWER_TABLE_SCREEN_HANDLER);
 
         EtherealGeneratorDispenserBehavior.register();
 

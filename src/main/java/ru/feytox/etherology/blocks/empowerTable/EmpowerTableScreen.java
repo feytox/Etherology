@@ -1,4 +1,4 @@
-package ru.feytox.etherology.blocks.etherWorkbench;
+package ru.feytox.etherology.blocks.empowerTable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -9,13 +9,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
-public class EtherWorkbenchScreen extends HandledScreen<EtherWorkbenchScreenHandler> {
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/ether_worckbench.png");
+public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler> {
+    private static final Identifier TEXTURE = new EIdentifier("textures/gui/empowerment_table.png");
 
-    public EtherWorkbenchScreen(EtherWorkbenchScreenHandler handler, PlayerInventory inventory, Text title) {
+    public EmpowerTableScreen(EmpowerTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.playerInventoryTitleX = 116;
-        this.playerInventoryTitleY = 88;
     }
 
     @Override
@@ -24,8 +22,8 @@ public class EtherWorkbenchScreen extends HandledScreen<EtherWorkbenchScreenHand
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - 175) / 2;
-        int y = (height - 195) / 2;
-        drawTexture(matrices, x, y, 0, 0, 175, 195);
+        int y = (height - 175) / 2;
+        drawTexture(matrices, x, y, 0, 0, 175, 171);
     }
 
     @Override
@@ -33,5 +31,13 @@ public class EtherWorkbenchScreen extends HandledScreen<EtherWorkbenchScreenHand
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleY -= 7;
+        playerInventoryTitleY += 6;
     }
 }

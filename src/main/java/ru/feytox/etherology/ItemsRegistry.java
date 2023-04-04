@@ -15,6 +15,7 @@ public class ItemsRegistry {
 
     public static final Teldecore TELDECORE = (Teldecore) new Teldecore().register();
 
+    // TODO: 04/04/2023 удалить шарды
     public static final DeepShard DEEP_SHARD = (DeepShard) new DeepShard().register();
     public static final TerrestrialShard TERRESTRIAL_SHARD = (TerrestrialShard) new TerrestrialShard().register();
     public static final HeavenlyShard HEAVENLY_SHARD = (HeavenlyShard) new HeavenlyShard().register();

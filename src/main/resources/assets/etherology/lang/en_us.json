@@ -21,7 +21,6 @@
   "block.etherology.closet_slab": "Шкаф",
   "block.etherology.shelf_slab": "Полка",
   "block.etherology.furniture_slab": "Мебельный блок",
-  "block.etherology.ether_workbench": "Эфирный верстак",
   "block.etherology.pedestal": "Пьедестал",
   "block.etherology.armillary_matrix_base": "Пьедестал для Армиллярной Матрицы",
   "block.etherology.ethereal_channel": "Эфирный канал",
@@ -32,6 +31,8 @@
   "block.etherology.ethereal_furnace": "Эфирная печь",
   "block.etherology.ethereal_spinner": "Волчок",
   "block.etherology.ethereal_metronome": "Метроном",
+  "block.etherology.empowerment_table": "Стол Великоестествия",
+  "block.etherology.empowerment_table.title": "Великоестествие",
 
   "etherology.mix_red": "Замешать до красной эссенции",
   "etherology.mix_yellow": "Замешать до желтой эссенции",

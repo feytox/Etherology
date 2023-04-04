@@ -9,10 +9,10 @@ import ru.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.blocks.closet.ClosetSlabBlock;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlock;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlockEntity;
+import ru.feytox.etherology.blocks.empowerTable.EmpowerTableBlock;
+import ru.feytox.etherology.blocks.empowerTable.EmpowerTableBlockEntity;
 import ru.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlock;
 import ru.feytox.etherology.blocks.essenceDetector.EssenceDetectorBlockEntity;
-import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbench;
-import ru.feytox.etherology.blocks.etherWorkbench.EtherWorkbenchBlockEntity;
 import ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock;
 import ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlockEntity;
 import ru.feytox.etherology.blocks.etherealFork.EtherealForkBlock;
@@ -47,13 +47,6 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("crucible_block_entity"),
             FabricBlockEntityTypeBuilder.create(CrucibleBlockEntity::new, CRUCIBLE).build()
-    );
-
-    public static final EtherWorkbench ETHER_WORKBENCH = (EtherWorkbench) new EtherWorkbench().registerAll();
-    public static final BlockEntityType<EtherWorkbenchBlockEntity> ETHER_WORKBENCH_BLOCK_ENTITY = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("ether_workbench_block_entity"),
-            FabricBlockEntityTypeBuilder.create(EtherWorkbenchBlockEntity::new, ETHER_WORKBENCH).build()
     );
 
     public static final PedestalBlock PEDESTAL_BLOCK = (PedestalBlock) new PedestalBlock().registerAll();
@@ -154,6 +147,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_metronome_block_entity"),
             FabricBlockEntityTypeBuilder.create(EtherealMetronomeBlockEntity::new, ETHEREAL_METRONOME).build()
+    );
+
+    public static final EmpowerTableBlock EMPOWERMENT_TABLE = (EmpowerTableBlock) new EmpowerTableBlock().registerAll();
+    public static final BlockEntityType<EmpowerTableBlockEntity> EMPOWERMENT_TABLE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("empowerment_table_block_entity"),
+            FabricBlockEntityTypeBuilder.create(EmpowerTableBlockEntity::new, EMPOWERMENT_TABLE).build()
     );
 
     public static void register() {}
