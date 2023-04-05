@@ -16,7 +16,6 @@ import ru.feytox.etherology.util.feyapi.SpecificSlot;
 import static ru.feytox.etherology.Etherology.ETHEREAL_FURNACE_SCREEN_HANDLER;
 
 public class EtherealFurnaceScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
     private final PropertyDelegate propertyDelegate;
 
     public EtherealFurnaceScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -27,7 +26,6 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
         super(ETHEREAL_FURNACE_SCREEN_HANDLER, syncId);
         checkSize(inventory, 3);
         checkDataCount(propertyDelegate, 3);
-        this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         inventory.onOpen(playerInventory.player);
 

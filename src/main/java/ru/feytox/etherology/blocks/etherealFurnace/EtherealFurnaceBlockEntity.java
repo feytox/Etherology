@@ -50,13 +50,13 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         public int get(int index) {
             switch (index) {
                 case 0 -> {
-                    return EtherealFurnaceBlockEntity.this.fuel;
+                    return fuel;
                 }
                 case 1 -> {
-                    return EtherealFurnaceBlockEntity.this.cookTime;
+                    return cookTime;
                 }
                 case 2 -> {
-                    return EtherealFurnaceBlockEntity.this.totalCookTime;
+                    return totalCookTime;
                 }
             }
             return 0;
@@ -65,9 +65,9 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> EtherealFurnaceBlockEntity.this.fuel = value;
-                case 1 -> EtherealFurnaceBlockEntity.this.cookTime = value;
-                case 2 -> EtherealFurnaceBlockEntity.this.totalCookTime = value;
+                case 0 -> fuel = value;
+                case 1 -> cookTime = value;
+                case 2 -> totalCookTime = value;
             }
         }
 

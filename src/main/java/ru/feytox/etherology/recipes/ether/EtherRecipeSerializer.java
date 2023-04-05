@@ -1,6 +1,7 @@
 package ru.feytox.etherology.recipes.ether;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -168,8 +169,8 @@ public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
 
     private static DefaultedList<Ingredient> createPatternMatrix(String[] pattern, Map<String, Ingredient> symbols, int width, int height) {
         DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
-        Set<String> symSet = symbols.keySet();
-        symSet.remove(" ");
+        Set<String> set = Sets.newHashSet((Iterable)symbols.keySet());
+        set.remove(" ");
 
         for(int i = 0; i < pattern.length; ++i) {
             for(int j = 0; j < pattern[i].length(); ++j) {
@@ -179,13 +180,13 @@ public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
                     throw new JsonSyntaxException("Pattern references symbol '" + string + "' but it's not defined in the key");
                 }
 
-                symSet.remove(string);
+                set.remove(string);
                 defaultedList.set(j + width * i, ingredient);
             }
         }
 
-        if (!symSet.isEmpty()) {
-            throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + symSet);
+        if (!set.isEmpty()) {
+            throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
         } else {
             return defaultedList;
         }

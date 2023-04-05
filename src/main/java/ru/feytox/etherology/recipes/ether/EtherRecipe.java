@@ -83,6 +83,10 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
             }
         }
 
+        return true;
+    }
+
+    public boolean checkShards(ImplementedInventory inventory) {
         return inventory.getStack(5).getCount() >= relaCount
                 && inventory.getStack(6).getCount() >= viaCount
                 && inventory.getStack(7).getCount() >= closCount
