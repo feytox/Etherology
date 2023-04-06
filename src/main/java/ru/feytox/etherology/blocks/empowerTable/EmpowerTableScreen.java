@@ -2,21 +2,22 @@ package ru.feytox.etherology.blocks.empowerTable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.joml.Matrix4f;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler> {
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/empowerment_table.png");
-    private static final Identifier GLOW_RELA = new EIdentifier("textures/gui/empowerment_table/glow_rela.png");
-    private static final Identifier GLOW_VIA = new EIdentifier("textures/gui/empowerment_table/glow_via.png");
-    private static final Identifier GLOW_CLOS = new EIdentifier("textures/gui/empowerment_table/glow_clos.png");
-    private static final Identifier GLOW_KETA = new EIdentifier("textures/gui/empowerment_table/glow_keta.png");
-    private static final int AGE_GLOW = 40;
-    private int glowTicks = 0;
+    private static final Identifier GLOW_RELA = new EIdentifier("textures/gui/glow_rela.png");
+    private static final Identifier GLOW_VIA = new EIdentifier("textures/gui/glow_via.png");
+    private static final Identifier GLOW_CLOS = new EIdentifier("textures/gui/glow_clos.png");
+    private static final Identifier GLOW_KETA = new EIdentifier("textures/gui/glow_keta.png");
+    private static final float AGE_GLOW = 60;
+    private float glowAge = 0;
 
     public EmpowerTableScreen(EmpowerTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -24,33 +25,59 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
 
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+        matrices.push();
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - 175) / 2;
         int y = (height - 175) / 2;
         drawTexture(matrices, x, y, 0, 0, 175, 171);
+        matrices.pop();
 
         if (handler.shouldGlow()) {
-            drawGlow(matrices, handler.getRela(), 0, x+23, y+17);
-            drawGlow(matrices, handler.getVia(), 16, x+69, y+17);
-            drawGlow(matrices, handler.getClos(), 32, x+23, y+63);
-            drawGlow(matrices, handler.getKeta(), 48, x+69, y+63);
-            if (glowTicks++ >= AGE_GLOW) glowTicks = 0;
+            drawGlow(matrices, handler.getRela(), GLOW_RELA, x+23, y+17);
+            drawGlow(matrices, handler.getVia(), GLOW_VIA, x+69, y+17);
+            drawGlow(matrices, handler.getClos(), GLOW_CLOS, x+23, y+63);
+            drawGlow(matrices, handler.getKeta(), GLOW_KETA, x+69, y+63);
+            glowAge += delta;
+            if (glowAge >= AGE_GLOW) glowAge = 0;
 
         } else {
-            glowTicks = 0;
+            glowAge = 0;
         }
     }
 
-    public void drawGlow(MatrixStack matrices, int value, int v, int x, int y) {
+    public void drawGlow(MatrixStack matrices, int value, Identifier texture, int x, int y) {
         if (value == 0) return;
 
-        float alpha = glowTicks / (AGE_GLOW / 2f);
-        alpha = alpha > 1 ? alpha - 1 : alpha;
+        float alpha = glowAge / (AGE_GLOW / 2f);
+        alpha = alpha > 1 ? Math.abs(alpha - 2) : alpha;
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-        drawTexture(matrices, x, y, 176, v, 16, 16);
+        matrices.push();
+        RenderSystem.setShaderTexture(0, texture);
+        drawTexturedQuad(matrices, x, y, alpha);
+        matrices.pop();
+    }
+
+    private static void drawTexturedQuad(MatrixStack matrices, int x0, int y0, float alpha) {
+        Matrix4f matrix = matrices.peek().getPositionMatrix();
+        int x1 = x0 + 16;
+        int y1 = y0 + 16;
+        float u0 = 0;
+        float u1 = 1.0f;
+        float v0 = 0;
+        float v1 = 1.0f;
+
+        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+        RenderSystem.enableBlend();
+
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+        bufferBuilder.vertex(matrix, (float)x0, (float)y1, 0).texture(u0, v1).color(1.0F, 1.0F, 1.0F, alpha).next();
+        bufferBuilder.vertex(matrix, (float)x1, (float)y1, 0).texture(u1, v1).color(1.0F, 1.0F, 1.0F, alpha).next();
+        bufferBuilder.vertex(matrix, (float)x1, (float)y0, 0).texture(u1, v0).color(1.0F, 1.0F, 1.0F, alpha).next();
+        bufferBuilder.vertex(matrix, (float)x0, (float)y0, 0).texture(u0, v0).color(1.0F, 1.0F, 1.0F, alpha).next();
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
     @Override
