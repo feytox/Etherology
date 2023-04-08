@@ -18,6 +18,9 @@ public class SimpleUpdatableInventory implements UpdatableInventory {
     public void onTrackedUpdate(int index) {}
 
     @Override
+    public void onSpecialEvent(int eventId, ItemStack stack) {}
+
+    @Override
     public DefaultedList<ItemStack> getItems() {
         return stacks;
     }

@@ -8,12 +8,14 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.ItemsRegistry;
+import ru.feytox.etherology.items.PrimoShard;
 import ru.feytox.etherology.util.feyapi.*;
 
 import static ru.feytox.etherology.Etherology.EMPOWER_TABLE_SCREEN_HANDLER;
 
 public class EmpowerTableScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;
+    private final UpdatableInventory inventory;
 
     public EmpowerTableScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleUpdatableInventory(10), new ArrayPropertyDelegate(4));
@@ -24,6 +26,7 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         checkSize(inventory, 10);
         checkDataCount(propertyDelegate, 4);
         this.propertyDelegate = propertyDelegate;
+        this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
 
         this.addProperties(propertyDelegate);
@@ -66,9 +69,48 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int slot) {
-        // TODO: 04/04/2023 impl shift + lmb
-        return ItemStack.EMPTY;
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
+        ItemStack newStack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(invSlot);
+        if (!slot.hasStack()) return newStack;
+
+        boolean skip = false;
+        ItemStack originalStack = slot.getStack();
+
+        if (slot instanceof EmpowerOutputSlot && !isFull(inventory.size(), slots.size())) {
+            skip = true;
+            newStack = originalStack.copy();
+            inventory.onSpecialEvent(0, originalStack);
+            if (!this.insertItem(originalStack, inventory.size(), slots.size(), true)) {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        if (invSlot < inventory.size() && !skip) {
+            skip = true;
+            if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        if (originalStack.getItem() instanceof PrimoShard && !skip) {
+            int primoSlot = 5;
+            newStack = originalStack.copy();
+            if (originalStack.isOf(ItemsRegistry.PRIMOSHARD_VIA)) primoSlot = 6;
+            if (originalStack.isOf(ItemsRegistry.PRIMOSHARD_CLOS)) primoSlot = 7;
+            if (originalStack.isOf(ItemsRegistry.PRIMOSHARD_KETA)) primoSlot = 8;
+            if (!this.insertItem(originalStack, primoSlot, primoSlot+1, false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        if (originalStack.isEmpty()) {
+            slot.setStack(ItemStack.EMPTY);
+        } else {
+            slot.markDirty();
+        }
+
+        return newStack;
     }
 
     @Override
@@ -94,5 +136,12 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
 
     public boolean shouldGlow() {
         return getRela() != 0 || getVia() != 0 || getClos() != 0 || getKeta() != 0;
+    }
+
+    public boolean isFull(int startIndex, int endIndex) {
+        for (int i = startIndex; i < endIndex; i++) {
+            if (!slots.get(i).hasStack()) return false;
+        }
+        return true;
     }
 }

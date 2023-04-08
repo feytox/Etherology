@@ -33,6 +33,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
     private int cachedVia = 0;
     private int cachedClos = 0;
     private int cachedKeta = 0;
+    private EtherRecipe currentRecipe = null;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
@@ -76,7 +77,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
 
     @Override
     public void onTrackedSlotTake(PlayerEntity player, ItemStack stack, int index) {
-        if (index == 9) craft();
+        if (index == 9) craft(true);
     }
 
     @Override
@@ -84,9 +85,27 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
         if (index != 9) updateResult();
     }
 
-    public void craft() {
+    @Override
+    public void onSpecialEvent(int eventId, ItemStack stack) {
+        if (eventId == 0) craftAll(stack);
+    }
+
+    @Override
+    public void onOpen(PlayerEntity player) {
+        updateResult();
+    }
+
+    public void craftAll(ItemStack resultStack) {
+        craft(true);
+        while (canCraft() && resultStack.getCount() + currentRecipe.getOutput().getCount() < resultStack.getMaxCount()) {
+            if (craft(false)) resultStack.increment(currentRecipe.getOutput().getCount());
+        }
+        updateResult();
+    }
+
+    public boolean craft(boolean shouldUpdate) {
         EtherRecipe recipe = getRecipe();
-        if (recipe == null) return;
+        if (recipe == null || !recipe.checkShards(this)) return false;
         for (int i = 0; i < 5; i++) {
             removeStack(i, 1);
         }
@@ -96,14 +115,19 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
         removeStack(8, recipe.ketaCount());
         markDirty();
 
-        updateResult();
+        if (shouldUpdate) updateResult();
+        return true;
+    }
+
+    public boolean canCraft() {
+        currentRecipe = getRecipe();
+        return currentRecipe != null && currentRecipe.checkShards(this);
     }
 
     public void updateResult() {
-        EtherRecipe recipe = getRecipe();
         ItemStack outputStack = ItemStack.EMPTY;
-        if (recipe != null && recipe.checkShards(this)) outputStack = recipe.getOutput();
-        cacheShards(recipe);
+        if (canCraft()) outputStack = currentRecipe.getOutput();
+        cacheShards(currentRecipe);
         setStack(9, outputStack);
         markDirty();
     }
