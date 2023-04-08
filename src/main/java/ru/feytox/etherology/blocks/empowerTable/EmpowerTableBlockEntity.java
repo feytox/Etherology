@@ -17,7 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.recipes.ether.EtherRecipe;
+import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
     private int cachedVia = 0;
     private int cachedClos = 0;
     private int cachedKeta = 0;
-    private EtherRecipe currentRecipe = null;
+    private EmpowerRecipe currentRecipe = null;
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
@@ -104,7 +104,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
     }
 
     public boolean craft(boolean shouldUpdate) {
-        EtherRecipe recipe = getRecipe();
+        EmpowerRecipe recipe = getRecipe();
         if (recipe == null || !recipe.checkShards(this)) return false;
         for (int i = 0; i < 5; i++) {
             removeStack(i, 1);
@@ -132,7 +132,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
         markDirty();
     }
 
-    public void cacheShards(EtherRecipe recipe) {
+    public void cacheShards(EmpowerRecipe recipe) {
         boolean isNull = recipe == null;
         cachedRela = isNull ? 0 : recipe.relaCount();
         cachedVia = isNull ? 0 : recipe.viaCount();
@@ -141,9 +141,9 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
     }
 
     @Nullable
-    public EtherRecipe getRecipe() {
+    public EmpowerRecipe getRecipe() {
         if (world == null) return null;
-        Optional<EtherRecipe> match = world.getRecipeManager().getFirstMatch(EtherRecipe.Type.INSTANCE, this, world);
+        Optional<EmpowerRecipe> match = world.getRecipeManager().getFirstMatch(EmpowerRecipe.Type.INSTANCE, this, world);
         return match.orElse(null);
     }
 

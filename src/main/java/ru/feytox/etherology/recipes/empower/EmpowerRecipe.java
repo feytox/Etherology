@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.ether;
+package ru.feytox.etherology.recipes.empower;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.item.ItemStack;
@@ -10,9 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class EtherRecipe implements Recipe<ImplementedInventory> {
-    private final int width;
-    private final int height;
+public class EmpowerRecipe implements Recipe<ImplementedInventory> {
     private final DefaultedList<Ingredient> gridInput;
     private final int relaCount;
     private final int viaCount;
@@ -21,8 +19,8 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
     private final ItemStack output;
     private final Identifier id;
 
-    public EtherRecipe(DefaultedList<Ingredient> gridInput, int relaCount, int viaCount, int closCount,
-                       int ketaCount, ItemStack output, Identifier id, int width, int height) {
+    public EmpowerRecipe(DefaultedList<Ingredient> gridInput, int relaCount, int viaCount, int closCount,
+                         int ketaCount, ItemStack output, Identifier id) {
         this.gridInput = gridInput;
         this.relaCount = relaCount;
         this.viaCount = viaCount;
@@ -30,8 +28,6 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
         this.ketaCount = ketaCount;
         this.output = output;
         this.id = id;
-        this.width = width;
-        this.height = height;
     }
 
     public DefaultedList<Ingredient> gridInput() {
@@ -52,17 +48,6 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
 
     public int ketaCount() {
         return ketaCount;
-    }
-
-    // TODO: 04/04/2023 finish deprecation
-    @Deprecated
-    public int width() {
-        return width;
-    }
-
-    @Deprecated
-    public int height() {
-        return height;
     }
 
     @Override
@@ -115,7 +100,7 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return EtherRecipeSerializer.INSTANCE;
+        return EmpowerRecipeSerializer.INSTANCE;
     }
 
     @Override
@@ -123,10 +108,10 @@ public class EtherRecipe implements Recipe<ImplementedInventory> {
         return Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<EtherRecipe> {
+    public static class Type implements RecipeType<EmpowerRecipe> {
         private Type() {}
         public static final Type INSTANCE = new Type();
 
-        public static final String ID = "ether_recipe";
+        public static final String ID = "empower_recipe";
     }
 }

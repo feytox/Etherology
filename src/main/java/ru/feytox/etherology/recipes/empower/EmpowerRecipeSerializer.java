@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.ether;
+package ru.feytox.etherology.recipes.empower;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -19,47 +19,39 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 import java.util.Map;
 import java.util.Set;
 
-public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
-    private EtherRecipeSerializer() {}
+public class EmpowerRecipeSerializer implements RecipeSerializer<EmpowerRecipe> {
+    private EmpowerRecipeSerializer() {}
 
-    public static final EtherRecipeSerializer INSTANCE = new EtherRecipeSerializer();
-    public static final Identifier ID = new EIdentifier("ether_recipe");
+    public static final EmpowerRecipeSerializer INSTANCE = new EmpowerRecipeSerializer();
+    public static final Identifier ID = new EIdentifier("empower_recipe");
 
     @Override
-    public EtherRecipe read(Identifier id, JsonObject json) {
+    public EmpowerRecipe read(Identifier id, JsonObject json) {
         Map<String, Ingredient> map = readSymbols(JsonHelper.getObject(json, "key"));
         String[] strings = removePadding(getPattern(JsonHelper.getArray(json, "pattern")));
-        int width = strings[0].length();
-        int height = strings.length;
-        DefaultedList<Ingredient> gridInput = createPatternMatrix(strings, map, width, height);
+        DefaultedList<Ingredient> gridInput = createPatternMatrix(strings, map);
         ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
-        int heavenlyCount = JsonHelper.getInt(json, "heavenlyCount", 0);
-        int aquaticCount = JsonHelper.getInt(json, "aquaticCount", 0);
-        int deepCount = JsonHelper.getInt(json, "deepCount", 0);
-        int terrestrialCount = JsonHelper.getInt(json, "terrestrialCount", 0);
-        return new EtherRecipe(gridInput, heavenlyCount, aquaticCount, deepCount, terrestrialCount,
-                output, id, width, height);
+        int heavenlyCount = JsonHelper.getInt(json, "relaCount", 0);
+        int aquaticCount = JsonHelper.getInt(json, "viaCount", 0);
+        int deepCount = JsonHelper.getInt(json, "closCount", 0);
+        int terrestrialCount = JsonHelper.getInt(json, "ketaCount", 0);
+        return new EmpowerRecipe(gridInput, heavenlyCount, aquaticCount, deepCount, terrestrialCount, output, id);
     }
 
     @Override
-    public EtherRecipe read(Identifier id, PacketByteBuf buf) {
-        int width = buf.readInt();
-        int height = buf.readInt();
-        DefaultedList<Ingredient> gridInput = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
+    public EmpowerRecipe read(Identifier id, PacketByteBuf buf) {
+        DefaultedList<Ingredient> gridInput = DefaultedList.ofSize(9, Ingredient.EMPTY);
         gridInput.replaceAll(ignored -> Ingredient.fromPacket(buf));
-        int heavenlyCount = buf.readInt();
-        int aquaticCount = buf.readInt();
-        int deepCount = buf.readInt();
-        int terrestrialCount = buf.readInt();
+        int relaCount = buf.readInt();
+        int viaCount = buf.readInt();
+        int closCount = buf.readInt();
+        int ketaCount = buf.readInt();
         ItemStack output = buf.readItemStack();
-        return new EtherRecipe(gridInput, heavenlyCount, aquaticCount, deepCount, terrestrialCount,
-                output, id, width, height);
+        return new EmpowerRecipe(gridInput, relaCount, viaCount, closCount, ketaCount, output, id);
     }
 
     @Override
-    public void write(PacketByteBuf buf, EtherRecipe recipe) {
-        buf.writeInt(recipe.width());
-        buf.writeInt(recipe.height());
+    public void write(PacketByteBuf buf, EmpowerRecipe recipe) {
         buf.writeCollection(recipe.gridInput(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
         buf.writeInt(recipe.relaCount());
         buf.writeInt(recipe.viaCount());
@@ -167,8 +159,8 @@ public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
         return i;
     }
 
-    private static DefaultedList<Ingredient> createPatternMatrix(String[] pattern, Map<String, Ingredient> symbols, int width, int height) {
-        DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
+    private static DefaultedList<Ingredient> createPatternMatrix(String[] pattern, Map<String, Ingredient> symbols) {
+        DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(3 * 3, Ingredient.EMPTY);
         Set<String> set = Sets.newHashSet((Iterable)symbols.keySet());
         set.remove(" ");
 
@@ -181,7 +173,7 @@ public class EtherRecipeSerializer implements RecipeSerializer<EtherRecipe> {
                 }
 
                 set.remove(string);
-                defaultedList.set(j + width * i, ingredient);
+                defaultedList.set(j + 3 * i, ingredient);
             }
         }
 

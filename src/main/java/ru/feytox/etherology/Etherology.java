@@ -26,8 +26,8 @@ import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
-import ru.feytox.etherology.recipes.ether.EtherRecipe;
-import ru.feytox.etherology.recipes.ether.EtherRecipeSerializer;
+import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
+import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
@@ -81,9 +81,9 @@ public class Etherology implements ModInitializer {
                 AlchemyRecipeSerializer.INSTANCE);
         Registry.register(Registries.RECIPE_TYPE, new EIdentifier(AlchemyRecipe.Type.ID), AlchemyRecipe.Type.INSTANCE);
 
-        Registry.register(Registries.RECIPE_SERIALIZER, EtherRecipeSerializer.ID,
-                EtherRecipeSerializer.INSTANCE);
-        Registry.register(Registries.RECIPE_TYPE, new EIdentifier(EtherRecipe.Type.ID), EtherRecipe.Type.INSTANCE);
+        Registry.register(Registries.RECIPE_SERIALIZER, EmpowerRecipeSerializer.ID,
+                EmpowerRecipeSerializer.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, new EIdentifier(EmpowerRecipe.Type.ID), EmpowerRecipe.Type.INSTANCE);
 
         Registry.register(Registries.RECIPE_SERIALIZER, ArmillaryRecipeSerializer.ID,
                 ArmillaryRecipeSerializer.INSTANCE);

@@ -1,5 +1,5 @@
 {
-  "type": "etherology:ether_recipe",
+  "type": "etherology:empower_recipe",
   "key": {
     "#": {
       "item": "minecraft:bricks"
@@ -14,7 +14,7 @@
     "count": 6,
     "item": "minecraft:brick_wall"
   },
-  "heavenlyCount": 12,
-  "aquaticCount": 1,
-  "deepCount": 3
+  "relaCount": 12,
+  "viaCount": 1,
+  "closCount": 3
 }
