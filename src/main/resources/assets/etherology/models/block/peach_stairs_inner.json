@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "etherology:block/peach_planks",
+    "side": "etherology:block/peach_planks",
+    "top": "etherology:block/peach_planks"
+  }
+}

@@ -73,6 +73,9 @@ public class Etherology implements ModInitializer {
     public void onInitialize() {
         ItemsRegistry.registerItems();
         BlocksRegistry.register();
+        DecoBlocks.registerAll();
+        DecoBlockItems.registerAll();
+        EBlockFamilies.registerFamilies();
         MixTypes.registerMixes();
         DevCommands.register();
 

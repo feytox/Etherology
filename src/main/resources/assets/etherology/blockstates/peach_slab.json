@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "etherology:block/peach_slab"
+    },
+    "type=double": {
+      "model": "etherology:block/peach_planks"
+    },
+    "type=top": {
+      "model": "etherology:block/peach_slab_top"
+    }
+  }
+}
