@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.blocks.closet.ClosetScreen;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static ru.feytox.etherology.BlocksRegistry.*;
+import static ru.feytox.etherology.DecoBlocks.*;
 import static ru.feytox.etherology.Etherology.*;
 import static ru.feytox.etherology.ItemsRegistry.GLINT;
 
@@ -55,6 +57,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ETHEREAL_SOCKET_BLOCK_ENTITY, EtherealSocketRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_SPINNER_BLOCK_ENTITY, EtherealSpinnerRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_METRONOME_BLOCK_ENTITY, EtherealMetronomeRenderer::new);
+        BlockEntityRendererFactories.register(ETHEROLOGY_SIGN, SignBlockEntityRenderer::new);
 
         HandledScreens.register(Etherology.CLOSET_SCREEN_HANDLER, ClosetScreen::new);
         HandledScreens.register(ETHEREAL_STORAGE_SCREEN_HANDLER, EtherealStorageScreen::new);
@@ -83,6 +86,8 @@ public class EtherologyClient implements ClientModInitializer {
         }));
 
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SOCKET, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(PEACH_DOOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(PEACH_TRAPDOOR, RenderLayer.getCutout());
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();

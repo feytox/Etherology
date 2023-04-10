@@ -9,12 +9,13 @@
     "GeoModelAccessor",
     "ItemEntityAccessor",
     "ServerPlayerEntityMixin",
-    "VanillaBlockTagProviderMixin",
     "WorldRendererAccessor"
   ],
   "client": [
     "EntityModelLayersMixin",
+    "HangingSignEditScreenMixin",
     "InGameHudMixin",
+    "TexturedRenderLayersMixin",
     "TooltipComponentMixin"
   ],
   "injectors": {
