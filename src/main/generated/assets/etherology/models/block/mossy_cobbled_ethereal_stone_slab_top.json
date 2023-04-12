@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "etherology:block/mossy_cobbled_ethereal_stone",
+    "side": "etherology:block/mossy_cobbled_ethereal_stone",
+    "top": "etherology:block/mossy_cobbled_ethereal_stone"
+  }
+}

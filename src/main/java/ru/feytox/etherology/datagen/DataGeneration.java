@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
+import ru.feytox.etherology.datagen.lang.RuLangProvider;
 import ru.feytox.etherology.world.EConfiguredFeatures;
 import ru.feytox.etherology.world.EPlacedFeatures;
 
@@ -15,6 +16,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
 
         pack.addProvider(WorldGeneration::new);
         pack.addProvider(ModelGeneration::new);
+        pack.addProvider(RuLangProvider::new);
     }
 
     @Override

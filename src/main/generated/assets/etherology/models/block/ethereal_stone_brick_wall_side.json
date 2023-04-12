@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_side",
+  "textures": {
+    "wall": "etherology:block/ethereal_stone_bricks"
+  }
+}

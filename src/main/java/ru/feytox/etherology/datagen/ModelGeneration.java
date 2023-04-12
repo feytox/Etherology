@@ -5,8 +5,13 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
+import net.minecraft.data.family.BlockFamily;
 import ru.feytox.etherology.ItemsRegistry;
 import ru.feytox.etherology.items.glints.AbstractGlintItem;
+
+import java.util.Arrays;
+
+import static ru.feytox.etherology.EBlockFamilies.*;
 
 public class ModelGeneration extends FabricModelProvider {
     public ModelGeneration(FabricDataOutput output) {
@@ -14,13 +19,20 @@ public class ModelGeneration extends FabricModelProvider {
     }
 
     @Override
-    public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-
+    public void generateBlockStateModels(BlockStateModelGenerator generator) {
+//        generator.registerCubeAllModelTexturePool(DecoBlocks.ETHEREAL_STONE).slab(DecoBlocks.ETHEREAL_STONE_SLAB);
+        registerBlockFamilies(generator, ETHEREAL_STONE, COBBLED_ETHEREAL_STONE, CRACKED_ETHEREAL_STONE_BRICKS,
+                ETHEREAL_STONE_BRICKS, MOSSY_COBBLED_ETHEREAL_STONE, POLISHED_ETHEREAL_STONE,
+                CHISELED_ETHEREAL_STONE_BRICKS, MOSSY_ETHEREAL_STONE_BRICKS);
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         registerGlint(ItemsRegistry.GLINT, itemModelGenerator);
+    }
+
+    private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
+        Arrays.stream(blockFamilies).forEach(family -> generator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family));
     }
 
     private static void registerGlint(AbstractGlintItem glint, ItemModelGenerator itemModelGenerator) {

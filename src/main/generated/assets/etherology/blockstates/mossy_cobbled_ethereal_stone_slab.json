@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "etherology:block/mossy_cobbled_ethereal_stone_slab"
+    },
+    "type=double": {
+      "model": "etherology:block/mossy_cobbled_ethereal_stone"
+    },
+    "type=top": {
+      "model": "etherology:block/mossy_cobbled_ethereal_stone_slab_top"
+    }
+  }
+}

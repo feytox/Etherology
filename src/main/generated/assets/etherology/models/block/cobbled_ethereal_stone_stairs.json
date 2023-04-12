@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "etherology:block/cobbled_ethereal_stone",
+    "side": "etherology:block/cobbled_ethereal_stone",
+    "top": "etherology:block/cobbled_ethereal_stone"
+  }
+}

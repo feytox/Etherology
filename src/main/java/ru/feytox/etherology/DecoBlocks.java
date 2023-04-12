@@ -17,6 +17,7 @@ import ru.feytox.etherology.blocks.signs.EtherSignBlock;
 import ru.feytox.etherology.blocks.signs.EtherSignBlockEntity;
 import ru.feytox.etherology.blocks.signs.EtherSignType;
 import ru.feytox.etherology.blocks.signs.EtherWallSignBlock;
+import ru.feytox.etherology.util.feyapi.EBlock;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Map;
@@ -27,42 +28,109 @@ public class DecoBlocks {
     public static final BlockEntityType<EtherSignBlockEntity> ETHEROLOGY_SIGN;
 
     // peach wood
-    public static final Block PEACH_LOG = register("peach_log", Blocks.createLogBlock(MapColor.OAK_TAN, MapColor.SPRUCE_BROWN));
-    public static final Block STRIPPED_PEACH_LOG = register("stripped_peach_log", Blocks.createLogBlock(MapColor.OAK_TAN, MapColor.OAK_TAN));
-    public static final Block PEACH_WOOD = register("peach_wood", new PillarBlock(copy(PEACH_LOG)));
-    public static final Block STRIPPED_PEACH_WOOD = register("stripped_peach_wood", new PillarBlock(copy(STRIPPED_PEACH_LOG)));
-    public static final Block PEACH_PLANKS = register("peach_planks", new Block(AbstractBlock.Settings.of(Material.WOOD, MapColor.OAK_TAN).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD)));
-    public static final Block PEACH_STAIRS = registerStairs("peach_stairs", PEACH_PLANKS);
-    public static final Block PEACH_SLAB = registerSlab("peach_slab", PEACH_PLANKS);
-    public static final Block PEACH_BUTTON = register("peach_button", Blocks.createWoodenButtonBlock());
-    public static final Block PEACH_DOOR = registerWoodenDoor("peach_door", PEACH_PLANKS, 3.0f);
-    public static final Block PEACH_FENCE = register("peach_fence", new FenceBlock(copy(PEACH_PLANKS)));
-    public static final Block PEACH_FENCE_GATE = register("peach_fence_gate", new FenceGateBlock(copy(PEACH_PLANKS), SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundEvents.BLOCK_FENCE_GATE_OPEN));
-    public static final Block PEACH_PRESSURE_PLATE = register("peach_pressure_plate", new PressurePlateBlock(
-            PressurePlateBlock.ActivationRule.EVERYTHING, copy(PEACH_PLANKS).noCollision().strength(0.5f), SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON));
-    public static final Block PEACH_SIGN = register("peach_sign", new EtherSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE));
-    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE));
+    public static final Block PEACH_LOG = register("peach_log", Blocks.createLogBlock(MapColor.OAK_TAN, MapColor.SPRUCE_BROWN)).withItem();
+    public static final Block STRIPPED_PEACH_LOG = register("stripped_peach_log", Blocks.createLogBlock(MapColor.OAK_TAN, MapColor.OAK_TAN)).withItem();
+    public static final Block PEACH_WOOD = register("peach_wood", new PillarBlock(copy(PEACH_LOG))).withItem();
+    public static final Block STRIPPED_PEACH_WOOD = register("stripped_peach_wood", new PillarBlock(copy(STRIPPED_PEACH_LOG))).withItem();
+    public static final Block PEACH_PLANKS = register("peach_planks", new Block(AbstractBlock.Settings.of(Material.WOOD, MapColor.OAK_TAN).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD))).withItem();
+    public static final Block PEACH_STAIRS = registerStairs("peach_stairs", PEACH_PLANKS).withItem();
+    public static final Block PEACH_SLAB = registerSlab("peach_slab", PEACH_PLANKS).withItem();
+    public static final Block PEACH_BUTTON = register("peach_button", Blocks.createWoodenButtonBlock()).withItem();
+    public static final Block PEACH_DOOR = registerWoodenDoor("peach_door", PEACH_PLANKS, 3.0f).withoutItem();
+    public static final Block PEACH_FENCE = register("peach_fence", new FenceBlock(copy(PEACH_PLANKS))).withItem();
+    public static final Block PEACH_FENCE_GATE = register("peach_fence_gate", new FenceGateBlock(copy(PEACH_PLANKS), SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundEvents.BLOCK_FENCE_GATE_OPEN)).withItem();
+    public static final Block PEACH_PRESSURE_PLATE = registerWoodenPressurePlate("peach_pressure_plate", PEACH_PLANKS).withItem();
+    public static final Block PEACH_SIGN = register("peach_sign", new EtherSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withoutItem();
+    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withItem();
     public static final Block PEACH_TRAPDOOR = register("peach_trapdoor", new TrapdoorBlock(copy(PEACH_PLANKS)
-            .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never), SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN));
+            .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never), SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN)).withItem();
 
 
-    private static Block register(String id, Block block) {
-        return Registry.register(Registries.BLOCK, new EIdentifier(id), block);
+    // ethereal stone
+    public static final Block ETHEREAL_STONE = registerSimple("ethereal_stone", copy(Blocks.STONE)).withItem();
+    public static final Block ETHEREAL_STONE_STAIRS = registerStairs("ethereal_stone_stairs", ETHEREAL_STONE).withItem();
+    public static final Block ETHEREAL_STONE_SLAB = registerSlab("ethereal_stone_slab", ETHEREAL_STONE).withItem();
+    public static final Block ETHEREAL_STONE_BUTTON = register("ethereal_stone_button", Blocks.createStoneButtonBlock()).withItem();
+    public static final Block ETHEREAL_STONE_PRESSURE_PLATE = registerStonePressurePlate("ethereal_stone_pressure_plate", ETHEREAL_STONE).withItem();
+    public static final Block ETHEREAL_STONE_WALL = registerWall("ethereal_stone_wall", ETHEREAL_STONE).withItem();
+
+    // cobbled ethereal stone
+    public static final Block COBBLED_ETHEREAL_STONE = registerSimple("cobbled_ethereal_stone", copy(Blocks.COBBLESTONE)).withItem();
+    public static final Block COBBLED_ETHEREAL_STONE_SLAB = registerSlab("cobbled_ethereal_stone_slab", COBBLED_ETHEREAL_STONE).withItem();
+    public static final Block COBBLED_ETHEREAL_STONE_STAIRS = registerStairs("cobbled_ethereal_stone_stairs", COBBLED_ETHEREAL_STONE).withItem();
+    public static final Block COBBLED_ETHEREAL_STONE_WALL = registerWall("cobbled_ethereal_stone_wall", COBBLED_ETHEREAL_STONE).withItem();
+    public static final Block COBBLED_ETHEREAL_STONE_PRESSURE_PLATE = registerStonePressurePlate("cobbled_ethereal_stone_pressure_plate", COBBLED_ETHEREAL_STONE).withItem();
+
+    // ethereal stone bricks
+    public static final Block ETHEREAL_STONE_BRICKS = registerSimple("ethereal_stone_bricks", copy(Blocks.STONE_BRICKS)).withItem();
+    public static final Block ETHEREAL_STONE_BRICK_SLAB = registerSlab("ethereal_stone_brick_slab", ETHEREAL_STONE_BRICKS).withItem();
+    public static final Block ETHEREAL_STONE_BRICK_PRESSURE_PLATE = registerStonePressurePlate("ethereal_stone_brick_pressure_plate", ETHEREAL_STONE_BRICKS).withItem();
+    public static final Block ETHEREAL_STONE_BRICK_STAIRS = registerStairs("ethereal_stone_brick_stairs", ETHEREAL_STONE_BRICKS).withItem();
+    public static final Block ETHEREAL_STONE_BRICK_WALL = registerWall("ethereal_stone_brick_wall", ETHEREAL_STONE_BRICKS).withItem();
+
+    // chiseled ethereal stone
+    public static final Block CHISELED_ETHEREAL_STONE_BRICKS = registerSimple("chiseled_ethereal_stone_bricks", copy(Blocks.CHISELED_STONE_BRICKS)).withItem();
+    public static final Block CHISELED_ETHEREAL_STONE_BRICK_SLAB = registerSlab("chiseled_ethereal_stone_brick_slab", CHISELED_ETHEREAL_STONE_BRICKS).withItem();
+    public static final Block CHISELED_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("chiseled_ethereal_stone_brick_stairs", CHISELED_ETHEREAL_STONE_BRICKS).withItem();
+
+    // cracked ethereal stone
+    public static final Block CRACKED_ETHEREAL_STONE_BRICKS = registerSimple("cracked_ethereal_stone_bricks", copy(Blocks.CRACKED_STONE_BRICKS)).withItem();
+    public static final Block CRACKED_ETHEREAL_STONE_BRICK_SLAB = registerSlab("cracked_ethereal_stone_brick_slab", CRACKED_ETHEREAL_STONE_BRICKS).withItem();
+    public static final Block CRACKED_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("cracked_ethereal_stone_brick_stairs", CRACKED_ETHEREAL_STONE_BRICKS).withItem();
+
+    // mossy bricks ethereal stone
+    public static final Block MOSSY_ETHEREAL_STONE_BRICKS = registerSimple("mossy_ethereal_stone_bricks", copy(Blocks.MOSSY_STONE_BRICKS)).withItem();
+    public static final Block MOSSY_ETHEREAL_STONE_BRICK_SLAB = registerSlab("mossy_ethereal_stone_brick_slab", MOSSY_ETHEREAL_STONE_BRICKS).withItem();
+    public static final Block MOSSY_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("mossy_ethereal_stone_brick_stairs", MOSSY_ETHEREAL_STONE_BRICKS).withItem();
+
+    // mossy cobbled ethereal stone
+    public static final Block MOSSY_COBBLED_ETHEREAL_STONE = registerSimple("mossy_cobbled_ethereal_stone", copy(Blocks.MOSSY_COBBLESTONE)).withItem();
+    public static final Block MOSSY_COBBLED_ETHEREAL_STONE_SLAB = registerSlab("mossy_cobbled_ethereal_stone_slab", MOSSY_COBBLED_ETHEREAL_STONE).withItem();
+    public static final Block MOSSY_COBBLED_ETHEREAL_STONE_STAIRS = registerStairs("mossy_cobbled_ethereal_stone_stairs", MOSSY_COBBLED_ETHEREAL_STONE).withItem();
+
+    // polished ethereal stone
+    public static final Block POLISHED_ETHEREAL_STONE = registerSimple("polished_ethereal_stone", copy(Blocks.SMOOTH_STONE)).withItem();
+    public static final Block POLISHED_ETHEREAL_STONE_SLAB = registerSlab("polished_ethereal_stone_slab", POLISHED_ETHEREAL_STONE).withItem();
+    public static final Block POLISHED_ETHEREAL_STONE_STAIRS = registerStairs("polished_ethereal_stone_stairs", POLISHED_ETHEREAL_STONE).withItem();
+
+    private static EBlock register(String id, Block block) {
+        Block registredBlock = Registry.register(Registries.BLOCK, new EIdentifier(id), block);
+        return new EBlock(registredBlock);
     }
 
-    private static Block registerSlab(String id, Block originalBlock) {
+    private static EBlock registerSimple(String id, AbstractBlock.Settings settings) {
+        return register(id, new Block(settings));
+    }
+
+    private static EBlock registerSlab(String id, Block originalBlock) {
         return register(id, new SlabBlock(copy(originalBlock)));
     }
 
-    private static Block registerWoodenDoor(String id, Block originalBlock, float strength) {
+    public static EBlock registerWall(String id, Block originalBlock) {
+        return register(id, new WallBlock(copy(originalBlock)));
+    }
+
+    private static EBlock registerWoodenDoor(String id, Block originalBlock, float strength) {
         return registerDoor(id, originalBlock, strength, SoundEvents.BLOCK_WOODEN_DOOR_CLOSE, SoundEvents.BLOCK_WOODEN_DOOR_OPEN);
     }
 
-    private static Block registerDoor(String id, Block originalBlock, float strength, SoundEvent openSound, SoundEvent closeSound) {
+    private static EBlock registerWoodenPressurePlate(String id, Block originalBlock) {
+        return register(id, new PressurePlateBlock(
+                PressurePlateBlock.ActivationRule.EVERYTHING, copy(originalBlock).noCollision().strength(0.5f),
+                SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON));
+    }
+
+    private static EBlock registerStonePressurePlate(String id, Block originalBlock) {
+        return register(id, new PressurePlateBlock(
+                PressurePlateBlock.ActivationRule.MOBS, copy(originalBlock).noCollision().strength(0.5f),
+                SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_STONE_PRESSURE_PLATE_CLICK_ON));
+    }
+
+    private static EBlock registerDoor(String id, Block originalBlock, float strength, SoundEvent openSound, SoundEvent closeSound) {
         return register(id, new DoorBlock(copy(originalBlock).strength(strength).nonOpaque(), closeSound, openSound));
     }
 
-    private static Block registerStairs(String id, Block originalBlock) {
+    private static EBlock registerStairs(String id, Block originalBlock) {
         return register(id, new StairsBlock(originalBlock.getDefaultState(), copy(originalBlock)));
     }
 

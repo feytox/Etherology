@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pressure_plate_up",
+  "textures": {
+    "texture": "etherology:block/cobbled_ethereal_stone"
+  }
+}

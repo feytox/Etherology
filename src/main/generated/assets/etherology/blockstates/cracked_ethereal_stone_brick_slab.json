@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "etherology:block/cracked_ethereal_stone_brick_slab"
+    },
+    "type=double": {
+      "model": "etherology:block/cracked_ethereal_stone_bricks"
+    },
+    "type=top": {
+      "model": "etherology:block/cracked_ethereal_stone_brick_slab_top"
+    }
+  }
+}
