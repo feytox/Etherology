@@ -1,7 +1,11 @@
 package ru.feytox.etherology;
 
+import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.feytox.etherology.DecoBlocks.*;
 
@@ -25,6 +29,14 @@ public class EBlockFamilies {
 
 
     public static void registerFamilies() {}
+
+
+
+    public static List<Block> getBlocks(BlockFamily blockFamily) {
+        List<Block> blocks = new ArrayList<>(blockFamily.getVariants().values().stream().toList());
+        blocks.add(blockFamily.getBaseBlock());
+        return blocks;
+    }
 
     // TODO: 12/04/2023 для камней нет привязки polished/cracked и т.д.
 
