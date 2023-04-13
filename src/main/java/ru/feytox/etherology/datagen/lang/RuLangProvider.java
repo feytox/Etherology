@@ -46,7 +46,6 @@ public class RuLangProvider extends FabricLanguageProvider {
 
         builder.add(CHISELED_ETHEREAL_STONE_BRICKS, "Резные эфирные каменные кирпичи");
         new TranslationPart(builder, "резного эфирного каменного кирпича")
-                .slab(CHISELED_ETHEREAL_STONE_BRICK_SLAB)
                 .stairs(CHISELED_ETHEREAL_STONE_BRICK_STAIRS);
 
         builder.add(CRACKED_ETHEREAL_STONE_BRICKS, "Потрескавшиеся эфирные каменные кирпичи");

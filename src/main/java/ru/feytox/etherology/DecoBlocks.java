@@ -70,7 +70,6 @@ public class DecoBlocks {
 
     // chiseled ethereal stone
     public static final Block CHISELED_ETHEREAL_STONE_BRICKS = registerSimple("chiseled_ethereal_stone_bricks", copy(Blocks.CHISELED_STONE_BRICKS)).withItem();
-    public static final Block CHISELED_ETHEREAL_STONE_BRICK_SLAB = registerSlab("chiseled_ethereal_stone_brick_slab", CHISELED_ETHEREAL_STONE_BRICKS).withItem();
     public static final Block CHISELED_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("chiseled_ethereal_stone_brick_stairs", CHISELED_ETHEREAL_STONE_BRICKS).withItem();
 
     // cracked ethereal stone
