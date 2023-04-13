@@ -59,12 +59,10 @@ public class DecoBlocks {
     public static final Block COBBLED_ETHEREAL_STONE_SLAB = registerSlab("cobbled_ethereal_stone_slab", COBBLED_ETHEREAL_STONE).withItem();
     public static final Block COBBLED_ETHEREAL_STONE_STAIRS = registerStairs("cobbled_ethereal_stone_stairs", COBBLED_ETHEREAL_STONE).withItem();
     public static final Block COBBLED_ETHEREAL_STONE_WALL = registerWall("cobbled_ethereal_stone_wall", COBBLED_ETHEREAL_STONE).withItem();
-    public static final Block COBBLED_ETHEREAL_STONE_PRESSURE_PLATE = registerStonePressurePlate("cobbled_ethereal_stone_pressure_plate", COBBLED_ETHEREAL_STONE).withItem();
 
     // ethereal stone bricks
     public static final Block ETHEREAL_STONE_BRICKS = registerSimple("ethereal_stone_bricks", copy(Blocks.STONE_BRICKS)).withItem();
     public static final Block ETHEREAL_STONE_BRICK_SLAB = registerSlab("ethereal_stone_brick_slab", ETHEREAL_STONE_BRICKS).withItem();
-    public static final Block ETHEREAL_STONE_BRICK_PRESSURE_PLATE = registerStonePressurePlate("ethereal_stone_brick_pressure_plate", ETHEREAL_STONE_BRICKS).withItem();
     public static final Block ETHEREAL_STONE_BRICK_STAIRS = registerStairs("ethereal_stone_brick_stairs", ETHEREAL_STONE_BRICKS).withItem();
     public static final Block ETHEREAL_STONE_BRICK_WALL = registerWall("ethereal_stone_brick_wall", ETHEREAL_STONE_BRICKS).withItem();
 

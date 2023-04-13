@@ -34,15 +34,13 @@ public class RuLangProvider extends FabricLanguageProvider {
         new TranslationPart(builder, "эфирного булыжника")
                 .stairs(COBBLED_ETHEREAL_STONE_STAIRS)
                 .slab(COBBLED_ETHEREAL_STONE_SLAB)
-                .wall(COBBLED_ETHEREAL_STONE_WALL)
-                .plate(COBBLED_ETHEREAL_STONE_PRESSURE_PLATE);
+                .wall(COBBLED_ETHEREAL_STONE_WALL);
 
         builder.add(ETHEREAL_STONE_BRICKS, "Эфирные каменные кирпичи");
         new TranslationPart(builder, "эфирного каменного кирпича")
                 .stairs(ETHEREAL_STONE_BRICK_STAIRS)
                 .slab(ETHEREAL_STONE_BRICK_SLAB)
-                .wall(ETHEREAL_STONE_BRICK_WALL)
-                .plate(ETHEREAL_STONE_BRICK_PRESSURE_PLATE);
+                .wall(ETHEREAL_STONE_BRICK_WALL);
 
         builder.add(CHISELED_ETHEREAL_STONE_BRICKS, "Резные эфирные каменные кирпичи");
         new TranslationPart(builder, "резного эфирного каменного кирпича")
