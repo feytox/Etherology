@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "etherology:block/green_clay_tiles_slab"
+    },
+    "type=double": {
+      "model": "etherology:block/green_clay_tiles"
+    },
+    "type=top": {
+      "model": "etherology:block/green_clay_tiles_slab_top"
+    }
+  }
+}
