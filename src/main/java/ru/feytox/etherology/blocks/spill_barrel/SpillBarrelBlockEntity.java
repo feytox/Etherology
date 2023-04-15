@@ -2,6 +2,8 @@ package ru.feytox.etherology.blocks.spill_barrel;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -11,7 +13,9 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -75,9 +79,44 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
         return handStack;
     }
 
+    /**
+     * @param player Player to show the info about the SpillBarrel
+     */
+    public void showPotionsInfo(PlayerEntity player) {
+        Text resultText = Text.translatable("lore.etherology.spill_barrel.empty").formatted(Formatting.GRAY);
+        if (!isEmpty()) {
+            resultText = getPotionInfo(items.get(0), getPotionCount(), hasCustomName(), getCustomName()).formatted(Formatting.GRAY);
+        }
+
+        player.sendMessage(resultText, true);
+    }
+
+    public static MutableText getPotionInfo(ItemStack potionStack, int potionCount, boolean withCustomName, Text customName) {
+        Potion barrelPotion = PotionUtil.getPotion(potionStack);
+        StatusEffectInstance statusEffectInstance = barrelPotion.getEffects().get(0);
+        Text effectText = Text.translatable(statusEffectInstance.getTranslationKey());
+        Text levelText = Text.translatable("potion.potency." + statusEffectInstance.getAmplifier());
+        if (!levelText.getString().equals("")) {
+            levelText = Text.of(" " + levelText.getString());
+        }
+
+        if (withCustomName) return Text.translatable("lore.etherology.spill_barrel.filled", customName, "", potionCount);
+
+        return Text.translatable("lore.etherology.spill_barrel.filled",
+                effectText.getString(), levelText.getString(), potionCount);
+    }
+
     @Override
     public DefaultedList<ItemStack> getItems() {
         return items;
+    }
+
+    public int getPotionCount() {
+        int count = 0;
+        for (int i = 0; i < 15; i++) {
+            if (!items.get(i).isEmpty()) count++;
+        }
+        return count;
     }
 
     @Override
