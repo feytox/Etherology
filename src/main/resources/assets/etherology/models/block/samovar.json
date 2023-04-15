@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"samovar": "etherology:block/samovar"
+		"samovar": "etherology:block/samovar",
+		"particle": "etherology:block/samovar"
 	},
 	"elements": [
 		{

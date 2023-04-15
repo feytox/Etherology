@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "etherology:block/spill_barrel",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "etherology:block/spill_barrel"
+    },
+    "facing=south": {
+      "model": "etherology:block/spill_barrel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "etherology:block/spill_barrel",
+      "y": 270
+    }
+  }
+}

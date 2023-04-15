@@ -36,6 +36,8 @@ import ru.feytox.etherology.blocks.samovar.SamovarBlock;
 import ru.feytox.etherology.blocks.sedimentary.SedimentaryBlock;
 import ru.feytox.etherology.blocks.sedimentary.SedimentaryBlockEntity;
 import ru.feytox.etherology.blocks.shelf.ShelfSlabBlock;
+import ru.feytox.etherology.blocks.spill_barrel.SpillBarrelBlock;
+import ru.feytox.etherology.blocks.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.blocks.zone_blocks.ZoneCoreBlock;
 import ru.feytox.etherology.blocks.zone_blocks.ZoneCoreBlockEntity;
 import ru.feytox.etherology.furniture.FurSlabBlockEntity;
@@ -158,6 +160,13 @@ public class BlocksRegistry {
     );
 
     public static final SamovarBlock SAMOVAR_BLOCK = (SamovarBlock) new SamovarBlock().registerAll();
+
+    public static final SpillBarrelBlock SPILL_BARREL = (SpillBarrelBlock) new SpillBarrelBlock().registerAll();
+    public static final BlockEntityType<SpillBarrelBlockEntity> SPILL_BARREL_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("spill_barrel_block_entity"),
+            FabricBlockEntityTypeBuilder.create(SpillBarrelBlockEntity::new, SPILL_BARREL).build()
+    );
 
     public static void register() {}
 }

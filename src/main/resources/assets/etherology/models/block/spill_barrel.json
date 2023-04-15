@@ -1,0 +1,54 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "etherology:block/spill_barrel",
+		"spill_barrel": "etherology:block/spill_barrel"
+	},
+	"elements": [
+		{
+			"from": [4, 2, 2],
+			"to": [12, 10, 14],
+			"faces": {
+				"north": {"uv": [0, 8, 8, 16], "texture": "#spill_barrel"},
+				"east": {"uv": [0, 0, 12, 8], "texture": "#spill_barrel"},
+				"south": {"uv": [0, 8, 8, 16], "texture": "#spill_barrel"},
+				"west": {"uv": [0, 0, 12, 8], "texture": "#spill_barrel"},
+				"up": {"uv": [0, 0, 12, 8], "rotation": 90, "texture": "#spill_barrel"},
+				"down": {"uv": [0, 0, 12, 8], "rotation": 270, "texture": "#spill_barrel"}
+			}
+		},
+		{
+			"from": [3, 0, 3],
+			"to": [13, 3, 6],
+			"faces": {
+				"north": {"uv": [13, 0, 16, 10], "rotation": 270, "texture": "#spill_barrel"},
+				"east": {"uv": [13, 10, 16, 13], "texture": "#spill_barrel"},
+				"south": {"uv": [13, 0, 16, 10], "rotation": 270, "texture": "#spill_barrel"},
+				"west": {"uv": [16, 10, 13, 13], "texture": "#spill_barrel"},
+				"up": {"uv": [13, 0, 16, 10], "rotation": 90, "texture": "#spill_barrel"},
+				"down": {"uv": [13, 0, 16, 10], "rotation": 270, "texture": "#spill_barrel"}
+			}
+		},
+		{
+			"from": [3, 0, 10],
+			"to": [13, 3, 13],
+			"faces": {
+				"north": {"uv": [13, 0, 16, 10], "rotation": 270, "texture": "#spill_barrel"},
+				"east": {"uv": [16, 10, 13, 13], "texture": "#spill_barrel"},
+				"south": {"uv": [13, 0, 16, 10], "rotation": 270, "texture": "#spill_barrel"},
+				"west": {"uv": [13, 10, 16, 13], "texture": "#spill_barrel"},
+				"up": {"uv": [13, 0, 16, 10], "rotation": 90, "texture": "#spill_barrel"},
+				"down": {"uv": [13, 0, 16, 10], "rotation": 270, "texture": "#spill_barrel"}
+			}
+		},
+		{
+			"from": [8, 2, 0],
+			"to": [8, 5, 2],
+			"faces": {
+				"east": {"uv": [16, 13, 14, 16], "texture": "#spill_barrel"},
+				"west": {"uv": [14, 13, 16, 16], "texture": "#spill_barrel"}
+			}
+		}
+	]
+}
