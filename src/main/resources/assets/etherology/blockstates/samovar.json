@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "etherology:block/samovar",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "etherology:block/samovar"
+    },
+    "facing=south": {
+      "model": "etherology:block/samovar",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "etherology:block/samovar",
+      "y": 270
+    }
+  }
+}

@@ -32,6 +32,7 @@ import ru.feytox.etherology.blocks.pedestal.PedestalBlock;
 import ru.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.blocks.ringMatrix.RingMatrixBlock;
 import ru.feytox.etherology.blocks.ringMatrix.RingMatrixBlockEntity;
+import ru.feytox.etherology.blocks.samovar.SamovarBlock;
 import ru.feytox.etherology.blocks.sedimentary.SedimentaryBlock;
 import ru.feytox.etherology.blocks.sedimentary.SedimentaryBlockEntity;
 import ru.feytox.etherology.blocks.shelf.ShelfSlabBlock;
@@ -155,6 +156,8 @@ public class BlocksRegistry {
             new EIdentifier("empowerment_table_block_entity"),
             FabricBlockEntityTypeBuilder.create(EmpowerTableBlockEntity::new, EMPOWERMENT_TABLE).build()
     );
+
+    public static final SamovarBlock SAMOVAR_BLOCK = (SamovarBlock) new SamovarBlock().registerAll();
 
     public static void register() {}
 }
