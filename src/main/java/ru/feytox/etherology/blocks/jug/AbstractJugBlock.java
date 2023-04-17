@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -15,24 +15,21 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import ru.feytox.etherology.BlocksRegistry;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     private final String blockId;
-    private final JugType jugType;
     private static final VoxelShape OUTLINE_SHAPE;
     private static final VoxelShape TOP_SHAPE;
 
-    public AbstractJugBlock(String blockId, JugType jugType) {
+    public AbstractJugBlock(String blockId) {
         super(FabricBlockSettings.copyOf(Blocks.TERRACOTTA).nonOpaque());
         this.blockId = blockId;
-        this.jugType = jugType;
     }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (state.getBlock() != newState.getBlock() && !newState.isOf(BlocksRegistry.SEALED_JUG) && !moved) {
+        if (state.getBlock() != newState.getBlock()) {
             if (world.getBlockEntity(pos) instanceof JugBlockEntity jug) {
                 ItemScatterer.spawn(world, pos, jug);
                 world.updateComparators(pos, this);
@@ -44,28 +41,19 @@ public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEn
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player.isSneaking() && player.getMainHandStack().isEmpty() && jugType.equals(JugType.SEALED) && !world.isClient) {
-            if (world.getBlockEntity(pos) instanceof JugBlockEntity jug) {
-                ItemStack jugStack = BlocksRegistry.SEALED_JUG.getItem().getDefaultStack();
-                jug.setStackNbt(jugStack);
-                jug.clear();
-                jug.markDirty();
-                player.setStackInHand(Hand.MAIN_HAND, jugStack);
-                world.removeBlock(pos, true);
-                return ActionResult.SUCCESS;
+        if (!world.isClient) {
+            NamedScreenHandlerFactory factory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
+            if (factory != null) {
+                player.openHandledScreen(factory);
             }
         }
 
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return OUTLINE_SHAPE;
-    }
-
-    public JugType getJugType() {
-        return jugType;
     }
 
     @Override

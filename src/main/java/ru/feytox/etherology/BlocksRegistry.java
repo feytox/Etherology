@@ -30,7 +30,6 @@ import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageBlockEntity;
 import ru.feytox.etherology.blocks.furniture.FurSlabBlock;
 import ru.feytox.etherology.blocks.jug.AbstractJugBlock;
 import ru.feytox.etherology.blocks.jug.JugBlockEntity;
-import ru.feytox.etherology.blocks.jug.JugType;
 import ru.feytox.etherology.blocks.pedestal.PedestalBlock;
 import ru.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.blocks.ringMatrix.RingMatrixBlock;
@@ -171,12 +170,11 @@ public class BlocksRegistry {
             FabricBlockEntityTypeBuilder.create(SpillBarrelBlockEntity::new, SPILL_BARREL).build()
     );
 
-    public static final AbstractJugBlock JUG = (AbstractJugBlock) new AbstractJugBlock("jug", JugType.OPENED).registerAll();
-    public static final AbstractJugBlock SEALED_JUG = (AbstractJugBlock) new AbstractJugBlock("sealed_jug", JugType.SEALED).registerAll();
+    public static final AbstractJugBlock JUG = (AbstractJugBlock) new AbstractJugBlock("jug").registerAll();
     public static final BlockEntityType<JugBlockEntity> JUG_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("jug_block_entity"),
-            FabricBlockEntityTypeBuilder.create(JugBlockEntity::new, JUG, SEALED_JUG).build()
+            FabricBlockEntityTypeBuilder.create(JugBlockEntity::new, JUG).build()
     );
 
     public static void register() {}

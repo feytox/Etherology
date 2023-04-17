@@ -103,6 +103,5 @@
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",
   "lore.etherology.spill_barrel.empty": "Пусто",
-  "block.etherology.jug": "Кувшин",
-  "block.etherology.sealed_jug": "Запечатанный кувшин"
+  "block.etherology.jug": "Кувшин"
 }

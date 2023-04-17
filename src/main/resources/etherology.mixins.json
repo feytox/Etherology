@@ -7,7 +7,6 @@
     "AxeItemMixin",
     "DataPackContentsMixin",
     "GeoModelAccessor",
-    "HoneyCombItemMixin",
     "ItemEntityAccessor",
     "ServerPlayerEntityMixin",
     "WorldRendererAccessor"
