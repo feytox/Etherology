@@ -1,0 +1,6 @@
+{
+  "parent": "etherology:block/template_beamer",
+  "textures": {
+    "plant": "etherology:block/beamer"
+  }
+}

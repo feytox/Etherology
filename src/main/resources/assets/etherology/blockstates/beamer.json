@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "etherology:block/beamer_0"
+    },
+    "age=1": {
+      "model": "etherology:block/beamer_1"
+    },
+    "age=2": {
+      "model": "etherology:block/beamer_2"
+    },
+    "age=3": {
+      "model": "etherology:block/beamer_3"
+    }
+  }
+}

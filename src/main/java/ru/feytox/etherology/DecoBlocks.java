@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.SignType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
+import ru.feytox.etherology.blocks.beamer.BeamerBlock;
 import ru.feytox.etherology.blocks.signs.EtherSignBlock;
 import ru.feytox.etherology.blocks.signs.EtherSignBlockEntity;
 import ru.feytox.etherology.blocks.signs.EtherSignType;
@@ -119,6 +120,9 @@ public class DecoBlocks {
     public static final Block YELLOW_CLAY_TILES_SLAB = registerSlab("yellow_clay_tiles_slab", YELLOW_CLAY_TILES).withItem();
     public static final Block YELLOW_CLAY_TILES_STAIRS = registerStairs("yellow_clay_tiles_stairs", YELLOW_CLAY_TILES).withItem();
     public static final Block YELLOW_CLAY_TILES_WALL = registerWall("yellow_clay_tiles_wall", YELLOW_CLAY_TILES).withItem();
+
+    // plants
+    public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerAll();
 
     private static EBlock register(String id, Block block) {
         Block registredBlock = Registry.register(Registries.BLOCK, new EIdentifier(id), block);

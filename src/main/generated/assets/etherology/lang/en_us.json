@@ -104,5 +104,6 @@
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",
   "lore.etherology.spill_barrel.empty": "Пусто",
   "block.etherology.jug": "Сосуд для Хранения",
-  "block.etherology.clay_jug": "Форма Сосуда для Хранения"
+  "block.etherology.clay_jug": "Форма Сосуда для Хранения",
+  "block.etherology.beamer": "Лучевод"
 }
