@@ -15,16 +15,23 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEntityProvider {
-    private final String blockId;
     private static final VoxelShape OUTLINE_SHAPE;
     private static final VoxelShape TOP_SHAPE;
+    private final String blockId;
+    private final JugType jugType;
 
-    public AbstractJugBlock(String blockId) {
-        super(FabricBlockSettings.copyOf(Blocks.TERRACOTTA).nonOpaque());
+    public AbstractJugBlock(String blockId, JugType jugType) {
+        this(blockId, jugType, FabricBlockSettings.copyOf(Blocks.TERRACOTTA));
+    }
+
+    public AbstractJugBlock(String blockId, JugType jugType, FabricBlockSettings settings) {
+        super(settings.nonOpaque());
         this.blockId = blockId;
+        this.jugType = jugType;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEn
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
+        if (!world.isClient && !jugType.equals(JugType.RAW)) {
             NamedScreenHandlerFactory factory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
             if (factory != null) {
                 player.openHandledScreen(factory);
@@ -66,9 +73,10 @@ public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEn
         return blockId;
     }
 
+    @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new JugBlockEntity(pos, state);
+        return jugType.equals(JugType.RAW) ? null : new JugBlockEntity(pos, state);
     }
 
     static {
