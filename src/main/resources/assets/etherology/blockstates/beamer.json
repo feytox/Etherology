@@ -1,16 +1,28 @@
 {
   "variants": {
-    "age=0": {
+    "age=0,is_farmland=false": {
       "model": "etherology:block/beamer_0"
     },
-    "age=1": {
+    "age=0,is_farmland=true": {
+      "model": "etherology:block/beamer_0_farmland"
+    },
+    "age=1,is_farmland=false": {
       "model": "etherology:block/beamer_1"
     },
-    "age=2": {
+    "age=1,is_farmland=true": {
+      "model": "etherology:block/beamer_1_farmland"
+    },
+    "age=2,is_farmland=false": {
       "model": "etherology:block/beamer_2"
     },
-    "age=3": {
+    "age=2,is_farmland=true": {
+      "model": "etherology:block/beamer_2_farmland"
+    },
+    "age=3,is_farmland=false": {
       "model": "etherology:block/beamer_3"
+    },
+    "age=3,is_farmland=true": {
+      "model": "etherology:block/beamer_3_farmland"
     }
   }
 }

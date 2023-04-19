@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "etherology:block/cross_crop",
   "textures": {
     "cross": "etherology:block/beamer_1"
   }
