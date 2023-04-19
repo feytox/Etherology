@@ -2,6 +2,8 @@ package ru.feytox.etherology.blocks.beamer;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -14,6 +16,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import ru.feytox.etherology.DecoBlockItems;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 public class BeamerBlock extends PlantBlock implements Fertilizable, RegistrableBlock {
@@ -24,6 +27,21 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
     public BeamerBlock() {
         super(FabricBlockSettings.of(Material.PLANT).nonOpaque().ticksRandomly().sounds(BlockSoundGroup.GRASS).noCollision().breakInstantly());
         this.setDefaultState(getDefaultState().with(AGE, 0));
+    }
+
+    @Override
+    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+        BlockState downState = world.getBlockState(pos.down());
+        if (state.get(AGE) == MAX_AGE) {
+            return downState.isIn(BlockTags.DIRT) || downState.isOf(Blocks.FARMLAND);
+        }
+        return downState.isOf(Blocks.FARMLAND);
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        int age = ctx.getStack().isOf(DecoBlockItems.BEAMER_SEEDS) ? 0 : MAX_AGE;
+        return getDefaultState().with(AGE, age);
     }
 
     @Override

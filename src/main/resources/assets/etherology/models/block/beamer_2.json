@@ -1,6 +1,6 @@
 {
-  "parent": "etherology:block/template_beamer",
+  "parent": "etherology:block/cross_crop",
   "textures": {
-    "plant": "etherology:block/beamer_2"
+    "cross": "etherology:block/beamer_2"
   }
 }

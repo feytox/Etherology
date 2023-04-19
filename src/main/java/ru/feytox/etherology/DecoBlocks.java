@@ -122,7 +122,7 @@ public class DecoBlocks {
     public static final Block YELLOW_CLAY_TILES_WALL = registerWall("yellow_clay_tiles_wall", YELLOW_CLAY_TILES).withItem();
 
     // plants
-    public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerAll();
+    public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
 
     private static EBlock register(String id, Block block) {
         Block registredBlock = Registry.register(Registries.BLOCK, new EIdentifier(id), block);

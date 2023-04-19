@@ -14,6 +14,8 @@
   "item.etherology.glint.fullness": "%d/%d эфира",
   "item.etherology.ether_shard": "Эфир",
   "item.etherology.ethereal_oil": "Эфирное масло",
+  "item.etherology.beamer_seeds": "Семена Лучевода",
+  "item.etherology.beamer_fruit": "Плод Лучевода",
 
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",
