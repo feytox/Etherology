@@ -7,6 +7,7 @@ import ru.feytox.etherology.Etherology;
 
 import java.nio.file.Path;
 
+import static ru.feytox.etherology.DecoBlockItems.*;
 import static ru.feytox.etherology.DecoBlocks.*;
 
 public class RuLangProvider extends FabricLanguageProvider {
@@ -95,6 +96,21 @@ public class RuLangProvider extends FabricLanguageProvider {
                 .stairs(YELLOW_CLAY_TILES_STAIRS)
                 .slab(YELLOW_CLAY_TILES_SLAB)
                 .wall(YELLOW_CLAY_TILES_WALL);
+
+        // attrahite
+        builder.add(ATTRAHITE_BLOCK, "Аттрахитовый блок");
+        builder.add(ATTRAHITE_INGOT, "Аттрахитовый слиток");
+        builder.add(ATTRAHITE_NUGGET, "Аттрахитовый самородок");
+
+        // ethril
+        builder.add(ETHRIL_BLOCK, "Эфриловый блок");
+        builder.add(ETHRIL_INGOT, "Эфриловый слиток");
+        builder.add(ETHRIL_NUGGET, "Эфриловый самородок");
+
+        // telder steel
+        builder.add(TELDER_STEEL_BLOCK, "Телдер-стальной блок");
+        builder.add(TELDER_STEEL_INGOT, "Телдер-стальной слиток");
+        builder.add(TELDER_STEEL_NUGGET, "Телдер-стальной самородок");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

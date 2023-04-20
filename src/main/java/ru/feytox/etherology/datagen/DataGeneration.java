@@ -17,7 +17,9 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         pack.addProvider(WorldGeneration::new);
         pack.addProvider(ModelGeneration::new);
         pack.addProvider(RuLangProvider::new);
-        pack.addProvider(BlockTagGeneration::new);
+        pack.addProvider(RecipeGeneration::new);
+        BlockTagGeneration blockTagGeneration = pack.addProvider(BlockTagGeneration::new);
+        pack.addProvider(((output, registries) -> new ItemTagGeneration(output, registries, blockTagGeneration)));
     }
 
     @Override

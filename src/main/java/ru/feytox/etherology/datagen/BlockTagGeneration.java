@@ -36,6 +36,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addVariant(BlockTags.STONE_PRESSURE_PLATES, BlockFamily.Variant.PRESSURE_PLATE, mostFamilies);
 
         addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
+
+        addBlocks(BlockTags.NEEDS_IRON_TOOL, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
     }
 
     private void addBlocks(TagKey<Block> tagKey, Block... blocks) {

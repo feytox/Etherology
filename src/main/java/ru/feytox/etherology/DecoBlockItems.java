@@ -8,10 +8,25 @@ import net.minecraft.registry.Registry;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class DecoBlockItems {
+    // peach wood
     public static final Item PEACH_DOOR = registerBlockItem(new TallBlockItem(DecoBlocks.PEACH_DOOR, new FabricItemSettings()));
     public static final Item PEACH_SIGN = registerBlockItem(new SignItem(new FabricItemSettings().maxCount(16), DecoBlocks.PEACH_SIGN, DecoBlocks.PEACH_WALL_SIGN));
+
+    // plants
     public static final Item BEAMER_SEEDS = registerAliasedBlockItem("beamer_seeds", DecoBlocks.BEAMER);
     public static final Item BEAMER_FRUIT = registerAliasedBlockItem("beamer_fruit", DecoBlocks.BEAMER);
+
+    // metals
+    public static final Item ATTRAHITE_INGOT = registerSimpleItem("attrahite_ingot");
+    public static final Item ATTRAHITE_NUGGET = registerSimpleItem("attrahite_nugget");
+    public static final Item ETHRIL_INGOT = registerSimpleItem("ethril_ingot");
+    public static final Item ETHRIL_NUGGET = registerSimpleItem("ethril_nugget");
+    public static final Item TELDER_STEEL_INGOT = registerSimpleItem("telder_steel_ingot");
+    public static final Item TELDER_STEEL_NUGGET = registerSimpleItem("telder_steel_nugget");
+
+    private static Item registerSimpleItem(String id) {
+        return Registry.register(Registries.ITEM, new EIdentifier(id), new Item(new FabricItemSettings()));
+    }
 
     private static Item registerBlockItem(BlockItem blockItem) {
         blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);

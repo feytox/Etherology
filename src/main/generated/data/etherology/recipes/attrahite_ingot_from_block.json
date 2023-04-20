@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "etherology:attrahite_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "etherology:attrahite_ingot"
+  }
+}

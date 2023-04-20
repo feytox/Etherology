@@ -2,6 +2,7 @@ package ru.feytox.etherology.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 
 public class BlockRuTranslationBuilder {
     private final FabricLanguageProvider.TranslationBuilder builder;
@@ -12,6 +13,10 @@ public class BlockRuTranslationBuilder {
 
     public void add(Block block, String name) {
         builder.add(block, name);
+    }
+
+    public void add(Item item, String name) {
+        builder.add(item, name);
     }
 
     /**

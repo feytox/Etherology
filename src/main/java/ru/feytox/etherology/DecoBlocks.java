@@ -124,6 +124,11 @@ public class DecoBlocks {
     // plants
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
 
+    // metals
+    public static final Block ATTRAHITE_BLOCK = registerSimple("attrahite_block", copy(Blocks.IRON_BLOCK).mapColor(MapColor.LAPIS_BLUE)).withItem();
+    public static final Block ETHRIL_BLOCK = registerSimple("ethril_block", copy(Blocks.GOLD_BLOCK)).withItem();
+    public static final Block TELDER_STEEL_BLOCK = registerSimple("telder_steel_block", copy(Blocks.DIAMOND_BLOCK).mapColor(MapColor.ORANGE)).withItem();
+
     private static EBlock register(String id, Block block) {
         Block registredBlock = Registry.register(Registries.BLOCK, new EIdentifier(id), block);
         return new EBlock(registredBlock);
