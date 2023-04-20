@@ -14,8 +14,6 @@
   "item.etherology.glint.fullness": "%d/%d эфира",
   "item.etherology.ether_shard": "Эфир",
   "item.etherology.ethereal_oil": "Эфирное масло",
-  "item.etherology.beamer_seeds": "Семена Лучевода",
-  "item.etherology.beamer_fruit": "Плод Лучевода",
 
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",
@@ -56,8 +54,6 @@
   "block.etherology.peach_pressure_plate": "Персиковая нажимная плита",
   "block.etherology.peach_sign": "Персиковая табличка",
   "block.etherology.peach_trapdoor": "Персиковый люк",
-
-  "block.etherology.beamer": "Лучевод",
 
   "etherology.mix_red": "Замешать до красной эссенции",
   "etherology.mix_yellow": "Замешать до желтой эссенции",

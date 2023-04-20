@@ -112,6 +112,11 @@ public class RuLangProvider extends FabricLanguageProvider {
         builder.add(TELDER_STEEL_INGOT, "Телдер-стальной слиток");
         builder.add(TELDER_STEEL_NUGGET, "Телдер-стальной самородок");
 
+        // beamer
+        builder.add(BEAMER, "Лучевод");
+        builder.add(BEAMER_SEEDS, "Семена лучевода");
+        builder.add(BEAM_FRUIT, "Лучеплод");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

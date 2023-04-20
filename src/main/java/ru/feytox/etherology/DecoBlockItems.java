@@ -14,7 +14,7 @@ public class DecoBlockItems {
 
     // plants
     public static final Item BEAMER_SEEDS = registerAliasedBlockItem("beamer_seeds", DecoBlocks.BEAMER);
-    public static final Item BEAMER_FRUIT = registerAliasedBlockItem("beamer_fruit", DecoBlocks.BEAMER);
+    public static final Item BEAM_FRUIT = registerAliasedBlockItem("beam_fruit", DecoBlocks.BEAMER);
 
     // metals
     public static final Item ATTRAHITE_INGOT = registerSimpleItem("attrahite_ingot");

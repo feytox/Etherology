@@ -37,7 +37,7 @@ public class ModelGeneration extends FabricModelProvider {
         // glint
         registerGlint(ItemsRegistry.GLINT, itemModelGenerator);
         // all simple items
-        registerSimpleItem(itemModelGenerator, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET);
+        registerSimpleItem(itemModelGenerator, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
