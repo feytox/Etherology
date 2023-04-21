@@ -7,6 +7,7 @@ import ru.feytox.etherology.Etherology;
 
 import java.nio.file.Path;
 
+import static ru.feytox.etherology.BlocksRegistry.CRATE;
 import static ru.feytox.etherology.DecoBlockItems.*;
 import static ru.feytox.etherology.DecoBlocks.*;
 
@@ -116,6 +117,8 @@ public class RuLangProvider extends FabricLanguageProvider {
         builder.add(BEAMER, "Лучевод");
         builder.add(BEAMER_SEEDS, "Семена лучевода");
         builder.add(BEAM_FRUIT, "Лучеплод");
+
+        builder.add(CRATE, "Ящик");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

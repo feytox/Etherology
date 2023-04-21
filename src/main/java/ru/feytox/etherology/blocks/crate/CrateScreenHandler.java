@@ -1,4 +1,4 @@
-package ru.feytox.etherology.blocks.closet;
+package ru.feytox.etherology.blocks.crate;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -9,19 +9,15 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.Etherology;
 
-public class ClosetScreenHandler extends ScreenHandler {
+public class CrateScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
-    public ClosetScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, false);
+    public CrateScreenHandler(int syncId, PlayerInventory playerInventory) {
+        this(syncId, playerInventory, new SimpleInventory(10));
     }
 
-    public ClosetScreenHandler(int syncId, PlayerInventory playerInventory, boolean isBottom) {
-        this(syncId, playerInventory, new SimpleInventory(10), isBottom);
-    }
-
-    public ClosetScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, boolean isBottom) {
-        super(Etherology.CLOSET_SCREEN_HANDLER, syncId);
+    public CrateScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+        super(Etherology.CRATE_SCREEN_HANDLER, syncId);
         checkSize(inventory, 10);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
@@ -48,11 +44,6 @@ public class ClosetScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
-    }
-
-    @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
@@ -75,6 +66,11 @@ public class ClosetScreenHandler extends ScreenHandler {
         }
 
         return newStack;
+    }
+
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return true;
     }
 
     @Override

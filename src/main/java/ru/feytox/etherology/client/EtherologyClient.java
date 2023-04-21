@@ -12,8 +12,9 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.blocks.closet.ClosetScreen;
+import ru.feytox.etherology.blocks.crate.CrateBlockRenderer;
+import ru.feytox.etherology.blocks.crate.CrateScreen;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
 import ru.feytox.etherology.blocks.empowerTable.EmpowerTableScreen;
 import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreen;
@@ -58,11 +59,13 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ETHEREAL_SPINNER_BLOCK_ENTITY, EtherealSpinnerRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_METRONOME_BLOCK_ENTITY, EtherealMetronomeRenderer::new);
         BlockEntityRendererFactories.register(ETHEROLOGY_SIGN, SignBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(CRATE_BLOCK_ENTITY, CrateBlockRenderer::new);
 
-        HandledScreens.register(Etherology.CLOSET_SCREEN_HANDLER, ClosetScreen::new);
+        HandledScreens.register(CLOSET_SCREEN_HANDLER, ClosetScreen::new);
         HandledScreens.register(ETHEREAL_STORAGE_SCREEN_HANDLER, EtherealStorageScreen::new);
         HandledScreens.register(ETHEREAL_FURNACE_SCREEN_HANDLER, EtherealFurnaceScreen::new);
         HandledScreens.register(EMPOWER_TABLE_SCREEN_HANDLER, EmpowerTableScreen::new);
+        HandledScreens.register(CRATE_SCREEN_HANDLER, CrateScreen::new);
 
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, ElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);

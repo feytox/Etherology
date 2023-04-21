@@ -9,6 +9,8 @@ import net.minecraft.registry.Registry;
 import ru.feytox.etherology.blocks.armillar.ArmillaryMatrixBlock;
 import ru.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.blocks.closet.ClosetSlabBlock;
+import ru.feytox.etherology.blocks.crate.CrateBlock;
+import ru.feytox.etherology.blocks.crate.CrateBlockEntity;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlock;
 import ru.feytox.etherology.blocks.crucible.CrucibleBlockEntity;
 import ru.feytox.etherology.blocks.empowerTable.EmpowerTableBlock;
@@ -179,6 +181,13 @@ public class BlocksRegistry {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("jug_block_entity"),
             FabricBlockEntityTypeBuilder.create(JugBlockEntity::new, JUG).build()
+    );
+
+    public static final CrateBlock CRATE = (CrateBlock) new CrateBlock().registerAll();
+    public static final BlockEntityType<CrateBlockEntity> CRATE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("crate_block_entity"),
+            FabricBlockEntityTypeBuilder.create(CrateBlockEntity::new, CRATE).build()
     );
 
     public static void register() {}

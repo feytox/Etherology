@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"texture_size": [128, 128],
+	"textures": {
+		"particle": "etherology:block/crate_particle",
+		"crate": "etherology:block/crate"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 3],
+			"to": [15, 10, 13],
+			"faces": {
+				"north": {"uv": [11.25, 14.75, 13, 16], "texture": "#crate"},
+				"east": {"uv": [10, 14.75, 11.25, 16], "texture": "#crate"},
+				"south": {"uv": [14.25, 14.75, 16, 16], "texture": "#crate"},
+				"west": {"uv": [13, 14.75, 14.25, 16], "texture": "#crate"},
+				"up": {"uv": [13, 14.75, 11.25, 13.5], "texture": "#crate"},
+				"down": {"uv": [14.75, 13.5, 13, 14.75], "texture": "#crate"}
+			}
+		}
+	]
+}
