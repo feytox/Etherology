@@ -1,18 +1,24 @@
 package ru.feytox.etherology.items;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.AliasedBlockItem;
-import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.feytox.etherology.BlocksRegistry;
+import ru.feytox.etherology.blocks.crate.CrateBlock;
 
 public class CarriedCrateItem extends AliasedBlockItem {
     public CarriedCrateItem() {
@@ -38,22 +44,24 @@ public class CarriedCrateItem extends AliasedBlockItem {
 
         ServerPlayerEntity player = (ServerPlayerEntity) entity;
         if (!selected && player.getInventory().contains(stack)) {
+            BlockPos blockPos = player.getBlockPos();
+            boolean shouldFall = FallingBlock.canFallThrough(world.getBlockState(blockPos.down()));
+            BlockState state = BlocksRegistry.CRATE.getDefaultState()
+                    .with(CrateBlock.FALLING, shouldFall)
+                    .with(CrateBlock.FACING, player.getHorizontalFacing().getOpposite());
+            boolean canPlace = FallingBlock.canFallThrough(world.getBlockState(blockPos));
+            boolean placeResult = false;
+            if (canPlace) placeResult = world.setBlockState(player.getBlockPos(), state);
 
-            HitResult hitResult = player.raycast(4.5, 0.0f, false);
-            boolean placeResult = hitResult.getType() == HitResult.Type.BLOCK;
             if (placeResult) {
-                // tries to place a crate
-                placeResult = ActionResult.CONSUME == place(new ItemPlacementContext(world, player, player.getActiveHand(), stack, (BlockHitResult) hitResult));
-            }
-
-            if (!placeResult) {
-                // when cannot to place a crate
-                player.dropItem(stack.copy(), false);
-                stack.decrement(1);
+                BlockItem.writeNbtToBlockEntity(world, player, blockPos, stack);
             } else {
-                // when crate was placed successfully
-                stack.decrement(1);
+                NbtCompound data = stack.getOrCreateSubNbt("BlockEntityTag");
+                DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
+                Inventories.readNbt(data, items);
+                ItemScatterer.spawn(world, player.getBlockPos(), items);
             }
+            stack.decrement(1);
         }
     }
 }

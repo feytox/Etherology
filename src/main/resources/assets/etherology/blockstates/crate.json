@@ -1,5 +1,19 @@
 {
   "variants": {
-    "": { "model": "etherology:block/crate" }
+    "facing=east": {
+      "model": "etherology:block/crate",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "etherology:block/crate"
+    },
+    "facing=south": {
+      "model": "etherology:block/crate",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "etherology:block/crate",
+      "y": 270
+    }
   }
 }

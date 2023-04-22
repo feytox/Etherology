@@ -190,5 +190,6 @@ public class BlocksRegistry {
             FabricBlockEntityTypeBuilder.create(CrateBlockEntity::new, CRATE).build()
     );
 
-    public static void register() {}
+    public static void register() {
+    }
 }
