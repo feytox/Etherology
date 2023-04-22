@@ -21,6 +21,10 @@ public class EtherNetwork {
 
     @Environment(EnvType.CLIENT)
     public static void registerPackets() {
+        registerS2CPackets();
+    }
+
+    public static void registerS2CPackets() {
         ClientPlayNetworking.registerGlobalReceiver(BLOCK_UPDATE_PACKET_ID, EtherNetwork::blockUpdateHandler);
     }
 

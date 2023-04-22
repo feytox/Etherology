@@ -31,6 +31,7 @@ public class ItemsRegistry {
     public static final EtherShard ETHER_SHARD = (EtherShard) new EtherShard().register();
     public static final EtherOil ETHEREAL_OIL = (EtherOil) new EtherOil().register();
     public static final SpillBarrelItem SPILL_BARREL = (SpillBarrelItem) registerItem("spill_barrel", new SpillBarrelItem());
+    public static final CarriedCrateItem CARRIED_CRATE = (CarriedCrateItem) registerItem("carried_crate", new CarriedCrateItem());
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);

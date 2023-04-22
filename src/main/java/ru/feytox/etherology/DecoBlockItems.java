@@ -38,7 +38,7 @@ public class DecoBlockItems {
         return registerBlockItem(blockItem);
     }
 
-    private static Item registerAliasedBlockItem(String id, Block block) {
+    public static Item registerAliasedBlockItem(String id, Block block) {
         AliasedBlockItem aliasedBlockItem = new AliasedBlockItem(block, new FabricItemSettings());
         Registry.register(Registries.ITEM, new EIdentifier(id), aliasedBlockItem);
         return aliasedBlockItem;

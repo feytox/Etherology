@@ -19,6 +19,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.ItemsRegistry;
 import ru.feytox.etherology.util.registry.RegistrableBlock;
 
 import java.util.List;
@@ -61,6 +62,16 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient) {
+            if (player.isSneaking() && player.getMainHandStack().isEmpty() && world.getBlockEntity(pos) instanceof CrateBlockEntity crate) {
+                ItemStack crateStack = ItemsRegistry.CARRIED_CRATE.getDefaultStack();
+                crate.setStackNbt(crateStack);
+                crate.clear();
+                crate.markDirty();
+                player.setStackInHand(Hand.MAIN_HAND, crateStack);
+                world.removeBlock(pos, true);
+                return ActionResult.SUCCESS;
+            }
+
             NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
             if (screenHandlerFactory != null) {
                 player.openHandledScreen(screenHandlerFactory);
@@ -71,7 +82,7 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (state.getBlock() != newState.getBlock()) {
+        if (state.getBlock() != newState.getBlock() && !moved) {
             BlockEntity be = world.getBlockEntity(pos);
             if (be instanceof CrateBlockEntity crate) {
                 List<ItemStack> stacks = crate.getItems().subList(0, 4);
