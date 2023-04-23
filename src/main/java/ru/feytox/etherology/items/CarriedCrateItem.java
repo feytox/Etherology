@@ -16,7 +16,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.BlocksRegistry;
 import ru.feytox.etherology.blocks.crate.CrateBlock;
 
@@ -45,23 +47,28 @@ public class CarriedCrateItem extends AliasedBlockItem {
         ServerPlayerEntity player = (ServerPlayerEntity) entity;
         if (!selected && player.getInventory().contains(stack)) {
             BlockPos blockPos = player.getBlockPos();
-            boolean shouldFall = FallingBlock.canFallThrough(world.getBlockState(blockPos.down()));
-            BlockState state = BlocksRegistry.CRATE.getDefaultState()
-                    .with(CrateBlock.FALLING, shouldFall)
-                    .with(CrateBlock.FACING, player.getHorizontalFacing().getOpposite());
-            boolean canPlace = FallingBlock.canFallThrough(world.getBlockState(blockPos));
-            boolean placeResult = false;
-            if (canPlace) placeResult = world.setBlockState(player.getBlockPos(), state);
-
-            if (placeResult) {
-                BlockItem.writeNbtToBlockEntity(world, player, blockPos, stack);
-            } else {
-                NbtCompound data = stack.getOrCreateSubNbt("BlockEntityTag");
-                DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
-                Inventories.readNbt(data, items);
-                ItemScatterer.spawn(world, player.getBlockPos(), items);
-            }
-            stack.decrement(1);
+            placeFallingCrate(world, blockPos, stack, player.getHorizontalFacing().getOpposite(), player);
         }
+    }
+
+    public static boolean placeFallingCrate(World world, BlockPos blockPos, ItemStack stack, Direction facing, @Nullable PlayerEntity player) {
+        boolean shouldFall = FallingBlock.canFallThrough(world.getBlockState(blockPos.down()));
+        BlockState state = BlocksRegistry.CRATE.getDefaultState()
+                .with(CrateBlock.FALLING, shouldFall)
+                .with(CrateBlock.FACING, facing);
+        boolean canPlace = FallingBlock.canFallThrough(world.getBlockState(blockPos));
+        boolean placeResult = false;
+        if (canPlace) placeResult = world.setBlockState(blockPos, state);
+
+        if (placeResult) {
+            BlockItem.writeNbtToBlockEntity(world, player, blockPos, stack);
+        } else {
+            NbtCompound data = stack.getOrCreateSubNbt("BlockEntityTag");
+            DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
+            Inventories.readNbt(data, items);
+            ItemScatterer.spawn(world, blockPos, items);
+        }
+        stack.decrement(1);
+        return placeResult;
     }
 }

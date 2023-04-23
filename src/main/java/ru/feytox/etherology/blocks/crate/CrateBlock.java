@@ -153,9 +153,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        boolean isCarried = ctx.getStack().isOf(ItemsRegistry.CARRIED_CRATE);
-        boolean isInAir = ctx.getWorld().isAir(ctx.getBlockPos().down());
-        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite()).with(FALLING, isCarried && isInAir);
+        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
     @Nullable
