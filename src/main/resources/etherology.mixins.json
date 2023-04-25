@@ -13,6 +13,7 @@
     "WorldRendererAccessor"
   ],
   "client": [
+    "ClientPlayerEntityMixin",
     "EntityModelLayersMixin",
     "HangingSignEditScreenMixin",
     "InGameHudMixin",

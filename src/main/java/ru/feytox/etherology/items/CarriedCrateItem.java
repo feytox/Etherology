@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
@@ -21,6 +22,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.BlocksRegistry;
 import ru.feytox.etherology.blocks.crate.CrateBlock;
+import ru.feytox.etherology.network.EtherologyNetwork;
+import ru.feytox.etherology.network.animation.PlayerAnimationS2C;
+import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class CarriedCrateItem extends AliasedBlockItem {
     public CarriedCrateItem() {
@@ -45,10 +49,14 @@ public class CarriedCrateItem extends AliasedBlockItem {
         if (!entity.isPlayer()) return;
 
         ServerPlayerEntity player = (ServerPlayerEntity) entity;
-        if (!selected && player.getInventory().contains(stack)) {
+        if (!player.getInventory().contains(stack)) return;
+        if (!selected) {
             BlockPos blockPos = player.getBlockPos();
             placeFallingCrate(world, blockPos, stack, player.getHorizontalFacing().getOpposite(), player);
+            return;
         }
+
+        EtherologyNetwork.sendForTrackingAndSelf((ServerWorld) world, new PlayerAnimationS2C(player, new EIdentifier("test")), player);
     }
 
     public static boolean placeFallingCrate(World world, BlockPos blockPos, ItemStack stack, Direction facing, @Nullable PlayerEntity player) {

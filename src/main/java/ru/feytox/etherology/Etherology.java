@@ -23,6 +23,7 @@ import ru.feytox.etherology.blocks.etherealGenerators.EtherealGeneratorDispenser
 import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreenHandler;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.enums.MixTypes;
+import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
@@ -73,6 +74,7 @@ public class Etherology implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        EtherologyNetwork.registerPackets();
         ItemsRegistry.registerItems();
         BlocksRegistry.register();
         DecoBlocks.registerAll();
