@@ -1,13 +1,16 @@
 package ru.feytox.etherology.network.animation;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.util.Identifier;
 import ru.feytox.etherology.network.util.AbstractPacketManager;
-import ru.feytox.etherology.network.util.AbstractS2CPacket;
+
+import static ru.feytox.etherology.network.animation.PlayerAnimationS2C.PLAYER_ANIMATION_PACKET_ID;
 
 public class AnimationPacketManager extends AbstractPacketManager {
 
     @Override
-    public void registerS2C(ImmutableList.Builder<AbstractS2CPacket> builder) {
-        builder.add(PlayerAnimationS2C.dummy());
+    public void registerS2C(ImmutableMap.Builder<Identifier, ClientPlayNetworking.PlayChannelHandler> builder) {
+        builder.put(PLAYER_ANIMATION_PACKET_ID, PlayerAnimationS2C::receive);
     }
 }

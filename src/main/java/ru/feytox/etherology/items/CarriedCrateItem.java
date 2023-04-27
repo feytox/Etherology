@@ -1,5 +1,8 @@
 package ru.feytox.etherology.items;
 
+import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
+import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
+import dev.kosmx.playerAnim.core.util.Ease;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
@@ -12,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
@@ -39,7 +41,15 @@ public class CarriedCrateItem extends AliasedBlockItem {
             if (player != null && player.getAbilities().creativeMode) {
                 player.getInventory().removeOne(context.getStack());
             }
+            if (!context.getWorld().isClient) {
+                PlayerAnimationS2C packet = new PlayerAnimationS2C(player, new EIdentifier("animation.player.carry"), true);
+                packet.setFade(5, Ease.INOUTCUBIC)
+                        .setFirstPersonConfiguration(new FirstPersonConfiguration(true, true, true, true))
+                        .setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL);
+                EtherologyNetwork.sendForTrackingAndSelf(packet, (ServerPlayerEntity) player);
+            }
         }
+
         return result;
     }
 
@@ -49,14 +59,23 @@ public class CarriedCrateItem extends AliasedBlockItem {
         if (!entity.isPlayer()) return;
 
         ServerPlayerEntity player = (ServerPlayerEntity) entity;
-        if (!player.getInventory().contains(stack)) return;
+        PlayerAnimationS2C packet = new PlayerAnimationS2C(player, new EIdentifier("animation.player.carry"), true);
+        packet.setFade(5, Ease.INOUTCUBIC)
+                .setFirstPersonConfiguration(new FirstPersonConfiguration(true, true, true, true))
+                .setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL);
+        if (!player.getInventory().contains(stack)) {
+            EtherologyNetwork.sendForTrackingAndSelf(packet, player);
+            return;
+        }
         if (!selected) {
             BlockPos blockPos = player.getBlockPos();
             placeFallingCrate(world, blockPos, stack, player.getHorizontalFacing().getOpposite(), player);
+            EtherologyNetwork.sendForTrackingAndSelf(packet, player);
             return;
         }
 
-        EtherologyNetwork.sendForTrackingAndSelf((ServerWorld) world, new PlayerAnimationS2C(player, new EIdentifier("test")), player);
+        packet.setStop(false);
+        EtherologyNetwork.sendForTrackingAndSelf(packet, player);
     }
 
     public static boolean placeFallingCrate(World world, BlockPos blockPos, ItemStack stack, Direction facing, @Nullable PlayerEntity player) {
