@@ -28,14 +28,18 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.ETHEREAL_STONE_BRICKS, DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS, DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS, DecoBlocks.MOSSY_ETHEREAL_STONE_BRICKS);
 
         // добавление всего, что указано в вариантах
-        BlockFamily[] mostFamilies = new BlockFamily[]{ETHEREAL_STONE, COBBLED_ETHEREAL_STONE, ETHEREAL_STONE_BRICKS, CHISELED_ETHEREAL_STONE_BRICKS, CRACKED_ETHEREAL_STONE_BRICKS, MOSSY_COBBLED_ETHEREAL_STONE, MOSSY_ETHEREAL_STONE_BRICKS, POLISHED_ETHEREAL_STONE, CLAY_TILE, BLUE_CLAY_TILE, GREEN_CLAY_TILE, RED_CLAY_TILE, YELLOW_CLAY_TILE};
-        addAllBlocks(BlockTags.PICKAXE_MINEABLE, mostFamilies);
-        addVariant(BlockTags.SLABS, BlockFamily.Variant.SLAB, mostFamilies);
-        addVariant(BlockTags.STAIRS, BlockFamily.Variant.STAIRS, mostFamilies);
-        addVariant(BlockTags.WALLS, BlockFamily.Variant.WALL, mostFamilies);
-        addVariant(BlockTags.STONE_PRESSURE_PLATES, BlockFamily.Variant.PRESSURE_PLATE, mostFamilies);
+        BlockFamily[] stoneFamilies = new BlockFamily[]{ETHEREAL_STONE, COBBLED_ETHEREAL_STONE, ETHEREAL_STONE_BRICKS, CHISELED_ETHEREAL_STONE_BRICKS, CRACKED_ETHEREAL_STONE_BRICKS, MOSSY_COBBLED_ETHEREAL_STONE, MOSSY_ETHEREAL_STONE_BRICKS, POLISHED_ETHEREAL_STONE, CLAY_TILE, BLUE_CLAY_TILE, GREEN_CLAY_TILE, RED_CLAY_TILE, YELLOW_CLAY_TILE};
+        addAllBlocks(BlockTags.PICKAXE_MINEABLE, stoneFamilies);
+        addVariant(BlockTags.SLABS, BlockFamily.Variant.SLAB, stoneFamilies);
+        addVariant(BlockTags.STAIRS, BlockFamily.Variant.STAIRS, stoneFamilies);
+        addVariant(BlockTags.WALLS, BlockFamily.Variant.WALL, stoneFamilies);
+        addVariant(BlockTags.STONE_PRESSURE_PLATES, BlockFamily.Variant.PRESSURE_PLATE, stoneFamilies);
+
+        // TODO: 29/04/2023 add peach wood to blockTags
 
         addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
+
+        addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
 
         addBlocks(BlockTags.NEEDS_IRON_TOOL, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
     }

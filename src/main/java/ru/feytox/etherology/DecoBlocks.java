@@ -14,6 +14,7 @@ import net.minecraft.util.SignType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import ru.feytox.etherology.blocks.beamer.BeamerBlock;
+import ru.feytox.etherology.blocks.peachSapling.PeachSaplingBlock;
 import ru.feytox.etherology.blocks.signs.EtherSignBlock;
 import ru.feytox.etherology.blocks.signs.EtherSignBlockEntity;
 import ru.feytox.etherology.blocks.signs.EtherSignType;
@@ -45,6 +46,7 @@ public class DecoBlocks {
     public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withItem();
     public static final Block PEACH_TRAPDOOR = register("peach_trapdoor", new TrapdoorBlock(copy(PEACH_PLANKS)
             .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never), SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN)).withItem();
+    public static final Block PEACH_LEAVES = register("peach_leaves", Blocks.createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem();
 
 
     // ethereal stone
@@ -122,7 +124,11 @@ public class DecoBlocks {
     public static final Block YELLOW_CLAY_TILES_WALL = registerWall("yellow_clay_tiles_wall", YELLOW_CLAY_TILES).withItem();
 
     // plants
+    // TODO: 29/04/2023 add potted variant
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
+
+    // saplings
+    public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();
 
     // metals
     public static final Block ATTRAHITE_BLOCK = registerSimple("attrahite_block", copy(Blocks.IRON_BLOCK).mapColor(MapColor.LAPIS_BLUE)).withItem();
@@ -196,6 +202,7 @@ public class DecoBlocks {
         fireBlock.registerFlammableBlock(PEACH_DOOR, 5, 20);
         fireBlock.registerFlammableBlock(PEACH_FENCE, 5, 20);
         fireBlock.registerFlammableBlock(PEACH_FENCE_GATE, 5, 20);
+        fireBlock.registerFlammableBlock(PEACH_LEAVES, 60, 30);
     }
 
     // logs registry

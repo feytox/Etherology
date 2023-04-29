@@ -8,6 +8,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.features.zones.EssenceZoneFeatureConfig;
+import ru.feytox.etherology.world.gen.EtherTreesGeneration;
 
 import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE;
 
@@ -16,6 +17,7 @@ public class EConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?,?>> RELA_ZONE_KEY = registerKey("rela_zone");
     public static final RegistryKey<ConfiguredFeature<?,?>> CLOS_ZONE_KEY = registerKey("clos_zone");
     public static final RegistryKey<ConfiguredFeature<?,?>> VIA_ZONE_KEY = registerKey("via_zone");
+    public static final RegistryKey<ConfiguredFeature<?,?>> PEACH_TREE = registerKey("peach_tree");
 
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
@@ -25,6 +27,7 @@ public class EConfiguredFeatures {
         register(context, RELA_ZONE_KEY, ESSENCE_ZONE_FEATURE, new EssenceZoneFeatureConfig(1));
         register(context, CLOS_ZONE_KEY, ESSENCE_ZONE_FEATURE, new EssenceZoneFeatureConfig(2));
         register(context, VIA_ZONE_KEY, ESSENCE_ZONE_FEATURE, new EssenceZoneFeatureConfig(3));
+        register(context, PEACH_TREE, Feature.TREE, EtherTreesGeneration.peach().build());
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

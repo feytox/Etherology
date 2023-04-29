@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
+import net.minecraft.data.client.TexturedModel;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
 import ru.feytox.etherology.DecoBlocks;
@@ -30,6 +31,9 @@ public class ModelGeneration extends FabricModelProvider {
         registerBlockFamilies(generator, CLAY_TILE, BLUE_CLAY_TILE, GREEN_CLAY_TILE, RED_CLAY_TILE, YELLOW_CLAY_TILE);
         // all simple blocks
         registerSimpleBlock(generator, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.ETHRIL_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK);
+
+        generator.registerSingleton(DecoBlocks.PEACH_LEAVES, TexturedModel.LEAVES);
+        generator.registerTintableCross(DecoBlocks.PEACH_SAPLING, BlockStateModelGenerator.TintType.NOT_TINTED);
     }
 
     @Override

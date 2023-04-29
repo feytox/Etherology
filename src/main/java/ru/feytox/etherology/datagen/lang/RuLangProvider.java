@@ -120,6 +120,10 @@ public class RuLangProvider extends FabricLanguageProvider {
 
         builder.add(CRATE, "Ящик");
 
+        // TODO: 29/04/2023 check
+        builder.add(PEACH_SAPLING, "Саженец персикового дерева");
+        builder.add(PEACH_LEAVES, "Персиковая листва");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);
