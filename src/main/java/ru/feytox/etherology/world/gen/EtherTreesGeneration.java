@@ -2,18 +2,25 @@ package ru.feytox.etherology.world.gen;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
-import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
-import net.minecraft.world.gen.foliage.BushFoliagePlacer;
+import net.minecraft.world.gen.feature.size.ThreeLayersFeatureSize;
+import net.minecraft.world.gen.foliage.AcaciaFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
-import net.minecraft.world.gen.trunk.UpwardsBranchingTrunkPlacer;
+import net.minecraft.world.gen.trunk.TrunkPlacerType;
 import ru.feytox.etherology.DecoBlocks;
+import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.mixin.TrunkPlacerTypeAccessor;
 import ru.feytox.etherology.world.EPlacedFeatures;
+import ru.feytox.etherology.world.trees.PeachTrunkPlacer;
+
+import java.util.OptionalInt;
 
 public class EtherTreesGeneration {
+    public static final TrunkPlacerType<PeachTrunkPlacer> PEACH_TRUNK_PLACER =
+            TrunkPlacerTypeAccessor.callRegister(Etherology.MOD_ID + ":peach_trunk_placer", PeachTrunkPlacer.CODEC);
+
     public static void generateTrees() {
         BiomeModifications.addFeature(
                 // TODO: 29/04/2023 specify biome
@@ -26,10 +33,10 @@ public class EtherTreesGeneration {
     public static TreeFeatureConfig.Builder peach() {
         return new TreeFeatureConfig.Builder(
                 BlockStateProvider.of(DecoBlocks.PEACH_LOG),
-                new UpwardsBranchingTrunkPlacer(4, 3, 2, ConstantIntProvider.create(4), 0.4f, ConstantIntProvider.create(3), RegistryEntryList.of()),
+                new PeachTrunkPlacer(5, 3, 4),
                 BlockStateProvider.of(DecoBlocks.PEACH_LEAVES),
-                new BushFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0), 3),
-                new TwoLayersFeatureSize(0, 0, 0)
+                new AcaciaFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
+                new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty())
         );
     }
 }

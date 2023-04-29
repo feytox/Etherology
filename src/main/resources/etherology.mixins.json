@@ -10,6 +10,7 @@
     "ItemEntityAccessor",
     "ItemEntityMixin",
     "ServerPlayerEntityMixin",
+    "TrunkPlacerTypeAccessor",
     "WorldRendererAccessor"
   ],
   "client": [

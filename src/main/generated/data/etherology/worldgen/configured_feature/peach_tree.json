@@ -9,8 +9,7 @@
       }
     },
     "foliage_placer": {
-      "type": "minecraft:bush_foliage_placer",
-      "height": 2,
+      "type": "minecraft:acacia_foliage_placer",
       "offset": 0,
       "radius": 2
     },
@@ -28,20 +27,18 @@
     "force_dirt": false,
     "ignore_vines": false,
     "minimum_size": {
-      "type": "minecraft:two_layers_feature_size",
-      "limit": 0,
+      "type": "minecraft:three_layers_feature_size",
+      "limit": 1,
       "lower_size": 0,
-      "upper_size": 0
+      "middle_size": 1,
+      "upper_limit": 1,
+      "upper_size": 2
     },
     "trunk_placer": {
-      "type": "minecraft:upwards_branching_trunk_placer",
-      "base_height": 4,
-      "can_grow_through": [],
-      "extra_branch_length": 3,
-      "extra_branch_steps": 4,
+      "type": "etherology:peach_trunk_placer",
+      "base_height": 5,
       "height_rand_a": 3,
-      "height_rand_b": 2,
-      "place_branch_per_log_probability": 0.4
+      "height_rand_b": 4
     },
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",
