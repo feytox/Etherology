@@ -33,7 +33,7 @@ public class EtherTreesGeneration {
     public static TreeFeatureConfig.Builder peach() {
         return new TreeFeatureConfig.Builder(
                 BlockStateProvider.of(DecoBlocks.PEACH_LOG),
-                new PeachTrunkPlacer(5, 3, 4),
+                new PeachTrunkPlacer(10, 2, 6),
                 BlockStateProvider.of(DecoBlocks.PEACH_LEAVES),
                 new AcaciaFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
                 new ThreeLayersFeatureSize(1, 1, 0, 1, 2, OptionalInt.empty())
