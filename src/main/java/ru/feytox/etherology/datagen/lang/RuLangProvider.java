@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.CRATE;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
+import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 public class RuLangProvider extends FabricLanguageProvider {
     private final String langCode;
@@ -120,9 +121,20 @@ public class RuLangProvider extends FabricLanguageProvider {
 
         builder.add(CRATE, "Ящик");
 
-        // TODO: 29/04/2023 check
         builder.add(PEACH_SAPLING, "Саженец персикового дерева");
         builder.add(PEACH_LEAVES, "Персиковая листва");
+
+        builder.add(ETHRIL_AXE, "Эфриловый топор");
+        builder.add(ETHRIL_HOE, "Эфриловая мотыга");
+        builder.add(ETHRIL_PICKAXE, "Эфриловая кирка");
+        builder.add(ETHRIL_SHOVEL, "Эфриловая лопата");
+        builder.add(ETHRIL_SWORD, "Эфриловый меч");
+
+        builder.add(TELDER_STEEL_AXE, "Телдер-стальной меч");
+        builder.add(TELDER_STEEL_HOE, "Телдер-стальная мотыга");
+        builder.add(TELDER_STEEL_PICKAXE, "Телдер-стальная кирка");
+        builder.add(TELDER_STEEL_SHOVEL, "Телдер-стальная лопата");
+        builder.add(TELDER_STEEL_SWORD, "Телдер-стальный меч");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

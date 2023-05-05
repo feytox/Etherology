@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
+import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 public class ModelGeneration extends FabricModelProvider {
     public ModelGeneration(FabricDataOutput output) {
@@ -43,7 +44,7 @@ public class ModelGeneration extends FabricModelProvider {
         // all simple items
         registerSimpleItem(generator, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS);
         // all handheld (swords, pickaxe and etc)
-        registerHandheldItem(generator);
+        registerHandheldItem(generator, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
