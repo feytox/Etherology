@@ -6,8 +6,8 @@ import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
-import ru.feytox.etherology.EtherologyComponents;
 import ru.feytox.etherology.components.IFloatComponent;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import static net.minecraft.server.command.CommandManager.argument;

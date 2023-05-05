@@ -2,14 +2,14 @@ package ru.feytox.etherology.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import ru.feytox.etherology.DecoBlocks;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.registry.block.DecoBlocks;
 
 import java.nio.file.Path;
 
-import static ru.feytox.etherology.BlocksRegistry.CRATE;
-import static ru.feytox.etherology.DecoBlockItems.*;
-import static ru.feytox.etherology.DecoBlocks.*;
+import static ru.feytox.etherology.registry.block.BlocksRegistry.CRATE;
+import static ru.feytox.etherology.registry.block.DecoBlocks.*;
+import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 
 public class RuLangProvider extends FabricLanguageProvider {
     private final String langCode;

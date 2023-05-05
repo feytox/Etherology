@@ -12,10 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
-import ru.feytox.etherology.blocks.pedestal.PedestalBlockEntity;
+import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.particle.utility.SmallLightning;
-import ru.feytox.etherology.util.registry.FakeItem;
+import ru.feytox.etherology.util.deprecated.FakeItem;
 
 import java.util.Arrays;
 import java.util.List;

@@ -7,7 +7,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placementmodifier.*;
-import ru.feytox.etherology.DecoBlocks;
+import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.List;

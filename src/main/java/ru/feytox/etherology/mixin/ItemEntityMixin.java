@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.ItemsRegistry;
-import ru.feytox.etherology.items.CarriedCrateItem;
+import ru.feytox.etherology.item.CarriedCrateItem;
+import ru.feytox.etherology.registry.item.ItemsRegistry;
 
 @Mixin(ItemEntity.class)
 public class ItemEntityMixin {

@@ -1,9 +1,9 @@
 package ru.feytox.etherology.recipes.visual;
 
-import ru.feytox.etherology.ItemsRegistry;
-import ru.feytox.etherology.util.registry.SimpleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import ru.feytox.etherology.registry.item.ItemsRegistry;
+import ru.feytox.etherology.util.deprecated.SimpleItem;
 
 import java.util.ArrayList;
 import java.util.List;

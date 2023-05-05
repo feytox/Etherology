@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static ru.feytox.etherology.EtherologyComponents.ETHER_MAX;
+import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_MAX;
 
 public class ComponentArgumentType implements ArgumentType<String>, Serializable {
     private final ComponentKey<IFloatComponent> componentKey;

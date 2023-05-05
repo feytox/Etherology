@@ -10,8 +10,8 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.function.Consumer;
 
-import static ru.feytox.etherology.DecoBlockItems.*;
-import static ru.feytox.etherology.DecoBlocks.*;
+import static ru.feytox.etherology.registry.block.DecoBlocks.*;
+import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 
 public class RecipeGeneration extends FabricRecipeProvider {
     public RecipeGeneration(FabricDataOutput output) {

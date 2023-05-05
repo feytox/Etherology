@@ -3,8 +3,8 @@ package ru.feytox.etherology.enums;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.util.deprecated.FakeItem;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.registry.FakeItem;
 
 import java.util.Arrays;
 import java.util.List;

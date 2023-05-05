@@ -12,18 +12,18 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.blocks.closet.ClosetScreen;
-import ru.feytox.etherology.blocks.crate.CrateBlockRenderer;
-import ru.feytox.etherology.blocks.crate.CrateScreen;
-import ru.feytox.etherology.blocks.crucible.CrucibleBlockRenderer;
-import ru.feytox.etherology.blocks.empowerTable.EmpowerTableScreen;
-import ru.feytox.etherology.blocks.etherealFurnace.EtherealFurnaceScreen;
-import ru.feytox.etherology.blocks.etherealGenerators.metronome.EtherealMetronomeRenderer;
-import ru.feytox.etherology.blocks.etherealGenerators.spinner.EtherealSpinnerRenderer;
-import ru.feytox.etherology.blocks.etherealSocket.EtherealSocketRenderer;
-import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageRenderer;
-import ru.feytox.etherology.blocks.etherealStorage.EtherealStorageScreen;
-import ru.feytox.etherology.blocks.ringMatrix.RingMatrixBlockRenderer;
+import ru.feytox.etherology.block.closet.ClosetScreen;
+import ru.feytox.etherology.block.crate.CrateBlockRenderer;
+import ru.feytox.etherology.block.crate.CrateScreen;
+import ru.feytox.etherology.block.crucible.CrucibleBlockRenderer;
+import ru.feytox.etherology.block.empowerTable.EmpowerTableScreen;
+import ru.feytox.etherology.block.etherealFurnace.EtherealFurnaceScreen;
+import ru.feytox.etherology.block.etherealGenerators.metronome.EtherealMetronomeRenderer;
+import ru.feytox.etherology.block.etherealGenerators.spinner.EtherealSpinnerRenderer;
+import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
+import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
+import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
+import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
@@ -37,10 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static ru.feytox.etherology.BlocksRegistry.*;
-import static ru.feytox.etherology.DecoBlocks.*;
 import static ru.feytox.etherology.Etherology.*;
-import static ru.feytox.etherology.ItemsRegistry.GLINT;
+import static ru.feytox.etherology.registry.block.BlocksRegistry.*;
+import static ru.feytox.etherology.registry.block.DecoBlocks.*;
+import static ru.feytox.etherology.registry.item.ItemsRegistry.GLINT;
 
 @Environment(EnvType.CLIENT)
 public class EtherologyClient implements ClientModInitializer {

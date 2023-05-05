@@ -23,7 +23,7 @@
       "ru.feytox.etherology.Etherology"
     ],
     "cardinal-components": [
-      "ru.feytox.etherology.EtherologyComponents"
+      "ru.feytox.etherology.registry.util.EtherologyComponents"
     ]
   },
   "mixins": [

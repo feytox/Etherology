@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.feytox.etherology.blocks.signs.EtherSignType;
+import ru.feytox.etherology.block.signs.EtherSignType;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import static net.minecraft.client.render.TexturedRenderLayers.SIGNS_ATLAS_TEXTURE;

@@ -2,6 +2,7 @@ package ru.feytox.etherology.util.feyapi;
 
 import net.minecraft.util.math.random.Random;
 
+@Deprecated
 public class FeyRandom {
     /**
      * @return рандомный знак (+1 или -1)

@@ -7,14 +7,14 @@ import net.minecraft.data.family.BlockFamily;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
-import ru.feytox.etherology.DecoBlocks;
-import ru.feytox.etherology.EBlockFamilies;
+import ru.feytox.etherology.registry.block.DecoBlocks;
+import ru.feytox.etherology.registry.block.EBlockFamilies;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static ru.feytox.etherology.EBlockFamilies.*;
+import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 
 public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
     public BlockTagGeneration(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

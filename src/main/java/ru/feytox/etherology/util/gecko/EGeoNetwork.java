@@ -11,8 +11,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import ru.feytox.etherology.blocks.armillar.ArmillaryMatrixBlockEntity;
-import ru.feytox.etherology.blocks.ringMatrix.RingMatrixBlockEntity;
+import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EGeoNetwork {

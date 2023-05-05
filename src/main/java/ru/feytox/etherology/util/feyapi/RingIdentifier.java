@@ -4,17 +4,10 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.enums.RingType;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RingIdentifier extends Identifier {
     private int ringsNum;
     private List<RingType> ringsTypes;
-
-    public RingIdentifier(Identifier identifier, int ringsNum, List<Integer> ringsTypes) {
-        super(identifier.toString());
-        this.ringsNum = ringsNum;
-        this.ringsTypes = ringsTypes.stream().map(RingType::getRingType).collect(Collectors.toList());;
-    }
 
     public RingIdentifier(Identifier identifier, List<RingType> ringsTypes, int ringsNum) {
         super(identifier.toString());

@@ -9,9 +9,9 @@ import net.minecraft.world.gen.feature.size.ThreeLayersFeatureSize;
 import net.minecraft.world.gen.foliage.AcaciaFoliagePlacer;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.trunk.TrunkPlacerType;
-import ru.feytox.etherology.DecoBlocks;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.mixin.TrunkPlacerTypeAccessor;
+import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.world.EPlacedFeatures;
 import ru.feytox.etherology.world.trees.PeachTrunkPlacer;
 

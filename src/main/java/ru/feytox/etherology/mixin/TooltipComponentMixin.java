@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.feytox.etherology.items.glints.GlintTooltipComponent;
-import ru.feytox.etherology.items.glints.GlintTooltipData;
+import ru.feytox.etherology.item.glints.GlintTooltipComponent;
+import ru.feytox.etherology.item.glints.GlintTooltipData;
 
 @Mixin(TooltipComponent.class)
 public interface TooltipComponentMixin {

@@ -9,14 +9,14 @@ import net.minecraft.data.client.Models;
 import net.minecraft.data.client.TexturedModel;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
-import ru.feytox.etherology.DecoBlocks;
-import ru.feytox.etherology.ItemsRegistry;
-import ru.feytox.etherology.items.glints.AbstractGlintItem;
+import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.registry.block.DecoBlocks;
+import ru.feytox.etherology.registry.item.ItemsRegistry;
 
 import java.util.Arrays;
 
-import static ru.feytox.etherology.DecoBlockItems.*;
-import static ru.feytox.etherology.EBlockFamilies.*;
+import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
+import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 
 public class ModelGeneration extends FabricModelProvider {
     public ModelGeneration(FabricDataOutput output) {

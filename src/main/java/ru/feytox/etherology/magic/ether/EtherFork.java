@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import ru.feytox.etherology.blocks.etherealChannel.EtherealChannelBlock;
+import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock;
 
 import java.util.ArrayList;
 import java.util.List;

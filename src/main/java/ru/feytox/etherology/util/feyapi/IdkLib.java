@@ -14,12 +14,13 @@ import ru.feytox.etherology.components.IFloatComponent;
 
 import java.util.Optional;
 
-import static ru.feytox.etherology.EtherologyComponents.ETHER_POINTS;
+import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 
 /**
  * random 'useful' things
  */
 
+@Deprecated
 public class IdkLib {
     public static boolean isExhaustion(PlayerEntity player) {
         Optional<IFloatComponent> component = ETHER_POINTS.maybeGet(player);

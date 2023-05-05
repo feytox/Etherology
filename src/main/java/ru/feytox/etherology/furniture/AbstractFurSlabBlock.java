@@ -25,13 +25,13 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
 import ru.feytox.etherology.util.feyapi.IdkLib;
-import ru.feytox.etherology.util.registry.RegistrableBlock;
+import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import java.util.Optional;
 
-import static ru.feytox.etherology.BlocksRegistry.FURNITURE_BLOCK_ENTITY;
 import static ru.feytox.etherology.enums.FurnitureType.EMPTY;
 import static ru.feytox.etherology.enums.FurnitureType.SHELF;
+import static ru.feytox.etherology.registry.block.BlocksRegistry.FURNITURE_BLOCK_ENTITY;
 
 public abstract class AbstractFurSlabBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public static final BooleanProperty BOTTOM_ACTIVE = BooleanProperty.of("bottom_active");

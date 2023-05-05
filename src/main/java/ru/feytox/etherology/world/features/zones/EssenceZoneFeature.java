@@ -10,7 +10,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
-import ru.feytox.etherology.blocks.zone_blocks.ZoneCoreBlockEntity;
+import ru.feytox.etherology.block.zone_blocks.ZoneCoreBlockEntity;
 import ru.feytox.etherology.magic.zones.EssenceZones;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.FeyRandom;
@@ -18,7 +18,7 @@ import ru.feytox.etherology.util.feyapi.UwuLib;
 
 import javax.annotation.Nullable;
 
-import static ru.feytox.etherology.BlocksRegistry.ZONE_CORE_BLOCK;
+import static ru.feytox.etherology.registry.block.BlocksRegistry.ZONE_CORE_BLOCK;
 
 public class EssenceZoneFeature extends Feature<EssenceZoneFeatureConfig> {
     public static final EIdentifier ESSENCE_ZONE_FEATURE_ID = new EIdentifier("essence_zone_feature");

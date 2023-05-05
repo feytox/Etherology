@@ -2,7 +2,7 @@ package ru.feytox.etherology.magic.ether;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import ru.feytox.etherology.items.glints.AbstractGlintItem;
+import ru.feytox.etherology.item.glints.AbstractGlintItem;
 
 public class EtherGlint {
     private final ItemStack stack;

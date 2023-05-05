@@ -1,7 +1,5 @@
 package ru.feytox.etherology.util.feyapi;
 
-// штучки, которые я переделал, а то в owo lib фигово сделаны
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.Surface;
@@ -9,7 +7,6 @@ import io.wispforest.owo.ui.util.Drawer;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -20,6 +17,8 @@ import net.minecraft.world.StructureWorldAccess;
 
 import javax.annotation.Nullable;
 
+// TODO: 05/05/2023 в разные места отправить
+@Deprecated
 public class UwuLib {
 
     public static Surface tiled(Identifier texture, int u1, int v1, int u2, int v2, int textureWidth, int textureHeight) {
@@ -67,20 +66,6 @@ public class UwuLib {
         }
     }
 
-    public static void drawParticleLine(ServerWorld world, Entity entity1, Entity entity2, DefaultParticleType particle, float step) {
-        drawParticleLine(world, getCenterPos(entity1), getCenterPos(entity2), particle, step);
-    }
-
-    public static void drawParticleLine(ServerWorld world, Vec3d pos1, Entity entity2, DefaultParticleType particle, float step) {
-        drawParticleLine(world, pos1, getCenterPos(entity2), particle, step);
-    }
-
-    public static Vec3d getCenterPos(Entity entity) {
-        return new Vec3d(entity.getX() + entity.getWidth() * 0.5,
-                entity.getY() + entity.getHeight() * 0.5,
-                entity.getZ() + entity.getWidth() * 0.5);
-    }
-
     public static BlockPos getAirPos(BlockPos startPos, StructureWorldAccess world) {
         BlockPos testPos = new BlockPos(startPos);
         while (testPos.getY() < world.getTopY()) {
@@ -100,18 +85,6 @@ public class UwuLib {
                 return testPos;
             }
             testPos = testPos.up();
-        }
-        return null;
-    }
-
-    @Nullable
-    public static BlockPos getDeeperPos(BlockPos startPos, StructureWorldAccess world) {
-        BlockPos testPos = new BlockPos(startPos);
-        while (testPos.getY() > world.getBottomY()) {
-            if (world.isAir(testPos)) {
-                return testPos;
-            }
-            testPos = testPos.down();
         }
         return null;
     }

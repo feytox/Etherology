@@ -8,6 +8,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class EVec3d {
     public static Vec3d of(BlockPos pos) {
         return new Vec3d(pos.getX(), pos.getY(), pos.getZ());
