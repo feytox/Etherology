@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGeneratorBlockEntity;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_SPINNER_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SPINNER_BLOCK_ENTITY;
 
 public class EtherealSpinnerBlockEntity extends AbstractEtherealGeneratorBlockEntity {
     private static final RawAnimation SPIN_ANIM = RawAnimation.begin().thenLoop("animation.spinner.spin");

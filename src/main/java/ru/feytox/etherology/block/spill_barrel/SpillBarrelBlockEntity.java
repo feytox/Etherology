@@ -20,7 +20,7 @@ import net.minecraft.util.Nameable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 public class SpillBarrelBlockEntity extends TickableBlockEntity implements ImplementedInventory, Nameable {
@@ -28,7 +28,7 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     private Text customName;
 
     public SpillBarrelBlockEntity(BlockPos pos, BlockState state) {
-        super(BlocksRegistry.SPILL_BARREL_BLOCK_ENTITY, pos, state);
+        super(EBlocks.SPILL_BARREL_BLOCK_ENTITY, pos, state);
     }
 
     /**

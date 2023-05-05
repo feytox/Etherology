@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_SOCKET_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
 public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
     protected static final BooleanProperty WITH_GLINT = BooleanProperty.of("with_glint");

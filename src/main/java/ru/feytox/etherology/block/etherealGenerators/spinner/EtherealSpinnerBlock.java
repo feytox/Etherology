@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_SPINNER_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SPINNER_BLOCK_ENTITY;
 
 public class EtherealSpinnerBlock extends AbstractEtherealGenerator {
 

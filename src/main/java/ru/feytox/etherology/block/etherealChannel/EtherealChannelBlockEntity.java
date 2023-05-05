@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 import static ru.feytox.etherology.Etherology.LIGHT;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_CHANNEL_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
 public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe {
     private float storedEther = 0;

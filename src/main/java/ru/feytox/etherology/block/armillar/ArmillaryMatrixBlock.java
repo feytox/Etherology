@@ -22,8 +22,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.deprecated.SimpleBlock;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ARMILLARY_MATRIX_BLOCK_ENTITY;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.RING_MATRIX_BLOCK;
+import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.RING_MATRIX_BLOCK;
 
 public class ArmillaryMatrixBlock extends SimpleBlock implements BlockEntityProvider {
     private static final VoxelShape BOTTOM_CUBOID =

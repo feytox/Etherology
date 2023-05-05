@@ -24,7 +24,7 @@ import ru.feytox.etherology.magic.zones.EssenceDetectable;
 import ru.feytox.etherology.magic.zones.EssenceSupplier;
 import ru.feytox.etherology.magic.zones.EssenceZones;
 import ru.feytox.etherology.particle.ZoneParticle;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.nbt.FeyNbtList;
 import ru.feytox.etherology.util.nbt.NbtBlockPos;
 
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ZONE_CORE_BLOCK;
+import static ru.feytox.etherology.registry.block.EBlocks.ZONE_CORE_BLOCK;
 
 public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier, Permissible {
     public static final int ZONE_RADIUS = 16;
@@ -47,7 +47,7 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier,
     private List<BlockPos> consumersPos = new ArrayList<>();
 
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
-        super(BlocksRegistry.ZONE_CORE_BLOCK_ENTITY, pos, state);
+        super(EBlocks.ZONE_CORE_BLOCK_ENTITY, pos, state);
         this.corePos = pos;
 
         // FIXME: 21/02/2023 УБРАТЬ ПОСЛЕ ТЕСТОВ!!!!!!!!!!!!!!!

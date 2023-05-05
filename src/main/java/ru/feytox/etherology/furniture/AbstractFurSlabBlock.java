@@ -31,7 +31,7 @@ import java.util.Optional;
 
 import static ru.feytox.etherology.enums.FurnitureType.EMPTY;
 import static ru.feytox.etherology.enums.FurnitureType.SHELF;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.FURNITURE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.FURNITURE_BLOCK_ENTITY;
 
 public abstract class AbstractFurSlabBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public static final BooleanProperty BOTTOM_ACTIVE = BooleanProperty.of("bottom_active");

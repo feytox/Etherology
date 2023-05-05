@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.deprecated.SimpleBlock;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
 public class PedestalBlock extends SimpleBlock implements BlockEntityProvider {
     private static final VoxelShape BOTTOM_CUBOID =

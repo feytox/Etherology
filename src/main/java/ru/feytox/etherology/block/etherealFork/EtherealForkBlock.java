@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_FORK_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
 public class EtherealForkBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     private static final VoxelShape CENTER_SHAPE;

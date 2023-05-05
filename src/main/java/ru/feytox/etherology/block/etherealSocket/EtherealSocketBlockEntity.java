@@ -30,7 +30,7 @@ import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_SOCKET_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
 public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, PacketUpdatable {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);

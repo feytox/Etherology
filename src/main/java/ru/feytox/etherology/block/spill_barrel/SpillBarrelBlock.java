@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
@@ -100,7 +100,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof SpillBarrelBlockEntity spillBarrel) {
             if (!world.isClient && (!player.isCreative() || (player.isCreative() && !spillBarrel.isEmpty()))) {
-                ItemStack barrelStack = BlocksRegistry.SPILL_BARREL.getItem().getDefaultStack();
+                ItemStack barrelStack = EBlocks.SPILL_BARREL.getItem().getDefaultStack();
                 spillBarrel.setStackNbt(barrelStack);
                 if (spillBarrel.hasCustomName()) {
                     barrelStack.setCustomName(spillBarrel.getCustomName());
@@ -124,7 +124,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState underState = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
         BlockState state = this.getDefaultState().with(HorizontalFacingBlock.FACING, ctx.getPlayerFacing().getOpposite());
-        if (underState.isAir() || underState.isOf(BlocksRegistry.SPILL_BARREL)) {
+        if (underState.isAir() || underState.isOf(EBlocks.SPILL_BARREL)) {
             state = state.with(WITH_FRAME, true);
         }
         return state;
@@ -134,7 +134,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!neighborPos.equals(pos.down())) return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 
-        if (neighborState.isAir() || neighborState.isOf(BlocksRegistry.SPILL_BARREL)) {
+        if (neighborState.isAir() || neighborState.isOf(EBlocks.SPILL_BARREL)) {
             return state.with(WITH_FRAME, true);
         }
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);

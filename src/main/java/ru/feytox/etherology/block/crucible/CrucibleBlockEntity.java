@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.MixTypes;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.EVec3d;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
@@ -55,7 +55,7 @@ public class CrucibleBlockEntity extends BlockEntity implements EGeoBlockEntity,
 
 
     public CrucibleBlockEntity(BlockPos pos, BlockState state) {
-        super(BlocksRegistry.CRUCIBLE_BLOCK_ENTITY, pos, state);
+        super(EBlocks.CRUCIBLE_BLOCK_ENTITY, pos, state);
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, CrucibleBlockEntity be) {

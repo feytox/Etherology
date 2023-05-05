@@ -23,7 +23,7 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import java.util.List;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_STORAGE_BLOCK_ENTITY;
 
 public class EtherealStorageBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
     protected static final DirectionProperty FACING = HorizontalFacingBlock.FACING;

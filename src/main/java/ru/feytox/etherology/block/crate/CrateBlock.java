@@ -27,8 +27,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
-import ru.feytox.etherology.registry.item.ItemsRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockEntityProvider, LandingBlock {
@@ -47,7 +47,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
 
     @Override
     public Item asItem() {
-        return BlocksRegistry.CRATE.getItem();
+        return EBlocks.CRATE.getItem();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient) {
             if (player.isSneaking() && player.getMainHandStack().isEmpty() && world.getBlockEntity(pos) instanceof CrateBlockEntity crate) {
-                ItemStack crateStack = ItemsRegistry.CARRIED_CRATE.getDefaultStack();
+                ItemStack crateStack = EItems.CARRIED_CRATE.getDefaultStack();
                 crate.setStackNbt(crateStack);
                 crate.clear();
                 crate.markDirty();
@@ -102,7 +102,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
 
     @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        return BlocksRegistry.CRATE.getItem().getDefaultStack();
+        return EBlocks.CRATE.getItem().getDefaultStack();
     }
 
     @Override

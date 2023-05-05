@@ -16,7 +16,7 @@ import ru.feytox.etherology.util.deprecated.SimpleItem;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.feytox.etherology.registry.item.ItemsRegistry.ETHER_SHARD;
+import static ru.feytox.etherology.registry.item.EItems.ETHER_SHARD;
 
 public abstract class AbstractGlintItem extends SimpleItem {
     private final float maxEther;

@@ -30,16 +30,14 @@ import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
-import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
-import ru.feytox.etherology.registry.item.DecoBlockItems;
-import ru.feytox.etherology.registry.item.ItemsRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.*;
-import static ru.feytox.etherology.registry.item.ItemsRegistry.*;
+import static ru.feytox.etherology.registry.block.EBlocks.*;
+import static ru.feytox.etherology.registry.item.EItems.*;
 import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE;
 import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE_ID;
 
@@ -80,10 +78,8 @@ public class Etherology implements ModInitializer {
     @Override
     public void onInitialize() {
         EtherologyNetwork.registerPackets();
-        ItemsRegistry.registerItems();
-        BlocksRegistry.register();
-        DecoBlocks.registerAll();
-        DecoBlockItems.registerAll();
+        EItems.registerItems();
+        EBlocks.registerAll();
         EBlockFamilies.registerFamilies();
         MixTypes.registerMixes();
         DevCommands.register();

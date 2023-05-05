@@ -24,7 +24,7 @@ import ru.feytox.etherology.enums.SedimentaryStates;
 import ru.feytox.etherology.util.deprecated.SimpleBlock;
 
 import static ru.feytox.etherology.enums.SedimentaryStates.EMPTY;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.SEDIMENTARY_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 
 public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider {
     public static final EnumProperty<SedimentaryStates> ESSENCE_STATE = EnumProperty.of("essence_state", SedimentaryStates.class);

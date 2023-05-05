@@ -28,7 +28,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.CRATE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.CRATE_BLOCK_ENTITY;
 
 public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory {
     private static final RawAnimation OPEN_ANIM;

@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_FURNACE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FURNACE_BLOCK_ENTITY;
 
 public class EtherealFurnace extends Block implements BlockEntityProvider, RegistrableBlock {
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;

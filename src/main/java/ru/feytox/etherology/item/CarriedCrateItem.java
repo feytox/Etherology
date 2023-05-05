@@ -25,12 +25,12 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.crate.CrateBlock;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.animation.PlayerAnimationS2C;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class CarriedCrateItem extends AliasedBlockItem {
     public CarriedCrateItem() {
-        super(BlocksRegistry.CRATE, new FabricItemSettings());
+        super(EBlocks.CRATE, new FabricItemSettings());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CarriedCrateItem extends AliasedBlockItem {
 
     public static boolean placeFallingCrate(World world, BlockPos blockPos, ItemStack stack, Direction facing, @Nullable PlayerEntity player) {
         boolean shouldFall = FallingBlock.canFallThrough(world.getBlockState(blockPos.down()));
-        BlockState state = BlocksRegistry.CRATE.getDefaultState()
+        BlockState state = EBlocks.CRATE.getDefaultState()
                 .with(CrateBlock.FALLING, shouldFall)
                 .with(CrateBlock.FACING, facing);
         boolean canPlace = FallingBlock.canFallThrough(world.getBlockState(blockPos));

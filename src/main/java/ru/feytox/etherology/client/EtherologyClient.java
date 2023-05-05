@@ -38,9 +38,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static ru.feytox.etherology.Etherology.*;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.*;
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
-import static ru.feytox.etherology.registry.item.ItemsRegistry.GLINT;
+import static ru.feytox.etherology.registry.block.EBlocks.*;
+import static ru.feytox.etherology.registry.item.EItems.GLINT;
 
 @Environment(EnvType.CLIENT)
 public class EtherologyClient implements ClientModInitializer {

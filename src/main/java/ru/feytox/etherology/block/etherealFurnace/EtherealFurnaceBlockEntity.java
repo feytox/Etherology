@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static ru.feytox.etherology.block.etherealFurnace.EtherealFurnace.LIT;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_FURNACE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FURNACE_BLOCK_ENTITY;
 
 public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {

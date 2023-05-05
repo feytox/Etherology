@@ -29,8 +29,8 @@ import java.util.Optional;
 
 import static ru.feytox.etherology.block.sedimentary.SedimentaryBlock.ESSENCE_LEVEL;
 import static ru.feytox.etherology.block.sedimentary.SedimentaryBlock.ESSENCE_STATE;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.SEDIMENTARY_BLOCK;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.SEDIMENTARY_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK;
+import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 
 public class SedimentaryBlockEntity extends BlockEntity implements EssenceConsumer {
     private static final float MAX_POINTS = 32.0f;

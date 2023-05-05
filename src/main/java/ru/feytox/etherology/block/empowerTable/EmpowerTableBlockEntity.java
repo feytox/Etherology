@@ -22,7 +22,7 @@ import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 import java.util.Optional;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.EMPOWERMENT_TABLE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.EMPOWERMENT_TABLE_BLOCK_ENTITY;
 
 public class EmpowerTableBlockEntity extends BlockEntity implements
         UpdatableInventory, NamedScreenHandlerFactory {

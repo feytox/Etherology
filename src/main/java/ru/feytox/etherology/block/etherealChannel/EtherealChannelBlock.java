@@ -26,7 +26,7 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_CHANNEL_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
 public class EtherealChannelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");

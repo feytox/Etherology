@@ -40,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static ru.feytox.etherology.block.etherealStorage.EtherealStorageBlock.FACING;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ETHEREAL_STORAGE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_STORAGE_BLOCK_ENTITY;
 
 public class EtherealStorageBlockEntity extends TickableBlockEntity
         implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {

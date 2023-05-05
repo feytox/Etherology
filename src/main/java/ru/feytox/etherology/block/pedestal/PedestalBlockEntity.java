@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import static ru.feytox.etherology.Etherology.LIGHT_SPARK;
 import static ru.feytox.etherology.Etherology.SPARK;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.PEDESTAL_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
 public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);

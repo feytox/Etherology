@@ -13,13 +13,13 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 
 import java.util.List;
 
 public class SpillBarrelItem extends BlockItem {
     public SpillBarrelItem() {
-        super(BlocksRegistry.SPILL_BARREL, new FabricItemSettings());
+        super(EBlocks.SPILL_BARREL, new FabricItemSettings());
     }
 
     @Override

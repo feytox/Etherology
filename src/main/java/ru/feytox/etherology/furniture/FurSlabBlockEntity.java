@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.BOTTOM_TYPE;
 import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.TOP_TYPE;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.FURNITURE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.FURNITURE_BLOCK_ENTITY;
 
 public class FurSlabBlockEntity extends TickableBlockEntity {
     private FurnitureType bottomType = FurnitureType.EMPTY;

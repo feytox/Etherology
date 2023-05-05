@@ -28,7 +28,7 @@ import ru.feytox.etherology.util.nbt.Nbtable;
 
 import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.BOTTOM_ACTIVE;
 import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.TOP_ACTIVE;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.CLOSET_SLAB;
+import static ru.feytox.etherology.registry.block.EBlocks.CLOSET_SLAB;
 
 public class ClosetData extends FurnitureData implements ImplementedInventory, NamedScreenHandlerFactory {
     private World cachedWorld = null;

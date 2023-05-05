@@ -8,7 +8,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.item.PrimoShard;
-import ru.feytox.etherology.registry.item.ItemsRegistry;
+import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.feyapi.*;
 
 import static ru.feytox.etherology.Etherology.EMPOWER_TABLE_SCREEN_HANDLER;
@@ -45,13 +45,13 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         }
 
         // keta
-        this.addSlot(new TrackedPredictableSlot(inventory, 5, 23, 12, (stack) -> stack.isOf(ItemsRegistry.PRIMOSHARD_RELA)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 5, 23, 12, (stack) -> stack.isOf(EItems.PRIMOSHARD_RELA)));
         // via
-        this.addSlot(new TrackedPredictableSlot(inventory, 6, 69, 12, (stack) -> stack.isOf(ItemsRegistry.PRIMOSHARD_VIA)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 6, 69, 12, (stack) -> stack.isOf(EItems.PRIMOSHARD_VIA)));
         // clos
-        this.addSlot(new TrackedPredictableSlot(inventory, 7, 23, 58, (stack) -> stack.isOf(ItemsRegistry.PRIMOSHARD_CLOS)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 7, 23, 58, (stack) -> stack.isOf(EItems.PRIMOSHARD_CLOS)));
         // rela
-        this.addSlot(new TrackedPredictableSlot(inventory, 8, 69, 58, (stack) -> stack.isOf(ItemsRegistry.PRIMOSHARD_KETA)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 8, 69, 58, (stack) -> stack.isOf(EItems.PRIMOSHARD_KETA)));
 
         // output
         this.addSlot(new EmpowerOutputSlot(inventory, 9, 133, 35));
@@ -96,9 +96,9 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         if (originalStack.getItem() instanceof PrimoShard && !skip) {
             int primoSlot = 5;
             newStack = originalStack.copy();
-            if (originalStack.isOf(ItemsRegistry.PRIMOSHARD_VIA)) primoSlot = 6;
-            if (originalStack.isOf(ItemsRegistry.PRIMOSHARD_CLOS)) primoSlot = 7;
-            if (originalStack.isOf(ItemsRegistry.PRIMOSHARD_KETA)) primoSlot = 8;
+            if (originalStack.isOf(EItems.PRIMOSHARD_VIA)) primoSlot = 6;
+            if (originalStack.isOf(EItems.PRIMOSHARD_CLOS)) primoSlot = 7;
+            if (originalStack.isOf(EItems.PRIMOSHARD_KETA)) primoSlot = 8;
             if (!this.insertItem(originalStack, primoSlot, primoSlot+1, false)) {
                 return ItemStack.EMPTY;
             }

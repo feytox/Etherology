@@ -8,7 +8,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import ru.feytox.etherology.registry.item.ItemsRegistry;
+import ru.feytox.etherology.registry.item.EItems;
 
 import static ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
@@ -32,6 +32,6 @@ public class EtherealGeneratorDispenserBehavior extends ItemDispenserBehavior {
     }
 
     public static void register() {
-        DispenserBlock.registerBehavior(ItemsRegistry.ETHEREAL_OIL, new EtherealGeneratorDispenserBehavior());
+        DispenserBlock.registerBehavior(EItems.ETHEREAL_OIL, new EtherealGeneratorDispenserBehavior());
     }
 }

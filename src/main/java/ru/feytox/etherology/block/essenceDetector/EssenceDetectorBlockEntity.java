@@ -12,7 +12,7 @@ import ru.feytox.etherology.magic.zones.EssenceSupplier;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import static ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlock.POWER;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ESSENCE_DETECTOR_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ESSENCE_DETECTOR_BLOCK_ENTITY;
 
 public class EssenceDetectorBlockEntity extends TickableBlockEntity implements EssenceDetector {
     private EssenceSupplier cachedSupplier = null;

@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.deprecated.SimpleBlock;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ZONE_CORE_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ZONE_CORE_BLOCK_ENTITY;
 
 public class ZoneCoreBlock extends SimpleBlock implements BlockEntityProvider {
     public ZoneCoreBlock() {

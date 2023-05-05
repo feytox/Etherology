@@ -11,7 +11,7 @@ import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.registry.block.DecoBlocks;
-import ru.feytox.etherology.registry.item.ItemsRegistry;
+import ru.feytox.etherology.registry.item.EItems;
 
 import java.util.Arrays;
 
@@ -37,11 +37,13 @@ public class ModelGeneration extends FabricModelProvider {
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+    public void generateItemModels(ItemModelGenerator generator) {
         // glint
-        registerGlint(ItemsRegistry.GLINT, itemModelGenerator);
+        registerGlint(EItems.GLINT, generator);
         // all simple items
-        registerSimpleItem(itemModelGenerator, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS);
+        registerSimpleItem(generator, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS);
+        // all handheld (swords, pickaxe and etc)
+        registerHandheldItem(generator);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
@@ -50,6 +52,10 @@ public class ModelGeneration extends FabricModelProvider {
 
     private static void registerSimpleItem(ItemModelGenerator generator, Item... items) {
         Arrays.stream(items).forEach(item -> generator.register(item, Models.GENERATED));
+    }
+
+    private static void registerHandheldItem(ItemModelGenerator generator, Item... items) {
+        Arrays.stream(items).forEach(item -> generator.register(item, Models.HANDHELD));
     }
 
     private static void registerSimpleBlock(BlockStateModelGenerator generator, Block... blocks) {

@@ -61,7 +61,7 @@ import java.util.UUID;
 import static ru.feytox.etherology.Etherology.LIGHT_VITAL;
 import static ru.feytox.etherology.Etherology.STEAM;
 import static ru.feytox.etherology.enums.ArmillarStateType.*;
-import static ru.feytox.etherology.registry.block.BlocksRegistry.*;
+import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 
 public class ArmillaryMatrixBlockEntity extends BlockEntity implements ImplementedInventory, ITicker, EGeoBlockEntity {

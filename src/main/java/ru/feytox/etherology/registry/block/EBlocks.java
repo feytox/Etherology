@@ -50,7 +50,7 @@ import ru.feytox.etherology.block.zone_blocks.ZoneCoreBlockEntity;
 import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
-public class BlocksRegistry {
+public class EBlocks {
 
     public static final CrucibleBlock CRUCIBLE = (CrucibleBlock) new CrucibleBlock().registerAll();
     public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE_BLOCK_ENTITY = Registry.register(
@@ -190,6 +190,7 @@ public class BlocksRegistry {
             FabricBlockEntityTypeBuilder.create(CrateBlockEntity::new, CRATE).build()
     );
 
-    public static void register() {
+    public static void registerAll() {
+        DecoBlocks.registerAll();
     }
 }

@@ -11,7 +11,7 @@ import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 
-public class ItemsRegistry {
+public class EItems {
 
     public static final Teldecore TELDECORE = (Teldecore) new Teldecore().register();
 
@@ -38,5 +38,6 @@ public class ItemsRegistry {
     }
 
     public static void registerItems() {
+        DecoBlockItems.registerAll();
     }
 }

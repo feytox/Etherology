@@ -7,8 +7,8 @@ import ru.feytox.etherology.registry.block.DecoBlocks;
 
 import java.nio.file.Path;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.CRATE;
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
+import static ru.feytox.etherology.registry.block.EBlocks.CRATE;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 
 public class RuLangProvider extends FabricLanguageProvider {

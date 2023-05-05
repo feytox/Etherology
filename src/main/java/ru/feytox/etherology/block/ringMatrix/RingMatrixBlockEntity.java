@@ -11,7 +11,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -42,7 +42,7 @@ public class RingMatrixBlockEntity extends BlockEntity implements EGeoBlockEntit
 
 
     public RingMatrixBlockEntity(BlockPos pos, BlockState state) {
-        super(BlocksRegistry.RING_MATRIX_BLOCK_ENTITY, pos, state);
+        super(EBlocks.RING_MATRIX_BLOCK_ENTITY, pos, state);
     }
 
     public ArmillaryMatrixBlockEntity getBaseBlock() {

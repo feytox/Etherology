@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.deprecated.SimpleBlock;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ESSENCE_DETECTOR_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ESSENCE_DETECTOR_BLOCK_ENTITY;
 
 public class EssenceDetectorBlock extends SimpleBlock implements BlockEntityProvider {
     public static final IntProperty POWER = Properties.POWER;

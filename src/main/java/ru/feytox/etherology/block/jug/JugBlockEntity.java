@@ -19,7 +19,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.JUG_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.JUG_BLOCK_ENTITY;
 
 public class JugBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(27, ItemStack.EMPTY);

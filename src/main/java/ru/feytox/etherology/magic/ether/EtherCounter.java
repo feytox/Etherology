@@ -7,7 +7,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-import static ru.feytox.etherology.registry.item.ItemsRegistry.ETHER_SHARD;
+import static ru.feytox.etherology.registry.item.EItems.ETHER_SHARD;
 
 public interface EtherCounter {
     float getEtherCount();

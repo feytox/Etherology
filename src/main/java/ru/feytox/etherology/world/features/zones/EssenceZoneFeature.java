@@ -18,7 +18,7 @@ import ru.feytox.etherology.util.feyapi.UwuLib;
 
 import javax.annotation.Nullable;
 
-import static ru.feytox.etherology.registry.block.BlocksRegistry.ZONE_CORE_BLOCK;
+import static ru.feytox.etherology.registry.block.EBlocks.ZONE_CORE_BLOCK;
 
 public class EssenceZoneFeature extends Feature<EssenceZoneFeatureConfig> {
     public static final EIdentifier ESSENCE_ZONE_FEATURE_ID = new EIdentifier("essence_zone_feature");

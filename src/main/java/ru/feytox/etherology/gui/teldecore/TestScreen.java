@@ -16,7 +16,7 @@ import ru.feytox.etherology.recipes.visual.*;
 
 import java.util.Map;
 
-import static ru.feytox.etherology.registry.item.ItemsRegistry.DEEP_SHARD;
+import static ru.feytox.etherology.registry.item.EItems.DEEP_SHARD;
 
 public class TestScreen extends BaseOwoScreen<FlowLayout> {
 

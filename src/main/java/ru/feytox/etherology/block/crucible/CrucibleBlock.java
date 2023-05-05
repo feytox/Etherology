@@ -16,7 +16,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.registry.block.BlocksRegistry;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.deprecated.SimpleBlock;
 
 
@@ -56,7 +56,7 @@ public class CrucibleBlock extends SimpleBlock implements BlockEntityProvider {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return type == BlocksRegistry.CRUCIBLE_BLOCK_ENTITY ?
+        return type == EBlocks.CRUCIBLE_BLOCK_ENTITY ?
                 (world1, pos, state1, be) -> CrucibleBlockEntity.tick(world1, pos, state1, (CrucibleBlockEntity) be) : null;
     }
 
