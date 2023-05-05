@@ -39,6 +39,7 @@ import ru.feytox.etherology.enums.InstabTypes;
 import ru.feytox.etherology.enums.RingType;
 import ru.feytox.etherology.item.MatrixRing;
 import ru.feytox.etherology.mixin.ItemEntityAccessor;
+import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.particle.ElectricityParticle;
 import ru.feytox.etherology.particle.MovingParticle;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
@@ -189,13 +190,6 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         return true;
     }
 
-    public void tryActivate(ServerWorld world) {
-        Ticker ticker = getDefaultTickers().get("starter");
-        if (ticker == null) return;
-        addTicker(ticker.copy(0));
-        getRingMatrix(world).triggerAnim("accepted");
-    }
-
     public void activate(ServerWorld world) {
         armillarStateType = RAISING;
         EGeoNetwork.sendStartMatrix(world, this);
@@ -211,7 +205,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
     public void deactivate(ServerWorld world) {
         armillarStateType = LOWERING;
-        EGeoNetwork.sendStopAnim(world, pos, "work");
+        StopBlockAnimS2C.sendForTracking(this, "work");
         getRingMatrix(world).triggerAnim("end");
         getRingMatrix(world).triggerAnim("inactively");
         storingTicks = -40; // TODO: check raising time
@@ -306,10 +300,10 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     public static void clientTick(ClientWorld world, BlockPos pos, BlockState state, ArmillaryMatrixBlockEntity blockEntity) {
         blockEntity.clientTickStore(world);
         blockEntity.clientTickWorking(world);
-        blockEntity.clientTickSound(world, pos);
+        blockEntity.clientTickSound();
     }
 
-    public void clientTickSound(ClientWorld world, BlockPos pos) {
+    public void clientTickSound() {
         MinecraftClient client = MinecraftClient.getInstance();
 
         if (client.player == null) return;
@@ -465,11 +459,6 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
             if (displayedItem.isAlive()) displayedItem.kill();
             displayedItemUUID = null;
         }
-    }
-
-    public boolean checkStructure(World world, BlockPos pos, BlockState state) {
-        // TODO: как-то использовать проверку структуры
-        return getPedestals(world, pos, state).size() >= 9;
     }
 
     @Nullable

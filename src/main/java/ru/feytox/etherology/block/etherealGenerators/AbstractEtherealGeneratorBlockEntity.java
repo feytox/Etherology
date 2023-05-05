@@ -17,9 +17,10 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.magic.zones.EssenceDetectable;
 import ru.feytox.etherology.magic.zones.EssenceSupplier;
+import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
+import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
-import ru.feytox.etherology.util.gecko.EGeoNetwork;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -43,24 +44,24 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
         super(type, pos, state);
     }
 
-    public void spinAnim(ServerWorld world) {
-        EGeoNetwork.sendStopAnim(world, pos, "stalled");
-        EGeoNetwork.sendStartAnim(world, pos, "spin");
+    public void spinAnim() {
+        StopBlockAnimS2C.sendForTracking(this, "stalled");
+        StartBlockAnimS2C.sendForTracking(this, "spin");
     }
 
     public void unstall(ServerWorld world, BlockState state) {
         world.setBlockState(pos, state.with(STALLED, false));
-        spinAnim(world);
+        spinAnim();
     }
 
-    public void stallAnim(ServerWorld world) {
-        EGeoNetwork.sendStopAnim(world, pos, "spin");
-        EGeoNetwork.sendStartAnim(world, pos, "stalled");
+    public void stallAnim() {
+        StopBlockAnimS2C.sendForTracking(this, "spin");
+        StartBlockAnimS2C.sendForTracking(this, "stalled");
     }
 
     public void stall(ServerWorld world, BlockState state) {
         world.setBlockState(pos, state.with(STALLED, true));
-        stallAnim(world);
+        stallAnim();
     }
 
     @Override

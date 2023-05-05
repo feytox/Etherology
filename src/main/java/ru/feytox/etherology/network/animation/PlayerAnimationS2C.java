@@ -9,15 +9,13 @@ import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
+import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
@@ -39,11 +37,10 @@ public class PlayerAnimationS2C extends AbstractS2CPacket {
         this.isStop = isStop;
     }
 
-    public PlayerAnimationS2C(PlayerEntity relatedPlayer, Identifier animationID) {
-        this(relatedPlayer, animationID, false);
-    }
+    public static void receive(S2CPacketInfo packetInfo) {
+        MinecraftClient client = packetInfo.client();
+        PacketByteBuf buf = packetInfo.buf();
 
-    public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         if (client.world == null) return;
         Entity entity = client.world.getEntityById(buf.readInt());
         if (!(entity instanceof IAnimatedPlayer animatedPlayer)) return;
@@ -112,8 +109,7 @@ public class PlayerAnimationS2C extends AbstractS2CPacket {
     }
 
     @Override
-    public PacketByteBuf encode() {
-        PacketByteBuf buf = PacketByteBufs.create();
+    public PacketByteBuf encode(PacketByteBuf buf) {
         buf.writeInt(relatedPlayer.getId());
         buf.writeIdentifier(animationID);
         buf.writeBoolean(isStop);

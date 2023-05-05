@@ -26,9 +26,10 @@ import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.ether.EtherCounter;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
+import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
+import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
-import ru.feytox.etherology.util.gecko.EGeoNetwork;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -193,8 +194,8 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
         viewers += 1;
         if (world == null || world.isClient || isOpen) return;
         ServerWorld serverWorld = (ServerWorld) world;
-        EGeoNetwork.sendStopAnim(serverWorld, pos, "close");
-        EGeoNetwork.sendStartAnim(serverWorld, pos, "open");
+        StopBlockAnimS2C.sendForTracking(this, "close");
+        StartBlockAnimS2C.sendForTracking(this, "open");
         serverWorld.playSound(null, pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5f, 0.9f);
         isOpen = true;
     }
@@ -204,8 +205,8 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
         viewers -= 1;
         if (world == null || world.isClient || !isOpen || viewers > 0) return;
         ServerWorld serverWorld = (ServerWorld) world;
-        EGeoNetwork.sendStopAnim(serverWorld, pos, "open");
-        EGeoNetwork.sendStartAnim(serverWorld, pos, "close");
+        StopBlockAnimS2C.sendForTracking(this, "open");
+        StartBlockAnimS2C.sendForTracking(this, "close");
         serverWorld.playSound(null, pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5f, 0.9f);
         isOpen = false;
     }

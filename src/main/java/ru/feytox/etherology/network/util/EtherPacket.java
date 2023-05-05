@@ -4,6 +4,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 public interface EtherPacket {
-    PacketByteBuf encode();
+    PacketByteBuf encode(PacketByteBuf buf);
     Identifier getPacketID();
 }
