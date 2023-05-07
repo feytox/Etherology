@@ -17,17 +17,18 @@ repositories {
         name "KosmX's maven"
         url 'https://maven.kosmx.dev/'
     }
+    maven { url 'https://jitpack.io' }
+    maven { url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
-    // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
+    
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-
+    modImplementation "com.github.feytox:OptiDevium:${project.minecraft_version}-SNAPSHOT"
+    
     modImplementation("io.wispforest:owo-lib:${project.owo_version}")
     include "io.wispforest:owo-sentinel:${project.owo_version}"
     include modImplementation("software.bernie.geckolib:geckolib-fabric-${project.gecko_version}")
