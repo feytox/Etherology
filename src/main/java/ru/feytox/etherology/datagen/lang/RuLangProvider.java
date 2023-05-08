@@ -136,6 +136,15 @@ public class RuLangProvider extends FabricLanguageProvider {
         builder.add(TELDER_STEEL_SHOVEL, "Телдер-стальная лопата");
         builder.add(TELDER_STEEL_SWORD, "Телдер-стальный меч");
 
+        builder.add(WOODEN_BATTLE_PICKAXE, "Деревянное кайло");
+        builder.add(STONE_BATTLE_PICKAXE, "Каменное кайло");
+        builder.add(IRON_BATTLE_PICKAXE, "Железное кайло");
+        builder.add(GOLDEN_BATTLE_PICKAXE, "Золотое кайло");
+        builder.add(DIAMOND_BATTLE_PICKAXE, "Алмазное кайло");
+        builder.add(NETHERITE_BATTLE_PICKAXE, "Незеритовое кайло");
+        builder.add(ETHRIL_BATTLE_PICKAXE, "Эфриловое кайло");
+        builder.add(TELDER_STEEL_BATTLE_PICKAXE, "Телдер-стальное кайло");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

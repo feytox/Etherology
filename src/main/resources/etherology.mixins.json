@@ -4,8 +4,12 @@
   "package": "ru.feytox.etherology.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnvilScreenHandlerMixin",
     "AxeItemMixin",
     "DataPackContentsMixin",
+    "EnchantmentHelperMixin",
+    "EnchantmentMixin",
+    "ForgingScreenHandlerAccessor",
     "GeoModelAccessor",
     "ItemEntityAccessor",
     "ItemEntityMixin",
