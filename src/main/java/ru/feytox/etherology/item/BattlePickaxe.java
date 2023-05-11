@@ -8,4 +8,8 @@ public class BattlePickaxe extends PickaxeItem {
     public BattlePickaxe(ToolMaterial material, int attackDamage, float attackSpeed) {
         super(material, attackDamage, attackSpeed, new FabricItemSettings());
     }
+
+    public float getDamagePercent() {
+        return (getAttackDamage() + 1) / 7;
+    }
 }

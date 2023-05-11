@@ -13,6 +13,8 @@
     "GeoModelAccessor",
     "ItemEntityAccessor",
     "ItemEntityMixin",
+    "LivingEntityMixin",
+    "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
     "TrunkPlacerTypeAccessor",
     "WorldRendererAccessor"

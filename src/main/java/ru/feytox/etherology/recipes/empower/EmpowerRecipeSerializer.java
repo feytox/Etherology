@@ -16,6 +16,8 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,8 +42,8 @@ public class EmpowerRecipeSerializer implements RecipeSerializer<EmpowerRecipe> 
 
     @Override
     public EmpowerRecipe read(Identifier id, PacketByteBuf buf) {
-        DefaultedList<Ingredient> gridInput = DefaultedList.ofSize(9, Ingredient.EMPTY);
-        gridInput.replaceAll(ignored -> Ingredient.fromPacket(buf));
+        List<Ingredient> ingredients = buf.readCollection(i -> new ArrayList<>(), Ingredient::fromPacket);
+        DefaultedList<Ingredient> gridInput = DefaultedList.copyOf(Ingredient.EMPTY, ingredients.toArray(new Ingredient[]{}));
         int relaCount = buf.readInt();
         int viaCount = buf.readInt();
         int closCount = buf.readInt();
