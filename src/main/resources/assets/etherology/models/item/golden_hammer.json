@@ -1,0 +1,7 @@
+{
+	"parent": "etherology:item/hammer",
+	"textures": {
+		"particle": "etherology:item/golden_hammer",
+		"hammer": "etherology:item/golden_hammer"
+	}
+}

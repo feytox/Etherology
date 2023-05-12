@@ -14,6 +14,7 @@
     "ItemEntityAccessor",
     "ItemEntityMixin",
     "LivingEntityMixin",
+    "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
     "TrunkPlacerTypeAccessor",
