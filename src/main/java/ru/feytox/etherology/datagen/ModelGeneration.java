@@ -3,10 +3,7 @@ package ru.feytox.etherology.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.Models;
-import net.minecraft.data.client.TexturedModel;
+import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
@@ -42,22 +39,18 @@ public class ModelGeneration extends FabricModelProvider {
         // glint
         registerGlint(EItems.GLINT, generator);
         // all simple items
-        registerSimpleItem(generator, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS);
+        registerItems(generator, Models.GENERATED, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS);
         // all handheld (swords, pickaxe and etc)
-        registerHandheldItem(generator, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
-        registerHandheldItem(generator, WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, TELDER_STEEL_BATTLE_PICKAXE);
+        registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
+        registerItems(generator, Models.HANDHELD, WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, TELDER_STEEL_BATTLE_PICKAXE);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
         Arrays.stream(blockFamilies).forEach(family -> generator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family));
     }
 
-    private static void registerSimpleItem(ItemModelGenerator generator, Item... items) {
-        Arrays.stream(items).forEach(item -> generator.register(item, Models.GENERATED));
-    }
-
-    private static void registerHandheldItem(ItemModelGenerator generator, Item... items) {
-        Arrays.stream(items).forEach(item -> generator.register(item, Models.HANDHELD));
+    private static void registerItems(ItemModelGenerator generator, Model model, Item... items) {
+        Arrays.stream(items).forEach(item -> generator.register(item, model));
     }
 
     private static void registerSimpleBlock(BlockStateModelGenerator generator, Block... blocks) {

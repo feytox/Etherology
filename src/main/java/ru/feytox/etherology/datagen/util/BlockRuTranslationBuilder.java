@@ -1,4 +1,4 @@
-package ru.feytox.etherology.datagen.lang;
+package ru.feytox.etherology.datagen.util;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
