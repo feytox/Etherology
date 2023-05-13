@@ -1,5 +1,6 @@
 package ru.feytox.etherology.mixin;
 
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -7,8 +8,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.util.feyapi.PlayerAnimations;
+
+import java.util.concurrent.CompletableFuture;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -28,5 +34,12 @@ public class PlayerEntityMixin {
         ItemStack stack = player.getMainHandStack();
         if (!(stack.getItem() instanceof HammerItem) || player.getOffHandStack().isEmpty()) return attribute;
         return 0;
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void onPlayerTick(CallbackInfo ci) {
+        PlayerEntity it = ((PlayerEntity) (Object) this);
+        if (!(it instanceof AbstractClientPlayerEntity clientPlayer)) return;
+        CompletableFuture.runAsync(() -> PlayerAnimations.tickAnimations(clientPlayer));
     }
 }
