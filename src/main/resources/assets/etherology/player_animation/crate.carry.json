@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.player.carry": {
+		"crate.carry": {
 			"loop": true,
 			"bones": {
 				"right_arm": {

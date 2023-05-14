@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.feytox.etherology.enums.FourStates;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 
@@ -24,7 +25,7 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     private final ModifierLayer<IAnimation> etherologyAnimationContainer = new ModifierLayer<>();
 
     @Unique
-    private final Map<PlayerAnimations, Boolean> etherologyPredictableAnimations = new HashMap<>();
+    private final Map<PlayerAnimations, FourStates> etherologyPredictableAnimations = new HashMap<>();
 
     @Unique
     private boolean etherologyAnimationTicks = false;
@@ -32,7 +33,7 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(ClientWorld world, GameProfile profile, CallbackInfo ci) {
         PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayerEntity) (Object) this).addAnimLayer(1000, etherologyAnimationContainer);
-        Arrays.stream(PlayerAnimations.values()).forEach(anim -> etherologyPredictableAnimations.put(anim, false));
+        Arrays.stream(PlayerAnimations.values()).forEach(anim -> etherologyPredictableAnimations.put(anim, FourStates.FALSE));
     }
 
     @Override
@@ -41,7 +42,7 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     }
 
     @Override
-    public boolean getLastAnimState(PlayerAnimations anim) {
+    public FourStates getLastAnimState(PlayerAnimations anim) {
         return etherologyPredictableAnimations.get(anim);
     }
 
@@ -56,7 +57,7 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     }
 
     @Override
-    public void setAnimState(PlayerAnimations anim, boolean state) {
+    public void setAnimState(PlayerAnimations anim, FourStates state) {
         etherologyPredictableAnimations.put(anim, state);
     }
 }
