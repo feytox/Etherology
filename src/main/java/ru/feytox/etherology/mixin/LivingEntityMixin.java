@@ -59,7 +59,7 @@ public abstract class LivingEntityMixin {
         String animString = player.getMainArm().equals(Arm.LEFT) ? "right.twohanded.hit": "left.twohanded.hit";
         PlayerAnimations idle = player.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.LEFT_TWOHANDED_IDLE : PlayerAnimations.RIGHT_TWOHANDED_IDLE;
         PlayerAnimations.setAnimation(animatedPlayer, false,
-                new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.LINEAR, true),
+                new PlayerAnimations.AnimationData(new EIdentifier(animString), 2, Ease.OUTQUART, true),
                 null, idle);
     }
 }
