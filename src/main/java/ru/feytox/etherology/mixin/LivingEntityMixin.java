@@ -49,8 +49,8 @@ public abstract class LivingEntityMixin {
         return Math.round(i * (1 - 0.5f * k));
     }
 
-    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;)V", at = @At("HEAD"))
-    private void onSwingHand(Hand hand, CallbackInfo ci) {
+    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;Z)V", at = @At("HEAD"), cancellable = true)
+    private void onSwingHand(Hand hand, boolean fromServerPlayer, CallbackInfo ci) {
         LivingEntity entity = ((LivingEntity) (Object) this);
         if (!(entity instanceof AbstractClientPlayerEntity player)) return;
         if (!(player instanceof IAnimatedPlayer animatedPlayer)) return;
@@ -59,7 +59,8 @@ public abstract class LivingEntityMixin {
         String animString = player.getMainArm().equals(Arm.LEFT) ? "right.twohanded.hit": "left.twohanded.hit";
         PlayerAnimations idle = player.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.LEFT_TWOHANDED_IDLE : PlayerAnimations.RIGHT_TWOHANDED_IDLE;
         PlayerAnimations.setAnimation(animatedPlayer, false,
-                new PlayerAnimations.AnimationData(new EIdentifier(animString), 2, Ease.OUTQUART, true),
+                new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
                 null, idle);
+        ci.cancel();
     }
 }

@@ -23,10 +23,10 @@ import java.util.function.Predicate;
 public enum PlayerAnimations {
     CRATE_CARRYING(new AnimationData(new EIdentifier("crate.carry"), 5, Ease.INOUTCUBIC, true),
             player -> player.getMainHandStack().isOf(EItems.CARRIED_CRATE)),
-    LEFT_TWOHANDED_IDLE(new AnimationData(new EIdentifier("right.twohanded.idle"), 8, Ease.INOUTCUBIC, true),
+    LEFT_TWOHANDED_IDLE(new AnimationData(new EIdentifier("right.twohanded.idle"), 0, Ease.INOUTCUBIC, true),
             new EIdentifier("right.twohanded.hit"),
             player -> AnimationPredicates.twohandedIdle(player, Arm.LEFT)),
-    RIGHT_TWOHANDED_IDLE(new AnimationData(new EIdentifier("left.twohanded.idle"), 8, Ease.INOUTCUBIC, true),
+    RIGHT_TWOHANDED_IDLE(new AnimationData(new EIdentifier("left.twohanded.idle"), 0, Ease.INOUTCUBIC, true),
             new EIdentifier("left.twohanded.hit"),
             player -> AnimationPredicates.twohandedIdle(player, Arm.RIGHT));
 
@@ -73,7 +73,9 @@ public enum PlayerAnimations {
         var animationContainer = player.getEtherologyAnimation();
         KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(animationInfo.animationID);
         if (anim == null) return FourStates.FALSE;
-        if (anim.stopTick != anim.endTick) ((KeyframeAnimationAccessor) (Object) anim).setStopTick(anim.endTick);
+        if (anim.stopTick != anim.endTick && !anim.isInfinite) {
+            ((KeyframeAnimationAccessor) (Object) anim).setStopTick(anim.endTick);
+        }
 
         UUID currentAnimUUID = null;
         KeyframeAnimationPlayer currentAnim = null;
