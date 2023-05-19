@@ -22,7 +22,7 @@ import ru.feytox.etherology.util.feyapi.FVec3d;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.feytox.etherology.Etherology.ELECTRICITY_SOUND_EVENT;
+import static ru.feytox.etherology.registry.util.EtherSounds.ELECTRICITY_SOUND_EVENT;
 
 public class SmallLightning {
     public static final EIdentifier SMALL_LIGHTNING_PACKET_ID = new EIdentifier("small_lightning_packet");

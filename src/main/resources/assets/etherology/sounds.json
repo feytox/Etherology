@@ -12,5 +12,13 @@
     "sounds": [
       "etherology:armillary_matrix_work_loop"
     ]
+  },
+  "hammer_swing_sound": {
+    "subtitle": "subtitles.etherology.hammer_swing",
+    "sounds": [
+      "etherology:hammer_swing_0",
+      "etherology:hammer_swing_1",
+      "etherology:hammer_swing_2"
+    ]
   }
 }

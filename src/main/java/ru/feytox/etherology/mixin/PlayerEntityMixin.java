@@ -8,8 +8,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -78,5 +81,13 @@ public class PlayerEntityMixin {
         }
 
         return instance.expand(x+4, y, z+4);
+    }
+
+    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
+    private void onPlaySound(World instance, PlayerEntity except, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch) {
+        PlayerEntity attacker = ((PlayerEntity) (Object) this);
+        if (!(attacker.getMainHandStack().getItem() instanceof HammerItem) || !attacker.getOffHandStack().isEmpty()) {
+            instance.playSound(except, x, y, z, sound, category, volume, pitch);
+        }
     }
 }

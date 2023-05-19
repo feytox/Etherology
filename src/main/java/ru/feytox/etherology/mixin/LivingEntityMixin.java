@@ -9,6 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 import ru.feytox.etherology.util.feyapi.PlayerAnimations;
@@ -61,6 +63,7 @@ public abstract class LivingEntityMixin {
         PlayerAnimations.setAnimation(animatedPlayer, false,
                 new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
                 null, idle);
+        player.playSound(EtherSounds.HAMMER_SWING_SOUND_EVENT, SoundCategory.PLAYERS, 0.9f, 1.0f);
         ci.cancel();
     }
 }

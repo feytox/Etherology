@@ -11,9 +11,7 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import ru.feytox.etherology.block.closet.ClosetScreenHandler;
 import ru.feytox.etherology.block.crate.CrateScreenHandler;
@@ -33,6 +31,7 @@ import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.EItems;
+import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
@@ -70,19 +69,16 @@ public class Etherology implements ModInitializer {
             .displayName(Text.of("Etherology"))
             .build();
 
-    public static final Identifier ELECTRICITY_SOUND_ID = new EIdentifier("electricity_sound");
-    public static SoundEvent ELECTRICITY_SOUND_EVENT = SoundEvent.of(ELECTRICITY_SOUND_ID);
-    public static final Identifier MATRIX_WORK_SOUND_ID = new EIdentifier("matrix_work_sound");
-    public static SoundEvent MATRIX_WORK_SOUND_EVENT = SoundEvent.of(MATRIX_WORK_SOUND_ID);
-
     @Override
     public void onInitialize() {
+        // TODO: 19/05/2023 убрать лишнее
         EtherologyNetwork.registerPackets();
         EItems.registerItems();
         EBlocks.registerAll();
         EBlockFamilies.registerFamilies();
         MixTypes.registerMixes();
         DevCommands.register();
+        EtherSounds.registerAll();
 
         // TODO: move somewhere else
         Registry.register(Registries.RECIPE_SERIALIZER, AlchemyRecipeSerializer.ID,
@@ -126,9 +122,6 @@ public class Etherology implements ModInitializer {
             content.add(TELDECORE);
             content.add(TERRESTRIAL_SHARD);
         });
-
-        Registry.register(Registries.SOUND_EVENT, ELECTRICITY_SOUND_ID, ELECTRICITY_SOUND_EVENT);
-        Registry.register(Registries.SOUND_EVENT, MATRIX_WORK_SOUND_ID, MATRIX_WORK_SOUND_EVENT);
 
         Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
 

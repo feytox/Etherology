@@ -6,8 +6,8 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
 import ru.feytox.etherology.enums.ArmillarStateType;
 
-import static ru.feytox.etherology.Etherology.MATRIX_WORK_SOUND_EVENT;
 import static ru.feytox.etherology.enums.ArmillarStateType.*;
+import static ru.feytox.etherology.registry.util.EtherSounds.MATRIX_WORK_SOUND_EVENT;
 
 public class MatrixWorkSoundInstance extends MovingSoundInstance {
     private final ArmillaryMatrixBlockEntity armBlock;

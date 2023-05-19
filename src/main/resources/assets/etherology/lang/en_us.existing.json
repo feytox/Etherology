@@ -61,5 +61,9 @@
   "etherology.mix_magenta": "Замешать до фиолетовой эссенции",
   "etherology.mix_green": "Замешать до зелёной эссенции",
   "etherology.mix_blue": "Замешать до синей эссенции",
-  "etherology.mix_cyan": "Замешать до голубой эссенции"
+  "etherology.mix_cyan": "Замешать до голубой эссенции",
+
+  "subtitles.etherology.small_lightning": "Маленькая молния",
+  "subtitles.etherology.armillary_matrix_work": "Армиллярная матрица шумит",
+  "subtitles.etherology.hammer_swing": "Взмах молота"
 }
