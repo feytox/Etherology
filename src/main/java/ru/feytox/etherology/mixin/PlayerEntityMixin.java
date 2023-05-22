@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 
 import java.util.Iterator;
@@ -88,6 +90,12 @@ public class PlayerEntityMixin {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
         if (!(attacker.getMainHandStack().getItem() instanceof HammerItem) || !attacker.getOffHandStack().isEmpty()) {
             instance.playSound(except, x, y, z, sound, category, volume, pitch);
+            return;
+        }
+
+        if (!sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE) && !sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_WEAK)) {
+            float pitchVal = 0.9f + instance.random.nextFloat() * 0.2f;
+            instance.playSound(except, x, y, z, EtherSounds.HAMMER_DAMAGE, category, 0.5f, pitchVal);
         }
     }
 }

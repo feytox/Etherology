@@ -7,7 +7,7 @@ import net.minecraft.sound.SoundCategory;
 import ru.feytox.etherology.enums.ArmillarStateType;
 
 import static ru.feytox.etherology.enums.ArmillarStateType.*;
-import static ru.feytox.etherology.registry.util.EtherSounds.MATRIX_WORK_SOUND_EVENT;
+import static ru.feytox.etherology.registry.util.EtherSounds.MATRIX_WORK;
 
 public class MatrixWorkSoundInstance extends MovingSoundInstance {
     private final ArmillaryMatrixBlockEntity armBlock;
@@ -15,7 +15,7 @@ public class MatrixWorkSoundInstance extends MovingSoundInstance {
     private double fading = 0.0f;
 
     protected MatrixWorkSoundInstance(ArmillaryMatrixBlockEntity armBlock, ClientPlayerEntity player) {
-        super(MATRIX_WORK_SOUND_EVENT, SoundCategory.BLOCKS, SoundInstance.createRandom());
+        super(MATRIX_WORK, SoundCategory.BLOCKS, SoundInstance.createRandom());
         this.armBlock = armBlock;
         this.player = player;
         this.attenuationType = SoundInstance.AttenuationType.NONE;

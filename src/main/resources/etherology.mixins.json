@@ -26,6 +26,7 @@
     "EntityModelLayersMixin",
     "HangingSignEditScreenMixin",
     "InGameHudMixin",
+    "MinecraftClientMixin",
     "TexturedRenderLayersMixin",
     "TooltipComponentMixin"
   ],

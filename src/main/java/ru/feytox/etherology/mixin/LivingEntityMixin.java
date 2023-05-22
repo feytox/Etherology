@@ -63,7 +63,8 @@ public abstract class LivingEntityMixin {
         PlayerAnimations.setAnimation(animatedPlayer, false,
                 new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
                 null, idle);
-        player.playSound(EtherSounds.HAMMER_SWING_SOUND_EVENT, SoundCategory.PLAYERS, 0.9f, 1.0f);
+        float pitchVal = 0.9f + player.world.random.nextFloat() * 0.2f;
+        player.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, pitchVal);
         ci.cancel();
     }
 }
