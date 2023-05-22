@@ -17,6 +17,14 @@ public class HammerItem extends SwordItem {
         super(toolMaterial, attackDamage, attackSpeed, new FabricItemSettings());
     }
 
+    /**
+     * @param player player to check
+     * @return true if player has hammer in main hand and offhand is empty
+     */
+    public static boolean checkHammer(PlayerEntity player) {
+        return player.getMainHandStack().getItem() instanceof HammerItem && player.getOffHandStack().isEmpty();
+    }
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
@@ -32,6 +40,4 @@ public class HammerItem extends SwordItem {
             player.sendMessage(Text.translatable("item.etherology.hammer.warn").formatted(Formatting.WHITE), true);
         }
     }
-
-    // player.sendMessage(Text.translatable("item.etherology.hammer.warn").formatted(Formatting.DARK_RED), true);
 }

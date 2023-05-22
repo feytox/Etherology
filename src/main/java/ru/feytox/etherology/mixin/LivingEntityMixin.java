@@ -1,7 +1,5 @@
 package ru.feytox.etherology.mixin;
 
-import dev.kosmx.playerAnim.core.util.Ease;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.DamageUtil;
 import net.minecraft.entity.LivingEntity;
@@ -9,21 +7,12 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.feytox.etherology.item.BattlePickaxe;
-import ru.feytox.etherology.item.HammerItem;
-import ru.feytox.etherology.registry.util.EtherSounds;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
-import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -49,22 +38,5 @@ public abstract class LivingEntityMixin {
 
         float k = pick.getDamagePercent();
         return Math.round(i * (1 - 0.5f * k));
-    }
-
-    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;Z)V", at = @At("HEAD"), cancellable = true)
-    private void onSwingHand(Hand hand, boolean fromServerPlayer, CallbackInfo ci) {
-        LivingEntity entity = ((LivingEntity) (Object) this);
-        if (!(entity instanceof AbstractClientPlayerEntity player)) return;
-        if (!(player instanceof IAnimatedPlayer animatedPlayer)) return;
-        if (!(player.getMainHandStack().getItem() instanceof HammerItem) || !player.getOffHandStack().isEmpty()) return;
-
-        String animString = player.getMainArm().equals(Arm.LEFT) ? "right.twohanded.hit": "left.twohanded.hit";
-        PlayerAnimations idle = player.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.LEFT_TWOHANDED_IDLE : PlayerAnimations.RIGHT_TWOHANDED_IDLE;
-        PlayerAnimations.setAnimation(animatedPlayer, false,
-                new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
-                null, idle);
-        float pitchVal = 0.9f + player.world.random.nextFloat() * 0.2f;
-        player.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, pitchVal);
-        ci.cancel();
     }
 }

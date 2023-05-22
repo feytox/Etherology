@@ -27,6 +27,8 @@ import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -58,17 +60,18 @@ public class PlayerEntityMixin {
     @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V"))
     private void vanillaKnockbackCancel(LivingEntity instance, double strength, double x, double z) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (attacker.getMainHandStack().getItem() instanceof HammerItem && attacker.getOffHandStack().isEmpty()) return;
-        instance.takeKnockback(strength, x, z);
+        if (!HammerItem.checkHammer(attacker)) {
+            instance.takeKnockback(strength, x, z);
+        }
     }
 
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
     private void onHammerKnockback(Entity target, CallbackInfo ci, float f, float g, boolean bl, boolean bl2, int i, boolean bl3, boolean bl4, float j, boolean bl5, int k, Vec3d vec3d, float l, List<LivingEntity> list, Iterator<LivingEntity> var19, LivingEntity livingEntity) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (!(attacker.getMainHandStack().getItem() instanceof HammerItem hammer) || !attacker.getOffHandStack().isEmpty()) return;
+        if (!HammerItem.checkHammer(attacker)) return;
         Vec3d hammerVec = livingEntity.getPos().subtract(target.getPos());
-        float radius = 2f * hammer.getAttackDamage() * l;
+        float radius = 2f * l;
         float distance = livingEntity.distanceTo(target);
         if (distance > radius) return;
         hammerVec = hammerVec.multiply(2 * radius / distance);
@@ -78,7 +81,7 @@ public class PlayerEntityMixin {
     @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"))
     private Box expandHammerAttack(Box instance, double x, double y, double z) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (!(attacker.getMainHandStack().getItem() instanceof HammerItem) || !attacker.getOffHandStack().isEmpty()) {
+        if (!HammerItem.checkHammer(attacker)) {
             return instance.expand(x, y, z);
         }
 
@@ -88,14 +91,16 @@ public class PlayerEntityMixin {
     @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
     private void onPlaySound(World instance, PlayerEntity except, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (!(attacker.getMainHandStack().getItem() instanceof HammerItem) || !attacker.getOffHandStack().isEmpty()) {
+        if (!HammerItem.checkHammer(attacker)) {
             instance.playSound(except, x, y, z, sound, category, volume, pitch);
             return;
         }
 
-        if (!sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE) && !sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_WEAK)) {
+        if (!sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE)) {
             float pitchVal = 0.9f + instance.random.nextFloat() * 0.2f;
-            instance.playSound(except, x, y, z, EtherSounds.HAMMER_DAMAGE, category, 0.5f, pitchVal);
+            Executor delayedExecutor = CompletableFuture.delayedExecutor(200, TimeUnit.MILLISECONDS);
+            CompletableFuture.runAsync(() ->
+                    instance.playSound(except, x, y, z, EtherSounds.HAMMER_DAMAGE, category, 0.5f, pitchVal), delayedExecutor);
         }
     }
 }
