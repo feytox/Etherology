@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 
@@ -57,12 +59,23 @@ public class PlayerEntityMixin {
         CompletableFuture.runAsync(() -> PlayerAnimations.tickAnimations(clientPlayer));
     }
 
-    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V"))
+    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V", ordinal = 1))
     private void vanillaKnockbackCancel(LivingEntity instance, double strength, double x, double z) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
         if (!HammerItem.checkHammer(attacker)) {
             instance.takeKnockback(strength, x, z);
         }
+    }
+
+    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V", ordinal = 0))
+    private void shockwaveKnockback(LivingEntity instance, double strength, double x, double z) {
+        instance.takeKnockback(strength, x, z);
+        PlayerEntity attacker = ((PlayerEntity) (Object) this);
+        if (!HammerItem.checkHammer(attacker)) return;
+        World world = attacker.getWorld();
+        if (world.isClient) return;
+
+        ShockwaveParticle.spawnParticle((ServerWorld) world, instance);
     }
 
     @SuppressWarnings("InvalidInjectorMethodSignature")
@@ -76,6 +89,12 @@ public class PlayerEntityMixin {
         if (distance > radius) return;
         hammerVec = hammerVec.multiply(2 * radius / distance);
         livingEntity.takeKnockback(1, hammerVec.x, hammerVec.z);
+    }
+
+    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;squaredDistanceTo(Lnet/minecraft/entity/Entity;)D"))
+    private double hammerWaveDistance(PlayerEntity instance, Entity entity) {
+        double distance = instance.squaredDistanceTo(entity);
+        return HammerItem.checkHammer(instance) ? 0 : distance;
     }
 
     @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"))
@@ -101,6 +120,13 @@ public class PlayerEntityMixin {
             Executor delayedExecutor = CompletableFuture.delayedExecutor(200, TimeUnit.MILLISECONDS);
             CompletableFuture.runAsync(() ->
                     instance.playSound(except, x, y, z, EtherSounds.HAMMER_DAMAGE, category, 0.5f, pitchVal), delayedExecutor);
+        }
+    }
+
+    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;spawnSweepAttackParticles()V"))
+    private void replaceSweepToHammer(PlayerEntity instance) {
+        if (!HammerItem.checkHammer(instance)) {
+            instance.spawnSweepAttackParticles();
         }
     }
 }

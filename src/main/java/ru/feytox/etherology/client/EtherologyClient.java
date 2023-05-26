@@ -82,6 +82,7 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(VIA_PARTICLE, ZoneParticle.ViaFactory::new);
 
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
 
         ModelPredicateProviderRegistry.register(GLINT, new Identifier("ether_percentage"), ((stack, world, entity, seed) -> {
             EtherGlint glint = new EtherGlint(stack);
