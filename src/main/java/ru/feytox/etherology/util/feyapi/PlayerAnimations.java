@@ -12,7 +12,6 @@ import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FourStates;
-import ru.feytox.etherology.mixin.KeyframeAnimationAccessor;
 import ru.feytox.etherology.registry.item.EItems;
 
 import java.util.UUID;
@@ -23,12 +22,12 @@ import java.util.function.Predicate;
 public enum PlayerAnimations {
     CRATE_CARRYING(new AnimationData(new EIdentifier("crate.carry"), 5, Ease.INOUTCUBIC, true),
             player -> player.getMainHandStack().isOf(EItems.CARRIED_CRATE)),
-    LEFT_TWOHANDED_IDLE(new AnimationData(new EIdentifier("right.twohanded.idle"), 0, Ease.INOUTCUBIC, true),
-            new EIdentifier("right.twohanded.hit"),
-            player -> AnimationPredicates.twohandedIdle(player, Arm.LEFT)),
-    RIGHT_TWOHANDED_IDLE(new AnimationData(new EIdentifier("left.twohanded.idle"), 0, Ease.INOUTCUBIC, true),
-            new EIdentifier("left.twohanded.hit"),
-            player -> AnimationPredicates.twohandedIdle(player, Arm.RIGHT));
+    LEFT_HAMMER_IDLE(new AnimationData(new EIdentifier("right_hammer_idle"), 0, Ease.INOUTCUBIC, true),
+            new EIdentifier("right_hammer_hit"),
+            player -> AnimationPredicates.twohandedIdle(player, Arm.RIGHT)),
+    RIGHT_HAMMER_IDLE(new AnimationData(new EIdentifier("left_hammer_idle"), 0, Ease.INOUTCUBIC, true),
+            new EIdentifier("left_hammer_hit"),
+            player -> AnimationPredicates.twohandedIdle(player, Arm.LEFT));
 
     private final Predicate<AbstractClientPlayerEntity> playPredicate;
     private final AnimationData animationInfo;
@@ -73,9 +72,6 @@ public enum PlayerAnimations {
         var animationContainer = player.getEtherologyAnimation();
         KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(animationInfo.animationID);
         if (anim == null) return FourStates.FALSE;
-        if (anim.stopTick != anim.endTick && !anim.isInfinite) {
-            ((KeyframeAnimationAccessor) (Object) anim).setStopTick(anim.endTick);
-        }
 
         UUID currentAnimUUID = null;
         KeyframeAnimationPlayer currentAnim = null;

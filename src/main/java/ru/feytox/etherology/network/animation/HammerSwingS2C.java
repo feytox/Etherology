@@ -51,8 +51,8 @@ public class HammerSwingS2C extends AbstractS2CPacket {
             if (!(swinger instanceof IAnimatedPlayer animatedPlayer)) return;
             if (!HammerItem.checkHammer(swinger)) return;
 
-            String animString = swinger.getMainArm().equals(Arm.LEFT) ? "right.twohanded.hit": "left.twohanded.hit";
-            PlayerAnimations idle = swinger.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.LEFT_TWOHANDED_IDLE : PlayerAnimations.RIGHT_TWOHANDED_IDLE;
+            String animString = swinger.getMainArm().equals(Arm.LEFT) ? "left_hammer_hit": "right_hammer_hit";
+            PlayerAnimations idle = swinger.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.RIGHT_HAMMER_IDLE : PlayerAnimations.LEFT_HAMMER_IDLE;
             PlayerAnimations.setAnimation(animatedPlayer, false,
                     new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
                     null, idle);

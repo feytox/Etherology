@@ -42,8 +42,8 @@ public class MinecraftClientMixin {
         if (!(player instanceof IAnimatedPlayer animatedPlayer)) return;
         ClientWorld world = player.clientWorld;
 
-        String animString = player.getMainArm().equals(Arm.LEFT) ? "right.twohanded.hit": "left.twohanded.hit";
-        PlayerAnimations idle = player.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.LEFT_TWOHANDED_IDLE : PlayerAnimations.RIGHT_TWOHANDED_IDLE;
+        String animString = player.getMainArm().equals(Arm.LEFT) ? "left_hammer_hit": "right_hammer_hit";
+        PlayerAnimations idle = player.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.RIGHT_HAMMER_IDLE : PlayerAnimations.LEFT_HAMMER_IDLE;
         PlayerAnimations.setAnimation(animatedPlayer, false,
                 new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
                 null, idle);
@@ -55,7 +55,7 @@ public class MinecraftClientMixin {
         if (!player.isOnGround()) return;
         float yawAngle = -player.getYaw() * 0.017453292F;
         Vec3d attackVec = new Vec3d(MathHelper.sin(yawAngle), 0, MathHelper.cos(yawAngle));
-        Vec3d shockPos = player.getPos().add(attackVec.multiply(1.5)).add(0, 0.1, 0);
+        Vec3d shockPos = player.getPos().add(attackVec.multiply(1.5)).add(0, 0.025, 0);
         world.addParticle(Etherology.SHOCKWAVE, shockPos.x, shockPos.y, shockPos.z, 0, 0, 0);
     }
 }
