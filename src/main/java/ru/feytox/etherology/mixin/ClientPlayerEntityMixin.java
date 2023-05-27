@@ -11,11 +11,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.enums.FourStates;
+import ru.feytox.etherology.animation.AbstractPlayerAnimation;
+import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
-import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,15 +24,12 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     private final ModifierLayer<IAnimation> etherologyAnimationContainer = new ModifierLayer<>();
 
     @Unique
-    private final Map<PlayerAnimations, FourStates> etherologyPredictableAnimations = new HashMap<>();
-
-    @Unique
-    private boolean etherologyAnimationTicks = false;
+    private final Map<AbstractPlayerAnimation, Boolean> etherologyPredictableAnimations = new HashMap<>();
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(ClientWorld world, GameProfile profile, CallbackInfo ci) {
         PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayerEntity) (Object) this).addAnimLayer(1000, etherologyAnimationContainer);
-        Arrays.stream(PlayerAnimations.values()).forEach(anim -> etherologyPredictableAnimations.put(anim, FourStates.FALSE));
+        initPredictable();
     }
 
     @Override
@@ -42,22 +38,18 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     }
 
     @Override
-    public FourStates getLastAnimState(PlayerAnimations anim) {
+    public boolean getLastAnimState(AbstractPlayerAnimation anim) {
+        if (etherologyPredictableAnimations.isEmpty()) initPredictable();
         return etherologyPredictableAnimations.get(anim);
     }
 
-    @Override
-    public boolean hadEtherologyAnimationsTick() {
-        return etherologyAnimationTicks;
+    // TODO: 27/05/2023 remove after registry update
+    private void initPredictable() {
+        PlayerAnimationController.getPredicateAnimations().forEach(anim -> etherologyPredictableAnimations.put(anim, false));
     }
 
     @Override
-    public void setHadEtherologyAnimationsTick() {
-        etherologyAnimationTicks = true;
-    }
-
-    @Override
-    public void setAnimState(PlayerAnimations anim, FourStates state) {
+    public void setAnimState(AbstractPlayerAnimation anim, boolean state) {
         etherologyPredictableAnimations.put(anim, state);
     }
 }

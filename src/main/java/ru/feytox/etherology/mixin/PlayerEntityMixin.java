@@ -21,10 +21,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
-import ru.feytox.etherology.util.feyapi.PlayerAnimations;
 
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +56,7 @@ public class PlayerEntityMixin {
     private void onPlayerTick(CallbackInfo ci) {
         PlayerEntity it = ((PlayerEntity) (Object) this);
         if (!(it instanceof AbstractClientPlayerEntity clientPlayer)) return;
-        CompletableFuture.runAsync(() -> PlayerAnimations.tickAnimations(clientPlayer));
+        CompletableFuture.runAsync(() -> PlayerAnimationController.tickAnimations(clientPlayer));
     }
 
     @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V", ordinal = 1))

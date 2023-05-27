@@ -1,6 +1,5 @@
 package ru.feytox.etherology.network.animation;
 
-import dev.kosmx.playerAnim.core.util.Ease;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -10,13 +9,15 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
+import ru.feytox.etherology.animation.TriggerablePlayerAnimation;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
-import ru.feytox.etherology.util.feyapi.PlayerAnimations;
+
+import static ru.feytox.etherology.animation.EtherPlayerAnimations.*;
 
 public class HammerSwingS2C extends AbstractS2CPacket {
 
@@ -51,16 +52,14 @@ public class HammerSwingS2C extends AbstractS2CPacket {
             if (!(swinger instanceof IAnimatedPlayer animatedPlayer)) return;
             if (!HammerItem.checkHammer(swinger)) return;
 
-            String animString = swinger.getMainArm().equals(Arm.LEFT) ? "left_hammer_hit": "right_hammer_hit";
-            PlayerAnimations idle = swinger.getMainArm().equals(Arm.LEFT) ? PlayerAnimations.RIGHT_HAMMER_IDLE : PlayerAnimations.LEFT_HAMMER_IDLE;
-            PlayerAnimations.setAnimation(animatedPlayer, false,
-                    new PlayerAnimations.AnimationData(new EIdentifier(animString), 0, Ease.OUTQUART, true),
-                    null, idle);
-
+            TriggerablePlayerAnimation animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT : RIGHT_HAMMER_HIT;
             if (attackCooldown == 1.0F) {
+                animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT_WEAK : RIGHT_HAMMER_HIT_WEAK;
                 float pitchVal = 0.9f + world.random.nextFloat() * 0.2f;
                 swinger.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, pitchVal);
             }
+
+            animation.play(animatedPlayer, 0, null);
         });
     }
 
