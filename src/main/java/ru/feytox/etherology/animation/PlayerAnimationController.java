@@ -10,7 +10,6 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.util.Identifier;
 import ru.feytox.etherology.util.feyapi.ExtendedKAP;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
@@ -32,13 +31,13 @@ public class PlayerAnimationController {
     public static void tickAnimations(AbstractClientPlayerEntity player) {
         if (!(player instanceof IAnimatedPlayer animatedPlayer)) return;
 
-        for (PredicatePlayerAnimation animation : predicateAnimations) {
-            boolean lastState = animatedPlayer.getLastAnimState(animation);
-            boolean predicateState = animation.test(player);
-
-            if (predicateState) animation.play(animatedPlayer);
-            else if (lastState) animatedPlayer.stopAnim(animation);
-        }
+//        for (PredicatePlayerAnimation animation : predicateAnimations) {
+//            boolean lastState = animatedPlayer.getLastAnimState(animation);
+//            boolean predicateState = animation.test(player);
+//
+//            if (predicateState) animation.play(animatedPlayer);
+//            else if (lastState) animatedPlayer.stopAnim(animation);
+//        }
     }
 
     public static boolean playAnimation(IAnimatedPlayer player, AbstractPlayerAnimation playerAnimation, int easeLength, Ease ease) {
@@ -52,17 +51,18 @@ public class PlayerAnimationController {
         }
 
         if (currentAnim instanceof ExtendedKAP currentKAP && currentAnim.isActive()) {
-            List<Identifier> replacements = playerAnimation.getReplacements();
-            if (!replacements.isEmpty() && replacements.contains(currentKAP.getId())) {
+            List<AbstractPlayerAnimation> replacements = playerAnimation.getReplacements();
+            if (!replacements.isEmpty() && replacements.contains(currentKAP.getAnim())) {
                 return false;
             }
 
-            if (currentKAP.getId().equals(playerAnimation.getAnimationId()) && !playerAnimation.isShouldBreak()) {
+            if (currentKAP.getAnim().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
                 return true;
             }
         }
 
-        ExtendedKAP animation = new ExtendedKAP(anim, playerAnimation.getAnimationId());
+        ExtendedKAP animation = new ExtendedKAP(anim, playerAnimation);
+        animation.setupEndAction(player);
 
         if (playerAnimation.isFirstPerson()) {
             animation.setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL);

@@ -17,7 +17,7 @@ import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
-import static ru.feytox.etherology.animation.EtherPlayerAnimations.*;
+import static ru.feytox.etherology.animation.TriggerAnimations.*;
 
 public class HammerSwingS2C extends AbstractS2CPacket {
 

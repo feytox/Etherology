@@ -21,7 +21,7 @@ import ru.feytox.etherology.network.animation.HammerSwingC2S;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
-import static ru.feytox.etherology.animation.EtherPlayerAnimations.*;
+import static ru.feytox.etherology.animation.TriggerAnimations.*;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {

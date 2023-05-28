@@ -1,6 +1,5 @@
 package ru.feytox.etherology.animation;
 
-import com.google.common.collect.Lists;
 import dev.kosmx.playerAnim.core.util.Ease;
 import lombok.Getter;
 import lombok.NonNull;
@@ -11,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
@@ -25,11 +25,15 @@ public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
     @Nullable
     private final Ease ease;
 
-    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, AbstractPlayerAnimation... replacements) {
-        super(animationId, firstPerson, Lists.transform(List.of(replacements), AbstractPlayerAnimation::getAnimationId), shouldBreak);
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> endAction, AbstractPlayerAnimation... replacements) {
+        super(animationId, firstPerson, List.of(replacements), shouldBreak, endAction);
         this.playPredicate = playPredicate;
         this.ease = ease;
         this.easeLength = easeLength;
+    }
+
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, AbstractPlayerAnimation... replacements) {
+        this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, null, replacements);
     }
 
     public void play(IAnimatedPlayer player) {
