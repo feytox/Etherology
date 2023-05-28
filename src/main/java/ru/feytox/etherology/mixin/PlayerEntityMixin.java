@@ -8,7 +8,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -23,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.HammerItem;
-import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 
 import java.util.Iterator;
@@ -65,17 +63,6 @@ public class PlayerEntityMixin {
         if (!HammerItem.checkHammer(attacker)) {
             instance.takeKnockback(strength, x, z);
         }
-    }
-
-    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V", ordinal = 0))
-    private void shockwaveKnockback(LivingEntity instance, double strength, double x, double z) {
-        instance.takeKnockback(strength, x, z);
-        PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (!HammerItem.checkHammer(attacker)) return;
-        World world = attacker.getWorld();
-        if (world.isClient) return;
-
-        ShockwaveParticle.spawnParticle((ServerWorld) world, instance);
     }
 
     @SuppressWarnings("InvalidInjectorMethodSignature")
