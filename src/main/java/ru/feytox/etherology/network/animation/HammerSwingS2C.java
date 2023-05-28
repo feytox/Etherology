@@ -13,6 +13,7 @@ import ru.feytox.etherology.animation.TriggerablePlayerAnimation;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
+import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
@@ -52,11 +53,12 @@ public class HammerSwingS2C extends AbstractS2CPacket {
             if (!(swinger instanceof IAnimatedPlayer animatedPlayer)) return;
             if (!HammerItem.checkHammer(swinger)) return;
 
-            TriggerablePlayerAnimation animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT : RIGHT_HAMMER_HIT;
+            TriggerablePlayerAnimation animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT_WEAK : RIGHT_HAMMER_HIT_WEAK;
             if (attackCooldown == 1.0F) {
-                animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT_WEAK : RIGHT_HAMMER_HIT_WEAK;
+                animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT : RIGHT_HAMMER_HIT;
                 float pitchVal = 0.9f + world.random.nextFloat() * 0.2f;
                 swinger.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, pitchVal);
+                ShockwaveParticle.spawnParticle(world, swinger);
             }
 
             animation.play(animatedPlayer, 0, null);
