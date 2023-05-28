@@ -13,6 +13,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
+import ru.feytox.etherology.animation.PredicateAnimations;
+import ru.feytox.etherology.animation.TriggerAnimations;
 import ru.feytox.etherology.block.closet.ClosetScreenHandler;
 import ru.feytox.etherology.block.crate.CrateScreenHandler;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableScreenHandler;
@@ -30,6 +32,7 @@ import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
@@ -80,6 +83,8 @@ public class Etherology implements ModInitializer {
         MixTypes.registerMixes();
         DevCommands.register();
         EtherSounds.registerAll();
+        PredicateAnimations.registerAll();
+        TriggerAnimations.registerAll();
 
         // TODO: move somewhere else
         Registry.register(Registries.RECIPE_SERIALIZER, AlchemyRecipeSerializer.ID,
@@ -135,5 +140,7 @@ public class Etherology implements ModInitializer {
         EtherealGeneratorDispenserBehavior.register();
 
         EWorldGeneration.generateWorldGen();
+
+        EtherologyRegistry.buildRegistry();
     }
 }

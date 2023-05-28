@@ -25,27 +25,29 @@ public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
     @Nullable
     private final Ease ease;
 
-    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> endAction, AbstractPlayerAnimation... replacements) {
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> endAction, Identifier... replacements) {
         super(animationId, firstPerson, List.of(replacements), shouldBreak, endAction);
         this.playPredicate = playPredicate;
         this.ease = ease;
         this.easeLength = easeLength;
     }
 
-    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, AbstractPlayerAnimation... replacements) {
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, Identifier... replacements) {
         this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, null, replacements);
     }
 
     public void play(IAnimatedPlayer player) {
-        boolean result = play(player, easeLength, ease);
+        play(player, easeLength, ease);
+    }
+
+    @Override
+    public boolean play(IAnimatedPlayer player, int easeLength, @Nullable Ease ease) {
+        boolean result = super.play(player, easeLength, ease);
         player.setAnimState(this, result);
+        return result;
     }
 
     public boolean test(AbstractClientPlayerEntity clientPlayerEntity) {
         return playPredicate.test(clientPlayerEntity);
-    }
-
-    public PredicatePlayerAnimation register() {
-        return PlayerAnimationController.register(this);
     }
 }

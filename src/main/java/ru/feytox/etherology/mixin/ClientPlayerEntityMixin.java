@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.AbstractPlayerAnimation;
-import ru.feytox.etherology.animation.PlayerAnimationController;
+import ru.feytox.etherology.animation.PredicatePlayerAnimation;
+import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(ClientWorld world, GameProfile profile, CallbackInfo ci) {
         PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayerEntity) (Object) this).addAnimLayer(1000, etherologyAnimationContainer);
-        initPredictable();
+        EtherologyRegistry.getAll(PredicatePlayerAnimation.class).forEach(anim -> etherologyPredictableAnimations.put(anim, false));
     }
 
     @Override
@@ -39,14 +40,9 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
 
     @Override
     public boolean getLastAnimState(AbstractPlayerAnimation anim) {
-        if (etherologyPredictableAnimations.isEmpty()) initPredictable();
         return etherologyPredictableAnimations.get(anim);
     }
 
-    // TODO: 27/05/2023 remove after registry update
-    private void initPredictable() {
-        PlayerAnimationController.getPredicateAnimations().forEach(anim -> etherologyPredictableAnimations.put(anim, false));
-    }
 
     @Override
     public void setAnimState(AbstractPlayerAnimation anim, boolean state) {

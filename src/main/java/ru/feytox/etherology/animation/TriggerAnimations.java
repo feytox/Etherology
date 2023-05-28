@@ -1,24 +1,34 @@
 package ru.feytox.etherology.animation;
 
+import dev.kosmx.playerAnim.core.util.Ease;
+import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
-import static ru.feytox.etherology.animation.PredicateAnimations.LEFT_HAMMER_IDLE;
-import static ru.feytox.etherology.animation.PredicateAnimations.RIGHT_HAMMER_IDLE;
+import java.util.function.Consumer;
 
 public class TriggerAnimations {
-    public static final TriggerablePlayerAnimation LEFT_HAMMER_HIT;
-    public static final TriggerablePlayerAnimation RIGHT_HAMMER_HIT;
-    public static final TriggerablePlayerAnimation LEFT_HAMMER_HIT_WEAK;
-    public static final TriggerablePlayerAnimation RIGHT_HAMMER_HIT_WEAK;
+    public static final TriggerablePlayerAnimation LEFT_HAMMER_HIT = new TriggerablePlayerAnimation(new EIdentifier("left_hammer_hit"), true, true,
+            play("left_hammer_idle"));
+    public static final TriggerablePlayerAnimation RIGHT_HAMMER_HIT = new TriggerablePlayerAnimation(new EIdentifier("right_hammer_hit"), true, true,
+            play("right_hammer_idle"));
+    public static final TriggerablePlayerAnimation LEFT_HAMMER_HIT_WEAK = new TriggerablePlayerAnimation(new EIdentifier("left_hammer_hit_weak"), true, true,
+            play("left_hammer_idle"));
+    public static final TriggerablePlayerAnimation RIGHT_HAMMER_HIT_WEAK = new TriggerablePlayerAnimation(new EIdentifier("right_hammer_hit_weak"), true, true,
+            play("right_hammer_idle"));
 
-    static {
-        LEFT_HAMMER_HIT = new TriggerablePlayerAnimation(new EIdentifier("left_hammer_hit"), true, true,
-                LEFT_HAMMER_IDLE::play);
-        RIGHT_HAMMER_HIT = new TriggerablePlayerAnimation(new EIdentifier("right_hammer_hit"), true, true,
-                RIGHT_HAMMER_IDLE::play);
-        LEFT_HAMMER_HIT_WEAK = new TriggerablePlayerAnimation(new EIdentifier("left_hammer_hit_weak"), true, true,
-                LEFT_HAMMER_IDLE::play);
-        RIGHT_HAMMER_HIT_WEAK = new TriggerablePlayerAnimation(new EIdentifier("right_hammer_hit_weak"), true, true,
-                RIGHT_HAMMER_IDLE::play);
+    private static Consumer<IAnimatedPlayer> play(String id) {
+        return player -> {
+            AbstractPlayerAnimation anim = EtherologyRegistry.getAndCast(PredicatePlayerAnimation.class, new EIdentifier(id));
+            if (anim == null) return;
+            anim.play(player, 2, Ease.INCUBIC);
+        };
+    }
+
+    public static void registerAll() {
+        LEFT_HAMMER_HIT.register();
+        RIGHT_HAMMER_HIT.register();
+        LEFT_HAMMER_HIT_WEAK.register();
+        RIGHT_HAMMER_HIT_WEAK.register();
     }
 }

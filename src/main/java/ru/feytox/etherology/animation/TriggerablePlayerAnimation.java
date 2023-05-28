@@ -9,11 +9,11 @@ import java.util.function.Consumer;
 
 public class TriggerablePlayerAnimation extends AbstractPlayerAnimation {
 
-    public TriggerablePlayerAnimation(Identifier animationId, boolean firstPerson, boolean shouldBreak, @Nullable Consumer<IAnimatedPlayer> endAction, AbstractPlayerAnimation... replacements) {
+    public TriggerablePlayerAnimation(Identifier animationId, boolean firstPerson, boolean shouldBreak, @Nullable Consumer<IAnimatedPlayer> endAction, Identifier... replacements) {
         super(animationId, firstPerson, List.of(replacements), shouldBreak, endAction);
     }
 
-    public TriggerablePlayerAnimation(Identifier animationId, boolean firstPerson, boolean shouldBreak, AbstractPlayerAnimation... replacements) {
+    public TriggerablePlayerAnimation(Identifier animationId, boolean firstPerson, boolean shouldBreak, Identifier... replacements) {
         this(animationId, firstPerson, shouldBreak, null, replacements);
     }
 }
