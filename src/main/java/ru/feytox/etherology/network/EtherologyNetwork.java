@@ -12,13 +12,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.network.animation.AnimationPacketManager;
+import ru.feytox.etherology.network.interaction.InteractionPacketManager;
 import ru.feytox.etherology.network.util.*;
 
 public class EtherologyNetwork {
     // TODO: 25/04/2023 перенести сюда все остальные пакеты
 
     public static void registerPackets() {
-        registerPackets(new AnimationPacketManager());
+        registerPackets(AnimationPacketManager.INSTANCE, InteractionPacketManager.INSTANCE);
     }
 
     private static void registerPackets(AbstractPacketManager... packetManagers) {

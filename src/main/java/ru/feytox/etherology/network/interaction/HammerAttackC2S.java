@@ -1,4 +1,4 @@
-package ru.feytox.etherology.network.animation;
+package ru.feytox.etherology.network.interaction;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
@@ -10,39 +10,42 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.C2SPacketInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
-public class HammerSwingC2S extends AbstractC2SPacket {
+public class HammerAttackC2S extends AbstractC2SPacket {
 
-    public static final Identifier HAMMER_SWING_C2S_ID = new EIdentifier("hammer_swing_c2s");
-    private final float attackCooldown;
+    public static final Identifier HAMMER_ATTACK_C2S_ID = new EIdentifier("hammer_attack_c2s");
+    private final boolean attackGround;
 
-    public HammerSwingC2S(float attackCooldown) {
-        this.attackCooldown = attackCooldown;
+    public HammerAttackC2S(boolean attackGround) {
+        this.attackGround = attackGround;
     }
 
     @Override
     public PacketByteBuf encode(PacketByteBuf buf) {
-        buf.writeFloat(attackCooldown);
+        buf.writeBoolean(attackGround);
         return buf;
     }
 
     public static void receive(C2SPacketInfo packetInfo) {
-        float attackCooldown = packetInfo.buf().readFloat();
-
+        boolean attackGround = packetInfo.buf().readBoolean();
         MinecraftServer server = packetInfo.server();
         ServerPlayerEntity sender = packetInfo.player();
         ServerWorld world = sender.getWorld();
+        float attackCooldown = sender.getAttackCooldownProgress(0.0f);
 
         server.execute(() -> {
             if (!HammerItem.checkHammer(sender)) return;
 
-            HammerSwingS2C packet = new HammerSwingS2C(sender.getId(), attackCooldown);
+            if (attackGround && attackCooldown == 1) ShockwaveUtil.onFullAttack(sender);
+
+            HammerAttackS2C packet = new HammerAttackS2C(sender.getId(), attackCooldown, attackGround);
             EtherologyNetwork.sendForTracking(world, sender.getBlockPos(), sender.getId(), packet);
         });
     }
 
     @Override
     public Identifier getPacketID() {
-        return HAMMER_SWING_C2S_ID;
+        return HAMMER_ATTACK_C2S_ID;
     }
 }
