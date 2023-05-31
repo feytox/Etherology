@@ -59,7 +59,7 @@ public class HammerAttackS2C extends AbstractS2CPacket {
             if (!HammerItem.checkHammer(swinger)) return;
 
             TriggerablePlayerAnimation animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT_WEAK : RIGHT_HAMMER_HIT_WEAK;
-            if (attackCooldown == 1.0F) {
+            if (attackCooldown > 0.9F) {
                 if (attackGround) ShockwaveUtil.onFullAttack(swinger);
 
                 animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT : RIGHT_HAMMER_HIT;

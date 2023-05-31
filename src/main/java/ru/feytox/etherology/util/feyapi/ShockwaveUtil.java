@@ -33,7 +33,7 @@ public class ShockwaveUtil {
         World world = attacker.getWorld();
         Vec3d shockPos = getShockPos(attacker.getYaw(), attacker.getPos());
 
-        Box attackBox = Box.of(shockPos, 4.0, 0.25, 4.0);
+        Box attackBox = Box.of(shockPos, 8.0, 2, 8.0);
         List<LivingEntity> attackedEntities = world.getNonSpectatingEntities(LivingEntity.class, attackBox);
         attackedEntities.sort(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(shockPos)));
 
@@ -53,7 +53,7 @@ public class ShockwaveUtil {
             if (target.equals(attacker)) continue;
             if (target.handleAttack(attacker)) continue;
 
-            Vec3d dVec = target.getPos().subtract(shockPos);
+            Vec3d dVec = shockPos.subtract(target.getPos());
             double vecLen = dVec.length();
             double attackK = 1 - vecLen / 4;
             float g = 0.0f;
@@ -82,7 +82,9 @@ public class ShockwaveUtil {
 
             Vec3d oldVelocity = target.getVelocity();
             if (knockback > 0) {
-                target.takeKnockback(knockback * attackK, dVec.x, dVec.z);
+                double knockSin = dVec.x / vecLen;
+                double knockCos = dVec.z / vecLen;
+                target.takeKnockback(0.75 * knockback * attackK, knockSin, knockCos);
             }
 
             if (target instanceof ServerPlayerEntity serverPlayerTarget && target.velocityModified) {

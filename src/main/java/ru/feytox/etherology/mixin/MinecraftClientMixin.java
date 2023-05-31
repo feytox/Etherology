@@ -42,7 +42,7 @@ public class MinecraftClientMixin {
         HammerAttackC2S packet = new HammerAttackC2S(attackGround);
         EtherologyNetwork.sendToServer(packet);
 
-        if (cooldown == 1 && attackGround) {
+        if (cooldown > 0.9f && attackGround) {
             ShockwaveUtil.onFullAttack(player);
             if (hitResult.getType().equals(HitResult.Type.BLOCK)) player.resetLastAttackedTicks();
         }
@@ -51,7 +51,7 @@ public class MinecraftClientMixin {
         ClientWorld world = player.clientWorld;
 
         TriggerablePlayerAnimation animation = player.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT : RIGHT_HAMMER_HIT;
-        if (cooldown != 1.0F) {
+        if (cooldown <= 0.9F) {
             animation = player.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT_WEAK : RIGHT_HAMMER_HIT_WEAK;
             animation.play(animatedPlayer, 0, null);
             return;

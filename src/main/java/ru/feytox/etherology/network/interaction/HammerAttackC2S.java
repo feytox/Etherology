@@ -37,7 +37,7 @@ public class HammerAttackC2S extends AbstractC2SPacket {
         server.execute(() -> {
             if (!HammerItem.checkHammer(sender)) return;
 
-            if (attackGround && attackCooldown == 1) ShockwaveUtil.onFullAttack(sender);
+            if (attackGround && attackCooldown > 0.9) ShockwaveUtil.onFullAttack(sender);
 
             HammerAttackS2C packet = new HammerAttackS2C(sender.getId(), attackCooldown, attackGround);
             EtherologyNetwork.sendForTracking(world, sender.getBlockPos(), sender.getId(), packet);
