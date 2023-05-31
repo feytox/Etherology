@@ -1,0 +1,7 @@
+{
+	"parent": "etherology:item/hammer_handle",
+	"textures": {
+		"particle": "etherology:item/netherite_hammer",
+		"hammer": "etherology:item/netherite_hammer"
+	}
+}

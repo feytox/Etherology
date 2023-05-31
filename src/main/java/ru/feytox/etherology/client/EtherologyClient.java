@@ -7,11 +7,9 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
-import net.minecraft.util.Identifier;
 import ru.feytox.etherology.block.closet.ClosetScreen;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
 import ru.feytox.etherology.block.crate.CrateScreen;
@@ -27,9 +25,9 @@ import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
-import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
+import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.gecko.EGeoNetwork;
 
@@ -40,7 +38,6 @@ import java.util.function.Supplier;
 import static ru.feytox.etherology.Etherology.*;
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
-import static ru.feytox.etherology.registry.item.EItems.GLINT;
 
 @Environment(EnvType.CLIENT)
 public class EtherologyClient implements ClientModInitializer {
@@ -51,6 +48,8 @@ public class EtherologyClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ModelPredicates.registerAll();
+
         BlockEntityRendererFactories.register(CRUCIBLE_BLOCK_ENTITY, CrucibleBlockRenderer::new);
         BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
@@ -83,11 +82,6 @@ public class EtherologyClient implements ClientModInitializer {
 
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
-
-        ModelPredicateProviderRegistry.register(GLINT, new Identifier("ether_percentage"), ((stack, world, entity, seed) -> {
-            EtherGlint glint = new EtherGlint(stack);
-            return glint.getStoredEther() / glint.getMaxEther();
-        }));
 
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SOCKET, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(PEACH_DOOR, RenderLayer.getCutout());

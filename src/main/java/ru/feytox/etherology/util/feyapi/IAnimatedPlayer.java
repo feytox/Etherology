@@ -5,6 +5,7 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.util.Ease;
 import ru.feytox.etherology.animation.AbstractPlayerAnimation;
+import ru.feytox.etherology.enums.HammerState;
 
 public interface IAnimatedPlayer {
     ModifierLayer<IAnimation> getEtherologyAnimation();
@@ -15,4 +16,6 @@ public interface IAnimatedPlayer {
         animationContainer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(5, Ease.INOUTCUBIC), null, true);
         setAnimState(anim, false);
     }
+    HammerState getHammerState();
+    void setHammerState(HammerState state);
 }

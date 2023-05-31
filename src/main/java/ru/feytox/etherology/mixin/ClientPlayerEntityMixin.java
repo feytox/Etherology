@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.AbstractPlayerAnimation;
 import ru.feytox.etherology.animation.PredicatePlayerAnimation;
+import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
@@ -26,6 +27,9 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
 
     @Unique
     private final Map<AbstractPlayerAnimation, Boolean> etherologyPredictableAnimations = new HashMap<>();
+
+    @Unique
+    private HammerState etherologyHammerState = HammerState.EMPTY;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(ClientWorld world, GameProfile profile, CallbackInfo ci) {
@@ -47,5 +51,15 @@ public class ClientPlayerEntityMixin implements IAnimatedPlayer {
     @Override
     public void setAnimState(AbstractPlayerAnimation anim, boolean state) {
         etherologyPredictableAnimations.put(anim, state);
+    }
+
+    @Override
+    public HammerState getHammerState() {
+        return etherologyHammerState;
+    }
+
+    @Override
+    public void setHammerState(HammerState state) {
+        etherologyHammerState = state;
     }
 }

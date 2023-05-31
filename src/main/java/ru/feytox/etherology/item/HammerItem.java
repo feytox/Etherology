@@ -1,6 +1,7 @@
 package ru.feytox.etherology.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
+import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
 public class HammerItem extends SwordItem {
     private static boolean wasSelected = false;
@@ -23,6 +25,11 @@ public class HammerItem extends SwordItem {
      */
     public static boolean checkHammer(PlayerEntity player) {
         return player.getMainHandStack().getItem() instanceof HammerItem && player.getOffHandStack().isEmpty();
+    }
+
+    public static boolean checkHammer(IAnimatedPlayer animatedPlayer) {
+        if (!(animatedPlayer instanceof AbstractClientPlayerEntity clientPlayer)) return false;
+        return checkHammer(clientPlayer);
     }
 
     @Override

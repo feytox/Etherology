@@ -25,15 +25,19 @@ public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
     @Nullable
     private final Ease ease;
 
-    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> endAction, Identifier... replacements) {
-        super(animationId, firstPerson, List.of(replacements), shouldBreak, endAction);
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> startAction, @Nullable Consumer<IAnimatedPlayer> endAction, Identifier... replacements) {
+        super(animationId, firstPerson, List.of(replacements), shouldBreak, startAction, endAction);
         this.playPredicate = playPredicate;
         this.ease = ease;
         this.easeLength = easeLength;
     }
 
     public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, Identifier... replacements) {
-        this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, null, replacements);
+        this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, null, null, replacements);
+    }
+
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> startAction, Identifier... replacements) {
+        this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, startAction, null, replacements);
     }
 
     public void play(IAnimatedPlayer player) {

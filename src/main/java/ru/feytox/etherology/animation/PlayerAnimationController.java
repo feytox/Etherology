@@ -10,11 +10,13 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
+import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.ExtendedKAP;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @UtilityClass
 public class PlayerAnimationController {
@@ -65,6 +67,15 @@ public class PlayerAnimationController {
         if (ease == null || easeLength == 0) animationContainer.setAnimation(animation);
         else animationContainer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(easeLength, ease), animation, true);
 
+        Consumer<IAnimatedPlayer> startAction = playerAnimation.getStartAction();
+        if (startAction != null) {
+            startAction.accept(player);
+        }
+
         return true;
+    }
+
+    public static Consumer<IAnimatedPlayer> setHammerState(HammerState state) {
+        return player -> player.setHammerState(state);
     }
 }

@@ -33,6 +33,10 @@ public abstract class AbstractPlayerAnimation implements EtherRegistrable {
 
     @Getter
     @Nullable
+    private final Consumer<IAnimatedPlayer> startAction;
+
+    @Getter
+    @Nullable
     private final Consumer<IAnimatedPlayer> endAction;
 
     public boolean play(IAnimatedPlayer player, int easeLength, @Nullable Ease ease) {
