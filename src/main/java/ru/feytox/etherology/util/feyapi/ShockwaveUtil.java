@@ -44,6 +44,7 @@ public class ShockwaveUtil {
         }
         float knockback = EnchantmentHelper.getKnockback(attacker);
         if (attacker.isSprinting()) knockback++;
+        int fireK = EnchantmentHelper.getFireAspect(attacker);
 
         boolean isFirstEntity = true;
         LivingEntity firstTarget = null;
@@ -57,18 +58,18 @@ public class ShockwaveUtil {
             double vecLen = dVec.length();
             double attackK = 1 - vecLen / 4;
             float g = 0.0f;
+
             boolean isInFire = false;
+            if (fireK > 0 && !target.isOnFire() && vecLen < 2) {
+                isInFire = true;
+                target.setOnFireFor(1);
+            }
 
             if (isFirstEntity) {
                 isFirstEntity = false;
                 firstTarget = target;
                 firstTargetHealth = target.getHealth();
                 g = EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), target.getGroup());
-                int fireK = EnchantmentHelper.getFireAspect(attacker);
-                if (fireK > 0 && !target.isOnFire()) {
-                    isInFire = true;
-                    target.setOnFireFor(1);
-                }
             } else {
                 f *= 0.5f * attackK;
             }
