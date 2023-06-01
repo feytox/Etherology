@@ -56,17 +56,16 @@ public class ShockwaveUtil {
             Vec3d dVec = shockPos.subtract(target.getPos());
             double vecLen = dVec.length();
             double attackK = 1 - vecLen / 4;
-            float g = 0.0f;
+            float g = EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), target.getGroup());
+            f += g;
 
             if (isFirstEntity) {
                 isFirstEntity = false;
                 firstTarget = target;
                 firstTargetHealth = target.getHealth();
-                g = EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), target.getGroup());
             } else {
                 f *= 0.5f * attackK;
             }
-            f += g;
 
             boolean wasDamaged = target.damage(DamageSource.player(attacker), f);
             if (!wasDamaged) continue;
