@@ -14,7 +14,7 @@ import java.util.Map;
 public class EtherEnchantments {
     private static final Map<Class<?>, List<Enchantment>> bannedEnchantments = Map.of(
             BattlePickaxe.class, ImmutableList.of(Enchantments.FORTUNE, Enchantments.SILK_TOUCH),
-            HammerItem.class, ImmutableList.of(Enchantments.SHARPNESS, Enchantments.LOOTING)
+            HammerItem.class, ImmutableList.of(Enchantments.SHARPNESS, Enchantments.LOOTING, Enchantments.FIRE_ASPECT)
     );
 
     @Nullable
