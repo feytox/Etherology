@@ -6,6 +6,7 @@
   "mixins": [
     "AnvilScreenHandlerMixin",
     "AxeItemMixin",
+    "ClientPlayerInteractionManagerAccessor",
     "DataPackContentsMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
@@ -18,6 +19,7 @@
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
+    "ServerPlayerInteractionManagerAccessor",
     "TrunkPlacerTypeAccessor",
     "WorldRendererAccessor"
   ],

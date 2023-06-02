@@ -1,130 +1,71 @@
 package ru.feytox.etherology.network.animation;
 
-import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
-import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
-import dev.kosmx.playerAnim.api.layered.IAnimation;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.ModifierLayer;
-import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
-import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.core.util.Ease;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.animation.AbstractPlayerAnimation;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
+import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
-import java.util.UUID;
-
+@AllArgsConstructor
 public class PlayerAnimationS2C extends AbstractS2CPacket {
-    public static final EIdentifier PLAYER_ANIMATION_PACKET_ID = new EIdentifier("player_animation_packet");
-    private final PlayerEntity relatedPlayer;
-    private final Identifier animationID;
-    private boolean isStop;
-    private int fadeLength = -1;
-    private Ease fadeEase = null;
-    private FirstPersonConfiguration firstPersonConfiguration = new FirstPersonConfiguration();
-    private FirstPersonMode firstPersonMode = FirstPersonMode.DISABLED;
+    public static final Identifier PLAYER_ANIMATION_S2C_ID = new EIdentifier("player_animation_s2c");
 
-    public PlayerAnimationS2C(PlayerEntity relatedPlayer, Identifier animationID, boolean isStop) {
-        this.relatedPlayer = relatedPlayer;
-        this.animationID = animationID;
-        this.isStop = isStop;
-    }
+    @NonNull
+    private final ServerPlayerEntity relatedPlayer;
+    @NonNull
+    private final Identifier animationId;
+    private final int easeLength;
+    @Nullable
+    private final Ease ease;
 
     public static void receive(S2CPacketInfo packetInfo) {
-        MinecraftClient client = packetInfo.client();
         PacketByteBuf buf = packetInfo.buf();
+        MinecraftClient client = packetInfo.client();
 
-        if (client.world == null) return;
-        Entity entity = client.world.getEntityById(buf.readInt());
-        if (!(entity instanceof IAnimatedPlayer animatedPlayer)) return;
-        Identifier animationID = buf.readIdentifier();
-        boolean isStop = buf.readBoolean();
+        ClientWorld world = client.world;
+        if (world == null) return;
+        Entity entity = world.getEntityById(buf.readInt());
+        Identifier animationId = buf.readIdentifier();
+        int easeLength = buf.readInt();
+        Ease ease = buf.readEnumConstant(Ease.class);
 
-        int fadeLength = buf.readInt();
-        Ease fadeEase = fadeLength == -1 ? null : Ease.getEase(buf.readByte());
-
-        FirstPersonMode firstPersonMode = FirstPersonMode.DISABLED;
-        try {
-            firstPersonMode = FirstPersonMode.valueOf(buf.readString());
-        } catch (Exception ignored) {}
-        FirstPersonConfiguration firstPersonConfiguration = new FirstPersonConfiguration(buf.readBoolean(), buf.readBoolean(), buf.readBoolean(), buf.readBoolean());
-
-        FirstPersonMode finalFirstPersonMode = firstPersonMode;
         client.execute(() -> {
-            var animationContainer = animatedPlayer.getEtherologyAnimation();
-            KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(animationID);
-            UUID currentAnimUUID = null;
-            KeyframeAnimationPlayer currentAnim = null;
-            if (animationContainer.getAnimation() instanceof KeyframeAnimationPlayer playAnim) {
-                currentAnim = playAnim;
-                currentAnimUUID = currentAnim.getData().getUuid();
-            }
-
-            if (anim == null) return;
-            boolean animEquality = anim.getUuid().equals(currentAnimUUID);
-            if (animEquality && currentAnim.isActive()) {
-                if (isStop) setAnimation(animationContainer, null, fadeLength, fadeEase);
-                return;
-            }
-            if (!animEquality && isStop) return;
-            KeyframeAnimationPlayer animation = new KeyframeAnimationPlayer(anim);
-            animation.setFirstPersonMode(finalFirstPersonMode).setFirstPersonConfiguration(firstPersonConfiguration);
-            setAnimation(animationContainer, animation, fadeLength, fadeEase);
+            if (!(entity instanceof IAnimatedPlayer animatedPlayer)) return;
+            AbstractPlayerAnimation animation = EtherologyRegistry.getAndCast(AbstractPlayerAnimation.class, animationId);
+            if (animation == null) return;
+            animation.play(animatedPlayer, easeLength, ease);
         });
-    }
-
-    private static void setAnimation(ModifierLayer<IAnimation> animationContainer, IAnimation animation, int fadeLength, Ease fadeEase) {
-        if (fadeEase == null) animationContainer.setAnimation(animation);
-        else {
-            animationContainer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(fadeLength, fadeEase), animation, true);
-        }
-    }
-
-    public PlayerAnimationS2C setFirstPersonConfiguration(FirstPersonConfiguration firstPersonConfiguration) {
-        this.firstPersonConfiguration = firstPersonConfiguration;
-        return this;
-    }
-
-    public PlayerAnimationS2C setFirstPersonMode(FirstPersonMode firstPersonMode) {
-        this.firstPersonMode = firstPersonMode;
-        return this;
-    }
-
-    public PlayerAnimationS2C setStop(boolean isStop) {
-        this.isStop = isStop;
-        return this;
-    }
-
-    public PlayerAnimationS2C setFade(int length, Ease ease) {
-        fadeLength = length;
-        fadeEase = ease;
-        return this;
     }
 
     @Override
     public PacketByteBuf encode(PacketByteBuf buf) {
         buf.writeInt(relatedPlayer.getId());
-        buf.writeIdentifier(animationID);
-        buf.writeBoolean(isStop);
-        buf.writeInt(fadeLength);
-        buf.writeByte(fadeEase.getId());
-        buf.writeString(firstPersonMode.name());
-        buf.writeBoolean(firstPersonConfiguration.isShowLeftArm());
-        buf.writeBoolean(firstPersonConfiguration.isShowLeftItem());
-        buf.writeBoolean(firstPersonConfiguration.isShowRightArm());
-        buf.writeBoolean(firstPersonConfiguration.isShowRightItem());
+        buf.writeIdentifier(animationId);
+
+        if (ease == null) {
+            buf.writeInt(0);
+            buf.writeEnumConstant(Ease.CONSTANT);
+        }
+        else {
+            buf.writeInt(easeLength);
+            buf.writeEnumConstant(ease);
+        }
         return buf;
     }
 
     @Override
     public Identifier getPacketID() {
-        return PLAYER_ANIMATION_PACKET_ID;
+        return PLAYER_ANIMATION_S2C_ID;
     }
 }
