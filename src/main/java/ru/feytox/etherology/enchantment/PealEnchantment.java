@@ -2,7 +2,6 @@ package ru.feytox.etherology.enchantment;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 
 import java.util.function.Supplier;
@@ -11,8 +10,7 @@ public class PealEnchantment extends Enchantment {
     public static final Supplier<PealEnchantment> INSTANCE = Suppliers.memoize(PealEnchantment::new);
 
     private PealEnchantment() {
-        // TODO: 04.06.2023 replace with Hammer Target
-        super(Rarity.RARE, EnchantmentTarget.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.RARE, HammerEnchantmentTarget.INSTANCE.get(), new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     @Override

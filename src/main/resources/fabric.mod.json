@@ -24,6 +24,9 @@
     ],
     "cardinal-components": [
       "ru.feytox.etherology.registry.util.EtherologyComponents"
+    ],
+    "mm:early_risers": [
+      "ru.feytox.etherology.mixin.EarlyRisers"
     ]
   },
   "mixins": [

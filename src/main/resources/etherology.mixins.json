@@ -16,6 +16,7 @@
     "ItemEntityMixin",
     "KeyframeAnimationAccessor",
     "LivingEntityMixin",
+    "MixinEnchantmentTarget",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
