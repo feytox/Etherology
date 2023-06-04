@@ -14,4 +14,4 @@ accessible method net/minecraft/util/SignType <init> (Ljava/lang/String;)V
 accessible method net/minecraft/block/FireBlock registerFlammableBlock (Lnet/minecraft/block/Block;II)V
 accessible method net/minecraft/block/Blocks createStoneButtonBlock ()Lnet/minecraft/block/ButtonBlock;
 
-accessible class net/minecraft/enchantment/EnchantmentTarget
+extendable class net/minecraft/enchantment/EnchantmentTarget
