@@ -34,6 +34,7 @@ import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.registry.item.EItems;
+import ru.feytox.etherology.registry.item.EtherEnchantments;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
@@ -85,6 +86,7 @@ public class Etherology implements ModInitializer {
         EtherSounds.registerAll();
         PredicateAnimations.registerAll();
         TriggerAnimations.registerAll();
+        EtherEnchantments.registerAll();
 
         // TODO: move somewhere else
         Registry.register(Registries.RECIPE_SERIALIZER, AlchemyRecipeSerializer.ID,

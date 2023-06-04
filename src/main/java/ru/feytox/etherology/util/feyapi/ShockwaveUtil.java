@@ -1,6 +1,7 @@
 package ru.feytox.etherology.util.feyapi;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.registry.util.EtherSounds;
 
@@ -28,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ShockwaveUtil {
 
+    // TODO: 03.06.2023 make more modular
     public static boolean onFullAttack(PlayerEntity attacker) {
         if (!HammerItem.checkHammer(attacker)) return false;
         World world = attacker.getWorld();
@@ -84,6 +88,20 @@ public class ShockwaveUtil {
                 serverPlayerTarget.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(target));
                 target.velocityModified = false;
                 target.setVelocity(oldVelocity);
+            }
+        }
+
+        int pealLevel = EnchantmentHelper.getEquipmentLevel(PealEnchantment.INSTANCE.get(), attacker);
+        if (pealLevel > 0 && firstTarget != null) {
+            Box pealBox = Box.of(shockPos, 4.0, 2, 4.0);
+            List<? extends Entity> pealedEntities = world.getEntitiesByType(firstTarget.getType(), pealBox, EntityPredicates.EXCEPT_SPECTATOR);
+
+            for (Entity pealTarget : pealedEntities) {
+                if (!pealTarget.isAttackable()) continue;
+                if (pealTarget.equals(attacker)) continue;
+                if (pealTarget.handleAttack(attacker)) continue;
+
+                pealTarget.damage(DamageSource.player(attacker), 3 * pealLevel);
             }
         }
 
