@@ -22,7 +22,7 @@ public class ShockwaveParticle extends HorizontalParticle {
     public ShockwaveParticle(ClientWorld clientWorld, double x, double y, double z, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z);
         maxAge = 7;
-        scale(10);
+        scale(15);
 
         this.spriteProvider = spriteProvider;
         setSpriteForAge(spriteProvider);
