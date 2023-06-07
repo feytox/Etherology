@@ -68,6 +68,7 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType VIA_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType GLINT_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType SHOCKWAVE = FabricParticleTypes.simple();
+    public static final DefaultParticleType PEAL_WAVE = FabricParticleTypes.simple();
 
     public static final ItemGroup ETHER_GROUP = FabricItemGroup.builder(new EIdentifier("ether_group"))
             .icon(() -> new ItemStack(TELDECORE))
@@ -117,6 +118,7 @@ public class Etherology implements ModInitializer {
 
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("glint_particle"), GLINT_PARTICLE);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("shockwave"), SHOCKWAVE);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("peal_wave"), PEAL_WAVE);
 
         ItemGroupEvents.modifyEntriesEvent(ETHER_GROUP).register(content -> {
             content.add(ARMILLARY_MATRIX_BASE);

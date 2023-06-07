@@ -1,6 +1,7 @@
 package ru.feytox.etherology.util.feyapi;
 
 import lombok.extern.slf4j.Slf4j;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -23,6 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.particle.PealWaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 
 import java.util.Comparator;
@@ -56,6 +58,7 @@ public class ShockwaveUtil {
 
         boolean isFirstEntity = true;
         LivingEntity firstTarget = null;
+        LivingEntity targetForPeal = null;
         float firstTargetHealth = 0.0f;
         for (LivingEntity target : attackedEntities) {
             if (!target.isAttackable()) continue;
@@ -80,6 +83,10 @@ public class ShockwaveUtil {
                 f *= 0.5f * attackK;
             }
 
+            if (targetForPeal == null || targetForPeal.isDead()) {
+                targetForPeal = target;
+            }
+
             boolean wasDamaged = target.damage(DamageSource.player(attacker), f);
             if (!wasDamaged) continue;
 
@@ -97,9 +104,13 @@ public class ShockwaveUtil {
         }
 
         int pealLevel = EnchantmentHelper.getEquipmentLevel(PealEnchantment.INSTANCE.get(), attacker);
-        if (pealLevel > 0 && firstTarget != null) {
-            world.playSound(null, firstTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
-            doPealDamage(world, attacker, firstTarget, 2 + pealLevel, null);
+        if (pealLevel > 0 && targetForPeal != null) {
+            Executor executor = CompletableFuture.delayedExecutor(500, TimeUnit.MILLISECONDS);
+            final Entity pealTarget = targetForPeal;
+            CompletableFuture.runAsync(() -> {
+                int targets = doPealDamage(world, attacker, pealTarget, 2 + pealLevel, null);
+                if (targets > 0) world.playSound(null, pealTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
+            }, executor);
         }
 
         attacker.setVelocity(attacker.getVelocity().multiply(0.6, 1.0, 0.6));
@@ -129,32 +140,42 @@ public class ShockwaveUtil {
         attacker.addExhaustion(0.1f);
 
         float pitchVal = 0.9f + world.random.nextFloat() * 0.2f;
-        Executor delayedExecutor = CompletableFuture.delayedExecutor(200, TimeUnit.MILLISECONDS);
         double x = firstTarget.getX();
         double y = firstTarget.getY();
         double z = firstTarget.getZ();
+        Executor delayedExecutor = CompletableFuture.delayedExecutor(200, TimeUnit.MILLISECONDS);
         CompletableFuture.runAsync(() ->
                 world.playSound(null, x, y, z, EtherSounds.HAMMER_DAMAGE, attacker.getSoundCategory(), 0.5f, pitchVal), delayedExecutor);
         return true;
     }
 
-    private static void doPealDamage(World world, PlayerEntity attacker, Entity target, float damage, @Nullable Map<Integer, Boolean> memo) {
-        if (memo == null) memo = new HashMap<>();
+    private static int doPealDamage(World world, PlayerEntity attacker, Entity target, float damage, @Nullable Map<Integer, Boolean> memo) {
+        if (memo == null) {
+            memo = new HashMap<>();
+        }
+        if (memo.size() >= 7) return memo.size();
+
         Box pealBox = Box.of(target.getPos(), 6, 2, 6);
         List<? extends Entity> pealedEntities = world.getEntitiesByType(target.getType(), pealBox, EntityPredicates.EXCEPT_SPECTATOR);
 
         for (Entity pealTarget : pealedEntities) {
             if (!pealTarget.isAttackable()) continue;
             if (pealTarget.equals(attacker)) continue;
+            if (pealTarget.equals(target)) continue;
             if (pealTarget.handleAttack(attacker)) continue;
             if (memo.containsKey(pealTarget.getId())) continue;
             if (memo.size() >= 7) break;
 
             pealTarget.damage(DamageSource.player(attacker), damage);
+            if (world.isClient) {
+                PealWaveParticle.spawnWave((ClientWorld) world, target, pealTarget);
+            }
+
             memo.put(pealTarget.getId(), true);
             doPealDamage(world, attacker, pealTarget, damage, memo);
         }
 
+        return memo.size();
     }
 
     public static Vec3d getShockPos(float playerYaw, Vec3d playerPos) {
