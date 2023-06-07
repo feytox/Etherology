@@ -61,6 +61,6 @@ public class MinecraftClientMixin {
         float pitchVal = 0.9f + world.random.nextFloat() * 0.2f;
         player.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, pitchVal);
 
-        ShockwaveParticle.spawnParticle(world, player);
+        ShockwaveParticle.spawnShockParticles(world, player);
     }
 }

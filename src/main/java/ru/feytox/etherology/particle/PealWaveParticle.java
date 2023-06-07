@@ -12,6 +12,8 @@ import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.particle.utility.VerticalParticle;
 
+import java.util.Random;
+
 public class PealWaveParticle extends VerticalParticle {
     private final SpriteProvider spriteProvider;
 
@@ -47,7 +49,21 @@ public class PealWaveParticle extends VerticalParticle {
         Vec3d end = to.getBoundingBox().getCenter();
 
         ParticleManager particleManager = MinecraftClient.getInstance().particleManager;
-        particleManager.addParticle(Etherology.PEAL_WAVE, start.x, start.y, start.z, end.x, end.y, end.z);
+        particleManager.addParticle(Etherology.THUNDER_ZAP, start.x, start.y, start.z, end.x, end.y, end.z);
+
+        Random javaRand = new Random();
+        spawnElectricity(particleManager, start, javaRand);
+        spawnElectricity(particleManager, end, javaRand);
+    }
+
+    private static void spawnElectricity(ParticleManager particleManager, Vec3d entityCenter, Random javaRand) {
+        for (int i = 0; i < javaRand.nextInt(3, 6); i++) {
+            DefaultParticleType electricityType = ElectricityParticle.getParticleType(javaRand);
+            double ex = entityCenter.x + javaRand.nextDouble() * 0.5;
+            double ey = entityCenter.y + javaRand.nextDouble() * 0.5;
+            double ez = entityCenter.z + javaRand.nextDouble() * 0.5;
+            particleManager.addParticle(electricityType, ex, ey, ez, 0.5, 0, 10);
+        }
     }
 
     @Environment(EnvType.CLIENT)

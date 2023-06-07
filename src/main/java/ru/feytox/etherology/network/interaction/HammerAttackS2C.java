@@ -65,7 +65,7 @@ public class HammerAttackS2C extends AbstractS2CPacket {
                 animation = swinger.getMainArm().equals(Arm.LEFT) ? LEFT_HAMMER_HIT : RIGHT_HAMMER_HIT;
                 float pitchVal = 0.9f + world.random.nextFloat() * 0.2f;
                 swinger.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, pitchVal);
-                ShockwaveParticle.spawnParticle(world, swinger);
+                ShockwaveParticle.spawnShockParticles(world, swinger);
             }
 
             animation.play(animatedPlayer, 0, null);
