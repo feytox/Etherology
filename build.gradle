@@ -20,6 +20,8 @@ repositories {
     }
     maven { url 'https://jitpack.io' }
     maven { url = "https://api.modrinth.com/maven" }
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 dependencies {
@@ -37,7 +39,21 @@ dependencies {
     include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
     include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
 
-    include modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
+    include modImplementation("com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}")
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    include("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
+    modCompileOnly modRuntimeOnly ("com.terraformersmc:modmenu:${project.mod_menu}"), {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}") {
+        exclude (group: "net.fabricmc.fabric-api")
+    }
+    include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
+
+    include implementation("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
+    annotationProcessor("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
 }
 
 processResources {

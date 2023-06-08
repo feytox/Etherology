@@ -4,8 +4,10 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
@@ -84,5 +87,12 @@ public class PlayerEntityMixin {
 
         attacker.resetLastAttackedTicks();
         ci.cancel();
+    }
+
+    @Inject(method = "takeShieldHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;disablesShield()Z"), cancellable = true)
+    private void onTakeIronShieldHit(LivingEntity attacker, CallbackInfo ci) {
+        PlayerEntity player = ((PlayerEntity) (Object) this);
+        if (!player.getActiveItem().isOf(ToolItems.IRON_SHIELD)) return;
+        if (attacker.getMainHandStack().getItem() instanceof AxeItem) ci.cancel();
     }
 }

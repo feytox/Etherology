@@ -1,18 +1,25 @@
 package ru.feytox.etherology.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.DamageUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.feytox.etherology.item.BattlePickaxe;
+import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.registry.item.ToolItems;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -38,5 +45,45 @@ public abstract class LivingEntityMixin {
 
         float k = pick.getDamagePercent();
         return Math.round(i * (1 - 0.5f * k));
+    }
+
+    @Inject(method = "blockedByShield", at = @At(value = "HEAD"), cancellable = true)
+    private void onShieldBlocking(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity shieldHolder = ((LivingEntity) (Object) this);
+        if (!shieldHolder.getActiveItem().isOf(ToolItems.IRON_SHIELD)) return;
+
+        cir.setReturnValue(modifiedBlockedByShield(shieldHolder, source));
+    }
+
+    @SuppressWarnings("unused")
+    @ModifyReturnValue(method = "disablesShield", at = @At("RETURN"))
+    private boolean onDisablesShield(boolean original) {
+        LivingEntity it = ((LivingEntity) (Object) this);
+        if (!(it instanceof PlayerEntity player)) return original || it.getMainHandStack().getItem() instanceof HammerItem;
+        return original || HammerItem.checkHammer(player);
+    }
+
+    private static boolean modifiedBlockedByShield(LivingEntity shieldHolder, DamageSource source) {
+        Entity entity = source.getSource();
+        boolean bl = false;
+        if (entity instanceof PersistentProjectileEntity persistentProjectileEntity) {
+            if (persistentProjectileEntity.getPierceLevel() > 0) {
+                bl = true;
+            }
+        }
+
+        if (!source.bypassesArmor() && shieldHolder.isBlocking() && !bl) {
+            Vec3d vec3d = source.getPosition();
+            if (vec3d != null) {
+                Vec3d vec3d2 = shieldHolder.getRotationVec(1.0F);
+                Vec3d vec3d3 = vec3d.relativize(shieldHolder.getPos()).normalize();
+                vec3d3 = new Vec3d(vec3d3.x, 0.0, vec3d3.z);
+
+                // 90 -> 30 degrees
+                return vec3d3.dotProduct(vec3d2) < -0.866025;
+            }
+        }
+
+        return false;
     }
 }

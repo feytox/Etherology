@@ -1,0 +1,14 @@
+{
+  "parent":"fabricshieldlib:item/fabric_shield",
+  "textures":{
+    "shield":"etherology:item/iron_shield"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "etherology:item/iron_shield_blocking"
+    }
+  ]
+}

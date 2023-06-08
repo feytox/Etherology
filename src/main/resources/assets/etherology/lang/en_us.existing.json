@@ -15,6 +15,7 @@
   "item.etherology.ether_shard": "Эфир",
   "item.etherology.ethereal_oil": "Эфирное масло",
   "item.etherology.hammer.warn": "Вы не можете использовать молот, пока ваши руки заняты",
+  "item.etherology.iron_shield": "Железный щит",
 
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",
