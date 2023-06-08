@@ -1,6 +1,7 @@
 package ru.feytox.etherology.util.feyapi;
 
 import lombok.extern.slf4j.Slf4j;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -24,6 +25,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.network.EtherologyNetwork;
+import ru.feytox.etherology.network.interaction.HammerPealS2C;
 import ru.feytox.etherology.particle.PealWaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 
@@ -107,8 +110,9 @@ public class ShockwaveUtil {
         if (pealLevel > 0 && targetForPeal != null) {
             Executor executor = CompletableFuture.delayedExecutor(500, TimeUnit.MILLISECONDS);
             final Entity pealTarget = targetForPeal;
+            final boolean isClientPlayer = attacker instanceof ClientPlayerEntity;
             CompletableFuture.runAsync(() -> {
-                int targets = doPealDamage(world, attacker, pealTarget, 2 + pealLevel, null);
+                int targets = doPealDamage(world, attacker, pealTarget, 2 + pealLevel, null, isClientPlayer);
                 if (targets > 0) world.playSound(null, pealTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
             }, executor);
         }
@@ -149,11 +153,12 @@ public class ShockwaveUtil {
         return true;
     }
 
-    private static int doPealDamage(World world, PlayerEntity attacker, Entity target, float damage, @Nullable Map<Integer, Boolean> memo) {
+    private static int doPealDamage(World world, PlayerEntity attacker, Entity target, float damage, @Nullable Map<Integer, Boolean> memo, boolean isClientPlayer) {
         if (memo == null) {
             memo = new HashMap<>();
+            memo.put(attacker.getId(), true);
         }
-        if (memo.size() >= 7) return memo.size();
+        if (memo.size() >= 8) return memo.size();
 
         Box pealBox = Box.of(target.getPos(), 6, 2, 6);
         List<? extends Entity> pealedEntities = world.getEntitiesByType(target.getType(), pealBox, EntityPredicates.EXCEPT_SPECTATOR);
@@ -164,15 +169,18 @@ public class ShockwaveUtil {
             if (pealTarget.equals(target)) continue;
             if (pealTarget.handleAttack(attacker)) continue;
             if (memo.containsKey(pealTarget.getId())) continue;
-            if (memo.size() >= 7) break;
+            if (memo.size() >= 8) break;
 
             pealTarget.damage(DamageSource.player(attacker), damage);
-            if (world.isClient) {
+            if (world.isClient && isClientPlayer) {
                 PealWaveParticle.spawnWave((ClientWorld) world, target, pealTarget);
+            } else if (!world.isClient) {
+                HammerPealS2C packet = new HammerPealS2C(target.getId(), pealTarget.getId());
+                EtherologyNetwork.sendForTracking((ServerWorld) world, target.getBlockPos(), attacker.getId(), packet);
             }
 
             memo.put(pealTarget.getId(), true);
-            doPealDamage(world, attacker, pealTarget, damage, memo);
+            doPealDamage(world, attacker, pealTarget, damage, memo, isClientPlayer);
         }
 
         return memo.size();

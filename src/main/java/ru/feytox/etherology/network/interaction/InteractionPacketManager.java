@@ -20,5 +20,6 @@ public class InteractionPacketManager extends AbstractPacketManager {
     @Override
     public void registerS2C(ImmutableMap.Builder<Identifier, AbstractS2CPacket.S2CHandler> builder) {
         builder.put(HammerAttackS2C.HAMMER_ATTACK_S2C_ID, HammerAttackS2C::receive);
+        builder.put(HammerPealS2C.HAMMER_PEAL_S2C_ID, HammerPealS2C::receive);
     }
 }
