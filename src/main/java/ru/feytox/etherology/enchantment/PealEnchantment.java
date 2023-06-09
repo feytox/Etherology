@@ -3,6 +3,7 @@ package ru.feytox.etherology.enchantment;
 import com.google.common.base.Suppliers;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
+import ru.feytox.etherology.enchantment.target.HammerEnchantmentTarget;
 
 import java.util.function.Supplier;
 

@@ -152,5 +152,7 @@
   "subtitles.etherology.hammer_swing": "Взмах молота",
   "subtitles.etherology.hammer_damage": "Удар молота",
   "enchantment.etherology.peal": "Раскат",
-  "item.etherology.iron_shield": "Железный щит"
+  "item.etherology.iron_shield": "Железный щит",
+  "enchantment.etherology.reflection": "Отражение",
+  "subtitles.etherology.deflect": "Отражение снаряда щитом"
 }

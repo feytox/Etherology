@@ -1,7 +1,7 @@
 {
-  "parent":"fabricshieldlib:item/fabric_shield",
-  "textures":{
-    "shield":"etherology:item/iron_shield"
+  "parent": "etherology:item/template_ether_shield",
+  "textures": {
+    "shield": "etherology:item/iron_shield"
   },
   "overrides": [
     {

@@ -68,6 +68,8 @@
   "subtitles.etherology.armillary_matrix_work": "Армиллярная матрица шумит",
   "subtitles.etherology.hammer_swing": "Взмах молота",
   "subtitles.etherology.hammer_damage": "Удар молота",
+  "subtitles.etherology.deflect": "Отражение снаряда щитом",
 
-  "enchantment.etherology.peal": "Раскат"
+  "enchantment.etherology.peal": "Раскат",
+  "enchantment.etherology.reflection": "Отражение"
 }

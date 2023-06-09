@@ -7,11 +7,12 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EtherSounds {
-    public static SoundEvent ELECTRICITY = register("electricity_sound");
-    public static SoundEvent MATRIX_WORK = register("matrix_work_sound");
-    public static SoundEvent HAMMER_SWING = register("hammer_swing_sound");
-    public static SoundEvent HAMMER_DAMAGE = register("hammer_damage_sound");
-    public static SoundEvent THUNDER_ZAP = register("thunder_zap_sound");
+    public static final SoundEvent ELECTRICITY = register("electricity_sound");
+    public static final SoundEvent MATRIX_WORK = register("matrix_work_sound");
+    public static final SoundEvent HAMMER_SWING = register("hammer_swing_sound");
+    public static final SoundEvent HAMMER_DAMAGE = register("hammer_damage_sound");
+    public static final SoundEvent THUNDER_ZAP = register("thunder_zap_sound");
+    public static final SoundEvent DEFLECT = register("deflect");
 
     public static void registerAll() {}
 

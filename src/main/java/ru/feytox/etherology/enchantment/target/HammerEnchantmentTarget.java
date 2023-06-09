@@ -1,4 +1,4 @@
-package ru.feytox.etherology.enchantment;
+package ru.feytox.etherology.enchantment.target;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.enchantment.EnchantmentTarget;

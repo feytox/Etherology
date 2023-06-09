@@ -1,11 +1,11 @@
 package ru.feytox.etherology.registry.item;
 
-import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.BattlePickaxe;
+import ru.feytox.etherology.item.EtherShield;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -49,7 +49,7 @@ public class ToolItems {
     public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.3f));
 
     // custom shields
-    public static final Item IRON_SHIELD = register("iron_shield", new FabricShieldItem(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
+    public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
 
     private static Item register(String id, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), item);
