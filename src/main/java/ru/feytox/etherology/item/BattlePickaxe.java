@@ -6,7 +6,11 @@ import net.minecraft.item.ToolMaterial;
 
 public class BattlePickaxe extends PickaxeItem {
     public BattlePickaxe(ToolMaterial material, int attackDamage, float attackSpeed) {
-        super(material, attackDamage, attackSpeed, new FabricItemSettings());
+        this(material, attackDamage, attackSpeed, new FabricItemSettings());
+    }
+
+    public BattlePickaxe(ToolMaterial material, int attackDamage, float attackSpeed, FabricItemSettings itemSettings) {
+        super(material, attackDamage, attackSpeed, itemSettings);
     }
 
     public float getDamagePercent() {

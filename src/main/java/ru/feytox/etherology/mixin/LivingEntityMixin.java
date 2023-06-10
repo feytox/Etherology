@@ -61,19 +61,8 @@ public abstract class LivingEntityMixin {
     private static boolean modifiedBlockedByShield(LivingEntity shieldHolder, DamageSource source) {
         Entity entity = source.getSource();
 
-        boolean isProjectile = false;
-        if (entity instanceof ProjectileEntity projectile) {
-            isProjectile = true;
-
-            int reflectionLevel = EnchantmentHelper.getEquipmentLevel(ReflectionEnchantment.INSTANCE.get(), shieldHolder);
-            if (reflectionLevel > 0) {
-                projectile.setVelocity(projectile.getVelocity().multiply(8.5));
-                shieldHolder.getEntityWorld().playSound(null, shieldHolder.getBlockPos(), EtherSounds.DEFLECT, shieldHolder.getSoundCategory(), 0.5f, 1.0f);
-                return true;
-            }
-        }
-
-        if (entity instanceof PersistentProjectileEntity persistentProjectile) {
+        boolean isProjectile = entity instanceof ProjectileEntity;
+        if (isProjectile && entity instanceof PersistentProjectileEntity persistentProjectile) {
             if (persistentProjectile.getPierceLevel() > 0) {
                 return false;
             }
@@ -88,7 +77,16 @@ public abstract class LivingEntityMixin {
 
                 // 90 -> 30 degrees
                 double cosVal = isProjectile ? 0.0 : -0.866025;
-                return vec3d3.dotProduct(vec3d2) < cosVal;
+                boolean result = vec3d3.dotProduct(vec3d2) < cosVal;
+                if (result && isProjectile) {
+                    int reflectionLevel = EnchantmentHelper.getEquipmentLevel(ReflectionEnchantment.INSTANCE.get(), shieldHolder);
+                    if (reflectionLevel > 0) {
+                        entity.setVelocity(entity.getVelocity().multiply(8.5));
+                        shieldHolder.getEntityWorld().playSound(null, shieldHolder.getBlockPos(), EtherSounds.DEFLECT, shieldHolder.getSoundCategory(), 0.5f, 1.0f);
+                        return true;
+                    }
+                }
+                return result;
             }
         }
 

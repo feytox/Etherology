@@ -16,7 +16,11 @@ public class HammerItem extends SwordItem {
     private static boolean wasSelected = false;
 
     public HammerItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed) {
-        super(toolMaterial, attackDamage, attackSpeed, new FabricItemSettings());
+        this(toolMaterial, attackDamage, attackSpeed, new FabricItemSettings());
+    }
+
+    public HammerItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, FabricItemSettings itemSettings) {
+        super(toolMaterial, attackDamage, attackSpeed, itemSettings);
     }
 
     /**

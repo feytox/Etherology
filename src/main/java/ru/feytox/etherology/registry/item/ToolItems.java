@@ -36,7 +36,7 @@ public class ToolItems {
     public static final Item ETHRIL_BATTLE_PICKAXE = register("ethril_battle_pickaxe", new BattlePickaxe(ETHRIL, 1, -2.6f));
     public static final Item TELDER_STEEL_BATTLE_PICKAXE = register("telder_steel_battle_pickaxe", new BattlePickaxe(TELDER_STEEL, 1, -2.6f));
     public static final Item DIAMOND_BATTLE_PICKAXE = register("diamond_battle_pickaxe", new BattlePickaxe(DIAMOND, 2, -2.6f));
-    public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f));
+    public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f, new FabricItemSettings().fireproof()));
 
     // hammers
     public static final Item WOODEN_HAMMER = register("wooden_hammer", new HammerItem(WOOD, 9, -3.6f));
@@ -46,7 +46,7 @@ public class ToolItems {
     public static final Item ETHRIL_HAMMER = register("ethril_hammer", new HammerItem(ETHRIL, 8, -3.5f));
     public static final Item TELDER_STEEL_HAMMER = register("telder_steel_hammer", new HammerItem(TELDER_STEEL, 8, -3.4f));
     public static final Item DIAMOND_HAMMER = register("diamond_hammer", new HammerItem(DIAMOND, 8, -3.4f));
-    public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.4f));
+    public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.4f, new FabricItemSettings().fireproof()));
 
     // custom shields
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
