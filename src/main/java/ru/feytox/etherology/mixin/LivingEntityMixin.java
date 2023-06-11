@@ -62,7 +62,9 @@ public abstract class LivingEntityMixin {
         Entity entity = source.getSource();
 
         boolean isProjectile = entity instanceof ProjectileEntity;
+        boolean isPersistentProjectile = false;
         if (isProjectile && entity instanceof PersistentProjectileEntity persistentProjectile) {
+            isPersistentProjectile = true;
             if (persistentProjectile.getPierceLevel() > 0) {
                 return false;
             }
@@ -81,7 +83,9 @@ public abstract class LivingEntityMixin {
                 if (result && isProjectile) {
                     int reflectionLevel = EnchantmentHelper.getEquipmentLevel(ReflectionEnchantment.INSTANCE.get(), shieldHolder);
                     if (reflectionLevel > 0) {
-                        entity.setVelocity(entity.getVelocity().multiply(8.5));
+                        Vec3d newVelocity = entity.getVelocity().multiply(8.5);
+                        if (!isPersistentProjectile) newVelocity = newVelocity.negate();
+                        entity.setVelocity(newVelocity);
                         shieldHolder.getEntityWorld().playSound(null, shieldHolder.getBlockPos(), EtherSounds.DEFLECT, shieldHolder.getSoundCategory(), 0.5f, 1.0f);
                         return true;
                     }

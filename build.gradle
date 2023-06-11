@@ -52,8 +52,8 @@ dependencies {
     }
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
 
-    include implementation("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
-    annotationProcessor("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
+    include implementation("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras}")
+    annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras}")
 }
 
 processResources {

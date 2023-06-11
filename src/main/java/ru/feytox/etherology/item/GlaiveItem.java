@@ -6,26 +6,25 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ToolMaterial;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
-public class HammerItem extends TwoHandheldSword {
-
-    public HammerItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed) {
+public class GlaiveItem extends TwoHandheldSword {
+    public GlaiveItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed) {
         this(toolMaterial, attackDamage, attackSpeed, new FabricItemSettings());
     }
 
-    public HammerItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, FabricItemSettings itemSettings) {
+    public GlaiveItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, FabricItemSettings itemSettings) {
         super(toolMaterial, attackDamage, attackSpeed, itemSettings);
     }
 
     /**
      * @param player player to check
-     * @return true if player has hammer in main hand and offhand is empty
+     * @return true if player has glaive in main hand and offhand is empty
      */
-    public static boolean checkHammer(PlayerEntity player) {
-        return check(player, HammerItem.class);
+    public static boolean checkGlaive(PlayerEntity player) {
+        return check(player, GlaiveItem.class);
     }
 
-    public static boolean checkHammer(IAnimatedPlayer animatedPlayer) {
+    public static boolean checkGlaive(IAnimatedPlayer animatedPlayer) {
         if (!(animatedPlayer instanceof AbstractClientPlayerEntity clientPlayer)) return false;
-        return checkHammer(clientPlayer);
+        return checkGlaive(clientPlayer);
     }
 }

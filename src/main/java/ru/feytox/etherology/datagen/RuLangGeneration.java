@@ -156,6 +156,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHRIL_HAMMER, "Эфриловый молот");
         builder.add(TELDER_STEEL_HAMMER, "Телдер-стальной молот");
 
+        builder.add(DIAMOND_GLAIVE, "Алмазная глефа");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

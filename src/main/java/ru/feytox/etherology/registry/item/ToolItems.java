@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.EtherShield;
+import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -47,6 +48,9 @@ public class ToolItems {
     public static final Item TELDER_STEEL_HAMMER = register("telder_steel_hammer", new HammerItem(TELDER_STEEL, 8, -3.4f));
     public static final Item DIAMOND_HAMMER = register("diamond_hammer", new HammerItem(DIAMOND, 8, -3.4f));
     public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.4f, new FabricItemSettings().fireproof()));
+
+    // glaives
+    public static final Item DIAMOND_GLAIVE = register("diamond_glaive", new GlaiveItem(DIAMOND, 1, -2.9f));
 
     // custom shields
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
