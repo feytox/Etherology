@@ -92,6 +92,9 @@ public class EtherologyClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BEAMER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(PEACH_SAPLING, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(PEACH_LEAVES, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_METRONOME, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SPINNER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_STORAGE, RenderLayer.getCutout());
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();

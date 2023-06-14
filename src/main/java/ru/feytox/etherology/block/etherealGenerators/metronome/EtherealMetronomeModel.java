@@ -15,7 +15,7 @@ public class EtherealMetronomeModel extends GeoModel<EtherealMetronomeBlockEntit
 
     @Override
     public Identifier getTextureResource(EtherealMetronomeBlockEntity animatable) {
-        return new EIdentifier("textures/machines/metronome.png");
+        return new EIdentifier("textures/machines/ethereal_metronome.png");
     }
 
     @Override

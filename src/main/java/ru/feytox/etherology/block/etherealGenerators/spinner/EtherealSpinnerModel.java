@@ -15,7 +15,7 @@ public class EtherealSpinnerModel extends GeoModel<EtherealSpinnerBlockEntity> {
 
     @Override
     public Identifier getTextureResource(EtherealSpinnerBlockEntity animatable) {
-        return new EIdentifier("textures/machines/spinner.png");
+        return new EIdentifier("textures/machines/ethereal_spinner.png");
     }
 
     @Override
