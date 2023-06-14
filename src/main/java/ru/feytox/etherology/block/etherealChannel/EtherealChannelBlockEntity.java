@@ -7,17 +7,20 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.joml.Vector3f;
+import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.MovingParticle;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 import static ru.feytox.etherology.Etherology.LIGHT;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
@@ -100,13 +103,11 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     @Nullable
     @Override
     public Direction getOutputSide() {
+        List<EnumProperty<PipeSide>> properties = List.of(NORTH, SOUTH, EAST, WEST, UP, DOWN);
         BlockState state = getCachedState();
-        if (state.get(NORTH).isOutput()) return Direction.NORTH;
-        if (state.get(SOUTH).isOutput()) return Direction.SOUTH;
-        if (state.get(EAST).isOutput()) return Direction.EAST;
-        if (state.get(WEST).isOutput()) return Direction.WEST;
-        if (state.get(UP).isOutput()) return Direction.UP;
-        if (state.get(DOWN).isOutput()) return Direction.DOWN;
+        for (EnumProperty<PipeSide> property : properties) {
+            if (state.get(property).isOutput()) return Direction.byName(property.getName());
+        }
         return null;
     }
 

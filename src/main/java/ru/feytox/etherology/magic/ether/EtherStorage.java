@@ -4,6 +4,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
+import org.jetbrains.annotations.ApiStatus;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 
 import javax.annotation.Nullable;
@@ -14,8 +15,9 @@ public interface EtherStorage {
     float getTransferSize();
 
     /**
-     * @deprecated используйте increment и decrement
+     * @apiNote вместе этого необходимо использовать increment и decrement
      */
+    @ApiStatus.OverrideOnly
     void setStoredEther(float value);
     boolean isInputSide(Direction side);
     @Nullable
