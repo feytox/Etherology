@@ -17,6 +17,7 @@ import static ru.feytox.etherology.Etherology.ETHEREAL_FURNACE_SCREEN_HANDLER;
 
 public class EtherealFurnaceScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;
+    private final Inventory inventory;
 
     public EtherealFurnaceScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleInventory(3), new ArrayPropertyDelegate(3));
@@ -28,6 +29,7 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
         checkDataCount(propertyDelegate, 3);
         this.propertyDelegate = propertyDelegate;
         inventory.onOpen(playerInventory.player);
+        this.inventory = inventory;
 
         this.addProperties(propertyDelegate);
 
@@ -61,10 +63,21 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
         Slot slot = this.slots.get(invSlot);
         if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
+
             newStack = originalStack.copy();
-            if (!this.insertItem(originalStack, 1, 2, false)) {
+            if (invSlot >= inventory.size()) {
+                if (originalStack.isOf(Items.BLAZE_POWDER)) {
+                    if (!this.insertItem(originalStack, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (!this.insertItem(originalStack, 1, 2, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
+
 
             if (originalStack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);

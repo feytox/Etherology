@@ -60,7 +60,7 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
                 if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size()-4, false)) {
+            } else if (!this.insertItem(originalStack, 0, 3, false)) {
                 return ItemStack.EMPTY;
             }
 
