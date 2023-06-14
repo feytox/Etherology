@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@SuppressWarnings("UnusedMixin")
+@SuppressWarnings("UnusedMixin") // This mixin does not need to be added to json.
 @Mixin(EnchantmentTarget.class)
 public abstract class MixinEnchantmentTarget {
 

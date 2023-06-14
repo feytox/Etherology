@@ -1,22 +1,20 @@
 package ru.feytox.etherology.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.DamageUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.feytox.etherology.enchantment.ReflectionEnchantment;
 import ru.feytox.etherology.item.BattlePickaxe;
@@ -27,27 +25,25 @@ import ru.feytox.etherology.registry.util.EtherSounds;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 
-    @Inject(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"), cancellable = true)
-    private void getDamageByPick(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-        if (!(source instanceof EntityDamageSource entitySource)) return;
-        if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return;
-        if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return;
+    @ModifyExpressionValue(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"))
+    private float getDamageByPick(float original, @Local DamageSource source) {
+        if (!(source instanceof EntityDamageSource entitySource)) return original;
+        if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return original;
+        if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
 
         LivingEntity it = ((LivingEntity) (Object) this);
-        amount = DamageUtil.getDamageLeft(amount, it.getArmor(), (float) it.getAttributeValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS));
-        amount = Math.min(amount + 0.5f * pick.getDamagePercent() * it.getArmor(), amount * 1.5f);
-        cir.setReturnValue(amount);
+        original = Math.min(original + 0.5f * pick.getDamagePercent() * it.getArmor(), original * 1.5f);
+        return original;
     }
 
-    @Redirect(method = "modifyAppliedDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I"))
-    private int getProtectionOnPick(Iterable<ItemStack> equipment, DamageSource source) {
-        int i = EnchantmentHelper.getProtectionAmount(equipment, source);
-        if (!(source instanceof EntityDamageSource entitySource)) return i;
-        if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return i;
-        if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return i;
+    @ModifyExpressionValue(method = "modifyAppliedDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I"))
+    private int getProtectionOnPick(int original, @Local DamageSource source) {
+        if (!(source instanceof EntityDamageSource entitySource)) return original;
+        if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return original;
+        if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
 
         float k = pick.getDamagePercent();
-        return Math.round(i * (1 - 0.5f * k));
+        return Math.round(original * (1 - 0.5f * k));
     }
 
     @Inject(method = "blockedByShield", at = @At(value = "HEAD"), cancellable = true)

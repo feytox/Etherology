@@ -17,11 +17,9 @@ public class AxeItemMixin {
 
     @Inject(method = "getStrippedState", at = @At("HEAD"), cancellable = true)
     private void onGetStrippedState(BlockState state, CallbackInfoReturnable<Optional<BlockState>> cir) {
-        for (Block original : DecoBlocks.ETHER_LOGS.keySet()) {
-            if (state.getBlock().equals(original)) {
-                Block strippedBlock = DecoBlocks.ETHER_LOGS.get(original);
-                cir.setReturnValue(Optional.of(strippedBlock.getDefaultState().with(PillarBlock.AXIS, state.get(PillarBlock.AXIS))));
-            }
-        }
+        Block original = state.getBlock();
+        if (!DecoBlocks.ETHER_LOGS.containsKey(original)) return;
+        Block strippedBlock = DecoBlocks.ETHER_LOGS.get(original);
+        cir.setReturnValue(Optional.of(strippedBlock.getDefaultState().with(PillarBlock.AXIS, state.get(PillarBlock.AXIS))));
     }
 }

@@ -15,7 +15,7 @@ import ru.feytox.etherology.item.BattlePickaxe;
 public class EnchantmentMixin {
     
     @Inject(method = "isAcceptableItem", at = @At("HEAD"), cancellable = true)
-    private void onCheck(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+    private void battlePickTargetExtend(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         Enchantment it = ((Enchantment) (Object) this);
         if (!(stack.getItem() instanceof BattlePickaxe)) return;
         if (it.type.equals(EnchantmentTarget.WEAPON)) cir.setReturnValue(true);
