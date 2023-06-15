@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
+import ru.feytox.etherology.data.client.EtherologyModels;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.EItems;
@@ -43,6 +44,9 @@ public class ModelGeneration extends FabricModelProvider {
         // all handheld (swords, pickaxe and etc)
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
         registerItems(generator, Models.HANDHELD, WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, TELDER_STEEL_BATTLE_PICKAXE);
+        // all glaives
+        registerItems(generator, EtherologyModels.GLAIVE_IN_HAND, "_in_hand", GLAIVES);
+        registerItems(generator, Models.HANDHELD, GLAIVES);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
@@ -51,6 +55,10 @@ public class ModelGeneration extends FabricModelProvider {
 
     private static void registerItems(ItemModelGenerator generator, Model model, Item... items) {
         Arrays.stream(items).forEach(item -> generator.register(item, model));
+    }
+
+    private static void registerItems(ItemModelGenerator generator, Model model, String suffix, Item... items) {
+        Arrays.stream(items).forEach(item -> generator.register(item, suffix, model));
     }
 
     private static void registerSimpleBlock(BlockStateModelGenerator generator, Block... blocks) {

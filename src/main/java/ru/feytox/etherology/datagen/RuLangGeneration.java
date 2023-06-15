@@ -156,7 +156,14 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHRIL_HAMMER, "Эфриловый молот");
         builder.add(TELDER_STEEL_HAMMER, "Телдер-стальной молот");
 
+        builder.add(WOODEN_GLAIVE, "Деревянная глефа");
+        builder.add(STONE_GLAIVE, "Каменная глефа");
+        builder.add(IRON_GLAIVE, "Железная глефа");
+        builder.add(GOLDEN_GLAIVE, "Золотая глефа");
         builder.add(DIAMOND_GLAIVE, "Алмазная глефа");
+        builder.add(NETHERITE_GLAIVE, "Незеритовая глефа");
+        builder.add(ETHRIL_GLAIVE, "Эфриловая глефа");
+        builder.add(TELDER_STEEL_GLAIVE, "Телдер-стальная глефа");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

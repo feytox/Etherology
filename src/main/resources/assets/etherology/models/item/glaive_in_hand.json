@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "etherology:item/diamond_glaive"
+		"layer0": "#layer0",
+		"particle": "#layer0"
 	},
 	"display": {
 		"thirdperson_righthand": {

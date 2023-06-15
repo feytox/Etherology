@@ -13,13 +13,13 @@ public class InteractionPacketManager extends AbstractPacketManager {
 
     @Override
     public void registerC2S(ImmutableMap.Builder<Identifier, AbstractC2SPacket.C2SHandler> builder) {
-        builder.put(HammerAttackC2S.HAMMER_ATTACK_C2S_ID, HammerAttackC2S::receive);
+        builder.put(TwoHandHeldAttackC2S.TWOHANDHELD_ATTACK_C2S_ID, TwoHandHeldAttackC2S::receive);
         builder.put(HammerMiningC2S.HAMMER_MINING_C2S_ID, HammerMiningC2S::receive);
     }
 
     @Override
     public void registerS2C(ImmutableMap.Builder<Identifier, AbstractS2CPacket.S2CHandler> builder) {
-        builder.put(HammerAttackS2C.HAMMER_ATTACK_S2C_ID, HammerAttackS2C::receive);
+        builder.put(TwoHandHeldAttackS2C.TWOHANDHELD_ATTACK_S2C_ID, TwoHandHeldAttackS2C::receive);
         builder.put(HammerPealS2C.HAMMER_PEAL_S2C_ID, HammerPealS2C::receive);
     }
 }

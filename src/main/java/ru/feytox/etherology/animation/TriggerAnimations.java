@@ -17,16 +17,16 @@ import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 import java.util.function.Consumer;
 
 public class TriggerAnimations {
-    public static final TriggerablePlayerAnimation LEFT_HAMMER_HIT = new TriggerablePlayerAnimation(new EIdentifier("left_hammer_hit"), false, true,
+    public static final TriggerPlayerAnimation LEFT_HAMMER_HIT = new TriggerPlayerAnimation(new EIdentifier("left_hammer_hit"), false, true,
             PlayerAnimationController.setHammerState(HammerState.FULL_ATTACK),
             playOrMine("left_hammer_idle"));
-    public static final TriggerablePlayerAnimation RIGHT_HAMMER_HIT = new TriggerablePlayerAnimation(new EIdentifier("right_hammer_hit"), false, true,
+    public static final TriggerPlayerAnimation RIGHT_HAMMER_HIT = new TriggerPlayerAnimation(new EIdentifier("right_hammer_hit"), false, true,
             PlayerAnimationController.setHammerState(HammerState.FULL_ATTACK),
             playOrMine("right_hammer_idle"));
-    public static final TriggerablePlayerAnimation LEFT_HAMMER_HIT_WEAK = new TriggerablePlayerAnimation(new EIdentifier("left_hammer_hit_weak"), false, true,
+    public static final TriggerPlayerAnimation LEFT_HAMMER_HIT_WEAK = new TriggerPlayerAnimation(new EIdentifier("left_hammer_hit_weak"), false, true,
             PlayerAnimationController.setHammerState(HammerState.WEAK_ATTACK),
             playOrMine("left_hammer_idle"));
-    public static final TriggerablePlayerAnimation RIGHT_HAMMER_HIT_WEAK = new TriggerablePlayerAnimation(new EIdentifier("right_hammer_hit_weak"), false, true,
+    public static final TriggerPlayerAnimation RIGHT_HAMMER_HIT_WEAK = new TriggerPlayerAnimation(new EIdentifier("right_hammer_hit_weak"), false, true,
             PlayerAnimationController.setHammerState(HammerState.WEAK_ATTACK),
             playOrMine("right_hammer_idle"));
 
@@ -58,7 +58,7 @@ public class TriggerAnimations {
 
             String prefix = isRightArm ? "right" : "left";
             Identifier animationId = new EIdentifier(prefix + "_hammer_hit_weak");
-            AbstractPlayerAnimation anim = EtherologyRegistry.getAndCast(TriggerablePlayerAnimation.class, animationId);
+            AbstractPlayerAnimation anim = EtherologyRegistry.getAndCast(TriggerPlayerAnimation.class, animationId);
             if (anim == null) return;
             anim.play(player, 0, null);
         };

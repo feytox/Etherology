@@ -1,0 +1,6 @@
+{
+  "parent": "etherology:item/glaive_in_hand",
+  "textures": {
+    "layer0": "etherology:item/stone_glaive_in_hand"
+  }
+}
