@@ -1,5 +1,13 @@
 {
   "parent": "etherology:item/glaive_in_hand",
+  "overrides": [
+    {
+      "model": "etherology:item/netherite_glaive_in_hand_handle",
+      "predicate": {
+        "glaive_handle": 1
+      }
+    }
+  ],
   "textures": {
     "layer0": "etherology:item/netherite_glaive_in_hand"
   }

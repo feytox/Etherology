@@ -6,6 +6,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.enums.HammerState;
+import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
@@ -33,5 +34,11 @@ public class ModelPredicates {
             HammerState hammerState = player.getHammerState();
             return hammerState.equals(HammerState.IDLE) && HammerItem.checkHammer(player) ? 1 : 0;
         }), WOODEN_HAMMER, STONE_HAMMER, IRON_HAMMER, GOLDEN_HAMMER, DIAMOND_HAMMER, NETHERITE_HAMMER, TELDER_STEEL_HAMMER, ETHRIL_HAMMER);
+
+        register("glaive_handle", ((stack, world, entity, seed) -> {
+            if (!(entity instanceof IAnimatedPlayer player)) return 0;
+            HammerState hammerState = player.getHammerState();
+            return hammerState.equals(HammerState.IDLE) && GlaiveItem.checkGlaive(player) ? 1 : 0;
+        }), GLAIVES);
     }
 }

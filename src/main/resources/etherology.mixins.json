@@ -18,6 +18,7 @@
     "ItemEntityMixin",
     "KeyframeAnimationAccessor",
     "LivingEntityMixin",
+    "ModelAccessor",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ServerPlayerEntityMixin",
