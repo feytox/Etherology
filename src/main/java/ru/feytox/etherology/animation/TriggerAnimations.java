@@ -17,18 +17,28 @@ import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 import java.util.function.Consumer;
 
 public class TriggerAnimations {
-    public static final TriggerPlayerAnimation LEFT_HAMMER_HIT = new TriggerPlayerAnimation(new EIdentifier("left_hammer_hit"), false, true,
+    // hammer animations (weak = hammer + glaive)
+    public static final TriggerPlayerAnimation HAMMER_HIT_LEFT = new TriggerPlayerAnimation(new EIdentifier("hammer_hit_left"), false, true,
             PlayerAnimationController.setHammerState(HammerState.FULL_ATTACK),
-            playOrMine("left_hammer_idle"));
-    public static final TriggerPlayerAnimation RIGHT_HAMMER_HIT = new TriggerPlayerAnimation(new EIdentifier("right_hammer_hit"), false, true,
+            playOrMine("hammer_idle_left"));
+    public static final TriggerPlayerAnimation HAMMER_HIT_RIGHT = new TriggerPlayerAnimation(new EIdentifier("hammer_hit_right"), false, true,
             PlayerAnimationController.setHammerState(HammerState.FULL_ATTACK),
-            playOrMine("right_hammer_idle"));
-    public static final TriggerPlayerAnimation LEFT_HAMMER_HIT_WEAK = new TriggerPlayerAnimation(new EIdentifier("left_hammer_hit_weak"), false, true,
+            playOrMine("hammer_idle_right"));
+    public static final TriggerPlayerAnimation HAMMER_WEAK_HIT_LEFT = new TriggerPlayerAnimation(new EIdentifier("hammer_weak_hit_left"), false, true,
             PlayerAnimationController.setHammerState(HammerState.WEAK_ATTACK),
-            playOrMine("left_hammer_idle"));
-    public static final TriggerPlayerAnimation RIGHT_HAMMER_HIT_WEAK = new TriggerPlayerAnimation(new EIdentifier("right_hammer_hit_weak"), false, true,
+            playOrMine("hammer_idle_left"));
+    public static final TriggerPlayerAnimation HAMMER_WEAK_HIT_RIGHT = new TriggerPlayerAnimation(new EIdentifier("hammer_weak_hit_right"), false, true,
             PlayerAnimationController.setHammerState(HammerState.WEAK_ATTACK),
-            playOrMine("right_hammer_idle"));
+            playOrMine("hammer_idle_right"));
+
+    // glaive animations
+    public static final TriggerPlayerAnimation GLAIVE_HIT_LEFT = new TriggerPlayerAnimation(new EIdentifier("glaive_hit_left"), false, true,
+            PlayerAnimationController.setHammerState(HammerState.FULL_ATTACK),
+            playOrMine("hammer_idle_left"));
+    public static final TriggerPlayerAnimation GLAIVE_HIT_RIGHT = new TriggerPlayerAnimation(new EIdentifier("glaive_hit_right"), false, true,
+            PlayerAnimationController.setHammerState(HammerState.FULL_ATTACK),
+            playOrMine("hammer_idle_right"));
+
 
     private static Consumer<IAnimatedPlayer> play(String id) {
         return player -> {
@@ -57,17 +67,25 @@ public class TriggerAnimations {
             EtherologyNetwork.sendToServer(packet);
 
             String prefix = isRightArm ? "right" : "left";
-            Identifier animationId = new EIdentifier(prefix + "_hammer_hit_weak");
+            Identifier animationId = new EIdentifier("hammer_weak_hit_" + prefix);
             AbstractPlayerAnimation anim = EtherologyRegistry.getAndCast(TriggerPlayerAnimation.class, animationId);
             if (anim == null) return;
             anim.play(player, 0, null);
         };
     }
 
+    public static TriggerPlayerAnimation getTwohandheldAnim(Arm mainArm, boolean isHammer, boolean isStrongAttack) {
+        if (!isStrongAttack) return mainArm.equals(Arm.LEFT) ? HAMMER_WEAK_HIT_LEFT : HAMMER_WEAK_HIT_RIGHT;
+        if (isHammer) return mainArm.equals(Arm.LEFT) ? HAMMER_HIT_LEFT : HAMMER_HIT_RIGHT;
+        return mainArm.equals(Arm.LEFT) ? GLAIVE_HIT_LEFT : GLAIVE_HIT_RIGHT;
+    }
+
     public static void registerAll() {
-        LEFT_HAMMER_HIT.register();
-        RIGHT_HAMMER_HIT.register();
-        LEFT_HAMMER_HIT_WEAK.register();
-        RIGHT_HAMMER_HIT_WEAK.register();
+        HAMMER_HIT_LEFT.register();
+        HAMMER_HIT_RIGHT.register();
+        HAMMER_WEAK_HIT_LEFT.register();
+        HAMMER_WEAK_HIT_RIGHT.register();
+        GLAIVE_HIT_LEFT.register();
+        GLAIVE_HIT_RIGHT.register();
     }
 }

@@ -16,7 +16,7 @@ import static ru.feytox.etherology.registry.util.EtherToolMaterials.TELDER_STEEL
 
 public class ToolItems {
     // ethril tools
-    public static final Item ETHRIL_AXE = register("ethril_axe", new AxeItem(ETHRIL, 5, -3, new FabricItemSettings()));
+    public static final Item ETHRIL_AXE = register("ethril_axe", new AxeItem(ETHRIL, 5, -3.0f, new FabricItemSettings()));
     public static final Item ETHRIL_PICKAXE = register("ethril_pickaxe", new PickaxeItem(ETHRIL, 0, -2.8F, new FabricItemSettings()));
     public static final Item ETHRIL_HOE = register("ethril_hoe", new HoeItem(ETHRIL, 0, -3, new FabricItemSettings()));
     public static final Item ETHRIL_SHOVEL = register("ethril_shovel", new ShovelItem(ETHRIL, 0.5f, -3, new FabricItemSettings()));
@@ -50,14 +50,14 @@ public class ToolItems {
     public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.4f, new FabricItemSettings().fireproof()));
 
     // glaives
-    public static final Item WOODEN_GLAIVE = register("wooden_glaive", new GlaiveItem(WOOD, 1, -3.0f));
-    public static final Item STONE_GLAIVE = register("stone_glaive", new GlaiveItem(STONE, 1, -3.0f));
-    public static final Item IRON_GLAIVE = register("iron_glaive", new GlaiveItem(IRON, 1, -2.9f));
-    public static final Item GOLDEN_GLAIVE = register("golden_glaive", new GlaiveItem(GOLD, 1, -2.9f));
-    public static final Item ETHRIL_GLAIVE = register("ethril_glaive", new GlaiveItem(ETHRIL, 1, -2.9f));
-    public static final Item TELDER_STEEL_GLAIVE = register("telder_steel_glaive", new GlaiveItem(TELDER_STEEL, 1, -2.9f));
-    public static final Item DIAMOND_GLAIVE = register("diamond_glaive", new GlaiveItem(DIAMOND, 1, -2.9f));
-    public static final Item NETHERITE_GLAIVE = register("netherite_glaive", new GlaiveItem(NETHERITE, 1, -2.9f, new FabricItemSettings().fireproof()));
+    public static final Item WOODEN_GLAIVE = register("wooden_glaive", new GlaiveItem(WOOD, 1, -3.2f));
+    public static final Item STONE_GLAIVE = register("stone_glaive", new GlaiveItem(STONE, 1, -3.2f));
+    public static final Item IRON_GLAIVE = register("iron_glaive", new GlaiveItem(IRON, 1, -3.1f));
+    public static final Item GOLDEN_GLAIVE = register("golden_glaive", new GlaiveItem(GOLD, 1, -3.0f));
+    public static final Item ETHRIL_GLAIVE = register("ethril_glaive", new GlaiveItem(ETHRIL, 1, -3.0f));
+    public static final Item TELDER_STEEL_GLAIVE = register("telder_steel_glaive", new GlaiveItem(TELDER_STEEL, 1, -3.1f));
+    public static final Item DIAMOND_GLAIVE = register("diamond_glaive", new GlaiveItem(DIAMOND, 1, -3.0f));
+    public static final Item NETHERITE_GLAIVE = register("netherite_glaive", new GlaiveItem(NETHERITE, 1, -3.0f, new FabricItemSettings().fireproof()));
     public static final Item[] GLAIVES = {WOODEN_GLAIVE, STONE_GLAIVE, IRON_GLAIVE, GOLDEN_GLAIVE, ETHRIL_GLAIVE, TELDER_STEEL_GLAIVE, DIAMOND_GLAIVE, NETHERITE_GLAIVE};
 
     // custom shields

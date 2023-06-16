@@ -9,25 +9,27 @@ import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class PredicateAnimations {
-    // predicate animations
+    // crate animation
     public static final PredicatePlayerAnimation CRATE_CARRYING = new PredicatePlayerAnimation(new EIdentifier("crate.carry"), 5, Ease.INOUTCUBIC, true, false,
             player -> player.getMainHandStack().isOf(EItems.CARRIED_CRATE));
 
-    public static final PredicatePlayerAnimation LEFT_HAMMER_IDLE = new PredicatePlayerAnimation(new EIdentifier("left_hammer_idle"), 0, null, false, false,
-            player -> twohandedIdle(player, Arm.LEFT),
-            PlayerAnimationController.setHammerState(HammerState.IDLE));
+    // hammer + glaive animations
+    public static final PredicatePlayerAnimation HAMMER_IDLE_LEFT = new PredicatePlayerAnimation(new EIdentifier("hammer_idle_left"), 0, null, false, false,
+            player -> twohandheldIdle(player, Arm.LEFT),
+            PlayerAnimationController.setHammerState(HammerState.IDLE),
+            new EIdentifier("hammer_idle_right"));
+    public static final PredicatePlayerAnimation HAMMER_IDLE_RIGHT = new PredicatePlayerAnimation(new EIdentifier("hammer_idle_right"), 0, null, false, false,
+            player -> twohandheldIdle(player, Arm.RIGHT),
+            PlayerAnimationController.setHammerState(HammerState.IDLE),
+            new EIdentifier("hammer_idle_left"));
 
-    public static final PredicatePlayerAnimation RIGHT_HAMMER_IDLE = new PredicatePlayerAnimation(new EIdentifier("right_hammer_idle"), 0, null, false, false,
-            player -> twohandedIdle(player, Arm.RIGHT),
-            PlayerAnimationController.setHammerState(HammerState.IDLE));
-
-    private static boolean twohandedIdle(AbstractClientPlayerEntity player, Arm arm) {
+    private static boolean twohandheldIdle(AbstractClientPlayerEntity player, Arm arm) {
         return TwoHandheldSword.check(player, TwoHandheldSword.class) && player.getMainArm().equals(arm);
     }
 
     public static void registerAll() {
         CRATE_CARRYING.register();
-        LEFT_HAMMER_IDLE.register();
-        RIGHT_HAMMER_IDLE.register();
+        HAMMER_IDLE_LEFT.register();
+        HAMMER_IDLE_RIGHT.register();
     }
 }
