@@ -1,0 +1,6 @@
+{
+  "parent": "etherology:item/hammer_handle",
+  "textures": {
+    "hammer": "etherology:item/telder_steel_hammer"
+  }
+}

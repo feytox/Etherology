@@ -1,0 +1,14 @@
+{
+  "parent": "etherology:item/hammer",
+  "overrides": [
+    {
+      "model": "etherology:item/telder_steel_hammer_handle",
+      "predicate": {
+        "hammer_handle": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "hammer": "etherology:item/telder_steel_hammer"
+  }
+}

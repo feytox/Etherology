@@ -1,0 +1,6 @@
+{
+  "parent": "etherology:item/hammer_handle",
+  "textures": {
+    "hammer": "etherology:item/diamond_hammer"
+  }
+}

@@ -51,6 +51,8 @@ public class ModelGeneration extends FabricModelProvider {
         // all glaives
         registerInHandGlaives(generator);
         registerItems(generator, Models.HANDHELD, GLAIVES);
+        // all hammers
+        registerHammers(generator);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
@@ -77,6 +79,21 @@ public class ModelGeneration extends FabricModelProvider {
 
             // MATERIAL_glaive_in_hand_handle generator
             EtherologyModels.GLAIVE_IN_HAND_HANDLE.upload(handleFileId, textures, generator.writer);
+        });
+    }
+
+    private static void registerHammers(ItemModelGenerator generator) {
+        Arrays.stream(HAMMERS).forEach(item -> {
+            Identifier fileId = TextureMap.getId(item);
+            Identifier handleFileId = TextureMap.getSubId(item, "_handle");
+            TextureMap textures = TextureMap.of(EtherologyModels.HAMMER_KEY, fileId);
+
+            // MATERIAL_hammer generator
+            ModelOverride override = new ModelOverride(handleFileId, "hammer_handle", 1);
+            ModelUtil.registerItemWithOverride(generator, EtherologyModels.HAMMER, fileId, textures, override);
+
+            // MATERIAL_hammer_handle generator
+            EtherologyModels.HAMMER_HANDLE.upload(handleFileId, textures, generator.writer);
         });
     }
 

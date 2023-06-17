@@ -1,7 +1,0 @@
-{
-	"parent": "etherology:item/hammer",
-	"textures": {
-		"particle": "etherology:item/telder_steel_hammer",
-		"hammer": "etherology:item/telder_steel_hammer"
-	}
-}

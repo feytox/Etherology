@@ -14,7 +14,8 @@ import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 import java.util.Arrays;
 
 import static ru.feytox.etherology.registry.item.EItems.GLINT;
-import static ru.feytox.etherology.registry.item.ToolItems.*;
+import static ru.feytox.etherology.registry.item.ToolItems.GLAIVES;
+import static ru.feytox.etherology.registry.item.ToolItems.HAMMERS;
 
 @UtilityClass
 public class ModelPredicates {
@@ -33,7 +34,7 @@ public class ModelPredicates {
             if (!(entity instanceof IAnimatedPlayer player)) return 0;
             HammerState hammerState = player.getHammerState();
             return hammerState.equals(HammerState.IDLE) && HammerItem.checkHammer(player) ? 1 : 0;
-        }), WOODEN_HAMMER, STONE_HAMMER, IRON_HAMMER, GOLDEN_HAMMER, DIAMOND_HAMMER, NETHERITE_HAMMER, TELDER_STEEL_HAMMER, ETHRIL_HAMMER);
+        }), HAMMERS);
 
         register("glaive_handle", ((stack, world, entity, seed) -> {
             if (!(entity instanceof IAnimatedPlayer player)) return 0;

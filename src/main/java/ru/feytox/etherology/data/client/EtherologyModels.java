@@ -16,9 +16,12 @@ public class EtherologyModels {
     // models
     public static final Model GLAIVE_IN_HAND;
     public static final Model GLAIVE_IN_HAND_HANDLE;
+    public static final Model HAMMER;
+    public static final Model HAMMER_HANDLE;
 
     // texture keys
     public static final TextureKey GLAIVE = TextureKey.of("glaive");
+    public static final TextureKey HAMMER_KEY = TextureKey.of("hammer");
 
     private static Model item(String parent, TextureKey... requiredTextureKeys) {
         return new Model(Optional.of(new EIdentifier("item/" + parent)), Optional.empty(), requiredTextureKeys);
@@ -34,5 +37,7 @@ public class EtherologyModels {
     static {
         GLAIVE_IN_HAND = item("glaive_in_hand", GLAIVE);
         GLAIVE_IN_HAND_HANDLE = item("glaive_in_hand_handle", GLAIVE);
+        HAMMER = item("hammer", HAMMER_KEY);
+        HAMMER_HANDLE = item("hammer_handle", HAMMER_KEY);
     }
 }

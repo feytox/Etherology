@@ -50,6 +50,7 @@ public class ToolItems {
     public static final Item TELDER_STEEL_HAMMER = register("telder_steel_hammer", new HammerItem(TELDER_STEEL, 8, -3.4f));
     public static final Item DIAMOND_HAMMER = register("diamond_hammer", new HammerItem(DIAMOND, 8, -3.4f));
     public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.4f, new FabricItemSettings().fireproof()));
+    public static final Item[] HAMMERS = {WOODEN_HAMMER, STONE_HAMMER, IRON_HAMMER, GOLDEN_HAMMER, ETHRIL_HAMMER, TELDER_STEEL_HAMMER, DIAMOND_HAMMER, NETHERITE_HAMMER};
 
     // glaives
     public static final Item WOODEN_GLAIVE = register("wooden_glaive", new GlaiveItem(WOOD, 1, -3.2f));
