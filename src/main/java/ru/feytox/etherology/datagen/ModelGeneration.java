@@ -1,7 +1,5 @@
 package ru.feytox.etherology.datagen;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
@@ -10,19 +8,19 @@ import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.data.client.EtherologyModels;
+import ru.feytox.etherology.datagen.util.ModelOverride;
+import ru.feytox.etherology.datagen.util.ModelUtil;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
-import ru.feytox.etherology.mixin.ModelAccessor;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.EItems;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
+@SuppressWarnings("SameParameterValue")
 public class ModelGeneration extends FabricModelProvider {
     public ModelGeneration(FabricDataOutput output) {
         super(output);
@@ -51,8 +49,7 @@ public class ModelGeneration extends FabricModelProvider {
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
         registerItems(generator, Models.HANDHELD, WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, TELDER_STEEL_BATTLE_PICKAXE);
         // all glaives
-        registerGlaives(generator);
-        registerGlaivesHandle(generator);
+        registerInHandGlaives(generator);
         registerItems(generator, Models.HANDHELD, GLAIVES);
     }
 
@@ -68,47 +65,19 @@ public class ModelGeneration extends FabricModelProvider {
         Arrays.stream(items).forEach(item -> generator.register(item, suffix, model));
     }
 
-    private static void registerGlaivesHandle(ItemModelGenerator generator) {
+    private static void registerInHandGlaives(ItemModelGenerator generator) {
         Arrays.stream(GLAIVES).forEach(item -> {
-            EtherologyModels.GLAIVE_IN_HAND_HANDLE.upload(ModelIds.getItemSubModelId(item, "_in_hand_handle"), TextureMap.layer0(TextureMap.getSubId(item, "_in_hand")), generator.writer);
+            Identifier fileId = TextureMap.getSubId(item, "_in_hand");
+            Identifier handleFileId = TextureMap.getSubId(item, "_in_hand_handle");
+            TextureMap textures = TextureMap.of(EtherologyModels.GLAIVE, fileId);
+
+            // MATERIAL_glaive_in_hand generator
+            ModelOverride override = new ModelOverride(handleFileId, "glaive_handle", 1);
+            ModelUtil.registerItemWithOverride(generator, EtherologyModels.GLAIVE_IN_HAND, fileId, textures, override);
+
+            // MATERIAL_glaive_in_hand_handle generator
+            EtherologyModels.GLAIVE_IN_HAND_HANDLE.upload(handleFileId, textures, generator.writer);
         });
-    }
-
-    private static void registerGlaives(ItemModelGenerator generator) {
-        var modelCollector = generator.writer;
-        Model model = EtherologyModels.GLAIVE_IN_HAND;
-
-        List<Item> glaives = Arrays.stream(GLAIVES).toList();
-        for (Item item : glaives) {
-            TextureMap textures = TextureMap.layer0(TextureMap.getSubId(item, "_in_hand"));
-            Identifier id = ModelIds.getItemSubModelId(item, "_in_hand");
-            Identifier handleId = ModelIds.getItemSubModelId(item, "_in_hand_handle");
-
-            Map<TextureKey, Identifier> map = model.createTextureMap(textures);
-            modelCollector.accept(id, () -> {
-                JsonObject jsonObject = new JsonObject();
-                ((ModelAccessor) model).getParent().ifPresent((parentId) ->
-                        jsonObject.addProperty("parent", parentId.toString()));
-                if (!map.isEmpty()) {
-                    JsonObject jsonObject2 = new JsonObject();
-                    map.forEach((textureKey, textureId) ->
-                            jsonObject2.addProperty(textureKey.getName(), textureId.toString()));
-                    jsonObject.add("textures", jsonObject2);
-                }
-
-                JsonArray overrides = new JsonArray();
-                JsonObject glaive_override = new JsonObject();
-                JsonObject predicate = new JsonObject();
-
-                predicate.addProperty("glaive_handle", 1);
-                glaive_override.add("predicate", predicate);
-                glaive_override.addProperty("model", handleId.toString());
-                overrides.add(glaive_override);
-                jsonObject.add("overrides", overrides);
-
-                return jsonObject;
-            });
-        }
     }
 
     private static void registerSimpleBlock(BlockStateModelGenerator generator, Block... blocks) {

@@ -4,11 +4,11 @@
     {
       "model": "etherology:item/telder_steel_glaive_in_hand_handle",
       "predicate": {
-        "glaive_handle": 1
+        "glaive_handle": 1.0
       }
     }
   ],
   "textures": {
-    "layer0": "etherology:item/telder_steel_glaive_in_hand"
+    "glaive": "etherology:item/telder_steel_glaive_in_hand"
   }
 }

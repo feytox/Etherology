@@ -13,9 +13,12 @@ import java.util.Optional;
 
 @UtilityClass
 public class EtherologyModels {
-
+    // models
     public static final Model GLAIVE_IN_HAND;
     public static final Model GLAIVE_IN_HAND_HANDLE;
+
+    // texture keys
+    public static final TextureKey GLAIVE = TextureKey.of("glaive");
 
     private static Model item(String parent, TextureKey... requiredTextureKeys) {
         return new Model(Optional.of(new EIdentifier("item/" + parent)), Optional.empty(), requiredTextureKeys);
@@ -29,7 +32,7 @@ public class EtherologyModels {
     }
 
     static {
-        GLAIVE_IN_HAND = item("glaive_in_hand", TextureKey.LAYER0);
-        GLAIVE_IN_HAND_HANDLE = item("glaive_in_hand_handle", TextureKey.LAYER0);
+        GLAIVE_IN_HAND = item("glaive_in_hand", GLAIVE);
+        GLAIVE_IN_HAND_HANDLE = item("glaive_in_hand_handle", GLAIVE);
     }
 }
