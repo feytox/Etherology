@@ -40,5 +40,6 @@ public class EItems {
     public static void registerItems() {
         DecoBlockItems.registerAll();
         ToolItems.registerAll();
+        ArmorItems.registerAll();
     }
 }

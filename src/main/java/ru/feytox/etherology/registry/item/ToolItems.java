@@ -1,5 +1,6 @@
 package ru.feytox.etherology.registry.item;
 
+import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -14,6 +15,7 @@ import static net.minecraft.item.ToolMaterials.*;
 import static ru.feytox.etherology.registry.util.EtherToolMaterials.ETHRIL;
 import static ru.feytox.etherology.registry.util.EtherToolMaterials.TELDER_STEEL;
 
+@UtilityClass
 public class ToolItems {
     // ethril tools
     public static final Item ETHRIL_AXE = register("ethril_axe", new AxeItem(ETHRIL, 5, -3.0f, new FabricItemSettings()));
@@ -63,7 +65,7 @@ public class ToolItems {
     // custom shields
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
 
-    private static Item register(String id, Item item) {
+    public static Item register(String id, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), item);
     }
 

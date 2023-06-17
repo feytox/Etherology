@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
+// TODO: 16.06.2023 rename
 public class DecoBlockItems {
     // peach wood
     public static final Item PEACH_DOOR = registerBlockItem(new TallBlockItem(DecoBlocks.PEACH_DOOR, new FabricItemSettings()));

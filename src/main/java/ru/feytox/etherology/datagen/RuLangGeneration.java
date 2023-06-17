@@ -11,6 +11,7 @@ import java.nio.file.Path;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.CRATE;
+import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
@@ -164,6 +165,15 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(NETHERITE_GLAIVE, "Незеритовая глефа");
         builder.add(ETHRIL_GLAIVE, "Эфриловая глефа");
         builder.add(TELDER_STEEL_GLAIVE, "Телдер-стальная глефа");
+
+        builder.add(ETHRIL_HELMET, "Эфриловый шлем");
+        builder.add(ETHRIL_CHESTPLATE, "Эфриловый нагрудник");
+        builder.add(ETHRIL_LEGGINGS, "Эфриловые поножи");
+        builder.add(ETHRIL_BOOTS, "Эфриловые ботинки");
+        builder.add(TELDER_STEEL_HELMET, "Телдер-стальной шлем");
+        builder.add(TELDER_STEEL_CHESTPLATE, "Телдер-стальной нагрудник");
+        builder.add(TELDER_STEEL_LEGGINGS, "Телдер-стальные поножи");
+        builder.add(TELDER_STEEL_BOOTS, "Телдер-стальные ботинки");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
