@@ -17,6 +17,7 @@ import ru.feytox.etherology.registry.item.EItems;
 import java.util.Arrays;
 
 import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
+import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
@@ -53,6 +54,8 @@ public class ModelGeneration extends FabricModelProvider {
         registerItems(generator, Models.HANDHELD, GLAIVES);
         // all hammers
         registerHammers(generator);
+        // all armor
+        registerItems(generator, Models.GENERATED, ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, TELDER_STEEL_HELMET, TELDER_STEEL_CHESTPLATE, TELDER_STEEL_LEGGINGS, TELDER_STEEL_BOOTS);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
