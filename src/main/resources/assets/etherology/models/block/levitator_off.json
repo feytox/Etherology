@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "etherology:block/levitator_bottom",
+    "east": "etherology:block/levitator_side",
+    "north": "etherology:block/levitator_side",
+    "particle": "etherology:block/levitator_side",
+    "south": "etherology:block/levitator_side",
+    "up": "etherology:block/levitator_top_off",
+    "west": "etherology:block/levitator_side"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "multipart": [
+    {"apply": { "model": "etherology:block/levitator_off" }, "when": { "OR": [{"facing": "down", "powered": false}, {"facing": "down", "with_fuel": false}] }},
+    {"apply": { "model": "etherology:block/levitator_off", "x": 180 }, "when": { "OR": [{"facing": "up", "powered": false}, {"facing": "up", "with_fuel": false}] } },
+    {"apply": { "model": "etherology:block/levitator_off", "x": 90 }, "when": { "OR": [{"facing": "south", "powered": false}, {"facing": "south", "with_fuel": false}] }},
+    {"apply": { "model": "etherology:block/levitator_off", "x": 90, "y": 90 }, "when": { "OR": [{"facing": "west", "powered": false}, {"facing": "west", "with_fuel": false}] }},
+    {"apply": { "model": "etherology:block/levitator_off", "x": 90, "y": 180 }, "when": { "OR": [{"facing": "north", "powered": false}, {"facing": "north", "with_fuel": false}] }},
+    {"apply": { "model": "etherology:block/levitator_off", "x": 90, "y": 270 }, "when": { "OR": [{"facing": "east", "powered": false}, {"facing": "east", "with_fuel": false}] }},
+
+    {"apply": { "model": "etherology:block/levitator_push" }, "when": {"facing": "down", "powered": true, "with_fuel": true, "pushing": true}},
+    {"apply": { "model": "etherology:block/levitator_push", "x": 180 }, "when": {"facing": "up", "powered": true, "with_fuel": true, "pushing": true}},
+    {"apply": { "model": "etherology:block/levitator_push", "x": 90 }, "when": {"facing": "south", "powered": true, "with_fuel": true, "pushing": true}},
+    {"apply": { "model": "etherology:block/levitator_push", "x": 90, "y": 90 }, "when": {"facing": "west", "powered": true, "with_fuel": true, "pushing": true}},
+    {"apply": { "model": "etherology:block/levitator_push", "x": 90, "y": 180 }, "when": {"facing": "north", "powered": true, "with_fuel": true, "pushing": true}},
+    {"apply": { "model": "etherology:block/levitator_push", "x": 90, "y": 270 }, "when": {"facing": "east", "powered": true, "with_fuel": true, "pushing": true}},
+
+    {"apply": { "model": "etherology:block/levitator_attract" }, "when": {"facing": "down", "powered": true, "with_fuel": true, "pushing": false}},
+    {"apply": { "model": "etherology:block/levitator_attract", "x": 180 }, "when": {"facing": "up", "powered": true, "with_fuel": true, "pushing": false}},
+    {"apply": { "model": "etherology:block/levitator_attract", "x": 90 }, "when": {"facing": "south", "powered": true, "with_fuel": true, "pushing": false}},
+    {"apply": { "model": "etherology:block/levitator_attract", "x": 90, "y": 90 }, "when": {"facing": "west", "powered": true, "with_fuel": true, "pushing": false}},
+    {"apply": { "model": "etherology:block/levitator_attract", "x": 90, "y": 180 }, "when": {"facing": "north", "powered": true, "with_fuel": true, "pushing": false}},
+    {"apply": { "model": "etherology:block/levitator_attract", "x": 90, "y": 270 }, "when": {"facing": "east", "powered": true, "with_fuel": true, "pushing": false}}
+  ]
+}

@@ -35,6 +35,8 @@ import ru.feytox.etherology.block.furniture.FurSlabBlock;
 import ru.feytox.etherology.block.jug.AbstractJugBlock;
 import ru.feytox.etherology.block.jug.JugBlockEntity;
 import ru.feytox.etherology.block.jug.JugType;
+import ru.feytox.etherology.block.levitator.LevitatorBlock;
+import ru.feytox.etherology.block.levitator.LevitatorBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlock;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.block.ringMatrix.RingMatrixBlock;
@@ -190,7 +192,15 @@ public class EBlocks {
             FabricBlockEntityTypeBuilder.create(CrateBlockEntity::new, CRATE).build()
     );
 
+    public static final LevitatorBlock LEVITATOR = (LevitatorBlock) new LevitatorBlock().registerAll();
+    public static final BlockEntityType<LevitatorBlockEntity> LEVITATOR_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("levitator_block_entity"),
+            FabricBlockEntityTypeBuilder.create(LevitatorBlockEntity::new, LEVITATOR).build()
+    );
+
     public static void registerAll() {
         DecoBlocks.registerAll();
+        DevBlocks.registerAll();
     }
 }

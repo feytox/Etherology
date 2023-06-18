@@ -12,6 +12,7 @@ import ru.feytox.etherology.datagen.util.ModelOverride;
 import ru.feytox.etherology.datagen.util.ModelUtil;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.registry.block.DecoBlocks;
+import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.item.EItems;
 
 import java.util.Arrays;
@@ -35,9 +36,11 @@ public class ModelGeneration extends FabricModelProvider {
         registerBlockFamilies(generator, CLAY_TILE, BLUE_CLAY_TILE, GREEN_CLAY_TILE, RED_CLAY_TILE, YELLOW_CLAY_TILE);
         // all simple blocks
         registerSimpleBlock(generator, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.ETHRIL_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK);
-
+        // peach models
         generator.registerSingleton(DecoBlocks.PEACH_LEAVES, TexturedModel.LEAVES);
         generator.registerTintableCross(DecoBlocks.PEACH_SAPLING, BlockStateModelGenerator.TintType.NOT_TINTED);
+        // dev blocks
+        registerSimpleBlock(generator, DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK);
     }
 
     @Override

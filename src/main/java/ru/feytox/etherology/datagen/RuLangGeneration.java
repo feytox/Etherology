@@ -6,11 +6,13 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.datagen.util.BlockRuTranslationBuilder;
 import ru.feytox.etherology.datagen.util.RuTranslationPart;
 import ru.feytox.etherology.registry.block.DecoBlocks;
+import ru.feytox.etherology.registry.block.DevBlocks;
 
 import java.nio.file.Path;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.CRATE;
+import static ru.feytox.etherology.registry.block.EBlocks.LEVITATOR;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
@@ -174,6 +176,9 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(TELDER_STEEL_CHESTPLATE, "Телдер-стальной нагрудник");
         builder.add(TELDER_STEEL_LEGGINGS, "Телдер-стальные поножи");
         builder.add(TELDER_STEEL_BOOTS, "Телдер-стальные ботинки");
+
+        builder.add(DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK, "Творческий бесконечный источник-хранилище чистейшего очищенного эфира");
+        builder.add(LEVITATOR, "Левитатор");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

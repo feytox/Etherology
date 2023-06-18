@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "etherology:block/unlimited_ether_storage"
+    }
+  }
+}
