@@ -40,10 +40,10 @@ public class MovingParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
-        acceleratedMovingTick(0.4f, 0.5f, true);
+        acceleratedMovingTick(0.4f, 0.5f, true, false);
     }
 
-    public void acceleratedMovingTick(float speed_k, float start_speed, boolean deadOnEnd) {
+    public void acceleratedMovingTick(float speed_k, float start_speed, boolean deadOnEnd, boolean notAccelerated) {
         if (this.age++ >= this.maxAge) {
             this.markDead();
             return;
@@ -58,6 +58,7 @@ public class MovingParticle extends SpriteBillboardParticle {
 
         double fullPath = new Vec3d(endX-startX, endY-startY, endZ-startZ).length();
         double f = (fullPath - vecLength) / fullPath;
+        f = notAccelerated ? 0 : f;
         double deltaC = speed_k * Math.pow(f+start_speed, 3);
 
         if (deadOnEnd && vecLength <= 0.5f) {
@@ -99,6 +100,14 @@ public class MovingParticle extends SpriteBillboardParticle {
             double y = y1 + random.nextDouble() * delta * random.nextBetween(-1, 1);
             double z = z1 + random.nextDouble() * delta * random.nextBetween(-1, 1);
             world.addParticle(parameters, x, y, z, x2, y2, z2);
+        }
+    }
+
+    public static void spawnParticles(ClientWorld world, ParticleEffect parameters, int count, double delta, Vec3d centerPos, Vec3d moveVec, Random random) {
+        for (int i = 0; i < count; i++) {
+            Vec3d start = centerPos.add(random.nextDouble() * delta * random.nextBetween(-1, 1), random.nextDouble() * delta * random.nextBetween(-1, 1), random.nextDouble() * delta * random.nextBetween(-1, 1));
+            Vec3d end = start.add(moveVec);
+            world.addParticle(parameters, start.x, start.y, start.z, end.x, end.y, end.z);
         }
     }
 

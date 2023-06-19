@@ -83,6 +83,8 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(THUNDER_ZAP, PealWaveParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(PUSHING_PARTICLE, LightParticle.PushingFactory::new);
+        ParticleFactoryRegistry.getInstance().register(ATTRACT_PARTICLE, LightParticle.AttractFactory::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SOCKET, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(PEACH_DOOR, RenderLayer.getCutout());

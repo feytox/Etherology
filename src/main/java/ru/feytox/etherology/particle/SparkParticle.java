@@ -48,7 +48,7 @@ public class SparkParticle extends MovingParticle {
 
     @Override
     public void tick() {
-        acceleratedMovingTick(isSedimentary ? 0.01f : 0.4f, isSedimentary ? 0.1f : 0.5f, !isSedimentary);
+        acceleratedMovingTick(isSedimentary ? 0.01f : 0.4f, isSedimentary ? 0.1f : 0.5f, !isSedimentary, false);
         this.setSpriteForAge(spriteProvider);
 
         Vec3d vec = new Vec3d(endX-x, endY-y, endZ-z);

@@ -1,15 +1,11 @@
 package ru.feytox.etherology.particle;
 
-import ru.feytox.etherology.magic.zones.EssenceZones;
-import ru.feytox.etherology.util.feyapi.FeyRandom;
-import ru.feytox.etherology.util.feyapi.RGBColor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
@@ -17,6 +13,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.magic.zones.EssenceZones;
+import ru.feytox.etherology.util.feyapi.FeyRandom;
+import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class ZoneParticle extends MovingParticle {
     public static final int PARTICLE_RADIUS = 8;
@@ -67,18 +66,13 @@ public class ZoneParticle extends MovingParticle {
 
     @Override
     public void tick() {
-        acceleratedMovingTick(0.2f, 0.3f, true);
+        acceleratedMovingTick(0.2f, 0.3f, true, false);
         this.setSpriteForAge(spriteProvider);
     }
 
     @Override
     protected int getBrightness(float tint) {
         return 255;
-    }
-
-    @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Environment(EnvType.CLIENT)

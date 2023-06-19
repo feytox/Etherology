@@ -9,33 +9,32 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.enums.LightParticleType;
+import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class LightParticle extends MovingParticle {
     private final int startRed;
     private final int startGreen;
     private final int startBlue;
-    private final boolean isVital;
-    private final boolean isSpark;
+    private final LightParticleType lightType;
 
-    public LightParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i,
-                         boolean isVital, boolean isSpark) {
+    public LightParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, LightParticleType lightType) {
         super(clientWorld, d, e, f, g, h, i);
-        this.isVital = isVital;
-        this.isSpark = isSpark;
+        this.lightType = lightType;
 
-        if (!isVital && !isSpark) this.scale(0.3f);
-        else if (!isVital) this.scale(0.1f);
-        else {
-            Random random = Random.create();
-            float randFloat = random.nextFloat();
-            this.scale(0.05f + randFloat * 0.1f);
-            this.alpha *= 0.78f * randFloat;
+        RGBColor color = null;
+        switch (lightType) {
+            case SIMPLE -> color = new RGBColor(244, 194, 133);
+            case SPARK -> this.scale(0.1f);
+            case ATTRACT -> color = FeyColor.getRandomColor(RGBColor.of(0xCF70FF), RGBColor.of(0xCC3FFF), random);
+            case PUSHING -> color = FeyColor.getRandomColor(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D), random);
         }
-
-        if (!isVital && !isSpark) setRGB(new RGBColor(244, 194, 133));
+        if (color != null) {
+            setRGB(color);
+            this.scale(0.3f);
+        }
 
         this.startRed = MathHelper.floor(this.red * 255);
         this.startGreen = MathHelper.floor(this.green * 255);
@@ -49,19 +48,19 @@ public class LightParticle extends MovingParticle {
 
     @Override
     public void tick() {
-        if (!isVital && !isSpark) {
-            acceleratedMovingTick(0.1f, 0.5f, true);
+        if (!lightType.equals(LightParticleType.SPARK)) {
+            boolean isSimple = lightType.equals(LightParticleType.SIMPLE);
+            acceleratedMovingTick(isSimple ? 0.1f : 0.2f, 0.5f, true, !isSimple);
+            return;
         }
-        if (isVital | isSpark) super.tick();
-        if (isSpark) {
-            Vec3d vec = new Vec3d(endX-x, endY-y, endZ-z);
-            double vecLength = vec.length();
-            double fullPath = new Vec3d(endX-startX, endY-startY, endZ-startZ).length();
 
-            this.setRGB(startRed + (83 - startRed) * ((fullPath - vecLength) / fullPath),
-                    startGreen + (14 - startGreen) * ((fullPath - vecLength) / fullPath),
-                    startBlue + (255 - startBlue) * ((fullPath - vecLength) / fullPath));
-        }
+        super.tick();
+        Vec3d vec = new Vec3d(endX - x, endY - y, endZ - z);
+        double vecLength = vec.length();
+        double fullPath = new Vec3d(endX - startX, endY - startY, endZ - startZ).length();
+        this.setRGB(startRed + (83 - startRed) * ((fullPath - vecLength) / fullPath),
+                startGreen + (14 - startGreen) * ((fullPath - vecLength) / fullPath),
+                startBlue + (255 - startBlue) * ((fullPath - vecLength) / fullPath));
     }
 
     @Environment(EnvType.CLIENT)
@@ -75,7 +74,7 @@ public class LightParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, false, false);
+            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SIMPLE);
             particle.setSprite(this.spriteProvider);
             return particle;
         }
@@ -92,7 +91,41 @@ public class LightParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, false, true);
+            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SPARK);
+            particle.setSprite(this.spriteProvider);
+            return particle;
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static class PushingFactory implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider spriteProvider;
+
+        public PushingFactory(SpriteProvider spriteProvider) {
+            this.spriteProvider = spriteProvider;
+        }
+
+        @Nullable
+        @Override
+        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.PUSHING);
+            particle.setSprite(this.spriteProvider);
+            return particle;
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static class AttractFactory implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider spriteProvider;
+
+        public AttractFactory(SpriteProvider spriteProvider) {
+            this.spriteProvider = spriteProvider;
+        }
+
+        @Nullable
+        @Override
+        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.ATTRACT);
             particle.setSprite(this.spriteProvider);
             return particle;
         }

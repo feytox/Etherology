@@ -5,23 +5,27 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherStorage;
+import ru.feytox.etherology.particle.MovingParticle;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import java.util.List;
 
 import static net.minecraft.state.property.Properties.FACING;
 import static net.minecraft.state.property.Properties.POWER;
+import static ru.feytox.etherology.Etherology.ATTRACT_PARTICLE;
+import static ru.feytox.etherology.Etherology.PUSHING_PARTICLE;
 import static ru.feytox.etherology.block.levitator.LevitatorBlock.PUSHING;
 import static ru.feytox.etherology.registry.block.EBlocks.LEVITATOR_BLOCK_ENTITY;
 
 public class LevitatorBlockEntity extends TickableBlockEntity implements EtherStorage {
-    private static final int FUEL_TIME = 600;
+    private static final int FUEL_TIME = 100;
     private int fuel = 0;
     private float storedEther = 0;
 
@@ -39,7 +43,6 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        // TODO: 18.06.2023 tickParticles (or do it using another ticker)
         tickLevitation(world, pos, state);
     }
 
@@ -65,19 +68,30 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
         if (power <= 0) return;
 
         Vec3i directionVec = state.get(FACING).getVector().multiply(-1);
-        int distance = MathHelper.ceil(power / 2f);
-        BlockBox levitationBlockBox = BlockBox.create(pos.add(directionVec), pos.add(directionVec.multiply(distance)));
+        int length = MathHelper.ceil(power / 2f);
+        BlockBox levitationBlockBox = BlockBox.create(pos.add(directionVec), pos.add(directionVec.multiply(length)));
         Box levitationBox = Box.from(levitationBlockBox);
+
+        boolean isPushing = state.get(PUSHING);
+        if (world.isClient && world.getTime() % 10 == 0) {
+            BlockPos targetPos = isPushing ? pos.add(directionVec.multiply(length +1)) : pos;
+            tickParticles((ClientWorld) world, levitationBlockBox, targetPos, isPushing);
+        }
 
         List<Entity> entities = world.getNonSpectatingEntities(Entity.class, levitationBox);
         if (entities.isEmpty()) return;
 
-        boolean isPushing = state.get(PUSHING);
-        directionVec = isPushing ? directionVec : directionVec.multiply(-1);
-        Vec3d levitationVec = Vec3d.of(directionVec).multiply(0.1);
+        Vec3d leviVec = Vec3d.of(directionVec);
+        Vec3d maxPos = pos.toCenterPos().add(leviVec.multiply(0.5));
+        leviVec = isPushing ? leviVec : leviVec.multiply(-1);
+        Vec3d minLevitation = leviVec.multiply(0.05);
         for (Entity entity : entities) {
+            double distance = entity.getPos().distanceTo(maxPos);
+            double speedK = Math.max(0, (length - distance) / length);
+            Vec3d speedVec = minLevitation.multiply(1 + 2 * speedK);
+
             Vec3d oldVelocity = entity.getVelocity();
-            Vec3d newVelocity = oldVelocity.add(levitationVec);
+            Vec3d newVelocity = oldVelocity.add(speedVec);
             entity.setVelocity(newVelocity);
 
             // TODO: 18.06.2023 clamping
@@ -88,6 +102,17 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
                 entity.setVelocity(oldVelocity);
             }
         }
+    }
+
+    private void tickParticles(ClientWorld world, BlockBox box, BlockPos targetPos, boolean isPushing) {
+        DefaultParticleType particleType = isPushing ? PUSHING_PARTICLE : ATTRACT_PARTICLE;
+        Vec3d target = targetPos.toCenterPos();
+
+        BlockPos.iterate(box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ()).forEach(blockPos -> {
+            Vec3d centerPos = blockPos.toCenterPos();
+            Vec3d moveVec = target.subtract(centerPos);
+            MovingParticle.spawnParticles(world, particleType, 1, 0.5, centerPos, moveVec, world.random);
+        });
     }
 
     @Override
