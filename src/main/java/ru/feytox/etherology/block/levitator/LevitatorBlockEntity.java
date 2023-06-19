@@ -74,8 +74,9 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
 
         boolean isPushing = state.get(PUSHING);
         if (world.isClient && world.getTime() % 10 == 0) {
-            BlockPos targetPos = isPushing ? pos.add(directionVec.multiply(length +1)) : pos;
-            tickParticles((ClientWorld) world, levitationBlockBox, targetPos, isPushing);
+            BlockPos startPos = isPushing ? pos.add(directionVec) : pos.add(directionVec.multiply(length));
+            BlockPos targetPos = isPushing ? pos.add(directionVec.multiply(length+1)) : pos;
+            tickParticles((ClientWorld) world, startPos, targetPos, isPushing);
         }
 
         List<Entity> entities = world.getNonSpectatingEntities(Entity.class, levitationBox);
@@ -104,15 +105,13 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
         }
     }
 
-    private void tickParticles(ClientWorld world, BlockBox box, BlockPos targetPos, boolean isPushing) {
+    private void tickParticles(ClientWorld world, BlockPos startPos, BlockPos targetPos, boolean isPushing) {
         DefaultParticleType particleType = isPushing ? PUSHING_PARTICLE : ATTRACT_PARTICLE;
         Vec3d target = targetPos.toCenterPos();
 
-        BlockPos.iterate(box.getMinX(), box.getMinY(), box.getMinZ(), box.getMaxX(), box.getMaxY(), box.getMaxZ()).forEach(blockPos -> {
-            Vec3d centerPos = blockPos.toCenterPos();
-            Vec3d moveVec = target.subtract(centerPos);
-            MovingParticle.spawnParticles(world, particleType, 1, 0.5, centerPos, moveVec, world.random);
-        });
+        Vec3d centerPos = startPos.toCenterPos();
+        Vec3d moveVec = target.subtract(centerPos);
+        MovingParticle.spawnParticles(world, particleType, 2, 0.5, centerPos, moveVec, world.random);
     }
 
     @Override

@@ -19,17 +19,33 @@ public class LightParticle extends MovingParticle {
     private final int startGreen;
     private final int startBlue;
     private final LightParticleType lightType;
+    private final SpriteProvider spriteProvider;
 
-    public LightParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, LightParticleType lightType) {
+    public LightParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, LightParticleType lightType, SpriteProvider spriteProvider) {
         super(clientWorld, d, e, f, g, h, i);
         this.lightType = lightType;
+        this.spriteProvider = spriteProvider;
 
         RGBColor color = null;
         switch (lightType) {
-            case SIMPLE -> color = new RGBColor(244, 194, 133);
-            case SPARK -> this.scale(0.1f);
-            case ATTRACT -> color = FeyColor.getRandomColor(RGBColor.of(0xCF70FF), RGBColor.of(0xCC3FFF), random);
-            case PUSHING -> color = FeyColor.getRandomColor(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D), random);
+            case SIMPLE -> {
+                color = new RGBColor(244, 194, 133);
+                setSprite(spriteProvider);
+            }
+            case SPARK -> {
+                this.scale(0.1f);
+                setSprite(spriteProvider);
+            }
+            case ATTRACT -> {
+                color = FeyColor.getRandomColor(RGBColor.of(0xCF70FF), RGBColor.of(0xCC3FFF), random);
+                setSpriteForAge(spriteProvider);
+                maxAge = 320;
+            }
+            case PUSHING -> {
+                color = FeyColor.getRandomColor(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D), random);
+                setSpriteForAge(spriteProvider);
+                maxAge = 320;
+            }
         }
         if (color != null) {
             setRGB(color);
@@ -50,7 +66,9 @@ public class LightParticle extends MovingParticle {
     public void tick() {
         if (!lightType.equals(LightParticleType.SPARK)) {
             boolean isSimple = lightType.equals(LightParticleType.SIMPLE);
-            acceleratedMovingTick(isSimple ? 0.1f : 0.2f, 0.5f, true, !isSimple);
+            boolean deadOnEnd = lightType.equals(LightParticleType.SIMPLE) || lightType.equals(LightParticleType.ATTRACT);
+            if (!isSimple) setSpriteForAge(spriteProvider);
+            acceleratedMovingTick(isSimple ? 0.1f : 0.2f, 0.5f, deadOnEnd, !isSimple);
             return;
         }
 
@@ -74,9 +92,7 @@ public class LightParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SIMPLE);
-            particle.setSprite(this.spriteProvider);
-            return particle;
+            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SIMPLE, this.spriteProvider);
         }
     }
 
@@ -91,9 +107,7 @@ public class LightParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SPARK);
-            particle.setSprite(this.spriteProvider);
-            return particle;
+            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SPARK, this.spriteProvider);
         }
     }
 
@@ -108,9 +122,7 @@ public class LightParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.PUSHING);
-            particle.setSprite(this.spriteProvider);
-            return particle;
+            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.PUSHING, this.spriteProvider);
         }
     }
 
@@ -125,9 +137,7 @@ public class LightParticle extends MovingParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            LightParticle particle = new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.ATTRACT);
-            particle.setSprite(this.spriteProvider);
-            return particle;
+            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.ATTRACT, this.spriteProvider);
         }
     }
 }
