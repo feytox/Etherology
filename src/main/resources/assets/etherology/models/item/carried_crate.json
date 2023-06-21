@@ -1,3 +1,62 @@
 {
-  "parent": "minecraft:block/diamond_ore"
+	"credit": "Made with Blockbench",
+	"texture_size": [128, 128],
+	"textures": {
+		"particle": "etherology:block/crate_particle",
+		"crate": "etherology:block/crate"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 3],
+			"to": [15, 10, 13],
+			"faces": {
+				"north": {"uv": [11.25, 14.75, 13, 16], "texture": "#crate"},
+				"east": {"uv": [10, 14.75, 11.25, 16], "texture": "#crate"},
+				"south": {"uv": [14.25, 14.75, 16, 16], "texture": "#crate"},
+				"west": {"uv": [13, 14.75, 14.25, 16], "texture": "#crate"},
+				"up": {"uv": [13, 14.75, 11.25, 13.5], "texture": "#crate"},
+				"down": {"uv": [14.75, 13.5, 13, 14.75], "texture": "#crate"}
+			}
+		},
+		{
+			"from": [7, 10, 4],
+			"to": [9, 11, 5],
+			"faces": {
+				"north": {"uv": [12, 14.5, 12.25, 14.625], "texture": "#crate"},
+				"east": {"uv": [12.125, 14.5, 12, 14.625], "texture": "#crate"},
+				"south": {"uv": [12.25, 14.5, 12, 14.625], "texture": "#crate"},
+				"west": {"uv": [12.25, 14.5, 12.125, 14.625], "texture": "#crate"},
+				"up": {"uv": [12.25, 14.5, 12, 14.625], "texture": "#crate"}
+			}
+		},
+		{
+			"from": [0, 5, 7],
+			"to": [1, 6, 9],
+			"faces": {
+				"north": {"uv": [13.5, 15.25, 13.625, 15.375], "texture": "#crate"},
+				"south": {"uv": [13.625, 15.25, 13.75, 15.375], "texture": "#crate"},
+				"west": {"uv": [13.5, 15.25, 13.75, 15.375], "texture": "#crate"},
+				"up": {"uv": [13.5, 15.25, 13.75, 15.375], "rotation": 90, "texture": "#crate"},
+				"down": {"uv": [13.75, 15.25, 13.5, 15.375], "rotation": 90, "texture": "#crate"}
+			}
+		},
+		{
+			"from": [15, 5, 7],
+			"to": [16, 6, 9],
+			"faces": {
+				"north": {"uv": [10.625, 15.25, 10.75, 15.375], "texture": "#crate"},
+				"east": {"uv": [10.5, 15.25, 10.75, 15.375], "texture": "#crate"},
+				"south": {"uv": [10.5, 15.25, 10.625, 15.375], "texture": "#crate"},
+				"up": {"uv": [10.75, 15.25, 10.5, 15.375], "rotation": 90, "texture": "#crate"},
+				"down": {"uv": [10.5, 15.25, 10.75, 15.375], "rotation": 90, "texture": "#crate"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [60, 0, 0],
+			"translation": [-5.5, 1, 2],
+			"scale": [0.75, 0.75, 0.75]
+		}
+	}
 }
