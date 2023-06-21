@@ -28,6 +28,7 @@ import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
 import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.registry.item.ModelPredicates;
+import ru.feytox.etherology.registry.particle.ClientParticleTypes;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.gecko.EGeoNetwork;
 
@@ -48,6 +49,7 @@ public class EtherologyClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
 
         BlockEntityRendererFactories.register(CRUCIBLE_BLOCK_ENTITY, CrucibleBlockRenderer::new);
