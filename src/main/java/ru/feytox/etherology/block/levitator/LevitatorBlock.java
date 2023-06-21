@@ -53,7 +53,7 @@ public class LevitatorBlock extends FacingBlock implements RegistrableBlock, Blo
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction facing = ctx.getSide().getOpposite();
+        Direction facing = ctx.getPlayerLookDirection();
         int power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
         return getDefaultState().with(POWER, power).with(FACING, facing).with(POWERED, power > 0);
     }

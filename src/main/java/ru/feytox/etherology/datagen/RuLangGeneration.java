@@ -177,7 +177,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(TELDER_STEEL_LEGGINGS, "Телдер-стальные поножи");
         builder.add(TELDER_STEEL_BOOTS, "Телдер-стальные ботинки");
 
-        builder.add(DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK, "Творческий бесконечный источник-хранилище чистейшего очищенного эфира");
+        builder.add(DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK, "Творческий бесконечный источник эфира");
         builder.add(LEVITATOR, "Левитатор");
 
         try {
