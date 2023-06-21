@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.mixin.ItemEntityAccessor;
 import ru.feytox.etherology.particle.ItemMovingParticle;
-import ru.feytox.etherology.particle.MovingParticle;
+import ru.feytox.etherology.particle.OldMovingParticle;
 import ru.feytox.etherology.util.nbt.NbtPos;
 
 import java.util.UUID;
@@ -99,9 +99,9 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
             MinecraftClient.getInstance().particleManager.addParticle(particle);
         }
 
-        MovingParticle.spawnParticles(world, LIGHT_SPARK, random.nextBetween(10, 25), 0.35,
+        OldMovingParticle.spawnParticles(world, LIGHT_SPARK, random.nextBetween(10, 25), 0.35,
                 pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
-        MovingParticle.spawnParticles(world, SPARK, random.nextBetween(1, 5), 0.35,
+        OldMovingParticle.spawnParticles(world, SPARK, random.nextBetween(1, 5), 0.35,
                 pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
     }
 

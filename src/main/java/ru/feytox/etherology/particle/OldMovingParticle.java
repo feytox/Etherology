@@ -13,7 +13,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class MovingParticle extends SpriteBillboardParticle {
+public class OldMovingParticle extends SpriteBillboardParticle {
     protected final double startX;
     protected final double startY;
     protected final double startZ;
@@ -22,7 +22,7 @@ public class MovingParticle extends SpriteBillboardParticle {
     protected double endZ;
 
 
-    public MovingParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
+    public OldMovingParticle(ClientWorld clientWorld, double x0, double y0, double z0, double x1, double y1, double z1) {
         // end coords = velocity
         super(clientWorld, x0, y0, z0, x1, y1, z1);
         this.x = x0;
@@ -88,7 +88,7 @@ public class MovingParticle extends SpriteBillboardParticle {
         @Nullable
         @Override
         public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            MovingParticle particle = new MovingParticle(world, x, y, z, velocityX, velocityY, velocityZ);
+            OldMovingParticle particle = new OldMovingParticle(world, x, y, z, velocityX, velocityY, velocityZ);
             particle.setSprite(this.spriteProvider);
             return particle;
         }

@@ -9,12 +9,14 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 @UtilityClass
 public class SimpleArgs {
-    public static final ParticleArg<Vec3d> VEC3D;
+    public static final Supplier<ParticleArg<Vec3d>> VEC3D;
 
     static {
-        VEC3D = new ParticleArg<>() {
+        VEC3D = () -> new ParticleArg<>() {
             @Override
             public Vec3d read(StringReader reader) throws CommandSyntaxException {
                 double x = CoordinateArgument.parse(reader).toAbsoluteCoordinate(0);

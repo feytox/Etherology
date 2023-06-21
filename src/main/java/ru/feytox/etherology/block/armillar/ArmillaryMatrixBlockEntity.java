@@ -41,7 +41,7 @@ import ru.feytox.etherology.item.MatrixRing;
 import ru.feytox.etherology.mixin.ItemEntityAccessor;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.particle.ElectricityParticle;
-import ru.feytox.etherology.particle.MovingParticle;
+import ru.feytox.etherology.particle.OldMovingParticle;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.EArmillaryRecipe;
 import ru.feytox.etherology.tickers.ITicker;
@@ -326,7 +326,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 
         Vec3d center = getCenterPos();
 
-        MovingParticle.spawnParticles(world, ElectricityParticle.getParticleType(rand), rand.nextBetween(1, 3), 1,
+        OldMovingParticle.spawnParticles(world, ElectricityParticle.getParticleType(rand), rand.nextBetween(1, 3), 1,
                 center.x, center.y, center.z, instabilityMulti, 20, 0, rand);
     }
 
@@ -411,21 +411,21 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
                 PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, false);
                 if (player == null) return;
 
-                MovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, player,
+                OldMovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, player,
                         center.x, center.y, center.z, rand);
 
                 return;
             }
 
             Entity nearestEntity = nearestEntities.get(0);
-            MovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, nearestEntity,
+            OldMovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, nearestEntity,
                     center.x, center.y, center.z, rand);
 
         } else {
             PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
             if (player == null) return;
 
-            MovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, player,
+            OldMovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, player,
                     center.x, center.y, center.z, rand);
         }
     }

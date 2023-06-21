@@ -5,7 +5,7 @@ import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 
-public class ItemMovingParticle extends MovingParticle {
+public class ItemMovingParticle extends OldMovingParticle {
     private final float sampleU;
     private final float sampleV;
 

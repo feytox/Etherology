@@ -16,7 +16,7 @@ import org.joml.Vector3f;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.particle.MovingParticle;
+import ru.feytox.etherology.particle.OldMovingParticle;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import javax.annotation.Nullable;
@@ -65,7 +65,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
                 .add(0, random.nextFloat()*0.5f, 0);
         Vec3d endPos = new Vec3d(endVec).add(pos.toCenterPos());
 
-        MovingParticle.spawnParticles(world, LIGHT, 1, 0.07d,
+        OldMovingParticle.spawnParticles(world, LIGHT, 1, 0.07d,
                 startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, random);
     }
 

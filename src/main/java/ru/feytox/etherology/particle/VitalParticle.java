@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
-public class VitalParticle extends MovingParticle {
+public class VitalParticle extends OldMovingParticle {
     private double currentAngle = 0.1 * Math.PI;
     private int direction = -1;
     private Vec3d trueVec;

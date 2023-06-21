@@ -13,7 +13,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.FVec3d;
 
-public class LightVitalParticle extends MovingParticle {
+public class LightVitalParticle extends OldMovingParticle {
     private double passedWay = 0;
     private final FVec3d fullPath;
     private final int wavesType;

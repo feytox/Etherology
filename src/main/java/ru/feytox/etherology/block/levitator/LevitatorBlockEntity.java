@@ -5,22 +5,21 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.particle.MovingParticle;
+import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import java.util.List;
 
 import static net.minecraft.state.property.Properties.FACING;
 import static net.minecraft.state.property.Properties.POWER;
-import static ru.feytox.etherology.Etherology.ATTRACT_PARTICLE;
-import static ru.feytox.etherology.Etherology.PUSHING_PARTICLE;
 import static ru.feytox.etherology.block.levitator.LevitatorBlock.PUSHING;
 import static ru.feytox.etherology.registry.block.EBlocks.LEVITATOR_BLOCK_ENTITY;
 
@@ -106,12 +105,17 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
     }
 
     private void tickParticles(ClientWorld world, BlockPos startPos, BlockPos targetPos, boolean isPushing) {
-        DefaultParticleType particleType = isPushing ? PUSHING_PARTICLE : ATTRACT_PARTICLE;
+        LightParticleType lightType = isPushing ? LightParticleType.PUSHING : LightParticleType.ATTRACT;
         Vec3d target = targetPos.toCenterPos();
 
-        Vec3d centerPos = startPos.toCenterPos();
-        Vec3d moveVec = target.subtract(centerPos);
-        MovingParticle.spawnParticles(world, particleType, 2, 0.5, centerPos, moveVec, world.random);
+        BlockPos.iterate(startPos, targetPos).forEach(blockPos -> {
+            if (blockPos.equals(targetPos)) return;
+            Vec3d centerPos = blockPos.toCenterPos();
+            Vec3d moveVec = target.subtract(centerPos);
+
+            LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, lightType, moveVec);
+            effect.spawnParticles(world, 1, 0.5, centerPos);
+        });
     }
 
     @Override

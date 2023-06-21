@@ -17,7 +17,7 @@ import ru.feytox.etherology.magic.zones.EssenceZones;
 import ru.feytox.etherology.util.feyapi.FeyRandom;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class ZoneParticle extends MovingParticle {
+public class ZoneParticle extends OldMovingParticle {
     public static final int PARTICLE_RADIUS = 8;
     private final SpriteProvider spriteProvider;
 
@@ -145,7 +145,7 @@ public class ZoneParticle extends MovingParticle {
 
         int count = MathHelper.ceil(5 * k);
 
-        MovingParticle.spawnParticles(world, zoneType.getParticleType(), count, 0.5,
+        OldMovingParticle.spawnParticles(world, zoneType.getParticleType(), count, 0.5,
                 startPos.getX()+0.5, startPos.getY()+0.5, startPos.getZ()+0.5,
                 endPos.getX()+0.5, endPos.getY()+0.5, endPos.getZ()+0.5, random);
     }

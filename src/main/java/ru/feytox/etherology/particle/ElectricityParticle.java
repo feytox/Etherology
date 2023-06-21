@@ -14,7 +14,7 @@ import ru.feytox.etherology.util.feyapi.RGBColor;
 import static ru.feytox.etherology.Etherology.ELECTRICITY1;
 import static ru.feytox.etherology.Etherology.ELECTRICITY2;
 
-public class ElectricityParticle extends MovingParticle {
+public class ElectricityParticle extends OldMovingParticle {
     protected final SpriteProvider spriteProvider;
 
     public ElectricityParticle(ClientWorld clientWorld, double d, double e, double f, double instability, double isCenter, double isPeal, SpriteProvider spriteProvider) {

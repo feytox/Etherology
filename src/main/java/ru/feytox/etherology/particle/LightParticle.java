@@ -1,51 +1,53 @@
 package ru.feytox.etherology.particle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.LightParticleType;
+import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.utility.MovingParticle;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class LightParticle extends MovingParticle {
+// TODO: 21.06.2023 simplify
+public class LightParticle extends MovingParticle<LightParticleEffect> {
     private final int startRed;
     private final int startGreen;
     private final int startBlue;
     private final LightParticleType lightType;
-    private final SpriteProvider spriteProvider;
+    private final Vec3d endPos;
 
-    public LightParticle(ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, LightParticleType lightType, SpriteProvider spriteProvider) {
-        super(clientWorld, d, e, f, g, h, i);
-        this.lightType = lightType;
-        this.spriteProvider = spriteProvider;
+    public LightParticle(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
+        super(clientWorld, x, y, z, parameters, spriteProvider);
+        this.lightType = parameters.getLightType();
 
+        Vec3d moveVec = parameters.getMoveVec();
         RGBColor color = null;
         switch (lightType) {
             case SIMPLE -> {
                 color = new RGBColor(244, 194, 133);
                 setSprite(spriteProvider);
+                endPos = moveVec;
             }
             case SPARK -> {
                 this.scale(0.1f);
                 setSprite(spriteProvider);
+                endPos = moveVec;
             }
             case ATTRACT -> {
                 color = FeyColor.getRandomColor(RGBColor.of(0xCF70FF), RGBColor.of(0xCC3FFF), random);
                 setSpriteForAge(spriteProvider);
-                maxAge = 320;
+                maxAge = 40;
+                endPos = startPos.add(moveVec);
             }
             case PUSHING -> {
                 color = FeyColor.getRandomColor(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D), random);
                 setSpriteForAge(spriteProvider);
-                maxAge = 320;
+                maxAge = 40;
+                endPos = startPos.add(moveVec);
             }
+            default -> endPos = moveVec;
         }
         if (color != null) {
             setRGB(color);
@@ -58,86 +60,22 @@ public class LightParticle extends MovingParticle {
     }
 
     @Override
-    protected int getBrightness(float tint) {
-        return 255;
-    }
-
-    @Override
     public void tick() {
         if (!lightType.equals(LightParticleType.SPARK)) {
             boolean isSimple = lightType.equals(LightParticleType.SIMPLE);
-            boolean deadOnEnd = lightType.equals(LightParticleType.SIMPLE) || lightType.equals(LightParticleType.ATTRACT);
-            if (!isSimple) setSpriteForAge(spriteProvider);
-            acceleratedMovingTick(isSimple ? 0.1f : 0.2f, 0.5f, deadOnEnd, !isSimple);
+            if (!isSimple) {
+                simpleMovingTick(0.025f, endPos, lightType.equals(LightParticleType.ATTRACT));
+                setSpriteForAge(spriteProvider);
+            }
+            else acceleratedMovingTick(0.1f, 0.5f, true, endPos);
             return;
         }
 
-        super.tick();
-        Vec3d vec = new Vec3d(endX - x, endY - y, endZ - z);
-        double vecLength = vec.length();
-        double fullPath = new Vec3d(endX - startX, endY - startY, endZ - startZ).length();
-        this.setRGB(startRed + (83 - startRed) * ((fullPath - vecLength) / fullPath),
-                startGreen + (14 - startGreen) * ((fullPath - vecLength) / fullPath),
-                startBlue + (255 - startBlue) * ((fullPath - vecLength) / fullPath));
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class SimpleFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public SimpleFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SIMPLE, this.spriteProvider);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class SparkFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public SparkFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.SPARK, this.spriteProvider);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class PushingFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public PushingFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.PUSHING, this.spriteProvider);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static class AttractFactory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public AttractFactory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new LightParticle(world, x, y, z, velocityX, velocityY, velocityZ, LightParticleType.ATTRACT, this.spriteProvider);
-        }
+        acceleratedMovingTick(0.4f, 0.5f, true, endPos);
+        double pathLen = getPathVec(endPos).length();
+        double fullPathLen = getFullPathVec(endPos).length();
+        this.setRGB(startRed + (83 - startRed) * ((fullPathLen - pathLen) / fullPathLen),
+                startGreen + (14 - startGreen) * ((fullPathLen - pathLen) / fullPathLen),
+                startBlue + (255 - startBlue) * ((fullPathLen - pathLen) / fullPathLen));
     }
 }

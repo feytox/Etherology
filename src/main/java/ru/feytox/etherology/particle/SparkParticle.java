@@ -18,7 +18,7 @@ import ru.feytox.etherology.util.feyapi.RGBColor;
 
 import java.util.List;
 
-public class SparkParticle extends MovingParticle {
+public class SparkParticle extends OldMovingParticle {
     private static SpriteProvider spriteProvider;
     private int startRed;
     private int startGreen;
