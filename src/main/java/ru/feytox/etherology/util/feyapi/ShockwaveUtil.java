@@ -47,14 +47,14 @@ public class ShockwaveUtil {
         World world = attacker.getWorld();
         Vec3d shockPos = getShockPos(attacker.getYaw(), attacker.getPos());
 
-        Box attackBox = Box.of(shockPos, 8.0, 2, 8.0);
+        Box attackBox = Box.of(shockPos, 6.0, 2.0, 6.0);
         List<LivingEntity> attackedEntities = world.getNonSpectatingEntities(LivingEntity.class, attackBox);
         attackedEntities.sort(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(shockPos)));
 
         float f = (float) attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
         boolean moreDamage = attacker.fallDistance > 0.0F && !attacker.isOnGround() && !attacker.isClimbing() && !attacker.isTouchingWater() && !attacker.hasStatusEffect(StatusEffects.BLINDNESS) && !attacker.hasVehicle() && !attacker.isSprinting();
         if (moreDamage) {
-            f *= 1.5f;
+            f *= 1.2f;
         }
         float knockback = EnchantmentHelper.getKnockback(attacker);
         if (attacker.isSprinting()) knockback++;
@@ -70,7 +70,7 @@ public class ShockwaveUtil {
 
             Vec3d dVec = shockPos.subtract(target.getPos());
             double vecLen = dVec.length();
-            double attackK = 1 - vecLen / 4;
+            double attackK = Math.max(1 - vecLen / 3, 0);
             float g = EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), target.getGroup());
             f += g;
 
@@ -83,7 +83,7 @@ public class ShockwaveUtil {
                     target.setVelocity(target.getVelocity().multiply(1, 2.5, 1));
                 }
             } else {
-                f *= 0.5f * attackK;
+                f *= 0.25f * attackK * attackK;
             }
 
             if (targetForPeal == null || targetForPeal.isDead()) {
@@ -96,7 +96,7 @@ public class ShockwaveUtil {
             if (knockback > 0) {
                 double knockSin = dVec.x / vecLen;
                 double knockCos = dVec.z / vecLen;
-                target.takeKnockback(0.75 * knockback * attackK, knockSin, knockCos);
+                target.takeKnockback(0.6 * knockback * attackK, knockSin, knockCos);
             }
 
             if (target instanceof ServerPlayerEntity serverPlayerTarget && target.velocityModified) {
@@ -108,12 +108,12 @@ public class ShockwaveUtil {
 
         int pealLevel = EnchantmentHelper.getEquipmentLevel(PealEnchantment.INSTANCE.get(), attacker);
         if (pealLevel > 0 && targetForPeal != null) {
-            Executor executor = CompletableFuture.delayedExecutor(500, TimeUnit.MILLISECONDS);
+            Executor executor = CompletableFuture.delayedExecutor(650, TimeUnit.MILLISECONDS);
             final Entity pealTarget = targetForPeal;
             final boolean isClientPlayer = attacker instanceof ClientPlayerEntity;
             CompletableFuture.runAsync(() -> {
-                int targets = doPealDamage(world, attacker, pealTarget, 2 + pealLevel, null, isClientPlayer);
-                if (targets > 0) world.playSound(null, pealTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
+                int targets = doPealDamage(world, attacker, pealTarget, pealLevel, null, isClientPlayer);
+                if (targets > 2 && !world.isClient) world.playSound(null, pealTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
             }, executor);
         }
 
@@ -157,21 +157,22 @@ public class ShockwaveUtil {
         if (memo == null) {
             memo = new HashMap<>();
             memo.put(attacker.getId(), true);
+            memo.put(target.getId(), true);
         }
-        if (memo.size() >= 8) return memo.size();
+        if (memo.size() >= 9) return memo.size();
 
-        Box pealBox = Box.of(target.getPos(), 6, 2, 6);
+        Box pealBox = Box.of(target.getPos(), 4, 2, 4);
         List<? extends Entity> pealedEntities = world.getEntitiesByType(target.getType(), pealBox, EntityPredicates.EXCEPT_SPECTATOR);
 
         for (Entity pealTarget : pealedEntities) {
             if (!pealTarget.isAttackable()) continue;
-            if (pealTarget.equals(attacker)) continue;
-            if (pealTarget.equals(target)) continue;
             if (pealTarget.handleAttack(attacker)) continue;
             if (memo.containsKey(pealTarget.getId())) continue;
-            if (memo.size() >= 8) break;
+            if (memo.size() >= 9) break;
 
             pealTarget.damage(DamageSource.player(attacker), damage);
+            damage *= 0.8f;
+
             if (world.isClient && isClientPlayer) {
                 PealWaveParticle.spawnWave((ClientWorld) world, target, pealTarget);
             } else if (!world.isClient) {
