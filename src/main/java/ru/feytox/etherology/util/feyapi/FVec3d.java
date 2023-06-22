@@ -4,6 +4,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
+@Deprecated
 public class FVec3d extends Vec3d {
     public FVec3d(double x, double y, double z) {
         super(x, y, z);
@@ -16,16 +17,6 @@ public class FVec3d extends Vec3d {
 
     public static FVec3d of(Vec3i vec3i) {
         return of(Vec3d.of(vec3i));
-    }
-
-    @Override
-    public FVec3d multiply(double value) {
-        return (FVec3d) super.multiply(value);
-    }
-
-    private static float getAngle(double c, double cProjection) {
-        double cos = c / cProjection;
-        return (float) Math.acos(cos);
     }
 
     public void write(PacketByteBuf buf) {

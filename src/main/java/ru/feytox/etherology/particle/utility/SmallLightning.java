@@ -155,7 +155,9 @@ public class SmallLightning {
         ClientPlayNetworking.registerGlobalReceiver(SMALL_LIGHTNING_PACKET_ID, ((client, handler, buf, responseSender) -> {
             SmallLightning smallLightning = SmallLightning.read(buf);
             if (client.world == null) return;
-            smallLightning.spawnLines(client.world);
+            client.execute(() -> {
+                smallLightning.spawnLines(client.world);
+            });
         }));
     }
 
