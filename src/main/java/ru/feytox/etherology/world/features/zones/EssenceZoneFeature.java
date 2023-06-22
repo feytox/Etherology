@@ -2,7 +2,6 @@ package ru.feytox.etherology.world.features.zones;
 
 import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.tag.convention.v1.TagUtil;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -10,7 +9,6 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
-import ru.feytox.etherology.block.zone_blocks.ZoneCoreBlockEntity;
 import ru.feytox.etherology.magic.zones.EssenceZones;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.FeyRandom;
@@ -18,8 +16,7 @@ import ru.feytox.etherology.util.feyapi.UwuLib;
 
 import javax.annotation.Nullable;
 
-import static ru.feytox.etherology.registry.block.EBlocks.ZONE_CORE_BLOCK;
-
+@Deprecated
 public class EssenceZoneFeature extends Feature<EssenceZoneFeatureConfig> {
     public static final EIdentifier ESSENCE_ZONE_FEATURE_ID = new EIdentifier("essence_zone_feature");
     public static Feature<EssenceZoneFeatureConfig> ESSENCE_ZONE_FEATURE = new EssenceZoneFeature(EssenceZoneFeatureConfig.CODEC);
@@ -42,14 +39,13 @@ public class EssenceZoneFeature extends Feature<EssenceZoneFeatureConfig> {
             case CLOS -> corePos = closGenerate(world, origin, random);
             case VIA -> corePos = viaGenerate(world, origin, random);
         }
-        if (corePos == null) return false;
+        return corePos != null;
 
-        BlockEntity blockEntity = UwuLib.getOrCreateBlockEntity(world, ZONE_CORE_BLOCK, corePos);
-        if (blockEntity instanceof ZoneCoreBlockEntity zoneCore) {
-            zoneCore.setup(zoneType, 128);
-            return true;
-        }
-        return false;
+//        BlockEntity blockEntity = UwuLib.getOrCreateBlockEntity(world, ZONE_CORE_BLOCK, corePos);
+//        if (blockEntity instanceof ZoneCoreBlockEntity zoneCore) {
+//            zoneCore.setup(zoneType, 128);
+//            return true;
+//        }
     }
 
     @Nullable
