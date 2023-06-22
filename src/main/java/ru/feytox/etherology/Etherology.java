@@ -144,6 +144,7 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_storage_screen_handler"), ETHEREAL_STORAGE_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_furnace_screen_handler"), ETHEREAL_FURNACE_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("empower_table_screen_handler"), EMPOWER_TABLE_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("crate_screen_handler"), CRATE_SCREEN_HANDLER);
 
         EtherealGeneratorDispenserBehavior.register();
 

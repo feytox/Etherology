@@ -31,6 +31,7 @@ import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.gecko.EGeoNetwork;
+import software.bernie.geckolib.network.GeckoLibNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class EtherologyClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        GeckoLibNetwork.registerClientReceiverPackets();
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
 
