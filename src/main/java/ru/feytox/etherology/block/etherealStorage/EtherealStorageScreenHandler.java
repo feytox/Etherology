@@ -29,20 +29,20 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
         int l;
         //Glints inventory
         for (m = 0; m < 3; ++m) {
-            this.addSlot(new TypedSlot<>(AbstractGlintItem.class, inventory, m, 79 + m * 19, 35));
+            this.addSlot(new TypedSlot<>(AbstractGlintItem.class, inventory, m, 79 + m * 19, 20));
         }
         //Ether inventory
-        this.addSlot(new ClosedSlot(this.inventory, 3, 35, 35));
+        this.addSlot(new ClosedSlot(this.inventory, 3, 35, 20));
 
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 69 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 54 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 127));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 112));
         }
     }
 

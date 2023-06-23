@@ -106,7 +106,7 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, N
 
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new ClosetScreenHandler(syncId, inv, this, isBottom);
+        return new ClosetScreenHandler(syncId, inv, this);
     }
 
     public void cache(World world, BlockState state, BlockPos pos) {
@@ -121,6 +121,6 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, N
 
     public static NamedScreenHandlerFactory createScreenFactory(Inventory blockInv, boolean isBottom) {
         return new SimpleNamedScreenHandlerFactory(((syncId, inv, player) ->
-                new ClosetScreenHandler(syncId, inv, blockInv, isBottom)), ClosetData.getTitle());
+                new ClosetScreenHandler(syncId, inv, blockInv)), ClosetData.getTitle());
     }
 }

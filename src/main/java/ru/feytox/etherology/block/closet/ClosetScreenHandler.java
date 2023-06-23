@@ -13,14 +13,10 @@ public class ClosetScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
     public ClosetScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, false);
+        this(syncId, playerInventory, new SimpleInventory(10));
     }
 
-    public ClosetScreenHandler(int syncId, PlayerInventory playerInventory, boolean isBottom) {
-        this(syncId, playerInventory, new SimpleInventory(10), isBottom);
-    }
-
-    public ClosetScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, boolean isBottom) {
+    public ClosetScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(Etherology.CLOSET_SCREEN_HANDLER, syncId);
         checkSize(inventory, 10);
         this.inventory = inventory;
@@ -32,18 +28,18 @@ public class ClosetScreenHandler extends ScreenHandler {
         //Our inventory
         for (m = 0; m < 2; ++m) {
             for (l = 0; l < 5; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 5, 44 + l * 18, 28 + m * 18));
+                this.addSlot(new Slot(inventory, l + m * 5, 44 + l * 18, 20 + m * 18));
             }
         }
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 77 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 69 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 135));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 127));
         }
     }
 

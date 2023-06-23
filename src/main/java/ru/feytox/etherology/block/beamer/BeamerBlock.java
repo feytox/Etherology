@@ -2,6 +2,8 @@ package ru.feytox.etherology.block.beamer;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
@@ -13,6 +15,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -23,14 +26,14 @@ import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-public class BeamerBlock extends PlantBlock implements Fertilizable, RegistrableBlock {
+public class BeamerBlock extends PlantBlock implements Fertilizable, RegistrableBlock, SuspiciousStewIngredient {
     public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
     public static final BooleanProperty IS_FARMLAND = BooleanProperty.of("is_farmland");
     private static final VoxelShape[] AGE_TO_SHAPE;
 
     public BeamerBlock() {
-        super(FabricBlockSettings.of(Material.PLANT).nonOpaque().ticksRandomly().sounds(BlockSoundGroup.GRASS).noCollision().breakInstantly());
+        super(FabricBlockSettings.of(Material.PLANT).nonOpaque().ticksRandomly().sounds(BlockSoundGroup.GRASS).noCollision().offsetType(AbstractBlock.OffsetType.XZ).breakInstantly());
         this.setDefaultState(getDefaultState()
                 .with(AGE, 0)
                 .with(IS_FARMLAND, false)
@@ -73,7 +76,8 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return AGE_TO_SHAPE[state.get(AGE)];
+        Vec3d offset = state.getModelOffset(world, pos);
+        return AGE_TO_SHAPE[state.get(AGE)].offset(offset.x, offset.y, offset.z);
     }
 
     public boolean isMature(BlockState state) {
@@ -130,5 +134,15 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
     @Override
     public String getBlockId() {
         return "beamer";
+    }
+
+    @Override
+    public StatusEffect getEffectInStew() {
+        return StatusEffects.ABSORPTION;
+    }
+
+    @Override
+    public int getEffectInStewDuration() {
+        return 100;
     }
 }

@@ -38,10 +38,11 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         // TODO: 29/04/2023 add peach wood to blockTags
 
         addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
-
         addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
-
         addBlocks(BlockTags.NEEDS_IRON_TOOL, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
+
+        addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
+        addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
     }
 
     private void addBlocks(TagKey<Block> tagKey, Block... blocks) {

@@ -21,6 +21,7 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
 
     public EmpowerTableScreen(EmpowerTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        backgroundHeight = 176;
     }
 
     @Override
@@ -29,9 +30,9 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - 175) / 2;
-        int y = (height - 175) / 2;
-        drawTexture(matrices, x, y, 0, 0, 175, 171);
+        int x = (this.width - this.backgroundWidth) / 2;
+        int y = (this.height - this.backgroundHeight) / 2;
+        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
         matrices.pop();
 
         if (handler.shouldGlow()) {
@@ -91,7 +92,7 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY -= 7;
-        playerInventoryTitleY += 6;
+        titleY = 5;
+        playerInventoryTitleY = backgroundHeight - 94;
     }
 }

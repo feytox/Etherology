@@ -22,9 +22,9 @@ public class EtherealFurnaceScreen extends HandledScreen<EtherealFurnaceScreenHa
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - 175) / 2;
-        int y = (height - 135) / 2;
-        drawTexture(matrices, x, y, 0, 0, 175, 171);
+        int x = (this.width - this.backgroundWidth) / 2;
+        int y = (this.height - this.backgroundHeight) / 2;
+        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         float cookingPercent = 0;
         if (handler.isCooking() || handler.isDegrade()) {
@@ -49,7 +49,7 @@ public class EtherealFurnaceScreen extends HandledScreen<EtherealFurnaceScreenHa
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY += 13;
-        playerInventoryTitleY -= 14;
+        titleY = 6;
+        playerInventoryTitleY = backgroundHeight - 124;
     }
 }

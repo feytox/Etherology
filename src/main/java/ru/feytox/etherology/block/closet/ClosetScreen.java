@@ -21,8 +21,8 @@ public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - 175) / 2;
-        int y = (height - 150) / 2;
+        int x = (this.width - this.backgroundWidth) / 2;
+        int y = (this.height - this.backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
     }
 
@@ -37,7 +37,6 @@ public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY += 7;
-        playerInventoryTitleY -= 6;
+        playerInventoryTitleY = backgroundHeight - 108;
     }
 }

@@ -34,25 +34,25 @@ public class EtherealFurnaceScreenHandler extends ScreenHandler {
         this.addProperties(propertyDelegate);
 
         // fuel slot
-        this.addSlot(new SpecificSlot(inventory, Items.BLAZE_POWDER, 0, 8, 32));
+        this.addSlot(new SpecificSlot(inventory, Items.BLAZE_POWDER, 0, 8, 17));
 
         // item slot
-        this.addSlot(new Slot(inventory, 1, 38, 35));
+        this.addSlot(new Slot(inventory, 1, 38, 20));
 
         // ether slot
-        this.addSlot(new ClosedSlot(inventory, 2, 125, 35));
+        this.addSlot(new ClosedSlot(inventory, 2, 125, 20));
 
         int m;
         int l;
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 69 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 54 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 127));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 112));
         }
     }
 

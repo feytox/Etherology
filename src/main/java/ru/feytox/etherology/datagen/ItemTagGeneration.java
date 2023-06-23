@@ -5,8 +5,10 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.registry.item.DecoBlockItems;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,6 +19,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
+        addItems(ItemTags.BEACON_PAYMENT_ITEMS, DecoBlockItems.TELDER_STEEL_INGOT, DecoBlockItems.ETHRIL_INGOT);
     }
 
     public void copy(TagKey<Block>[] blockTags, TagKey<Item>[] itemTags) throws Exception {

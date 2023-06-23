@@ -39,32 +39,32 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         for (m = 0; m < 3; m++) {
             for (l = 0; l < 3; l++) {
                 if ((m == 0 || m == 2) && (l == 0 || l == 2)) continue;
-                this.addSlot(new TrackedSlot(inventory, gridNum, 27 + l * 19, 16 + m * 19));
+                this.addSlot(new TrackedSlot(inventory, gridNum, 27 + l * 19, 21 + m * 19));
                 gridNum++;
             }
         }
 
         // keta
-        this.addSlot(new TrackedPredictableSlot(inventory, 5, 23, 12, (stack) -> stack.isOf(EItems.PRIMOSHARD_RELA)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 5, 23, 17, (stack) -> stack.isOf(EItems.PRIMOSHARD_RELA)));
         // via
-        this.addSlot(new TrackedPredictableSlot(inventory, 6, 69, 12, (stack) -> stack.isOf(EItems.PRIMOSHARD_VIA)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 6, 69, 17, (stack) -> stack.isOf(EItems.PRIMOSHARD_VIA)));
         // clos
-        this.addSlot(new TrackedPredictableSlot(inventory, 7, 23, 58, (stack) -> stack.isOf(EItems.PRIMOSHARD_CLOS)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 7, 23, 63, (stack) -> stack.isOf(EItems.PRIMOSHARD_CLOS)));
         // rela
-        this.addSlot(new TrackedPredictableSlot(inventory, 8, 69, 58, (stack) -> stack.isOf(EItems.PRIMOSHARD_KETA)));
+        this.addSlot(new TrackedPredictableSlot(inventory, 8, 69, 63, (stack) -> stack.isOf(EItems.PRIMOSHARD_KETA)));
 
         // output
-        this.addSlot(new EmpowerOutputSlot(inventory, 9, 133, 35));
+        this.addSlot(new EmpowerOutputSlot(inventory, 9, 133, 40));
 
         //The player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 89 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 94 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 147));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 152));
         }
     }
 
