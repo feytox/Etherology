@@ -87,7 +87,6 @@ public class EtherologyClient implements ClientModInitializer {
 
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(THUNDER_ZAP, PealWaveParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(PUSHING_PARTICLE, OldLightParticle.PushingFactory::new);
         ParticleFactoryRegistry.getInstance().register(ATTRACT_PARTICLE, OldLightParticle.AttractFactory::new);
 

@@ -190,7 +190,7 @@ public class ShockwaveUtil {
         }
 
         takePealDamage(entitiesToDamage, attacker, damage);
-        return true;
+        return entitiesToDamage.size() > 1;
     }
 
     private static void takePealDamage(List<Entity> entitiesToDamage, PlayerEntity attacker, float damage) {

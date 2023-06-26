@@ -1,13 +1,14 @@
 package ru.feytox.etherology.particle.utility;
 
 import lombok.NonNull;
-import net.minecraft.client.particle.SpriteBillboardParticle;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
+import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
 
-public abstract class VertexParticle extends SpriteBillboardParticle {
+public class VertexParticle<T extends FeyParticleEffect<T>> extends FeyParticle<T> {
     @NonNull
     private final Vec3d leftBottom;
     @NonNull
@@ -17,8 +18,8 @@ public abstract class VertexParticle extends SpriteBillboardParticle {
     @NonNull
     private final Vec3d rightBottom;
 
-    protected VertexParticle(ClientWorld clientWorld, @NonNull Vec3d leftBottom, @NonNull Vec3d leftTop, @NonNull Vec3d rightTop, @NonNull Vec3d rightBottom) {
-        super(clientWorld, leftBottom.x, leftBottom.y, leftBottom.z, 0, 0, 0);
+    public VertexParticle(ClientWorld clientWorld, @NonNull Vec3d leftBottom, @NonNull Vec3d leftTop, @NonNull Vec3d rightTop, @NonNull Vec3d rightBottom, T parameters, SpriteProvider spriteProvider) {
+        super(clientWorld, leftBottom.x, leftBottom.y, leftBottom.z, parameters, spriteProvider);
         this.leftBottom = leftBottom;
         this.leftTop = leftTop;
         this.rightTop = rightTop;
