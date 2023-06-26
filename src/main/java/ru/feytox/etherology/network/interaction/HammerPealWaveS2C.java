@@ -1,21 +1,26 @@
 package ru.feytox.etherology.network.interaction;
 
-import lombok.RequiredArgsConstructor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.particle.PealWaveParticle;
+import ru.feytox.etherology.particle.types.args.ParticleArg;
+import ru.feytox.etherology.particle.types.args.SimpleArgs;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
-@RequiredArgsConstructor
-public class HammerPealS2C extends AbstractS2CPacket {
+public class HammerPealWaveS2C extends AbstractS2CPacket {
     public static final Identifier HAMMER_PEAL_S2C_ID = new EIdentifier("hammer_peal_s2c");
-    private final int fromEntityId;
-    private final int toEntityId;
+    private final Vec3d fromPos;
+    private final Vec3d toPos;
+
+    public HammerPealWaveS2C(Vec3d fromPos, Vec3d toPos) {
+        this.fromPos = fromPos;
+        this.toPos = toPos;
+    }
 
     public static void receive(S2CPacketInfo packetInfo) {
         PacketByteBuf buf = packetInfo.buf();
@@ -23,22 +28,18 @@ public class HammerPealS2C extends AbstractS2CPacket {
         ClientWorld world = client.world;
         if (world == null) return;
 
-        int fromEntityId = buf.readInt();
-        int toEntityId = buf.readInt();
+        ParticleArg<Vec3d> vec3dArg = SimpleArgs.VEC3D.get();
+        Vec3d fromPos = vec3dArg.read(buf);
+        Vec3d toPos = vec3dArg.read(buf);
 
-        client.execute(() -> {
-            Entity fromEntity = world.getEntityById(fromEntityId);
-            Entity toEntity = world.getEntityById(toEntityId);
-            if (fromEntity == null || toEntity == null) return;
-
-            PealWaveParticle.spawnWave(world, fromEntity, toEntity);
-        });
+        client.execute(() -> PealWaveParticle.spawnWave(world, fromPos, toPos));
     }
 
     @Override
     public PacketByteBuf encode(PacketByteBuf buf) {
-        buf.writeInt(fromEntityId);
-        buf.writeInt(toEntityId);
+        ParticleArg<Vec3d> vec3dArg = SimpleArgs.VEC3D.get();
+        vec3dArg.write(buf, fromPos);
+        vec3dArg.write(buf, toPos);
         return buf;
     }
 

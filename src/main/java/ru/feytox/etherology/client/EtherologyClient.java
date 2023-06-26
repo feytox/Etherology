@@ -29,6 +29,7 @@ import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
+import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.gecko.EGeoNetwork;
 import software.bernie.geckolib.network.GeckoLibNetwork;
@@ -107,6 +108,9 @@ public class EtherologyClient implements ClientModInitializer {
         EtherNetwork.registerPackets();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
+            ClientTaskManager.INSTANCE.tickTasks();
+
+            // TODO: 24.06.2023 use... something better than this garbage
             if (chapters == null && client.textRenderer != null) {
                 chapters = new Chapters();
                 chapters.add(new ExampleChapter());

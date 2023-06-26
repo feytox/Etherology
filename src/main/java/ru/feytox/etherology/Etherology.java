@@ -2,6 +2,7 @@ package ru.feytox.etherology;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
@@ -36,6 +37,7 @@ import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.item.EtherEnchantments;
 import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
@@ -151,5 +153,7 @@ public class Etherology implements ModInitializer {
         EWorldGeneration.generateWorldGen();
 
         EtherologyRegistry.buildRegistry();
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
     }
 }

@@ -3,16 +3,16 @@ package ru.feytox.etherology.particle;
 import lombok.NonNull;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.ParticleTextureSheet;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.particle.utility.VerticalParticle;
-
-import java.util.Random;
 
 public class PealWaveParticle extends VerticalParticle {
     private final SpriteProvider spriteProvider;
@@ -43,26 +43,20 @@ public class PealWaveParticle extends VerticalParticle {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    // TODO: 07.06.2023 replace ClientWorld argument to smth else (i use it to make sure that particles spawn on the client)
-    public static void spawnWave(ClientWorld world, @NonNull Entity from, @NonNull Entity to) {
-        Vec3d start = from.getBoundingBox().getCenter();
-        Vec3d end = to.getBoundingBox().getCenter();
-
-        ParticleManager particleManager = MinecraftClient.getInstance().particleManager;
-        particleManager.addParticle(Etherology.THUNDER_ZAP, start.x, start.y, start.z, end.x, end.y, end.z);
-
-        Random javaRand = new Random();
-        spawnElectricity(particleManager, start, javaRand);
-        spawnElectricity(particleManager, end, javaRand);
+    public static void spawnWave(ClientWorld world, @NonNull Vec3d start, @NonNull Vec3d end) {
+        world.addParticle(Etherology.THUNDER_ZAP, true, start.x, start.y, start.z, end.x, end.y, end.z);
+        spawnElectricity(world, start);
+        spawnElectricity(world, end);
     }
 
-    private static void spawnElectricity(ParticleManager particleManager, Vec3d entityCenter, Random javaRand) {
-        for (int i = 0; i < javaRand.nextInt(3, 6); i++) {
-            DefaultParticleType electricityType = ElectricityParticle.getParticleType(javaRand);
-            double ex = entityCenter.x + javaRand.nextDouble() * 0.5;
-            double ey = entityCenter.y + javaRand.nextDouble() * 0.5;
-            double ez = entityCenter.z + javaRand.nextDouble() * 0.5;
-            particleManager.addParticle(electricityType, ex, ey, ez, 0.5, 0, 10);
+    private static void spawnElectricity(ClientWorld world, Vec3d entityCenter) {
+        Random random = world.getRandom();
+        for (int i = 0; i < random.nextBetween(3, 6); i++) {
+            DefaultParticleType electricityType = ElectricityParticle.getParticleType(random);
+            double ex = entityCenter.x + random.nextDouble() * 0.5;
+            double ey = entityCenter.y + random.nextDouble() * 0.5;
+            double ez = entityCenter.z + random.nextDouble() * 0.5;
+            world.addParticle(electricityType, true, ex, ey, ez, 0.5, 0, 10);
         }
     }
 
