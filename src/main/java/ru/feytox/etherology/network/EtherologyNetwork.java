@@ -57,9 +57,16 @@ public class EtherologyNetwork {
         }
     }
 
+    public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity, int exceptId) {
+        for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
+            if (player.getId() == exceptId) continue;
+            PacketByteBuf buf = packet.encode(PacketByteBufs.create());
+            ServerPlayNetworking.send(player, packet.getPacketID(), buf);
+        }
+    }
+
     public static void sendForTracking(ServerWorld world, BlockPos pos, int exceptId, AbstractS2CPacket packet) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
-            // TODO: 22/05/2023 проверить, точно ли нужно каждый раз создавать buf
             if (player.getId() == exceptId) continue;
             PacketByteBuf buf = packet.encode(PacketByteBufs.create());
             ServerPlayNetworking.send(player, packet.getPacketID(), buf);

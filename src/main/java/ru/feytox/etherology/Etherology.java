@@ -3,16 +3,11 @@ package ru.feytox.etherology;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
@@ -41,8 +36,6 @@ import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
-import static ru.feytox.etherology.registry.block.EBlocks.*;
-import static ru.feytox.etherology.registry.item.EItems.*;
 import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE;
 import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE_ID;
 
@@ -72,11 +65,6 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType SHOCKWAVE = FabricParticleTypes.simple();
     public static final DefaultParticleType PUSHING_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType ATTRACT_PARTICLE = FabricParticleTypes.simple();
-
-    public static final ItemGroup ETHER_GROUP = FabricItemGroup.builder(new EIdentifier("ether_group"))
-            .icon(() -> new ItemStack(TELDECORE))
-            .displayName(Text.of("Etherology"))
-            .build();
 
     @Override
     public void onInitialize() {
@@ -123,20 +111,6 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("shockwave"), SHOCKWAVE);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_pushing"), PUSHING_PARTICLE);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_attract"), ATTRACT_PARTICLE);
-
-        ItemGroupEvents.modifyEntriesEvent(ETHER_GROUP).register(content -> {
-            content.add(ARMILLARY_MATRIX_BASE);
-            content.add(CRUCIBLE);
-            content.add(PEDESTAL_BLOCK);
-            content.add(AQUATIC_SHARD);
-            content.add(DEEP_SHARD);
-            content.add(HEAVENLY_SHARD);
-            content.add(TELDER_STEEL_RING);
-            content.add(ETHRIL_RING);
-            content.add(NETHERITE_RING);
-            content.add(TELDECORE);
-            content.add(TERRESTRIAL_SHARD);
-        });
 
         Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
 

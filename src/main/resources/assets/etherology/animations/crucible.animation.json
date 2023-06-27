@@ -2,7 +2,7 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"animation.brewingCauldron.mixing": {
-			"animation_length": 1,
+			"animation_length": 1.0,
 			"bones": {
 				"SpoonRotate": {
 					"rotation": {

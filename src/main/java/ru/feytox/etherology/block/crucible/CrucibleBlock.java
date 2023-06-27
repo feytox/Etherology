@@ -16,36 +16,46 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.util.deprecated.SimpleBlock;
+import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
+import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
+import static ru.feytox.etherology.registry.block.EBlocks.CRUCIBLE_BLOCK_ENTITY;
 
-public class CrucibleBlock extends SimpleBlock implements BlockEntityProvider {
+public class CrucibleBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     private static final VoxelShape RAYCAST_SHAPE =
             createCuboidShape(3.5, 5.0, 3.5, 12.5, 15.1, 12.5);
     protected static final VoxelShape OUTLINE_SHAPE;
 
     public CrucibleBlock() {
-        super("crucible", FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
+        super(FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (type != CRUCIBLE_BLOCK_ENTITY) return null;
+
+        return world.isClient ? CrucibleBlockEntity::clientTicker : CrucibleBlockEntity::serverTicker;
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient()) {
-            CrucibleBlockEntity.interact(world, pos, player, hand);
-            world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
-        }
-        return ActionResult.CONSUME;
+        if (!(world.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible)) return ActionResult.FAIL;
+
+        if (world.isClient) crucible.triggerAnim("mixing");
+        else StartBlockAnimS2C.sendForTracking(crucible, "mixing", player);
+
+        return ActionResult.SUCCESS;
     }
 
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new CrucibleBlockEntity(pos, state);
+    public Block getBlockInstance() {
+        return this;
     }
 
     @Override
-    public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return RAYCAST_SHAPE;
+    public String getBlockId() {
+        return "crucible";
     }
 
     @Override
@@ -53,11 +63,15 @@ public class CrucibleBlock extends SimpleBlock implements BlockEntityProvider {
         return OUTLINE_SHAPE;
     }
 
+    @Override
+    public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
+        return RAYCAST_SHAPE;
+    }
+
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return type == EBlocks.CRUCIBLE_BLOCK_ENTITY ?
-                (world1, pos, state1, be) -> CrucibleBlockEntity.tick(world1, pos, state1, (CrucibleBlockEntity) be) : null;
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new CrucibleBlockEntity(pos, state);
     }
 
     static {

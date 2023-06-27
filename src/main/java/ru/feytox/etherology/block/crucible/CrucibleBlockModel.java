@@ -7,16 +7,13 @@ import software.bernie.geckolib.model.GeoModel;
 public class CrucibleBlockModel extends GeoModel<CrucibleBlockEntity> {
 
     @Override
-    public Identifier getModelResource(CrucibleBlockEntity object) {
+    public Identifier getModelResource(CrucibleBlockEntity animatable) {
         return new EIdentifier("geo/crucible.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(CrucibleBlockEntity object) {
-        String colorName = object.getCurrentColor();
-        if (!colorName.equals("clear")) {
-            return new EIdentifier("textures/machines/crucible_" + colorName + ".png");
-        }
+    public Identifier getTextureResource(CrucibleBlockEntity animatable) {
+        // TODO: 27.06.2023 adapt for texture animation
         return new EIdentifier("textures/machines/crucible.png");
     }
 

@@ -53,7 +53,6 @@ import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EBlocks {
-
     public static final CrucibleBlock CRUCIBLE = (CrucibleBlock) new CrucibleBlock().registerAll();
     public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,

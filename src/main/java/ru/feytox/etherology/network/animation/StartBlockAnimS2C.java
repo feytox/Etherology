@@ -2,6 +2,7 @@ package ru.feytox.etherology.network.animation;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +25,11 @@ public class StartBlockAnimS2C extends AbstractS2CPacket {
     public static <T extends BlockEntity, EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
         StartBlockAnimS2C packet = new StartBlockAnimS2C(blockEntity, animName);
         EtherologyNetwork.sendForTracking(packet, blockEntity);
+    }
+
+    public static <T extends BlockEntity, EGeoBlockEntity> void sendForTracking(T blockEntity, String animName, PlayerEntity except) {
+        StartBlockAnimS2C packet = new StartBlockAnimS2C(blockEntity, animName);
+        EtherologyNetwork.sendForTracking(packet, blockEntity, except.getId());
     }
 
     public static void receive(S2CPacketInfo packetInfo) {
