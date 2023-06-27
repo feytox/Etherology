@@ -9,9 +9,10 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 
+@SuppressWarnings("Guava")
 public enum EtherArmorMaterials implements ArmorMaterial {
     TELDER_STEEL("telder_steel", 18, new int[]{2, 6, 5, 2}, 16, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0, 0, () -> Ingredient.ofItems(DecoBlockItems.TELDER_STEEL_INGOT)),
-    ETHRIL("ethril", 8, new int[]{2, 5, 3, 2}, 27, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0, 0, () -> Ingredient.ofItems(DecoBlockItems.ETHRIL_INGOT));
+    ETHRIL("ethril", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.ofItems(DecoBlockItems.ETHRIL_INGOT));
 
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
     private final String name;

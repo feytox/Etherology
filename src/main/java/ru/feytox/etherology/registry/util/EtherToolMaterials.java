@@ -7,8 +7,9 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 
+@SuppressWarnings("Guava")
 public enum EtherToolMaterials implements ToolMaterial {
-    ETHRIL(MiningLevels.STONE, 51, 13, 1, 24,
+    ETHRIL(MiningLevels.DIAMOND, 1561, 8.0F, 3.0F, 10,
             () -> Ingredient.ofItems(DecoBlockItems.ETHRIL_INGOT)),
     TELDER_STEEL(MiningLevels.IRON, 320, 7, 3, 16,
             () -> Ingredient.ofItems(DecoBlockItems.TELDER_STEEL_INGOT));

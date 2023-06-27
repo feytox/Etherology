@@ -19,9 +19,9 @@ import static ru.feytox.etherology.registry.util.EtherToolMaterials.TELDER_STEEL
 public class ToolItems {
     // ethril tools
     public static final Item ETHRIL_AXE = register("ethril_axe", new AxeItem(ETHRIL, 5, -3.0f, new FabricItemSettings()));
-    public static final Item ETHRIL_PICKAXE = register("ethril_pickaxe", new PickaxeItem(ETHRIL, 0, -2.8F, new FabricItemSettings()));
-    public static final Item ETHRIL_HOE = register("ethril_hoe", new HoeItem(ETHRIL, 0, -3, new FabricItemSettings()));
-    public static final Item ETHRIL_SHOVEL = register("ethril_shovel", new ShovelItem(ETHRIL, 0.5f, -3, new FabricItemSettings()));
+    public static final Item ETHRIL_PICKAXE = register("ethril_pickaxe", new PickaxeItem(ETHRIL, 1, -2.8F, new FabricItemSettings()));
+    public static final Item ETHRIL_HOE = register("ethril_hoe", new HoeItem(ETHRIL, -3, 0.0f, new FabricItemSettings()));
+    public static final Item ETHRIL_SHOVEL = register("ethril_shovel", new ShovelItem(ETHRIL, 1.5f, -3.0f, new FabricItemSettings()));
     public static final Item ETHRIL_SWORD = register("ethril_sword", new SwordItem(ETHRIL, 3, -2.4f, new FabricItemSettings()));
 
     // telder steel tools
