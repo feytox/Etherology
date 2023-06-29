@@ -1,6 +1,6 @@
 package ru.feytox.etherology.magic.aspects;
 
-public enum Aspects implements EtherologyAspect {
+public enum EtherAspect implements EtherologyAspect {
     RELLA(0, 0),
     ETHA(0, 1),
     DIZORD(0, 2),
@@ -37,7 +37,7 @@ public enum Aspects implements EtherologyAspect {
     private final int textureRow;
     private final int textureColumn;
 
-    Aspects(int textureRow, int textureColumn) {
+    EtherAspect(int textureRow, int textureColumn) {
         this.textureRow = textureRow;
         this.textureColumn = textureColumn;
     }

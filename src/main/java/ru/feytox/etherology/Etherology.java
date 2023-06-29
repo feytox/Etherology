@@ -32,6 +32,7 @@ import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.item.EtherEnchantments;
 import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.registry.util.ResourceReloaders;
 import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
@@ -69,6 +70,7 @@ public class Etherology implements ModInitializer {
     @Override
     public void onInitialize() {
         // TODO: 19/05/2023 убрать лишнее
+        ResourceReloaders.registerServerData();
         EtherologyNetwork.registerPackets();
         EItems.registerItems();
         EBlocks.registerAll();
