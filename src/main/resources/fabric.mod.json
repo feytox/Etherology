@@ -17,7 +17,7 @@
       "ru.feytox.etherology.datagen.DataGeneration"
     ],
     "client": [
-      "ru.feytox.etherology.client.EtherologyClient"
+      "ru.feytox.etherology.EtherologyClient"
     ],
     "main": [
       "ru.feytox.etherology.Etherology"

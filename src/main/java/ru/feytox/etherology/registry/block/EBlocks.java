@@ -8,11 +8,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlock;
 import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
+import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlockEntity;
 import ru.feytox.etherology.block.closet.ClosetSlabBlock;
 import ru.feytox.etherology.block.crate.CrateBlock;
 import ru.feytox.etherology.block.crate.CrateBlockEntity;
-import ru.feytox.etherology.block.crucible.CrucibleBlock;
-import ru.feytox.etherology.block.crucible.CrucibleBlockEntity;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlock;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlockEntity;
 import ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlock;
@@ -53,11 +53,11 @@ import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EBlocks {
-    public static final CrucibleBlock CRUCIBLE = (CrucibleBlock) new CrucibleBlock().registerAll();
-    public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE_BLOCK_ENTITY = Registry.register(
+    public static final BrewingCauldronBlock BREWING_CAULDRON = (BrewingCauldronBlock) new BrewingCauldronBlock().registerAll();
+    public static final BlockEntityType<BrewingCauldronBlockEntity> BREWING_CAULDRON_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("crucible_block_entity"),
-            FabricBlockEntityTypeBuilder.create(CrucibleBlockEntity::new, CRUCIBLE).build()
+            new EIdentifier("brewing_cauldron_block_entity"),
+            FabricBlockEntityTypeBuilder.create(BrewingCauldronBlockEntity::new, BREWING_CAULDRON).build()
     );
 
     public static final PedestalBlock PEDESTAL_BLOCK = (PedestalBlock) new PedestalBlock().registerAll();

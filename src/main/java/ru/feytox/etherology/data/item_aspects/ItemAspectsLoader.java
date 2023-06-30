@@ -1,8 +1,10 @@
 package ru.feytox.etherology.data.item_aspects;
 
+import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -11,22 +13,30 @@ import net.minecraft.util.profiler.Profiler;
 import ru.feytox.etherology.registry.util.ResourceReloaders;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class ItemAspectsLoader implements IdentifiableResourceReloadListener {
-    private static Map<Identifier, ItemAspectsContainer> cache = Collections.emptyMap();
+    private static ImmutableMap<Identifier, ItemAspectsContainer> cache = ImmutableMap.of();
     private static boolean isInitialized = false;
 
     public static Optional<ItemAspectsContainer> getAspectsOf(Item item) {
         if (!isInitialized) return Optional.empty();
 
         Identifier itemId = Registries.ITEM.getId(item);
-        return Optional.ofNullable(cache.getOrDefault(itemId, null));
+        if (!cache.containsKey(itemId)) return Optional.empty();
+
+        return Optional.ofNullable(cache.get(itemId));
+    }
+
+    public static Optional<ItemAspectsContainer> getAspectsOf(ItemStack stack) {
+        ItemAspectsContainer itemAspects = getAspectsOf(stack.getItem()).orElse(null);
+        if (itemAspects == null) return Optional.empty();
+
+        itemAspects.map(value -> value * stack.getCount());
+        return Optional.of(itemAspects);
     }
 
     @Override
@@ -51,10 +61,10 @@ public class ItemAspectsLoader implements IdentifiableResourceReloadListener {
                         .reduce(ItemAspectsRegistry::combine)
                         .orElseGet(ItemAspectsRegistry.EMPTY_SUPPLIER)
                         .getRegistryMap(), executor)
-                .thenCompose(synchronizer::whenPrepared).thenAcceptAsync(itemAspects -> {
-                    cache = itemAspects;
+                .thenComposeAsync(synchronizer::whenPrepared, executor).thenAcceptAsync(itemAspects -> {
+                    cache = ImmutableMap.copyOf(itemAspects);
                     isInitialized = true;
-                });
+                }, executor);
     }
 
     public ItemAspectsRegistry loadAspectsFile(Identifier fileName, Resource resource) {

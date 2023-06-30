@@ -1,4 +1,4 @@
-package ru.feytox.etherology.client;
+package ru.feytox.etherology;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -13,7 +13,6 @@ import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import ru.feytox.etherology.block.closet.ClosetScreen;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
 import ru.feytox.etherology.block.crate.CrateScreen;
-import ru.feytox.etherology.block.crucible.CrucibleBlockRenderer;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableScreen;
 import ru.feytox.etherology.block.etherealFurnace.EtherealFurnaceScreen;
 import ru.feytox.etherology.block.etherealGenerators.metronome.EtherealMetronomeRenderer;
@@ -55,7 +54,6 @@ public class EtherologyClient implements ClientModInitializer {
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
 
-        BlockEntityRendererFactories.register(CRUCIBLE_BLOCK_ENTITY, CrucibleBlockRenderer::new);
         BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_STORAGE_BLOCK_ENTITY, EtherealStorageRenderer::new);
@@ -101,6 +99,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_METRONOME, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SPINNER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_STORAGE, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BREWING_CAULDRON, RenderLayer.getCutout());
 
         SmallLightning.registerPacket();
         EGeoNetwork.registerPackets();

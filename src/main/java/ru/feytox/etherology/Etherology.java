@@ -24,6 +24,8 @@ import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
+import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
+import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
@@ -83,6 +85,10 @@ public class Etherology implements ModInitializer {
         EtherEnchantments.registerAll();
 
         // TODO: move somewhere else
+        Registry.register(Registries.RECIPE_SERIALIZER, CauldronRecipeSerializer.ID,
+                CauldronRecipeSerializer.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, new EIdentifier(CauldronRecipe.Type.ID), CauldronRecipe.Type.INSTANCE);
+
         Registry.register(Registries.RECIPE_SERIALIZER, AlchemyRecipeSerializer.ID,
                 AlchemyRecipeSerializer.INSTANCE);
         Registry.register(Registries.RECIPE_TYPE, new EIdentifier(AlchemyRecipe.Type.ID), AlchemyRecipe.Type.INSTANCE);

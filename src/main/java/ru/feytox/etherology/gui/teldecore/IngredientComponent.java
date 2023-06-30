@@ -5,7 +5,7 @@ import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
-import ru.feytox.etherology.client.EtherologyClient;
+import ru.feytox.etherology.EtherologyClient;
 import ru.feytox.etherology.util.feyapi.EIngredient;
 
 public class IngredientComponent extends ItemComponent {

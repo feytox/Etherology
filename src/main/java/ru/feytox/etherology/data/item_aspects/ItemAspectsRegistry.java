@@ -34,7 +34,7 @@ public class ItemAspectsRegistry {
             root.asMap().forEach((s, jsonElement) -> {
                 Identifier itemId = new Identifier(s);
                 ItemAspectsContainer container = ResourceReloaders.EGSON.fromJson(jsonElement.getAsJsonObject(), ItemAspectsContainer.class);
-                registryMap.put(itemId, container);
+                if (!container.isEmpty()) registryMap.put(itemId, container);
             });
 
             return new ItemAspectsRegistry(registryMap);

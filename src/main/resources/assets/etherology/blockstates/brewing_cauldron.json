@@ -1,0 +1,35 @@
+{
+  "variants": {
+    "filled=false,facing=east": {
+      "model": "etherology:block/brewing_cauldron",
+      "y": 90
+    },
+    "filled=false,facing=north": {
+      "model": "etherology:block/brewing_cauldron"
+    },
+    "filled=false,facing=south": {
+      "model": "etherology:block/brewing_cauldron",
+      "y": 180
+    },
+    "filled=false,facing=west": {
+      "model": "etherology:block/brewing_cauldron",
+      "y": 270
+    },
+
+    "filled=true,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled",
+      "y": 90
+    },
+    "filled=true,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled"
+    },
+    "filled=true,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled",
+      "y": 180
+    },
+    "filled=true,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled",
+      "y": 270
+    }
+  }
+}
