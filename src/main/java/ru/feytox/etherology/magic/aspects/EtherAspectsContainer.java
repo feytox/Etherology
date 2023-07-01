@@ -1,4 +1,4 @@
-package ru.feytox.etherology.data.item_aspects;
+package ru.feytox.etherology.magic.aspects;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonDeserializer;
@@ -9,24 +9,25 @@ import lombok.Getter;
 import lombok.NonNull;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import ru.feytox.etherology.magic.aspects.EtherAspect;
 import ru.feytox.etherology.util.nbt.Nbtable;
 
+import javax.annotation.CheckReturnValue;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class ItemAspectsContainer implements Nbtable {
+public class EtherAspectsContainer implements Nbtable {
 
     @Getter
     @NonNull
     private final ImmutableMap<EtherAspect, Integer> aspects;
 
-    public ItemAspectsContainer(Map<EtherAspect, Integer> mutableAspects) {
+    public EtherAspectsContainer(Map<EtherAspect, Integer> mutableAspects) {
         aspects = ImmutableMap.copyOf(mutableAspects);
     }
 
-    public ItemAspectsContainer combine(ItemAspectsContainer otherContainer) {
+    @CheckReturnValue
+    public EtherAspectsContainer combine(EtherAspectsContainer otherContainer) {
         return merge(otherContainer, Math::min);
     }
 
@@ -34,31 +35,35 @@ public class ItemAspectsContainer implements Nbtable {
         return aspects.isEmpty();
     }
 
-    public ItemAspectsContainer add(ItemAspectsContainer otherContainer) {
+    @CheckReturnValue
+    public EtherAspectsContainer add(EtherAspectsContainer otherContainer) {
         return merge(otherContainer, Integer::sum);
     }
 
-    public ItemAspectsContainer subtract(ItemAspectsContainer otherContainer) {
+    @CheckReturnValue
+    public EtherAspectsContainer subtract(EtherAspectsContainer otherContainer) {
         return merge(otherContainer, (i1, i2) -> i1 - i2);
     }
 
-    public ItemAspectsContainer merge(ItemAspectsContainer otherContainer, BiFunction<Integer, Integer, Integer> mergeFunction) {
+    @CheckReturnValue
+    public EtherAspectsContainer merge(EtherAspectsContainer otherContainer, BiFunction<Integer, Integer, Integer> mergeFunction) {
         Map<EtherAspect, Integer> mutableAspects = getMutableAspects();
         otherContainer.aspects.forEach((otherAspect, otherValue) -> mutableAspects.merge(otherAspect, otherValue, mergeFunction));
-        return new ItemAspectsContainer(mutableAspects);
+        return new EtherAspectsContainer(mutableAspects);
     }
 
     public Map<EtherAspect, Integer> getMutableAspects() {
         return new Object2ObjectOpenHashMap<>(this.aspects);
     }
 
-    public ItemAspectsContainer map(Function<Integer, Integer> mapper) {
+    @CheckReturnValue
+    public EtherAspectsContainer map(Function<Integer, Integer> mapper) {
         Map<EtherAspect, Integer> mutableAspects = getMutableAspects();
         mutableAspects.replaceAll((ignored, value) -> mapper.apply(value));
-        return new ItemAspectsContainer(mutableAspects);
+        return new EtherAspectsContainer(mutableAspects);
     }
 
-    public static JsonDeserializer<ItemAspectsContainer> deserializer() throws JsonParseException, IllegalArgumentException {
+    public static JsonDeserializer<EtherAspectsContainer> deserializer() throws JsonParseException, IllegalArgumentException {
         return (json, type, context) -> {
             JsonObject root = json.getAsJsonObject();
 
@@ -70,7 +75,7 @@ public class ItemAspectsContainer implements Nbtable {
                 if (value != 0) aspects.put(aspect, value);
             });
 
-            return new ItemAspectsContainer(aspects);
+            return new EtherAspectsContainer(aspects);
         };
     }
 
@@ -83,6 +88,7 @@ public class ItemAspectsContainer implements Nbtable {
     }
 
     @Override
+    @CheckReturnValue
     public Nbtable readNbt(NbtCompound nbt) {
         Map<EtherAspect, Integer> result = new Object2ObjectOpenHashMap<>();
 
@@ -93,15 +99,15 @@ public class ItemAspectsContainer implements Nbtable {
             result.put(aspect, value);
         });
 
-        return new ItemAspectsContainer(result);
+        return new EtherAspectsContainer(result);
     }
 
     public void writeBuf(PacketByteBuf buf) {
         buf.writeMap(aspects, PacketByteBuf::writeEnumConstant, PacketByteBuf::writeInt);
     }
 
-    public static ItemAspectsContainer readBuf(PacketByteBuf buf) {
+    public static EtherAspectsContainer readBuf(PacketByteBuf buf) {
         Map<EtherAspect, Integer> aspectMap = buf.readMap(buff -> buff.readEnumConstant(EtherAspect.class), PacketByteBuf::readInt);
-        return new ItemAspectsContainer(aspectMap);
+        return new EtherAspectsContainer(aspectMap);
     }
 }

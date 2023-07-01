@@ -12,9 +12,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import org.apache.commons.io.IOUtils;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsContainer;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsRegistry;
+import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -52,7 +52,7 @@ public class ResourceReloaders {
     static {
         EGSON = new GsonBuilder().setLenient()
                 .registerTypeAdapter(ItemAspectsRegistry.class, ItemAspectsRegistry.deserializer())
-                .registerTypeAdapter(ItemAspectsContainer.class, ItemAspectsContainer.deserializer())
+                .registerTypeAdapter(EtherAspectsContainer.class, EtherAspectsContainer.deserializer())
                 .create();
     }
 }

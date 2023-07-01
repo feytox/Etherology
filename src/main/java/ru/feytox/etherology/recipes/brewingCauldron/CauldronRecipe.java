@@ -11,8 +11,8 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspect;
+import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class CauldronRecipe implements Recipe<CauldronRecipeInventory> {
     @Getter
     private final int inputAmount;
     @Getter
-    private final ItemAspectsContainer inputAspects;
+    private final EtherAspectsContainer inputAspects;
     private final ItemStack outputStack;
     private final Identifier id;
 

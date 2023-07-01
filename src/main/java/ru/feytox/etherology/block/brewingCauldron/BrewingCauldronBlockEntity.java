@@ -14,8 +14,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsContainer;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
+import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeInventory;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
@@ -25,7 +25,7 @@ import java.util.Optional;
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 
 public class BrewingCauldronBlockEntity extends TickableBlockEntity {
-    private ItemAspectsContainer aspects = new ItemAspectsContainer(new Object2ObjectOpenHashMap<>());
+    private EtherAspectsContainer aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
 
     public BrewingCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BREWING_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -52,7 +52,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
     }
 
     public void clearAspects() {
-        aspects = new ItemAspectsContainer(new Object2ObjectOpenHashMap<>());
+        aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
         markDirty();
     }
 
@@ -65,7 +65,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
             return;
         }
 
-        ItemAspectsContainer aspectContainer = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
+        EtherAspectsContainer aspectContainer = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
         if (aspectContainer == null) return;
 
         itemEntity.discard();
@@ -113,7 +113,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
-        aspects = (ItemAspectsContainer) aspects.readNbt(nbt);
+        aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
     }
 
     @Nullable

@@ -10,6 +10,7 @@ import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
+import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.registry.util.ResourceReloaders;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -19,10 +20,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class ItemAspectsLoader implements IdentifiableResourceReloadListener {
-    private static ImmutableMap<Identifier, ItemAspectsContainer> cache = ImmutableMap.of();
+    private static ImmutableMap<Identifier, EtherAspectsContainer> cache = ImmutableMap.of();
     private static boolean isInitialized = false;
 
-    public static Optional<ItemAspectsContainer> getAspectsOf(Item item) {
+    public static Optional<EtherAspectsContainer> getAspectsOf(Item item) {
         if (!isInitialized) return Optional.empty();
 
         Identifier itemId = Registries.ITEM.getId(item);
@@ -31,11 +32,11 @@ public class ItemAspectsLoader implements IdentifiableResourceReloadListener {
         return Optional.ofNullable(cache.get(itemId));
     }
 
-    public static Optional<ItemAspectsContainer> getAspectsOf(ItemStack stack) {
-        ItemAspectsContainer itemAspects = getAspectsOf(stack.getItem()).orElse(null);
+    public static Optional<EtherAspectsContainer> getAspectsOf(ItemStack stack) {
+        EtherAspectsContainer itemAspects = getAspectsOf(stack.getItem()).orElse(null);
         if (itemAspects == null) return Optional.empty();
 
-        itemAspects.map(value -> value * stack.getCount());
+        itemAspects = itemAspects.map(value -> value * stack.getCount());
         return Optional.of(itemAspects);
     }
 

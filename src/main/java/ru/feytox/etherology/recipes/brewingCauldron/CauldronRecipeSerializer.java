@@ -9,7 +9,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsContainer;
+import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.registry.util.ResourceReloaders;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -29,7 +29,7 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
         if (recipeJson.inputAmount == 0) recipeJson.inputAmount = 1;
 
         Ingredient inputStack = Ingredient.fromJson(recipeJson.inputItem);
-        ItemAspectsContainer inputAspects = recipeJson.inputAspects;
+        EtherAspectsContainer inputAspects = recipeJson.inputAspects;
         Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.outputItem));
         ItemStack outputStack = new ItemStack(outputItem, recipeJson.outputAmount);
@@ -41,7 +41,7 @@ public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe
     public CauldronRecipe read(Identifier id, PacketByteBuf buf) {
         Ingredient inputItem = Ingredient.fromPacket(buf);
         int inputAmount = buf.readInt();
-        ItemAspectsContainer inputAspects = ItemAspectsContainer.readBuf(buf);
+        EtherAspectsContainer inputAspects = EtherAspectsContainer.readBuf(buf);
         ItemStack outputStack = buf.readItemStack();
 
         return new CauldronRecipe(inputItem, inputAmount, inputAspects, outputStack, id);
