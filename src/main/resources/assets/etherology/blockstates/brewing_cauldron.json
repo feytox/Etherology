@@ -1,34 +1,146 @@
 {
   "variants": {
-    "filled=false,facing=east": {
+    "level=0,facing=east": {
       "model": "etherology:block/brewing_cauldron",
       "y": 90
     },
-    "filled=false,facing=north": {
+    "level=0,facing=north": {
       "model": "etherology:block/brewing_cauldron"
     },
-    "filled=false,facing=south": {
+    "level=0,facing=south": {
       "model": "etherology:block/brewing_cauldron",
       "y": 180
     },
-    "filled=false,facing=west": {
+    "level=0,facing=west": {
       "model": "etherology:block/brewing_cauldron",
       "y": 270
     },
 
-    "filled=true,facing=east": {
-      "model": "etherology:block/brewing_cauldron_filled",
+    "level=1,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_1",
       "y": 90
     },
-    "filled=true,facing=north": {
-      "model": "etherology:block/brewing_cauldron_filled"
+    "level=1,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_1"
     },
-    "filled=true,facing=south": {
-      "model": "etherology:block/brewing_cauldron_filled",
+    "level=1,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_1",
       "y": 180
     },
-    "filled=true,facing=west": {
-      "model": "etherology:block/brewing_cauldron_filled",
+    "level=1,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_1",
+      "y": 270
+    },
+
+    "level=2,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_2",
+      "y": 90
+    },
+    "level=2,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_2"
+    },
+    "level=2,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_2",
+      "y": 180
+    },
+    "level=2,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_2",
+      "y": 270
+    },
+
+    "level=3,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_3",
+      "y": 90
+    },
+    "level=3,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_3"
+    },
+    "level=3,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_3",
+      "y": 180
+    },
+    "level=3,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_3",
+      "y": 270
+    },
+
+    "level=4,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_4",
+      "y": 90
+    },
+    "level=4,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_4"
+    },
+    "level=4,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_4",
+      "y": 180
+    },
+    "level=4,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_4",
+      "y": 270
+    },
+
+    "level=5,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_5",
+      "y": 90
+    },
+    "level=5,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_5"
+    },
+    "level=5,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_5",
+      "y": 180
+    },
+    "level=5,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_5",
+      "y": 270
+    },
+
+    "level=6,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_6",
+      "y": 90
+    },
+    "level=6,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_6"
+    },
+    "level=6,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_6",
+      "y": 180
+    },
+    "level=6,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_6",
+      "y": 270
+    },
+
+    "level=7,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_7",
+      "y": 90
+    },
+    "level=7,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_7"
+    },
+    "level=7,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_7",
+      "y": 180
+    },
+    "level=7,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_7",
+      "y": 270
+    },
+
+    "level=8,facing=east": {
+      "model": "etherology:block/brewing_cauldron_filled_8",
+      "y": 90
+    },
+    "level=8,facing=north": {
+      "model": "etherology:block/brewing_cauldron_filled_8"
+    },
+    "level=8,facing=south": {
+      "model": "etherology:block/brewing_cauldron_filled_8",
+      "y": 180
+    },
+    "level=8,facing=west": {
+      "model": "etherology:block/brewing_cauldron_filled_8",
       "y": 270
     }
   }

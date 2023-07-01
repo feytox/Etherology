@@ -6,6 +6,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -53,6 +55,10 @@ public class EtherologyClient implements ClientModInitializer {
         GeckoLibNetwork.registerClientReceiverPackets();
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
+
+        ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) ->
+                world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1,
+                BREWING_CAULDRON);
 
         BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);

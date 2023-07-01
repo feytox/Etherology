@@ -33,7 +33,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
-        if (!state.get(BrewingCauldronBlock.FILLED)) return;
+        if (!BrewingCauldronBlock.isFilled(state)) return;
         tickTemperature(world, blockPos, state);
     }
 
@@ -56,15 +56,16 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
         markDirty();
     }
 
-    public void consumeItem(ServerWorld world, ItemEntity itemEntity) {
+    public void consumeItem(ServerWorld world, ItemEntity itemEntity, BlockState state) {
         if (itemEntity instanceof CauldronItemEntity) return;
 
         ItemStack stack = itemEntity.getStack();
-        if (checkForRecipe(world, stack)) {
+        if (checkForRecipe(world, stack, state)) {
             itemEntity.discard();
             return;
         }
 
+        if (!BrewingCauldronBlock.isFilled(world, pos)) return;
         EtherAspectsContainer aspectContainer = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
         if (aspectContainer == null) return;
 
@@ -73,20 +74,20 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
         markDirty();
     }
 
-    private boolean checkForRecipe(ServerWorld world, ItemStack itemStack) {
-        CauldronRecipeInventory inventory = new CauldronRecipeInventory(aspects, itemStack);
+    private boolean checkForRecipe(ServerWorld world, ItemStack inputStack, BlockState state) {
+        CauldronRecipeInventory inventory = new CauldronRecipeInventory(aspects, inputStack);
         Optional<CauldronRecipe> match = world.getRecipeManager()
                 .getFirstMatch(CauldronRecipe.Type.INSTANCE, inventory, world);
         if (match.isEmpty()) return false;
 
-        ItemStack resultStack = craft(world, itemStack, match.get());
+        ItemStack resultStack = craft(world, inputStack, match.get(), state);
         CauldronItemEntity.spawn(world, pos.up().toCenterPos(), resultStack);
         markDirty();
-        return true;
+        return inputStack.isEmpty();
     }
 
     @NotNull
-    private ItemStack craft(ServerWorld world, ItemStack itemStack, CauldronRecipe recipe) {
+    private ItemStack craft(ServerWorld world, ItemStack itemStack, CauldronRecipe recipe, BlockState state) {
         CauldronRecipeInventory inventory;
         Item outputItem = recipe.getOutput().getItem();
         int count = 0;
@@ -96,9 +97,12 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
             aspects = aspects.subtract(recipe.getInputAspects());
             count += recipe.getOutput().getCount();
 
+            int oldLevel = state.get(BrewingCauldronBlock.LEVEL);
+            state = state.with(BrewingCauldronBlock.LEVEL, oldLevel-1);
             inventory = new CauldronRecipeInventory(aspects, itemStack);
-        } while (recipe.matches(inventory, world));
+        } while (recipe.matches(inventory, world) && BrewingCauldronBlock.isFilled(state));
 
+        world.setBlockState(pos, state);
         return new ItemStack(outputItem, count);
     }
 

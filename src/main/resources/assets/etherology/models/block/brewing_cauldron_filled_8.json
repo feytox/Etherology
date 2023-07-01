@@ -4,7 +4,8 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"particle": "etherology:block/brewing_cauldron",
-		"brewing_cauldron": "etherology:block/brewing_cauldron"
+		"brewing_cauldron": "etherology:block/brewing_cauldron",
+		"water": "minecraft:block/water_still"
 	},
 	"elements": [
 		{
@@ -187,6 +188,13 @@
 				"south": {"uv": [1.5, 9, 1.75, 9.5], "texture": "#brewing_cauldron"},
 				"up": {"uv": [0.5, 8.75, 1.5, 9], "texture": "#brewing_cauldron"},
 				"down": {"uv": [0.5, 9.5, 1.5, 9.75], "texture": "#brewing_cauldron"}
+			}
+		},
+		{
+			"from": [3, 12, 3],
+			"to": [13, 14, 13],
+			"faces": {
+				"up": {"uv": [3, 3, 13, 13], "texture": "#water", "tintindex": 0}
 			}
 		}
 	]
