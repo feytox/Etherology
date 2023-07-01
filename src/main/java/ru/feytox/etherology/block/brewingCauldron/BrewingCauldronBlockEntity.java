@@ -1,9 +1,11 @@
 package ru.feytox.etherology.block.brewingCauldron;
 
+import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -11,6 +13,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,8 +27,9 @@ import java.util.Optional;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 
-public class BrewingCauldronBlockEntity extends TickableBlockEntity {
+public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory {
     private EtherAspectsContainer aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
+    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(8, ItemStack.EMPTY);
 
     public BrewingCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BREWING_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -60,18 +64,28 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
         if (itemEntity instanceof CauldronItemEntity) return;
 
         ItemStack stack = itemEntity.getStack();
-        if (checkForRecipe(world, stack, state)) {
+        if (isEmpty() && checkForRecipe(world, stack, state)) {
             itemEntity.discard();
             return;
         }
 
         if (!BrewingCauldronBlock.isFilled(world, pos)) return;
-        EtherAspectsContainer aspectContainer = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
-        if (aspectContainer == null) return;
+        if (!ItemAspectsLoader.containsItem(stack.getItem())) return;
+        if (!putStack(stack).isEmpty()) return;
 
         itemEntity.discard();
-        aspects = aspects.add(aspectContainer);
         markDirty();
+    }
+
+    public boolean mixWater() {
+        items.forEach(stack -> {
+            EtherAspectsContainer itemAspects = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
+            if (itemAspects == null) return;
+
+            aspects = aspects.add(itemAspects);
+        });
+        clear();
+        return true;
     }
 
     private boolean checkForRecipe(ServerWorld world, ItemStack inputStack, BlockState state) {
@@ -109,6 +123,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt) {
         aspects.writeNbt(nbt);
+        Inventories.writeNbt(nbt, items);
 
         super.writeNbt(nbt);
     }
@@ -118,6 +133,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
         super.readNbt(nbt);
 
         aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
+        Inventories.readNbt(nbt, items);
     }
 
     @Nullable
@@ -129,5 +145,37 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity {
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
+    }
+
+    @Override
+    public DefaultedList<ItemStack> getItems() {
+        return items;
+    }
+
+    @Override
+    public int getMaxCountPerStack() {
+        return 1;
+    }
+
+    public ItemStack takeLastStack() {
+        for (int i = items.size()-1; i >= 0; i--) {
+            ItemStack slotStack = getStack(i);
+            if (!slotStack.isEmpty()) return removeStack(i);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public ItemStack putStack(ItemStack remainingStack) {
+        if (!getStack(7).isEmpty()) return remainingStack;
+
+        for (int i = 0; i < size(); i++) {
+            if (remainingStack.isEmpty()) return ItemStack.EMPTY;
+            ItemStack slotStack = getStack(i);
+            if (!slotStack.isEmpty()) continue;
+            setStack(i, remainingStack.copyWithCount(1));
+            remainingStack.decrement(1);
+        }
+
+        return remainingStack;
     }
 }

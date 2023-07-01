@@ -40,6 +40,12 @@ public class ItemAspectsLoader implements IdentifiableResourceReloadListener {
         return Optional.of(itemAspects);
     }
 
+    public static boolean containsItem(Item item) {
+        if (!isInitialized) return false;
+        Identifier itemId = Registries.ITEM.getId(item);
+        return cache.containsKey(itemId);
+    }
+
     @Override
     public Identifier getFabricId() {
         return new EIdentifier("item_aspects");

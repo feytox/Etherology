@@ -14,7 +14,6 @@ import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
@@ -40,7 +39,8 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     public static final IntProperty TEMPERATURE = IntProperty.of("temperature", 0, 100);
 
     private static final VoxelShape RAYCAST_SHAPE;
-    protected static final VoxelShape OUTLINE_SHAPE;
+    private static final VoxelShape OUTLINE_SHAPE;
+    private static final VoxelShape INPUT_SHAPE;
 
     public BrewingCauldronBlock() {
         super(FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
@@ -80,27 +80,46 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack handStack = player.getStackInHand(hand);
-        if (!handStack.isOf(Items.WATER_BUCKET)) return ActionResult.PASS;
-        int waterLevel = state.get(LEVEL);
+        if (!handStack.isOf(Items.WATER_BUCKET)) {
+            return player.isSneaking() ? tryTakeLastItem(world, player, hand, state, pos) :
+                    mixWater(world, state, pos);
+        }
 
+        int waterLevel = state.get(LEVEL);
         if (waterLevel == 8) return ActionResult.PASS;
         if (!world.isClient) {
-            useBucket(state, world, pos, player, hand, handStack);
+            fillCauldron(state, world, pos, player, hand, handStack);
             // TODO: 01.07.2023 add water bucket with aspects
         }
 
         return ActionResult.success(world.isClient);
     }
 
-    private void useBucket(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack handStack) {
+    private ActionResult tryTakeLastItem(World world, PlayerEntity player, Hand hand, BlockState state, BlockPos pos) {
+        if (world.isClient || !isFilled(state)) return ActionResult.PASS;
+        if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
+
+        ItemStack cauldronStack = cauldron.takeLastStack();
+        if (cauldronStack.isEmpty()) return ActionResult.PASS;
+
+        player.setStackInHand(hand, cauldronStack);
+        return ActionResult.SUCCESS;
+    }
+
+    private ActionResult mixWater(World world, BlockState state, BlockPos pos) {
+        if (!isFilled(state) || world.isClient) return ActionResult.PASS;
+        if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
+
+        return cauldron.mixWater() ? ActionResult.SUCCESS : ActionResult.PASS;
+    }
+
+    private void fillCauldron(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack handStack) {
         world.setBlockState(pos, state.with(LEVEL, 8));
         ItemStack outputStack = new ItemStack(Items.BUCKET);
         player.setStackInHand(hand, ItemUsage.exchangeStack(handStack, player, outputStack));
-
-        GameEvent gameEvent = GameEvent.FLUID_PLACE;
-        SoundEvent soundEvent = SoundEvents.ITEM_BUCKET_EMPTY;
-        world.playSound(null, pos, soundEvent, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        world.emitGameEvent(null, gameEvent, pos);
+        
+        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
     }
 
     @Override
@@ -111,7 +130,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
         if (!(entity instanceof ItemEntity itemEntity)) return;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return;
-        if (!VoxelShapes.matchesAnywhere(VoxelShapes.cuboid(entity.getBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ())), RAYCAST_SHAPE, BooleanBiFunction.AND)) return;
+        if (!VoxelShapes.matchesAnywhere(VoxelShapes.cuboid(entity.getBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ())), INPUT_SHAPE, BooleanBiFunction.AND)) return;
 
         cauldron.consumeItem((ServerWorld) world, itemEntity, state);
     }
@@ -144,6 +163,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     static {
         RAYCAST_SHAPE = createCuboidShape(3.5, 5.0, 3.5, 12.5, 15.1, 12.5);
+        INPUT_SHAPE = createCuboidShape(3.5, 5.0, 3.5, 12.5, 8.0, 12.5);
         OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(
                 createCuboidShape(1.5, 0, 1.5, 14.5, 15.1, 14.5),
                 RAYCAST_SHAPE,
