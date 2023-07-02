@@ -41,9 +41,9 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         tickTemperature(world, blockPos, state);
     }
 
-    private void tickAspects(ServerWorld world, BlockPos blockPos, BlockState state) {
-        // TODO: 30.06.2023 сделать испарение со временем
-    }
+//    private void tickAspects(ServerWorld world, BlockPos blockPos, BlockState state) {
+//        // TODO: 30.06.2023 сделать испарение со временем
+//    }
 
     private void tickTemperature(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (world.getTime() % 5 != 0) return;
@@ -55,10 +55,10 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         world.setBlockState(blockPos, state.with(BrewingCauldronBlock.TEMPERATURE, newTemperature));
     }
 
-    public void clearAspects() {
-        aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
-        markDirty();
-    }
+//    public void clearAspects(ServerWorld world) {
+//        aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
+//        syncData(world);
+//    }
 
     public void consumeItem(ServerWorld world, ItemEntity itemEntity, BlockState state) {
         if (itemEntity instanceof CauldronItemEntity) return;
@@ -71,13 +71,16 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         if (!BrewingCauldronBlock.isFilled(world, pos)) return;
         if (!ItemAspectsLoader.containsItem(stack.getItem())) return;
-        if (!putStack(stack).isEmpty()) return;
-
-        itemEntity.discard();
-        markDirty();
+        if (putStack(stack).isEmpty()) itemEntity.discard();
+        syncData(world);
     }
 
-    public boolean mixWater() {
+    private void syncData(ServerWorld world) {
+        markDirty();
+        world.getChunkManager().markForUpdate(pos);
+    }
+
+    public boolean mixWater(ServerWorld world) {
         items.forEach(stack -> {
             EtherAspectsContainer itemAspects = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
             if (itemAspects == null) return;
@@ -85,6 +88,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
             aspects = aspects.add(itemAspects);
         });
         clear();
+        syncData(world);
         return true;
     }
 
@@ -96,7 +100,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         ItemStack resultStack = craft(world, inputStack, match.get(), state);
         CauldronItemEntity.spawn(world, pos.up().toCenterPos(), resultStack);
-        markDirty();
+        syncData(world);
         return inputStack.isEmpty();
     }
 
@@ -133,6 +137,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         super.readNbt(nbt);
 
         aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
+        items.clear();
         Inventories.readNbt(nbt, items);
     }
 
@@ -157,12 +162,19 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         return 1;
     }
 
-    public ItemStack takeLastStack() {
+    public ItemStack takeLastStack(ServerWorld world) {
+        int lastSlot = getLastStackSlot();
+        ItemStack result = lastSlot == -1 ? ItemStack.EMPTY : removeStack(lastSlot);
+        syncData(world);
+        return result;
+    }
+
+    public int getLastStackSlot() {
         for (int i = items.size()-1; i >= 0; i--) {
             ItemStack slotStack = getStack(i);
-            if (!slotStack.isEmpty()) return removeStack(i);
+            if (!slotStack.isEmpty()) return i;
         }
-        return ItemStack.EMPTY;
+        return -1;
     }
 
     public ItemStack putStack(ItemStack remainingStack) {

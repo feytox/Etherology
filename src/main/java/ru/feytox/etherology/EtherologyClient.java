@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
+import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.closet.ClosetScreen;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
 import ru.feytox.etherology.block.crate.CrateScreen;
@@ -68,6 +69,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ETHEREAL_METRONOME_BLOCK_ENTITY, EtherealMetronomeRenderer::new);
         BlockEntityRendererFactories.register(ETHEROLOGY_SIGN, SignBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(CRATE_BLOCK_ENTITY, CrateBlockRenderer::new);
+        BlockEntityRendererFactories.register(BREWING_CAULDRON_BLOCK_ENTITY, BrewingCauldronRenderer::new);
 
         HandledScreens.register(CLOSET_SCREEN_HANDLER, ClosetScreen::new);
         HandledScreens.register(ETHEREAL_STORAGE_SCREEN_HANDLER, EtherealStorageScreen::new);

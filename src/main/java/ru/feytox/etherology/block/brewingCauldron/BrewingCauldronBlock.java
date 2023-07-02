@@ -99,7 +99,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         if (world.isClient || !isFilled(state)) return ActionResult.PASS;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
 
-        ItemStack cauldronStack = cauldron.takeLastStack();
+        ItemStack cauldronStack = cauldron.takeLastStack((ServerWorld) world);
         if (cauldronStack.isEmpty()) return ActionResult.PASS;
 
         player.setStackInHand(hand, cauldronStack);
@@ -110,7 +110,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         if (!isFilled(state) || world.isClient) return ActionResult.PASS;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
 
-        return cauldron.mixWater() ? ActionResult.SUCCESS : ActionResult.PASS;
+        return cauldron.mixWater((ServerWorld) world) ? ActionResult.SUCCESS : ActionResult.PASS;
     }
 
     private void fillCauldron(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, ItemStack handStack) {
