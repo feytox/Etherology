@@ -64,7 +64,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (itemEntity instanceof CauldronItemEntity) return;
 
         ItemStack stack = itemEntity.getStack();
-        if (isEmpty() && checkForRecipe(world, stack, state)) {
+        if (isEmpty() && tryCraft(world, stack, state)) {
             itemEntity.discard();
             return;
         }
@@ -92,7 +92,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         return true;
     }
 
-    private boolean checkForRecipe(ServerWorld world, ItemStack inputStack, BlockState state) {
+    private boolean tryCraft(ServerWorld world, ItemStack inputStack, BlockState state) {
         CauldronRecipeInventory inventory = new CauldronRecipeInventory(aspects, inputStack);
         Optional<CauldronRecipe> match = world.getRecipeManager()
                 .getFirstMatch(CauldronRecipe.Type.INSTANCE, inventory, world);
@@ -120,6 +120,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
             inventory = new CauldronRecipeInventory(aspects, itemStack);
         } while (recipe.matches(inventory, world) && BrewingCauldronBlock.isFilled(state));
 
+        if (!BrewingCauldronBlock.isFilled(state)) state = state.with(BrewingCauldronBlock.TEMPERATURE, 20);
         world.setBlockState(pos, state);
         return new ItemStack(outputItem, count);
     }
