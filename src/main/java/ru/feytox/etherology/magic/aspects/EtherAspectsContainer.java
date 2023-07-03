@@ -15,6 +15,7 @@ import javax.annotation.CheckReturnValue;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class EtherAspectsContainer implements Nbtable {
 
@@ -24,6 +25,10 @@ public class EtherAspectsContainer implements Nbtable {
 
     public EtherAspectsContainer(Map<EtherAspect, Integer> mutableAspects) {
         aspects = ImmutableMap.copyOf(mutableAspects);
+    }
+
+    public EtherAspectsContainer(Map<EtherAspect, Integer> mutableAspects, boolean clearZeros) {
+        this(clearZeros ? clearZeros(mutableAspects) : mutableAspects);
     }
 
     @CheckReturnValue
@@ -60,7 +65,11 @@ public class EtherAspectsContainer implements Nbtable {
     public EtherAspectsContainer map(Function<Integer, Integer> mapper) {
         Map<EtherAspect, Integer> mutableAspects = getMutableAspects();
         mutableAspects.replaceAll((ignored, value) -> mapper.apply(value));
-        return new EtherAspectsContainer(mutableAspects);
+        return new EtherAspectsContainer(mutableAspects, true);
+    }
+
+    public static Map<EtherAspect, Integer> clearZeros(Map<EtherAspect, Integer> map) {
+        return map.entrySet().stream().filter(entry -> entry.getValue() > 0).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static JsonDeserializer<EtherAspectsContainer> deserializer() throws JsonParseException, IllegalArgumentException {

@@ -15,6 +15,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
@@ -38,12 +39,26 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (!BrewingCauldronBlock.isFilled(state)) return;
+        tickAspects(world, state);
         tickTemperature(world, blockPos, state);
     }
 
-//    private void tickAspects(ServerWorld world, BlockPos blockPos, BlockState state) {
-//        // TODO: 30.06.2023 сделать испарение со временем
-//    }
+    private void tickAspects(ServerWorld world, BlockState state) {
+        if (!BrewingCauldronBlock.isFilled(state)) {
+            clearAspects(world);
+            return;
+        }
+
+        if (world.getTime() % 20 != 0) return;
+        Random random = world.getRandom();
+
+        aspects = aspects.map(value -> {
+            double chance = 0.1 + 0.0140625 * value;
+            if (random.nextDouble() > chance) return value;
+            return value - 1;
+        });
+        syncData(world);
+    }
 
     private void tickTemperature(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (world.getTime() % 5 != 0) return;
@@ -55,10 +70,10 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         world.setBlockState(blockPos, state.with(BrewingCauldronBlock.TEMPERATURE, newTemperature));
     }
 
-//    public void clearAspects(ServerWorld world) {
-//        aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
-//        syncData(world);
-//    }
+    public void clearAspects(ServerWorld world) {
+        aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
+        syncData(world);
+    }
 
     public void consumeItem(ServerWorld world, ItemEntity itemEntity, BlockState state) {
         if (itemEntity instanceof CauldronItemEntity) return;
