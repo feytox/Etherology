@@ -20,17 +20,26 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeInventory;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 
-public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory {
+public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity {
+    private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
+
     private EtherAspectsContainer aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(8, ItemStack.EMPTY);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BrewingCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BREWING_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -96,6 +105,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     public boolean mixWater(ServerWorld world) {
+        StartBlockAnimS2C.sendForTracking(this, "mixing");
+
         items.forEach(stack -> {
             EtherAspectsContainer itemAspects = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
             if (itemAspects == null) return;
@@ -205,5 +216,20 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
 
         return remainingStack;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(getTriggerController("mixing", MIXING));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    @Override
+    public double getBoneResetTime() {
+        return 0.0000001d;
     }
 }

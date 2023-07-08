@@ -1,0 +1,36 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Model",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "SpoonRotate",
+					"parent": "Model",
+					"pivot": [0, 6, 0],
+					"rotation": [0, -45, 0]
+				},
+				{
+					"name": "Spoon",
+					"parent": "SpoonRotate",
+					"pivot": [4.25, 13, 0],
+					"rotation": [0, 0, 15],
+					"cubes": [
+						{"origin": [3.25, 6, -0.5], "size": [2, 14, 1], "pivot": [4.25, 13, 0], "rotation": [0, -90, 0], "uv": [13, 20]}
+					]
+				}
+			]
+		}
+	]
+}
