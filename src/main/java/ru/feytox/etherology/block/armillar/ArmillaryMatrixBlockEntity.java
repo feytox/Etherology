@@ -59,7 +59,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static ru.feytox.etherology.Etherology.LIGHT_VITAL;
-import static ru.feytox.etherology.Etherology.STEAM;
+import static ru.feytox.etherology.Etherology.OLD_STEAM;
 import static ru.feytox.etherology.enums.ArmillarStateType.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
@@ -220,7 +220,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
     public boolean craft(ServerWorld world) {
         if (currentRecipe == null) return false;
 
-        UwuLib.drawParticleLine(world, getCenterPos(), getCenterPos().add(0, 0.2, 0), STEAM, 0.1f);
+        UwuLib.drawParticleLine(world, getCenterPos(), getCenterPos().add(0, 0.2, 0), OLD_STEAM, 0.1f);
 
         ItemEntity displayedItem = getDisplayedItemEntity(world);
         if (displayedItem != null) displayedItem.kill();

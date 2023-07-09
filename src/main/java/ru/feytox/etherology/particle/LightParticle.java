@@ -7,7 +7,6 @@ import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.particle.types.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
-import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 // TODO: 21.06.2023 simplify
@@ -22,11 +21,12 @@ public class LightParticle extends MovingParticle<LightParticleEffect> {
         super(clientWorld, x, y, z, parameters, spriteProvider);
         this.lightType = parameters.getLightType();
 
+        // TODO: 09.07.2023 particle builders
+
         Vec3d moveVec = parameters.getMoveVec();
-        RGBColor color = null;
+        RGBColor color = lightType.getColor(random);
         switch (lightType) {
             case SIMPLE -> {
-                color = new RGBColor(244, 194, 133);
                 setSprite(spriteProvider);
                 endPos = moveVec;
             }
@@ -35,14 +35,13 @@ public class LightParticle extends MovingParticle<LightParticleEffect> {
                 setSprite(spriteProvider);
                 endPos = moveVec;
             }
-            case ATTRACT -> {
-                color = FeyColor.getRandomColor(RGBColor.of(0xCF70FF), RGBColor.of(0xCC3FFF), random);
+            case BREWING -> {
                 setSpriteForAge(spriteProvider);
-                maxAge = 40;
+                maxAge = 20;
+                this.scale(0.5f);
                 endPos = startPos.add(moveVec);
             }
-            case PUSHING -> {
-                color = FeyColor.getRandomColor(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D), random);
+            case ATTRACT, PUSHING -> {
                 setSpriteForAge(spriteProvider);
                 maxAge = 40;
                 endPos = startPos.add(moveVec);

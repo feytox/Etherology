@@ -1,33 +1,29 @@
 package ru.feytox.etherology.particle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.LargeFireSmokeParticle;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.math.Vec3d;
+import ru.feytox.etherology.particle.types.MovingParticleEffect;
+import ru.feytox.etherology.particle.utility.MovingParticle;
+import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class SteamParticle extends LargeFireSmokeParticle {
-    protected SteamParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider);
-        this.setColor(1.0f, 1.0f, 1.0f);
+public class SteamParticle extends MovingParticle<MovingParticleEffect> {
+
+    private final Vec3d endPos;
+
+    public SteamParticle(ClientWorld clientWorld, double x, double y, double z, MovingParticleEffect parameters, SpriteProvider spriteProvider) {
+        super(clientWorld, x, y, z, parameters, spriteProvider);
+        endPos = parameters.getMoveVec().add(startPos);
+
+        scale(0.66f);
+        maxAge = 60;
+        setRandomColor(RGBColor.of(0xB668FF), RGBColor.of(0xEC49D9));
+        setSpriteForAge(spriteProvider);
     }
 
-    @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<DefaultParticleType> {
-        private final SpriteProvider spriteProvider;
-
-        public Factory(SpriteProvider spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new SteamParticle(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
-        }
+    @Override
+    public void tick() {
+        setSpriteForAge(spriteProvider);
+        timeAcceleratedMovingTick(0.005f, 0.005f, endPos, false);
     }
 }

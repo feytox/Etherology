@@ -134,10 +134,10 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         double y = pos.getY() + 1.0;
         double z = pos.getZ() + 0.5;
         if (itemConsumingTicks > 0 && this.world != null) {
-//            world.spawnParticles(Etherology.SPARK, x, y, z, 1,
+//            world.spawnClientParticles(Etherology.SPARK, x, y, z, 1,
 //                    centerCoord.x-x, centerCoord.y-y, centerCoord.z-z, 1);
         } else if(itemConsumingTicks == 0) {
-//            world.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, items.get(0)), x, y, z,
+//            world.spawnClientParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, items.get(0)), x, y, z,
 //                    10, 0, 2, 0, 0.01);
 
             centerCoord = null;

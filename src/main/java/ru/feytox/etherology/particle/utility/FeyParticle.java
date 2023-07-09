@@ -7,6 +7,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
+import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends SpriteBillboardParticle {
@@ -65,6 +66,11 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
 
     public void setRGB(RGBColor rgbColor) {
         setRGB(rgbColor.r(), rgbColor.g(), rgbColor.b());
+    }
+
+    public void setRandomColor(RGBColor start, RGBColor end) {
+        RGBColor color = FeyColor.getRandomColor(start, end, random);
+        setRGB(color);
     }
 
     public void setAngle(float degrees) {

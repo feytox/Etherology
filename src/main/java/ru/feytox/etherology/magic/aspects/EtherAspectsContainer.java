@@ -12,7 +12,9 @@ import net.minecraft.network.PacketByteBuf;
 import ru.feytox.etherology.util.nbt.Nbtable;
 
 import javax.annotation.CheckReturnValue;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -113,6 +115,14 @@ public class EtherAspectsContainer implements Nbtable {
 
     public void writeBuf(PacketByteBuf buf) {
         buf.writeMap(aspects, PacketByteBuf::writeEnumConstant, PacketByteBuf::writeInt);
+    }
+
+    public Optional<Integer> max() {
+        return aspects.values().stream().max(Comparator.comparingInt(Integer::intValue));
+    }
+
+    public Optional<Integer> count() {
+        return aspects.values().stream().reduce(Integer::sum);
     }
 
     public static EtherAspectsContainer readBuf(PacketByteBuf buf) {

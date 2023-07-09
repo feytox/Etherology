@@ -55,7 +55,7 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
     public static final DefaultParticleType SPARK = FabricParticleTypes.simple();
-    public static final DefaultParticleType STEAM = FabricParticleTypes.simple();
+    public static final DefaultParticleType OLD_STEAM = FabricParticleTypes.simple();
     public static final DefaultParticleType LIGHT = FabricParticleTypes.simple();
     public static final DefaultParticleType LIGHT_VITAL = FabricParticleTypes.simple();
     public static final DefaultParticleType LIGHT_SPARK = FabricParticleTypes.simple();
@@ -66,8 +66,6 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType VIA_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType GLINT_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType SHOCKWAVE = FabricParticleTypes.simple();
-    public static final DefaultParticleType PUSHING_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType ATTRACT_PARTICLE = FabricParticleTypes.simple();
 
     @Override
     public void onInitialize() {
@@ -104,7 +102,7 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity1"), ELECTRICITY1);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity2"), ELECTRICITY2);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("spark"), SPARK);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("steam"), STEAM);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("old_steam"), OLD_STEAM);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light"), LIGHT);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_vital"), LIGHT_VITAL);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_spark"), LIGHT_SPARK);
@@ -117,8 +115,6 @@ public class Etherology implements ModInitializer {
 
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("glint_particle"), GLINT_PARTICLE);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("shockwave"), SHOCKWAVE);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_pushing"), PUSHING_PARTICLE);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_attract"), ATTRACT_PARTICLE);
 
         Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
 

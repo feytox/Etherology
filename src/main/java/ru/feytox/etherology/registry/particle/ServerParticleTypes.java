@@ -12,11 +12,12 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 @UtilityClass
 public class ServerParticleTypes {
-    public static final FeyParticleType<LightParticleEffect> LIGHT = register("light_new", false, LightParticleEffect::new);
-    public static final FeyParticleType<MovingParticleEffect> THUNDER_ZAP = register("thunder_zap", false, MovingParticleEffect::new);
+    public static final FeyParticleType<LightParticleEffect> LIGHT = register("light_new", LightParticleEffect::new);
+    public static final FeyParticleType<MovingParticleEffect> THUNDER_ZAP = register("thunder_zap", MovingParticleEffect::new);
+    public static final FeyParticleType<MovingParticleEffect> STEAM = register("steam", MovingParticleEffect::new);
 
-    private static <T extends ParticleEffect> FeyParticleType<T> register(String name, boolean alwaysShow, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
-        FeyParticleType<T> particleType = new FeyParticleType<>(alwaysShow, dummyConstructor);
+    private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
+        FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);
         return Registry.register(Registries.PARTICLE_TYPE, new EIdentifier(name), particleType);
     }
 }

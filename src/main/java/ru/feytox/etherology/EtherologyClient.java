@@ -80,7 +80,7 @@ public class EtherologyClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, ElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SPARK, SparkParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(STEAM, SteamParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(OLD_STEAM, OldSteamParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(LIGHT, OldLightParticle.SimpleFactory::new);
         ParticleFactoryRegistry.getInstance().register(LIGHT_VITAL, LightVitalParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(LIGHT_SPARK, OldLightParticle.SparkFactory::new);
@@ -93,8 +93,6 @@ public class EtherologyClient implements ClientModInitializer {
 
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(PUSHING_PARTICLE, OldLightParticle.PushingFactory::new);
-        ParticleFactoryRegistry.getInstance().register(ATTRACT_PARTICLE, OldLightParticle.AttractFactory::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SOCKET, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(PEACH_DOOR, RenderLayer.getCutout());
