@@ -16,7 +16,7 @@ public class SteamParticle extends MovingParticle<MovingParticleEffect> {
         endPos = parameters.getMoveVec().add(startPos);
 
         scale(0.66f);
-        maxAge = 60;
+        maxAge = 15 + random.nextBetween(0, 15);
         setRandomColor(RGBColor.of(0xB668FF), RGBColor.of(0xEC49D9));
         setSpriteForAge(spriteProvider);
     }
@@ -24,6 +24,6 @@ public class SteamParticle extends MovingParticle<MovingParticleEffect> {
     @Override
     public void tick() {
         setSpriteForAge(spriteProvider);
-        timeAcceleratedMovingTick(0.005f, 0.005f, endPos, false);
+        timeAcceleratedMovingTick(0.01f, 0.015f, endPos, false);
     }
 }

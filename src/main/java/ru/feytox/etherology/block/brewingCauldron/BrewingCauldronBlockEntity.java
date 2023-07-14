@@ -101,7 +101,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         int oldCount = aspects.count().orElse(0);
         aspects = aspects.map(value -> {
-            double chance = 0.1 + 0.1 * value;
+            double chance = 0.1 + 0.05 * value;
             if (random.nextDouble() > chance) return value;
             return value - 1;
         });
@@ -146,7 +146,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
 
         if (!BrewingCauldronBlock.isFilled(world, pos)) return;
-        if (!ItemAspectsLoader.containsItem(stack.getItem())) return;
         if (putStack(stack).isEmpty()) itemEntity.discard();
         syncData(world);
     }

@@ -2,6 +2,7 @@ package ru.feytox.etherology.particle.info;
 
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.LightParticle;
@@ -34,7 +35,9 @@ public class BrewingLightInfo extends ParticleInfo<LightParticle, LightParticleE
     @Override
     public void tick(LightParticle particle) {
         if (particle.tickAge()) return;
-        particle.setSpriteForAge();
+
+        int fakeAge = MathHelper.floor((particle.getMaxAge() + particle.getAge()) * 0.5);
+        particle.setSprite(particle.getSpriteProvider().getSprite(fakeAge, particle.getMaxAge()));
     }
 
     @Override

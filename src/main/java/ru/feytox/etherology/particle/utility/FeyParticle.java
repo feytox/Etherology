@@ -113,6 +113,10 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         this.sprite = sprite;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     public void setSpriteForAge() {
         setSpriteForAge(spriteProvider);
     }
