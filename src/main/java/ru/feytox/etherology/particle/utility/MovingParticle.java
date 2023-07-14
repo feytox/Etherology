@@ -13,7 +13,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     @Override
     public abstract void tick();
 
-    protected void markPrevPos() {
+    public void markPrevPos() {
         prevPosX = x;
         prevPosY = y;
         prevPosZ = z;
@@ -22,7 +22,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     /**
      * Performs a tick to move with static speed.
      */
-    protected void simpleMovingTick(float speed, Vec3d endPos, boolean deadOnEnd) {
+    public void simpleMovingTick(float speed, Vec3d endPos, boolean deadOnEnd) {
         if (tickAge()) return;
         markPrevPos();
 
@@ -38,7 +38,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     /**
      * Performs a tick to move with acceleration. The speed increases every tick.
      */
-    protected void timeAcceleratedMovingTick(float acceleration, float start_speed, Vec3d endPos, boolean deadOnEnd) {
+    public void timeAcceleratedMovingTick(float acceleration, float start_speed, Vec3d endPos, boolean deadOnEnd) {
         float speed = start_speed + acceleration * age;
         simpleMovingTick(speed, endPos, deadOnEnd);
     }
@@ -46,7 +46,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     /**
      * Performs a tick to move with acceleration. The speed increases as particle approach the end point.
      */
-    protected void acceleratedMovingTick(float speed_k, float start_speed, boolean deadOnEnd, Vec3d endPos) {
+    public void acceleratedMovingTick(float speed_k, float start_speed, boolean deadOnEnd, Vec3d endPos) {
         if (tickAge()) return;
         markPrevPos();
 
@@ -62,11 +62,11 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
         modifyPos(deltaVec);
     }
 
-    protected Vec3d getPathVec(Vec3d endPos) {
+    public Vec3d getPathVec(Vec3d endPos) {
         return new Vec3d(endPos.x-x, endPos.y-y, endPos.z-z);
     }
 
-    protected Vec3d getFullPathVec(Vec3d endPos) {
-        return new Vec3d(endPos.x-startPos.x, endPos.y-startPos.y, endPos.z-startPos.z);
+    public Vec3d getFullPathVec(Vec3d endPos) {
+        return endPos.subtract(startPos);
     }
 }

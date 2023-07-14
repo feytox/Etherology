@@ -1,32 +1,30 @@
 package ru.feytox.etherology.enums;
 
-import net.minecraft.util.math.random.Random;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.particle.LightParticle;
+import ru.feytox.etherology.particle.info.*;
+import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.utility.ParticleInfo;
+import ru.feytox.etherology.particle.utility.ParticleInfoProvider;
 
-public enum LightParticleType {
-    SIMPLE(new RGBColor(244, 194, 133)),
-    SPARK(null),
-    VITAL(null), // TODO: vital
-    PUSHING(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D)),
-    ATTRACT(RGBColor.of(0xCF70FF), RGBColor.of(0xCC3FFF)),
-    BREWING(RGBColor.of(0xB668FF), RGBColor.of(0xEC49D9));
+public enum LightParticleType implements ParticleInfoProvider<LightParticle, LightParticleEffect> {
+    SIMPLE(SimpleLightInfo::new),
+    SPARK(SparkLightInfo::new),
+    VITAL(VitalLightInfo::new),
+    PUSHING(PushingLightInfo::new),
+    ATTRACT(AttractLightInfo::new),
+    BREWING(BrewingLightInfo::new);
 
-    private final RGBColor startColor;
+    @Nullable
+    private final ParticleInfo.Factory<LightParticle, LightParticleEffect> infoFactory;
 
-    private final RGBColor endColor;
-
-    LightParticleType(RGBColor color) {
-        this(color, color);
+    LightParticleType(ParticleInfo.@Nullable Factory<LightParticle, LightParticleEffect> infoFactory) {
+        this.infoFactory = infoFactory;
     }
 
-    LightParticleType(RGBColor startColor, RGBColor endColor) {
-        this.startColor = startColor;
-        this.endColor = endColor;
-    }
-
-    public RGBColor getColor(Random random) {
-        if (startColor.equals(endColor)) return startColor;
-        return FeyColor.getRandomColor(startColor, endColor, random);
+    @Override
+    @Nullable
+    public ParticleInfo.Factory<LightParticle, LightParticleEffect> getFactory() {
+        return infoFactory;
     }
 }

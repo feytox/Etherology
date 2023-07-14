@@ -12,7 +12,7 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 @UtilityClass
 public class ServerParticleTypes {
-    public static final FeyParticleType<LightParticleEffect> LIGHT = register("light_new", LightParticleEffect::new);
+    public static final FeyParticleType<LightParticleEffect> LIGHT = register("light", LightParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> THUNDER_ZAP = register("thunder_zap", MovingParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> STEAM = register("steam", MovingParticleEffect::new);
 

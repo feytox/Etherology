@@ -36,14 +36,17 @@ import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockEntity;
 import ru.feytox.etherology.components.IFloatComponent;
 import ru.feytox.etherology.enums.ArmillarStateType;
 import ru.feytox.etherology.enums.InstabTypes;
+import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.enums.RingType;
 import ru.feytox.etherology.item.MatrixRing;
 import ru.feytox.etherology.mixin.ItemEntityAccessor;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.particle.ElectricityParticle;
 import ru.feytox.etherology.particle.OldMovingParticle;
+import ru.feytox.etherology.particle.types.LightParticleEffect;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.EArmillaryRecipe;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.tickers.ITicker;
 import ru.feytox.etherology.tickers.Ticker;
 import ru.feytox.etherology.tickers.Tickers;
@@ -58,7 +61,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static ru.feytox.etherology.Etherology.LIGHT_VITAL;
 import static ru.feytox.etherology.Etherology.OLD_STEAM;
 import static ru.feytox.etherology.enums.ArmillarStateType.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
@@ -398,6 +400,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
 //        if (rand.nextDouble() > 0.2) return;
 
         Vec3d center = getCenterPos();
+        LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightParticleType.VITAL, center);
 
         if (!armillarStateType.equals(DAMAGING)) {
             Box entitiesBox = new Box(pos.getX()-8, pos.getY()-1, pos.getZ()-8, pos.getX()+8,
@@ -407,26 +410,21 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
                             livingEntity -> !livingEntity.isPlayer());
 
             if (nearestEntities.isEmpty()) {
-                // TODO: replace 100 -> 8
-                PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 100, false);
+                PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
                 if (player == null) return;
 
-                OldMovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, player,
-                        center.x, center.y, center.z, rand);
-
+                effect.spawnParticles(world, 5, 0.1, player.getBoundingBox().getCenter());
                 return;
             }
 
             Entity nearestEntity = nearestEntities.get(0);
-            OldMovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, nearestEntity,
-                    center.x, center.y, center.z, rand);
+            effect.spawnParticles(world, 5, 0.1, nearestEntity.getBoundingBox().getCenter());
 
         } else {
             PlayerEntity player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 8, false);
             if (player == null) return;
 
-            OldMovingParticle.spawnParticles(world, LIGHT_VITAL, 5, 0.1, player,
-                    center.x, center.y, center.z, rand);
+            effect.spawnParticles(world, 5, 0.1, player.getBoundingBox().getCenter());
         }
     }
 

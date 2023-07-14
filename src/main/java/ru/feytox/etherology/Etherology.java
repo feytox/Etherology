@@ -56,9 +56,6 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
     public static final DefaultParticleType SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType OLD_STEAM = FabricParticleTypes.simple();
-    public static final DefaultParticleType LIGHT = FabricParticleTypes.simple();
-    public static final DefaultParticleType LIGHT_VITAL = FabricParticleTypes.simple();
-    public static final DefaultParticleType LIGHT_SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType VITAL_ENERGY = FabricParticleTypes.simple();
     public static final DefaultParticleType KETA_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType RELA_PARTICLE = FabricParticleTypes.simple();
@@ -103,9 +100,6 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity2"), ELECTRICITY2);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("spark"), SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("old_steam"), OLD_STEAM);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light"), LIGHT);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_vital"), LIGHT_VITAL);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("light_spark"), LIGHT_SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);
 
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("keta_particle"), KETA_PARTICLE);

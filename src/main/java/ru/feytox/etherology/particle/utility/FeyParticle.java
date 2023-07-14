@@ -1,18 +1,25 @@
 package ru.feytox.etherology.particle.utility;
 
+import lombok.Getter;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.particle.SpriteProvider;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends SpriteBillboardParticle {
+    @Getter
     protected final T parameters;
+    @Getter
     protected final SpriteProvider spriteProvider;
+    @Getter
     protected Vec3d startPos;
 
     public FeyParticle(ClientWorld clientWorld, double x, double y, double z, T parameters, SpriteProvider spriteProvider) {
@@ -32,29 +39,35 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         return 255;
     }
 
-    protected double getInverseLen(Vec3d vec) {
+    public double getInverseLen(Vec3d vec) {
         return MathHelper.fastInverseSqrt(vec.lengthSquared());
     }
 
-    protected void modifyPos(Vec3d deltaVec) {
+    public void modifyPos(Vec3d deltaVec) {
         x += deltaVec.x;
         y += deltaVec.y;
         z += deltaVec.z;
     }
 
-    protected boolean inverseCheckDeadPos(boolean deadOnEnd, double inverseLen) {
+    public void updatePos(Vec3d newPos) {
+        x = newPos.x;
+        y = newPos.y;
+        z = newPos.z;
+    }
+
+    public boolean inverseCheckDeadPos(boolean deadOnEnd, double inverseLen) {
         if (!deadOnEnd || inverseLen < 2.0d) return false;
         this.markDead();
         return true;
     }
 
-    protected boolean checkDeadPos(boolean deadOnEnd, double pathLen) {
+    public boolean checkDeadPos(boolean deadOnEnd, double pathLen) {
         if (!deadOnEnd || pathLen > 0.5d) return false;
         this.markDead();
         return true;
     }
 
-    protected boolean tickAge() {
+    public boolean tickAge() {
         if (this.age++ < this.maxAge) return false;
         this.markDead();
         return true;
@@ -82,5 +95,46 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         prevAngle = angle;
         angle += (float) (deltaDegrees * Math.PI / 180f);
         if (angle >= 2 * Math.PI) angle = (float) (angle - 2 * Math.PI);
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public void setSpriteForAge() {
+        setSpriteForAge(spriteProvider);
+    }
+
+    @Nullable
+    public static <A extends FeyParticle<B>, B extends FeyParticleEffect<B>> ParticleInfo<A, B> buildFromInfo(ParticleInfoProvider<A, B> infoProvider, A particle, ClientWorld clientWorld, double x, double y, double z, B parameters, SpriteProvider spriteProvider) {
+        ParticleInfo.Factory<A, B> infoFactory = infoProvider.getFactory();
+        if (infoFactory == null) return null;
+
+        ParticleInfo<A, B> particleInfo = infoFactory.createInfo(clientWorld, x, y, z, parameters, spriteProvider);
+        particleInfo.extraInit(particle);
+        particle.scale(particleInfo.getScale(particle.random));
+        particle.setMaxAge(particleInfo.getMaxAge(particle.random));
+
+        RGBColor color = particleInfo.getStartColor(particle.random);
+        if (color != null) particle.setRGB(color);
+        return particleInfo;
+    }
+
+    public static <A extends FeyParticle<B>, B extends FeyParticleEffect<B>> boolean tickFromInfo(@Nullable ParticleInfo<A, B> particleInfo, A particle) {
+        if (particleInfo == null) return false;
+        particleInfo.tick(particle);
+        return true;
     }
 }

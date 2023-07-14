@@ -13,16 +13,17 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.joml.Vector3f;
+import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.particle.OldMovingParticle;
+import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static ru.feytox.etherology.Etherology.LIGHT;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
@@ -65,8 +66,8 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
                 .add(0, random.nextFloat()*0.5f, 0);
         Vec3d endPos = new Vec3d(endVec).add(pos.toCenterPos());
 
-        OldMovingParticle.spawnParticles(world, LIGHT, 1, 0.07d,
-                startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, random);
+        LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightParticleType.SIMPLE, endPos);
+        effect.spawnParticles(world, 1, 0.07d, startPos);
     }
 
     @Override
