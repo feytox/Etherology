@@ -36,6 +36,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK
 public class BrewingCauldronBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
 
     public static final IntProperty LEVEL = IntProperty.of("level", 0, 8);
+    public static final IntProperty ASPECTS_LVL = IntProperty.of("aspects_lvl", 0, 100);
     public static final IntProperty TEMPERATURE = IntProperty.of("temperature", 0, 100);
 
     private static final VoxelShape RAYCAST_SHAPE;
@@ -47,6 +48,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH)
                 .with(LEVEL, 0)
+                .with(ASPECTS_LVL, 0)
                 .with(TEMPERATURE, 20));
     }
 
@@ -60,7 +62,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LEVEL, TEMPERATURE);
+        builder.add(FACING, LEVEL, TEMPERATURE, ASPECTS_LVL);
     }
 
     @Nullable

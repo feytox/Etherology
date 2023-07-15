@@ -93,13 +93,16 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     private void tickAspects(ServerWorld world, BlockState state) {
         if (!BrewingCauldronBlock.isFilled(state)) {
             clearAspects(world);
+            updateAspectsLvl(world, state, 0);
             return;
         }
 
-        if (world.getTime() % 20 != 0 || aspects.isEmpty()) return;
+        int oldCount = aspects.count().orElse(0);
+        updateAspectsLvl(world, state, oldCount);
+
+        if (world.getTime() % 20 != 0 || oldCount == 0) return;
         Random random = world.getRandom();
 
-        int oldCount = aspects.count().orElse(0);
         aspects = aspects.map(value -> {
             double chance = 0.1 + 0.05 * value;
             if (random.nextDouble() > chance) return value;
@@ -108,6 +111,13 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         tickAspectsParticles(world, state, oldCount);
 
         syncData(world);
+    }
+
+    private void updateAspectsLvl(ServerWorld world, BlockState state, int count) {
+        int aspectsLvl = (int) Math.min(100, 100 * count / 64f);
+        if (state.get(BrewingCauldronBlock.ASPECTS_LVL) == aspectsLvl) return;
+
+        world.setBlockState(pos, state.with(BrewingCauldronBlock.ASPECTS_LVL, aspectsLvl));
     }
 
     private void tickAspectsParticles(ServerWorld world, BlockState state, int oldCount) {

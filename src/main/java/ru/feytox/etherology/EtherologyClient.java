@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
+import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.closet.ClosetScreen;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
@@ -33,6 +34,8 @@ import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
 import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
+import ru.feytox.etherology.util.feyapi.FeyColor;
+import ru.feytox.etherology.util.feyapi.RGBColor;
 import ru.feytox.etherology.util.gecko.EGeoNetwork;
 import software.bernie.geckolib.network.GeckoLibNetwork;
 
@@ -57,9 +60,12 @@ public class EtherologyClient implements ClientModInitializer {
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
 
-        ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) ->
-                world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1,
-                BREWING_CAULDRON);
+        ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+            if (world == null || pos == null) return -1;
+            int biomeColor = BiomeColors.getWaterColor(world, pos);
+            int aspectsPercent = state.get(BrewingCauldronBlock.ASPECTS_LVL);
+            return FeyColor.getGradientColor(RGBColor.of(biomeColor), RGBColor.of(0x8032B5), aspectsPercent / 200f).asHex();
+            }, BREWING_CAULDRON);
 
         BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
