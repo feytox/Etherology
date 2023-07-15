@@ -121,6 +121,13 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         setSpriteForAge(spriteProvider);
     }
 
+    public void setSpriteForAgeCycle(int cycleAge) {
+        if (dead) return;
+
+        int fakeAge = age % (cycleAge + 1);
+        setSprite(spriteProvider.getSprite(fakeAge, cycleAge));
+    }
+
     @Nullable
     public static <A extends FeyParticle<B>, B extends FeyParticleEffect<B>> ParticleInfo<A, B> buildFromInfo(ParticleInfoProvider<A, B> infoProvider, A particle, ClientWorld clientWorld, double x, double y, double z, B parameters, SpriteProvider spriteProvider) {
         ParticleInfo.Factory<A, B> infoFactory = infoProvider.getFactory();
