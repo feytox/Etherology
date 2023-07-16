@@ -32,6 +32,7 @@ import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
+import ru.feytox.etherology.registry.util.GuiRegistry;
 import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.feyapi.FeyColor;
@@ -59,6 +60,7 @@ public class EtherologyClient implements ClientModInitializer {
         GeckoLibNetwork.registerClientReceiverPackets();
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
+        GuiRegistry.registerAll();
 
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) return -1;

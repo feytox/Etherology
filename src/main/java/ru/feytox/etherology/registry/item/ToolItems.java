@@ -5,10 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import ru.feytox.etherology.item.BattlePickaxe;
-import ru.feytox.etherology.item.EtherShield;
-import ru.feytox.etherology.item.GlaiveItem;
-import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.item.*;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import static net.minecraft.item.ToolMaterials.*;
@@ -65,6 +62,9 @@ public class ToolItems {
 
     // custom shields
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
+
+    // oculus
+    public static final Item OCULUS = register("oculus", new OculusVItem());
 
     public static Item register(String id, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), item);

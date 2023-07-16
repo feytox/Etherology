@@ -1,7 +1,7 @@
 package ru.feytox.etherology.gui.teldecore.pages;
 
 import io.wispforest.owo.ui.component.ButtonComponent;
-import io.wispforest.owo.ui.container.VerticalFlowLayout;
+import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.Surface;
 import net.minecraft.util.Identifier;
@@ -9,14 +9,14 @@ import ru.feytox.etherology.gui.teldecore.buttons.PageButton;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.UwuLib;
 
-public class EmptyPage extends VerticalFlowLayout {
+public class EmptyPage extends FlowLayout {
     ButtonComponent last_prev_button;
     ButtonComponent last_next_button;
     boolean is_left;
     Identifier identifier;
 
     public EmptyPage(boolean is_left, Identifier identifier) {
-        super(Sizing.fixed(143), Sizing.fixed(196));
+        super(Sizing.fixed(143), Sizing.fixed(196), Algorithm.VERTICAL);
         this.identifier = identifier;
         this.surface(getPageTexture(identifier, is_left));
         this.is_left = is_left;
