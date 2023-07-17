@@ -16,6 +16,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +24,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.enums.LightParticleType;
+import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
 import ru.feytox.etherology.mixin.ItemEntityAccessor;
 import ru.feytox.etherology.particle.ItemMovingParticle;
 import ru.feytox.etherology.particle.OldMovingParticle;
@@ -36,7 +40,7 @@ import java.util.UUID;
 import static ru.feytox.etherology.Etherology.SPARK;
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
-public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory {
+public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory, EtherAspectsProvider {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private UUID displayedItemUUID = null;
     private int itemConsumingTicks = 0;
@@ -227,5 +231,17 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
+    }
+
+    @Override
+    public @Nullable EtherAspectsContainer getStoredAspects() {
+        return ItemAspectsLoader.getAspectsOf(items.get(0)).orElse(null);
+    }
+
+    @Override
+    public Text getAspectsSourceName() {
+        String pedestalText = Text.translatable(getCachedState().getBlock().getTranslationKey()).getString();
+        String itemText = items.get(0).getName().getString();
+        return Text.of(pedestalText + " (" + itemText + ")");
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -24,6 +25,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.particle.types.MovingParticleEffect;
 import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
@@ -41,7 +43,7 @@ import java.util.Optional;
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.STEAM;
 
-public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity {
+public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity, EtherAspectsProvider {
     private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
 
     @Getter
@@ -327,5 +329,15 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     public int checkCacheItems() {
         if (!isEmpty()) return 0;
         return cacheItemsCount;
+    }
+
+    @Override
+    public @Nullable EtherAspectsContainer getStoredAspects() {
+        return aspects;
+    }
+
+    @Override
+    public Text getAspectsSourceName() {
+        return Text.translatable(getCachedState().getBlock().getTranslationKey());
     }
 }

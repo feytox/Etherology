@@ -1,34 +1,30 @@
 package ru.feytox.etherology.item;
 
+import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.Component;
-import io.wispforest.owo.ui.core.Positioning;
-import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.*;
 import lombok.NonNull;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlockEntity;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
-import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class OculusVItem extends Item {
@@ -63,55 +59,50 @@ public class OculusVItem extends Item {
         if (componentFuture != null && !componentFuture.isDone()) return;
 
         componentFuture = CompletableFuture
-                .supplyAsync(() -> createHud(client, world))
+                .supplyAsync(() -> getTrueCrosshairTarget(client))
+                .thenApplyAsync(hitResult -> createAspectHud(world, hitResult))
                 .thenAcceptAsync(component -> {
                     displayedHud.clearChildren();
-                    if (component != null) displayedHud.child(component);
-                    else componentFuture = null;
+                    displayedHud.children(component);
                 });
     }
 
     private static FlowLayout createRoot() {
-        FlowLayout root = Containers.horizontalFlow(Sizing.content(), Sizing.content());
-        root.positioning(Positioning.relative(50, 60));
+        FlowLayout root = Containers.horizontalFlow(Sizing.fill(100), Sizing.fill(100));
+        root.positioning(Positioning.relative(0, 0));
         return root;
     }
 
     @Nullable
-    private static Component createHud(MinecraftClient client, ClientWorld world) {
-        FlowLayout root = Containers.horizontalFlow(Sizing.content(), Sizing.content());
-        HitResult hitResult = getTrueCrosshairTarget(client);
-        if (hitResult == null || hitResult.getType().equals(HitResult.Type.MISS)) return null;
+    private static Component createTargetNameHud(ClientWorld world, @NonNull HitResult hitResult) {
+        Text targetName = EtherAspectsProvider.getTargetName(world, hitResult);
+        if (targetName == null) return null;
 
-        EtherAspectsContainer aspects = getAspects(world, hitResult);
-        if (aspects == null || aspects.isEmpty()) return null;
+        return Components.label(targetName).shadow(true)
+                .verticalTextAlignment(VerticalAlignment.CENTER)
+                .horizontalTextAlignment(HorizontalAlignment.CENTER)
+                .positioning(Positioning.relative(50, 45));
+    }
+
+    private static List<Component> createAspectHud(ClientWorld world, HitResult hitResult) {
+        List<Component> components = new ArrayList<>();
+        if (hitResult == null || hitResult.getType().equals(HitResult.Type.MISS)) return components;
+
+        Component targetName = createTargetNameHud(world, hitResult);
+        if (targetName != null) components.add(targetName);
+
+        FlowLayout aspectsRoot = Containers.horizontalFlow(Sizing.content(), Sizing.content());
+        aspectsRoot.positioning(Positioning.relative(50, 60));
+        EtherAspectsContainer aspects = EtherAspectsProvider.getAspects(world, hitResult);
+        if (aspects == null || aspects.isEmpty()) return components;
 
         aspects.getAspects().forEach((aspect, value) -> {
             AspectComponent aspectComponent = new AspectComponent(aspect, value);
-            root.child(aspectComponent);
+            aspectsRoot.child(aspectComponent);
         });
+        components.add(aspectsRoot);
 
-        return root;
-    }
-
-    @Nullable
-    private static EtherAspectsContainer getAspects(ClientWorld world, HitResult hitResult) {
-        if (hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof ItemEntity itemEntity) {
-            return ItemAspectsLoader.getAspectsOf(itemEntity.getStack()).orElse(null);
-        }
-
-        if (!(hitResult instanceof BlockHitResult blockHitResult)) return null;
-
-        BlockPos pos = blockHitResult.getBlockPos();
-        BlockState state = world.getBlockState(pos);
-        if (!state.isOf(EBlocks.BREWING_CAULDRON)) {
-            return ItemAspectsLoader.getAspectsOf(state.getBlock().asItem()).orElse(null);
-        }
-
-        // TODO: 15.07.2023 replace with EtherAspectsBlockContainer
-        return world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron
-                ? cauldron.getAspects() : ItemAspectsLoader.getAspectsOf(state.getBlock().asItem()).orElse(null);
-
+        return components;
     }
 
     @Nullable
