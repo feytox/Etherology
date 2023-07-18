@@ -1,9 +1,10 @@
 package ru.feytox.etherology.item;
 
-import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.*;
+import io.wispforest.owo.ui.core.Component;
+import io.wispforest.owo.ui.core.Positioning;
+import io.wispforest.owo.ui.core.Sizing;
 import lombok.NonNull;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
+import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +80,7 @@ public class OculusVItem extends Item {
         Text targetName = EtherAspectsProvider.getTargetName(world, hitResult);
         if (targetName == null) return null;
 
-        return Components.label(targetName).shadow(true)
-                .verticalTextAlignment(VerticalAlignment.CENTER)
-                .horizontalTextAlignment(HorizontalAlignment.CENTER)
+        return new ScaledLabelComponent(targetName, 1.5f).shadow(true)
                 .positioning(Positioning.relative(50, 45));
     }
 
