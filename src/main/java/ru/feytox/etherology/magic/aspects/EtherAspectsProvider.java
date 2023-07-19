@@ -33,11 +33,11 @@ public interface EtherAspectsProvider {
 
         if (!(hitResult instanceof EntityHitResult entityHitResult)) return null;
         if (entityHitResult.getEntity() instanceof ItemEntity itemEntity) {
-            return ItemAspectsLoader.getAspectsOf(itemEntity.getStack()).orElse(null);
+            return ItemAspectsLoader.getAspectsOf(itemEntity.getStack().getItem()).orElse(null);
         }
 
         if (entityHitResult.getEntity() instanceof ItemFrameEntity itemFrame) {
-            return ItemAspectsLoader.getAspectsOf(itemFrame.getHeldItemStack()).orElse(null);
+            return ItemAspectsLoader.getAspectsOf(itemFrame.getHeldItemStack().getItem()).orElse(null);
         }
 
         return null;

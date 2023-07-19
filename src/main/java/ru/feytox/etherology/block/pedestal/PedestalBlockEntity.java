@@ -235,7 +235,7 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
 
     @Override
     public @Nullable EtherAspectsContainer getStoredAspects() {
-        return ItemAspectsLoader.getAspectsOf(items.get(0)).orElse(null);
+        return ItemAspectsLoader.getAspectsOf(items.get(0).getItem()).orElse(null);
     }
 
     @Override
