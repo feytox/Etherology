@@ -16,6 +16,7 @@
   "item.etherology.ethereal_oil": "Эфирное масло",
   "item.etherology.twohandheld.warn": "Вы не можете использовать двуручное оружие, пока ваши руки заняты",
   "item.etherology.iron_shield": "Железный щит",
+  "item.etherology.oculus": "Окулус",
 
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",

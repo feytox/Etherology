@@ -64,7 +64,7 @@ public class ToolItems {
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
 
     // oculus
-    public static final Item OCULUS = register("oculus", new OculusVItem());
+    public static final Item OCULUS = register("oculus", new OculusItem());
 
     public static Item register(String id, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), item);

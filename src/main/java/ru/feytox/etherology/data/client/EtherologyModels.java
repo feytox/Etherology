@@ -7,6 +7,7 @@ import net.minecraft.data.client.TextureKey;
 import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.GlaiveItem;
+import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class EtherologyModels {
 
     @Nullable
     public static ModelIdentifier getItemModel(Item item, boolean isInHand) {
-        if (!(item instanceof GlaiveItem)) return null;
+        if (!(item instanceof GlaiveItem) && !(item instanceof OculusItem)) return null;
         String modelPath = item + (isInHand ? "_in_hand" : "");
         return new ModelIdentifier(new EIdentifier(modelPath), "inventory");
     }

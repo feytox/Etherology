@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class OculusVItem extends Item {
+public class OculusItem extends Item {
     private static final FlowLayout displayedHud = createRoot();
     @Nullable
     private static CompletableFuture<Void> componentFuture = null;
 
-    public OculusVItem() {
+    public OculusItem() {
         super(new FabricItemSettings().maxCount(1));
     }
 
@@ -57,6 +57,10 @@ public class OculusVItem extends Item {
 
     private static void tickHud(@NonNull final ClientWorld world) {
         final MinecraftClient client = MinecraftClient.getInstance();
+        if (!client.options.getPerspective().isFirstPerson()) {
+            displayedHud.clearChildren();
+            return;
+        }
 
         if (componentFuture != null && !componentFuture.isDone()) return;
 

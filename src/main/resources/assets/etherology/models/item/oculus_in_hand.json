@@ -1,0 +1,18 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "etherology:item/oculus_in_hand"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [15, 0, 0],
+			"translation": [-5.5, 3.5, 2],
+			"scale": [1, 1, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [-9, 7.25, 5.5],
+			"scale": [1, 1, 0.5]
+		}
+	}
+}
