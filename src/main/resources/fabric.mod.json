@@ -44,7 +44,8 @@
     "cardinal-components": [
       "etherology:ether_max",
       "etherology:ether_regen",
-      "etherology:ether_points"
+      "etherology:ether_points",
+      "etherology:corruption"
     ]
   },
   "accessWidener" : "etherology.accesswidener"

@@ -28,11 +28,14 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.item.CorruptionBucket;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 
+@SuppressWarnings("deprecation")
 public class BrewingCauldronBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
 
     public static final IntProperty LEVEL = IntProperty.of("level", 0, 8);
@@ -82,19 +85,37 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack handStack = player.getStackInHand(hand);
+        if (handStack.isOf(Items.BUCKET)) {
+            return fillBucketWithCorruption(world, state, pos, player, handStack, hand);
+        }
+        
         if (!handStack.isOf(Items.WATER_BUCKET)) {
             return player.isSneaking() ? tryTakeLastItem(world, player, hand, state, pos) :
                     mixWater(world, state, pos);
         }
-
+        
         int waterLevel = state.get(LEVEL);
         if (waterLevel == 8) return ActionResult.PASS;
-        if (!world.isClient) {
-            fillCauldron(state, world, pos, player, hand, handStack);
-            // TODO: 01.07.2023 add water bucket with aspects
-        }
+        if (world.isClient) return ActionResult.SUCCESS;
+        fillCauldron(state, world, pos, player, hand, handStack);
 
-        return ActionResult.success(world.isClient);
+        return ActionResult.CONSUME;
+    }
+
+    @NotNull
+    private ActionResult fillBucketWithCorruption(World world, BlockState state, BlockPos pos, PlayerEntity player, ItemStack handStack, Hand hand) {
+        if (world.isClient) return ActionResult.PASS;
+        if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
+
+        ItemStack corruptionStack = CorruptionBucket.createBucketStack(cauldron.getAspects());
+        if (corruptionStack == null) return ActionResult.PASS;
+        ItemStack newStack = ItemUsage.exchangeStack(handStack, player, corruptionStack);
+        player.setStackInHand(hand, newStack);
+
+        world.setBlockState(pos, state.with(LEVEL, 0));
+        cauldron.clearAspects((ServerWorld) world);
+        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        return ActionResult.SUCCESS;
     }
 
     private ActionResult tryTakeLastItem(World world, PlayerEntity player, Hand hand, BlockState state, BlockPos pos) {

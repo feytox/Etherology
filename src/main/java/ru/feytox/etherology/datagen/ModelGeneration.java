@@ -20,6 +20,7 @@ import java.util.Arrays;
 import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
+import static ru.feytox.etherology.registry.item.EItems.CORRUPTION_BUCKET;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 @SuppressWarnings("SameParameterValue")
@@ -48,7 +49,7 @@ public class ModelGeneration extends FabricModelProvider {
         // glint
         registerGlint(EItems.GLINT, generator);
         // all simple items
-        registerItems(generator, Models.GENERATED, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS);
+        registerItems(generator, Models.GENERATED, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET);
         // all handheld (swords, pickaxe and etc)
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
         registerItems(generator, Models.HANDHELD, WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, TELDER_STEEL_BATTLE_PICKAXE);
