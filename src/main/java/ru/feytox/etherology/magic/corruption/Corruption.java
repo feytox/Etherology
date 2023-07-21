@@ -24,10 +24,19 @@ public class Corruption implements Nbtable {
         Integer aspectsCount = aspects.count().orElse(null);
         if (aspectsCount == null || aspectsCount == 0) return null;
 
-        return new Corruption(aspectsCount);
+        return of(aspectsCount);
     }
 
-    public void injectInChunk(ServerWorld world, BlockPos pos) {
+    public static Corruption of(float aspectsCount) {
+        return new Corruption(aspectsCount * 0.1f);
+    }
+
+    @CheckReturnValue
+    public Corruption increment(float value) {
+        return new Corruption(corruptionValue + value);
+    }
+
+    public void placeInChunk(ServerWorld world, BlockPos pos) {
         CorruptionComponent component = world.getChunk(pos).getComponent(EtherologyComponents.CORRUPTION);
         component.setCorruption(this.add(component.getCorruption()));
     }
@@ -39,7 +48,7 @@ public class Corruption implements Nbtable {
     @CheckReturnValue
     public Corruption add(@Nullable Corruption corruption) {
         if (corruption == null) return new Corruption(corruptionValue);
-        return new Corruption(corruptionValue + corruption.corruptionValue);
+        return increment(corruption.corruptionValue);
     }
 
     @Override

@@ -10,10 +10,13 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
@@ -23,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
+import ru.feytox.etherology.magic.corruption.Corruption;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
 import java.util.ArrayList;
@@ -41,6 +46,19 @@ public class OculusItem extends Item {
     @NonNull
     public static Component initHud() {
         return displayedHud;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (world.isClient) return super.use(world, user, hand);
+
+        // TODO: 21.07.2023 remove
+        var component = world.getChunk(user.getBlockPos()).getComponent(EtherologyComponents.CORRUPTION);
+        Corruption corruption = component.getCorruption();
+        if (corruption != null) {
+            user.sendMessage(Text.of(String.valueOf(corruption.getCorruptionValue())));
+        }
+        return super.use(world, user, hand);
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
+import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.particle.types.MovingParticleEffect;
 import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
@@ -53,6 +54,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     private int cacheItemsCount = 0;
     private boolean shouldMixItems = false;
     private int mixItemsTicks = 0;
+    @Getter
+    private boolean wasWithAspects = false;
 
     public BrewingCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BREWING_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -112,7 +115,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
             if (random.nextDouble() > chance) return value;
             return value - 1;
         });
-        tickAspectsParticles(world, state, oldCount);
+        tickAspectsCorruption(world, state, oldCount);
 
         syncData(world);
     }
@@ -124,9 +127,12 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         world.setBlockState(pos, state.with(BrewingCauldronBlock.ASPECTS_LVL, aspectsLvl));
     }
 
-    private void tickAspectsParticles(ServerWorld world, BlockState state, int oldCount) {
+    private void tickAspectsCorruption(ServerWorld world, BlockState state, int oldCount) {
         int deltaCount = oldCount - aspects.count().orElse(0);
         if (deltaCount <= 0) return;
+
+        Corruption corruption = Corruption.of(deltaCount);
+        corruption.placeInChunk(world, pos);
 
         Vec3d moveVec = new Vec3d(0, 3, 0);
         Vec3d centerPos = getWaterPos(state).add(Vec3d.of(pos));
@@ -147,6 +153,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     public void clearAspects(ServerWorld world) {
         aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
+        wasWithAspects = false;
         syncData(world);
     }
 
@@ -186,6 +193,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
             aspects = aspects.add(itemAspects);
         });
+        if (!aspects.isEmpty()) wasWithAspects = true;
         clear();
         syncData(world);
     }
@@ -237,6 +245,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
+        nbt.putBoolean("wasWithAspects", wasWithAspects);
         aspects.writeNbt(nbt);
         Inventories.writeNbt(nbt, items);
 
@@ -247,6 +256,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        wasWithAspects = nbt.getBoolean("wasWithAspects");
         aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);

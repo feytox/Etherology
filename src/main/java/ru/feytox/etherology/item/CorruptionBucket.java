@@ -18,7 +18,7 @@ import ru.feytox.etherology.registry.item.EItems;
 public class CorruptionBucket extends Item {
     
     public CorruptionBucket() {
-        super(new FabricItemSettings());
+        super(new FabricItemSettings().maxCount(1));
     }
 
     @Nullable
@@ -50,7 +50,7 @@ public class CorruptionBucket extends Item {
         ItemStack handStack = context.getStack();
 
         Corruption corruption = getCorruptionFromBucket(handStack);
-        if (corruption != null) corruption.injectInChunk((ServerWorld) world, usePos);
+        if (corruption != null) corruption.placeInChunk((ServerWorld) world, usePos);
         ItemStack newStack = ItemUsage.exchangeStack(handStack, player, Items.BUCKET.getDefaultStack());
         player.setStackInHand(context.getHand(), newStack);
 

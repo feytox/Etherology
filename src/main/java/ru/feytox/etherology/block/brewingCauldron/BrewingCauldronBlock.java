@@ -104,15 +104,16 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     @NotNull
     private ActionResult fillBucketWithCorruption(World world, BlockState state, BlockPos pos, PlayerEntity player, ItemStack handStack, Hand hand) {
-        if (world.isClient) return ActionResult.PASS;
+        if (world.isClient || state.get(LEVEL) == 0) return ActionResult.PASS;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
 
-        ItemStack corruptionStack = CorruptionBucket.createBucketStack(cauldron.getAspects());
-        if (corruptionStack == null) return ActionResult.PASS;
-        ItemStack newStack = ItemUsage.exchangeStack(handStack, player, corruptionStack);
+        boolean wasWithAspects = cauldron.isWasWithAspects();
+        ItemStack filledStack = wasWithAspects ? CorruptionBucket.createBucketStack(cauldron.getAspects()) : Items.WATER_BUCKET.getDefaultStack();
+        if (filledStack == null) return ActionResult.PASS;
+        ItemStack newStack = ItemUsage.exchangeStack(handStack, player, filledStack);
         player.setStackInHand(hand, newStack);
 
-        world.setBlockState(pos, state.with(LEVEL, 0));
+        world.setBlockState(pos, state.with(LEVEL, 0).with(ASPECTS_LVL, 0));
         cauldron.clearAspects((ServerWorld) world);
         world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
         return ActionResult.SUCCESS;
