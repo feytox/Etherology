@@ -28,6 +28,7 @@ import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
+import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.registry.item.ModelPredicates;
@@ -61,6 +62,7 @@ public class EtherologyClient implements ClientModInitializer {
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
         GuiRegistry.registerAll();
+        EtherologyModelProvider.register();
 
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) return -1;

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.data.client.EtherologyModels;
+import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.registry.item.ToolItems;
 
 import java.util.Arrays;

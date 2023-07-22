@@ -1,0 +1,28 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "etherology:item/oculus_lens",
+		"lense": "etherology:item/oculus_lens"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 8],
+			"to": [16, 16, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#lense"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#lense"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [15, 0, 0],
+			"translation": [-5.5, 3.5, 2],
+			"scale": [1, 1, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [-9, 7.25, 3.5],
+			"scale": [1, 1, 0.5]
+		}
+	}
+}

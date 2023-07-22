@@ -1,4 +1,4 @@
-package ru.feytox.etherology.data.client;
+package ru.feytox.etherology.model;
 
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.util.ModelIdentifier;
@@ -32,6 +32,10 @@ public class EtherologyModels {
     public static ModelIdentifier getItemModel(Item item, boolean isInHand) {
         if (!(item instanceof GlaiveItem) && !(item instanceof OculusItem)) return null;
         String modelPath = item + (isInHand ? "_in_hand" : "");
+        return createItemModelId(modelPath);
+    }
+
+    public static ModelIdentifier createItemModelId(String modelPath) {
         return new ModelIdentifier(new EIdentifier(modelPath), "inventory");
     }
 
