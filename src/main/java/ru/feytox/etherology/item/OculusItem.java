@@ -6,8 +6,10 @@ import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
 import lombok.NonNull;
+import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,23 +17,26 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.components.ZoneComponent;
+import ru.feytox.etherology.enums.EssenceZoneType;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
-import ru.feytox.etherology.magic.corruption.Corruption;
+import ru.feytox.etherology.magic.zones.EssenceZone;
+import ru.feytox.etherology.particle.types.ZoneParticleEffect;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class OculusItem extends Item {
@@ -43,34 +48,70 @@ public class OculusItem extends Item {
         super(new FabricItemSettings().maxCount(1));
     }
 
+    public static boolean isUsingOculus(PlayerEntity player) {
+        val items = player.getHandItems();
+        for (ItemStack stack : items) {
+            if (stack.getItem() instanceof OculusItem) return true;
+        }
+        return false;
+    }
+
     @NonNull
     public static Component initHud() {
         return displayedHud;
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (world.isClient) return super.use(world, user, hand);
-
-        // TODO: 21.07.2023 remove
-        var component = world.getChunk(user.getBlockPos()).getComponent(EtherologyComponents.CORRUPTION);
-        Corruption corruption = component.getCorruption();
-        if (corruption != null) {
-            user.sendMessage(Text.of(String.valueOf(corruption.getCorruptionValue())));
-        }
-        return super.use(world, user, hand);
-    }
-
-    @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!world.isClient || !entity.isPlayer()) return;
+        if (!entity.isPlayer()) return;
+        if (!world.isClient) return;
         if (!selected) {
             displayedHud.clearChildren();
             return;
         }
 
+        tickZoneParticles((ClientWorld) world, (ClientPlayerEntity) entity);
         tickHud((ClientWorld) world);
+    }
+
+    private void tickZoneParticles(ClientWorld world, ClientPlayerEntity player) {
+        ChunkPos centerChunk = player.getChunkPos();
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                trySpawnZoneParticles(world, centerChunk, x, z);
+            }
+        }
+    }
+
+    private void trySpawnZoneParticles(ClientWorld world, ChunkPos centerChunk, int x, int z) {
+        Chunk chunk = world.getChunk(x + centerChunk.x, z + centerChunk.z);
+        Optional<ZoneComponent> zoneOptional = EtherologyComponents.ESSENCE_ZONE.maybeGet(chunk);
+        if (zoneOptional.isEmpty()) return;
+
+        ZoneComponent zone = zoneOptional.get();
+        EssenceZoneType zoneType = zone.getZoneType();
+        EssenceZone essenceZone = zone.getEssenceZone();
+        Integer zoneY = zone.getZoneY();
+        if (essenceZone == null || zoneY == null) return;
+        if (zoneType.equals(EssenceZoneType.EMPTY) || zoneType.equals(EssenceZoneType.NOT_INITIALIZED)) return;
+
+        spawnZoneParticles(world, chunk, zoneType, essenceZone, zoneY);
+    }
+
+    private void spawnZoneParticles(ClientWorld world, Chunk chunk, EssenceZoneType zoneType, EssenceZone essenceZone, int zoneY) {
+        float k = essenceZone.getValue() / 64.0f;
+
+        int count = MathHelper.ceil(5 * k);
+        ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneType);
+        ChunkPos chunkPos = chunk.getPos();
+        BlockPos startPos = new BlockPos(chunkPos.getStartX(), zoneY - 8, chunkPos.getStartZ());
+        BlockPos endPos = new BlockPos(chunkPos.getEndX(), zoneY + 8, chunkPos.getEndZ());
+
+        BlockPos.iterate(startPos, endPos).forEach(particlePos -> {
+            if (world.getRandom().nextDouble() > k * 1/300d) return;
+            effect.spawnParticles(world, count, 0.5, particlePos.toCenterPos());
+        });
     }
 
     private static void tickHud(@NonNull final ClientWorld world) {

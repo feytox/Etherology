@@ -14,6 +14,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceZones;
 import ru.feytox.etherology.util.feyapi.EVec3d;
+import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class SparkParticle extends OldMovingParticle {
         super(clientWorld, d, e, f, g, h, i);
         this.maxAge = 20;
         this.age = random.nextBetween(0, 10);
-        RGBColor gradientColor = ZoneParticle.getGradientColor(zoneType.getFirstColor(), zoneType.getSecondColor(), this.random);
+        RGBColor gradientColor = FeyColor.getRandomColor(zoneType.getFirstColor(), zoneType.getSecondColor(), this.random);
         this.setRGB(gradientColor);
         this.setSpriteForAge(spriteProvider);
         isSedimentary = true;

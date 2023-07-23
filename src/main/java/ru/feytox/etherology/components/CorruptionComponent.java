@@ -56,17 +56,11 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
         nbt.put("Corruption", corruptionNbt);
     }
 
-    @Nullable
-    private WorldChunk checkAndCast() {
-        return chunk instanceof WorldChunk worldChunk ? worldChunk : null;
-    }
-
     @Override
     public void serverTick() {
         if (ticks++ % TICK_RATE != 0) return;
         if (corruption == null || corruption.getCorruptionValue() <= MAX_CHUNK_CORRUPTION) return;
-        WorldChunk worldChunk = checkAndCast();
-        if (worldChunk == null) return;
+        if (!(chunk instanceof WorldChunk worldChunk)) return;
 
         World world = worldChunk.getWorld();
         float tipValue = (corruption.getCorruptionValue() - MAX_CHUNK_CORRUPTION) / 4;

@@ -45,7 +45,8 @@
       "etherology:ether_max",
       "etherology:ether_regen",
       "etherology:ether_points",
-      "etherology:corruption"
+      "etherology:corruption",
+      "etherology:essence_zone"
     ]
   },
   "accessWidener" : "etherology.accesswidener"

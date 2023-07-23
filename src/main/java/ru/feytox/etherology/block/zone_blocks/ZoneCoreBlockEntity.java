@@ -23,7 +23,7 @@ import ru.feytox.etherology.magic.zones.EssenceConsumer;
 import ru.feytox.etherology.magic.zones.EssenceDetectable;
 import ru.feytox.etherology.magic.zones.EssenceSupplier;
 import ru.feytox.etherology.magic.zones.EssenceZones;
-import ru.feytox.etherology.particle.ZoneParticle;
+import ru.feytox.etherology.particle.OldZoneParticle;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.nbt.FeyNbtList;
 import ru.feytox.etherology.util.nbt.NbtBlockPos;
@@ -127,11 +127,11 @@ public class ZoneCoreBlockEntity extends BlockEntity implements EssenceSupplier,
         particleBlocks.forEach(blockPos -> {
             for (BlockPos consumerPos: consumersPos) {
                 if (consumerPos.isWithinDistance(blockPos, 2)) {
-                    ZoneParticle.spawnParticles(world, points*1.4f, zoneType, blockPos, consumerPos, random);
+                    OldZoneParticle.spawnParticles(world, points*1.4f, zoneType, blockPos, consumerPos, random);
                     return;
                 }
             }
-            ZoneParticle.spawnParticles(world, points, zoneType, blockPos, random);
+            OldZoneParticle.spawnParticles(world, points, zoneType, blockPos, random);
         });
     }
 

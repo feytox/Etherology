@@ -8,10 +8,7 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import org.jetbrains.annotations.NotNull;
-import ru.feytox.etherology.components.CorruptionComponent;
-import ru.feytox.etherology.components.EtherComponent;
-import ru.feytox.etherology.components.FloatComponent;
-import ru.feytox.etherology.components.IFloatComponent;
+import ru.feytox.etherology.components.*;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EtherologyComponents implements EntityComponentInitializer, ChunkComponentInitializer {
@@ -24,6 +21,9 @@ public class EtherologyComponents implements EntityComponentInitializer, ChunkCo
     public static final ComponentKey<CorruptionComponent> CORRUPTION =
             ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("corruption"), CorruptionComponent.class);
 
+    public static final ComponentKey<ZoneComponent> ESSENCE_ZONE =
+            ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("essence_zone"), ZoneComponent.class);
+
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -35,6 +35,7 @@ public class EtherologyComponents implements EntityComponentInitializer, ChunkCo
     @Override
     public void registerChunkComponentFactories(@NotNull ChunkComponentFactoryRegistry registry) {
         registry.register(CORRUPTION, CorruptionComponent::new);
+        registry.register(ESSENCE_ZONE, ZoneComponent::new);
     }
 
     public static ComponentKey<IFloatComponent> fromString(String key) {
