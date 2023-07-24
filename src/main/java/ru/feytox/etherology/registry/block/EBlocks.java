@@ -42,13 +42,11 @@ import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.block.ringMatrix.RingMatrixBlock;
 import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockEntity;
 import ru.feytox.etherology.block.samovar.SamovarBlock;
-import ru.feytox.etherology.block.sedimentary.SedimentaryBlock;
-import ru.feytox.etherology.block.sedimentary.SedimentaryBlockEntity;
+import ru.feytox.etherology.block.sedimentary.SedimentaryStone;
+import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
-import ru.feytox.etherology.block.zone_blocks.ZoneCoreBlock;
-import ru.feytox.etherology.block.zone_blocks.ZoneCoreBlockEntity;
 import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -81,18 +79,11 @@ public class EBlocks {
             FabricBlockEntityTypeBuilder.create(RingMatrixBlockEntity::new, RING_MATRIX_BLOCK).build()
     );
 
-    public static final ZoneCoreBlock ZONE_CORE_BLOCK = (ZoneCoreBlock) new ZoneCoreBlock().registerAll();
-    public static final BlockEntityType<ZoneCoreBlockEntity> ZONE_CORE_BLOCK_ENTITY = Registry.register(
+    public static final SedimentaryStone SEDIMENTARY_BLOCK = (SedimentaryStone) new SedimentaryStone().registerAll();
+    public static final BlockEntityType<SedimentaryStoneBlockEntity> SEDIMENTARY_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("zone_core_block_entity"),
-            FabricBlockEntityTypeBuilder.create(ZoneCoreBlockEntity::new, ZONE_CORE_BLOCK).build()
-    );
-
-    public static final SedimentaryBlock SEDIMENTARY_BLOCK = (SedimentaryBlock) new SedimentaryBlock().registerAll();
-    public static final BlockEntityType<SedimentaryBlockEntity> SEDIMENTARY_BLOCK_ENTITY = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("sedimentary_block_entity"),
-            FabricBlockEntityTypeBuilder.create(SedimentaryBlockEntity::new, SEDIMENTARY_BLOCK).build()
+            new EIdentifier("sedimentary_stone_block_entity"),
+            FabricBlockEntityTypeBuilder.create(SedimentaryStoneBlockEntity::new, SEDIMENTARY_BLOCK).build()
     );
 
     public static final EssenceDetectorBlock ESSENCE_DETECTOR_BLOCK = (EssenceDetectorBlock) new EssenceDetectorBlock().registerAll();

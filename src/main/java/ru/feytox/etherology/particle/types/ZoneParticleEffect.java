@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleType;
-import ru.feytox.etherology.enums.EssenceZoneType;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.types.args.EnumArg;
 import ru.feytox.etherology.particle.types.args.ParticleArg;
 import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;

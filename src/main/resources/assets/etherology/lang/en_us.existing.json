@@ -7,7 +7,7 @@
   "item.etherology.ethril_ring": "Эфриловое матричное кольцо",
   "item.etherology.gold_ring": "Золотое матричное кольцо",
   "item.etherology.primoshard_keta": "Первичный осколок",
-  "item.etherology.primoshard_rela": "Первичный осколок",
+  "item.etherology.primoshard_rella": "Первичный осколок",
   "item.etherology.primoshard_clos": "Первичный осколок",
   "item.etherology.primoshard_via": "Первичный осколок",
   "item.etherology.glint_shard": "Огонёк",
@@ -59,6 +59,7 @@
   "block.etherology.peach_sign": "Персиковая табличка",
   "block.etherology.peach_trapdoor": "Персиковый люк",
   "block.etherology.brewing_cauldron": "Варочный тигель",
+  "block.etherology.sedimentary_stone": "Осадочный камень",
 
   "etherology.mix_red": "Замешать до красной эссенции",
   "etherology.mix_yellow": "Замешать до желтой эссенции",

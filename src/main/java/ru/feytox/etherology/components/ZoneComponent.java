@@ -15,18 +15,20 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.EssenceZoneType;
 import ru.feytox.etherology.magic.zones.EssenceZone;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponent {
 
-    // 4 in 64x64 chunks (4096 chunks or 1024x1024 blocks)
-    private static final float INIT_CHANCE = 1 / 222.25f;
+    // ~8 in 64x64 chunks (4096 chunks or 1024x1024 blocks)
+    private static final float INIT_CHANCE = 1 / 111.0f;
+    private static final float MAX_VALUE = 128.0f;
 
     private final Chunk chunk;
 
@@ -40,6 +42,51 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     @Nullable
     @Getter
     private Integer zoneY = null;
+
+    /**
+     * Retrieves the ZoneComponent associated with the given Chunk.
+     *
+     * @param  chunk  the Chunk to retrieve the ZoneComponent from
+     * @return        the ZoneComponent associated with the Chunk, or null if it doesn't exist
+     */
+    @Nullable
+    public static ZoneComponent getZone(Chunk chunk) {
+        Optional<ZoneComponent> zoneOptional = EtherologyComponents.ESSENCE_ZONE.maybeGet(chunk);
+        return zoneOptional.orElse(null);
+    }
+
+    /**
+     * Decrements the given value from the essence zone.
+     *
+     * @param  dValue  the value to decrement
+     * @return         the difference between the original value and the new value of the essence zone
+     */
+    public float decrement(float dValue) {
+        if (essenceZone == null) return 0.0f;
+        float value = essenceZone.getValue();
+        float newValue = Math.max(0, value - dValue);
+        essenceZone.setValue(newValue);
+        float result = value - newValue;
+        if (result != 0) {
+            save();
+            updateStatus();
+        }
+
+        return result;
+    }
+
+    public boolean isEmpty() {
+        return !zoneType.isZone();
+    }
+
+    public void updateStatus() {
+        if (isEmpty()) return;
+        if (essenceZone != null && essenceZone.getValue() > 0) return;
+
+        essenceZone = null;
+        zoneType = EssenceZoneType.EMPTY;
+        save();
+    }
 
     @Override
     public void serverTick() {
@@ -73,16 +120,28 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
         markAsEmpty();
     }
 
+    /**
+     * Marks the essence zone as empty.
+     */
     private void markAsEmpty() {
         zoneType = EssenceZoneType.EMPTY;
         save();
     }
 
+    /**
+     * Marks the essence zone as initialized.
+     */
     private void markAsInitialized(EssenceZoneType zoneType, int zoneY) {
         this.zoneType = zoneType;
-        this.essenceZone = new EssenceZone(64.0f);
+        // TODO: 24.07.2023 change value
+        this.essenceZone = new EssenceZone(MAX_VALUE);
         this.zoneY = zoneY;
         save();
+    }
+
+    public float getFillPercent() {
+        if (isEmpty() || essenceZone == null) return 0.0f;
+        return essenceZone.getValue() / MAX_VALUE;
     }
 
     @Override
@@ -101,6 +160,9 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
         if (zoneY != null) nbt.putInt("y", zoneY);
     }
 
+    /**
+     * Saves the chunk and synchronizes the essence zone.
+     */
     public void save() {
         this.chunk.setNeedsSaving(true);
         EtherologyComponents.ESSENCE_ZONE.sync(chunk);

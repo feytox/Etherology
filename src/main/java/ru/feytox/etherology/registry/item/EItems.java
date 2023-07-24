@@ -24,7 +24,7 @@ public class EItems {
     public static final TelderSteelRing TELDER_STEEL_RING = (TelderSteelRing) new TelderSteelRing().register();
     public static final NetheriteRing NETHERITE_RING = (NetheriteRing) new NetheriteRing().register();
     public static final PrimoShard.KetaPrimoShard PRIMOSHARD_KETA = (PrimoShard.KetaPrimoShard) new PrimoShard.KetaPrimoShard().register();
-    public static final PrimoShard.RelaPrimoShard PRIMOSHARD_RELA = (PrimoShard.RelaPrimoShard) new PrimoShard.RelaPrimoShard().register();
+    public static final PrimoShard.RellaPrimoShard PRIMOSHARD_RELLA = (PrimoShard.RellaPrimoShard) new PrimoShard.RellaPrimoShard().register();
     public static final PrimoShard.ClosPrimoShard PRIMOSHARD_CLOS = (PrimoShard.ClosPrimoShard) new PrimoShard.ClosPrimoShard().register();
     public static final PrimoShard.ViaPrimoShard PRIMOSHARD_VIA = (PrimoShard.ViaPrimoShard) new PrimoShard.ViaPrimoShard().register();
     public static final GlintItem GLINT = (GlintItem) new GlintItem().register();

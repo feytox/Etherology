@@ -24,19 +24,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.components.ZoneComponent;
-import ru.feytox.etherology.enums.EssenceZoneType;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
 import ru.feytox.etherology.magic.zones.EssenceZone;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.types.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class OculusItem extends Item {
@@ -86,15 +84,13 @@ public class OculusItem extends Item {
 
     private void trySpawnZoneParticles(ClientWorld world, ChunkPos centerChunk, int x, int z) {
         Chunk chunk = world.getChunk(x + centerChunk.x, z + centerChunk.z);
-        Optional<ZoneComponent> zoneOptional = EtherologyComponents.ESSENCE_ZONE.maybeGet(chunk);
-        if (zoneOptional.isEmpty()) return;
+        ZoneComponent zone = ZoneComponent.getZone(chunk);
+        if (zone == null || zone.isEmpty()) return;
 
-        ZoneComponent zone = zoneOptional.get();
         EssenceZoneType zoneType = zone.getZoneType();
         EssenceZone essenceZone = zone.getEssenceZone();
         Integer zoneY = zone.getZoneY();
         if (essenceZone == null || zoneY == null) return;
-        if (zoneType.equals(EssenceZoneType.EMPTY) || zoneType.equals(EssenceZoneType.NOT_INITIALIZED)) return;
 
         spawnZoneParticles(world, chunk, zoneType, essenceZone, zoneY);
     }

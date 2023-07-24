@@ -6,8 +6,8 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.enums.EssenceZoneType;
 import ru.feytox.etherology.item.OculusItem;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.types.ZoneParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
 

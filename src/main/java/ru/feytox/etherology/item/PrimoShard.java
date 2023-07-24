@@ -45,9 +45,9 @@ public class PrimoShard extends SimpleItem {
             super("primoshard_keta");
         }
     }
-    public static class RelaPrimoShard extends PrimoShard {
-        public RelaPrimoShard() {
-            super("primoshard_rela");
+    public static class RellaPrimoShard extends PrimoShard {
+        public RellaPrimoShard() {
+            super("primoshard_rella");
         }
     }
     public static class ClosPrimoShard extends PrimoShard {

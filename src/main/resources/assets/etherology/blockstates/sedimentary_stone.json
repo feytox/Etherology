@@ -1,0 +1,67 @@
+{
+  "variants": {
+    "essence_state=empty,essence_level=0": {
+      "model": "etherology:block/sedimentary_stone"
+    },
+    "essence_state=rella,essence_level=0": {
+      "model": "etherology:block/sedimentary_stone"
+    },
+    "essence_state=keta,essence_level=0": {
+      "model": "etherology:block/sedimentary_stone"
+    },
+    "essence_state=via,essence_level=0": {
+      "model": "etherology:block/sedimentary_stone"
+    },
+    "essence_state=clos,essence_level=0": {
+      "model": "etherology:block/sedimentary_stone"
+    },
+    "essence_state=rella,essence_level=1": {
+      "model": "etherology:block/sedimentary_stone_rela_1"
+    },
+    "essence_state=rella,essence_level=2": {
+      "model": "etherology:block/sedimentary_stone_rela_2"
+    },
+    "essence_state=rella,essence_level=3": {
+      "model": "etherology:block/sedimentary_stone_rela_3"
+    },
+    "essence_state=rella,essence_level=4": {
+      "model": "etherology:block/sedimentary_stone_rela_4"
+    },
+    "essence_state=keta,essence_level=1": {
+      "model": "etherology:block/sedimentary_stone_keta_1"
+    },
+    "essence_state=keta,essence_level=2": {
+      "model": "etherology:block/sedimentary_stone_keta_2"
+    },
+    "essence_state=keta,essence_level=3": {
+      "model": "etherology:block/sedimentary_stone_keta_3"
+    },
+    "essence_state=keta,essence_level=4": {
+      "model": "etherology:block/sedimentary_stone_keta_4"
+    },
+    "essence_state=clos,essence_level=1": {
+      "model": "etherology:block/sedimentary_stone_clos_1"
+    },
+    "essence_state=clos,essence_level=2": {
+      "model": "etherology:block/sedimentary_stone_clos_2"
+    },
+    "essence_state=clos,essence_level=3": {
+      "model": "etherology:block/sedimentary_stone_clos_3"
+    },
+    "essence_state=clos,essence_level=4": {
+      "model": "etherology:block/sedimentary_stone_clos_4"
+    },
+    "essence_state=via,essence_level=1": {
+      "model": "etherology:block/sedimentary_stone_via_1"
+    },
+    "essence_state=via,essence_level=2": {
+      "model": "etherology:block/sedimentary_stone_via_2"
+    },
+    "essence_state=via,essence_level=3": {
+      "model": "etherology:block/sedimentary_stone_via_3"
+    },
+    "essence_state=via,essence_level=4": {
+      "model": "etherology:block/sedimentary_stone_via_4"
+    }
+  }
+}

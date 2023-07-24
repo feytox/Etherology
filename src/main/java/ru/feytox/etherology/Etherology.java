@@ -39,9 +39,6 @@ import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
-import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE;
-import static ru.feytox.etherology.world.features.zones.EssenceZoneFeature.ESSENCE_ZONE_FEATURE_ID;
-
 public class Etherology implements ModInitializer {
 
     public static final Logger ELOGGER = LogUtils.getLogger();
@@ -57,10 +54,6 @@ public class Etherology implements ModInitializer {
     public static final DefaultParticleType SPARK = FabricParticleTypes.simple();
     public static final DefaultParticleType OLD_STEAM = FabricParticleTypes.simple();
     public static final DefaultParticleType VITAL_ENERGY = FabricParticleTypes.simple();
-    public static final DefaultParticleType KETA_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType RELA_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType CLOS_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType VIA_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType GLINT_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType SHOCKWAVE = FabricParticleTypes.simple();
 
@@ -102,15 +95,8 @@ public class Etherology implements ModInitializer {
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("old_steam"), OLD_STEAM);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);
 
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("keta_particle"), KETA_PARTICLE);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("rela_particle"), RELA_PARTICLE);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("clos_particle"), CLOS_PARTICLE);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("via_particle"), VIA_PARTICLE);
-
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("glint_particle"), GLINT_PARTICLE);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("shockwave"), SHOCKWAVE);
-
-        Registry.register(Registries.FEATURE, ESSENCE_ZONE_FEATURE_ID, ESSENCE_ZONE_FEATURE);
 
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("closet_screen_handler"), CLOSET_SCREEN_HANDLER);
         Registry.register(Registries.SCREEN_HANDLER, new EIdentifier("ethereal_storage_screen_handler"), ETHEREAL_STORAGE_SCREEN_HANDLER);

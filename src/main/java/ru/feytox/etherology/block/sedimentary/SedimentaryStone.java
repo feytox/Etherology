@@ -20,19 +20,18 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.SedimentaryStates;
-import ru.feytox.etherology.util.deprecated.SimpleBlock;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-import static ru.feytox.etherology.enums.SedimentaryStates.EMPTY;
 import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 
-public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider {
-    public static final EnumProperty<SedimentaryStates> ESSENCE_STATE = EnumProperty.of("essence_state", SedimentaryStates.class);
+public class SedimentaryStone extends Block implements RegistrableBlock, BlockEntityProvider {
+    public static final EnumProperty<EssenceZoneType> ESSENCE_STATE = EnumProperty.of("essence_state", EssenceZoneType.class);
     public static final IntProperty ESSENCE_LEVEL = IntProperty.of("essence_level", 0, 4);
 
-    public SedimentaryBlock() {
-        super("sedimentary_block", FabricBlockSettings.of(Material.STONE));
-        setDefaultState(getDefaultState().with(ESSENCE_STATE, EMPTY).with(ESSENCE_LEVEL, 0));
+    public SedimentaryStone() {
+        super(FabricBlockSettings.of(Material.STONE));
+        setDefaultState(getDefaultState().with(ESSENCE_STATE, EssenceZoneType.EMPTY).with(ESSENCE_LEVEL, 0));
     }
 
     @Override
@@ -48,8 +47,8 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
 
         boolean result = false;
         BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof SedimentaryBlockEntity sedimentaryBlock) {
-            result = sedimentaryBlock.onUseAxe(state, world, player);
+        if (be instanceof SedimentaryStoneBlockEntity sedimentaryBlock) {
+            result = sedimentaryBlock.onUseAxe(state, world);
         }
         return result ? ActionResult.SUCCESS : super.onUse(state, world, pos, player, hand, hit);
     }
@@ -57,7 +56,7 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new SedimentaryBlockEntity(pos, state);
+        return new SedimentaryStoneBlockEntity(pos, state);
     }
 
     @Override
@@ -70,12 +69,16 @@ public class SedimentaryBlock extends SimpleBlock implements BlockEntityProvider
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (type != SEDIMENTARY_BLOCK_ENTITY) return null;
 
-        return world.isClient ? null : SedimentaryBlockEntity::serverTick;
+        return world.isClient ? null : SedimentaryStoneBlockEntity::serverTicker;
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        super.onStateReplaced(state, world, pos, newState, moved);
-//        world.updateComparators(pos,this);
+    public Block getBlockInstance() {
+        return this;
+    }
+
+    @Override
+    public String getBlockId() {
+        return "sedimentary_stone";
     }
 }

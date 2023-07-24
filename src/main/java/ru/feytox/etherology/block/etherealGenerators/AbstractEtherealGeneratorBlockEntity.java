@@ -11,12 +11,13 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.components.ZoneComponent;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.magic.zones.EssenceDetectable;
-import ru.feytox.etherology.magic.zones.EssenceSupplier;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
@@ -31,11 +32,10 @@ import java.util.concurrent.CompletableFuture;
 import static ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
 public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlockEntity
-        implements EtherStorage, EssenceDetectable, EGeoBlockEntity {
+        implements EtherStorage, EGeoBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float storedEther;
     private int nextGenTime = 40*20;
-    private boolean isInZone = false;
     private boolean isLaunched = false;
     private boolean isMess = false;
     private CompletableFuture<Boolean> messCheck = null;
@@ -121,6 +121,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     public void generateTick(ServerWorld world, BlockState state) {
         if (state.get(STALLED) || isMess) return;
 
+        boolean isInZone = isInZone(world);
         Random random = world.getRandom();
         if (nextGenTime-- > 0) {
             if (isInZone && random.nextDouble() <= 0.5) nextGenTime -= random.nextBetween(0, 1);
@@ -137,6 +138,14 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
                 stall(world, state);
             }
         }
+    }
+
+    public boolean isInZone(World world) {
+        ZoneComponent zoneComponent = ZoneComponent.getZone(world.getChunk(pos));
+        if (zoneComponent == null || zoneComponent.isEmpty()) return false;
+        Integer zoneY = zoneComponent.getZoneY();
+        if (zoneY == null) return false;
+        return MathHelper.abs(pos.getY() - zoneY) <= 15;
     }
 
     @Override
@@ -191,27 +200,6 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     }
 
     @Override
-    public float getRadius() {
-        return 15;
-    }
-
-    @Override
-    public boolean sync(EssenceSupplier supplier) {
-        isInZone = true;
-        return true;
-    }
-
-    @Override
-    public void unsync(EssenceSupplier supplier) {
-        isInZone = false;
-    }
-
-    @Override
-    public BlockPos getDetectablePos() {
-        return pos;
-    }
-
-    @Override
     public NbtCompound toInitialChunkDataNbt() {
         return createNbt();
     }
@@ -225,7 +213,6 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     @Override
     protected void writeNbt(NbtCompound nbt) {
         nbt.putFloat("stored_ether", storedEther);
-        nbt.putBoolean("is_in_zone", isInZone);
         nbt.putInt("next_gen_time", nextGenTime);
         nbt.putBoolean("is_mess", isMess);
 
@@ -237,7 +224,6 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
         super.readNbt(nbt);
 
         storedEther = nbt.getFloat("stored_ether");
-        isInZone = nbt.getBoolean("is_in_zone");
         nextGenTime = nbt.getInt("next_gen_time");
         isMess = nbt.getBoolean("is_mess");
     }

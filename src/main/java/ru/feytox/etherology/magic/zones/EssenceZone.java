@@ -1,21 +1,19 @@
 package ru.feytox.etherology.magic.zones;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.nbt.Nbtable;
 
 public class EssenceZone implements Nbtable {
 
+    @Setter
     @Getter
     private float value;
 
     public EssenceZone(float value) {
         this.value = value;
-    }
-
-    public void decrement(float value) {
-        this.value -= value;
     }
 
     @Nullable
