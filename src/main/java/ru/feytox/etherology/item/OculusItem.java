@@ -62,8 +62,7 @@ public class OculusItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!entity.isPlayer()) return;
-        if (!world.isClient) return;
+        if (!entity.isPlayer() || !world.isClient) return;
         if (!selected) {
             displayedHud.clearChildren();
             return;
@@ -92,17 +91,17 @@ public class OculusItem extends Item {
         Integer zoneY = zone.getZoneY();
         if (essenceZone == null || zoneY == null) return;
 
-        spawnZoneParticles(world, chunk, zoneType, essenceZone, zoneY);
+        spawnZoneParticles(world, chunk, zoneType, essenceZone, zoneY, zone.getZoneRadius());
     }
 
-    private void spawnZoneParticles(ClientWorld world, Chunk chunk, EssenceZoneType zoneType, EssenceZone essenceZone, int zoneY) {
+    private void spawnZoneParticles(ClientWorld world, Chunk chunk, EssenceZoneType zoneType, EssenceZone essenceZone, int zoneY, int zoneRadius) {
         float k = essenceZone.getValue() / 64.0f;
 
         int count = MathHelper.ceil(5 * k);
         ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneType);
         ChunkPos chunkPos = chunk.getPos();
-        BlockPos startPos = new BlockPos(chunkPos.getStartX(), zoneY - 8, chunkPos.getStartZ());
-        BlockPos endPos = new BlockPos(chunkPos.getEndX(), zoneY + 8, chunkPos.getEndZ());
+        BlockPos startPos = new BlockPos(chunkPos.getStartX(), zoneY - zoneRadius, chunkPos.getStartZ());
+        BlockPos endPos = new BlockPos(chunkPos.getEndX(), zoneY + zoneRadius, chunkPos.getEndZ());
 
         BlockPos.iterate(startPos, endPos).forEach(particlePos -> {
             if (world.getRandom().nextDouble() > k * 1/300d) return;

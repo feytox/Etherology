@@ -29,6 +29,7 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     // ~8 in 64x64 chunks (4096 chunks or 1024x1024 blocks)
     private static final float INIT_CHANCE = 1 / 111.0f;
     private static final float MAX_VALUE = 128.0f;
+    private static final int Y_RADIUS = 7;
 
     private final Chunk chunk;
 
@@ -73,6 +74,10 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
         }
 
         return result;
+    }
+
+    public int getZoneRadius() {
+        return Y_RADIUS;
     }
 
     public boolean isEmpty() {

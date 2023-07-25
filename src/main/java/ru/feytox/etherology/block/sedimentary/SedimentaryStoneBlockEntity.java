@@ -83,11 +83,6 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     }
 
     @Override
-    public int getRadius() {
-        return 15;
-    }
-
-    @Override
     public void increment(float value) {
         points += value;
         points = Math.min(MAX_POINTS, points);

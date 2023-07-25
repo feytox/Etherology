@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface NewEssenceConsumer {
     float getConsumingValue();
-    int getRadius();
     void increment(float value);
 
     default Optional<EssenceZoneType> tickConsuming(ServerWorld world, BlockPos pos, EssenceZoneType blockType) {
@@ -19,7 +18,7 @@ public interface NewEssenceConsumer {
 
         Integer zoneY = zoneComponent.getZoneY();
         if (zoneY == null) return Optional.empty();
-        if (MathHelper.abs(pos.getY() - zoneY) > getRadius()) return Optional.empty();
+        if (MathHelper.abs(pos.getY() - zoneY) > zoneComponent.getZoneRadius()) return Optional.empty();
 
         float consumedPoints = zoneComponent.decrement(getConsumingValue());
         increment(consumedPoints);

@@ -25,7 +25,11 @@ public class EssenceDetectorBlockEntity extends TickableBlockEntity {
     public void tickZoneCheck(ServerWorld world, BlockPos blockPos, BlockState state) {
         ZoneComponent zoneComponent = ZoneComponent.getZone(world.getChunk(blockPos));
         float fillPercent = 0.0f;
-        if (zoneComponent != null) fillPercent = zoneComponent.getFillPercent();
+        if (zoneComponent != null && zoneComponent.getZoneY() != null) {
+            int zoneY = zoneComponent.getZoneY();
+            if (MathHelper.abs(blockPos.getY() - zoneY) <= zoneComponent.getZoneRadius())
+                fillPercent = zoneComponent.getFillPercent();
+        }
 
         int i = MathHelper.floor(fillPercent * 15);
         world.setBlockState(blockPos, state.with(POWER, i), Block.NOTIFY_ALL);
