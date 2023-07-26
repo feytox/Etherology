@@ -2,9 +2,11 @@ package ru.feytox.etherology.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.EnumUtils;
 
 import java.util.Optional;
@@ -31,13 +33,10 @@ public enum EArmPose {
     }
 
    private static void oculusPoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
-//       model.rightArm.pitch = PI * (-1 / 2.4f);
-//       model.leftArm.pitch = PI * (-1 / 2.4f);
-       model.rightArm.pitch = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
-       model.leftArm.pitch = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
-
-       model.leftArm.yaw = model.head.yaw;
-       model.rightArm.yaw = model.head.yaw;
+        val arm = isRightArm ? model.rightArm : model.leftArm;
+        val value = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
+        arm.pitch = MathHelper.clamp(value, -2.2F, -0.75f);
+        arm.yaw = model.head.yaw;
    }
 
     public interface ModelPoser {
