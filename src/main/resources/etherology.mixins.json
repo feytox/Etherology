@@ -28,6 +28,7 @@
     "WorldRendererAccessor"
   ],
   "client": [
+    "BipedEntityModelMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
     "EntityModelLayersMixin",
@@ -37,6 +38,7 @@
     "ItemRendererMixin",
     "MinecraftClientMixin",
     "ModelLoaderMixin",
+    "PlayerEntityRendererMixin",
     "TexturedRenderLayersMixin",
     "TooltipComponentMixin"
   ],

@@ -12,5 +12,16 @@ public class EarlyRisers implements Runnable {
         String enchantmentTarget = remapper.mapClassName("intermediary", "net.minecraft.class_1886");
         ClassTinkerers.enumBuilder(enchantmentTarget).addEnumSubclass("HAMMER", "ru.feytox.etherology.enchantment.target.HammerEnchantmentTarget").build();
         ClassTinkerers.enumBuilder(enchantmentTarget).addEnumSubclass("ETHEROLOGY_SHIELD", "ru.feytox.etherology.enchantment.target.EtherShieldEnchantmentTarget").build();
+
+        String armPose = remapper.mapClassName("intermediary", "net.minecraft.class_572$class_573");
+        String useAction = remapper.mapClassName("intermediary", "net.minecraft.class_1839");
+
+//        Arrays.stream(EArmPose.values()).forEach(customArmPose -> {
+//            ClassTinkerers.enumBuilder(armPose, boolean.class).addEnum(customArmPose.name(), customArmPose.isTwoHanded()).build();
+//            ClassTinkerers.enumBuilder(useAction).addEnum(customArmPose.name()).build();
+//        });
+
+        ClassTinkerers.enumBuilder(armPose, boolean.class).addEnum("OCULUS", true).build();
+        ClassTinkerers.enumBuilder(useAction).addEnum("OCULUS").build();
     }
 }

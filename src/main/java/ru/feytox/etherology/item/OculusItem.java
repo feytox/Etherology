@@ -17,6 +17,7 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
@@ -24,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.components.ZoneComponent;
+import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
@@ -44,6 +46,11 @@ public class OculusItem extends Item {
 
     public OculusItem() {
         super(new FabricItemSettings().maxCount(1));
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return EArmPose.OCULUS.getUseAction();
     }
 
     public static boolean isUsingOculus(PlayerEntity player) {
