@@ -11,15 +11,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.feytox.etherology.animation.TriggerAnimations;
-import ru.feytox.etherology.animation.TriggerPlayerAnimation;
+import ru.feytox.etherology.animation.playerAnimation.TriggerAnimations;
+import ru.feytox.etherology.animation.playerAnimation.TriggerPlayerAnimation;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.TwoHandHeldAttackC2S;
 import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
 @Mixin(MinecraftClient.class)
@@ -48,7 +48,7 @@ public class MinecraftClientMixin {
             if (hitResult.getType().equals(HitResult.Type.BLOCK)) player.resetLastAttackedTicks();
         }
 
-        if (!(player instanceof IAnimatedPlayer animatedPlayer)) return;
+        if (!(player instanceof EtherologyPlayer animatedPlayer)) return;
         ClientWorld world = player.clientWorld;
 
         TriggerPlayerAnimation animation = TriggerAnimations.getTwohandheldAnim(player.getMainArm(), isHammer, isStrongAttack);

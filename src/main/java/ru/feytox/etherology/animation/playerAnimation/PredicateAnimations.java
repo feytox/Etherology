@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation;
+package ru.feytox.etherology.animation.playerAnimation;
 
 import dev.kosmx.playerAnim.core.util.Ease;
 import net.minecraft.client.network.AbstractClientPlayerEntity;

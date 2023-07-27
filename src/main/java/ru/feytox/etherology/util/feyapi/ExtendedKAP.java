@@ -4,7 +4,7 @@ import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.animation.AbstractPlayerAnimation;
+import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
 
 public class ExtendedKAP extends KeyframeAnimationPlayer {
     private final AbstractPlayerAnimation playerAnimation;
@@ -20,7 +20,7 @@ public class ExtendedKAP extends KeyframeAnimationPlayer {
         return playerAnimation;
     }
 
-    public void setupEndAction(IAnimatedPlayer player) {
+    public void setupEndAction(EtherologyPlayer player) {
         if (playerAnimation.getEndAction() == null) return;
         endAction = () -> playerAnimation.getEndAction().accept(player);
     }

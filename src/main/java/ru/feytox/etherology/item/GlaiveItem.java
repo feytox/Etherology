@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ToolMaterial;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
 public class GlaiveItem extends TwoHandheldSword {
     public GlaiveItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed) {
@@ -23,7 +23,7 @@ public class GlaiveItem extends TwoHandheldSword {
         return check(player, GlaiveItem.class);
     }
 
-    public static boolean checkGlaive(IAnimatedPlayer animatedPlayer) {
+    public static boolean checkGlaive(EtherologyPlayer animatedPlayer) {
         if (!(animatedPlayer instanceof AbstractClientPlayerEntity clientPlayer)) return false;
         return checkGlaive(clientPlayer);
     }

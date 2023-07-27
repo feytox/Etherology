@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation;
+package ru.feytox.etherology.animation.playerAnimation;
 
 import dev.kosmx.playerAnim.core.util.Ease;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -25,7 +25,7 @@ public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
     @Nullable
     private final Ease ease;
 
-    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> startAction, @Nullable Consumer<IAnimatedPlayer> endAction, Identifier... replacements) {
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<EtherologyPlayer> startAction, @Nullable Consumer<EtherologyPlayer> endAction, Identifier... replacements) {
         super(animationId, firstPerson, List.of(replacements), shouldBreak, startAction, endAction);
         this.playPredicate = playPredicate;
         this.ease = ease;
@@ -36,18 +36,18 @@ public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
         this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, null, null, replacements);
     }
 
-    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<IAnimatedPlayer> startAction, Identifier... replacements) {
+    public PredicatePlayerAnimation(Identifier animationId, int easeLength, @Nullable Ease ease, boolean firstPerson, boolean shouldBreak, @NotNull Predicate<AbstractClientPlayerEntity> playPredicate, @Nullable Consumer<EtherologyPlayer> startAction, Identifier... replacements) {
         this(animationId, easeLength, ease, firstPerson, shouldBreak, playPredicate, startAction, null, replacements);
     }
 
-    public void play(IAnimatedPlayer player) {
+    public void play(EtherologyPlayer player) {
         play(player, easeLength, ease);
     }
 
     @Override
-    public boolean play(IAnimatedPlayer player, int easeLength, @Nullable Ease ease) {
+    public boolean play(EtherologyPlayer player, int easeLength, @Nullable Ease ease) {
         boolean result = super.play(player, easeLength, ease);
-        player.setAnimState(this, result);
+        player.etherology$setAnimState(this, result);
         return result;
     }
 

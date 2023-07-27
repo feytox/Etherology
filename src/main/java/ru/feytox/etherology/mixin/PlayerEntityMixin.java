@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.PlayerAnimationController;
+import ru.feytox.etherology.animation.playerAnimation.PlayerAnimationController;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.registry.item.ToolItems;

@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation;
+package ru.feytox.etherology.animation.playerAnimation;
 
 import dev.kosmx.playerAnim.core.util.Ease;
 import lombok.AllArgsConstructor;
@@ -8,38 +8,27 @@ import lombok.NonNull;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.custom.EtherRegistrable;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;
 
+@Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 public abstract class AbstractPlayerAnimation implements EtherRegistrable {
 
-    @Getter
     @NonNull
     private final Identifier animationId;
-
-
-    @Getter
     private final boolean firstPerson;
-
-    @Getter
     private final List<Identifier> replacements;
-
-    @Getter
     private final boolean shouldBreak;
-
-    @Getter
     @Nullable
-    private final Consumer<IAnimatedPlayer> startAction;
-
-    @Getter
+    private final Consumer<EtherologyPlayer> startAction;
     @Nullable
-    private final Consumer<IAnimatedPlayer> endAction;
+    private final Consumer<EtherologyPlayer> endAction;
 
-    public boolean play(IAnimatedPlayer player, int easeLength, @Nullable Ease ease) {
+    public boolean play(EtherologyPlayer player, int easeLength, @Nullable Ease ease) {
         return PlayerAnimationController.playAnimation(player, this, easeLength, ease);
     }
 

@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ToolMaterial;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
 public class HammerItem extends TwoHandheldSword {
 
@@ -24,7 +24,7 @@ public class HammerItem extends TwoHandheldSword {
         return check(player, HammerItem.class);
     }
 
-    public static boolean checkHammer(IAnimatedPlayer animatedPlayer) {
+    public static boolean checkHammer(EtherologyPlayer animatedPlayer) {
         if (!(animatedPlayer instanceof AbstractClientPlayerEntity clientPlayer)) return false;
         return checkHammer(clientPlayer);
     }

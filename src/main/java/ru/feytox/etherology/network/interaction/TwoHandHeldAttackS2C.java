@@ -8,8 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.animation.TriggerAnimations;
-import ru.feytox.etherology.animation.TriggerPlayerAnimation;
+import ru.feytox.etherology.animation.playerAnimation.TriggerAnimations;
+import ru.feytox.etherology.animation.playerAnimation.TriggerPlayerAnimation;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
@@ -17,7 +17,7 @@ import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
 public class TwoHandHeldAttackS2C extends AbstractS2CPacket {
@@ -58,7 +58,7 @@ public class TwoHandHeldAttackS2C extends AbstractS2CPacket {
         client.execute(() -> {
             Entity entity = world.getEntityById(senderId);
             if (!(entity instanceof AbstractClientPlayerEntity swinger)) return;
-            if (!(swinger instanceof IAnimatedPlayer animatedPlayer)) return;
+            if (!(swinger instanceof EtherologyPlayer animatedPlayer)) return;
             if (!TwoHandheldSword.check(swinger, TwoHandheldSword.class)) return;
 
             boolean isStrongAttack = attackCooldown > 0.9F;

@@ -28,8 +28,8 @@
     "WorldRendererAccessor"
   ],
   "client": [
+    "AbstractClientPlayerEntityMixin",
     "BipedEntityModelMixin",
-    "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
     "EntityModelLayersMixin",
     "HandledScreenMixin",

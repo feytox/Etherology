@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation;
+package ru.feytox.etherology.animation.playerAnimation;
 
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
@@ -12,8 +12,8 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 import ru.feytox.etherology.util.feyapi.ExtendedKAP;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,21 +22,21 @@ import java.util.function.Consumer;
 public class PlayerAnimationController {
 
     public static void tickAnimations(AbstractClientPlayerEntity player) {
-        if (!(player instanceof IAnimatedPlayer animatedPlayer)) return;
+        if (!(player instanceof EtherologyPlayer animatedPlayer)) return;
 
         List<PredicatePlayerAnimation> predicateAnimations = EtherologyRegistry.getAll(PredicatePlayerAnimation.class);
         for (PredicatePlayerAnimation animation : predicateAnimations) {
-            boolean lastState = animatedPlayer.getLastAnimState(animation);
+            boolean lastState = animatedPlayer.etherology$getLastAnimState(animation);
             boolean predicateState = animation.test(player);
             if (predicateState == lastState) continue;
 
             if (predicateState) animation.play(animatedPlayer);
-            else animatedPlayer.stopAnim(animation);
+            else animatedPlayer.etherology$stopAnim(animation);
         }
     }
 
-    public static boolean playAnimation(IAnimatedPlayer player, AbstractPlayerAnimation playerAnimation, int easeLength, Ease ease) {
-        var animationContainer = player.getEtherologyAnimation();
+    public static boolean playAnimation(EtherologyPlayer player, AbstractPlayerAnimation playerAnimation, int easeLength, Ease ease) {
+        var animationContainer = player.etherology$getAnimation();
         KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(playerAnimation.getAnimationId());
         if (anim == null) return false;
 
@@ -67,7 +67,7 @@ public class PlayerAnimationController {
         if (ease == null || easeLength == 0) animationContainer.setAnimation(animation);
         else animationContainer.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(easeLength, ease), animation, true);
 
-        Consumer<IAnimatedPlayer> startAction = playerAnimation.getStartAction();
+        Consumer<EtherologyPlayer> startAction = playerAnimation.getStartAction();
         if (startAction != null) {
             startAction.accept(player);
         }
@@ -75,7 +75,7 @@ public class PlayerAnimationController {
         return true;
     }
 
-    public static Consumer<IAnimatedPlayer> setHammerState(HammerState state) {
-        return player -> player.setHammerState(state);
+    public static Consumer<EtherologyPlayer> setHammerState(HammerState state) {
+        return player -> player.etherology$setHammerState(state);
     }
 }

@@ -10,12 +10,12 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.animation.AbstractPlayerAnimation;
+import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
 @AllArgsConstructor
 public class PlayerAnimationS2C extends AbstractS2CPacket {
@@ -41,7 +41,7 @@ public class PlayerAnimationS2C extends AbstractS2CPacket {
         Ease ease = buf.readEnumConstant(Ease.class);
 
         client.execute(() -> {
-            if (!(entity instanceof IAnimatedPlayer animatedPlayer)) return;
+            if (!(entity instanceof EtherologyPlayer animatedPlayer)) return;
             AbstractPlayerAnimation animation = EtherologyRegistry.getAndCast(AbstractPlayerAnimation.class, animationId);
             if (animation == null) return;
             animation.play(animatedPlayer, easeLength, ease);

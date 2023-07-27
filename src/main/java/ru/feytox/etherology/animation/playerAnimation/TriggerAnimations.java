@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation;
+package ru.feytox.etherology.animation.playerAnimation;
 
 import dev.kosmx.playerAnim.core.util.Ease;
 import net.minecraft.client.MinecraftClient;
@@ -12,7 +12,7 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.HammerMiningC2S;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.IAnimatedPlayer;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
 import java.util.function.Consumer;
 
@@ -40,7 +40,7 @@ public class TriggerAnimations {
             playOrMine("hammer_idle_right"));
 
 
-    private static Consumer<IAnimatedPlayer> play(String id) {
+    private static Consumer<EtherologyPlayer> play(String id) {
         return player -> {
             AbstractPlayerAnimation anim = EtherologyRegistry.getAndCast(PredicatePlayerAnimation.class, new EIdentifier(id));
             if (anim == null) return;
@@ -48,7 +48,7 @@ public class TriggerAnimations {
         };
     }
 
-    private static Consumer<IAnimatedPlayer> playOrMine(String id) {
+    private static Consumer<EtherologyPlayer> playOrMine(String id) {
         return player -> {
             if (!(player instanceof ClientPlayerEntity clientPlayer)) {
                 play(id).accept(player);
