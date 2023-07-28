@@ -8,16 +8,19 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.EnumUtils;
-import ru.feytox.etherology.animation.armPoses.ArmAnimations;
+import ru.feytox.etherology.animation.armPoses.ArmAnimation;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static net.minecraft.util.math.MathHelper.PI;
+import static ru.feytox.etherology.animation.armPoses.ArmAnimations.TEST_ANIMATION;
+import static ru.feytox.etherology.animation.armPoses.ArmAnimations.TEST_ANIMATION_2;
 
 @Getter
 @RequiredArgsConstructor
 public enum EArmPose {
-    OCULUS(EArmPose::testPoser);
+    OCULUS(EArmPose.armAnimationPoser(TEST_ANIMATION, TEST_ANIMATION_2));
 
     private final ModelPoser modelPoser;
 
@@ -40,11 +43,10 @@ public enum EArmPose {
         arm.yaw = model.head.yaw;
    }
 
-   private static void testPoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
-        val animation = ArmAnimations.TEST_ANIMATION.tryInject(entity).orElse(null);
-        if (animation == null) return;
-
-        animation.tick(model, entity, isRightArm);
+   private static ModelPoser armAnimationPoser(ArmAnimation... animations) {
+        return (model, entity, isRightArm) ->
+                Arrays.stream(animations).forEach(animation ->
+                        ArmAnimation.testAndInject(animation, entity));
    }
 
     public interface ModelPoser {

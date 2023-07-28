@@ -1,11 +1,8 @@
 package ru.feytox.etherology.animation.armPoses;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import org.joml.Vector3f;
 
@@ -29,46 +26,20 @@ public class PlayerBones {
     }
 
     private static void applyToPart(ModelPart original, Bone bone) {
-        original.setTransform(bone.asTransform(original.pivotX, original.pivotY, original.pivotZ));
-        original.xScale = bone.scale.x;
-        original.yScale = bone.scale.y;
-        original.zScale = bone.scale.z;
+        original.translate(bone.pivot);
+        original.rotate(new Vector3f(bone.pitch, bone.yaw, bone.roll));
+        original.xScale *= bone.scale.x;
+        original.yScale *= bone.scale.y;
+        original.zScale *= bone.scale.z;
     }
 
     @NoArgsConstructor
     @Getter
     public static class Bone {
-        private final FloatValue pivotX = new FloatValue();
-        private final FloatValue pivotY = new FloatValue();
-        private final FloatValue pivotZ = new FloatValue();
-        private final FloatValue pitch = new FloatValue();
-        private final FloatValue yaw = new FloatValue();
-        private final FloatValue roll = new FloatValue();
-        private final Vector3f scale = new Vector3f(1.0f, 1.0f, 1.0f);
-
-        public ModelTransform asTransform(float dPivotX, float dPivotY, float dPivotZ) {
-            return ModelTransform.of(pivotX.getOrDefault(dPivotX), pivotY.getOrDefault(dPivotY), pivotZ.getOrDefault(dPivotZ), pitch.getOrDefault(0), yaw.getOrDefault(0), roll.getOrDefault(0));
-        }
-    }
-
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class FloatValue {
-        private Float value = null;
-
-        public void increment(float value) {
-            if (this.value == null) this.value = value;
-            else this.value += value;
-        }
-
-        public void multiply(float value) {
-            if (this.value == null) this.value = value;
-             else this.value *= value;
-        }
-
-        public float getOrDefault(float defaultVal) {
-            return value == null ? defaultVal : value;
-        }
+        public float pitch = 0.0f;
+        public float yaw = 0.0f;
+        public float roll = 0.0f;
+        public Vector3f pivot = new Vector3f(0.0f);
+        public Vector3f scale = new Vector3f(1.0f);
     }
 }

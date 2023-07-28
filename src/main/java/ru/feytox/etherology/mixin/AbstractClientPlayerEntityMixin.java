@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.armPoses.FeyAnimation;
+import ru.feytox.etherology.animation.armPoses.ArmAnimation;
 import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
 import ru.feytox.etherology.animation.playerAnimation.PredicatePlayerAnimation;
 import ru.feytox.etherology.enums.HammerState;
@@ -35,7 +35,7 @@ public class AbstractClientPlayerEntityMixin implements EtherologyPlayer {
 
     @Unique
     @Nullable
-    private FeyAnimation.Instance etherology$currentArmAnimation = null;
+    private ArmAnimation.Instance etherology$currentArmAnimation = null;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(ClientWorld world, GameProfile profile, CallbackInfo ci) {
@@ -71,12 +71,12 @@ public class AbstractClientPlayerEntityMixin implements EtherologyPlayer {
 
     @Override
     @Nullable
-    public FeyAnimation.Instance etherology$getCurrentArmAnimation() {
+    public ArmAnimation.Instance etherology$getCurrentArmAnimation() {
         return etherology$currentArmAnimation;
     }
 
     @Override
-    public void etherology$setCurrentArmAnimation(FeyAnimation.Instance animation) {
+    public void etherology$setCurrentArmAnimation(ArmAnimation.Instance animation) {
         etherology$currentArmAnimation = animation;
     }
 }

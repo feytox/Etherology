@@ -4,7 +4,7 @@ import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.util.Ease;
-import ru.feytox.etherology.animation.armPoses.FeyAnimation;
+import ru.feytox.etherology.animation.armPoses.ArmAnimation;
 import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
 import ru.feytox.etherology.enums.HammerState;
 
@@ -24,6 +24,6 @@ public interface EtherologyPlayer {
     void etherology$setHammerState(HammerState state);
 
     @Nullable
-    FeyAnimation.Instance etherology$getCurrentArmAnimation();
-    void etherology$setCurrentArmAnimation(FeyAnimation.Instance animation);
+    ArmAnimation.Instance etherology$getCurrentArmAnimation();
+    void etherology$setCurrentArmAnimation(ArmAnimation.Instance animation);
 }

@@ -12,7 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -53,8 +53,8 @@ public class OculusItem extends Item {
         return EArmPose.OCULUS.getUseAction();
     }
 
-    public static boolean isUsingOculus(PlayerEntity player) {
-        val items = player.getHandItems();
+    public static boolean isUsingOculus(LivingEntity entity) {
+        val items = entity.getHandItems();
         for (ItemStack stack : items) {
             if (stack.getItem() instanceof OculusItem) return true;
         }
