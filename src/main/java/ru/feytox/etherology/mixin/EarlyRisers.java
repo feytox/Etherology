@@ -22,6 +22,8 @@ public class EarlyRisers implements Runnable {
 //        });
 
         ClassTinkerers.enumBuilder(armPose, boolean.class).addEnum("OCULUS", true).build();
+        ClassTinkerers.enumBuilder(armPose, boolean.class).addEnum("HAMMER", true).build();
         ClassTinkerers.enumBuilder(useAction).addEnum("OCULUS").build();
+        ClassTinkerers.enumBuilder(useAction).addEnum("HAMMER").build();
     }
 }

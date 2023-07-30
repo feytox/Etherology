@@ -16,8 +16,9 @@ public class ArmKeyframe {
         return timeMillis < endMillis && timeMillis >= startMillis;
     }
 
-    public void tickKeyframe(float timeMillis, BipedEntityModel<?> model, PlayerBones bones, LivingEntity entity) {
-        if (!isKeyframe(timeMillis)) return;
-        bonePoser.accept(bones, new AnimationInfo(model, entity, easing.invoke((timeMillis - startMillis) / (endMillis - startMillis))));
+    public float tickKeyframe(float timeMillis, BipedEntityModel<?> model, PlayerBones bones, LivingEntity entity) {
+        if (!isKeyframe(timeMillis)) return 100.0f;
+        bonePoser.accept(bones, new AnimationInfo(model, entity));
+        return easing.invoke((timeMillis - startMillis) / (endMillis - startMillis));
     }
 }

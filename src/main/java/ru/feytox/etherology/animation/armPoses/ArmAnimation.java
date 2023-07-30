@@ -20,6 +20,7 @@ public class ArmAnimation {
 
     private final float lengthMillis;
     private final int priority;
+    private final boolean loop;
     private final boolean canReset;
     private final boolean animateArms;
     private final List<ArmKeyframe> keyFrames;
@@ -82,7 +83,9 @@ public class ArmAnimation {
         private final ArmAnimation animation;
         private final PlayerBones playerBones = new PlayerBones();
         private int currentFrame = 0;
-        private float timeMillis;
+        private PlayerBones oldBones = new PlayerBones();
+        private float timeMillis = 0.0f;
+        private float currentPercent = 0.0f;
         @Setter
         private boolean stopped = false;
 
@@ -90,13 +93,13 @@ public class ArmAnimation {
             testTrigger(entity);
             if (isCompleted()) return false;
             if (!tickAnimation(model, entity)) return false;
-            playerBones.applyToModel(model);
+            playerBones.applyToModel(model, oldBones, currentPercent);
             timeMillis += timeDelta;
             return true;
         }
 
         public boolean isCompleted() {
-            return timeMillis >= animation.lengthMillis || stopped;
+            return (timeMillis >= animation.lengthMillis && !animation.loop) || stopped;
         }
 
         public void testTrigger(LivingEntity entity) {
@@ -107,11 +110,25 @@ public class ArmAnimation {
         private boolean tickAnimation(BipedEntityModel<?> model, LivingEntity entity) {
             List<ArmKeyframe> keyframes = animation.getKeyFrames();
             int i = currentFrame;
+            boolean tickResult = tickKeyframes(model, entity, i, keyframes);
+            if (animation.loop && !tickResult) {
+                oldBones = playerBones.copy();
+                currentFrame = 0;
+                currentPercent = 0.0f;
+                timeMillis = 0.0f;
+                tickResult = tickKeyframes(model, entity, 0, keyframes);
+            }
+
+            return tickResult;
+        }
+
+        private boolean tickKeyframes(BipedEntityModel<?> model, LivingEntity entity, int i, List<ArmKeyframe> keyframes) {
             while (i < keyframes.size()) {
                 ArmKeyframe keyframe = keyframes.get(i);
                 if (keyframe.isKeyframe(timeMillis)) {
+                    if (i != currentFrame) oldBones = playerBones.copy();
                     currentFrame = i;
-                    keyframe.tickKeyframe(timeMillis, model, playerBones, entity);
+                    currentPercent = keyframe.tickKeyframe(timeMillis, model, playerBones, entity);
                     return true;
                 }
                 i++;
@@ -128,6 +145,7 @@ public class ArmAnimation {
         private final List<PseudoKeyFrame> keyFrames = new ObjectArrayList<>();
         private Trigger trigger = null;
         private boolean animateArms = true;
+        private boolean loop = false;
 
         public static Builder create(float lengthMillis, int priority) {
             return create(lengthMillis, priority, false);
@@ -139,6 +157,11 @@ public class ArmAnimation {
 
         public Builder animateArms(boolean shouldAnimateArms) {
             animateArms = shouldAnimateArms;
+            return this;
+        }
+
+        public Builder loop(boolean shouldLoop) {
+            loop = shouldLoop;
             return this;
         }
 
@@ -168,7 +191,7 @@ public class ArmAnimation {
                 result.add(keyFrame.complete(nextFrame.startMillis));
             }
 
-            return new ArmAnimation(lengthMillis, priority, canReset, animateArms, result, trigger);
+            return new ArmAnimation(lengthMillis, priority, loop, canReset, animateArms, result, trigger);
         }
     }
 

@@ -14,12 +14,12 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static net.minecraft.util.math.MathHelper.PI;
-import static ru.feytox.etherology.animation.armPoses.ArmAnimations.TEST_ANIMATION;
-import static ru.feytox.etherology.animation.armPoses.ArmAnimations.TEST_ANIMATION_2;
+import static ru.feytox.etherology.animation.armPoses.ArmAnimations.*;
 
 @Getter
 @RequiredArgsConstructor
 public enum EArmPose {
+    HAMMER(EArmPose.armAnimationPoser(HAMMER_IDLE_LEFT)),
     OCULUS(EArmPose.armAnimationPoser(TEST_ANIMATION, TEST_ANIMATION_2));
 
     private final ModelPoser modelPoser;
