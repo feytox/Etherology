@@ -23,6 +23,7 @@ public class ArmAnimation {
     private final boolean loop;
     private final boolean canReset;
     private final boolean animateArms;
+    private final boolean transitionAfter;
     private final List<ArmKeyframe> keyFrames;
     @Nullable
     private final Trigger trigger;
@@ -37,7 +38,8 @@ public class ArmAnimation {
         if (animation == null) return;
 
         if (animation.isCompleted()) {
-            player.etherology$setCurrentArmAnimation(null);
+            val newAnimation = animation.animation.transitionAfter ? ArmAnimations.DEFAULT_ANIMATION.createInstance(animation) : null;
+            player.etherology$setCurrentArmAnimation(newAnimation);
             return;
         }
 
@@ -56,25 +58,25 @@ public class ArmAnimation {
         if (!(entity instanceof EtherologyPlayer player)) return;
         val currentAnimation = player.etherology$getCurrentArmAnimation();
         if (currentAnimation == null || currentAnimation.isCompleted()) {
-            player.etherology$setCurrentArmAnimation(animation.createInstance());
+            player.etherology$setCurrentArmAnimation(animation.createInstance(currentAnimation));
             return;
         }
 
         if (currentAnimation.animation.equals(animation)) {
             if (currentAnimation.animation.canReset) {
                 currentAnimation.setStopped(true);
-                player.etherology$setCurrentArmAnimation(animation.createInstance());
+                player.etherology$setCurrentArmAnimation(animation.createInstance(currentAnimation));
             }
             return;
         }
 
         if (currentAnimation.animation.priority >= animation.priority) return;
         currentAnimation.setStopped(true);
-        player.etherology$setCurrentArmAnimation(animation.createInstance());
+        player.etherology$setCurrentArmAnimation(animation.createInstance(currentAnimation));
     }
 
-    public Instance createInstance() {
-        return new Instance(this);
+    public Instance createInstance(@Nullable Instance prevAnimation) {
+        return prevAnimation == null ? new Instance(this) : new Instance(this, prevAnimation.playerBones);
     }
 
     @RequiredArgsConstructor
@@ -82,12 +84,17 @@ public class ArmAnimation {
         @Getter
         private final ArmAnimation animation;
         private final PlayerBones playerBones = new PlayerBones();
+        @NonNull
+        private PlayerBones oldBones;
         private int currentFrame = 0;
-        private PlayerBones oldBones = new PlayerBones();
         private float timeMillis = 0.0f;
         private float currentPercent = 0.0f;
         @Setter
         private boolean stopped = false;
+
+        public Instance(ArmAnimation animation) {
+            this(animation, new PlayerBones());
+        }
 
         public boolean tick(BipedEntityModel<?> model, LivingEntity entity, float timeDelta) {
             testTrigger(entity);
@@ -146,6 +153,7 @@ public class ArmAnimation {
         private Trigger trigger = null;
         private boolean animateArms = true;
         private boolean loop = false;
+        private boolean transitionAfter = true;
 
         public static Builder create(float lengthMillis, int priority) {
             return create(lengthMillis, priority, false);
@@ -162,6 +170,11 @@ public class ArmAnimation {
 
         public Builder loop(boolean shouldLoop) {
             loop = shouldLoop;
+            return this;
+        }
+
+        public Builder transitionAfter(boolean shouldTransitionAfter) {
+            transitionAfter = shouldTransitionAfter;
             return this;
         }
 
@@ -191,7 +204,7 @@ public class ArmAnimation {
                 result.add(keyFrame.complete(nextFrame.startMillis));
             }
 
-            return new ArmAnimation(lengthMillis, priority, loop, canReset, animateArms, result, trigger);
+            return new ArmAnimation(lengthMillis, priority, loop, canReset, animateArms, transitionAfter, result, trigger);
         }
     }
 

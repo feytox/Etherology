@@ -13,7 +13,14 @@ public class ArmAnimations {
     public static final ArmAnimation TEST_ANIMATION_2;
     public static final ArmAnimation HAMMER_IDLE_LEFT;
 
+    public static final ArmAnimation DEFAULT_ANIMATION;
+
     static {
+        DEFAULT_ANIMATION = ArmAnimation.Builder.create(150, 100)
+                .keyframe(0, Ease.INOUTQUAD, (bones, info) -> {})
+                .transitionAfter(false)
+                .build();
+
         TEST_ANIMATION = ArmAnimation.Builder.create(5000, 0)
                 .trigger(OculusItem::isUsingOculus)
                 .keyframe(0, Ease.INCUBIC, ((bones, info) ->
@@ -38,7 +45,7 @@ public class ArmAnimations {
                     bones.leftArm.yaw = MathHelper.PI * (5 / 18f);
                     bones.leftArm.pitch = -MathHelper.PI * (5 / 18f);
                     bones.leftArm.pivot.set(5.0f, 2.0f, -1.0f);}))
-                .keyframe(50, Ease.INOUTQUAD, ((bones, info) -> {
+                .keyframe(100, Ease.INOUTQUAD, ((bones, info) -> {
                     bones.rightArm.yaw = MathHelper.PI * (1 / 4f);
                     bones.rightArm.roll = -MathHelper.PI * (8 / 15f);
                     bones.rightArm.pitch = -MathHelper.PI * (8 / 15f);
@@ -47,7 +54,7 @@ public class ArmAnimations {
                     bones.leftArm.yaw = MathHelper.PI * (13 / 45f);
                     bones.leftArm.pitch = -MathHelper.PI * (13 / 45f);
                     bones.leftArm.pivot.set(5.0f, 2.0f, -1.0f);}))
-                .keyframe(2050, Ease.INOUTQUAD, ((bones, info) -> {
+                .keyframe(2100, Ease.INOUTQUAD, ((bones, info) -> {
                     bones.rightArm.yaw = MathHelper.PI * (1 / 4f);
                     bones.rightArm.roll = -MathHelper.PI * (1 / 2f);
                     bones.rightArm.pitch = -MathHelper.PI * (1 / 2f);
