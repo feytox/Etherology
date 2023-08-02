@@ -1,15 +1,18 @@
 package ru.feytox.etherology.mixin;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import lombok.val;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.armPoses.ArmAnimation;
+import ru.feytox.etherology.animation.armPoses.ArmAnimUtil;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
@@ -17,6 +20,12 @@ import java.util.Optional;
 
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
+
+    @Shadow public boolean sneaking;
+
+    @Shadow @Final public ModelPart rightArm;
+
+    @Shadow @Final public ModelPart leftArm;
 
     @Inject(method = "positionRightArm", at = @At("RETURN"))
     private void injectRightArmPoses(T entity, CallbackInfo ci) {
@@ -30,11 +39,9 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
 
     @WrapWithCondition(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;animateArms(Lnet/minecraft/entity/LivingEntity;F)V"))
     private boolean injectArmAnimations(BipedEntityModel<T> instance, T entity, float h) {
-        if (!(entity instanceof EtherologyPlayer player)) return true;
-        ArmAnimation.tickCurrentAnimation(instance, entity);
-
-        val animation = player.etherology$getCurrentArmAnimation();
-        return animation == null || animation.getAnimation().isAnimateArms();
+        if (!(entity instanceof EtherologyPlayer)) return true;
+        ArmAnimUtil.tickCurrentAnimation(instance, entity);
+        return ArmAnimUtil.shouldAnimateArms(entity);
     }
 
     @Unique
@@ -45,5 +52,14 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
         if (poseOptional.isEmpty()) return;
 
         poseOptional.get().getModelPoser().accept(model, entity, isRightArm);
+    }
+
+    @Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;sneaking:Z", opcode = Opcodes.GETFIELD))
+    private void cancelSneakingAngles(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (!sneaking) return;
+        if (!ArmAnimUtil.shouldAnimateArms(livingEntity)) {
+            rightArm.pitch -= 0.4f;
+            leftArm.pitch -= 0.4f;
+        }
     }
 }

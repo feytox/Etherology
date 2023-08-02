@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.EnumUtils;
+import ru.feytox.etherology.animation.armPoses.ArmAnimUtil;
 import ru.feytox.etherology.animation.armPoses.ArmAnimation;
 
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public enum EArmPose {
    private static ModelPoser armAnimationPoser(ArmAnimation... animations) {
         return (model, entity, isRightArm) ->
                 Arrays.stream(animations).forEach(animation ->
-                        ArmAnimation.testAndInject(animation, entity));
+                        ArmAnimUtil.testAndInject(animation, entity));
    }
 
     public interface ModelPoser {
