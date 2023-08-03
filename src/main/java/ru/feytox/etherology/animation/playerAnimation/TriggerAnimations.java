@@ -87,5 +87,33 @@ public class TriggerAnimations {
         HAMMER_WEAK_HIT_RIGHT.register();
         GLAIVE_HIT_LEFT.register();
         GLAIVE_HIT_RIGHT.register();
+        configureSneaking();
+    }
+
+    private static void configureSneaking() {
+        HAMMER_HIT_LEFT.getSneakingInfo()
+                .setLeftArm(true)
+                .setRightArm(true)
+                .setHead(true)
+                .setLeftLeg(true)
+                .setRightLeg(true);
+//        HAMMER_HIT_RIGHT.getSneakingInfo()
+//                .setLeftArm(true)
+//                .setRightArm(true)
+//                .setHead(true)
+//                .setLeftLeg(true)
+//                .setRightLeg(true);
+        HAMMER_WEAK_HIT_LEFT.getSneakingInfo()
+                .setLeftArm(true)
+                .setRightArm(true)
+                .setHead(true)
+                .setLeftLeg(true)
+                .setRightLeg(true);
+//        HAMMER_WEAK_HIT_RIGHT.getSneakingInfo()
+//                .setLeftArm(true)
+//                .setRightArm(true)
+//                .setHead(true)
+//                .setLeftLeg(true)
+//                .setRightLeg(true);
     }
 }

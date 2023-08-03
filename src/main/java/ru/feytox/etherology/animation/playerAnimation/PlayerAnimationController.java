@@ -45,18 +45,22 @@ public class PlayerAnimationController {
             currentAnim = playAnim;
         }
 
-        if (currentAnim instanceof ExtendedKAP currentKAP && currentAnim.isActive()) {
-            List<Identifier> replacements = playerAnimation.getReplacements();
-            if (!replacements.isEmpty() && replacements.contains(currentKAP.getAnim().getAnimationId())) {
-                return false;
-            }
+        PartsInfo oldInfo = null;
+        if (currentAnim instanceof ExtendedKAP currentKAP) {
+            oldInfo = currentKAP.getAnim().getSneakingInfo();
+            if (!currentAnim.isActive()) {
+                List<Identifier> replacements = playerAnimation.getReplacements();
+                if (!replacements.isEmpty() && replacements.contains(currentKAP.getAnim().getAnimationId())) {
+                    return false;
+                }
 
-            if (currentKAP.getAnim().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
-                return true;
+                if (currentKAP.getAnim().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
+                    return true;
+                }
             }
         }
 
-        ExtendedKAP animation = new ExtendedKAP(anim, playerAnimation);
+        ExtendedKAP animation = new ExtendedKAP(anim, playerAnimation, oldInfo);
         animation.setupEndAction(player);
 
         if (playerAnimation.isFirstPerson()) {

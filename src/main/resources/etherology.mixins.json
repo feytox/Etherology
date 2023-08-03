@@ -40,6 +40,7 @@
     "ItemRendererMixin",
     "MinecraftClientMixin",
     "ModelLoaderMixin",
+    "PlayerEntityModelMixin",
     "PlayerEntityRendererMixin",
     "TexturedRenderLayersMixin",
     "TooltipComponentMixin"
