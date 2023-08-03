@@ -527,14 +527,6 @@
                 "tick":1,
                 "easing": "EASEINOUTQUAD",
                 "turn": 0,
-                "rightArm":{
-                    "bend":-0.0
-                }
-            },
-            {
-                "tick":1,
-                "easing": "EASEINOUTQUAD",
-                "turn": 0,
                 "leftArm":{
                     "roll":4.440892098500626e-16
                 }
@@ -721,14 +713,6 @@
                 "turn": 0,
                 "leftArm":{
                     "x":5.0
-                }
-            },
-            {
-                "tick":1,
-                "easing": "EASEINOUTQUAD",
-                "turn": 0,
-                "leftArm":{
-                    "bend":0.0
                 }
             },
             {

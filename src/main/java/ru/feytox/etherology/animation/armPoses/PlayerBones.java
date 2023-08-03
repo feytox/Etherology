@@ -75,7 +75,7 @@ public class PlayerBones {
         public float pitch = 0.0f;
         public float yaw = 0.0f;
         public float roll = 0.0f;
-        public Vector3f pivot = new Vector3f(0.0f);
+        public PivotPos pivot = new PivotPos();
         public Vector3f scale = new Vector3f(1.0f);
 
         /**
