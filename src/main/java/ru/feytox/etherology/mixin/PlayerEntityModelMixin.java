@@ -1,6 +1,5 @@
 package ru.feytox.etherology.mixin;
 
-import lombok.val;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -12,50 +11,43 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.armPoses.ArmAnimUtil;
 import ru.feytox.etherology.animation.playerAnimation.PartsInfo;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
-import ru.feytox.etherology.util.feyapi.ExtendedKAP;
 
 @Mixin(value = PlayerEntityModel.class, priority = 2001)
 public class PlayerEntityModelMixin<T extends LivingEntity> extends BipedEntityModel<T> {
+
+    @Unique
+    private PartsInfo cachedModelState = null;
 
     public PlayerEntityModelMixin(ModelPart root) {
         super(root);
     }
 
+    @Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", shift = At.Shift.AFTER))
+    private void cacheDefaultState(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        cachedModelState = PartsInfo.of(this);
+    }
+
     @Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;copyTransform(Lnet/minecraft/client/model/ModelPart;)V", ordinal = 0))
     private void applySneakingToEmote(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
-        applySneaking(livingEntity);
+        applySneaking();
         ArmAnimUtil.tickCurrentAnimation(this, livingEntity);
     }
 
     @Unique
-    private void applySneaking(T entity) {
+    private void applySneaking() {
         if (!this.sneaking) return;
-        if (!(entity instanceof EtherologyPlayer player)) return;
-        val animationContainer = player.etherology$getAnimation();
-        val animation = animationContainer.getAnimation();
-        if (!(animation instanceof ExtendedKAP etherAnimation)) {
-            return;
-        }
+        if (cachedModelState == null) return;
 
-        PartsInfo partsInfo = etherAnimation.getAnim().getSneakingInfo();
-        PartsInfo oldInfo = etherAnimation.getPreviousSneakingInfo();
-        if (etherAnimation.getCurrentTick() == 0 && oldInfo != null) partsInfo = oldInfo;
-
-        if (partsInfo.isBody()) this.body.pivotY += 3.2f;
-        if (partsInfo.isHead()) {
-            this.head.pivotY += 3.2f;
-            this.hat.copyTransform(head);
+        if (cachedModelState.headY() != this.head.pivotY) {
+            this.head.pivotY = 4.2f;
+            this.hat.copyTransform(this.head);
         }
-        if (partsInfo.isLeftArm()) this.leftArm.pivotY += 3.2f;
-        if (partsInfo.isRightArm()) this.rightArm.pivotY += 3.2f;
-        if (partsInfo.isLeftLeg()) {
-            this.leftLeg.pivotY += 0.2f;
-            this.leftLeg.pivotZ += 3.9f;
-        }
-        if (partsInfo.isRightLeg()) {
-            this.rightLeg.pivotY += 0.2f;
-            this.rightLeg.pivotZ += 3.9f;
-        }
+        if (cachedModelState.bodyY() != this.body.pivotY) this.body.pivotY = 3.2f;
+        if (cachedModelState.rightArmY() != this.rightArm.pivotY) this.rightArm.pivotY = 5.2f;
+        if (cachedModelState.leftArmY() != this.leftArm.pivotY) this.leftArm.pivotY = 5.2f;
+        if (cachedModelState.rightLegY() != this.rightLeg.pivotY) this.rightLeg.pivotY = 12.2f;
+        if (cachedModelState.leftLegY() != this.leftLeg.pivotY) this.leftLeg.pivotY = 12.2f;
+        if (cachedModelState.rightLegZ() != this.rightLeg.pivotZ) this.rightLeg.pivotZ = 4.0f;
+        if (cachedModelState.leftLegZ() != this.leftLeg.pivotZ) this.leftLeg.pivotZ = 4.0f;
     }
 }

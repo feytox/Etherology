@@ -1,25 +1,19 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.animation.playerAnimation;
 
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
-import ru.feytox.etherology.animation.playerAnimation.PartsInfo;
+import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
-public class ExtendedKAP extends KeyframeAnimationPlayer {
+public class EtherKeyframe extends KeyframeAnimationPlayer {
     private final AbstractPlayerAnimation playerAnimation;
-    @Nullable
-    @Getter
-    private final PartsInfo previousSneakingInfo;
     @Nullable
     private Runnable endAction = null;
 
-    public ExtendedKAP(@NotNull KeyframeAnimation animation, AbstractPlayerAnimation playerAnimation, @Nullable PartsInfo previousSneakingInfo) {
+    public EtherKeyframe(@NotNull KeyframeAnimation animation, AbstractPlayerAnimation playerAnimation) {
         super(animation);
         this.playerAnimation = playerAnimation;
-        this.previousSneakingInfo = previousSneakingInfo;
     }
 
     public AbstractPlayerAnimation getAnim() {

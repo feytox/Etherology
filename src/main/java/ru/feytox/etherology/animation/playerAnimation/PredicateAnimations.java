@@ -31,15 +31,5 @@ public class PredicateAnimations {
         CRATE_CARRYING.register();
         HAMMER_IDLE_LEFT.register();
         HAMMER_IDLE_RIGHT.register();
-        configureSneaking();
-    }
-
-    private static void configureSneaking() {
-        HAMMER_IDLE_LEFT.getSneakingInfo()
-                .setLeftArm(true)
-                .setRightArm(true);
-//        HAMMER_IDLE_RIGHT.getSneakingInfo()
-//                .setLeftArm(true)
-//                .setRightArm(true);
     }
 }

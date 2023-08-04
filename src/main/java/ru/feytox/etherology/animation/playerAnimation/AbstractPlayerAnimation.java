@@ -27,7 +27,6 @@ public abstract class AbstractPlayerAnimation implements EtherRegistrable {
     private final Consumer<EtherologyPlayer> startAction;
     @Nullable
     private final Consumer<EtherologyPlayer> endAction;
-    private final PartsInfo sneakingInfo = new PartsInfo();
 
     public boolean play(EtherologyPlayer player, int easeLength, @Nullable Ease ease) {
         return PlayerAnimationController.playAnimation(player, this, easeLength, ease);
@@ -36,6 +35,4 @@ public abstract class AbstractPlayerAnimation implements EtherRegistrable {
     public void register() {
         EtherRegistrable.super.register(animationId);
     }
-
-
 }

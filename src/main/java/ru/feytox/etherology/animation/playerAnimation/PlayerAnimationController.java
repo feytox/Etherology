@@ -13,7 +13,6 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
-import ru.feytox.etherology.util.feyapi.ExtendedKAP;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -45,22 +44,18 @@ public class PlayerAnimationController {
             currentAnim = playAnim;
         }
 
-        PartsInfo oldInfo = null;
-        if (currentAnim instanceof ExtendedKAP currentKAP) {
-            oldInfo = currentKAP.getAnim().getSneakingInfo();
-            if (!currentAnim.isActive()) {
-                List<Identifier> replacements = playerAnimation.getReplacements();
-                if (!replacements.isEmpty() && replacements.contains(currentKAP.getAnim().getAnimationId())) {
-                    return false;
-                }
+        if (currentAnim instanceof EtherKeyframe currentKAP && !currentAnim.isActive()) {
+            List<Identifier> replacements = playerAnimation.getReplacements();
+            if (!replacements.isEmpty() && replacements.contains(currentKAP.getAnim().getAnimationId())) {
+                return false;
+            }
 
-                if (currentKAP.getAnim().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
-                    return true;
-                }
+            if (currentKAP.getAnim().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
+                return true;
             }
         }
 
-        ExtendedKAP animation = new ExtendedKAP(anim, playerAnimation, oldInfo);
+        EtherKeyframe animation = new EtherKeyframe(anim, playerAnimation);
         animation.setupEndAction(player);
 
         if (playerAnimation.isFirstPerson()) {

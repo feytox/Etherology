@@ -1,19 +1,11 @@
 package ru.feytox.etherology.animation.playerAnimation;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 
-@NoArgsConstructor
-@Accessors(chain = true)
-@Setter
-@Getter
-public class PartsInfo {
-    private boolean head;
-    private boolean body;
-    private boolean rightArm;
-    private boolean leftArm;
-    private boolean rightLeg;
-    private boolean leftLeg;
+
+public record PartsInfo(float headY, float bodyY, float leftArmY, float rightArmY, float leftLegY, float leftLegZ, float rightLegY, float rightLegZ) {
+
+    public static PartsInfo of(BipedEntityModel<?> model) {
+        return new PartsInfo(model.head.pivotY, model.body.pivotY, model.leftArm.pivotY, model.rightArm.pivotY, model.leftLeg.pivotY, model.leftLeg.pivotZ, model.rightLeg.pivotY, model.rightLeg.pivotZ);
+    }
 }
