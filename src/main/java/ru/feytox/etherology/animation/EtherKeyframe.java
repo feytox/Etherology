@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation.playerAnimation;
+package ru.feytox.etherology.animation;
 
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;

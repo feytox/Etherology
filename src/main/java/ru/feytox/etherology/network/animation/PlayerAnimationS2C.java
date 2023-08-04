@@ -10,7 +10,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
+import ru.feytox.etherology.animation.AbstractPlayerAnimation;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;

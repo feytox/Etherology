@@ -50,7 +50,7 @@ public class OculusItem extends Item {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return EArmPose.HAMMER.getUseAction();
+        return EArmPose.OCULUS.getUseAction();
     }
 
     public static boolean isUsingOculus(LivingEntity entity) {

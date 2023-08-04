@@ -9,8 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.armPoses.ArmAnimUtil;
-import ru.feytox.etherology.animation.playerAnimation.PartsInfo;
+import ru.feytox.etherology.animation.PartsInfo;
 
 @Mixin(value = PlayerEntityModel.class, priority = 2001)
 public class PlayerEntityModelMixin<T extends LivingEntity> extends BipedEntityModel<T> {
@@ -30,7 +29,6 @@ public class PlayerEntityModelMixin<T extends LivingEntity> extends BipedEntityM
     @Inject(method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;copyTransform(Lnet/minecraft/client/model/ModelPart;)V", ordinal = 0))
     private void applySneakingToEmote(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
         applySneaking();
-        ArmAnimUtil.tickCurrentAnimation(this, livingEntity);
     }
 
     @Unique

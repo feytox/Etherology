@@ -11,14 +11,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.armPoses.ArmAnimation;
-import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
-import ru.feytox.etherology.animation.playerAnimation.PredicatePlayerAnimation;
+import ru.feytox.etherology.animation.AbstractPlayerAnimation;
+import ru.feytox.etherology.animation.PredicatePlayerAnimation;
 import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +30,6 @@ public class AbstractClientPlayerEntityMixin implements EtherologyPlayer {
 
     @Unique
     private HammerState etherology$HammerState = HammerState.EMPTY;
-
-    @Unique
-    @Nullable
-    private ArmAnimation.Instance etherology$currentArmAnimation = null;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(ClientWorld world, GameProfile profile, CallbackInfo ci) {
@@ -67,16 +61,5 @@ public class AbstractClientPlayerEntityMixin implements EtherologyPlayer {
     @Override
     public void etherology$setHammerState(HammerState state) {
         etherology$HammerState = state;
-    }
-
-    @Override
-    @Nullable
-    public ArmAnimation.Instance etherology$getCurrentArmAnimation() {
-        return etherology$currentArmAnimation;
-    }
-
-    @Override
-    public void etherology$setCurrentArmAnimation(ArmAnimation.Instance animation) {
-        etherology$currentArmAnimation = animation;
     }
 }

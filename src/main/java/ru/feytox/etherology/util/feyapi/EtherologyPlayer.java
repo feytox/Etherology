@@ -4,11 +4,8 @@ import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.api.layered.modifier.AbstractFadeModifier;
 import dev.kosmx.playerAnim.core.util.Ease;
-import ru.feytox.etherology.animation.armPoses.ArmAnimation;
-import ru.feytox.etherology.animation.playerAnimation.AbstractPlayerAnimation;
+import ru.feytox.etherology.animation.AbstractPlayerAnimation;
 import ru.feytox.etherology.enums.HammerState;
-
-import javax.annotation.Nullable;
 
 public interface EtherologyPlayer {
     ModifierLayer<IAnimation> etherology$getAnimation();
@@ -22,8 +19,4 @@ public interface EtherologyPlayer {
 
     HammerState etherology$getHammerState();
     void etherology$setHammerState(HammerState state);
-
-    @Nullable
-    ArmAnimation.Instance etherology$getCurrentArmAnimation();
-    void etherology$setCurrentArmAnimation(ArmAnimation.Instance animation);
 }

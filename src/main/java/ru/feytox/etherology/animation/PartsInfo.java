@@ -1,4 +1,4 @@
-package ru.feytox.etherology.animation.playerAnimation;
+package ru.feytox.etherology.animation;
 
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 

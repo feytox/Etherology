@@ -8,20 +8,15 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.EnumUtils;
-import ru.feytox.etherology.animation.armPoses.ArmAnimUtil;
-import ru.feytox.etherology.animation.armPoses.ArmAnimation;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import static net.minecraft.util.math.MathHelper.PI;
-import static ru.feytox.etherology.animation.armPoses.ArmAnimations.HAMMER_HIT_LEFT;
 
 @Getter
 @RequiredArgsConstructor
 public enum EArmPose {
-    HAMMER(EArmPose.armAnimationPoser(HAMMER_HIT_LEFT)),
-    OCULUS(EArmPose.armAnimationPoser());
+    OCULUS(EArmPose::oculusPoser);
 
     private final ModelPoser modelPoser;
 
@@ -42,12 +37,6 @@ public enum EArmPose {
         val value = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
         arm.pitch = MathHelper.clamp(value, -2.2F, -0.75f);
         arm.yaw = model.head.yaw;
-   }
-
-   private static ModelPoser armAnimationPoser(ArmAnimation... animations) {
-        return (model, entity, isRightArm) ->
-                Arrays.stream(animations).forEach(animation ->
-                        ArmAnimUtil.testAndInject(animation, entity));
    }
 
     public interface ModelPoser {
