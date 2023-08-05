@@ -23,10 +23,20 @@ public class PredicateAnimations {
             PlayerAnimationController.setHammerState(HammerState.IDLE),
             new EIdentifier("hammer_idle_left"));
 
+    /**
+     * Returns the appropriate animation for a two-handed weapon based on the given parameters.
+     *
+     * @param  player          the player holding the weapon
+     * @param  arm             the main arm holding the weapon
+     * @return                 the corresponding animation for the given parameters
+     */
     private static boolean twohandheldIdle(AbstractClientPlayerEntity player, Arm arm) {
         return TwoHandheldSword.check(player, TwoHandheldSword.class) && player.getMainArm().equals(arm);
     }
 
+    /**
+     * Registers all Predicate Animations.
+     */
     public static void registerAll() {
         CRATE_CARRYING.register();
         HAMMER_IDLE_LEFT.register();

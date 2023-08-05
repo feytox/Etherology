@@ -20,6 +20,11 @@ import java.util.function.Consumer;
 @UtilityClass
 public class PlayerAnimationController {
 
+    /**
+     * Updates the animations for the given player.
+     *
+     * @param  player  the player whose animations need to be updated
+     */
     public static void tickAnimations(AbstractClientPlayerEntity player) {
         if (!(player instanceof EtherologyPlayer animatedPlayer)) return;
 
@@ -34,6 +39,15 @@ public class PlayerAnimationController {
         }
     }
 
+    /**
+     * Plays an Etherology animation for the Etherology player.
+     *
+     * @param  player          the Etherology player
+     * @param  playerAnimation the Etherology animation to play
+     * @param  easeLength      the length of the ease
+     * @param  ease            the ease type
+     * @return                 true if the animation was started successfully or already playing; false otherwise
+     */
     public static boolean playAnimation(EtherologyPlayer player, AbstractPlayerAnimation playerAnimation, int easeLength, Ease ease) {
         var animationContainer = player.etherology$getAnimation();
         KeyframeAnimation anim = PlayerAnimationRegistry.getAnimation(playerAnimation.getAnimationId());
@@ -46,11 +60,11 @@ public class PlayerAnimationController {
 
         if (currentAnim instanceof EtherKeyframe currentKAP && !currentAnim.isActive()) {
             List<Identifier> replacements = playerAnimation.getReplacements();
-            if (!replacements.isEmpty() && replacements.contains(currentKAP.getAnim().getAnimationId())) {
+            if (!replacements.isEmpty() && replacements.contains(currentKAP.getPlayerAnimation().getAnimationId())) {
                 return false;
             }
 
-            if (currentKAP.getAnim().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
+            if (currentKAP.getPlayerAnimation().equals(playerAnimation) && !playerAnimation.isShouldBreak()) {
                 return true;
             }
         }
@@ -74,6 +88,12 @@ public class PlayerAnimationController {
         return true;
     }
 
+    /**
+     * Returns a Consumer that sets the hammer state of an EtherologyPlayer.
+     *
+     * @param  state  the hammer state to be set
+     * @return        a Consumer that sets the hammer state of an EtherologyPlayer
+     */
     public static Consumer<EtherologyPlayer> setHammerState(HammerState state) {
         return player -> player.etherology$setHammerState(state);
     }
