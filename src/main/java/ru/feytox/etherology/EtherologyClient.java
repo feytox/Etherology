@@ -24,6 +24,7 @@ import ru.feytox.etherology.block.etherealGenerators.spinner.EtherealSpinnerRend
 import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
+import ru.feytox.etherology.block.pedestal.PedestalRenderer;
 import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
@@ -80,6 +81,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ETHEROLOGY_SIGN, SignBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(CRATE_BLOCK_ENTITY, CrateBlockRenderer::new);
         BlockEntityRendererFactories.register(BREWING_CAULDRON_BLOCK_ENTITY, BrewingCauldronRenderer::new);
+        BlockEntityRendererFactories.register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
 
         HandledScreens.register(CLOSET_SCREEN_HANDLER, ClosetScreen::new);
         HandledScreens.register(ETHEREAL_STORAGE_SCREEN_HANDLER, EtherealStorageScreen::new);

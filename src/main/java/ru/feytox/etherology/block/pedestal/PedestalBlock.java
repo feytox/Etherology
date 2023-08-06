@@ -6,6 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -43,7 +44,7 @@ public class PedestalBlock extends SimpleBlock implements BlockEntityProvider {
         if (!world.isClient) {
             PedestalBlockEntity pedestalBlockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
             if (pedestalBlockEntity != null) {
-                pedestalBlockEntity.interact(player, hand);
+                pedestalBlockEntity.interact((ServerWorld) world, player, hand);
                 world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
             }
         }
@@ -72,7 +73,6 @@ public class PedestalBlock extends SimpleBlock implements BlockEntityProvider {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof PedestalBlockEntity) {
                 ItemScatterer.spawn(world, pos, ((PedestalBlockEntity) blockEntity));
-                ((PedestalBlockEntity) blockEntity).onBreak(world);
             }
         }
     }

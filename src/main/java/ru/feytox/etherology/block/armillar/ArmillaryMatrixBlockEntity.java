@@ -270,7 +270,7 @@ public class ArmillaryMatrixBlockEntity extends BlockEntity implements Implement
         } else {
             List<PedestalBlockEntity> pedestals = getNotEmptyPedestals(world, pos, world.getBlockState(pos));
             PedestalBlockEntity pedestal = pedestals.get(result);
-            pedestal.consumeItem(3*20, getCenterPos());
+            pedestal.consumeItem(world, 3*20, getCenterPos());
 //            if (itemEntity != null) UwuLib.drawParticleLine(world, getCenterPos(), itemEntity, ParticleTypes.EFFECT, 0.1f);
         }
 

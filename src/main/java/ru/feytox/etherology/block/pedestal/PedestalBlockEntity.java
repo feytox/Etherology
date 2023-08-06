@@ -1,13 +1,12 @@
 package ru.feytox.etherology.block.pedestal;
 
 import io.wispforest.owo.util.ImplementedInventory;
-import net.minecraft.block.Block;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
@@ -28,21 +27,20 @@ import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
-import ru.feytox.etherology.mixin.ItemEntityAccessor;
 import ru.feytox.etherology.particle.ItemMovingParticle;
 import ru.feytox.etherology.particle.OldMovingParticle;
 import ru.feytox.etherology.particle.types.LightParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.nbt.NbtPos;
 
-import java.util.UUID;
-
 import static ru.feytox.etherology.Etherology.SPARK;
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
 public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory, EtherAspectsProvider {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
-    private UUID displayedItemUUID = null;
+    @Getter
+    @Setter
+    private Float cachedUniqueOffset = null;
     private int itemConsumingTicks = 0;
     private NbtPos centerCoord = null;
 
@@ -55,29 +53,28 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         return items;
     }
 
-    public void interact(PlayerEntity player, Hand hand) {
+    public void interact(ServerWorld world, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
         if (this.isEmpty() && !handStack.isEmpty()) {
             ItemStack copyStack = handStack.copy();
             copyStack.setCount(1);
             this.setStack(0, copyStack);
             handStack.decrement(1);
-            markDirty();
         } else if (!this.isEmpty() && (handStack.isEmpty() || handStack.isItemEqual(this.items.get(0)))) {
             ItemStack pedestalStack = this.items.get(0);
             this.clear();
             if (handStack.isItemEqual(pedestalStack)) {
                 handStack.increment(1);
+                syncData(world);
                 return;
             }
             player.setStackInHand(hand, pedestalStack);
-            markDirty();
         }
+        syncData(world);
     }
 
     public static void serverTick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if (!world.isClient) {
-            blockEntity.tickItem((ServerWorld) world);
             blockEntity.tickConsuming((ServerWorld) world);
         }
     }
@@ -112,21 +109,14 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
                 pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
     }
 
-    public void consumeItem(int ticks, Vec3d centerPos) {
+    public void consumeItem(ServerWorld world, int ticks, Vec3d centerPos) {
         itemConsumingTicks = ticks;
         centerCoord = new NbtPos("centerCoord", centerPos.x, centerPos.y+0.3, centerPos.z);
-        markDirty();
+        syncData(world);
     }
 
     public boolean isConsuming() {
         return itemConsumingTicks > 0;
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-
-        if (world != null) world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
     }
 
     public NbtPos getCenterCoord() {
@@ -137,61 +127,12 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         if (itemConsumingTicks == 0) return;
 
         itemConsumingTicks--;
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + 1.0;
-        double z = pos.getZ() + 0.5;
-        if (itemConsumingTicks > 0 && this.world != null) {
-//            world.spawnClientParticles(Etherology.SPARK, x, y, z, 1,
-//                    centerCoord.x-x, centerCoord.y-y, centerCoord.z-z, 1);
-        } else if(itemConsumingTicks == 0) {
-//            world.spawnClientParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, items.get(0)), x, y, z,
-//                    10, 0, 2, 0, 0.01);
-
+        if ((itemConsumingTicks <= 0 || this.world == null) && itemConsumingTicks == 0) {
             centerCoord = null;
             clear();
         }
 
-        markDirty();
-    }
-
-
-    public void tickItem(ServerWorld world) {
-        ItemEntity displayedItem = getDisplayedItemEntity(world);
-
-        if (displayedItem != null && displayedItem.isAlive()) {
-            displayedItem.setVelocity(0.0, 0.0, 0.0);
-            if (displayedItem.getX() != this.pos.getX()+0.5 ||
-            displayedItem.getY() != this.pos.getY()+1.0 ||
-            displayedItem.getZ() != this.pos.getZ()+0.5) {
-                displayedItem.setPos(this.pos.getX()+0.5, this.pos.getY()+1.0, this.pos.getZ()+0.5);
-            }
-        }
-
-        if (!this.isEmpty() && (displayedItem == null || !displayedItem.isAlive())) {
-            ItemStack displayedItemStack = items.get(0).copy();
-            displayedItemStack.setCount(1);
-            displayedItem = new ItemEntity(world, this.pos.getX()+0.5, this.pos.getY()+1.0, this.pos.getZ()+0.5,
-                    displayedItemStack, 0.0, 0.0, 0.0);
-            ((ItemEntityAccessor) displayedItem).setItemAge(-32768);
-            ((ItemEntityAccessor) displayedItem).setPickupDelay(32767);
-            displayedItem.setInvulnerable(true);
-            world.spawnEntity(displayedItem);
-            displayedItemUUID = displayedItem.getUuid();
-        } else if (this.isEmpty() && displayedItem != null) {
-            if (displayedItem.isAlive()) displayedItem.kill();
-            displayedItemUUID = null;
-        }
-    }
-
-    public void onBreak(World world) {
-        ItemEntity displayedItem = getDisplayedItemEntity((ServerWorld) world);
-        if (displayedItem != null && displayedItem.isAlive()) displayedItem.kill();
-    }
-
-    @Nullable
-    public ItemEntity getDisplayedItemEntity(ServerWorld world) {
-        Entity searchedEntity = world.getEntity(displayedItemUUID);
-        return searchedEntity instanceof ItemEntity ? (ItemEntity) searchedEntity : null;
+        syncData(world);
     }
 
     @Override
@@ -199,9 +140,6 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         Inventories.writeNbt(nbt, items);
 
         nbt.putInt("itemConsumingTicks", itemConsumingTicks);
-        displayedItemUUID = displayedItemUUID == null ? UUID.randomUUID() : displayedItemUUID;
-        nbt.putUuid("displayedItemUUID", displayedItemUUID);
-
         if (centerCoord != null) centerCoord.writeNbt(nbt);
 
         super.writeNbt(nbt);
@@ -210,8 +148,8 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        displayedItemUUID = nbt.getUuid("displayedItemUUID");
         itemConsumingTicks = nbt.getInt("itemConsumingTicks");
+        items.clear();
         Inventories.readNbt(nbt, items);
 
         centerCoord = itemConsumingTicks != 0 ? NbtPos.readNbt("centerCoord", nbt) : null;
@@ -243,5 +181,10 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         String pedestalText = Text.translatable(getCachedState().getBlock().getTranslationKey()).getString();
         String itemText = items.get(0).getName().getString();
         return Text.of(pedestalText + " (" + itemText + ")");
+    }
+
+    private void syncData(ServerWorld world) {
+        markDirty();
+        world.getChunkManager().markForUpdate(pos);
     }
 }
