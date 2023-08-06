@@ -5,6 +5,7 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class OculusItem extends Item {
+    @Getter
     private static final FlowLayout displayedHud = createRoot();
     @Nullable
     private static CompletableFuture<Void> componentFuture = null;

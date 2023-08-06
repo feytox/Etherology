@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
@@ -29,6 +30,7 @@ import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
+import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.SmallLightning;
@@ -117,6 +119,10 @@ public class EtherologyClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();
+
+            ClientPlayerEntity player = client.player;
+            if (player == null) return;
+            if (!OculusItem.isUsingOculus(player)) OculusItem.getDisplayedHud().clearChildren();
 
             // TODO: 24.06.2023 use... something better than this garbage
             if (chapters == null && client.textRenderer != null) {
