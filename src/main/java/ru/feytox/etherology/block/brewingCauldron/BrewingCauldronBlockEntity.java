@@ -16,10 +16,12 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
@@ -64,7 +66,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (!BrewingCauldronBlock.isFilled(state)) return;
-        tickMixingItems(world);
+        tickMixingItems(world, state);
         tickAspects(world, state);
         tickTemperature(world, blockPos, state);
     }
@@ -90,11 +92,11 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
     }
 
-    private void tickMixingItems(ServerWorld world) {
+    private void tickMixingItems(ServerWorld world, BlockState state) {
         if (!shouldMixItems || mixItemsTicks-- > 0) return;
 
         shouldMixItems = false;
-        mixItems(world);
+        mixItems(world, state);
     }
 
     private void tickAspects(ServerWorld world, BlockState state) {
@@ -110,13 +112,16 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (world.getTime() % 20 != 0 || oldCount == 0) return;
         Random random = world.getRandom();
 
+        vaporizeAspects(world, state, 0.1d, 0.05d, random, oldCount);
+    }
+
+    private void vaporizeAspects(ServerWorld world, BlockState state, double minChance, double perAspectChance, Random random, int oldCount) {
         aspects = aspects.map(value -> {
-            double chance = 0.1 + 0.05 * value;
+            double chance = minChance + perAspectChance * value;
             if (random.nextDouble() > chance) return value;
             return value - 1;
         });
         tickAspectsCorruption(world, state, oldCount);
-
         syncData(world);
     }
 
@@ -142,12 +147,14 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     private void tickTemperature(ServerWorld world, BlockPos blockPos, BlockState state) {
-        if (world.getTime() % 5 != 0) return;
+        if (world.getTime() % 10 != 0) return;
 
         BlockState downState = world.getBlockState(blockPos.down());
-        if (!downState.isOf(Blocks.TORCH)) return;
+        boolean isHotBlock = downState.isIn(BlockTags.FIRE) || downState.isIn(BlockTags.CAMPFIRES) || downState.isOf(Blocks.LAVA) || downState.isOf(Blocks.MAGMA_BLOCK);
+        if (!isHotBlock && world.getRandom().nextBoolean()) return;
 
-        int newTemperature = Math.min(100, state.get(BrewingCauldronBlock.TEMPERATURE) + 1);
+        int change = isHotBlock ? 1 : -1;
+        int newTemperature = MathHelper.clamp(state.get(BrewingCauldronBlock.TEMPERATURE) + change, 20, 100);
         world.setBlockState(blockPos, state.with(BrewingCauldronBlock.TEMPERATURE, newTemperature));
     }
 
@@ -186,7 +193,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         mixItemsTicks = 10;
     }
 
-    private void mixItems(ServerWorld world) {
+    private void mixItems(ServerWorld world, BlockState state) {
         items.forEach(stack -> {
             EtherAspectsContainer itemAspects = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
             if (itemAspects == null) return;
@@ -195,6 +202,9 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         });
         if (!aspects.isEmpty()) wasWithAspects = true;
         clear();
+
+        int oldCount = aspects.count().orElse(0);
+        if (oldCount != 0) vaporizeAspects(world, state, 0.2d, 0.1d, world.getRandom(), oldCount);
         syncData(world);
     }
 
