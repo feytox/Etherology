@@ -6,6 +6,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 public interface EGeoBlockEntity extends GeoBlockEntity {
+
     default void triggerAnim(String animName) {
         triggerAnim(animName + "_controller", animName);
     }

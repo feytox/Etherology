@@ -13,6 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
+import ru.feytox.etherology.block.armillar_new.ArmillaryMatrixRenderer;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.closet.ClosetScreen;
@@ -26,7 +27,7 @@ import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
-import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockRenderer;
+import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
@@ -74,7 +75,7 @@ public class EtherologyClient implements ClientModInitializer {
             return FeyColor.getGradientColor(RGBColor.of(biomeColor), RGBColor.of(0x8032B5), aspectsPercent / 200f).asHex();
             }, BREWING_CAULDRON);
 
-        BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, RingMatrixBlockRenderer::new);
+        BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, OldRingMatrixBlockRenderer::new);
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_STORAGE_BLOCK_ENTITY, EtherealStorageRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_SOCKET_BLOCK_ENTITY, EtherealSocketRenderer::new);
@@ -84,6 +85,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(CRATE_BLOCK_ENTITY, CrateBlockRenderer::new);
         BlockEntityRendererFactories.register(BREWING_CAULDRON_BLOCK_ENTITY, BrewingCauldronRenderer::new);
         BlockEntityRendererFactories.register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
+        BlockEntityRendererFactories.register(ARMILLARY_MATRIX_BLOCK_ENTITY_NEW, ArmillaryMatrixRenderer::new);
 
         HandledScreens.register(CLOSET_SCREEN_HANDLER, ClosetScreen::new);
         HandledScreens.register(ETHEREAL_STORAGE_SCREEN_HANDLER, EtherealStorageScreen::new);
@@ -91,8 +93,8 @@ public class EtherologyClient implements ClientModInitializer {
         HandledScreens.register(EMPOWER_TABLE_SCREEN_HANDLER, EmpowerTableScreen::new);
         HandledScreens.register(CRATE_SCREEN_HANDLER, CrateScreen::new);
 
-        ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, ElectricityParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, ElectricityParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, OldElectricityParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, OldElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SPARK, OldSparkParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(OLD_STEAM, OldSteamParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, VitalParticle.Factory::new);

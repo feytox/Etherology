@@ -16,12 +16,12 @@ public class StopBlockAnimS2C extends AbstractS2CPacket {
     private final BlockPos blockPos;
     private final String animName;
 
-    public <T extends BlockEntity, EGeoBlockEntity> StopBlockAnimS2C(T blockEntity, String animName) {
+    public <T extends BlockEntity & EGeoBlockEntity> StopBlockAnimS2C(T blockEntity, String animName) {
         this.blockPos = blockEntity.getPos();
         this.animName = animName;
     }
 
-    public static <T extends BlockEntity, EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
+    public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
         StopBlockAnimS2C packet = new StopBlockAnimS2C(blockEntity, animName);
         EtherologyNetwork.sendForTracking(packet, blockEntity);
     }

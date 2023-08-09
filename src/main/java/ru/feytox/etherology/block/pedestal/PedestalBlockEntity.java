@@ -24,19 +24,20 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
-import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
-import ru.feytox.etherology.particle.ItemMovingParticle;
+import ru.feytox.etherology.particle.OldItemMovingParticle;
 import ru.feytox.etherology.particle.OldMovingParticle;
-import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
+import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.util.feyapi.UniqueProvider;
 import ru.feytox.etherology.util.nbt.NbtPos;
 
 import static ru.feytox.etherology.Etherology.SPARK;
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
-public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory, EtherAspectsProvider {
+public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory, EtherAspectsProvider, UniqueProvider {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
     @Getter
     @Setter
@@ -97,12 +98,12 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
             double x = pos.getX() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
             double y = pos.getY() + 1.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
             double z = pos.getZ() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
-            ItemMovingParticle particle = new ItemMovingParticle(world, x, y, z, center.x, center.y, center.z,
+            OldItemMovingParticle particle = new OldItemMovingParticle(world, x, y, z, center.x, center.y, center.z,
                     getItems().get(0).copy());
             MinecraftClient.getInstance().particleManager.addParticle(particle);
         }
 
-        LightParticleEffect sparkEffect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightParticleType.SPARK, center.asVector());
+        LightParticleEffect sparkEffect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.SPARK, center.asVector());
         sparkEffect.spawnParticles(world, random.nextBetween(10, 25), 0.35, pos.toCenterPos().add(0, 1, 0));
 
         OldMovingParticle.spawnParticles(world, SPARK, random.nextBetween(1, 5), 0.35,
@@ -183,7 +184,7 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         return Text.of(pedestalText + " (" + itemText + ")");
     }
 
-    private void syncData(ServerWorld world) {
+    public void syncData(ServerWorld world) {
         markDirty();
         world.getChunkManager().markForUpdate(pos);
     }

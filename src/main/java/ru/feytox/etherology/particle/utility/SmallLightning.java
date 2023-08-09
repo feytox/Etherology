@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import ru.feytox.etherology.particle.ElectricityParticle;
+import ru.feytox.etherology.particle.OldElectricityParticle;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.FVec3d;
 
@@ -93,7 +93,7 @@ public class SmallLightning {
                 endPos = this.endPos;
             }
 
-            particleLines.add(new ParticleLine(ElectricityParticle.getParticleType(random), startPos, endPos, 0.1f));
+            particleLines.add(new ParticleLine(OldElectricityParticle.getParticleType(random), startPos, endPos, 0.1f));
         }
     }
 
@@ -144,7 +144,7 @@ public class SmallLightning {
         List<ParticleLine> particleLines = new ArrayList<>();
         for (int i = 0; i < lineCount; i++) {
             Random random = Random.create();
-            ParticleLine particleLine = ParticleLine.read(buf, ElectricityParticle.getParticleType(random));
+            ParticleLine particleLine = ParticleLine.read(buf, OldElectricityParticle.getParticleType(random));
             particleLines.add(particleLine);
         }
 

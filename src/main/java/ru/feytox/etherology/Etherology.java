@@ -18,6 +18,8 @@ import ru.feytox.etherology.block.etherealFurnace.EtherealFurnaceScreenHandler;
 import ru.feytox.etherology.block.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreenHandler;
 import ru.feytox.etherology.commands.DevCommands;
+import ru.feytox.etherology.deprecated.armillary.OldArmillaryRecipe;
+import ru.feytox.etherology.deprecated.armillary.OldArmillaryRecipeSerializer;
 import ru.feytox.etherology.enums.MixTypes;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
@@ -85,12 +87,16 @@ public class Etherology implements ModInitializer {
                 EmpowerRecipeSerializer.INSTANCE);
         Registry.register(Registries.RECIPE_TYPE, new EIdentifier(EmpowerRecipe.Type.ID), EmpowerRecipe.Type.INSTANCE);
 
+        Registry.register(Registries.RECIPE_SERIALIZER, OldArmillaryRecipeSerializer.ID,
+                OldArmillaryRecipeSerializer.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, new EIdentifier(OldArmillaryRecipe.Type.ID), OldArmillaryRecipe.Type.INSTANCE);
+
         Registry.register(Registries.RECIPE_SERIALIZER, ArmillaryRecipeSerializer.ID,
                 ArmillaryRecipeSerializer.INSTANCE);
         Registry.register(Registries.RECIPE_TYPE, new EIdentifier(ArmillaryRecipe.Type.ID), ArmillaryRecipe.Type.INSTANCE);
 
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity1"), ELECTRICITY1);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity2"), ELECTRICITY2);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity1_old"), ELECTRICITY1);
+        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity2_old"), ELECTRICITY2);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("spark"), SPARK);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("old_steam"), OLD_STEAM);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("vital_energy"), VITAL_ENERGY);

@@ -21,6 +21,9 @@ public class ClientParticleTypes {
         register(STEAM, SteamParticle::new);
         register(ZONE_PARTICLE, ZoneParticle::new);
         register(SPARK, SparkParticle::new);
+        register(ELECTRICITY1, ElectricityParticle::new);
+        register(ELECTRICITY2, ElectricityParticle::new);
+        register(ITEM, ItemParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {

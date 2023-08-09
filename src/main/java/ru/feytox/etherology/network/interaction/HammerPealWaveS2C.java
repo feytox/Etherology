@@ -8,8 +8,8 @@ import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.particle.PealWaveParticle;
-import ru.feytox.etherology.particle.types.args.ParticleArg;
-import ru.feytox.etherology.particle.types.args.SimpleArgs;
+import ru.feytox.etherology.particle.effects.args.ParticleArg;
+import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class HammerPealWaveS2C extends AbstractS2CPacket {

@@ -1,7 +1,5 @@
 package ru.feytox.etherology.enums;
 
-import java.util.Arrays;
-
 public enum RingType {
     ETHRIL(0, 0, 0, 73),
     TELDER_STEEL(0, 138, 0, 211),
@@ -11,10 +9,6 @@ public enum RingType {
     private final int v1;
     private final int u2;
     private final int v2;
-
-    public static RingType getRingType(int index) {
-        return Arrays.stream(RingType.values()).toList().get(index);
-    }
 
     RingType(int u1, int v1, int u2, int v2) {
         this.u1 = u1;

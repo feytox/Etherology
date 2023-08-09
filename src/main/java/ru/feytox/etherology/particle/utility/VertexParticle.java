@@ -6,7 +6,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
+import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
 public class VertexParticle<T extends FeyParticleEffect<T>> extends FeyParticle<T> {
     @NonNull

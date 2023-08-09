@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.SparkParticle;
-import ru.feytox.etherology.particle.types.SparkParticleEffect;
+import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.FeyColor;

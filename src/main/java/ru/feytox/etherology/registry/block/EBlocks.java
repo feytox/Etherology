@@ -6,8 +6,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlock;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.armillar_new.ArmillaryMatrixBlock;
+import ru.feytox.etherology.block.armillar_new.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlockEntity;
 import ru.feytox.etherology.block.closet.ClosetSlabBlock;
@@ -39,14 +39,16 @@ import ru.feytox.etherology.block.levitator.LevitatorBlock;
 import ru.feytox.etherology.block.levitator.LevitatorBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlock;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
-import ru.feytox.etherology.block.ringMatrix.RingMatrixBlock;
-import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockEntity;
 import ru.feytox.etherology.block.samovar.SamovarBlock;
 import ru.feytox.etherology.block.sedimentary.SedimentaryStone;
 import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
+import ru.feytox.etherology.deprecated.armillar.OldArmillaryMatrixBlock;
+import ru.feytox.etherology.deprecated.armillar.OldArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlock;
+import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlockEntity;
 import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -65,18 +67,18 @@ public class EBlocks {
             FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build()
     );
 
-    public static final ArmillaryMatrixBlock ARMILLARY_MATRIX_BASE = (ArmillaryMatrixBlock) new ArmillaryMatrixBlock().registerAll();
-    public static final BlockEntityType<ArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
+    public static final OldArmillaryMatrixBlock ARMILLARY_MATRIX_BASE = (OldArmillaryMatrixBlock) new OldArmillaryMatrixBlock().registerAll();
+    public static final BlockEntityType<OldArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("armillary_matrix_block_entity"),
-            FabricBlockEntityTypeBuilder.create(ArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX_BASE).build()
+            FabricBlockEntityTypeBuilder.create(OldArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX_BASE).build()
     );
 
-    public static final RingMatrixBlock RING_MATRIX_BLOCK = (RingMatrixBlock) new RingMatrixBlock().registerAll();
-    public static final BlockEntityType<RingMatrixBlockEntity> RING_MATRIX_BLOCK_ENTITY = Registry.register(
+    public static final OldRingMatrixBlock RING_MATRIX_BLOCK = (OldRingMatrixBlock) new OldRingMatrixBlock().registerAll();
+    public static final BlockEntityType<OldRingMatrixBlockEntity> RING_MATRIX_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ring_matrix_block"),
-            FabricBlockEntityTypeBuilder.create(RingMatrixBlockEntity::new, RING_MATRIX_BLOCK).build()
+            FabricBlockEntityTypeBuilder.create(OldRingMatrixBlockEntity::new, RING_MATRIX_BLOCK).build()
     );
 
     public static final SedimentaryStone SEDIMENTARY_BLOCK = (SedimentaryStone) new SedimentaryStone().registerAll();
@@ -187,6 +189,13 @@ public class EBlocks {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("levitator_block_entity"),
             FabricBlockEntityTypeBuilder.create(LevitatorBlockEntity::new, LEVITATOR).build()
+    );
+
+    public static final ArmillaryMatrixBlock ARMILLARY_MATRIX = (ArmillaryMatrixBlock) new ArmillaryMatrixBlock().registerAll();
+    public static final BlockEntityType<ArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY_NEW = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("armillary_matrix_block_entity_new"),
+            FabricBlockEntityTypeBuilder.create(ArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX).build()
     );
 
     public static void registerAll() {

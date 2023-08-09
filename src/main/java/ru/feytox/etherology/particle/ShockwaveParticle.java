@@ -45,7 +45,7 @@ public class ShockwaveParticle extends HorizontalParticle {
         if (pealLevel == 0) return;
 
         for (int i = 0; i < world.random.nextBetween(4, 7); i++) {
-            DefaultParticleType electricityType = ElectricityParticle.getParticleType(world.random);
+            DefaultParticleType electricityType = OldElectricityParticle.getParticleType(world.random);
             double ex = shockPos.x + world.random.nextDouble();
             double ez = shockPos.z + world.random.nextDouble();
             world.addParticle(electricityType, ex, shockPos.y + 0.2, ez, 0.5, 0, 10);

@@ -6,7 +6,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import ru.feytox.etherology.particle.types.MovingParticleEffect;
+import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.particle.utility.VerticalParticle;
 
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.THUNDER_ZAP;
@@ -34,7 +34,7 @@ public class PealWaveParticle extends VerticalParticle<MovingParticleEffect> {
     private static void spawnElectricity(ClientWorld world, Vec3d entityCenter) {
         Random random = world.getRandom();
         for (int i = 0; i < random.nextBetween(3, 6); i++) {
-            DefaultParticleType electricityType = ElectricityParticle.getParticleType(random);
+            DefaultParticleType electricityType = OldElectricityParticle.getParticleType(random);
             double ex = entityCenter.x + random.nextDouble() * 0.5;
             double ey = entityCenter.y + random.nextDouble() * 0.5;
             double ez = entityCenter.z + random.nextDouble() * 0.5;

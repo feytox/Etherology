@@ -1,21 +1,17 @@
 package ru.feytox.etherology.item;
 
+import lombok.Getter;
 import ru.feytox.etherology.enums.RingType;
 import ru.feytox.etherology.util.deprecated.SimpleItem;
 
 public class MatrixRing extends SimpleItem {
+    @Getter
     private final RingType ringType;
 
     public MatrixRing(String itemId, RingType ringType) {
         super(itemId);
         this.ringType = ringType;
     }
-
-    public RingType getRingType() {
-        return ringType;
-    }
-
-    // note: я использовал их отдельными подклассами для того, чтобы если что добавить функционал для отдельного типа колец
 
     public static class EthrilRing extends MatrixRing {
         public EthrilRing() {

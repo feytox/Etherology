@@ -47,7 +47,7 @@ public class ArmillaryRecipeSerializer implements RecipeSerializer<ArmillaryReci
     public ArmillaryRecipe read(Identifier id, PacketByteBuf buf) {
         List<Ingredient> inputs = buf.readList(Ingredient::fromPacket);
         Ingredient centerInput = Ingredient.fromPacket(buf);
-        int instability = buf.readInt();
+        String instability = buf.readString();
         float etherPoints = buf.readFloat();
         ItemStack output = buf.readItemStack();
         return new ArmillaryRecipe(inputs, centerInput, instability, etherPoints, output, id);
@@ -57,7 +57,7 @@ public class ArmillaryRecipeSerializer implements RecipeSerializer<ArmillaryReci
     public void write(PacketByteBuf buf, ArmillaryRecipe recipe) {
         buf.writeCollection(recipe.getInputs(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
         recipe.getCenterInput().write(buf);
-        buf.writeInt(recipe.getInstability().getIndex());
+        buf.writeString(recipe.getInstability().name());
         buf.writeFloat(recipe.getEtherPoints());
         buf.writeItemStack(recipe.getOutput());
     }

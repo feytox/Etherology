@@ -1,5 +1,6 @@
 package ru.feytox.etherology.recipes.armillary;
 
+import lombok.Getter;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -8,44 +9,31 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import ru.feytox.etherology.enums.InstabTypes;
+import ru.feytox.etherology.enums.InstabilityType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArmillaryRecipe implements Recipe<Inventory> {
+    @Getter
     private final List<Ingredient> inputs;
+    @Getter
     private final Ingredient centerInput;
-    private final InstabTypes instability;
+    @Getter
+    private final InstabilityType instability;
+    @Getter
     private final float etherPoints;
     private final ItemStack outputStack;
     private final Identifier id;
 
-    public ArmillaryRecipe(List<Ingredient> inputs, Ingredient centerInput, int instability,
+    public ArmillaryRecipe(List<Ingredient> inputs, Ingredient centerInput, String instability,
                            float etherPoints, ItemStack outputStack, Identifier id) {
         this.inputs = inputs;
         this.centerInput = centerInput;
-        this.instability = InstabTypes.getFromIndex(instability);
+        this.instability = InstabilityType.valueOf(instability);
         this.etherPoints = etherPoints;
         this.outputStack = outputStack;
         this.id = id;
-    }
-
-    public Ingredient getCenterInput() {
-        return centerInput;
-    }
-
-
-    public InstabTypes getInstability() {
-        return instability;
-    }
-
-    public float getEtherPoints() {
-        return etherPoints;
-    }
-
-    public List<Ingredient> getInputs() {
-        return inputs;
     }
 
     @Override

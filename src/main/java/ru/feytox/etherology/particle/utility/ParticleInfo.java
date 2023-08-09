@@ -4,7 +4,7 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
+import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public abstract class ParticleInfo<T extends FeyParticle<M>, M extends FeyParticleEffect<M>> {

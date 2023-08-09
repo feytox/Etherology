@@ -3,7 +3,7 @@ package ru.feytox.etherology.particle.utility;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.particle.types.misc.FeyParticleEffect;
+import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
 public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends FeyParticle<T> {
     public MovingParticle(ClientWorld clientWorld, double x, double y, double z, T parameters, SpriteProvider spriteProvider) {
@@ -64,6 +64,10 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
 
     public Vec3d getPathVec(Vec3d endPos) {
         return new Vec3d(endPos.x-x, endPos.y-y, endPos.z-z);
+    }
+
+    public Vec3d getPassedVec() {
+        return new Vec3d(x, y, z).subtract(startPos);
     }
 
     public Vec3d getFullPathVec(Vec3d endPos) {

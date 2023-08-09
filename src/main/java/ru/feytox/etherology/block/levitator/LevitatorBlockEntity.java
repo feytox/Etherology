@@ -13,9 +13,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.LightParticleType;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
+import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
@@ -108,7 +108,7 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
     }
 
     private void tickParticles(ClientWorld world, BlockPos startPos, BlockPos targetPos, boolean isPushing) {
-        LightParticleType lightType = isPushing ? LightParticleType.PUSHING : LightParticleType.ATTRACT;
+        LightSubtype lightType = isPushing ? LightSubtype.PUSHING : LightSubtype.ATTRACT;
         Vec3d target = targetPos.toCenterPos();
 
         BlockPos.iterate(startPos, targetPos).forEach(blockPos -> {

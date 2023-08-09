@@ -12,8 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
+import ru.feytox.etherology.deprecated.armillar.OldArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.util.deprecated.FakeItem;
 
@@ -126,7 +126,7 @@ public enum InstabTypes {
         Random rand = new Random();
 
         BlockEntity be = world.getBlockEntity(pos);
-        if (!(be instanceof ArmillaryMatrixBlockEntity armBlock)) return false;
+        if (!(be instanceof OldArmillaryMatrixBlockEntity armBlock)) return false;
 
         Vec3d randomPos = new Vec3d(pos.getX() + rand.nextInt(-8, 9), pos.getY(),
                 pos.getZ() + rand.nextInt(-8, 9));
@@ -138,7 +138,7 @@ public enum InstabTypes {
         return true;
     }
 
-    public boolean event3(float multi, ServerWorld world, ArmillaryMatrixBlockEntity armillBlock) {
+    public boolean event3(float multi, ServerWorld world, OldArmillaryMatrixBlockEntity armillBlock) {
         if (!checkRandom(chance3, multi)) return false;
 
         Random rand = new Random();
@@ -166,7 +166,7 @@ public enum InstabTypes {
         return true;
     }
 
-    public boolean event5(float multi, ServerWorld world, ArmillaryMatrixBlockEntity armillBlock) {
+    public boolean event5(float multi, ServerWorld world, OldArmillaryMatrixBlockEntity armillBlock) {
         if (!checkRandom(chance5, multi)) return false;
 
         Random rand = new Random();

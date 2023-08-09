@@ -32,7 +32,7 @@ import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
 import ru.feytox.etherology.magic.zones.EssenceZone;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.particle.types.ZoneParticleEffect;
+import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 

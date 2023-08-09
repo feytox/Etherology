@@ -2,7 +2,7 @@ package ru.feytox.etherology.particle;
 
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
-import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 

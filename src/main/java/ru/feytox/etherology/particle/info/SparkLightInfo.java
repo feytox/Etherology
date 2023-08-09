@@ -6,7 +6,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.LightParticle;
-import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 

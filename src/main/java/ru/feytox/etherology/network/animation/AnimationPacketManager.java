@@ -19,5 +19,6 @@ public class AnimationPacketManager extends AbstractPacketManager {
         builder.put(PlayerAnimationS2C.PLAYER_ANIMATION_S2C_ID, PlayerAnimationS2C::receive);
         builder.put(StopBlockAnimS2C.STOP_BLOCK_ANIM_PACKET_ID, StopBlockAnimS2C::receive);
         builder.put(StartBlockAnimS2C.START_BLOCK_ANIM_PACKET_ID, StartBlockAnimS2C::receive);
+        builder.put(SwitchBlockAnimS2C.SWITCH_BLOCK_ANIM_PACKET_ID, SwitchBlockAnimS2C::receive);
     }
 }

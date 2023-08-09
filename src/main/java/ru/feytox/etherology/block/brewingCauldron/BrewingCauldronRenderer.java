@@ -14,8 +14,8 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.LightParticleType;
-import ru.feytox.etherology.particle.types.LightParticleEffect;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
+import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
@@ -68,7 +68,7 @@ public class BrewingCauldronRenderer extends GeoBlockRenderer<BrewingCauldronBlo
     }
 
     private void spawnLightParticles(World world, Vec3d cauldronPos, double dx, double dz) {
-        LightParticleEffect effect = new LightParticleEffect(LIGHT, LightParticleType.BREWING, new Vec3d(0, 0, 0));
+        LightParticleEffect effect = new LightParticleEffect(LIGHT, LightSubtype.BREWING, new Vec3d(0, 0, 0));
         Vec3d particlePos = cauldronPos.add(dx, 0.05, dz);
         effect.spawnParticles(world, 1, 0, 0, 0, particlePos);
     }

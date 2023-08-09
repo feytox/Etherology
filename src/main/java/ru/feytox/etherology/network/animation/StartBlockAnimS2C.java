@@ -17,17 +17,17 @@ public class StartBlockAnimS2C extends AbstractS2CPacket {
     private final BlockPos blockPos;
     private final String animName;
 
-    public <T extends BlockEntity, EGeoBlockEntity> StartBlockAnimS2C(T blockEntity, String animName) {
+    public <T extends BlockEntity & EGeoBlockEntity> StartBlockAnimS2C(T blockEntity, String animName) {
         this.blockPos = blockEntity.getPos();
         this.animName = animName;
     }
 
-    public static <T extends BlockEntity, EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
+    public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
         StartBlockAnimS2C packet = new StartBlockAnimS2C(blockEntity, animName);
         EtherologyNetwork.sendForTracking(packet, blockEntity);
     }
 
-    public static <T extends BlockEntity, EGeoBlockEntity> void sendForTracking(T blockEntity, String animName, PlayerEntity except) {
+    public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName, PlayerEntity except) {
         StartBlockAnimS2C packet = new StartBlockAnimS2C(blockEntity, animName);
         EtherologyNetwork.sendForTracking(packet, blockEntity, except.getId());
     }

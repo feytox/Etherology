@@ -3,7 +3,7 @@ package ru.feytox.etherology.particle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.particle.types.MovingParticleEffect;
+import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 

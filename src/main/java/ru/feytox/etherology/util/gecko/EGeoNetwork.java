@@ -11,8 +11,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
-import ru.feytox.etherology.block.ringMatrix.RingMatrixBlockEntity;
+import ru.feytox.etherology.deprecated.armillar.OldArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EGeoNetwork {
@@ -26,8 +26,8 @@ public class EGeoNetwork {
             if (client.world == null) return;
             BlockEntity be = client.world.getBlockEntity(blockPos);
 
-            if (be instanceof ArmillaryMatrixBlockEntity armBlock) {
-                RingMatrixBlockEntity ringMatrix = armBlock.getRingMatrix(client.world);
+            if (be instanceof OldArmillaryMatrixBlockEntity armBlock) {
+                OldRingMatrixBlockEntity ringMatrix = armBlock.getRingMatrix(client.world);
 
                 ringMatrix.stopAnim("inactively");
                 ringMatrix.triggerAnim("start");
@@ -36,7 +36,7 @@ public class EGeoNetwork {
     }
 
     @Deprecated
-    public static void sendStartMatrix(ServerWorld world, ArmillaryMatrixBlockEntity armBlock) {
+    public static void sendStartMatrix(ServerWorld world, OldArmillaryMatrixBlockEntity armBlock) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeBlockPos(armBlock.getPos());
 

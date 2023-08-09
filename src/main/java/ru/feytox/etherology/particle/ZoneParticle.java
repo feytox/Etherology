@@ -8,7 +8,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.particle.types.ZoneParticleEffect;
+import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
 
 public class ZoneParticle extends MovingParticle<ZoneParticleEffect> {
