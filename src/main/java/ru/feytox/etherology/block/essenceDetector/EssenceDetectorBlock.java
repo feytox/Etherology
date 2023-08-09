@@ -14,16 +14,16 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.deprecated.SimpleBlock;
+import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ESSENCE_DETECTOR_BLOCK_ENTITY;
 
-public class EssenceDetectorBlock extends SimpleBlock implements BlockEntityProvider {
+public class EssenceDetectorBlock extends Block implements BlockEntityProvider, RegistrableBlock {
     public static final IntProperty POWER = Properties.POWER;
     private static final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
 
     public EssenceDetectorBlock() {
-        super("essence_detector", FabricBlockSettings.of(Material.STONE));
+        super(FabricBlockSettings.of(Material.STONE));
         setDefaultState(getDefaultState().with(POWER, 0));
     }
 
@@ -61,5 +61,15 @@ public class EssenceDetectorBlock extends SimpleBlock implements BlockEntityProv
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new EssenceDetectorBlockEntity(pos, state);
+    }
+
+    @Override
+    public Block getBlockInstance() {
+        return this;
+    }
+
+    @Override
+    public String getBlockId() {
+        return "essence_detector";
     }
 }

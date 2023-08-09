@@ -27,13 +27,14 @@ import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
-import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlockRenderer;
 import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
-import ru.feytox.etherology.particle.*;
+import ru.feytox.etherology.particle.GlintParticle;
+import ru.feytox.etherology.particle.OldElectricityParticle;
+import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
@@ -42,7 +43,6 @@ import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
 import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
-import ru.feytox.etherology.util.gecko.EGeoNetwork;
 import software.bernie.geckolib.network.GeckoLibNetwork;
 
 import java.util.ArrayList;
@@ -75,7 +75,6 @@ public class EtherologyClient implements ClientModInitializer {
             return FeyColor.getGradientColor(RGBColor.of(biomeColor), RGBColor.of(0x8032B5), aspectsPercent / 200f).asHex();
             }, BREWING_CAULDRON);
 
-        BlockEntityRendererFactories.register(RING_MATRIX_BLOCK_ENTITY, OldRingMatrixBlockRenderer::new);
         BlockEntityRendererFactories.register(FURNITURE_BLOCK_ENTITY, FurnitureBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_STORAGE_BLOCK_ENTITY, EtherealStorageRenderer::new);
         BlockEntityRendererFactories.register(ETHEREAL_SOCKET_BLOCK_ENTITY, EtherealSocketRenderer::new);
@@ -95,10 +94,6 @@ public class EtherologyClient implements ClientModInitializer {
 
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, OldElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, OldElectricityParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(SPARK, OldSparkParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(OLD_STEAM, OldSteamParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(VITAL_ENERGY, VitalParticle.Factory::new);
-
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
 
@@ -116,7 +111,6 @@ public class EtherologyClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(BREWING_CAULDRON, RenderLayer.getCutout());
 
         SmallLightning.registerPacket();
-        EGeoNetwork.registerPackets();
         EtherNetwork.registerPackets();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {

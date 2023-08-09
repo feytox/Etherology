@@ -4,9 +4,6 @@ import io.wispforest.owo.util.ImplementedInventory;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
@@ -19,31 +16,20 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
-import ru.feytox.etherology.particle.OldItemMovingParticle;
-import ru.feytox.etherology.particle.OldMovingParticle;
-import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
-import ru.feytox.etherology.util.nbt.NbtPos;
 
-import static ru.feytox.etherology.Etherology.SPARK;
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
-public class PedestalBlockEntity extends BlockEntity implements ImplementedInventory, EtherAspectsProvider, UniqueProvider {
+public class PedestalBlockEntity extends TickableBlockEntity implements ImplementedInventory, EtherAspectsProvider, UniqueProvider {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
     @Getter
     @Setter
     private Float cachedUniqueOffset = null;
-    private int itemConsumingTicks = 0;
-    private NbtPos centerCoord = null;
 
     public PedestalBlockEntity(BlockPos pos, BlockState state) {
         super(PEDESTAL_BLOCK_ENTITY, pos, state);
@@ -74,74 +60,9 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         syncData(world);
     }
 
-    public static void serverTick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
-        if (!world.isClient) {
-            blockEntity.tickConsuming((ServerWorld) world);
-        }
-    }
-
-    public static void clientTick(World world, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
-        if (world.isClient) {
-            blockEntity.tickConsumingParticles((ClientWorld) world);
-        }
-    }
-
-    public void tickConsumingParticles(ClientWorld world) {
-        if (!isConsuming()) return;
-
-        Random random = Random.create();
-        NbtPos center = getCenterCoord();
-
-        if (itemConsumingTicks % 5 != 0) return;
-
-        for (int i = 0; i < 5; i++) {
-            double x = pos.getX() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
-            double y = pos.getY() + 1.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
-            double z = pos.getZ() + 0.5 + random.nextDouble() * 0.2f * random.nextBetween(-1, 1);
-            OldItemMovingParticle particle = new OldItemMovingParticle(world, x, y, z, center.x, center.y, center.z,
-                    getItems().get(0).copy());
-            MinecraftClient.getInstance().particleManager.addParticle(particle);
-        }
-
-        LightParticleEffect sparkEffect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.SPARK, center.asVector());
-        sparkEffect.spawnParticles(world, random.nextBetween(10, 25), 0.35, pos.toCenterPos().add(0, 1, 0));
-
-        OldMovingParticle.spawnParticles(world, SPARK, random.nextBetween(1, 5), 0.35,
-                pos.getX()+0.5, pos.getY()+1.5, pos.getZ()+0.5, center.x, center.y, center.z, random);
-    }
-
-    public void consumeItem(ServerWorld world, int ticks, Vec3d centerPos) {
-        itemConsumingTicks = ticks;
-        centerCoord = new NbtPos("centerCoord", centerPos.x, centerPos.y+0.3, centerPos.z);
-        syncData(world);
-    }
-
-    public boolean isConsuming() {
-        return itemConsumingTicks > 0;
-    }
-
-    public NbtPos getCenterCoord() {
-        return centerCoord;
-    }
-
-    public void tickConsuming(ServerWorld world) {
-        if (itemConsumingTicks == 0) return;
-
-        itemConsumingTicks--;
-        if ((itemConsumingTicks <= 0 || this.world == null) && itemConsumingTicks == 0) {
-            centerCoord = null;
-            clear();
-        }
-
-        syncData(world);
-    }
-
     @Override
     protected void writeNbt(NbtCompound nbt) {
         Inventories.writeNbt(nbt, items);
-
-        nbt.putInt("itemConsumingTicks", itemConsumingTicks);
-        if (centerCoord != null) centerCoord.writeNbt(nbt);
 
         super.writeNbt(nbt);
     }
@@ -149,11 +70,8 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        itemConsumingTicks = nbt.getInt("itemConsumingTicks");
         items.clear();
         Inventories.readNbt(nbt, items);
-
-        centerCoord = itemConsumingTicks != 0 ? NbtPos.readNbt("centerCoord", nbt) : null;
     }
 
     @Override
@@ -182,10 +100,5 @@ public class PedestalBlockEntity extends BlockEntity implements ImplementedInven
         String pedestalText = Text.translatable(getCachedState().getBlock().getTranslationKey()).getString();
         String itemText = items.get(0).getName().getString();
         return Text.of(pedestalText + " (" + itemText + ")");
-    }
-
-    public void syncData(ServerWorld world) {
-        markDirty();
-        world.getChunkManager().markForUpdate(pos);
     }
 }

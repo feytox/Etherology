@@ -15,7 +15,7 @@ public class ServerParticleTypes {
     public static final FeyParticleType<MovingParticleEffect> THUNDER_ZAP = register("thunder_zap", MovingParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> STEAM = register("steam", MovingParticleEffect::new);
     public static final FeyParticleType<ZoneParticleEffect> ZONE_PARTICLE = register("zone_particle", ZoneParticleEffect::new);
-    public static final FeyParticleType<SparkParticleEffect> SPARK = register("spark_new", SparkParticleEffect::new);
+    public static final FeyParticleType<SparkParticleEffect> SPARK = register("spark", SparkParticleEffect::new);
     public static final FeyParticleType<ElectricityParticleEffect> ELECTRICITY1 = register("electricity1", ElectricityParticleEffect::new);
     public static final FeyParticleType<ElectricityParticleEffect> ELECTRICITY2 = register("electricity2", ElectricityParticleEffect::new);
     public static final FeyParticleType<ItemParticleEffect> ITEM = register("item", ItemParticleEffect::new);

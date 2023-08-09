@@ -178,11 +178,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         syncData(world);
     }
 
-    private void syncData(ServerWorld world) {
-        markDirty();
-        world.getChunkManager().markForUpdate(pos);
-    }
-
     public void mixWater() {
         StartBlockAnimS2C.sendForTracking(this, "mixing");
         scheduleMixItems();

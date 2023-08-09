@@ -177,7 +177,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         setStack(0, ItemStack.EMPTY);
     }
 
-    public boolean tryStartCrafting(ServerWorld world, BlockState state) {
+    public void tryStartCrafting(ServerWorld world, BlockState state) {
         List<ItemStack> allItems = new ObjectArrayList<>();
         List<PedestalBlockEntity> pedestals = getAndCachePedestals(world);
         pedestals.stream().map(pedestal -> pedestal.getStack(0)).forEach(allItems::add);
@@ -187,7 +187,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         SimpleInventory fakeInventory = new SimpleInventory(allItems.toArray(ItemStack[]::new));
 
         Optional<ArmillaryRecipe> match = world.getRecipeManager().getFirstMatch(ArmillaryRecipe.Type.INSTANCE, fakeInventory, world);
-        if (match.isEmpty()) return false;
+        if (match.isEmpty()) return;
         val recipe = match.get();
 
         currentRecipe = MatrixRecipe.of(recipe);
@@ -195,7 +195,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         state = setMatrixState(world, state, ArmillaryState.RAISING);
         setCraftInstability(world, state, recipe.getInstability());
         SwitchBlockAnimS2C.sendForTracking(this, "inactively", "start");
-        return true;
     }
 
     private void tickIdleAnimation(BlockState state) {
@@ -259,39 +258,34 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         craftInstability.removeEvent(world, matrixInstability, pos);
     }
 
-    private BlockState tickMatrixState(ServerWorld world, BlockState state) {
+    private void tickMatrixState(ServerWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
         switch (matrixState) {
             case LOWERING -> {
-                if (currentTick++ >= 40) state = setMatrixState(world, state, ArmillaryState.OFF);
+                if (currentTick++ >= 40) setMatrixState(world, state, ArmillaryState.OFF);
             }
             case RAISING -> {
                 if (currentTick++ >= 41) {
-                    state = setMatrixState(world, state, ArmillaryState.STORING);
+                    setMatrixState(world, state, ArmillaryState.STORING);
                     SwitchBlockAnimS2C.sendForTracking(this, "start", "work");
                 }
             }
             case STORING -> {
                 tickStoring(world);
-                if (currentRecipe != null && currentRecipe.getEtherPoints() <= 0.0f) state = setMatrixState(world, state, ArmillaryState.CRAFTING);
+                if (currentRecipe != null && currentRecipe.getEtherPoints() <= 0.0f) setMatrixState(world, state, ArmillaryState.CRAFTING);
             }
             case DAMAGING -> {
                 tickDamaging(world);
-                state = tickCrafting(world, state);
+                tickCrafting(world, state);
             }
-            case CRAFTING -> {
-                state = tickCrafting(world, state);
-            }
-            case CONSUMING -> {
-                state = tickItemConsuming(world, state);
-            }
+            case CRAFTING -> tickCrafting(world, state);
+            case CONSUMING -> tickItemConsuming(world, state);
             case OFF -> {
-                return state;
+                return;
             }
         }
 
         syncData(world);
-        return state;
     }
 
     private void tickStoring(ServerWorld world) {
@@ -347,35 +341,38 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         effect.spawnParticles(world, 5, 0.1, entity.getBoundingBox().getCenter());
     }
 
-    private BlockState tickCrafting(ServerWorld world, BlockState state) {
-        if (world.getTime() % 120 != 0 || currentRecipe == null) return state;
+    private void tickCrafting(ServerWorld world, BlockState state) {
+        if (world.getTime() % 120 != 0 || currentRecipe == null) return;
 
         if (currentRecipe.isFinished()) {
-            return craft(world, state);
+            craft(world, state);
+            return;
         }
 
         List<PedestalBlockEntity> pedestals = getCachedPedestals(world);
         Optional<PedestalBlockEntity> optionalPedestal = currentRecipe.findMatchedPedestal(pedestals);
         if (optionalPedestal.isEmpty()) {
             if (currentRecipe.testCenterStack(this)) {
-                return craft(world, state);
+                craft(world, state);
+                return;
             }
 
             matrixInstability += matrixInstability * 0.42f;
-            return setMatrixState(world, state, ArmillaryState.DAMAGING);
+            setMatrixState(world, state, ArmillaryState.DAMAGING);
+            return;
         }
 
         PedestalBlockEntity targetPedestal = optionalPedestal.get();
         cachedTargetPedestal = targetPedestal.getPos();
         currentTick = 0;
-        return setMatrixState(world, state, ArmillaryState.CONSUMING);
+        setMatrixState(world, state, ArmillaryState.CONSUMING);
     }
 
-    private BlockState craft(ServerWorld world, BlockState state) {
-        if (currentRecipe == null) return state;
+    private void craft(ServerWorld world, BlockState state) {
+        if (currentRecipe == null) return;
 
         Optional<? extends Recipe<?>> match = world.getRecipeManager().get(currentRecipe.getRecipeId());
-        if (match.isEmpty()) return state;
+        if (match.isEmpty()) return;
         setStack(0, match.get().getOutput());
 
         currentRecipe = null;
@@ -383,20 +380,22 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         SwitchBlockAnimS2C.sendForTracking(this, "work", "end");
         StartBlockAnimS2C.sendForTracking(this, "inactively");
         state = setMatrixState(world, state, ArmillaryState.LOWERING);
-        return setCraftInstability(world, state, InstabilityType.NULL);
+        setCraftInstability(world, state, InstabilityType.NULL);
     }
 
-    private BlockState tickItemConsuming(ServerWorld world, BlockState state) {
+    private void tickItemConsuming(ServerWorld world, BlockState state) {
         if (cachedTargetPedestal == null || currentRecipe == null || !(world.getBlockEntity(cachedTargetPedestal) instanceof PedestalBlockEntity pedestal)) {
-            return setMatrixState(world, state, ArmillaryState.CRAFTING);
+            setMatrixState(world, state, ArmillaryState.CRAFTING);
+            return;
         }
         if (currentTick++ >= 60) {
             pedestal.clear();
             pedestal.syncData(world);
             currentRecipe.getInputs().remove(0);
-            return setMatrixState(world, state, ArmillaryState.CRAFTING);
+            setMatrixState(world, state, ArmillaryState.CRAFTING);
+            return;
         }
-        if (world.getTime() % 5 != 0) return state;
+        if (world.getTime() % 5 != 0) return;
 
         Vec3d pedestalPos = cachedTargetPedestal.toCenterPos().add(0, 1, 0);
         Vec3d centerPos = getCenterPos(ArmillaryState.CONSUMING);
@@ -410,7 +409,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
         SparkParticleEffect sparkEffect = new SparkParticleEffect(ServerParticleTypes.SPARK, centerPos);
         sparkEffect.spawnParticles(world, random.nextBetween(1, 5), 0.35, pedestalPos);
-        return state;
     }
 
     public Vec3d getCenterPos(ArmillaryState matrixState) {
@@ -538,11 +536,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
-    }
-
-    public void syncData(ServerWorld world) {
-        markDirty();
-        world.getChunkManager().markForUpdate(pos);
     }
 
     static {

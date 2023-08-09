@@ -27,4 +27,9 @@ public abstract class TickableBlockEntity extends BlockEntity {
             be.serverTick((ServerWorld) world, blockPos, state);
         }
     }
+
+    public void syncData(ServerWorld world) {
+        markDirty();
+        world.getChunkManager().markForUpdate(pos);
+    }
 }

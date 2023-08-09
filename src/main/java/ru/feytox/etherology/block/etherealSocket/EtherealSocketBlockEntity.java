@@ -24,16 +24,15 @@ import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.GlintParticle;
-import ru.feytox.etherology.util.feyapi.EtherNetwork;
-import ru.feytox.etherology.util.feyapi.PacketUpdatable;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
-public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, PacketUpdatable {
+public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    // TODO: 09.08.2023 deprecate
     private boolean isUpdated = false;
     private float cachedPercent = 0;
 
@@ -80,10 +79,9 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
             setStack(0, glintStack);
 
             world.setBlockState(pos, state.with(WITH_GLINT, true));
-            markDirty();
             isUpdated = true;
             world.playSound(null, pos, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.BLOCKS, 0.6f, 0.95f);
-            EtherNetwork.sendBlockUpdate(world, this);
+            syncData(world);
             return ActionResult.CONSUME;
 
         } else if (glintStack.getItem() instanceof AbstractGlintItem && useStack.isEmpty()) {
@@ -93,7 +91,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
             player.setStackInHand(Hand.MAIN_HAND, takingStack);
 
             world.setBlockState(pos, state.with(WITH_GLINT, false));
-            markDirty();
+            syncData(world);
             isUpdated = true;
             world.playSound(null, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, 0.8f, 0.95f);
             return ActionResult.SUCCESS;
@@ -218,10 +216,5 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
 
     public float getCachedPercent() {
         return cachedPercent;
-    }
-
-    @Override
-    public void onPacketUpdate(ClientWorld world) {
-        isUpdated = true;
     }
 }

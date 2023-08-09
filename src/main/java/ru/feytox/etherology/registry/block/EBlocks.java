@@ -45,10 +45,6 @@ import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
-import ru.feytox.etherology.deprecated.armillar.OldArmillaryMatrixBlock;
-import ru.feytox.etherology.deprecated.armillar.OldArmillaryMatrixBlockEntity;
-import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlock;
-import ru.feytox.etherology.deprecated.armillar.ringMatrix.OldRingMatrixBlockEntity;
 import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -65,20 +61,6 @@ public class EBlocks {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("pedestal_block_entity"),
             FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build()
-    );
-
-    public static final OldArmillaryMatrixBlock ARMILLARY_MATRIX_BASE = (OldArmillaryMatrixBlock) new OldArmillaryMatrixBlock().registerAll();
-    public static final BlockEntityType<OldArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("armillary_matrix_block_entity"),
-            FabricBlockEntityTypeBuilder.create(OldArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX_BASE).build()
-    );
-
-    public static final OldRingMatrixBlock RING_MATRIX_BLOCK = (OldRingMatrixBlock) new OldRingMatrixBlock().registerAll();
-    public static final BlockEntityType<OldRingMatrixBlockEntity> RING_MATRIX_BLOCK_ENTITY = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("ring_matrix_block"),
-            FabricBlockEntityTypeBuilder.create(OldRingMatrixBlockEntity::new, RING_MATRIX_BLOCK).build()
     );
 
     public static final SedimentaryStone SEDIMENTARY_BLOCK = (SedimentaryStone) new SedimentaryStone().registerAll();

@@ -74,8 +74,4 @@ public class OldElectricityParticle extends OldMovingParticle {
     public static DefaultParticleType getParticleType(Random random) {
         return random.nextDouble() <= 0.5d ? ELECTRICITY1 : ELECTRICITY2;
     }
-
-    public static DefaultParticleType getParticleType(java.util.Random javaRand) {
-        return javaRand.nextBoolean() ? ELECTRICITY1 : ELECTRICITY2;
-    }
 }

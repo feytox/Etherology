@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "etherology:block/armillary_matrix_base" }
+    "": { "model": "etherology:block/armillary_base" }
   }
 }
