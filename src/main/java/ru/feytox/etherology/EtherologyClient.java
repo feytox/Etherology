@@ -13,7 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
-import ru.feytox.etherology.block.armillar_new.ArmillaryMatrixRenderer;
+import ru.feytox.etherology.block.armillar.ArmillaryMatrixRenderer;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.closet.ClosetScreen;

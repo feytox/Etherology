@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar_new;
+package ru.feytox.etherology.block.armillar;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -39,7 +39,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient || !(world.getBlockEntity(pos) instanceof ArmillaryMatrixBlockEntity matrix)) return ActionResult.CONSUME;
-        matrix.interact((ServerWorld) world, state, player, hand);
+        matrix.onHandUse((ServerWorld) world, state, player, hand);
         matrix.syncData((ServerWorld) world);
         return ActionResult.CONSUME;
     }

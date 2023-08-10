@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar_new;
+package ru.feytox.etherology.block.armillar;
 
 import lombok.val;
 import net.minecraft.client.MinecraftClient;

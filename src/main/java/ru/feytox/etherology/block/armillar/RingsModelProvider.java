@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar_new;
+package ru.feytox.etherology.block.armillar;
 
 import com.google.common.base.Suppliers;
 import com.google.gson.JsonObject;

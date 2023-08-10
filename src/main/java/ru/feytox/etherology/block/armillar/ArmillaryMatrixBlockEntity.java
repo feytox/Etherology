@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar_new;
+package ru.feytox.etherology.block.armillar;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -111,12 +111,26 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         super(ARMILLARY_MATRIX_BLOCK_ENTITY_NEW, pos, state);
     }
 
+    /**
+     * Updates the server-side tick logic for a block.
+     *
+     * @param  world     the server world
+     * @param  blockPos  the position of the block
+     * @param  state     the block state
+     */
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         tickCraftInstability(world, state);
         tickMatrixState(world, state);
     }
 
+    /**
+     * Updates the client-side tick logic for a block.
+     *
+     * @param  world     the client world
+     * @param  blockPos  the position of the block
+     * @param  state     the block state
+     */
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         tickSound(state);
@@ -125,7 +139,15 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         tickStoringParticles(world, state);
     }
 
-    public void interact(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
+    /**
+     * Handles server-side the event when the player uses their hand on a matrix base.
+     *
+     * @param  world   the server world
+     * @param  state   the block state
+     * @param  player  the player entity
+     * @param  hand    the hand used
+     */
+    public void onHandUse(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
         val matrixState = getMatrixState(state);
         if (!matrixState.equals(ArmillaryState.OFF)) return;
@@ -177,6 +199,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         setStack(0, ItemStack.EMPTY);
     }
 
+    /**
+     * Tries to start the crafting process and matrix raising.
+     *
+     * @param  world  the server world
+     * @param  state  the block state
+     */
     public void tryStartCrafting(ServerWorld world, BlockState state) {
         List<ItemStack> allItems = new ObjectArrayList<>();
         List<PedestalBlockEntity> pedestals = getAndCachePedestals(world);
@@ -197,11 +225,21 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         SwitchBlockAnimS2C.sendForTracking(this, "inactively", "start");
     }
 
+    /**
+     * Activates idle animation if matrix is off.
+     *
+     * @param  state  the current state of the block
+     */
     private void tickIdleAnimation(BlockState state) {
         val matrixState = getMatrixState(state);
         if (matrixState.equals(ArmillaryState.OFF)) triggerAnim("inactively");
     }
 
+    /**
+     * Tick the sound if matrix is working.
+     *
+     * @param  state  the block state
+     */
     private void tickSound(BlockState state) {
         val client = MinecraftClient.getInstance();
         if (client.player == null) return;
@@ -217,6 +255,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (!matrixState.isWorking() || soundInstance.isDone()) soundInstance = null;
     }
 
+    /**
+     * Tick the client-side electricity particles if matrix is working.
+     *
+     * @param  world  the client world
+     * @param  state  the block state
+     */
     private void tickElectricityParticles(ClientWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
         if (!matrixState.isWorking()) return;
@@ -229,6 +273,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         effect.spawnParticles(world, random.nextBetween(1, 3), 1, getCenterPos(matrixState));
     }
 
+    /**
+     * Tick the client-side storing particles if matrix is working.
+     *
+     * @param  world  the client world
+     * @param  state  the block state
+     */
     private void tickStoringParticles(ClientWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
         switch (matrixState) {
@@ -245,6 +295,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         }
     }
 
+    /**
+     * Executes server-side various events related to craft instability.
+     *
+     * @param  world  the server world in which the events are executed
+     * @param  state  the block state for which the events are executed
+     */
     private void tickCraftInstability(ServerWorld world, BlockState state) {
         if (!getMatrixState(state).isWorking()) return;
         if (world.getTime() % 10 != 0) return;
@@ -258,6 +314,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         craftInstability.removeEvent(world, matrixInstability, pos);
     }
 
+    /**
+     * Executes the tick behavior related to the matrix state.
+     *
+     * @param  world  the server world
+     * @param  state  the block state
+     */
     private void tickMatrixState(ServerWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
         switch (matrixState) {
@@ -288,6 +350,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         syncData(world);
     }
 
+    /**
+     * Tick server-side the ether storing process.
+     *
+     * @param  world  the server world
+     */
     private void tickStoring(ServerWorld world) {
         if (world.getTime() % 20 != 0 || currentRecipe == null) return;
         if (currentRecipe.getEtherPoints() <= 0.0f) return;
@@ -299,6 +366,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         consumeEther(entity, entity.isPlayer() ? 0.75f: 0.5f);
     }
 
+    /**
+     * Tick server-side the damaging matrix state.
+     *
+     * @param  world the server world.
+     */
     private void tickDamaging(ServerWorld world) {
         if (world.getTime() % 20 != 0) return;
 
@@ -307,22 +379,48 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         match.ifPresent(player -> consumeEther(player, 0.3f));
     }
 
+    /**
+     * Finds the closest mob; otherwise - the closest player.
+     *
+     * @param  world     the world to search in
+     * @param  centerPos the matrix center position to search from
+     * @return           an Optional containing the closest living entity, or empty if no entity is found
+     */
     private Optional<? extends LivingEntity> findClosestEntity(World world, Vec3d centerPos) {
         Optional<LivingEntity> match = findClosestMob(world);
         if (match.isPresent()) return match;
         return findClosestPlayer(world, centerPos);
     }
 
+    /**
+     * Finds the closest mob.
+     *
+     * @param  world  the world to search in
+     * @return        an Optional containing the closest mob, or empty if no entity is found
+     */
     private Optional<LivingEntity> findClosestMob(World world) {
         Box entitiesBox = new Box(pos.add(-MATRIX_RADIUS, -DOWN_HEIGHT, -MATRIX_RADIUS), pos.add(MATRIX_RADIUS, MATRIX_RADIUS, MATRIX_RADIUS));
         val mobs = world.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), entitiesBox, entity -> !entity.isPlayer());
         return mobs.isEmpty() ? Optional.empty() : Optional.of(mobs.get(0));
     }
 
+    /**
+     * Finds the closest player.
+     *
+     * @param  world       the world to search in
+     * @param  centerPos   the matrix center position to search from
+     * @return             an Optional containing the closest PlayerEntity, or empty if no player is found
+     */
     private Optional<PlayerEntity> findClosestPlayer(World world, Vec3d centerPos) {
         return Optional.ofNullable(world.getClosestPlayer(centerPos.x, centerPos.y, centerPos.z, MATRIX_RADIUS, false));
     }
 
+    /**
+     * Consumes ether from the given entity.
+     *
+     * @param  entity  the entity from which ether is consumed
+     * @param  value   the amount of ether to consume
+     */
     private void consumeEther(LivingEntity entity, float value) {
         if (entity instanceof PlayerEntity player) {
             IFloatComponent playerEther = ETHER_POINTS.get(player);
@@ -336,27 +434,40 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         currentRecipe.setEtherPoints(currentEther - value);
     }
 
+    /**
+     * Spawns a consuming particle effect from a given entity at a specific position.
+     *
+     * @param  world      the world in which to spawn the particles
+     * @param  entity     the entity from which to spawn the particles
+     * @param  centerPos  the matrix center position
+     */
     private void spawnConsumingParticle(World world, LivingEntity entity, Vec3d centerPos) {
         LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.VITAL, centerPos);
         effect.spawnParticles(world, 5, 0.1, entity.getBoundingBox().getCenter());
     }
 
+    /**
+     * Tick the crafting process.
+     *
+     * @param  world  the server world
+     * @param  state  the block state
+     */
     private void tickCrafting(ServerWorld world, BlockState state) {
         if (world.getTime() % 120 != 0 || currentRecipe == null) return;
 
         if (currentRecipe.isFinished()) {
-            craft(world, state);
+            endCrafting(world, state);
+            return;
+        }
+
+        if (currentRecipe.getInputs().isEmpty() && currentRecipe.testCenterStack(this)) {
+            endCrafting(world, state);
             return;
         }
 
         List<PedestalBlockEntity> pedestals = getCachedPedestals(world);
         Optional<PedestalBlockEntity> optionalPedestal = currentRecipe.findMatchedPedestal(pedestals);
         if (optionalPedestal.isEmpty()) {
-            if (currentRecipe.testCenterStack(this)) {
-                craft(world, state);
-                return;
-            }
-
             matrixInstability += matrixInstability * 0.42f;
             setMatrixState(world, state, ArmillaryState.DAMAGING);
             return;
@@ -368,7 +479,13 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         setMatrixState(world, state, ArmillaryState.CONSUMING);
     }
 
-    private void craft(ServerWorld world, BlockState state) {
+    /**
+     * Ends the crafting process.
+     *
+     * @param  world  the server world
+     * @param  state  the block state
+     */
+    private void endCrafting(ServerWorld world, BlockState state) {
         if (currentRecipe == null) return;
 
         Optional<? extends Recipe<?>> match = world.getRecipeManager().get(currentRecipe.getRecipeId());
@@ -383,6 +500,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         setCraftInstability(world, state, InstabilityType.NULL);
     }
 
+    /**
+     * Tick the item consuming process and spawns particles while crafting.
+     *
+     * @param  world  the server world
+     * @param  state  the block state
+     */
     private void tickItemConsuming(ServerWorld world, BlockState state) {
         if (cachedTargetPedestal == null || currentRecipe == null || !(world.getBlockEntity(cachedTargetPedestal) instanceof PedestalBlockEntity pedestal)) {
             setMatrixState(world, state, ArmillaryState.CRAFTING);
@@ -411,6 +534,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         sparkEffect.spawnParticles(world, random.nextBetween(1, 5), 0.35, pedestalPos);
     }
 
+/**
+ * Calculates and returns the matrix center position for the given matrix state.
+ *
+ * @param  matrixState  the ArmillaryState representing the matrix state
+ * @return              the matrix center position
+ */
     public Vec3d getCenterPos(ArmillaryState matrixState) {
         Vec3d notActivated = pos.toCenterPos().add(0, 0.25, 0);
         if (matrixState.equals(ArmillaryState.OFF)) return notActivated;
@@ -471,6 +600,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         );
     }
 
+    /**
+     * Retrieves the cached server-side list of Pedestals.
+     *
+     * @param  world  the ServerWorld
+     * @return        the list of Pedestals
+     */
     public List<PedestalBlockEntity> getCachedPedestals(ServerWorld world) {
         if (pedestalsCache == null) return getAndCachePedestals(world);
         for (BlockPos cachedPos : pedestalsCache) {
@@ -482,6 +617,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 .map(optionalBe -> optionalBe.orElse(null)).filter(Objects::nonNull).toList();
     }
 
+    /**
+     * Finds and caches server-side the list of Pedestals.
+     *
+     * @param  world  the ServerWorld
+     * @return        the list of Pedestals
+     */
     private List<PedestalBlockEntity> getAndCachePedestals(ServerWorld world) {
         val result = new ObjectArrayList<PedestalBlockEntity>();
         val newCache = new ObjectArrayList<BlockPos>();
@@ -494,10 +635,24 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         return result;
     }
 
+    /**
+     * Gets the ArmillaryState of a given BlockState.
+     *
+     * @param  blockState  the BlockState to get the ArmillaryState from
+     * @return             the ArmillaryState of the BlockState
+     */
     public ArmillaryState getMatrixState(BlockState blockState) {
         return blockState.get(ArmillaryMatrixBlock.MATRIX_STATE);
     }
 
+    /**
+     * Sets the matrix state of a block.
+     *
+     * @param  world         the server world in which the block is located
+     * @param  state         the current block state
+     * @param  matrixState   the new matrix state to set
+     * @return               the updated block state with the new matrix state
+     */
     public BlockState setMatrixState(ServerWorld world, BlockState state, ArmillaryState matrixState) {
         state = state.with(ArmillaryMatrixBlock.MATRIX_STATE, matrixState);
         world.setBlockState(pos, state);
@@ -505,16 +660,35 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         return state;
     }
 
+    /**
+     * Retrieves the craft instability of a given BlockState.
+     *
+     * @param  blockState  the block state for which to retrieve the instability type
+     * @return             the instability type associated with the given block state
+     */
     public InstabilityType getCraftInstability(BlockState blockState) {
         return blockState.get(ArmillaryMatrixBlock.CRAFT_INSTABILITY);
     }
 
+    /**
+     * Sets the craft instability of a block.
+     *
+     * @param  world              the server world where the block state is located
+     * @param  state              the block state to modify
+     * @param  craftInstability   the new craft instability value to set
+     * @return                    the modified block state with the new craft instability
+     */
     public BlockState setCraftInstability(ServerWorld world, BlockState state, InstabilityType craftInstability) {
         state = state.with(ArmillaryMatrixBlock.CRAFT_INSTABILITY, craftInstability);
         world.setBlockState(pos, state);
         return state;
     }
 
+    /**
+     * Returns the number of rings in the matrix.
+     *
+     * @return         	the number of rings
+     */
     public int getRingsNum() {
         int result = 0;
         for (int i = 1; i < 6; i++) {
@@ -523,6 +697,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         return result;
     }
 
+    /**
+     * Retrieves a list of matrix ring types.
+     *
+     * @return a list of RingTypes
+     */
     public List<RingType> getRingTypes() {
         List<RingType> result = new ObjectArrayList<>();
 

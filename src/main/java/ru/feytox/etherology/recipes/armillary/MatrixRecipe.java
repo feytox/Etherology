@@ -15,7 +15,7 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.armillar_new.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.util.nbt.Nbtable;
 
