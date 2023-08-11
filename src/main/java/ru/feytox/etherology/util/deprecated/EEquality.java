@@ -1,5 +1,6 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.deprecated;
 
+@Deprecated
 public interface EEquality {
     default boolean equalsAll(Object... objects) {
         for (Object o : objects) {

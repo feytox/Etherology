@@ -3,10 +3,10 @@ package ru.feytox.etherology.enums;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.StringIdentifiable;
 import ru.feytox.etherology.block.closet.ClosetData;
+import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.block.shelf.ShelfData;
-import ru.feytox.etherology.furniture.FurnitureData;
-import ru.feytox.etherology.util.feyapi.EEquality;
-import ru.feytox.etherology.util.nbt.Nbtable;
+import ru.feytox.etherology.util.deprecated.EEquality;
+import ru.feytox.etherology.util.feyapi.Nbtable;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;

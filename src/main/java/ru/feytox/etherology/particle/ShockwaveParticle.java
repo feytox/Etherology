@@ -1,5 +1,6 @@
 package ru.feytox.etherology.particle;
 
+import lombok.val;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -11,8 +12,11 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.enchantment.PealEnchantment;
+import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
+import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.utility.HorizontalParticle;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
@@ -44,12 +48,9 @@ public class ShockwaveParticle extends HorizontalParticle {
         int pealLevel = EnchantmentHelper.getEquipmentLevel(PealEnchantment.INSTANCE.get(), player);
         if (pealLevel == 0) return;
 
-        for (int i = 0; i < world.random.nextBetween(4, 7); i++) {
-            DefaultParticleType electricityType = OldElectricityParticle.getParticleType(world.random);
-            double ex = shockPos.x + world.random.nextDouble();
-            double ez = shockPos.z + world.random.nextDouble();
-            world.addParticle(electricityType, ex, shockPos.y + 0.2, ez, 0.5, 0, 10);
-        }
+        Random random = world.getRandom();
+        val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.PEAL);
+        effect.spawnParticles(world, random.nextBetween(4, 7), 1, 0, 1, shockPos.add(0, 0.2, 0));
     }
 
     @Override

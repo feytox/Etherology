@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.components.IFloatComponent;
-import ru.feytox.etherology.util.feyapi.IdkLib;
+import ru.feytox.etherology.util.deprecated.IdkLib;
 
 import java.util.Optional;
 

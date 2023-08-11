@@ -305,13 +305,15 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (!getMatrixState(state).isWorking()) return;
         if (world.getTime() % 10 != 0) return;
 
-        InstabilityType craftInstability = getCraftInstability(state);
+        val craftInstability = getCraftInstability(state);
+        val matrixState = getMatrixState(state);
         if (craftInstability.equals(InstabilityType.NULL)) return;
-        if (craftInstability.corruptionEvent(world, matrixInstability, pos)) return;
-        if (craftInstability.lightningEvent(world, matrixInstability, pos)) return;
-        if (craftInstability.dropEvent(world, matrixInstability, pos)) return;
-        if (craftInstability.boomEvent(world, matrixInstability, pos)) return;
-        craftInstability.removeEvent(world, matrixInstability, pos);
+
+        craftInstability.corruptionEvent(world, matrixInstability, pos);
+        craftInstability.lightningEvent(world, this, matrixState, matrixInstability);
+        craftInstability.dropEvent(world, this, matrixInstability);
+        craftInstability.boomEvent(world, matrixInstability, pos);
+        craftInstability.removeEvent(world, this, matrixInstability);
     }
 
     /**
@@ -386,7 +388,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  centerPos the matrix center position to search from
      * @return           an Optional containing the closest living entity, or empty if no entity is found
      */
-    private Optional<? extends LivingEntity> findClosestEntity(World world, Vec3d centerPos) {
+    public Optional<? extends LivingEntity> findClosestEntity(World world, Vec3d centerPos) {
         Optional<LivingEntity> match = findClosestMob(world);
         if (match.isPresent()) return match;
         return findClosestPlayer(world, centerPos);
@@ -507,7 +509,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  state  the block state
      */
     private void tickItemConsuming(ServerWorld world, BlockState state) {
-        if (cachedTargetPedestal == null || currentRecipe == null || !(world.getBlockEntity(cachedTargetPedestal) instanceof PedestalBlockEntity pedestal)) {
+        if (cachedTargetPedestal == null || currentRecipe == null || !(world.getBlockEntity(cachedTargetPedestal) instanceof PedestalBlockEntity pedestal) || pedestal.isEmpty()) {
             setMatrixState(world, state, ArmillaryState.CRAFTING);
             return;
         }
@@ -673,15 +675,13 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     /**
      * Sets the craft instability of a block.
      *
-     * @param  world              the server world where the block state is located
-     * @param  state              the block state to modify
-     * @param  craftInstability   the new craft instability value to set
-     * @return                    the modified block state with the new craft instability
+     * @param world            the server world where the block state is located
+     * @param state            the block state to modify
+     * @param craftInstability the new craft instability value to set
      */
-    public BlockState setCraftInstability(ServerWorld world, BlockState state, InstabilityType craftInstability) {
+    public void setCraftInstability(ServerWorld world, BlockState state, InstabilityType craftInstability) {
         state = state.with(ArmillaryMatrixBlock.CRAFT_INSTABILITY, craftInstability);
         world.setBlockState(pos, state);
-        return state;
     }
 
     /**

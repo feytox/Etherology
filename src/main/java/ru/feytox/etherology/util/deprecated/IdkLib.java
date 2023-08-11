@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.deprecated;
 
 import net.minecraft.block.ChiseledBookshelfBlock;
 import net.minecraft.entity.damage.DamageSource;

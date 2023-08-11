@@ -8,25 +8,20 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.LightParticle;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
+import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class SparkLightInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
     private final Vec3d endPos;
-    private final int startRed;
-    private final int startGreen;
-    private final int startBlue;
 
     public SparkLightInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
         endPos = parameters.getMoveVec();
-        startRed = 255;
-        startGreen = 255;
-        startBlue = 255;
     }
 
     @Override
     public void extraInit(LightParticle particle) {
-        particle.setSprite(particle.getSpriteProvider());
+        particle.setSpriteForAge();
     }
 
     @Override
@@ -42,11 +37,12 @@ public class SparkLightInfo extends ParticleInfo<LightParticle, LightParticleEff
     @Override
     public void tick(LightParticle particle) {
         particle.acceleratedMovingTick(0.4f, 0.5f, true, endPos);
-        double pathLen = particle.getPathVec(endPos).length();
-        double fullPathLen = particle.getFullPathVec(endPos).length();
-        particle.setRGB(startRed + (83 - startRed) * ((fullPathLen - pathLen) / fullPathLen),
-                startGreen + (14 - startGreen) * ((fullPathLen - pathLen) / fullPathLen),
-                startBlue + (255 - startBlue) * ((fullPathLen - pathLen) / fullPathLen));
+        particle.setSpriteForAge();
+
+        double passedLen = particle.getPassedVec().length();
+        double invFullPathLen = particle.getInverseLen(particle.getFullPathVec(endPos));
+        double percent = passedLen * invFullPathLen;
+        particle.setRGB(FeyColor.lerp(RGBColor.of(0xffffff), RGBColor.of(0x530eff), (float) percent));
     }
 
     @Override

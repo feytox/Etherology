@@ -1,4 +1,4 @@
-package ru.feytox.etherology.furniture;
+package ru.feytox.etherology.block.furniture;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.*;
@@ -24,7 +24,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
-import ru.feytox.etherology.util.feyapi.IdkLib;
+import ru.feytox.etherology.util.deprecated.IdkLib;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import java.util.Optional;
@@ -37,7 +37,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     public static final BooleanProperty BOTTOM_ACTIVE = BooleanProperty.of("bottom_active");
     public static final BooleanProperty TOP_ACTIVE = BooleanProperty.of("top_active");
     public static final EnumProperty<FurnitureType> TOP_TYPE = EnumProperty.of("top_type", FurnitureType.class);
-    public static final EnumProperty<FurnitureType> BOTTOM_TYPE = EnumProperty.of("bottom_type", FurnitureType.class);;
+    public static final EnumProperty<FurnitureType> BOTTOM_TYPE = EnumProperty.of("bottom_type", FurnitureType.class);
     protected static final VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     protected static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0.0, 8.0, 0.0, 16.0, 16.0, 16.0);
 
@@ -171,6 +171,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
         FurnitureType bottomType = state.get(BOTTOM_TYPE);
         FurnitureType topType = state.get(TOP_TYPE);
 
+        // TODO: 11.08.2023 deprecate
         return bottomType.equalsAny(EMPTY, SHELF) || topType.equalsAny(EMPTY, SHELF);
     }
 

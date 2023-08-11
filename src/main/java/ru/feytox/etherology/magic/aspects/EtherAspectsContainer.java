@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import ru.feytox.etherology.util.nbt.Nbtable;
+import ru.feytox.etherology.util.feyapi.Nbtable;
 
 import javax.annotation.CheckReturnValue;
 import java.util.Comparator;

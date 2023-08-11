@@ -6,8 +6,8 @@ import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.EtherologyClient;
+import ru.feytox.etherology.util.deprecated.UwuLib;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.UwuLib;
 
 import java.util.function.Consumer;
 

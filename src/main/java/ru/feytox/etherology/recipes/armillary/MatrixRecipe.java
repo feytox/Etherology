@@ -17,10 +17,11 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
-import ru.feytox.etherology.util.nbt.Nbtable;
+import ru.feytox.etherology.util.feyapi.Nbtable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Getter
@@ -86,7 +87,7 @@ public class MatrixRecipe implements Nbtable {
         String centerInputJson = root.getString("center_input");
         Ingredient centerInput = centerInputJson.isEmpty() ? null : readIngredient(centerInputJson);
 
-        List<Ingredient> inputs = root.get(INPUTS_KEY).stream().map(NbtElement::asString).map(MatrixRecipe::readIngredient).toList();
+        List<Ingredient> inputs = root.get(INPUTS_KEY).stream().map(NbtElement::asString).map(MatrixRecipe::readIngredient).collect(Collectors.toCollection(ObjectArrayList::new));
         return new MatrixRecipe(recipeId, etherPoints, inputs, centerInput);
     }
 

@@ -1,4 +1,4 @@
-package ru.feytox.etherology.furniture;
+package ru.feytox.etherology.block.furniture;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
@@ -18,8 +18,8 @@ import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import javax.annotation.Nullable;
 
-import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.BOTTOM_TYPE;
-import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.TOP_TYPE;
+import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.BOTTOM_TYPE;
+import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_TYPE;
 import static ru.feytox.etherology.registry.block.EBlocks.FURNITURE_BLOCK_ENTITY;
 
 public class FurSlabBlockEntity extends TickableBlockEntity {

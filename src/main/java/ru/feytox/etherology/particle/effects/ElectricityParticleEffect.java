@@ -20,11 +20,6 @@ public class ElectricityParticleEffect extends FeyParticleEffect<ElectricityPart
     private final ParticleArg<ElectricitySubtype> electricityTypeArg = EnumArg.of(ElectricitySubtype.class);
     private final ParticleArg<Float> instabilityArg = SimpleArgs.FLOAT.get();
 
-
-    public ElectricityParticleEffect(ParticleType<ElectricityParticleEffect> type, ElectricitySubtype electricityType) {
-        this(type, electricityType, -1.0f);
-    }
-
     public ElectricityParticleEffect(ParticleType<ElectricityParticleEffect> type, ElectricitySubtype electricityType, Float instability) {
         this(type);
         electricityTypeArg.setValue(electricityType);
@@ -33,6 +28,14 @@ public class ElectricityParticleEffect extends FeyParticleEffect<ElectricityPart
 
     public ElectricityParticleEffect(ParticleType<ElectricityParticleEffect> type) {
         super(type);
+    }
+
+    public static ElectricityParticleEffect of(Random random, ElectricitySubtype electricityType) {
+        return of(random, electricityType, -1.0f);
+    }
+
+    public static ElectricityParticleEffect of(Random random, ElectricitySubtype electricityType, Float instability) {
+        return new ElectricityParticleEffect(getRandomType(random), electricityType, instability);
     }
 
     @Override

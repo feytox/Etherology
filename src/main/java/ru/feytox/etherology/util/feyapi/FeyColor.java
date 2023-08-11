@@ -4,6 +4,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 
 public class FeyColor {
+
+    public static RGBColor lerp(RGBColor startColor, RGBColor endColor, float percent) {
+        return new RGBColor(lerpComponent(startColor.r(), endColor.r(), percent), lerpComponent(startColor.g(), endColor.g(), percent), lerpComponent(startColor.b(), endColor.b(), percent));
+    }
+
     public static RGBColor getRandomColor(RGBColor startColor, RGBColor endColor, Random random) {
         return getGradientColor(startColor, endColor, random.nextFloat());
     }
@@ -30,5 +35,9 @@ public class FeyColor {
             currentValue += increment;
         }
         return currentValue;
+    }
+
+    private static int lerpComponent(int start, int end, float percent) {
+        return Math.round(MathHelper.lerp(percent, start, end));
     }
 }

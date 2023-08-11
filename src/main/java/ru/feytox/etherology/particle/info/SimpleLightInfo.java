@@ -19,7 +19,7 @@ public class SimpleLightInfo extends ParticleInfo<LightParticle, LightParticleEf
 
     @Override
     public void extraInit(LightParticle particle) {
-        particle.setSprite(particle.getSpriteProvider());
+        particle.setSpriteForAge();
     }
 
     @Override
@@ -30,6 +30,7 @@ public class SimpleLightInfo extends ParticleInfo<LightParticle, LightParticleEf
     @Override
     public void tick(LightParticle particle) {
         particle.acceleratedMovingTick(0.1f, 0.5f, true, endPos);
+        particle.setSpriteForAge();
     }
 
     @Override

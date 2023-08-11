@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.nbt;
+package ru.feytox.etherology.util.feyapi;
 
 import net.minecraft.nbt.NbtCompound;
 

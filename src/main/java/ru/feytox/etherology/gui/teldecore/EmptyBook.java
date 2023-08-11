@@ -5,8 +5,8 @@ import io.wispforest.owo.ui.container.VerticalFlowLayout;
 import io.wispforest.owo.ui.core.HorizontalAlignment;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.core.VerticalAlignment;
+import ru.feytox.etherology.util.deprecated.UwuLib;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.UwuLib;
 
 public class EmptyBook extends VerticalFlowLayout {
     public EmptyBook() {

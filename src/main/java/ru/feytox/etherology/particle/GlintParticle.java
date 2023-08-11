@@ -11,7 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.EVec3d;
+import ru.feytox.etherology.util.deprecated.EVec3d;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
@@ -19,6 +19,7 @@ import java.util.List;
 
 import static ru.feytox.etherology.Etherology.GLINT_PARTICLE;
 
+@Deprecated
 public class GlintParticle extends SpriteBillboardParticle {
     private Vec3d currentVec;
     private double endX;

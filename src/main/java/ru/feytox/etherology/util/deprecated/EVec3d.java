@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.deprecated;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;

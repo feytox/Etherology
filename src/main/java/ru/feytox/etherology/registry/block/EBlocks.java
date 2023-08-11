@@ -32,6 +32,7 @@ import ru.feytox.etherology.block.etherealSocket.EtherealSocketBlockEntity;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageBlock;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageBlockEntity;
 import ru.feytox.etherology.block.furniture.FurSlabBlock;
+import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.jug.AbstractJugBlock;
 import ru.feytox.etherology.block.jug.JugBlockEntity;
 import ru.feytox.etherology.block.jug.JugType;
@@ -45,7 +46,6 @@ import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
-import ru.feytox.etherology.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class EBlocks {

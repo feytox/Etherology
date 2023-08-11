@@ -26,21 +26,18 @@ import ru.feytox.etherology.block.etherealGenerators.spinner.EtherealSpinnerRend
 import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
+import ru.feytox.etherology.block.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
-import ru.feytox.etherology.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.gui.teldecore.chapters.ExampleChapter;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.particle.GlintParticle;
-import ru.feytox.etherology.particle.OldElectricityParticle;
 import ru.feytox.etherology.particle.ShockwaveParticle;
-import ru.feytox.etherology.particle.utility.SmallLightning;
 import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
 import ru.feytox.etherology.registry.util.GuiRegistry;
 import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
-import ru.feytox.etherology.util.feyapi.EtherNetwork;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 import software.bernie.geckolib.network.GeckoLibNetwork;
@@ -92,8 +89,6 @@ public class EtherologyClient implements ClientModInitializer {
         HandledScreens.register(EMPOWER_TABLE_SCREEN_HANDLER, EmpowerTableScreen::new);
         HandledScreens.register(CRATE_SCREEN_HANDLER, CrateScreen::new);
 
-        ParticleFactoryRegistry.getInstance().register(ELECTRICITY1, OldElectricityParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ELECTRICITY2, OldElectricityParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(GLINT_PARTICLE, GlintParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
 
@@ -109,9 +104,6 @@ public class EtherologyClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SPINNER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_STORAGE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BREWING_CAULDRON, RenderLayer.getCutout());
-
-        SmallLightning.registerPacket();
-        EtherNetwork.registerPackets();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();

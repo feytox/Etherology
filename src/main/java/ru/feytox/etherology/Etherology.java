@@ -48,8 +48,6 @@ public class Etherology implements ModInitializer {
     public static final ScreenHandlerType<EmpowerTableScreenHandler> EMPOWER_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(EmpowerTableScreenHandler::new);
     public static final ScreenHandlerType<CrateScreenHandler> CRATE_SCREEN_HANDLER = new ScreenHandlerType<>(CrateScreenHandler::new);
 
-    public static final DefaultParticleType ELECTRICITY1 = FabricParticleTypes.simple();
-    public static final DefaultParticleType ELECTRICITY2 = FabricParticleTypes.simple();
     public static final DefaultParticleType GLINT_PARTICLE = FabricParticleTypes.simple();
     public static final DefaultParticleType SHOCKWAVE = FabricParticleTypes.simple();
 
@@ -84,8 +82,6 @@ public class Etherology implements ModInitializer {
                 ArmillaryRecipeSerializer.INSTANCE);
         Registry.register(Registries.RECIPE_TYPE, new EIdentifier(ArmillaryRecipe.Type.ID), ArmillaryRecipe.Type.INSTANCE);
 
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity1_old"), ELECTRICITY1);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("electricity2_old"), ELECTRICITY2);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("glint_particle"), GLINT_PARTICLE);
         Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("shockwave"), SHOCKWAVE);
 

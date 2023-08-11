@@ -34,6 +34,6 @@ public class SparkParticle extends MovingParticle<SparkParticleEffect> {
         double passedLen = getPassedVec().length();
         double invFullPathLen = getInverseLen(getFullPathVec(endPos));
         double percent = passedLen * invFullPathLen;
-        setRGB(FeyColor.getGradientColor(RGBColor.of(0xf4c285), RGBColor.of(0x530eff), (float) percent));
+        setRGB(FeyColor.lerp(RGBColor.of(0xf4c285), RGBColor.of(0x530eff), (float) percent));
     }
 }

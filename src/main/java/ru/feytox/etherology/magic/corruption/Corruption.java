@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.components.CorruptionComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.util.nbt.Nbtable;
+import ru.feytox.etherology.util.feyapi.Nbtable;
 
 import javax.annotation.CheckReturnValue;
 

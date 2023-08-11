@@ -15,9 +15,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.*;
-import ru.feytox.etherology.furniture.FurSlabBlockEntity;
-import ru.feytox.etherology.furniture.FurnitureData;
-import ru.feytox.etherology.util.nbt.Nbtable;
+import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
+import ru.feytox.etherology.block.furniture.FurnitureData;
+import ru.feytox.etherology.util.feyapi.Nbtable;
 
 import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
 
@@ -48,7 +48,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             world.markDirty(pos);
             updateData(world, pos);
 
-        } else if (!currentStack.isEmpty() && !playerStack.isEmpty() && isSameItem) {
+        } else if (!currentStack.isEmpty() && !playerStack.isEmpty()) {
             // кладём предмет на НЕПУСТУЮ полку
             ItemStack takingStack = playerStack.copy();
             takingStack.setCount(currentStack.getMaxCount() - currentStack.getCount());
@@ -59,7 +59,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             world.markDirty(pos);
             updateData(world, pos);
 
-        } else if (!currentStack.isEmpty() && playerStack.isEmpty()) {
+        } else if (!currentStack.isEmpty()) {
             // берём предмет ПУСТОЙ рукой с НЕПУСТОЙ полки
             ItemStack takingStack = currentStack.copy();
             currentStack.setCount(0);

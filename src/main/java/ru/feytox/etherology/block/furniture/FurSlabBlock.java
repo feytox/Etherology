@@ -7,7 +7,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
-import ru.feytox.etherology.furniture.AbstractFurSlabBlock;
 
 public class FurSlabBlock extends AbstractFurSlabBlock {
     public FurSlabBlock() {

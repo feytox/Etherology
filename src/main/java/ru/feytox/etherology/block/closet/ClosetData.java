@@ -23,11 +23,11 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
-import ru.feytox.etherology.furniture.FurnitureData;
-import ru.feytox.etherology.util.nbt.Nbtable;
+import ru.feytox.etherology.block.furniture.FurnitureData;
+import ru.feytox.etherology.util.feyapi.Nbtable;
 
-import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.BOTTOM_ACTIVE;
-import static ru.feytox.etherology.furniture.AbstractFurSlabBlock.TOP_ACTIVE;
+import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.BOTTOM_ACTIVE;
+import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_ACTIVE;
 import static ru.feytox.etherology.registry.block.EBlocks.CLOSET_SLAB;
 
 public class ClosetData extends FurnitureData implements ImplementedInventory, NamedScreenHandlerFactory {
