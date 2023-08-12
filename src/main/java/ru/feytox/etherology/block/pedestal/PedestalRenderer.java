@@ -26,7 +26,7 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
     @Override
     public void render(PedestalBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         World world = entity.getWorld();
-        if (world == null) return;
+        if (world == null || entity.isRemoved()) return;
         ItemStack stack = entity.getStack(0);
         if (stack.isEmpty()) return;
 

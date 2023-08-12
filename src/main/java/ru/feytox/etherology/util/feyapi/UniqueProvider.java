@@ -10,15 +10,15 @@ public interface UniqueProvider {
     @Nullable
     Float getCachedUniqueOffset();
 
-    public default float getUniqueOffset(BlockPos pos) {
+    default float getUniqueOffset(BlockPos pos) {
         if (getCachedUniqueOffset() != null) return getCachedUniqueOffset();
 
         float sum = 0.0f;
         sum += pos.getX() % 32;
         sum += pos.getY() % 64;
         sum += pos.getZ() % 128;
-        float uniquePercent = MathHelper.abs(sum) / 100.0f;
-        float result = 2 * MathHelper.PI * uniquePercent;
+        float unique = MathHelper.abs(sum) / 10.0f;
+        float result = 2 * MathHelper.PI * unique;
         setCachedUniqueOffset(result);
         return result;
     }

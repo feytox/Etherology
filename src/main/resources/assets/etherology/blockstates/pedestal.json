@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "etherology:block/pedestal" }
+    "shape=full": { "model": "etherology:block/pedestal" },
+    "shape=bottom": { "model": "etherology:block/pedestal_bottom" },
+    "shape=middle": { "model": "etherology:block/pedestal_column" },
+    "shape=top": { "model": "etherology:block/pedestal_top" }
   }
 }

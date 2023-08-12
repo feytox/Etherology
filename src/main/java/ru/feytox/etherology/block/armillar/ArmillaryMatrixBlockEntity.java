@@ -47,7 +47,6 @@ import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.MatrixRecipe;
-import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
@@ -58,18 +57,17 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY_NEW;
-import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 
 public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity, UniqueProvider {
 
     // constants
-    private static final int MATRIX_RADIUS = 8;
-    private static final int DOWN_HEIGHT = 1;
+    private static final int HORIZONTAL_RADIUS = 7;
+    private static final int UP_RADIUS = 3;
+    private static final int DOWN_RADIUS = 1;
 
     // animations
     private static final RawAnimation BASE_ANIM;
@@ -401,7 +399,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @return        an Optional containing the closest mob, or empty if no entity is found
      */
     private Optional<LivingEntity> findClosestMob(World world) {
-        Box entitiesBox = new Box(pos.add(-MATRIX_RADIUS, -DOWN_HEIGHT, -MATRIX_RADIUS), pos.add(MATRIX_RADIUS, MATRIX_RADIUS, MATRIX_RADIUS));
+        Box entitiesBox = new Box(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS));
         val mobs = world.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), entitiesBox, entity -> !entity.isPlayer());
         return mobs.isEmpty() ? Optional.empty() : Optional.of(mobs.get(0));
     }
@@ -414,7 +412,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @return             an Optional containing the closest PlayerEntity, or empty if no player is found
      */
     private Optional<PlayerEntity> findClosestPlayer(World world, Vec3d centerPos) {
-        return Optional.ofNullable(world.getClosestPlayer(centerPos.x, centerPos.y, centerPos.z, MATRIX_RADIUS, false));
+        return Optional.ofNullable(world.getClosestPlayer(centerPos.x, centerPos.y, centerPos.z, HORIZONTAL_RADIUS, false));
     }
 
     /**
@@ -610,13 +608,14 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      */
     public List<PedestalBlockEntity> getCachedPedestals(ServerWorld world) {
         if (pedestalsCache == null) return getAndCachePedestals(world);
+
+        List<PedestalBlockEntity> result = new ObjectArrayList<>();
         for (BlockPos cachedPos : pedestalsCache) {
-            BlockState blockState = world.getBlockState(cachedPos);
-            if (!blockState.isOf(PEDESTAL_BLOCK)) return getAndCachePedestals(world);
+            if (!(world.getBlockEntity(cachedPos) instanceof PedestalBlockEntity pedestal)) return getAndCachePedestals(world);
+            result.add(pedestal);
         }
-        return pedestalsCache.stream()
-                .map(cachedPos -> world.getBlockEntity(pos, EBlocks.PEDESTAL_BLOCK_ENTITY))
-                .map(optionalBe -> optionalBe.orElse(null)).filter(Objects::nonNull).toList();
+
+        return result;
     }
 
     /**
@@ -628,7 +627,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private List<PedestalBlockEntity> getAndCachePedestals(ServerWorld world) {
         val result = new ObjectArrayList<PedestalBlockEntity>();
         val newCache = new ObjectArrayList<BlockPos>();
-        BlockPos.iterate(pos.add(-MATRIX_RADIUS, -DOWN_HEIGHT, -MATRIX_RADIUS), pos.add(MATRIX_RADIUS, MATRIX_RADIUS, MATRIX_RADIUS)).forEach(blockPos -> {
+        BlockPos.iterate(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS)).forEach(blockPos -> {
             if (!(world.getBlockEntity(blockPos) instanceof PedestalBlockEntity pedestal)) return;
             result.add(pedestal);
             newCache.add(blockPos);

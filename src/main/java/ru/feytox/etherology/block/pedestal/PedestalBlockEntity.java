@@ -63,6 +63,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
     @Override
     protected void writeNbt(NbtCompound nbt) {
         Inventories.writeNbt(nbt, items);
+        nbt.putBoolean("removed", removed);
 
         super.writeNbt(nbt);
     }
@@ -72,6 +73,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         super.readNbt(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
+        removed = nbt.getBoolean("removed");
     }
 
     @Override
