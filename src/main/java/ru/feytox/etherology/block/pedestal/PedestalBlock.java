@@ -63,6 +63,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider, Registr
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!neighborPos.down().equals(pos) && !neighborPos.up().equals(pos)) return state;
         PedestalShape shape = PedestalShape.getShape(world.getBlockState(pos.down()), world.getBlockState(pos.up()));
+        if (!shape.isHasItem()) state = state.with(CLOTH_COLOR, DyeColor.WHITE).with(DECORATION, false);
         return state.with(SHAPE, shape);
     }
 
