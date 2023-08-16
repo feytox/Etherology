@@ -7,8 +7,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -31,6 +33,8 @@ import java.util.Optional;
 public class PedestalBlock extends Block implements BlockEntityProvider, RegistrableBlock {
 
     public static final EnumProperty<PedestalShape> SHAPE = EnumProperty.of("shape", PedestalShape.class);
+    public static final BooleanProperty DECORATION = BooleanProperty.of("decoration");
+    public static final EnumProperty<DyeColor> CLOTH_COLOR = EnumProperty.of("cloth_color", DyeColor.class);
     private static final VoxelShape BOTTOM_SHAPE;
     private static final VoxelShape MIDDLE_SHAPE;
     private static final VoxelShape TOP_SHAPE;
@@ -38,12 +42,16 @@ public class PedestalBlock extends Block implements BlockEntityProvider, Registr
 
     public PedestalBlock() {
         super(FabricBlockSettings.of(Material.STONE).strength(3.0f).nonOpaque());
-        setDefaultState(getDefaultState().with(SHAPE, PedestalShape.FULL));
+        setDefaultState(getDefaultState()
+                .with(SHAPE, PedestalShape.FULL)
+                .with(DECORATION, false)
+                .with(CLOTH_COLOR, DyeColor.WHITE)
+        );
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(SHAPE);
+        builder.add(SHAPE, DECORATION, CLOTH_COLOR);
     }
 
     @Override
@@ -72,8 +80,8 @@ public class PedestalBlock extends Block implements BlockEntityProvider, Registr
         if (!world.isClient) {
             PedestalBlockEntity pedestalBlockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
             if (pedestalBlockEntity != null) {
-                pedestalBlockEntity.interact((ServerWorld) world, player, hand);
-                world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+                pedestalBlockEntity.interact((ServerWorld) world, state, player, hand);
+                pedestalBlockEntity.syncData((ServerWorld) world);
             }
         }
 

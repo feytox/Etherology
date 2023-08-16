@@ -104,6 +104,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_SPINNER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ETHEREAL_STORAGE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BREWING_CAULDRON, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(PEDESTAL_BLOCK, RenderLayer.getCutout());
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();

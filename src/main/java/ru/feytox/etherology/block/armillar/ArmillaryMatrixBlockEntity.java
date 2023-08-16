@@ -147,6 +147,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      */
     public void onHandUse(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
+        ItemStack matrixStack = getStack(0);
         val matrixState = getMatrixState(state);
         if (!matrixState.equals(ArmillaryState.OFF)) return;
 
@@ -167,9 +168,9 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
         // item place
         if (!handStack.isEmpty()) {
-            if (!getStack(0).isEmpty()) {
+            if (!matrixStack.isEmpty()) {
                 // item take to stack
-                if (!getStack(0).isItemEqual(handStack)) return;
+                if (!ItemStack.canCombine(matrixStack, handStack) || handStack.getCount() >= handStack.getMaxCount()) return;
                 setStack(0, ItemStack.EMPTY);
                 handStack.increment(1);
                 player.setStackInHand(hand, handStack);
@@ -191,9 +192,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         }
 
         // item take
-        if (getStack(0).isEmpty()) return;
-        ItemStack stack = getStack(0);
-        player.setStackInHand(hand, stack);
+        if (matrixStack.isEmpty()) return;
+        player.setStackInHand(hand, matrixStack);
         setStack(0, ItemStack.EMPTY);
     }
 

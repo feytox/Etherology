@@ -1,8 +1,25 @@
 {
-  "variants": {
-    "shape=full": { "model": "etherology:block/pedestal" },
-    "shape=bottom": { "model": "etherology:block/pedestal_bottom" },
-    "shape=middle": { "model": "etherology:block/pedestal_column" },
-    "shape=top": { "model": "etherology:block/pedestal_top" }
-  }
+  "multipart": [
+    { "apply": { "model": "etherology:block/pedestal" }, "when": { "shape": "full" } },
+    { "apply": { "model": "etherology:block/pedestal_bottom" }, "when": { "shape": "bottom" } },
+    { "apply": { "model": "etherology:block/pedestal_column" }, "when": { "shape": "middle" } },
+    { "apply": { "model": "etherology:block/pedestal_top" }, "when": { "shape": "top" } },
+
+    { "apply": { "model": "etherology:block/pedestal_black" }, "when": { "cloth_color": "black", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_blue" }, "when": { "cloth_color": "blue", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_brown" }, "when": { "cloth_color": "brown", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_cyan" }, "when": { "cloth_color": "cyan", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_gray" }, "when": { "cloth_color": "gray", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_green" }, "when": { "cloth_color": "green", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_light_blue" }, "when": { "cloth_color": "light_blue", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_light_gray" }, "when": { "cloth_color": "light_gray", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_lime" }, "when": { "cloth_color": "lime", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_magenta" }, "when": { "cloth_color": "magenta", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_orange" }, "when": { "cloth_color": "orange", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_pink" }, "when": { "cloth_color": "pink", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_purple" }, "when": { "cloth_color": "purple", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_red" }, "when": { "cloth_color": "red", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_white" }, "when": { "cloth_color": "white", "decoration": true } },
+    { "apply": { "model": "etherology:block/pedestal_yellow" }, "when": { "cloth_color": "yellow", "decoration": true } }
+  ]
 }
