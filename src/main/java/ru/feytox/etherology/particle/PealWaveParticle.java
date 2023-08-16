@@ -17,13 +17,13 @@ public class PealWaveParticle extends VerticalParticle<MovingParticleEffect> {
     public PealWaveParticle(ClientWorld clientWorld, double x, double y, double z, MovingParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, new Vec3d(x, y, z), parameters.getMoveVec(), 0.5, parameters, spriteProvider);
         maxAge = 10;
-        setSpriteForAge(spriteProvider);
+        setSpriteForAge();
     }
 
     @Override
     public void tick() {
         if (tickAge()) return;
-        setSpriteForAge(spriteProvider);
+        setSpriteForAge();
     }
 
     public static void spawnWave(ClientWorld world, @NonNull Vec3d start, @NonNull Vec3d end) {

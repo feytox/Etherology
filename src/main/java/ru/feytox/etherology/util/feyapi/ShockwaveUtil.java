@@ -1,10 +1,11 @@
 package ru.feytox.etherology.util.feyapi;
 
-import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.extern.slf4j.Slf4j;
-import net.minecraft.client.world.ClientWorld;
+import lombok.val;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -13,29 +14,28 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.HammerItem;
-import ru.feytox.etherology.network.EtherologyNetwork;
-import ru.feytox.etherology.network.interaction.HammerPealWaveS2C;
-import ru.feytox.etherology.particle.PealWaveParticle;
+import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
+import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ShockwaveUtil {
@@ -50,10 +50,10 @@ public class ShockwaveUtil {
         List<LivingEntity> attackedEntities = world.getNonSpectatingEntities(LivingEntity.class, attackBox);
         attackedEntities.sort(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(shockPos)));
 
-        float f = (float) attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        double f = attacker.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
         boolean moreDamage = attacker.fallDistance > 0.0F && !attacker.isOnGround() && !attacker.isClimbing() && !attacker.isTouchingWater() && !attacker.hasStatusEffect(StatusEffects.BLINDNESS) && !attacker.hasVehicle() && !attacker.isSprinting();
         if (moreDamage) {
-            f *= 1.2f;
+            f *= 1.2d;
         }
         float knockback = EnchantmentHelper.getKnockback(attacker);
         if (attacker.isSprinting()) knockback++;
@@ -82,14 +82,14 @@ public class ShockwaveUtil {
                     target.setVelocity(target.getVelocity().multiply(1, 2.5, 1));
                 }
             } else {
-                f *= 0.25f * attackK * attackK;
+                f *= 0.25d * attackK * attackK;
             }
 
             if (targetForPeal == null || targetForPeal.isDead()) {
                 targetForPeal = target;
             }
 
-            boolean wasDamaged = target.damage(DamageSource.player(attacker), f);
+            boolean wasDamaged = target.damage(DamageSource.player(attacker), (float) f);
             if (!wasDamaged) continue;
 
             if (knockback > 0) {
@@ -106,11 +106,12 @@ public class ShockwaveUtil {
         }
 
         int pealLevel = EnchantmentHelper.getEquipmentLevel(PealEnchantment.INSTANCE.get(), attacker);
-        if (pealLevel > 0 && targetForPeal != null) {
+        if (pealLevel > 0 && targetForPeal != null && !world.isClient) {
             final Entity pealTarget = targetForPeal;
             DelayedTask.createTaskWithMs(world, 600, () -> {
-                boolean result = performPeal(world, attacker, pealTarget, pealLevel);
-                if (result && !world.isClient) world.playSound(null, pealTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
+//                boolean result = performPeal((ServerWorld) world, attacker, pealTarget, pealLevel);
+                boolean result = performPealNew((ServerWorld) world, attacker, pealTarget.getType(), shockPos, pealLevel);
+                if (result) world.playSound(null, pealTarget.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
             });
         }
 
@@ -150,75 +151,28 @@ public class ShockwaveUtil {
         return true;
     }
 
-    private static boolean performPeal(World world, PlayerEntity attacker, Entity firstTarget, float damage) {
-        Map<Integer, Boolean> cache = new HashMap<>();
-        Box mainBox = Box.of(firstTarget.getPos(), 30, 2, 30);
-        List<? extends Entity> mainBoxEntities = getSameEntities(world, firstTarget, mainBox, 6);
-        if (mainBoxEntities.isEmpty()) return false;
+    private static <T extends Entity> boolean performPealNew(ServerWorld world, PlayerEntity attacker, EntityType<T> targetType, Vec3d shockPos, int pealLevel) {
+        double diameter = pealLevel / 0.3d;
+        int maxCount = pealLevel + 2;
+        Box pealBox = Box.of(shockPos, diameter, 3, diameter);
+        List<T> pealEntities = world.getEntitiesByType(targetType, pealBox, entity -> !entity.equals(attacker)).stream()
+                .filter(entity -> entity.isAttackable() && entity.isAlive() && !entity.handleAttack(attacker))
+                .sorted(Comparator.comparing(entity -> entity.squaredDistanceTo(attacker)))
+                .limit(maxCount)
+                .collect(Collectors.toCollection(ObjectArrayList::new));
+        if (pealEntities.isEmpty()) return false;
 
-        Stack<Entity> targetStack = new Stack<>();
-        targetStack.push(firstTarget);
-        boolean isClientPlayer = attacker.isMainPlayer();
-        List<Entity> entitiesToDamage = new ArrayList<>();
-
-        while (!targetStack.isEmpty() && entitiesToDamage.size() <= 6) {
-            Entity fromTarget = targetStack.pop();
-            Box targetPealBox = Box.of(fromTarget.getPos(), 4, 2, 4);
-            List<? extends Entity> newTargets = getIntersectEntities(targetPealBox, mainBoxEntities, cache, fromTarget);
-            if (newTargets.isEmpty()) continue;
-            if (entitiesToDamage.isEmpty()) {
-                cache.put(fromTarget.getId(), true);
-                entitiesToDamage.add(fromTarget);
-            }
-
-            for (Entity toTarget : newTargets) {
-                if (toTarget.handleAttack(attacker)) continue;
-
-                entitiesToDamage.add(toTarget);
-                cache.put(toTarget.getId(), true);
-                Vec3d fromPos = fromTarget.getBoundingBox().getCenter();
-                Vec3d toPos = toTarget.getBoundingBox().getCenter();
-                targetStack.push(toTarget);
-
-                if (world.isClient && isClientPlayer) {
-                    PealWaveParticle.spawnWave((ClientWorld) world, fromPos, toPos);
-                } else if (!world.isClient) {
-                    HammerPealWaveS2C packet = new HammerPealWaveS2C(fromPos, toPos);
-                    EtherologyNetwork.sendForTracking((ServerWorld) world, fromTarget.getBlockPos(), attacker.getId(), packet);
-                }
-            }
-        }
-
-        takePealDamage(entitiesToDamage, attacker, damage);
-        return entitiesToDamage.size() > 1;
+        pealEntities.forEach(target -> {
+            spawnElectricity(world, target.getBoundingBox().getCenter());
+            target.damage(DamageSource.player(attacker), pealLevel);
+        });
+        return true;
     }
 
-    private static void takePealDamage(List<Entity> entitiesToDamage, PlayerEntity attacker, float damage) {
-        for (Entity target : entitiesToDamage) {
-            target.damage(DamageSource.player(attacker), damage);
-            damage *= 0.8f;
-        }
-    }
-
-    private static List<? extends Entity> getIntersectEntities(Box box, List<? extends Entity> entities, Map<Integer, Boolean> cache, Entity except) {
-        return entities.stream().filter(entity ->
-                entity.getBoundingBox().intersects(box) &&
-                        !cache.containsKey(entity.getId()) &&
-                        entity.getId() != except.getId() &&
-                        entity.isAttackable()).toList();
-    }
-
-    private static List<? extends Entity> getSameEntities(World world, Entity example, Box box, int limit) {
-        return getEntitiesByType(world, example.getType(), box, EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.and(entity -> entity.getId() != example.getId()), limit);
-    }
-
-    /**
-     * @see World#getEntitiesByType(TypeFilter, Box, Predicate) 
-     */
-    private static <T extends Entity> List<T> getEntitiesByType(World world, TypeFilter<Entity, T> filter, Box box, Predicate<? super T> predicate, int limit) {
-        List<T> result = Lists.newArrayList();
-        world.collectEntitiesByType(filter, box, predicate, result, limit);
-        return result;
+    private static void spawnElectricity(ServerWorld world, Vec3d pos) {
+        Random random = world.getRandom();
+        val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.PEAL);
+        effect.spawnParticles(world, random.nextBetween(3, 6), 0.5, pos);
     }
 
     public static Vec3d getShockPos(float playerYaw, Vec3d playerPos) {
