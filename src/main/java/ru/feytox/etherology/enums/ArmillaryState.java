@@ -12,6 +12,7 @@ public enum ArmillaryState implements StringIdentifiable {
     CRAFTING(true),
     CONSUMING(true),
     DAMAGING(true),
+    SHINING(true),
     LOWERING(false);
 
     @Getter

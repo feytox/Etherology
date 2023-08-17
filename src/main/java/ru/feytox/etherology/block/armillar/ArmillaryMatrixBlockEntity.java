@@ -39,12 +39,10 @@ import ru.feytox.etherology.enums.RingType;
 import ru.feytox.etherology.item.MatrixRing;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.SwitchBlockAnimS2C;
-import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
-import ru.feytox.etherology.particle.effects.ItemParticleEffect;
-import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.effects.SparkParticleEffect;
+import ru.feytox.etherology.particle.effects.*;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
+import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.MatrixRecipe;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
@@ -134,7 +132,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         tickSound(state);
         tickElectricityParticles(world, state);
         tickIdleAnimation(state);
-        tickStoringParticles(world, state);
+        tickClientParticles(world, state);
     }
 
     /**
@@ -272,23 +270,29 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     /**
-     * Tick the client-side storing particles if matrix is working.
+     * Tick the client-side particles if matrix is working.
      *
      * @param  world  the client world
      * @param  state  the block state
      */
-    private void tickStoringParticles(ClientWorld world, BlockState state) {
+    private void tickClientParticles(ClientWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
+        Vec3d centerPos = getCenterPos(matrixState);
         switch (matrixState) {
             case STORING -> {
-                Vec3d centerPos = getCenterPos(matrixState);
                 Optional<? extends LivingEntity> match = findClosestEntity(world, centerPos);
                 match.ifPresent(entity -> spawnConsumingParticle(world, entity, centerPos));
             }
             case DAMAGING -> {
-                Vec3d centerPos = getCenterPos(matrixState);
                 Optional<PlayerEntity> match = findClosestPlayer(world, centerPos);
                 match.ifPresent(player -> spawnConsumingParticle(world, player, centerPos));
+            }
+            case SHINING -> {
+                if (world.getRandom().nextBoolean()) break;
+                val risingEffect = new SimpleParticleEffect(ServerParticleTypes.RISING);
+                risingEffect.spawnParticles(world, 1, 0.175, centerPos.subtract(0, 0.25, 0));
+                val sparkEffect = new SparkParticleEffect(ServerParticleTypes.SPARK, new Vec3d(0, 1, 0), SparkSubtype.RISING);
+                sparkEffect.spawnParticles(world, 1, 0.25, centerPos.subtract(0, 0.25, 0));
             }
         }
     }
@@ -323,11 +327,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private void tickMatrixState(ServerWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
         switch (matrixState) {
-            case LOWERING -> {
-                if (currentTick++ >= 40) setMatrixState(world, state, ArmillaryState.OFF);
-            }
             case RAISING -> {
-                if (currentTick++ >= 41) {
+                if (currentTick++ >= 26) {
                     setMatrixState(world, state, ArmillaryState.STORING);
                     SwitchBlockAnimS2C.sendForTracking(this, "start", "work");
                 }
@@ -342,6 +343,18 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
             }
             case CRAFTING -> tickCrafting(world, state);
             case CONSUMING -> tickItemConsuming(world, state);
+            case SHINING -> {
+                if (currentTick++ < 21) break;
+                currentRecipe = null;
+                matrixInstability = 0.0f;
+                SwitchBlockAnimS2C.sendForTracking(this, "work", "end");
+                StartBlockAnimS2C.sendForTracking(this, "inactively");
+                state = setMatrixState(world, state, ArmillaryState.LOWERING);
+                setCraftInstability(world, state, InstabilityType.NULL);
+            }
+            case LOWERING -> {
+                if (currentTick++ >= 40) setMatrixState(world, state, ArmillaryState.OFF);
+            }
             case OFF -> {
                 return;
             }
@@ -491,13 +504,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         Optional<? extends Recipe<?>> match = world.getRecipeManager().get(currentRecipe.getRecipeId());
         if (match.isEmpty()) return;
         setStack(0, match.get().getOutput());
-
-        currentRecipe = null;
-        matrixInstability = 0.0f;
-        SwitchBlockAnimS2C.sendForTracking(this, "work", "end");
-        StartBlockAnimS2C.sendForTracking(this, "inactively");
-        state = setMatrixState(world, state, ArmillaryState.LOWERING);
-        setCraftInstability(world, state, InstabilityType.NULL);
+        setMatrixState(world, state, ArmillaryState.SHINING);
     }
 
     /**
@@ -530,7 +537,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         LightParticleEffect sparkLightEffect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.SPARK, centerPos);
         sparkLightEffect.spawnParticles(world, random.nextBetween(10, 25), 0.35, pedestalPos);
 
-        SparkParticleEffect sparkEffect = new SparkParticleEffect(ServerParticleTypes.SPARK, centerPos);
+        SparkParticleEffect sparkEffect = new SparkParticleEffect(ServerParticleTypes.SPARK, centerPos, SparkSubtype.SIMPLE);
         sparkEffect.spawnParticles(world, random.nextBetween(1, 5), 0.35, pedestalPos);
     }
 

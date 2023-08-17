@@ -12,24 +12,19 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.particle.SparkParticle;
-import ru.feytox.etherology.particle.effects.SparkParticleEffect;
-import ru.feytox.etherology.particle.info.SedimentarySparkInfo;
-import ru.feytox.etherology.particle.utility.ParticleInfo;
-import ru.feytox.etherology.particle.utility.ParticleInfoProvider;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
-public enum EssenceZoneType implements StringIdentifiable, ParticleInfoProvider<SparkParticle, SparkParticleEffect> {
+public enum EssenceZoneType implements StringIdentifiable {
     NOT_INITIALIZED,
     EMPTY,
-    KETA(EssenceZoneType::ketaTest, SedimentarySparkInfo::new, new RGBColor(128, 205, 247), new RGBColor(105, 128, 231)),
-    RELLA(EssenceZoneType::rellaTest, SedimentarySparkInfo::new, new RGBColor(177, 229,106), new RGBColor(106, 182, 81)),
-    VIA(EssenceZoneType::viaTest, SedimentarySparkInfo::new, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
-    CLOS(EssenceZoneType::closTest, SedimentarySparkInfo::new, new RGBColor(106, 182, 81), new RGBColor(208, 158, 89));
+    KETA(EssenceZoneType::ketaTest, new RGBColor(128, 205, 247), new RGBColor(105, 128, 231)),
+    RELLA(EssenceZoneType::rellaTest, new RGBColor(177, 229,106), new RGBColor(106, 182, 81)),
+    VIA(EssenceZoneType::viaTest, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
+    CLOS(EssenceZoneType::closTest, new RGBColor(106, 182, 81), new RGBColor(208, 158, 89));
 
     private static final float RARE_CHANCE = 0.5f;
     private static final float VERY_RARE_CHANCE = 0.25f;
@@ -37,9 +32,6 @@ public enum EssenceZoneType implements StringIdentifiable, ParticleInfoProvider<
     @Nullable
     @Getter
     private final GenerationSetting generationSetting;
-
-    @Nullable
-    private final ParticleInfo.Factory<SparkParticle, SparkParticleEffect> infoFactory;
 
     @Nullable
     @Getter
@@ -50,7 +42,7 @@ public enum EssenceZoneType implements StringIdentifiable, ParticleInfoProvider<
     private final RGBColor endColor;
 
     EssenceZoneType() {
-        this(null, null, null, null);
+        this(null, null, null);
     }
 
     public static List<EssenceZoneType> getShuffledTypes(Random random) {
@@ -118,11 +110,6 @@ public enum EssenceZoneType implements StringIdentifiable, ParticleInfoProvider<
     @Override
     public String asString() {
         return this.name().toLowerCase();
-    }
-
-    @Override
-    public ParticleInfo.@Nullable Factory<SparkParticle, SparkParticleEffect> getFactory() {
-        return infoFactory;
     }
 
     @FunctionalInterface

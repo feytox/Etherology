@@ -59,7 +59,7 @@ public class LightParticleEffect extends FeyParticleEffect<LightParticleEffect> 
 
     @Override
     public Codec<LightParticleEffect> createCodec() {
-        return RecordCodecBuilder.create((instance) -> instance.group(
+        return RecordCodecBuilder.create(instance -> instance.group(
                 lightTypeArg.getCodec("lightType")
                         .forGetter(LightParticleEffect::getLightType),
                 moveVecArg.getCodec("moveVec")

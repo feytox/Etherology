@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
+import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.FeyColor;
@@ -19,13 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
-    private final EssenceZoneType zoneType;
     private final Vec3d endPos;
+    private final RGBColor startColor;
+    private final RGBColor endColor;
 
-    public SedimentarySparkInfo(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider) {
+    public SedimentarySparkInfo(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider, RGBColor startColor, RGBColor endColor) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
-        zoneType = parameters.getZoneType();
         endPos = parameters.getMoveVec();
+        this.startColor = startColor;
+        this.endColor = endColor;
+    }
+
+    public static ParticleInfo.Factory<SparkParticle, SparkParticleEffect> of(EssenceZoneType zoneType) {
+        return (clientWorld, x, y, z, parameters, spriteProvider) -> new SedimentarySparkInfo(clientWorld, x, y, z, parameters, spriteProvider, zoneType.getStartColor(), zoneType.getEndColor());
     }
 
     @Override
@@ -36,9 +43,7 @@ public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParti
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {
-        RGBColor start = zoneType.getStartColor();
-        RGBColor end = zoneType.getEndColor();
-        return start == null || end == null ? null : FeyColor.getRandomColor(start, end, random);
+        return startColor == null || endColor == null ? null : FeyColor.getRandomColor(startColor, endColor, random);
     }
 
     @Override
@@ -54,6 +59,8 @@ public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParti
 
     public static void spawnSedimentaryParticle(World world, BlockPos blockPos, EssenceZoneType zoneType) {
         if (!zoneType.isZone()) return;
+        SparkSubtype sparkType = SparkSubtype.of(zoneType);
+        if (sparkType == null) return;
 
         Vec3d centerPos = blockPos.toCenterPos();
         Vec3d diffPos = new Vec3d(0.8d, 0.8d, 0.8d);
@@ -64,7 +71,7 @@ public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParti
         Random random = world.getRandom();
         particlePoses.forEach(pos -> {
             if (random.nextDouble() > 0.005) return;
-            SparkParticleEffect effect = new SparkParticleEffect(ServerParticleTypes.SPARK, pos.add(0, -0.2, 0), zoneType);
+            SparkParticleEffect effect = new SparkParticleEffect(ServerParticleTypes.SPARK, pos.add(0, -0.2, 0), sparkType);
             effect.spawnParticles(world, 1, 0, pos);
         });
     }

@@ -19,6 +19,7 @@ public class ServerParticleTypes {
     public static final FeyParticleType<ElectricityParticleEffect> ELECTRICITY1 = register("electricity1", ElectricityParticleEffect::new);
     public static final FeyParticleType<ElectricityParticleEffect> ELECTRICITY2 = register("electricity2", ElectricityParticleEffect::new);
     public static final FeyParticleType<ItemParticleEffect> ITEM = register("item", ItemParticleEffect::new);
+    public static final FeyParticleType<SimpleParticleEffect> RISING = register("rising", SimpleParticleEffect::new);
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);

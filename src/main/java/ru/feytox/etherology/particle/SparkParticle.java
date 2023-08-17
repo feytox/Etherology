@@ -15,7 +15,7 @@ public class SparkParticle extends MovingParticle<SparkParticleEffect> {
 
     public SparkParticle(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
-        particleInfo = buildFromInfo(parameters.getZoneType(), this, clientWorld, x, y, z, parameters, spriteProvider);
+        particleInfo = buildFromInfo(parameters.getSparkType(), this, clientWorld, x, y, z, parameters, spriteProvider);
         endPos = parameters.getMoveVec();
         if (particleInfo != null) return;
 
