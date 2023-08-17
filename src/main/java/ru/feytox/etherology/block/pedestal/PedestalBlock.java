@@ -30,7 +30,7 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import java.util.Optional;
 
-public class PedestalBlock extends Block implements BlockEntityProvider, RegistrableBlock {
+public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityProvider, RegistrableBlock {
 
     public static final EnumProperty<PedestalShape> SHAPE = EnumProperty.of("shape", PedestalShape.class);
     public static final BooleanProperty DECORATION = BooleanProperty.of("decoration");
@@ -43,6 +43,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider, Registr
     public PedestalBlock() {
         super(FabricBlockSettings.of(Material.STONE).strength(3.0f).nonOpaque());
         setDefaultState(getDefaultState()
+                .with(FACING, Direction.NORTH)
                 .with(SHAPE, PedestalShape.FULL)
                 .with(DECORATION, false)
                 .with(CLOTH_COLOR, DyeColor.WHITE)
@@ -51,7 +52,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider, Registr
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(SHAPE, DECORATION, CLOTH_COLOR);
+        builder.add(SHAPE, DECORATION, CLOTH_COLOR, FACING);
     }
 
     @Override

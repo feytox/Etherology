@@ -76,7 +76,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
 
             player.setStackInHand(hand, carpetStack);
             setStack(1, ItemStack.EMPTY);
-            setCarpetColor(world, state, DyeColor.WHITE, false);
+            setCarpetColor(world, player, state, DyeColor.WHITE, false);
             return;
         }
 
@@ -94,7 +94,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
             setStack(1, ItemStack.EMPTY);
             handStack.increment(1);
             player.setStackInHand(hand, handStack);
-            setCarpetColor(world, state, DyeColor.WHITE, false);
+            setCarpetColor(world, player, state, DyeColor.WHITE, false);
             return true;
         }
 
@@ -106,19 +106,22 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
             setStack(1, copyStack);
             handStack.decrement(1);
             player.setStackInHand(hand, handStack);
-            setCarpetColor(world, state, carpet.getDyeColor(), true);
+            setCarpetColor(world, player, state, carpet.getDyeColor(), true);
             return true;
         }
 
         // замена ковра (или пустоты) на пьедестале ковром из руки
         player.setStackInHand(hand, carpetStack);
         setStack(1, copyStack);
-        setCarpetColor(world, state, carpet.getDyeColor(), true);
+        setCarpetColor(world, player, state, carpet.getDyeColor(), true);
         return true;
     }
 
-    private void setCarpetColor(ServerWorld world, BlockState state, DyeColor dyeColor, boolean withCarpet) {
-        world.setBlockState(pos, state.with(PedestalBlock.CLOTH_COLOR, dyeColor).with(PedestalBlock.DECORATION, withCarpet));
+    private void setCarpetColor(ServerWorld world, PlayerEntity player, BlockState state, DyeColor dyeColor, boolean withCarpet) {
+        world.setBlockState(pos, state
+                .with(PedestalBlock.CLOTH_COLOR, dyeColor)
+                .with(PedestalBlock.DECORATION, withCarpet)
+                .with(PedestalBlock.FACING, player.getHorizontalFacing().getOpposite()));
     }
 
     @Override
