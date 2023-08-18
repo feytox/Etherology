@@ -33,12 +33,10 @@ public class SwitchBlockAnimS2C extends AbstractS2CPacket {
 
         client.execute(() -> {
             if (client.world == null) return;
-            BlockEntity be = client.world.getBlockEntity(blockPos);
+            if (!(client.world.getBlockEntity(blockPos) instanceof EGeoBlockEntity eGeoBlock)) return;
 
-            if (be instanceof EGeoBlockEntity eGeoBlock) {
-                eGeoBlock.stopAnim(stopAnim);
-                eGeoBlock.triggerAnim(startAnim);
-            }
+            eGeoBlock.stopAnim(stopAnim);
+            eGeoBlock.triggerAnim(startAnim);
         });
     }
 

@@ -328,7 +328,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         val matrixState = getMatrixState(state);
         switch (matrixState) {
             case RAISING -> {
-                if (currentTick++ >= 26) {
+                if (currentTick++ >= 41) {
                     setMatrixState(world, state, ArmillaryState.STORING);
                     SwitchBlockAnimS2C.sendForTracking(this, "start", "work");
                 }

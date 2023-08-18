@@ -35,7 +35,7 @@ public class SparkRisingInfo extends ParticleInfo<SparkParticle, SparkParticleEf
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {
-        return null;
+        return RGBColor.of(0xFFBFF6);
     }
 
     @Override
