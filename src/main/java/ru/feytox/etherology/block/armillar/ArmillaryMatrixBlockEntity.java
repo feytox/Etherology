@@ -425,7 +425,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @return             an Optional containing the closest PlayerEntity, or empty if no player is found
      */
     private Optional<PlayerEntity> findClosestPlayer(World world, Vec3d centerPos) {
-        return Optional.ofNullable(world.getClosestPlayer(centerPos.x, centerPos.y, centerPos.z, HORIZONTAL_RADIUS, false));
+        return Optional.ofNullable(world.getClosestPlayer(centerPos.x, centerPos.y, centerPos.z, 2 * HORIZONTAL_RADIUS, false));
     }
 
     /**
