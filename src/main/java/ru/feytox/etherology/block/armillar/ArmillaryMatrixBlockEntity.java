@@ -22,6 +22,8 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.collection.DefaultedList;
@@ -282,13 +284,16 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
             case STORING -> {
                 Optional<? extends LivingEntity> match = findClosestEntity(world, centerPos);
                 match.ifPresent(entity -> spawnConsumingParticle(world, entity, centerPos));
+                if (world.getTime() % 2 == 0 && world.getRandom().nextBoolean()) {
+                    world.playSound(centerPos.x, centerPos.y, centerPos.z, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.066f, 0.7f * world.getRandom().nextFloat() + 0.55f, true);
+                }
             }
             case DAMAGING -> {
                 Optional<PlayerEntity> match = findClosestPlayer(world, centerPos);
                 match.ifPresent(player -> spawnConsumingParticle(world, player, centerPos));
             }
             case SHINING -> {
-                if (world.getRandom().nextBoolean()) break;
+                if (world.getTime() % 2 == 0) break;
                 val risingEffect = new SimpleParticleEffect(ServerParticleTypes.RISING);
                 risingEffect.spawnParticles(world, 1, 0.175, centerPos.subtract(0, 0.25, 0));
                 val sparkEffect = new SparkParticleEffect(ServerParticleTypes.SPARK, new Vec3d(0, 1, 0), SparkSubtype.RISING);
@@ -455,8 +460,9 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  centerPos  the matrix center position
      */
     private void spawnConsumingParticle(World world, LivingEntity entity, Vec3d centerPos) {
-        LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.VITAL, centerPos);
-        effect.spawnParticles(world, 5, 0.1, entity.getBoundingBox().getCenter());
+        if (world.getTime() % 2 == 0) return;
+        val effect = new MovingParticleEffect(ServerParticleTypes.VITAL, centerPos);
+        effect.spawnParticles(world, 1, 0.1, entity.getBoundingBox().getCenter());
     }
 
     /**

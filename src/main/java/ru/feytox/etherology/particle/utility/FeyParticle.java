@@ -55,8 +55,8 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         z = newPos.z;
     }
 
-    public boolean inverseCheckDeadPos(boolean deadOnEnd, double inverseLen) {
-        if (!deadOnEnd || inverseLen < 2.0d) return false;
+    public boolean inverseCheckDeadPos(boolean deadOnEnd, double inverseLen, double deadDistance) {
+        if (!deadOnEnd || inverseLen < 1 / deadDistance) return false;
         this.markDead();
         return true;
     }

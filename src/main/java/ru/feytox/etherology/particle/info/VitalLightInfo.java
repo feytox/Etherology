@@ -11,6 +11,7 @@ import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
+@Deprecated
 public class VitalLightInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
     private Vec3d currentVec;
     private final Vec3d endPos;
@@ -48,7 +49,7 @@ public class VitalLightInfo extends ParticleInfo<LightParticle, LightParticleEff
         if (particle.tickAge()) return;
         Vec3d toEndVec = particle.getPathVec(endPos);
         double inverseToEndLen = particle.getInverseLen(toEndVec);
-        if (particle.inverseCheckDeadPos(true, inverseToEndLen)) return;
+        if (particle.inverseCheckDeadPos(true, inverseToEndLen, 0.25d)) return;
 
         Vec3d stepVec = currentVec.multiply(0.025d);
         particle.markPrevPos();

@@ -28,7 +28,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
 
         Vec3d pathVec = getFullPathVec(endPos);
         double inverseLen = getInverseLen(pathVec);
-        if (inverseCheckDeadPos(deadOnEnd, inverseLen)) return;
+        if (inverseCheckDeadPos(deadOnEnd, inverseLen, 0.5d)) return;
 
         Vec3d deltaVec = pathVec.multiply(inverseLen).multiply(speed);
         modifyPos(deltaVec);

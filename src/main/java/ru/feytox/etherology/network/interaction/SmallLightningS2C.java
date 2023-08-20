@@ -71,8 +71,8 @@ public class SmallLightningS2C extends AbstractS2CPacket {
             if (world == null) return;
 
             spawnLightning(world, startPos, endPos, lineCount, matrixInstability);
-            world.playSound(client.player, startPos.x, startPos.y, startPos.z, EtherSounds.ELECTRICITY, SoundCategory.BLOCKS, 0.1f, 1.0f);
-            world.playSound(client.player, endPos.x, endPos.y, endPos.z, EtherSounds.ELECTRICITY, SoundCategory.BLOCKS, 0.1f, 1.0f);
+            world.playSound(startPos.x, startPos.y, startPos.z, EtherSounds.ELECTRICITY, SoundCategory.BLOCKS, 0.1f, 1.0f, true);
+            world.playSound(endPos.x, endPos.y, endPos.z, EtherSounds.ELECTRICITY, SoundCategory.BLOCKS, 0.1f, 1.0f, true);
         });
     }
 
