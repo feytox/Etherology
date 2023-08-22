@@ -3,7 +3,6 @@ package ru.feytox.etherology.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -13,14 +12,13 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import ru.feytox.etherology.enchantment.ReflectionEnchantment;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.EtherShield;
 import ru.feytox.etherology.item.HammerItem;
-import ru.feytox.etherology.registry.util.EtherSounds;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -54,46 +52,27 @@ public abstract class LivingEntityMixin {
         cir.setReturnValue(modifiedBlockedByShield(shieldHolder, source));
     }
 
+    @Unique
     private static boolean modifiedBlockedByShield(LivingEntity shieldHolder, DamageSource source) {
         Entity entity = source.getSource();
-
         boolean isProjectile = entity instanceof ProjectileEntity;
-        boolean isPersistentProjectile = false;
         if (isProjectile && entity instanceof PersistentProjectileEntity persistentProjectile) {
-            isPersistentProjectile = true;
             if (persistentProjectile.getPierceLevel() > 0) {
                 return false;
             }
         }
 
         if (!source.bypassesArmor() && shieldHolder.isBlocking()) {
-            Vec3d vec3d = source.getPosition();
-            if (vec3d != null) {
-                Vec3d vec3d2 = shieldHolder.getRotationVec(1.0F);
-                Vec3d vec3d3 = vec3d.relativize(shieldHolder.getPos()).normalize();
-                vec3d3 = new Vec3d(vec3d3.x, 0.0, vec3d3.z);
-
-                // 90 -> 30 degrees
-                double cosVal = isProjectile ? 0.0 : -0.866025;
-                boolean result = vec3d3.dotProduct(vec3d2) < cosVal;
-                if (result && isProjectile) {
-                    int reflectionLevel = EnchantmentHelper.getEquipmentLevel(ReflectionEnchantment.INSTANCE.get(), shieldHolder);
-                    if (reflectionLevel > 0) {
-                        Vec3d newVelocity = entity.getVelocity().multiply(8.5);
-                        if (!isPersistentProjectile) newVelocity = newVelocity.negate();
-                        entity.setVelocity(newVelocity);
-                        shieldHolder.getEntityWorld().playSound(null, shieldHolder.getBlockPos(), EtherSounds.DEFLECT, shieldHolder.getSoundCategory(), 0.5f, 1.0f);
-                        return true;
-                    }
-                }
-                return result;
+            Vec3d damagePos = source.getPosition();
+            if (damagePos != null) {
+                Vec3d holderRotation = shieldHolder.getRotationVec(1.0F);
+                return EtherShield.shieldBlockCheck(holderRotation, shieldHolder.getPos(), damagePos, isProjectile);
             }
         }
 
         return false;
     }
 
-    @SuppressWarnings("unused")
     @ModifyReturnValue(method = "disablesShield", at = @At("RETURN"))
     private boolean onDisablesShield(boolean original) {
         LivingEntity it = ((LivingEntity) (Object) this);
