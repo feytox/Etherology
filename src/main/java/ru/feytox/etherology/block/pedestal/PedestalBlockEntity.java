@@ -14,6 +14,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -58,6 +60,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
                 setStack(0, handStack.copyWithCount(1));
                 handStack.decrement(1);
                 player.setStackInHand(hand, handStack);
+                playItemPlaceSound(world, pos);
                 return;
             }
 
@@ -66,6 +69,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
                 setStack(0, ItemStack.EMPTY);
                 handStack.increment(1);
                 player.setStackInHand(hand, handStack);
+                playItemTakeSound(world, pos);
                 return;
             }
         }
@@ -83,6 +87,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         // взятие предмета в пустую руку
         player.setStackInHand(hand, pedestalStack);
         setStack(0, ItemStack.EMPTY);
+        playItemTakeSound(world, pos);
     }
 
     private boolean placeCarpet(ServerWorld world, BlockState state, PlayerEntity player, Hand hand, ItemStack handStack, ItemStack carpetStack) {
@@ -122,6 +127,19 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
                 .with(PedestalBlock.CLOTH_COLOR, dyeColor)
                 .with(PedestalBlock.DECORATION, withCarpet)
                 .with(PedestalBlock.FACING, player.getHorizontalFacing().getOpposite()));
+        playCarpetSound(world);
+    }
+
+    private void playCarpetSound(ServerWorld world) {
+        world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_HORSE_SADDLE, SoundCategory.BLOCKS, 0.5f, 0.9f + 0.2f * world.getRandom().nextFloat());
+    }
+
+    public static void playItemTakeSound(ServerWorld world, BlockPos pos) {
+        world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 0.5f, 0.9f + 0.2f * world.getRandom().nextFloat());
+    }
+
+    public static void playItemPlaceSound(ServerWorld world, BlockPos pos) {
+        world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 0.5f, 0.9f + 0.2f * world.getRandom().nextFloat());
     }
 
     @Override

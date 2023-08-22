@@ -174,12 +174,14 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 setStack(0, ItemStack.EMPTY);
                 handStack.increment(1);
                 player.setStackInHand(hand, handStack);
+                PedestalBlockEntity.playItemTakeSound(world, pos);
                 return;
             }
 
             setStack(0, handStack.copyWithCount(1));
             handStack.decrement(1);
             player.setStackInHand(hand, handStack);
+            PedestalBlockEntity.playItemPlaceSound(world, pos);
             return;
         }
 
@@ -195,6 +197,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (matrixStack.isEmpty()) return;
         player.setStackInHand(hand, matrixStack);
         setStack(0, ItemStack.EMPTY);
+        PedestalBlockEntity.playItemTakeSound(world, pos);
     }
 
     /**
