@@ -4,6 +4,7 @@ import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -15,6 +16,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.*;
+import net.minecraft.world.World;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.util.feyapi.Nbtable;
@@ -72,11 +74,15 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
     @Override
     public void render(BlockEntityRendererFactory.Context ctx, FurSlabBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        World world = entity.getWorld();
+        if (world == null) return;
+
         ItemRenderer itemRenderer = ctx.getItemRenderer();
         ItemStack leftStack = getStack(0);
         ItemStack rightStack = getStack(1);
 
         Direction facing = entity.getCachedState().get(HorizontalFacingBlock.FACING);
+        light = WorldRenderer.getLightmapCoordinates(world, entity.getPos().add(facing.getVector()));
         float degrees = 180 - facing.asRotation();
         float rads = degrees * MathHelper.PI / 180;
 

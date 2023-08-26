@@ -88,7 +88,7 @@ public abstract class AbstractGlintItem extends SimpleItem {
         float newEther = storedEther + value;
         newEther = Math.min(newEther, maxEther);
         nbt.putFloat("stored_ether", newEther);
-        // TODO: 16/03/2023 проверить необходимость
+
         stack.setNbt(nbt);
         stack.setDamage(MathHelper.floor(maxEther - storedEther));
 
@@ -106,7 +106,7 @@ public abstract class AbstractGlintItem extends SimpleItem {
         float newEther = storedEther - value;
         newEther = Math.max(newEther, 0);
         nbt.putFloat("stored_ether", newEther);
-        // TODO: 16/03/2023 проверить необходимость
+
         stack.setNbt(nbt);
         stack.setDamage(MathHelper.floor(maxEther - storedEther));
 
