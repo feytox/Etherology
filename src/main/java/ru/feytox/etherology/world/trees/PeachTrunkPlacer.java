@@ -1,11 +1,11 @@
 package ru.feytox.etherology.world.trees;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TestableWorld;
@@ -15,15 +15,14 @@ import net.minecraft.world.gen.trunk.TrunkPlacer;
 import net.minecraft.world.gen.trunk.TrunkPlacerType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import static ru.feytox.etherology.world.gen.EtherTreesGeneration.PEACH_TRUNK_PLACER;
 
 public class PeachTrunkPlacer extends TrunkPlacer {
+
     public static final Codec<PeachTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
             fillTrunkPlacerFields(instance).apply(instance, PeachTrunkPlacer::new));
 
@@ -38,145 +37,179 @@ public class PeachTrunkPlacer extends TrunkPlacer {
 
     @Override
     public List<FoliagePlacer.TreeNode> generate(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, int height, BlockPos startPos, TreeFeatureConfig config) {
-        Placer placer = new Placer(world, replacer, random, config);
-        Map<Integer, List<BlockPos>> allEnds = generateNode(placer, startPos, Part.getRandomPart(random), 4, height, 0);
-        List<BlockPos> ends = new ArrayList<>();
-        allEnds.forEach((i, b) -> ends.addAll(b));
+        List<BlockPos> leaves = new ObjectArrayList<>();
+        generateRoot(new TreeContext(world, replacer, random, config), height, startPos, leaves);
+        return leaves.stream().map(pos -> new FoliagePlacer.TreeNode(pos, 0, false)).collect(Collectors.toCollection(ObjectArrayList::new));
 
-        ImmutableList.Builder<FoliagePlacer.TreeNode> builder = ImmutableList.builder();
-        ends.forEach(blockPos -> builder.add(new FoliagePlacer.TreeNode(blockPos, 0, false)));
-        return builder.build();
     }
 
-    private Map<Integer, List<BlockPos>> generateNode(Placer placer, BlockPos startPos, Part startPart, int partCount, int height, int gen) {
-        // TODO: 30/04/2023 add setToDirt or etc
-        List<Part> parts = Part.getParts(placer.random, startPart, partCount);
-        List<Direction> bannedDirections = partCount == 4 ? new ArrayList<>() : startPart.getBannedDirection();
-        Map<Integer, List<BlockPos>> ends = new HashMap<>();
-        if (partCount < 1) return ends;
-        for (Part part : parts) {
-            int partHeight = partCount == 1 ? Math.min(3, height) : (int) (height * 0.8 * (1 + placer.random.nextDouble()));
-            BlockPos partPos = startPart.getOtherPartPos(startPos, part);
-            boolean withSubNodes = false;
-            for (int i = 0; i < partHeight; i++) {
-                float percent = (float) i / partHeight;
-                getAndSetState(placer, partPos);
-                if (gen == 0 && i == 0) {
-                    for (int j = 0; j < placer.random.nextBetween(0, 1); j++) {
-                        BlockPos basePos = partPos.add(part.getBranchVec(placer.random));
-                        getAndSetState(placer, basePos);
-                        if (placer.random.nextDouble() < 0.3) getAndSetState(placer, basePos.up());
-                    }
-                    partPos = partPos.up();
+    private void generateRoot(TreeContext context, int height, BlockPos startPos, List<BlockPos> leaves) {
+        int rootHeight = MathHelper.ceil(height * (0.5 + 0.25 * context.random.nextFloat()));
+        // TODO: 24.08.2023 replace using saplings pos
+        Vec3i rootOffset = new Vec3i(context.random.nextBoolean() ? 1 : -1, 0, context.random.nextBoolean() ? 1 : -1);
+        List<Vec3i> innerOffsets = getInnerOffsets(rootOffset);
+        List<Vec3i> outerOffsets = innerOffsets.stream().map(vec -> getOuterOffsets(rootOffset, vec))
+                .flatMap(List::stream).collect(Collectors.toCollection(ObjectArrayList::new));
+        Vec3i forkPosOffset = null;
+        boolean hasBranch = false;
+        List<Vec3i> rootPoses = new ObjectArrayList<>();
+
+        for (int dy = 0; dy < rootHeight; dy++) {
+            BlockPos currentPos = startPos.up(dy);
+            innerOffsets.forEach(offset -> placeWood(context, currentPos.add(offset)));
+            if (forkPosOffset != null) break;
+
+            if (dy == rootHeight - 1) {
+                Vec3i firstLeaf = getRandomValue(innerOffsets, context.random);
+                if (firstLeaf == null) continue;
+                leaves.add(currentPos.up().add(firstLeaf));
+                continue;
+            }
+
+            switch (dy) {
+                case 0 -> {
+                    outerOffsets.forEach(offset -> {
+                        if (context.random.nextFloat() > 0.25f) return;
+                        placeWood(context, currentPos.add(offset));
+                        rootPoses.add(offset);
+                    });
                     continue;
                 }
-
-                Direction branch = part.getBranch(placer.random);
-                if (placer.random.nextDouble() < 0.3 * percent * 10 && !bannedDirections.contains(branch)) {
-                    partPos = partPos.add(branch.getVector());
-                    if (partCount == 1) {
-                        if (placer.random.nextDouble() < 0.75) break;
-                        partPos = partPos.up();
-                        continue;
-                    }
-
-                    int d = percent > 0.7 ? 2 : 1;
-                    Map<Integer, List<BlockPos>> subNodes = generateNode(placer, partPos, part,
-                            partCount - d,
-                            partHeight - i, gen+1);
-                    subNodes.forEach((genI, genPos) -> {
-                        List<BlockPos> poses = ends.getOrDefault(genI, new ArrayList<>());
-                        poses.addAll(genPos);
-                        ends.put(genI, poses);
+                case 1 -> {
+                    outerOffsets.forEach(offset -> {
+                        if (!rootPoses.contains(offset) || context.random.nextFloat() > 0.25f) return;
+                        placeWood(context, currentPos.add(offset));
                     });
-                    withSubNodes = true;
-                    break;
+                    continue;
                 }
-                partPos = partPos.up();
-                if (percent > 0.7 && placer.random.nextDouble() < 0.2) break;
+                case 2 -> {
+                    continue;
+                }
             }
-            if (!withSubNodes) {
-                List<BlockPos> poses = ends.getOrDefault(gen, new ArrayList<>());
-                poses.add(partPos.up());
-                ends.put(gen, poses);
+
+            if (context.random.nextFloat() <= 0.1f + 0.1f * dy) {
+                forkPosOffset = getRandomValue(innerOffsets, context.random);
+                if (forkPosOffset == null) continue;
+                Vec3i forkDirection = forkPosOffset.multiply(2).subtract(rootOffset);
+                List<Vec3i> exceptions = ObjectArrayList.of(forkDirection.multiply(-1));
+                generateFork(context, currentPos.add(forkPosOffset), forkDirection, rootHeight * 0.75f, 4, leaves, exceptions);
+                continue;
             }
-        }
 
-        return ends;
-    }
+            if (hasBranch || context.random.nextFloat() > 0.02 + 0.02 * dy) continue;
+            Vec3i branchOffset = getRandomValue(innerOffsets, context.random, forkPosOffset);
+            if (branchOffset == null) continue;
 
-    private void getAndSetState(Placer placer, BlockPos pos) {
-        this.getAndSetState(placer.world, placer.replacer, placer.random, pos, placer.config);
-    }
-
-    private record Placer(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config) {
-    }
-
-    private enum Part {
-        TOP_LEFT(v -> v, Direction.NORTH, Direction.WEST),
-        TOP_RIGHT(Vec3i::east, Direction.NORTH, Direction.EAST),
-        BOTTOM_LEFT(Vec3i::south, Direction.SOUTH, Direction.WEST),
-        BOTTOM_RIGHT(v -> v.south().east(), Direction.SOUTH, Direction.EAST);
-
-        private final PartVector partVector;
-        private final Direction branch1;
-        private final Direction branch2;
-
-        Part(PartVector partVector, Direction branch1, Direction branch2) {
-            this.partVector = partVector;
-            this.branch1 = branch1;
-            this.branch2 = branch2;
-        }
-
-        private Vec3i getVector() {
-            return partVector.getPartPos(Vec3i.ZERO);
-        }
-
-        public BlockPos getOtherPartPos(BlockPos partPos, Part otherPart) {
-            return partPos.subtract(getVector()).add(otherPart.getVector());
-        }
-
-        public static Part getRandomPart(Random random) {
-            return getRandomPart(random, new ArrayList<>());
-        }
-
-        @Nullable
-        public static Part getRandomPart(Random random, List<Part> except) {
-            int rIndex = random.nextBetween(1, 4 - except.size());
-            int index = 0;
-            for (int i = 0; i < values().length; i++) {
-                Part part = values()[i];
-                if (!except.contains(part)) index++;
-                if (index == rIndex) return part;
-            }
-            return null;
-        }
-
-        public static List<Part> getParts(Random random, Part startPart, int count) {
-            if (count <= 0 || count > 4) return new ArrayList<>();
-            if (count == 4) return List.of(values());
-            List<Part> result = new ArrayList<>(List.of(startPart));
-            for (int i = 0; i < count-1; i++) {
-                result.add(getRandomPart(random, result));
-            }
-            return result;
-        }
-
-
-        public Vec3i getBranchVec(Random random) {
-            return getBranch(random).getVector();
-        }
-
-        public Direction getBranch(Random random) {
-            return random.nextBoolean() ? branch1 : branch2;
-        }
-
-        public List<Direction> getBannedDirection() {
-            return List.of(branch1.getOpposite(), branch2.getOpposite());
+            hasBranch = true;
+            List<Vec3i> branchDirections = getOuterOffsets(rootOffset, branchOffset);
+            Vec3i branchDirection = getRandomValue(branchDirections, context.random);
+            if (branchDirection == null) continue;
+            generateBranch(context, currentPos.add(branchOffset), branchDirection.subtract(branchOffset), leaves);
         }
     }
 
-    protected interface PartVector {
-        Vec3i getPartPos(Vec3i startPos);
+    private void generateFork(TreeContext context, BlockPos startPos, Vec3i forkDirection, float height, int maxSize, List<BlockPos> leaves, List<Vec3i> forkExceptions) {
+        if (maxSize < 2) return;
+        int forkHeight = MathHelper.ceil(height * (0.8f + 0.2f * context.random.nextFloat()));
+        int startSize = maxSize == 2 ? 2 : context.random.nextBetween(1, 2);
+        int size = startSize;
+        Vec3i nextForkPosOffset = null;
+        boolean hasBranch = false;
+
+        List<Vec3i> allInnerOffsets = getInnerOffsets(forkDirection);
+        List<Vec3i> innerOffsets = new ObjectArrayList<>();
+        for (int i = 0; i < size; i++) {
+            innerOffsets.add(getRandomValue(allInnerOffsets, context.random, innerOffsets));
+        }
+
+        for (int dy = 0; dy < forkHeight; dy++) {
+            BlockPos currentPos = startPos.up(dy);
+            innerOffsets.forEach(offset -> placeWood(context, currentPos.add(offset)));
+            if (dy == 0) continue;
+            if (nextForkPosOffset != null) break;
+
+            if (dy == forkHeight - 1) {
+                Vec3i firstLeaf = getRandomValue(innerOffsets, context.random);
+                if (firstLeaf == null) continue;
+                leaves.add(currentPos.up().add(firstLeaf));
+                continue;
+            }
+
+            if (size < maxSize && context.random.nextFloat() <= 0.33f + 0.075f * dy) {
+                size++;
+                Vec3i newOffset = getRandomValue(allInnerOffsets, context.random, innerOffsets);
+                if (newOffset != null) innerOffsets.add(newOffset);
+                continue;
+            }
+
+            if (maxSize > 2 && (size == maxSize || size > startSize) && context.random.nextFloat() <= 0.4f + 0.1f * dy) {
+                nextForkPosOffset = getRandomValue(innerOffsets, context.random);
+                if (nextForkPosOffset == null) continue;
+                Vec3i nextForkDirection = nextForkPosOffset.multiply(2).subtract(forkDirection);
+                if (forkExceptions.contains(nextForkDirection)) continue;
+                forkExceptions.add(nextForkDirection.multiply(-1));
+                generateFork(context, currentPos.add(nextForkPosOffset), nextForkDirection, height * 0.75f, size - context.random.nextBetween(1, 2), leaves, forkExceptions);
+            }
+
+            if (hasBranch || context.random.nextFloat() > 0.02 + 0.02 * dy) continue;
+            Vec3i branchOffset = getRandomValue(innerOffsets, context.random, nextForkPosOffset);
+            if (branchOffset == null) continue;
+
+            hasBranch = true;
+            List<Vec3i> branchDirections = getOuterOffsets(forkDirection, branchOffset);
+            Vec3i branchDirection = getRandomValue(branchDirections, context.random);
+            if (branchDirection == null) continue;
+            generateBranch(context, currentPos.add(branchOffset), branchDirection.subtract(branchOffset), leaves);
+        }
+    }
+
+    private void generateBranch(TreeContext context, BlockPos pos, Vec3i direction, List<BlockPos> leaves) {
+        int length = context.random.nextBetween(3, 4);
+
+        for (int i = 0; i < length; i++) {
+            placeWood(context, pos);
+            pos = pos.add(direction);
+            if (context.random.nextFloat() > 0.4f) pos = pos.up();
+        }
+        leaves.add(pos.up());
+    }
+
+    private void placeWood(TreeContext context, BlockPos pos) {
+        getAndSetState(context.world, context.replacer, context.random, pos, context.config);
+    }
+
+    private static List<Vec3i> getInnerOffsets(Vec3i rootOffset) {
+        List<Vec3i> result = new ObjectArrayList<>();
+        for (int x = 0; x <= 1; x++) {
+            for (int y = 0; y <= 1; y++) {
+                result.add(getOffset(rootOffset, x, y));
+            }
+        }
+        return result;
+    }
+
+    private static List<Vec3i> getOuterOffsets(Vec3i rootOffset, Vec3i innerOffset) {
+        Vec3i delta = innerOffset.multiply(2).subtract(rootOffset);
+        return ObjectArrayList.of(innerOffset.add(delta.getX(), 0, 0), innerOffset.add(0, 0, delta.getZ()));
+    }
+
+    private static Vec3i getOffset(Vec3i rootOffset, int x, int z) {
+        return new Vec3i(rootOffset.getX() * x, 0, rootOffset.getZ() * z);
+    }
+
+    @SafeVarargs
+    @Nullable
+    private static <T> T getRandomValue(List<T> list, Random random, T... except) {
+        return getRandomValue(list, random, ObjectArrayList.of(except));
+    }
+
+    private static <T> T getRandomValue(List<T> list, Random random, List<T> except) {
+        List<T> values = new ObjectArrayList<>(list);
+        if (!except.isEmpty()) values.removeAll(except);
+        if (values.isEmpty()) return null;
+        return values.get(random.nextInt(values.size()));
+    }
+
+    private record TreeContext(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config) {
     }
 }
