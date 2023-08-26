@@ -23,7 +23,7 @@ import ru.feytox.etherology.enums.ArmillaryState;
 import ru.feytox.etherology.enums.InstabilityType;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY_NEW;
+import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 
 public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, BlockEntityProvider {
 
@@ -63,7 +63,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (!type.equals(ARMILLARY_MATRIX_BLOCK_ENTITY_NEW)) return null;
+        if (!type.equals(ARMILLARY_MATRIX_BLOCK_ENTITY)) return null;
 
         return world.isClient ? ArmillaryMatrixBlockEntity::clientTicker : ArmillaryMatrixBlockEntity::serverTicker;
     }

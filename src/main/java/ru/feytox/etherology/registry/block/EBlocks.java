@@ -174,9 +174,9 @@ public class EBlocks {
     );
 
     public static final ArmillaryMatrixBlock ARMILLARY_MATRIX = (ArmillaryMatrixBlock) new ArmillaryMatrixBlock().registerAll();
-    public static final BlockEntityType<ArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY_NEW = Registry.register(
+    public static final BlockEntityType<ArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("armillary_matrix_block_entity_new"),
+            new EIdentifier("armillary_matrix_block_entity"),
             FabricBlockEntityTypeBuilder.create(ArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX).build()
     );
 

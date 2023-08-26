@@ -5,7 +5,6 @@ import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
-import ru.feytox.etherology.EtherologyClient;
 import ru.feytox.etherology.util.feyapi.EIngredient;
 
 public class IngredientComponent extends ItemComponent {
@@ -34,14 +33,8 @@ public class IngredientComponent extends ItemComponent {
         return this.ingredient(this.eIngredient);
     }
 
+    @Deprecated
     public IngredientComponent blink() {
-        EtherologyClient.timer3_supps.add(() -> {
-            if (this.hasParent()) {
-                this.ingredient();
-                return true;
-            }
-            return false;
-        });
         return this;
     }
 }

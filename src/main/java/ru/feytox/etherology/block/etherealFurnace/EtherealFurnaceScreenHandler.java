@@ -13,7 +13,7 @@ import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.util.feyapi.ClosedSlot;
 import ru.feytox.etherology.util.feyapi.SpecificSlot;
 
-import static ru.feytox.etherology.Etherology.ETHEREAL_FURNACE_SCREEN_HANDLER;
+import static ru.feytox.etherology.registry.util.ScreenHandlersRegistry.ETHEREAL_FURNACE_SCREEN_HANDLER;
 
 public class EtherealFurnaceScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;

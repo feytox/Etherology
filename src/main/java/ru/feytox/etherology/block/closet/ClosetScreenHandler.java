@@ -7,7 +7,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
 
 public class ClosetScreenHandler extends ScreenHandler {
     private final Inventory inventory;
@@ -17,7 +17,7 @@ public class ClosetScreenHandler extends ScreenHandler {
     }
 
     public ClosetScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(Etherology.CLOSET_SCREEN_HANDLER, syncId);
+        super(ScreenHandlersRegistry.CLOSET_SCREEN_HANDLER, syncId);
         checkSize(inventory, 10);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);

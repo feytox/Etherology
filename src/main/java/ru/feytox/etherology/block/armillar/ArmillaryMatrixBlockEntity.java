@@ -59,7 +59,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY_NEW;
+import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 
 public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity, UniqueProvider {
@@ -106,7 +106,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private ArmillaryMatrixSoundInstance soundInstance = null;
 
     public ArmillaryMatrixBlockEntity(BlockPos pos, BlockState state) {
-        super(ARMILLARY_MATRIX_BLOCK_ENTITY_NEW, pos, state);
+        super(ARMILLARY_MATRIX_BLOCK_ENTITY, pos, state);
     }
 
     /**

@@ -5,13 +5,15 @@ import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.EtherologyClient;
+import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.util.deprecated.UwuLib;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.function.Consumer;
 
 public class PageButton extends ButtonComponent {
+
+    public static Chapters chapters = new Chapters();
 
     public PageButton(boolean is_prev) {
         super(Text.empty(), getOnClick(is_prev));
@@ -34,10 +36,10 @@ public class PageButton extends ButtonComponent {
     private static Consumer<ButtonComponent> getOnClick(boolean is_prev) {
         return (ButtonComponent button) -> {
             if (is_prev) {
-                EtherologyClient.chapters.current().prevTwo();
+                chapters.current().prevTwo();
                 return;
             }
-            EtherologyClient.chapters.current().nextTwo();
+            chapters.current().nextTwo();
         };
     }
 
@@ -45,25 +47,25 @@ public class PageButton extends ButtonComponent {
     @Nullable
     public static ButtonComponent getButtonForPage(boolean is_prev) {
         if (is_prev) {
-            if (EtherologyClient.chapters == null) {
+            if (chapters == null) {
                 return null;
             }
 
-            if (EtherologyClient.chapters.current().isFirst() && !EtherologyClient.chapters.isFirst()) {
+            if (chapters.current().isFirst() && !chapters.isFirst()) {
                 return new BigPageButton(true).prevButton();
-            } else if (!EtherologyClient.chapters.current().isFirst()) {
+            } else if (!chapters.current().isFirst()) {
                 return new PageButton(true).prevButton();
             }
             return null;
         }
 
-        if (EtherologyClient.chapters == null) {
+        if (chapters == null) {
             return new BigPageButton(false).nextButton();
         }
 
-        if (EtherologyClient.chapters.current().isLast() && !EtherologyClient.chapters.isLast()) {
+        if (chapters.current().isLast() && !chapters.isLast()) {
             return new BigPageButton(false).nextButton();
-        } else if (!EtherologyClient.chapters.current().isLast()) {
+        } else if (!chapters.current().isLast()) {
             return new PageButton(false).nextButton();
         }
         // TODO: сделать что-то, что будет в самом конце книги

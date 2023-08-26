@@ -4,7 +4,6 @@ import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.text.Text;
-import ru.feytox.etherology.EtherologyClient;
 import ru.feytox.etherology.util.deprecated.UwuLib;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -33,10 +32,10 @@ public class BigPageButton extends ButtonComponent {
     private static Consumer<ButtonComponent> getOnClick(boolean is_prev) {
         return (ButtonComponent button) -> {
             if (is_prev) {
-                EtherologyClient.chapters.prev();
+                PageButton.chapters.prev();
                 return;
             }
-            EtherologyClient.chapters.next();
+            PageButton.chapters.next();
         };
     }
 }

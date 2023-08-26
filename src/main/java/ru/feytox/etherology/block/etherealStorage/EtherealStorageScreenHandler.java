@@ -7,8 +7,8 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
 import ru.feytox.etherology.util.feyapi.ClosedSlot;
 import ru.feytox.etherology.util.feyapi.TypedSlot;
 
@@ -20,7 +20,7 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
     }
 
     public EtherealStorageScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(Etherology.ETHEREAL_STORAGE_SCREEN_HANDLER, syncId);
+        super(ScreenHandlersRegistry.ETHEREAL_STORAGE_SCREEN_HANDLER, syncId);
         checkSize(inventory, 4);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
