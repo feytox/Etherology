@@ -14,7 +14,6 @@ import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
-import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
@@ -70,7 +69,7 @@ public class TwoHandHeldAttackS2C extends AbstractS2CPacket {
             if (attackGround) ShockwaveUtil.onFullAttack(swinger);
 
             swinger.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, 0.9f);
-            ShockwaveParticle.spawnShockParticles(world, swinger);
+            ShockwaveUtil.spawnShockParticles(world, swinger);
         });
     }
 

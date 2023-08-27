@@ -26,6 +26,8 @@ public class ClientParticleTypes {
         register(ITEM, ItemParticle::new);
         register(RISING, RisingParticle::new);
         register(VITAL, VitalParticle::new);
+        register(SHOCKWAVE, ShockwaveParticle::new);
+        register(GLINT, GlintParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {

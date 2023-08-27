@@ -3,10 +3,6 @@ package ru.feytox.etherology;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import org.slf4j.Logger;
 import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
@@ -23,16 +19,12 @@ import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.registry.util.ResourceReloaders;
 import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
 import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
 
 public class Etherology implements ModInitializer {
 
     public static final Logger ELOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "etherology";
-
-    public static final DefaultParticleType GLINT_PARTICLE = FabricParticleTypes.simple();
-    public static final DefaultParticleType SHOCKWAVE = FabricParticleTypes.simple();
 
     @Override
     public void onInitialize() {
@@ -51,9 +43,6 @@ public class Etherology implements ModInitializer {
         EtherealGeneratorDispenserBehavior.register();
         EWorldGeneration.generateWorldGen();
         EtherologyRegistry.buildRegistry();
-
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("glint_particle"), GLINT_PARTICLE);
-        Registry.register(Registries.PARTICLE_TYPE, new EIdentifier("shockwave"), SHOCKWAVE);
 
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());

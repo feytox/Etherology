@@ -13,12 +13,6 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     @Override
     public abstract void tick();
 
-    public void markPrevPos() {
-        prevPosX = x;
-        prevPosY = y;
-        prevPosZ = z;
-    }
-
     /**
      * Performs a tick to move with static speed.
      */
@@ -50,7 +44,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
         if (tickAge()) return;
         markPrevPos();
 
-        Vec3d pathVec = getPathVec(endPos);
+        Vec3d pathVec = getFullPathVec(endPos);
         double pathLen = pathVec.length();
         if (checkDeadPos(deadOnEnd, pathLen)) return;
 

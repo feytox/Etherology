@@ -17,7 +17,6 @@ import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.TwoHandHeldAttackC2S;
-import ru.feytox.etherology.particle.ShockwaveParticle;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
@@ -56,6 +55,6 @@ public class MinecraftClientMixin {
         if (!isStrongAttack || !isHammer) return;
 
         player.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, 0.9f);
-        ShockwaveParticle.spawnShockParticles(world, player);
+        ShockwaveUtil.spawnShockParticles(world, player);
     }
 }

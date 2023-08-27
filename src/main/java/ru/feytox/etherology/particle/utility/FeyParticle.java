@@ -43,6 +43,12 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         return MathHelper.fastInverseSqrt(vec.lengthSquared());
     }
 
+    public void markPrevPos() {
+        prevPosX = x;
+        prevPosY = y;
+        prevPosZ = z;
+    }
+
     public void modifyPos(Vec3d deltaVec) {
         x += deltaVec.x;
         y += deltaVec.y;
@@ -130,6 +136,11 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
 
         int fakeAge = age % (cycleAge + 1);
         setSprite(spriteProvider.getSprite(fakeAge, cycleAge));
+    }
+
+    public void setSpriteForIndex(int spriteIndex, int spritesCount) {
+        if (!isAlive()) return;
+        setSprite(spriteProvider.getSprite(Math.min(spriteIndex, spritesCount-1), spritesCount-1));
     }
 
     @Nullable

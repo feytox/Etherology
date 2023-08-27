@@ -1,6 +1,6 @@
 package ru.feytox.etherology.particle.utility;
 
-import net.minecraft.client.particle.SpriteBillboardParticle;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
@@ -9,10 +9,12 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
-public abstract class HorizontalParticle extends SpriteBillboardParticle {
-    protected HorizontalParticle(ClientWorld clientWorld, double x, double y, double z) {
-        super(clientWorld, x, y, z, 0, 0, 0);
+public abstract class HorizontalParticle<T extends FeyParticleEffect<T>> extends FeyParticle<T> {
+
+    public HorizontalParticle(ClientWorld clientWorld, double x, double y, double z, T parameters, SpriteProvider spriteProvider) {
+        super(clientWorld, x, y, z, parameters, spriteProvider);
     }
 
     @Override

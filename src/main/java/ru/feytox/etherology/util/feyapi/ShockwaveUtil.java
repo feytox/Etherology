@@ -3,6 +3,8 @@ package ru.feytox.etherology.util.feyapi;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,7 +28,9 @@ import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
+import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
 
@@ -179,5 +183,20 @@ public class ShockwaveUtil {
         float yawAngle = -playerYaw * 0.017453292F;
         Vec3d attackVec = new Vec3d(MathHelper.sin(yawAngle), 0, MathHelper.cos(yawAngle));
         return playerPos.add(attackVec.multiply(1.5)).add(0, 0.025, 0);
+    }
+
+    public static void spawnShockParticles(ClientWorld world, AbstractClientPlayerEntity player) {
+        if (!player.isOnGround()) return;
+        Vec3d shockPos = getShockPos(player.getYaw(), player.getPos());
+
+        val shockEffect = new SimpleParticleEffect(ServerParticleTypes.SHOCKWAVE);
+        shockEffect.spawnParticles(world, 1, 0, shockPos);
+
+        int pealLevel = EnchantmentHelper.getEquipmentLevel(PealEnchantment.INSTANCE.get(), player);
+        if (pealLevel == 0) return;
+
+        Random random = world.getRandom();
+        val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.PEAL);
+        effect.spawnParticles(world, random.nextBetween(4, 7), 1, 0, 1, shockPos.add(0, 0.2, 0));
     }
 }

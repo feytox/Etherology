@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.etherealSocket;
 
 import io.wispforest.owo.util.ImplementedInventory;
+import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.client.world.ClientWorld;
@@ -19,12 +20,19 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.particle.GlintParticle;
+import ru.feytox.etherology.particle.effects.MovingParticleEffect;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.util.deprecated.EVec3d;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+
+import java.util.List;
 
 import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
@@ -32,6 +40,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_
 
 public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    private Boolean wasWithGlint = null;
     // TODO: 09.08.2023 deprecate
     private boolean isUpdated = false;
     private float cachedPercent = 0;
@@ -53,9 +62,64 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         cachePercent();
-        if (isUpdated) {
-            GlintParticle.spawnParticles(world, pos, state.get(FACING), cachedPercent);
-            isUpdated = false;
+        tickGlintParticles(world, state);
+    }
+
+    private void tickGlintParticles(ClientWorld world, BlockState state) {
+        Boolean withGlint = state.getOrEmpty(WITH_GLINT).orElse(null);
+        if (withGlint == null) return;
+
+        if (wasWithGlint != null && !wasWithGlint && withGlint) {
+            spawnGlintParticles(world, state.get(FACING));
+        }
+        wasWithGlint = withGlint;
+    }
+
+    private void spawnGlintParticles(ClientWorld world, Direction facing) {
+        Random random = world.getRandom();
+        Vec3d pos = Vec3d.of(this.pos);
+        Vec3d centerPos = this.pos.toCenterPos().subtract(0, 0.3, 0);
+
+        double dxz = 6/16d;
+        double dy = 0.25;
+        // down direction
+        Vec3d start = new Vec3d(dxz, dy, dxz);
+        Vec3d end = new Vec3d(0.25 + dxz, dy, 0.25 + dxz);
+        switch (facing) {
+            case UP -> {
+                start = new Vec3d(dxz, 0.5 + dy, dxz);
+                end = new Vec3d(0.25 + dxz, 0.5 + dy, 0.25 + dxz);
+            }
+            case NORTH -> {
+                start = new Vec3d(dxz, dxz, dy);
+                end = new Vec3d(0.25 + dxz, 0.25 + dxz, dy);
+            }
+            case SOUTH -> {
+                start = new Vec3d(dxz, dxz, 0.5 + dy);
+                end = new Vec3d(0.25 + dxz, 0.25 + dxz, 0.5 + dy);
+            }
+            case WEST -> {
+                start = new Vec3d(dy, dxz, dxz);
+                end = new Vec3d(dy, 0.25 + dxz, 0.25 + dxz);
+            }
+            case EAST -> {
+                start = new Vec3d(0.5 + dy, dxz, dxz);
+                end = new Vec3d(0.5 + dy, 0.25 + dxz, 0.25 + dxz);
+            }
+        }
+
+        List<Vec3d> particlePoses = EVec3d.aroundSquareOf(pos.add(start), pos.add(end), 0.05d);
+
+        int count = MathHelper.floor(25f * cachedPercent);
+        for (int i = 0; i < count; i++) {
+            int j = random.nextInt(particlePoses.size()-1);
+            Vec3d particlePos = particlePoses.get(j);
+            Vec3d path = particlePos
+                    .subtract(centerPos)
+                    .multiply(random.nextDouble() * 1);
+            path = particlePos.add(path);
+            val effect = new MovingParticleEffect(ServerParticleTypes.GLINT, path);
+            effect.spawnParticles(world, 2, 0.01, particlePos);
         }
     }
 

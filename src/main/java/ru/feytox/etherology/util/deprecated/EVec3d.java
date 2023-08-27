@@ -6,7 +6,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated
+// TODO: 27.08.2023 move to better place
 public class EVec3d {
 
     public static List<Vec3d> lineOf(Vec3d startPos, Vec3d endPos, double step) {
