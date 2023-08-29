@@ -1,6 +1,5 @@
 package ru.feytox.etherology.model;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
@@ -9,6 +8,7 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelOverrideList;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -26,18 +26,18 @@ import java.util.function.Supplier;
  */
 public abstract class MultiItemModel implements BakedModel, FabricBakedModel {
 
-    private final List<ModelIdentifier> modelIdentifiers;
+    public MultiItemModel() {}
 
-    public MultiItemModel(ModelIdentifier... modelIdentifiers) {
-        this.modelIdentifiers = ObjectArrayList.of(modelIdentifiers);
-    }
+    abstract public ModelIdentifier getModelForParticles();
+
+    abstract protected List<ModelIdentifier> getModels();
 
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
         var modelConsumer = context.bakedModelConsumer();
 
-        modelIdentifiers.forEach(modelId -> modelConsumer.accept(modelManager.getModel(modelId)));
+        getModels().forEach(modelId -> modelConsumer.accept(modelManager.getModel(modelId)));
     }
 
     @Override
@@ -76,5 +76,11 @@ public abstract class MultiItemModel implements BakedModel, FabricBakedModel {
     @Override
     public ModelOverrideList getOverrides() {
         return ModelOverrideList.EMPTY;
+    }
+
+    @Override
+    public Sprite getParticleSprite() {
+        BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
+        return modelManager.getModel(getModelForParticles()).getParticleSprite();
     }
 }

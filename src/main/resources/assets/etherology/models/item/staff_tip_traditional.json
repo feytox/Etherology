@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"style": "etherology:item/staff_style_traditional_iron"
+	},
+	"elements": [
+		{
+			"from": [7, -5, 7],
+			"to": [9, -3, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 4], "texture": "#style"},
+				"east": {"uv": [0, 2, 2, 4], "texture": "#style"},
+				"south": {"uv": [6, 2, 8, 4], "texture": "#style"},
+				"west": {"uv": [4, 2, 6, 4], "texture": "#style"},
+				"up": {"uv": [2, 0, 4, 2], "texture": "#style"},
+				"down": {"uv": [4, 0, 6, 2], "texture": "#style"}
+			}
+		}
+	]
+}

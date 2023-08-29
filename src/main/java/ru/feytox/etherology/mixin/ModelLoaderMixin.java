@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.registry.item.ToolItems;
 
@@ -25,5 +26,6 @@ public abstract class ModelLoaderMixin {
     private void injectInHandModels(BlockColors blockColors, Profiler profiler, Map jsonUnbakedModels, Map blockStates, CallbackInfo ci) {
         Arrays.stream(ToolItems.GLAIVES).map(item -> EtherologyModels.getItemModel(item, true)).forEach(this::addModel);
         addModel(EtherologyModels.getItemModel(ToolItems.OCULUS, true));
+        addModel(EtherologyModelProvider.ETHER_STAFF);
     }
 }

@@ -13,6 +13,8 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.model.custom.OculusModel;
+import ru.feytox.etherology.model.custom.StaffModel;
+import ru.feytox.etherology.registry.item.ToolItems;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,11 +27,13 @@ import static ru.feytox.etherology.model.custom.OculusModel.OCULUS_LENS;
 public class EtherologyModelProvider implements ModelVariantProvider {
 
     private static final ModelIdentifier OCULUS_IN_HAND = EtherologyModels.createItemModelId("oculus_in_hand");
+    public static final ModelIdentifier ETHER_STAFF = EtherologyModels.createItemModelId(ToolItems.ETHER_STAFF.toString());
 
     public static void register() {
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, identifierConsumer) -> {
             identifierConsumer.accept(OCULUS_BASE);
             identifierConsumer.accept(OCULUS_LENS);
+            StaffModel.loadPartModels(identifierConsumer);
         });
 
         ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> new EtherologyModelProvider());
@@ -37,9 +41,10 @@ public class EtherologyModelProvider implements ModelVariantProvider {
 
     @Override
     public @Nullable UnbakedModel loadModelVariant(ModelIdentifier modelId, ModelProviderContext context) {
-        if (!modelId.equals(OCULUS_IN_HAND)) return null;
+        if (modelId.equals(OCULUS_IN_HAND)) return new UnbakedMultiItemModel(OculusModel::new);
+        if (modelId.equals(ETHER_STAFF)) return new UnbakedMultiItemModel(StaffModel::new);
+        return null;
 
-        return new UnbakedMultiItemModel(OculusModel::new);
     }
 
     private record UnbakedMultiItemModel(Supplier<MultiItemModel> modelSupplier) implements UnbakedModel {

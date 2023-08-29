@@ -2,9 +2,8 @@ package ru.feytox.etherology.util.feyapi;
 
 import net.minecraft.nbt.NbtCompound;
 
-// TODO: 29.08.2023 replace to NbtReadable
-@Deprecated
-public interface Nbtable {
+public interface NbtReadable<T> {
+
     void writeNbt(NbtCompound nbt);
-    Nbtable readNbt(NbtCompound nbt);
+    T readNbt(NbtCompound nbt);
 }

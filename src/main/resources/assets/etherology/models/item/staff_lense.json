@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "etherology:item/staff_core_oak",
+		"lense": "etherology:item/staff_lense_purple"
+	},
+	"elements": [
+		{
+			"from": [6.75, 19.75, 6.75],
+			"to": [9.25, 22.25, 9.25],
+			"faces": {
+				"north": {"uv": [3, 3, 6, 6], "texture": "#lense"},
+				"east": {"uv": [0, 3, 3, 6], "texture": "#lense"},
+				"south": {"uv": [9, 3, 12, 6], "texture": "#lense"},
+				"west": {"uv": [6, 3, 9, 6], "texture": "#lense"},
+				"up": {"uv": [3, 0, 6, 3], "texture": "#lense"},
+				"down": {"uv": [6, 0, 9, 3], "texture": "#lense"}
+			}
+		}
+	]
+}

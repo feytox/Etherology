@@ -1,0 +1,56 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "etherology:item/staff_core_oak",
+		"style": "etherology:item/staff_style_ocular_iron"
+	},
+	"elements": [
+		{
+			"from": [7, 19, 7],
+			"to": [9, 21, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 4], "texture": "#style"},
+				"east": {"uv": [0, 2, 2, 4], "texture": "#style"},
+				"south": {"uv": [6, 2, 8, 4], "texture": "#style"},
+				"west": {"uv": [4, 2, 6, 4], "texture": "#style"},
+				"up": {"uv": [2, 0, 4, 2], "texture": "#style"},
+				"down": {"uv": [4, 0, 6, 2], "texture": "#style"}
+			}
+		},
+		{
+			"from": [7.5, 23, 7],
+			"to": [8.5, 24, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [10, 8, 11, 9], "texture": "#style"},
+				"east": {"uv": [14, 8, 16, 9], "texture": "#style"},
+				"south": {"uv": [13, 8, 14, 9], "texture": "#style"},
+				"west": {"uv": [11, 8, 13, 9], "texture": "#style"},
+				"up": {"uv": [11, 7, 13, 8], "rotation": 90, "texture": "#style"}
+			}
+		},
+		{
+			"from": [7.5, 19, 6],
+			"to": [8.5, 23, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 8, 1, 12], "texture": "#style"},
+				"south": {"uv": [5, 8, 6, 12], "texture": "#style"},
+				"up": {"uv": [1, 7, 5, 8], "rotation": 90, "texture": "#style"},
+				"down": {"uv": [9, 7, 5, 8], "rotation": 90, "texture": "#style"}
+			}
+		},
+		{
+			"from": [7.5, 23, 6],
+			"to": [8.5, 19, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 8, 1, 12], "texture": "#style"},
+				"south": {"uv": [5, 8, 6, 12], "texture": "#style"},
+				"up": {"uv": [5, 7, 9, 8], "rotation": 90, "texture": "#style"},
+				"down": {"uv": [5, 7, 1, 8], "rotation": 90, "texture": "#style"}
+			}
+		}
+	]
+}

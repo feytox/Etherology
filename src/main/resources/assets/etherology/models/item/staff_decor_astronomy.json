@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "etherology:item/staff_core_oak",
+		"style": "etherology:item/staff_style_astronomy_iron"
+	},
+	"elements": [
+		{
+			"from": [6.5, 17, 6.5],
+			"to": [9.5, 18, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [4, 15, 7, 16], "texture": "#style"},
+				"east": {"uv": [13, 15, 16, 16], "texture": "#style"},
+				"south": {"uv": [10, 15, 13, 16], "texture": "#style"},
+				"west": {"uv": [7, 15, 10, 16], "texture": "#style"},
+				"up": {"uv": [7, 12, 10, 15], "texture": "#style"},
+				"down": {"uv": [10, 12, 13, 15], "texture": "#style"}
+			}
+		},
+		{
+			"from": [7, 15, 7],
+			"to": [9, 16, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [2, 6, 4, 7], "texture": "#style"},
+				"east": {"uv": [0, 6, 2, 7], "texture": "#style"},
+				"south": {"uv": [6, 6, 8, 7], "texture": "#style"},
+				"west": {"uv": [4, 6, 6, 7], "texture": "#style"},
+				"up": {"uv": [2, 4, 4, 6], "texture": "#style"},
+				"down": {"uv": [4, 4, 6, 6], "texture": "#style"}
+			}
+		}
+	]
+}
