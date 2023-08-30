@@ -44,7 +44,6 @@ public class Etherology implements ModInitializer {
         EWorldGeneration.generateWorldGen();
         EtherologyRegistry.buildRegistry();
 
-
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
     }
 }

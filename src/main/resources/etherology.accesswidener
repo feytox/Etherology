@@ -16,3 +16,4 @@ accessible method net/minecraft/block/Blocks createStoneButtonBlock ()Lnet/minec
 
 extendable class net/minecraft/enchantment/EnchantmentTarget
 accessible method net/minecraft/data/client/Model createTextureMap (Lnet/minecraft/data/client/TextureMap;)Ljava/util/Map;
+accessible method net/minecraft/client/texture/atlas/AtlasSourceManager register (Ljava/lang/String;Lcom/mojang/serialization/Codec;)Lnet/minecraft/client/texture/atlas/AtlasSourceType;

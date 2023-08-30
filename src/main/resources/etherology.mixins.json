@@ -21,6 +21,7 @@
     "LivingEntityMixin",
     "MinecraftClientAccessor",
     "ModelAccessor",
+    "NativeImageAccessor",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ProjectileEntityMixin",
@@ -33,6 +34,8 @@
   ],
   "client": [
     "AbstractClientPlayerEntityMixin",
+    "AtlasSourceManagerMixin",
+    "BakedModelManagerMixin",
     "BipedEntityModelMixin",
     "ClientPlayerInteractionManagerMixin",
     "EntityModelLayersMixin",

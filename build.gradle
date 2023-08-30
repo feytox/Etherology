@@ -22,6 +22,7 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" }
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
+    mavenCentral()
 }
 
 dependencies {
@@ -51,8 +52,7 @@ dependencies {
     }
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
 
-    include implementation("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras}")
-    annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras}")
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixin_extras}")))
 }
 
 processResources {
