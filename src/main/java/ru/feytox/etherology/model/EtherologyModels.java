@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.OculusItem;
+import ru.feytox.etherology.magic.staff.StaffParts;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Optional;
@@ -23,6 +24,7 @@ public class EtherologyModels {
     // texture keys
     public static final TextureKey GLAIVE = TextureKey.of("glaive");
     public static final TextureKey HAMMER_KEY = TextureKey.of("hammer");
+    public static final TextureKey STYLE = TextureKey.of("style");
 
     private static Model item(String parent, TextureKey... requiredTextureKeys) {
         return new Model(Optional.of(new EIdentifier("item/" + parent)), Optional.empty(), requiredTextureKeys);
@@ -37,6 +39,10 @@ public class EtherologyModels {
 
     public static ModelIdentifier createItemModelId(String modelPath) {
         return new ModelIdentifier(new EIdentifier(modelPath), "inventory");
+    }
+
+    public static Model getStaffPartModel(StaffParts part) {
+        return item("template_staff_" + part.getName(), TextureKey.PARTICLE, STYLE);
     }
 
     static {

@@ -10,10 +10,12 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.datagen.util.ModelOverride;
 import ru.feytox.etherology.datagen.util.ModelUtil;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.magic.staff.StaffPartsInfo;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.item.EItems;
+import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Arrays;
 
@@ -60,6 +62,8 @@ public class ModelGeneration extends FabricModelProvider {
         registerHammers(generator);
         // all armor
         registerItems(generator, Models.GENERATED, ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, TELDER_STEEL_HELMET, TELDER_STEEL_CHESTPLATE, TELDER_STEEL_LEGGINGS, TELDER_STEEL_BOOTS);
+        // all staff parts
+        registerStaffParts(generator);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {
@@ -112,5 +116,14 @@ public class ModelGeneration extends FabricModelProvider {
         for (int i = 1; i < 17; i++) {
             itemModelGenerator.register(glint, "_"+i, Models.GENERATED);
         }
+    }
+
+    private static void registerStaffParts(ItemModelGenerator generator) {
+        StaffPartsInfo.generateAll().forEach(partInfo -> {
+            Identifier fileId = partInfo.toModelId().withPrefixedPath("item/");
+            TextureMap textures = TextureMap.particle(new EIdentifier("item/staff_core_oak")).put(EtherologyModels.STYLE, partInfo.toTextureId());
+
+            EtherologyModels.getStaffPartModel(partInfo.getPart()).upload(fileId, textures, generator.writer);
+        });
     }
 }

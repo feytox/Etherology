@@ -8,6 +8,7 @@ import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
 import ru.feytox.etherology.block.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.commands.DevCommands;
+import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
@@ -43,6 +44,7 @@ public class Etherology implements ModInitializer {
         EtherealGeneratorDispenserBehavior.register();
         EWorldGeneration.generateWorldGen();
         EtherologyRegistry.buildRegistry();
+        StaffPatterns.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
     }

@@ -1,0 +1,16 @@
+{
+	"credit": "Made with Blockbench",
+	"elements": [
+		{
+			"from": [7.25, -3.75, 7.25],
+			"to": [8.75, 19.75, 8.75],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [1, 0, 2, 12], "texture": "#style"},
+				"east": {"uv": [0, 0, 1, 12], "texture": "#style"},
+				"south": {"uv": [3, 0, 4, 12], "texture": "#style"},
+				"west": {"uv": [2, 0, 3, 12], "texture": "#style"}
+			}
+		}
+	]
+}
