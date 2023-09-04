@@ -9,16 +9,15 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public enum StaffParts {
-    CORE("core", StaffMaterial.MATERIALS),
-//    HANDLE("handle", StaffColors.COLORS),
-    DECOR("style", StaffStyles.STYLES, StaffMetals.METALS),
-    HEAD("style", StaffStyles.STYLES, StaffMetals.METALS),
-    LENSE("lense", StaffColors.COLORS),
-    TIP("style", StaffStyles.STYLES, StaffMetals.METALS);
+    CORE(false, StaffMaterial.MATERIALS),
+    HANDLE(false, StaffColors.COLORS),
+    DECOR(true, StaffStyles.STYLES, StaffMetals.METALS),
+    HEAD(true, StaffStyles.STYLES, StaffMetals.METALS),
+    LENSE(false, StaffColors.COLORS),
+    TIP(true, StaffStyles.STYLES, StaffMetals.METALS);
 
     @Getter
-    @NonNull
-    private final String textureSuffix;
+    private final boolean styled;
 
     @Getter
     @NonNull
@@ -28,8 +27,8 @@ public enum StaffParts {
     @NonNull
     private final Supplier<List<? extends StaffPattern>> secondPatterns;
 
-    StaffParts(String textureSuffix, @NonNull Supplier<List<? extends StaffPattern>> firstPatterns) {
-        this(textureSuffix, firstPatterns, StaffPattern.memoize(StaffPattern.EMPTY));
+    StaffParts(boolean styled, @NonNull Supplier<List<? extends StaffPattern>> firstPatterns) {
+        this(styled, firstPatterns, StaffPattern.memoize(StaffPattern.EMPTY));
     }
 
     public String getName() {

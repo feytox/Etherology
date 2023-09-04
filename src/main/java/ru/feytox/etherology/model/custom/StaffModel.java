@@ -39,7 +39,15 @@ public class StaffModel extends MultiItemModel {
                     return null;
                 })
                 .filter(Objects::nonNull)
-                .map(nbt -> nbt.get(StaffPartsInfo.NBT_KEY))
+                .map(nbt -> {
+                    try {
+                        return nbt.get(StaffPartsInfo.NBT_KEY);
+                    } catch (Exception e) {
+                        Etherology.ELOGGER.error("Found non-PartInfo element while loading EtherStaff NBT");
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .map(StaffPartsInfo::toModelId)
                 .map(modelManager::getModel)
                 .forEach(modelConsumer);

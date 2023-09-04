@@ -123,7 +123,7 @@ public class ModelGeneration extends FabricModelProvider {
             Identifier fileId = partInfo.toModelId().withPrefixedPath("item/");
             TextureMap textures = TextureMap.particle(new EIdentifier("item/staff_core_oak")).put(EtherologyModels.STYLE, partInfo.toTextureId());
 
-            EtherologyModels.getStaffPartModel(partInfo.getPart()).upload(fileId, textures, generator.writer);
+            EtherologyModels.getStaffPartModel(partInfo).upload(fileId, textures, generator.writer);
         });
     }
 }

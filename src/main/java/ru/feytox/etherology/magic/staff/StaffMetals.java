@@ -4,7 +4,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public enum StaffMetals implements StaffPattern {
-    IRON;
+    ATTRAHITE,
+    COPPER,
+    ETHRIL,
+    GOLD,
+    IRON,
+    NETHERITE,
+    TELDER;
 
     public static final Supplier<List<? extends StaffPattern>> METALS = StaffPattern.memoize(values());
 

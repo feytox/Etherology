@@ -40,7 +40,6 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     public static final IntProperty LEVEL = IntProperty.of("level", 0, 8);
     public static final IntProperty ASPECTS_LVL = IntProperty.of("aspects_lvl", 0, 100);
-    public static final IntProperty TEMPERATURE = IntProperty.of("temperature", 0, 100);
 
     private static final VoxelShape RAYCAST_SHAPE;
     private static final VoxelShape OUTLINE_SHAPE;
@@ -51,8 +50,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH)
                 .with(LEVEL, 0)
-                .with(ASPECTS_LVL, 0)
-                .with(TEMPERATURE, 20));
+                .with(ASPECTS_LVL, 0));
     }
 
     public static boolean isFilled(BlockState state) {
@@ -65,7 +63,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LEVEL, TEMPERATURE, ASPECTS_LVL);
+        builder.add(FACING, LEVEL, ASPECTS_LVL);
     }
 
     @Nullable
@@ -132,8 +130,8 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     private ActionResult mixWater(World world, BlockState state, BlockPos pos) {
         if (!isFilled(state) || world.isClient) return ActionResult.PASS;
-        if (state.get(TEMPERATURE) < 100) return ActionResult.PASS;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
+        if (cauldron.getTemperature() < 100) return ActionResult.PASS;
 
         cauldron.mixWater();
         return ActionResult.SUCCESS;
@@ -152,10 +150,9 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         if (world.isClient) return;
         if (!isFilled(state)) return;
-        if (state.get(TEMPERATURE) < 100) return;
-
         if (!(entity instanceof ItemEntity itemEntity)) return;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return;
+        if (cauldron.getTemperature() < 100) return;
         if (!VoxelShapes.matchesAnywhere(VoxelShapes.cuboid(entity.getBoundingBox().offset(-pos.getX(), -pos.getY(), -pos.getZ())), INPUT_SHAPE, BooleanBiFunction.AND)) return;
 
         cauldron.consumeItem((ServerWorld) world, itemEntity, state);

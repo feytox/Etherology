@@ -1,9 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"particle": "etherology:item/staff_core_oak",
-		"style": "etherology:item/staff_style_royal_iron"
-	},
 	"elements": [
 		{
 			"from": [7.15, -3.85, 7.15],
@@ -42,5 +38,6 @@
 				"down": {"uv": [4, 0, 6, 2], "texture": "#style"}
 			}
 		}
-	]
+	],
+	"display": {}
 }

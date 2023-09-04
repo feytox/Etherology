@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.val;
 import net.fabricmc.api.EnvType;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
 import org.slf4j.Logger;
 import ru.feytox.etherology.mixin.NativeImageAccessor;
+import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +61,27 @@ public class EPalettePermutationsAtlasSource implements AtlasSource {
         this.textures = textures;
         this.permutations = permutations;
         this.paletteKey = paletteKey;
+    }
+
+    public EPalettePermutationsAtlasSource() {
+        // TODO: 04.09.2023 load from json
+        this.textures = ObjectArrayList.of(
+                new EIdentifier("trims/textures/staff_style_aristocrat"),
+                new EIdentifier("trims/textures/staff_style_astronomy"),
+                new EIdentifier("trims/textures/staff_style_heavenly"),
+                new EIdentifier("trims/textures/staff_style_ocular"),
+                new EIdentifier("trims/textures/staff_style_ritual"),
+                new EIdentifier("trims/textures/staff_style_royal"),
+                new EIdentifier("trims/textures/staff_style_traditional")
+        );
+        this.permutations = Map.of("iron", new EIdentifier("trims/palettes/iron"),
+                "gold", new EIdentifier("trims/palettes/gold"),
+                "netherite", new EIdentifier("trims/palettes/netherite"),
+                "copper", new EIdentifier("trims/palettes/copper"),
+                "attrahite", new EIdentifier("trims/palettes/attrahite"),
+                "telder", new EIdentifier("trims/palettes/telder"),
+                "ethril", new EIdentifier("trims/palettes/ethril"));
+        this.paletteKey = new EIdentifier("trims/palettes/trim_palette");
     }
 
     public void load(ResourceManager resourceManager, AtlasSource.SpriteRegions regions) {

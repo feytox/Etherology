@@ -1,8 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"style": "etherology:item/staff_style_traditional_iron"
-	},
 	"elements": [
 		{
 			"from": [7, 19, 7],

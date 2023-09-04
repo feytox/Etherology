@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public enum StaffMaterial implements StaffPattern {
-    OAK,
-    SPRUCE,
-    BIRCH;
+    OAK;
 
     public static final Supplier<List<? extends StaffPattern>> MATERIALS = StaffPattern.memoize(values());
 

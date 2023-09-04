@@ -53,6 +53,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     private EtherAspectsContainer aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(8, ItemStack.EMPTY);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    @Getter
+    private int temperature = 20;
     private int cacheItemsCount = 0;
     private boolean shouldMixItems = false;
     private int mixItemsTicks = 0;
@@ -68,7 +70,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (!BrewingCauldronBlock.isFilled(state)) return;
         tickMixingItems(world, state);
         tickAspects(world, state);
-        tickTemperature(world, blockPos, state);
+        tickTemperature(world, blockPos);
     }
 
     @Override
@@ -80,7 +82,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     private void tickBubbleParticles(ClientWorld world, BlockState state) {
         if (world.getTime() % 3 != 0) return;
-        int temperature = state.get(BrewingCauldronBlock.TEMPERATURE);
         if (temperature < 100) return;
 
         Random random = world.getRandom();
@@ -146,7 +147,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         effect.spawnParticles(world, deltaCount, 0.35, 0, 0.35, centerPos);
     }
 
-    private void tickTemperature(ServerWorld world, BlockPos blockPos, BlockState state) {
+    private void tickTemperature(ServerWorld world, BlockPos blockPos) {
         if (world.getTime() % 10 != 0) return;
 
         BlockState downState = world.getBlockState(blockPos.down());
@@ -154,8 +155,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (!isHotBlock && world.getRandom().nextBoolean()) return;
 
         int change = isHotBlock ? 1 : -1;
-        int newTemperature = MathHelper.clamp(state.get(BrewingCauldronBlock.TEMPERATURE) + change, 20, 100);
-        world.setBlockState(blockPos, state.with(BrewingCauldronBlock.TEMPERATURE, newTemperature));
+        temperature = MathHelper.clamp(temperature + change, 20, 100);
+        syncData(world);
     }
 
     public void clearAspects(ServerWorld world) {
@@ -243,13 +244,14 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
             inventory = new CauldronRecipeInventory(aspects, itemStack);
         } while (recipe.matches(inventory, world) && BrewingCauldronBlock.isFilled(state));
 
-        if (!BrewingCauldronBlock.isFilled(state)) state = state.with(BrewingCauldronBlock.TEMPERATURE, 20);
+        if (!BrewingCauldronBlock.isFilled(state)) temperature = 20;
         world.setBlockState(pos, state);
         return new ItemStack(outputItem, count);
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
+        nbt.putInt("temperature", temperature);
         nbt.putBoolean("wasWithAspects", wasWithAspects);
         aspects.writeNbt(nbt);
         Inventories.writeNbt(nbt, items);
@@ -261,6 +263,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        temperature = nbt.getInt("temperature");
         wasWithAspects = nbt.getBoolean("wasWithAspects");
         aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
         items.clear();

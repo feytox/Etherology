@@ -14,7 +14,7 @@ public class AtlasSourceManagerMixin {
 
     @ModifyExpressionValue(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/HashBiMap;create()Lcom/google/common/collect/HashBiMap;"))
     private static HashBiMap<Identifier, AtlasSourceType> injectEtherAtlasSource(HashBiMap<Identifier, AtlasSourceType> original) {
-        original.put(new Identifier("ether_palette_permutations"), EtherAtlasSources.PALETTED_PERMUTATIONS);
+//        original.put(new Identifier("ether_palette_permutations"), EtherAtlasSources.PALETTED_PERMUTATIONS);
         return original;
     }
 }

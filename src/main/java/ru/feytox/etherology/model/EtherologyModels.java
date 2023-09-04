@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.staff.StaffParts;
+import ru.feytox.etherology.magic.staff.StaffPartsInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Optional;
@@ -41,8 +42,10 @@ public class EtherologyModels {
         return new ModelIdentifier(new EIdentifier(modelPath), "inventory");
     }
 
-    public static Model getStaffPartModel(StaffParts part) {
-        return item("template_staff_" + part.getName(), TextureKey.PARTICLE, STYLE);
+    public static Model getStaffPartModel(StaffPartsInfo partInfo) {
+        StaffParts part = partInfo.getPart();
+        if (!part.isStyled()) return item("staff_" + part.getName(), TextureKey.PARTICLE, STYLE);
+        return item("staff_" + part.getName() + "_" + partInfo.getFirstPattern().getName(), TextureKey.PARTICLE, STYLE);
     }
 
     static {
