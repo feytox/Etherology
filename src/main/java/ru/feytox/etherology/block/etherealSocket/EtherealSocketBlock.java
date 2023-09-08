@@ -91,11 +91,6 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "ethereal_socket";
     }

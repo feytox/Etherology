@@ -64,11 +64,6 @@ public class EssenceDetectorBlock extends Block implements BlockEntityProvider, 
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "essence_detector";
     }

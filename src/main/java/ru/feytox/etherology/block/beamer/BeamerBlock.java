@@ -127,11 +127,6 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "beamer";
     }

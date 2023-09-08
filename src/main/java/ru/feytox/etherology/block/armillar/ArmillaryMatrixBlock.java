@@ -69,11 +69,6 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "armillary_base";
     }

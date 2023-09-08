@@ -127,9 +127,6 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
         return WEST_SHAPE;
     }
 
-    public Block getBlockInstance() {
-        return this;
-    }
     public String getBlockId() {
         return blockId;
     }

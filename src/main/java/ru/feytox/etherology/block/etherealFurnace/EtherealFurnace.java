@@ -108,11 +108,6 @@ public class EtherealFurnace extends Block implements BlockEntityProvider, Regis
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "ethereal_furnace";
     }

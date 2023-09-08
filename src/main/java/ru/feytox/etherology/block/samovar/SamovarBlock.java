@@ -77,11 +77,6 @@ public class SamovarBlock extends Block implements RegistrableBlock {
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "samovar";
     }

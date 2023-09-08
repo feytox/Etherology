@@ -159,11 +159,6 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "brewing_cauldron";
     }

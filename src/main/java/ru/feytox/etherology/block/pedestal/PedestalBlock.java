@@ -139,11 +139,6 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "pedestal";
     }

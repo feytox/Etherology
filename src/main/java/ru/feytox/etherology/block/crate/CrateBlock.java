@@ -163,11 +163,6 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "crate";
     }

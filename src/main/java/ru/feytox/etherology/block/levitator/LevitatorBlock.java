@@ -69,11 +69,6 @@ public class LevitatorBlock extends FacingBlock implements RegistrableBlock, Blo
 
     }
 
-    @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {

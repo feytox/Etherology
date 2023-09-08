@@ -185,11 +185,6 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return blockId;
     }

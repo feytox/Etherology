@@ -64,11 +64,6 @@ public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEn
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return blockId;
     }

@@ -154,11 +154,6 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "spill_barrel";
     }

@@ -195,11 +195,6 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "ethereal_channel";
     }

@@ -33,11 +33,6 @@ public class EmpowerTableBlock extends Block implements RegistrableBlock, BlockE
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new EmpowerTableBlockEntity(pos, state);
     }

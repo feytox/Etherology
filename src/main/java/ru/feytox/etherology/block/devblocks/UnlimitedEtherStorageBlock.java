@@ -29,11 +29,6 @@ public class UnlimitedEtherStorageBlock extends Block implements RegistrableBloc
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "unlimited_ether_storage";
     }

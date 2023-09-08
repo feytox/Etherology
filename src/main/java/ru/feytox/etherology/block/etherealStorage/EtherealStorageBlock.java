@@ -75,11 +75,6 @@ public class EtherealStorageBlock extends HorizontalFacingBlock implements Regis
         return "ethereal_storage";
     }
 
-    @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

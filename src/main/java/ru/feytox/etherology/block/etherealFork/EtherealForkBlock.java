@@ -100,11 +100,6 @@ public class EtherealForkBlock extends Block implements RegistrableBlock, BlockE
     }
 
     @Override
-    public Block getBlockInstance() {
-        return this;
-    }
-
-    @Override
     public String getBlockId() {
         return "ethereal_fork";
     }
