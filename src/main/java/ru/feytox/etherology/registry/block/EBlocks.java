@@ -11,6 +11,8 @@ import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlockEntity;
 import ru.feytox.etherology.block.closet.ClosetSlabBlock;
+import ru.feytox.etherology.block.constructorTable.ConstructorTable;
+import ru.feytox.etherology.block.constructorTable.ConstructorTableBlockEntity;
 import ru.feytox.etherology.block.crate.CrateBlock;
 import ru.feytox.etherology.block.crate.CrateBlockEntity;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlock;
@@ -178,6 +180,13 @@ public class EBlocks {
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("armillary_matrix_block_entity"),
             FabricBlockEntityTypeBuilder.create(ArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX).build()
+    );
+
+    public static final ConstructorTable CONSTRUCTOR_TABLE = (ConstructorTable) new ConstructorTable().registerAll();
+    public static final BlockEntityType<ConstructorTableBlockEntity> CONSTRUCTOR_TABLE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new EIdentifier("constructor_table_block_entity"),
+            FabricBlockEntityTypeBuilder.create(ConstructorTableBlockEntity::new, CONSTRUCTOR_TABLE).build()
     );
 
     public static void registerAll() {

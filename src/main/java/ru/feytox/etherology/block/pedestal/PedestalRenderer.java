@@ -39,6 +39,10 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
     public static <T extends BlockEntity & UniqueProvider> void renderPedestalItem(T entity, MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, int light, ItemRenderer itemRenderer, Vec3d offset) {
         float uniqueOffset = entity.getUniqueOffset(entity.getPos());
 
+        renderVanillaGroundItem(matrices, world, itemStack, vertexConsumers, tickDelta, light, itemRenderer, offset, uniqueOffset);
+    }
+
+    public static void renderVanillaGroundItem(MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, int light, ItemRenderer itemRenderer, Vec3d offset, float uniqueOffset) {
         matrices.push();
         matrices.translate(offset.x, offset.y, offset.z);
         BakedModel bakedModel = itemRenderer.getModel(itemStack, world, null, 5678);

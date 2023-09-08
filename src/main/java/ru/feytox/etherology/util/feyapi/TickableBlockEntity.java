@@ -4,9 +4,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TickableBlockEntity extends BlockEntity {
     public TickableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -31,5 +36,16 @@ public abstract class TickableBlockEntity extends BlockEntity {
     public void syncData(ServerWorld world) {
         markDirty();
         world.getChunkManager().markForUpdate(pos);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 }
