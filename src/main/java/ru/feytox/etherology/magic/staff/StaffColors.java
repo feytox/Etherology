@@ -4,7 +4,21 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public enum StaffColors implements StaffPattern {
-    RED;
+    BLACK,
+    BLUE,
+    BROWN,
+    CYAN,
+    GRAY,
+    GREEN,
+    LIGHT_BLUE,
+    LIGHT_GRAY,
+    LIME,
+    ORANGE,
+    PINK,
+    PURPLE,
+    RED,
+    WHITE,
+    YELLOW;
 
     public static final Supplier<List<? extends StaffPattern>> COLORS = StaffPattern.memoize(values());
 
