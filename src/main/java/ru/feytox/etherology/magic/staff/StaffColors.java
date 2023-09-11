@@ -13,6 +13,7 @@ public enum StaffColors implements StaffPattern {
     LIGHT_BLUE,
     LIGHT_GRAY,
     LIME,
+    MAGENTA,
     ORANGE,
     PINK,
     PURPLE,

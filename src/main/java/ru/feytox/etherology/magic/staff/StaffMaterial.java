@@ -12,7 +12,8 @@ public enum StaffMaterial implements StaffPattern {
     MANGROVE,
     OAK,
     SPRUCE,
-    WARPED;
+    WARPED,
+    PEACH;
 
     public static final Supplier<List<? extends StaffPattern>> MATERIALS = StaffPattern.memoize(values());
 
