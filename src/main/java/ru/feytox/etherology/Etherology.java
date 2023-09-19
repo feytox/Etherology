@@ -13,6 +13,7 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
+import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.item.EtherEnchantments;
 import ru.feytox.etherology.registry.util.EtherSounds;
@@ -45,6 +46,7 @@ public class Etherology implements ModInitializer {
         EWorldGeneration.generateWorldGen();
         EtherologyRegistry.buildRegistry();
         StaffPatterns.registerAll();
+        EItemGroups.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
     }

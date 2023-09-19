@@ -37,6 +37,7 @@ public class ToolItems {
     public static final Item TELDER_STEEL_BATTLE_PICKAXE = register("telder_steel_battle_pickaxe", new BattlePickaxe(TELDER_STEEL, 1, -2.6f));
     public static final Item DIAMOND_BATTLE_PICKAXE = register("diamond_battle_pickaxe", new BattlePickaxe(DIAMOND, 2, -2.6f));
     public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f, new FabricItemSettings().fireproof()));
+    public static final Item[] BATTLE_PICKAXES = {WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, TELDER_STEEL_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE};
 
     // hammers
     public static final Item WOODEN_HAMMER = register("wooden_hammer", new HammerItem(WOOD, 9, -3.7f));

@@ -15,11 +15,6 @@ public class EItems {
 
     public static final Teldecore TELDECORE = (Teldecore) new Teldecore().register();
 
-    // TODO: 04/04/2023 удалить шарды
-    public static final DeepShard DEEP_SHARD = (DeepShard) new DeepShard().register();
-    public static final TerrestrialShard TERRESTRIAL_SHARD = (TerrestrialShard) new TerrestrialShard().register();
-    public static final HeavenlyShard HEAVENLY_SHARD = (HeavenlyShard) new HeavenlyShard().register();
-    public static final AquaticShard AQUATIC_SHARD = (AquaticShard) new AquaticShard().register();
     public static final EthrilRing ETHRIL_RING = (EthrilRing) new EthrilRing().register();
     public static final TelderSteelRing TELDER_STEEL_RING = (TelderSteelRing) new TelderSteelRing().register();
     public static final NetheriteRing NETHERITE_RING = (NetheriteRing) new NetheriteRing().register();
