@@ -1,66 +1,39 @@
 package ru.feytox.etherology.item;
 
-import lombok.val;
+import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.world.World;
-import ru.feytox.etherology.magic.staff.StaffParts;
-import ru.feytox.etherology.magic.staff.StaffPartsInfo;
-import ru.feytox.etherology.magic.staff.StaffPattern;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
+import ru.feytox.etherology.magic.staff.*;
 
 public class EtherStaff extends Item {
+
+    public static final ImmutableList<StaffPartInfo> DEFAULT_STAFF;
+
     public EtherStaff() {
         super(new FabricItemSettings().maxCount(1));
     }
 
-    @Override
-    public ItemStack getDefaultStack() {
-        ItemStack stack = super.getDefaultStack();
-        NbtCompound stackNbt = stack.getOrCreateNbt();
-        writeDefaultParts(stackNbt);
-        stack.setNbt(stackNbt);
-        return stack;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (world.isClient) return;
-        NbtCompound stackNbt = stack.getNbt();
-        if (stackNbt == null) stackNbt = new NbtCompound();
-        if (stackNbt.has(StaffPartsInfo.LIST_KEY)) return;
-
-        writeDefaultParts(stackNbt);
-        stack.setNbt(stackNbt);
-    }
-
-    private static void writeDefaultParts(NbtCompound stackNbt) {
-        // TODO: 02.09.2023 replace with default values
-        Random random = new Random();
+    public static void writeDefaultParts(NbtCompound stackNbt) {
         NbtList nbtList = new NbtList();
 
-        Arrays.stream(StaffParts.values())
-                .map(part -> new StaffPartsInfo(part, getRandomPattern(random, part.getFirstPatterns()), getRandomPattern(random, part.getSecondPatterns())))
-                .map(partsInfo -> {
+        DEFAULT_STAFF.stream()
+                .map(partInfo -> {
                     NbtCompound nbt = new NbtCompound();
-                    nbt.put(StaffPartsInfo.NBT_KEY, partsInfo);
+                    nbt.put(StaffPartInfo.NBT_KEY, partInfo);
                     return nbt;
-                })
-                .forEach(nbtList::add);
+                }).forEach(nbtList::add);
 
-        stackNbt.put(StaffPartsInfo.LIST_KEY, nbtList);
+        stackNbt.put(StaffPartInfo.LIST_KEY, nbtList);
     }
 
-    private static StaffPattern getRandomPattern(Random random, Supplier<List<? extends StaffPattern>> patternsGetter) {
-        val patterns = patternsGetter.get();
-        return patterns.get(random.nextInt(patterns.size()));
+    static {
+        DEFAULT_STAFF = ImmutableList.of(
+                new StaffPartInfo(StaffParts.CORE, StaffMaterial.OAK, StaffPattern.EMPTY),
+                new StaffPartInfo(StaffParts.HEAD, StaffStyles.TRADITIONAL, StaffMetals.IRON),
+                new StaffPartInfo(StaffParts.DECOR, StaffStyles.TRADITIONAL, StaffMetals.IRON),
+                new StaffPartInfo(StaffParts.TIP, StaffStyles.TRADITIONAL, StaffMetals.IRON)
+        );
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,13 +21,14 @@ import java.io.Reader;
 public class ModelTransformations {
     public static final ModelTransformation DEFAULT_ITEM_TRANSFORMS = loadTransformFromJson(new Identifier("minecraft:models/item/generated"));
     public static final ModelTransformation HANDHELD_ITEM_TRANSFORMS = loadTransformFromJson(new Identifier("minecraft:models/item/handheld"));
+    public static final ModelTransformation STAFF_ITEM_TRANSFORM = loadTransformFromJson(new EIdentifier("models/item/staff_core"));
 
     public static ModelTransformation loadTransformFromJson(Identifier location) {
         try {
             return JsonUnbakedModel.deserialize(getReaderForResource(location)).getTransformations();
         } catch (IOException exception) {
             Etherology.ELOGGER.warn("Can't load resource " + location);
-            exception.printStackTrace();
+            Etherology.ELOGGER.error(exception.getMessage());
             return null;
         }
     }

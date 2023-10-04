@@ -12,5 +12,29 @@
 				"west": {"uv": [2, 0, 3, 12], "texture": "#style"}
 			}
 		}
-	]
+	],
+
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-5, 0, 0],
+			"translation": [0, 0, 0.75]
+		},
+		"firstperson_righthand": {
+			"rotation": [-10, 0, 0],
+			"translation": [7, -8, -2]
+		},
+		"ground": {
+			"rotation": [0, 0, -45],
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [0, 0, -45],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"fixed": {
+			"rotation": [0, 180, -45],
+			"scale": [0.6, 0.6, 0.6]
+		}
+	}
 }

@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.datagen.util.ModelOverride;
 import ru.feytox.etherology.datagen.util.ModelUtil;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
-import ru.feytox.etherology.magic.staff.StaffPartsInfo;
+import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
@@ -119,7 +119,7 @@ public class ModelGeneration extends FabricModelProvider {
     }
 
     private static void registerStaffParts(ItemModelGenerator generator) {
-        StaffPartsInfo.generateAll().forEach(partInfo -> {
+        StaffPartInfo.generateAll().forEach(partInfo -> {
             Identifier fileId = partInfo.toModelId().withPrefixedPath("item/");
             TextureMap textures = TextureMap.particle(new EIdentifier("item/staff_core_oak")).put(EtherologyModels.STYLE, partInfo.toTextureId());
 

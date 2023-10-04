@@ -179,6 +179,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK, "Творческий бесконечный источник эфира");
         builder.add(LEVITATOR, "Левитатор");
+        builder.add(ETHER_STAFF, "Эфирный посох");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

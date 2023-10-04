@@ -12,7 +12,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.magic.staff.StaffPartsInfo;
+import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.model.ModelTransformations;
 import ru.feytox.etherology.model.MultiItemModel;
@@ -31,7 +31,7 @@ public class StaffModel extends MultiItemModel {
 
         NbtCompound stackNbt = stack.getNbt();
         if (stackNbt == null) return;
-        NbtList nbtList = stackNbt.getOr(StaffPartsInfo.LIST_KEY, new NbtList());
+        NbtList nbtList = stackNbt.getOr(StaffPartInfo.LIST_KEY, new NbtList());
         nbtList.stream()
                 .map(nbtElement -> {
                     if (nbtElement instanceof NbtCompound compound) return compound;
@@ -41,25 +41,25 @@ public class StaffModel extends MultiItemModel {
                 .filter(Objects::nonNull)
                 .map(nbt -> {
                     try {
-                        return nbt.get(StaffPartsInfo.NBT_KEY);
+                        return nbt.get(StaffPartInfo.NBT_KEY);
                     } catch (Exception e) {
                         Etherology.ELOGGER.error("Found non-PartInfo element while loading EtherStaff NBT");
                         return null;
                     }
                 })
                 .filter(Objects::nonNull)
-                .map(StaffPartsInfo::toModelId)
+                .map(StaffPartInfo::toModelId)
                 .map(modelManager::getModel)
                 .forEach(modelConsumer);
     }
 
     public static void loadPartModels(Consumer<Identifier> idConsumer) {
-        StaffPartsInfo.generateAll().stream().map(StaffPartsInfo::toModelId).forEach(idConsumer);
+        StaffPartInfo.generateAll().stream().map(StaffPartInfo::toModelId).forEach(idConsumer);
     }
 
     @Override
     public ModelTransformation getTransformation() {
-        return ModelTransformations.DEFAULT_ITEM_TRANSFORMS;
+        return ModelTransformations.STAFF_ITEM_TRANSFORM;
     }
 
     @Override

@@ -18,11 +18,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class StaffPartsInfo {
+public class StaffPartInfo {
 
-    private static final NbtKey.Type<StaffPartsInfo> NBT_TYPE;
-    public static final NbtKey<StaffPartsInfo> NBT_KEY;
-    public static final NbtKey.ListKey<StaffPartsInfo> LIST_KEY;
+    private static final NbtKey.Type<StaffPartInfo> NBT_TYPE;
+    public static final NbtKey<StaffPartInfo> NBT_KEY;
+    public static final NbtKey.ListKey<StaffPartInfo> LIST_KEY;
 
     @NonNull
     @Getter
@@ -36,11 +36,11 @@ public class StaffPartsInfo {
     @Getter
     private final StaffPattern secondPattern;
 
-    public static List<StaffPartsInfo> generateAll() {
+    public static List<StaffPartInfo> generateAll() {
         return Arrays.stream(StaffParts.values())
                 .flatMap(part -> part.getFirstPatterns().get().stream()
                         .map(firstPattern -> part.getSecondPatterns().get().stream()
-                                .map(secondPattern -> new StaffPartsInfo(part, firstPattern, secondPattern))))
+                                .map(secondPattern -> new StaffPartInfo(part, firstPattern, secondPattern))))
                 .flatMap(Function.identity())
                 .collect(Collectors.toCollection(ObjectArrayList::new));
     }
@@ -65,7 +65,7 @@ public class StaffPartsInfo {
             StaffParts part = EnumUtils.getEnumIgnoreCase(StaffParts.class, nbt.getString("part"));
             StaffPattern firstPattern = StaffPatterns.get(nbt.getString("first_pattern"));
             StaffPattern secondPattern = StaffPatterns.get(nbt.getString("second_pattern"));
-            return new StaffPartsInfo(part, firstPattern, secondPattern);
+            return new StaffPartInfo(part, firstPattern, secondPattern);
         }, ((root, s, partsInfo) -> {
             root.putString("part", partsInfo.getPart().getName());
             root.putString("first_pattern", partsInfo.getFirstPattern().getName());

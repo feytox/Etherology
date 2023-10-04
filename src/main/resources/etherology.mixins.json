@@ -17,6 +17,7 @@
     "GeoModelAccessor",
     "ItemEntityAccessor",
     "ItemEntityMixin",
+    "ItemStackMixin",
     "KeyframeAnimationAccessor",
     "LivingEntityMixin",
     "MinecraftClientAccessor",
