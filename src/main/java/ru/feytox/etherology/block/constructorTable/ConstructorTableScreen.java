@@ -17,15 +17,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
+import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class ConstructorTableScreen extends HandledScreen<ConstructorTableScreenHandler> {
-    // TODO: 08.09.2023 replace texture
-    private static final Identifier TEXTURE = new Identifier("textures/gui/container/dispenser.png");
+    private static final Identifier TEXTURE = new EIdentifier("textures/gui/constructor_table.png");
     private final PlayerInventory playerInventory;
 
     public ConstructorTableScreen(ConstructorTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         playerInventory = inventory;
+        backgroundHeight = 197;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ConstructorTableScreen extends HandledScreen<ConstructorTableScreen
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-        drawItem(x + 81, y + 55, 60, handler.getSlot(0).getStack(), delta);
+        drawItem(x + 116, y + 115, 145, handler.getSlot(0).getStack());
     }
 
     @Override
@@ -49,9 +50,13 @@ public class ConstructorTableScreen extends HandledScreen<ConstructorTableScreen
     @Override
     protected void init() {
         super.init();
+        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleY = 3;
+        playerInventoryTitleY = backgroundHeight - 94;
     }
 
-    private void drawItem(int x, int y, int size, ItemStack stack, float tickDelta) {
+    private void drawItem(int x, int y, int size, ItemStack stack) {
+        // TODO: 06.10.2023 lags fix
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
         matrixStack.translate(x, y, 1050.0F);
@@ -73,7 +78,7 @@ public class ConstructorTableScreen extends HandledScreen<ConstructorTableScreen
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         World world = playerInventory.player.getWorld();
 
-        RenderSystem.runAsFancy(() -> PedestalRenderer.renderVanillaGroundItem(renderStack, world, stack, immediate, tickDelta, 15728880, itemRenderer, Vec3d.ZERO, 0));
+        PedestalRenderer.renderVanillaGroundItem(renderStack, world, stack, immediate, 1.0F, 15728880, itemRenderer, Vec3d.ZERO, 0);
         immediate.draw();
         entityRenderDispatcher.setRenderShadows(true);
         matrixStack.pop();

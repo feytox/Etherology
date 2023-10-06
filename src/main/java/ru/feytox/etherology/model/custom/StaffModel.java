@@ -7,18 +7,17 @@ import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
-import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.item.EtherStaff;
+import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.model.ModelTransformations;
 import ru.feytox.etherology.model.MultiItemModel;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -29,25 +28,9 @@ public class StaffModel extends MultiItemModel {
         BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
         var modelConsumer = context.bakedModelConsumer();
 
-        NbtCompound stackNbt = stack.getNbt();
-        if (stackNbt == null) return;
-        NbtList nbtList = stackNbt.getOr(StaffPartInfo.LIST_KEY, new NbtList());
-        nbtList.stream()
-                .map(nbtElement -> {
-                    if (nbtElement instanceof NbtCompound compound) return compound;
-                    Etherology.ELOGGER.error("Found a non-NbtCompound element while loading EtherStaff NBT");
-                    return null;
-                })
-                .filter(Objects::nonNull)
-                .map(nbt -> {
-                    try {
-                        return nbt.get(StaffPartInfo.NBT_KEY);
-                    } catch (Exception e) {
-                        Etherology.ELOGGER.error("Found non-PartInfo element while loading EtherStaff NBT");
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
+        Map<StaffPart, StaffPartInfo> parts = EtherStaff.readNbt(stack);
+        if (parts == null) return;
+        parts.values().stream()
                 .map(StaffPartInfo::toModelId)
                 .map(modelManager::getModel)
                 .forEach(modelConsumer);

@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StaffPartInfo {
 
-    private static final NbtKey.Type<StaffPartInfo> NBT_TYPE;
+    public static final NbtKey.Type<StaffPartInfo> NBT_TYPE;
     public static final NbtKey<StaffPartInfo> NBT_KEY;
     public static final NbtKey.ListKey<StaffPartInfo> LIST_KEY;
 
     @NonNull
     @Getter
-    private final StaffParts part;
+    private final StaffPart part;
 
     @NonNull
     @Getter
@@ -37,7 +37,7 @@ public class StaffPartInfo {
     private final StaffPattern secondPattern;
 
     public static List<StaffPartInfo> generateAll() {
-        return Arrays.stream(StaffParts.values())
+        return Arrays.stream(StaffPart.values())
                 .flatMap(part -> part.getFirstPatterns().get().stream()
                         .map(firstPattern -> part.getSecondPatterns().get().stream()
                                 .map(secondPattern -> new StaffPartInfo(part, firstPattern, secondPattern))))
@@ -62,7 +62,7 @@ public class StaffPartInfo {
 
     static {
         NBT_TYPE = NbtKey.Type.of(NbtElement.COMPOUND_TYPE, (nbt, s) -> {
-            StaffParts part = EnumUtils.getEnumIgnoreCase(StaffParts.class, nbt.getString("part"));
+            StaffPart part = EnumUtils.getEnumIgnoreCase(StaffPart.class, nbt.getString("part"));
             StaffPattern firstPattern = StaffPatterns.get(nbt.getString("first_pattern"));
             StaffPattern secondPattern = StaffPatterns.get(nbt.getString("second_pattern"));
             return new StaffPartInfo(part, firstPattern, secondPattern);

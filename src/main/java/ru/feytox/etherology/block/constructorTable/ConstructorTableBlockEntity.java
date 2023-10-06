@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -53,6 +54,6 @@ public class ConstructorTableBlockEntity extends TickableBlockEntity implements 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new ConstructorTableScreenHandler(syncId, inv, this);
+        return new ConstructorTableScreenHandler(syncId, inv, this, ScreenHandlerContext.create(world, pos));
     }
 }

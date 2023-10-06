@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
-public enum StaffParts {
+public enum StaffPart {
     CORE(false, StaffMaterial.MATERIALS),
     HANDLE(false, StaffColors.COLORS),
     DECOR(true, StaffStyles.STYLES, StaffMetals.METALS),
@@ -27,7 +27,7 @@ public enum StaffParts {
     @NonNull
     private final Supplier<List<? extends StaffPattern>> secondPatterns;
 
-    StaffParts(boolean styled, @NonNull Supplier<List<? extends StaffPattern>> firstPatterns) {
+    StaffPart(boolean styled, @NonNull Supplier<List<? extends StaffPattern>> firstPatterns) {
         this(styled, firstPatterns, StaffPattern.memoize(StaffPattern.EMPTY));
     }
 
