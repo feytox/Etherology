@@ -1,6 +1,7 @@
 package ru.feytox.etherology.item;
 
 import com.google.common.collect.ImmutableList;
+import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,6 +32,18 @@ public class EtherStaff extends Item {
                 });
 
         stackNbt.put("parts", parts);
+    }
+
+    public static void setPartInfo(ItemStack stack, StaffPart part, StaffPattern firstPattern, StaffPattern secondPattern) {
+        val staffData = readNbt(stack);
+        if (staffData == null) {
+            Etherology.ELOGGER.error("Null staff data after staff nbt reading");
+            return;
+        }
+
+        StaffPartInfo partInfo = new StaffPartInfo(part, firstPattern, secondPattern);
+        staffData.put(part, partInfo);
+        writeNbt(stack, staffData);
     }
 
     public static void writeNbt(ItemStack stack, Map<StaffPart, StaffPartInfo> parts) {
@@ -67,31 +80,6 @@ public class EtherStaff extends Item {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(StaffPartInfo::getPart, part -> part));
     }
-
-//    @Nullable
-//    public static List<StaffPartInfo> readNbt(ItemStack stack) {
-//        NbtCompound stackNbt = stack.getNbt();
-//        if (stackNbt == null) return null;
-//
-//        NbtList nbtList = stackNbt.getOr(StaffPartInfo.LIST_KEY, new NbtList());
-//        return nbtList.stream()
-//                .map(nbtElement -> {
-//                    if (nbtElement instanceof NbtCompound compound) return compound;
-//                    Etherology.ELOGGER.error("Found a non-NbtCompound element while loading EtherStaff NBT");
-//                    return null;
-//                })
-//                .filter(Objects::nonNull)
-//                .map(nbt -> {
-//                    try {
-//                        return nbt.get(StaffPartInfo.NBT_KEY);
-//                    } catch (Exception e) {
-//                        Etherology.ELOGGER.error("Found non-PartInfo element while loading EtherStaff NBT");
-//                        return null;
-//                    }
-//                })
-//                .filter(Objects::nonNull)
-//                .collect(Collectors.toCollection(ObjectArrayList::new));
-//    }
 
     static {
         DEFAULT_STAFF = ImmutableList.of(

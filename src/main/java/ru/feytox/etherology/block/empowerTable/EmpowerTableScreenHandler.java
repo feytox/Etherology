@@ -54,7 +54,7 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         this.addSlot(new TrackedPredictableSlot(inventory, 8, 69, 63, (stack) -> stack.isOf(EItems.PRIMOSHARD_KETA)));
 
         // output
-        this.addSlot(new EmpowerOutputSlot(inventory, 9, 133, 40));
+        this.addSlot(new OutputSlot(inventory, 9, 133, 40));
 
         //The player inventory
         for (m = 0; m < 3; ++m) {
@@ -77,7 +77,7 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         boolean skip = false;
         ItemStack originalStack = slot.getStack();
 
-        if (slot instanceof EmpowerOutputSlot && !isFull(inventory.size(), slots.size())) {
+        if (slot instanceof OutputSlot && !isFull(inventory.size(), slots.size())) {
             skip = true;
             newStack = originalStack.copy();
             inventory.onSpecialEvent(0, originalStack);

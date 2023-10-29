@@ -8,6 +8,7 @@ import ru.feytox.etherology.item.MatrixRing.EthrilRing;
 import ru.feytox.etherology.item.MatrixRing.NetheriteRing;
 import ru.feytox.etherology.item.MatrixRing.TelderSteelRing;
 import ru.feytox.etherology.item.glints.GlintItem;
+import ru.feytox.etherology.magic.staff.StaffStyles;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 
@@ -28,12 +29,14 @@ public class EItems {
     public static final SpillBarrelItem SPILL_BARREL = (SpillBarrelItem) registerItem("spill_barrel", new SpillBarrelItem());
     public static final CarriedCrateItem CARRIED_CRATE = (CarriedCrateItem) registerItem("carried_crate", new CarriedCrateItem());
     public static final CorruptionBucket CORRUPTION_BUCKET = (CorruptionBucket) registerItem("corruption_bucket", new CorruptionBucket());
+    public static final StaffPatternItem TEST_STAFF_PATTERN = (StaffPatternItem) registerItem("test_staff_pattern", new StaffPatternItem(StaffStyles.ARISTOCRAT));
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);
     }
 
     public static void registerItems() {
+        // TODO: 29.10.2023 проверить необходимость
         DecoBlockItems.registerAll();
         ToolItems.registerAll();
         ArmorItems.registerAll();

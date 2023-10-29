@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.constructorTable;
+package ru.feytox.etherology.block.inventorTable;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
@@ -16,10 +16,10 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-public class ConstructorTable extends Block implements RegistrableBlock, BlockEntityProvider {
+public class InventorTable extends Block implements RegistrableBlock, BlockEntityProvider {
 
-    public ConstructorTable() {
-        super(FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE));
+    public InventorTable() {
+        super(FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE).nonOpaque());
     }
 
     @Override
@@ -35,12 +35,12 @@ public class ConstructorTable extends Block implements RegistrableBlock, BlockEn
 
     @Override
     public String getBlockId() {
-        return "constructor_table";
+        return "inventor_table";
     }
 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ConstructorTableBlockEntity(pos, state);
+        return new InventorTableBlockEntity(pos, state);
     }
 }

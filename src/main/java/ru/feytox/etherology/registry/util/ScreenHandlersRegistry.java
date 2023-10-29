@@ -7,8 +7,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
 import ru.feytox.etherology.block.closet.ClosetScreen;
 import ru.feytox.etherology.block.closet.ClosetScreenHandler;
-import ru.feytox.etherology.block.constructorTable.ConstructorTableScreen;
-import ru.feytox.etherology.block.constructorTable.ConstructorTableScreenHandler;
 import ru.feytox.etherology.block.crate.CrateScreen;
 import ru.feytox.etherology.block.crate.CrateScreenHandler;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableScreen;
@@ -17,6 +15,8 @@ import ru.feytox.etherology.block.etherealFurnace.EtherealFurnaceScreen;
 import ru.feytox.etherology.block.etherealFurnace.EtherealFurnaceScreenHandler;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreenHandler;
+import ru.feytox.etherology.block.inventorTable.InventorTableScreen;
+import ru.feytox.etherology.block.inventorTable.InventorTableScreenHandler;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 @UtilityClass
@@ -27,7 +27,7 @@ public class ScreenHandlersRegistry {
     public static final ScreenHandlerType<EtherealFurnaceScreenHandler> ETHEREAL_FURNACE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealFurnaceScreenHandler::new);
     public static final ScreenHandlerType<EmpowerTableScreenHandler> EMPOWER_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(EmpowerTableScreenHandler::new);
     public static final ScreenHandlerType<CrateScreenHandler> CRATE_SCREEN_HANDLER = new ScreenHandlerType<>(CrateScreenHandler::new);
-    public static final ScreenHandlerType<ConstructorTableScreenHandler> CONSTRUCTOR_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(ConstructorTableScreenHandler::new);
+    public static final ScreenHandlerType<InventorTableScreenHandler> CONSTRUCTOR_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(InventorTableScreenHandler::new);
 
     public static void registerServerSide() {
         registerHandler("closet_screen_handler", CLOSET_SCREEN_HANDLER);
@@ -44,7 +44,7 @@ public class ScreenHandlersRegistry {
         HandledScreens.register(ETHEREAL_FURNACE_SCREEN_HANDLER, EtherealFurnaceScreen::new);
         HandledScreens.register(EMPOWER_TABLE_SCREEN_HANDLER, EmpowerTableScreen::new);
         HandledScreens.register(CRATE_SCREEN_HANDLER, CrateScreen::new);
-        HandledScreens.register(CONSTRUCTOR_TABLE_SCREEN_HANDLER, ConstructorTableScreen::new);
+        HandledScreens.register(CONSTRUCTOR_TABLE_SCREEN_HANDLER, InventorTableScreen::new);
     }
 
     private static void registerHandler(String id, ScreenHandlerType<?> screenHandlerType) {
