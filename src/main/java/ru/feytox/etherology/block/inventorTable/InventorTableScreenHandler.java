@@ -56,6 +56,11 @@ public class InventorTableScreenHandler extends ScreenHandler {
         for (m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 148));
         }
+
+        if (!(tableInv instanceof InventorTableBlockEntity table)) return;
+
+        table.setSelectedPart(null);
+        table.updateResult();
     }
 
     public List<StaffPart> getStaffParts() {
@@ -94,9 +99,39 @@ public class InventorTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int slot) {
-        // TODO: 08.09.2023 add quick moving
-        return ItemStack.EMPTY;
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
+        ItemStack newStack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(invSlot);
+        // click on empty slot
+        if (!slot.hasStack()) return newStack;
+
+        ItemStack originalStack = slot.getStack();
+        newStack = originalStack.copy();
+
+        // from table to player
+        if (invSlot < tableInv.size()) {
+            if (insertItem(originalStack, tableInv.size(), slots.size(), true)) {
+                tableInv.onTrackedSlotTake(player, originalStack, invSlot);
+            } else {
+                return ItemStack.EMPTY;
+            }
+        }
+        // from player to table
+        else {
+            if (originalStack.isOf(ToolItems.ETHER_STAFF)) {
+                if (!insertItem(originalStack, 0, 1, false)) return ItemStack.EMPTY;
+            } else if (originalStack.getItem() instanceof PatternTabletItem) {
+                if (!insertItem(originalStack, 1, 2, false)) return ItemStack.EMPTY;
+            } else if (!insertItem(originalStack, 2, 3, false)) return ItemStack.EMPTY;
+        }
+
+        if (originalStack.isEmpty()) {
+            slot.setStack(ItemStack.EMPTY);
+        } else {
+            slot.markDirty();
+        }
+
+        return newStack;
     }
 
     @Override

@@ -6,9 +6,12 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -17,10 +20,9 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
-import ru.feytox.etherology.block.pedestal.PedestalRenderer;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -50,7 +52,7 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         ItemStack staffStack = handler.getSelectedPart() == null ? null : handler.getSlot(3).getStack();
-        if (staffStack != null) drawItem(x + 112, y + 78, 100, staffStack);
+        if (staffStack != null) drawItem(x + 112, y + 78, delta, staffStack);
 
         List<StaffPart> staffParts = handler.getStaffParts();
         aLotOfParts = staffParts.size() > 12;
@@ -174,34 +176,54 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         playerInventoryTitleY = backgroundHeight - 94;
     }
 
-    private void drawItem(int x, int y, int size, ItemStack stack) {
+    private void drawItem(int x, int y, float tickDelta, ItemStack stack) {
         // TODO: 06.10.2023 fix animation lag
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
         matrixStack.translate(x, y, 1050.0F);
         matrixStack.scale(1.0F, 1.0F, -1.0F);
         RenderSystem.applyModelViewMatrix();
+
         MatrixStack renderStack = new MatrixStack();
         renderStack.translate(0.0F, 0.0F, 1000.0F);
+        float size = 50;
         renderStack.scale(size, size, size);
-        Quaternionf quaternionf = (new Quaternionf()).rotateZ(3.1415927F);
-        Quaternionf quaternionf2 = (new Quaternionf()).rotateX(0 * 20.0F * 0.017453292F);
-        quaternionf.mul(quaternionf2);
-        renderStack.multiply(quaternionf);
+
+        Quaternionf rotationZ = (new Quaternionf()).rotateZ(3.1415927F);
+        Quaternionf rotationX = (new Quaternionf()).rotateX(0 * 20.0F * 0.017453292F);
+        rotationZ.mul(rotationX);
+        renderStack.multiply(rotationZ);
+
         DiffuseLighting.method_34742();
         EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
-        quaternionf2.conjugate();
-        entityRenderDispatcher.setRotation(quaternionf2);
+        rotationX.conjugate();
+        entityRenderDispatcher.setRotation(rotationX);
         entityRenderDispatcher.setRenderShadows(false);
+
         VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         World world = playerInventory.player.getWorld();
 
-        PedestalRenderer.renderVanillaGroundItem(renderStack, world, stack, immediate, 1.0F, 15728880, itemRenderer, Vec3d.ZERO, 0);
+        renderItem(renderStack, world, stack, immediate, tickDelta, itemRenderer);
         immediate.draw();
         entityRenderDispatcher.setRenderShadows(true);
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
         DiffuseLighting.enableGuiDepthLighting();
+    }
+
+    private void renderItem(MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, ItemRenderer itemRenderer) {
+        matrices.push();
+        BakedModel bakedModel = itemRenderer.getModel(itemStack, world, null, 5678);
+        boolean hasDepth = bakedModel.hasDepth();
+        matrices.translate(0.0F, 0.65F, 0.0F);
+        float yRotation = (world.getTime() + tickDelta) / 20.0F;
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation(yRotation));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-45));
+        float zScale = bakedModel.getTransformation().fixed.scale.z();
+
+        itemRenderer.renderItem(itemStack, ModelTransformation.Mode.FIXED, false, matrices, vertexConsumers, 15728880, OverlayTexture.DEFAULT_UV, bakedModel);
+        if (!hasDepth) matrices.translate(0.0F, 0.0F, 0.09375F * zScale);
+        matrices.pop();
     }
 }
