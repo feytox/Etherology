@@ -29,7 +29,15 @@ public class EItems {
     public static final SpillBarrelItem SPILL_BARREL = (SpillBarrelItem) registerItem("spill_barrel", new SpillBarrelItem());
     public static final CarriedCrateItem CARRIED_CRATE = (CarriedCrateItem) registerItem("carried_crate", new CarriedCrateItem());
     public static final CorruptionBucket CORRUPTION_BUCKET = (CorruptionBucket) registerItem("corruption_bucket", new CorruptionBucket());
-    public static final StaffPatternItem TEST_STAFF_PATTERN = (StaffPatternItem) registerItem("test_staff_pattern", new StaffPatternItem(StaffStyles.ARISTOCRAT));
+
+    public static final PatternTabletItem ARISTOCRAT_PATTERN_TABLET = (PatternTabletItem) registerItem("aristocrat_pattern_tablet", new PatternTabletItem(StaffStyles.ARISTOCRAT));
+    public static final PatternTabletItem ASTRONOMY_PATTERN_TABLET = (PatternTabletItem) registerItem("astronomy_pattern_tablet", new PatternTabletItem(StaffStyles.ASTRONOMY));
+    public static final PatternTabletItem HEAVENLY_PATTERN_TABLET = (PatternTabletItem) registerItem("heavenly_pattern_tablet", new PatternTabletItem(StaffStyles.HEAVENLY));
+    public static final PatternTabletItem OCULAR_PATTERN_TABLET = (PatternTabletItem) registerItem("ocular_pattern_tablet", new PatternTabletItem(StaffStyles.OCULAR));
+    public static final PatternTabletItem RITUAL_PATTERN_TABLET = (PatternTabletItem) registerItem("ritual_pattern_tablet", new PatternTabletItem(StaffStyles.RITUAL));
+    public static final PatternTabletItem ROYAL_PATTERN_TABLET = (PatternTabletItem) registerItem("royal_pattern_tablet", new PatternTabletItem(StaffStyles.ROYAL));
+    public static final PatternTabletItem TRADITIONAL_PATTERN_TABLET = (PatternTabletItem) registerItem("traditional_pattern_tablet", new PatternTabletItem(StaffStyles.TRADITIONAL));
+    public static final PatternTabletItem[] PATTERN_TABLETS = {ARISTOCRAT_PATTERN_TABLET, ASTRONOMY_PATTERN_TABLET, HEAVENLY_PATTERN_TABLET, OCULAR_PATTERN_TABLET, RITUAL_PATTERN_TABLET, ROYAL_PATTERN_TABLET, TRADITIONAL_PATTERN_TABLET};
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);

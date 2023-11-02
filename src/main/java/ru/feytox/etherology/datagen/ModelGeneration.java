@@ -23,6 +23,7 @@ import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.EItems.CORRUPTION_BUCKET;
+import static ru.feytox.etherology.registry.item.EItems.PATTERN_TABLETS;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 @SuppressWarnings("SameParameterValue")
@@ -64,6 +65,8 @@ public class ModelGeneration extends FabricModelProvider {
         registerItems(generator, Models.GENERATED, ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, TELDER_STEEL_HELMET, TELDER_STEEL_CHESTPLATE, TELDER_STEEL_LEGGINGS, TELDER_STEEL_BOOTS);
         // all staff parts
         registerStaffParts(generator);
+        // all pattern tablets
+        registerItems(generator, Models.GENERATED, PATTERN_TABLETS);
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, BlockFamily... blockFamilies) {

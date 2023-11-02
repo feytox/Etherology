@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.StaffPatternItem;
+import ru.feytox.etherology.item.PatternTabletItem;
 import ru.feytox.etherology.magic.staff.StaffMetals;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.registry.item.ToolItems;
@@ -22,6 +22,7 @@ public class InventorTableScreenHandler extends ScreenHandler {
 
     @Getter
     private final UpdatableInventory tableInv;
+    @Getter
     private int clientSelectedPart = -1;
 
     public InventorTableScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -37,7 +38,7 @@ public class InventorTableScreenHandler extends ScreenHandler {
         // input staff
         this.addSlot(new TrackedPredictableSlot(tableInv, 0, 8, 13, stack -> stack.isOf(ToolItems.ETHER_STAFF)));
         // pattern item
-        this.addSlot(new TrackedPredictableSlot(tableInv, 1, 28, 13, stack -> stack.getItem() instanceof StaffPatternItem));
+        this.addSlot(new TrackedPredictableSlot(tableInv, 1, 28, 13, stack -> stack.getItem() instanceof PatternTabletItem));
         // item for pattern apply
         this.addSlot(new TrackedSlot(tableInv, 2, 48, 13));
         // output staff
@@ -63,7 +64,7 @@ public class InventorTableScreenHandler extends ScreenHandler {
         ItemStack itemForPattern = tableInv.getStack(2);
         StaffMetals patternMetal = StaffMetals.getFromStack(itemForPattern);
 
-        if (!inputStaff.isOf(ToolItems.ETHER_STAFF) || !(patternItem.getItem() instanceof StaffPatternItem) || patternMetal == null) {
+        if (!inputStaff.isOf(ToolItems.ETHER_STAFF) || !(patternItem.getItem() instanceof PatternTabletItem) || patternMetal == null) {
             return new ObjectArrayList<>();
         }
 

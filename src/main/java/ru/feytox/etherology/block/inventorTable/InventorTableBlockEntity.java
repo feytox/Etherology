@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.item.EtherStaff;
-import ru.feytox.etherology.item.StaffPatternItem;
+import ru.feytox.etherology.item.PatternTabletItem;
 import ru.feytox.etherology.magic.staff.StaffMetals;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffStyles;
@@ -77,6 +77,8 @@ public class InventorTableBlockEntity extends TickableBlockEntity implements Imp
         if (index != 3) return;
         // take output staff
         setStack(0, ItemStack.EMPTY);
+        getStack(1).decrement(1);
+        getStack(2).decrement(1);
 
         if (!(world instanceof ServerWorld serverWorld)) return;
         syncData(serverWorld);
@@ -97,7 +99,7 @@ public class InventorTableBlockEntity extends TickableBlockEntity implements Imp
         ItemStack itemForPattern = getStack(2);
         StaffMetals patternMetal = StaffMetals.getFromStack(itemForPattern);
 
-        if (selectedPart == null || patternMetal == null || !inputStaff.isOf(ToolItems.ETHER_STAFF) || !(patternItem.getItem() instanceof StaffPatternItem pattern)) {
+        if (selectedPart == null || patternMetal == null || !inputStaff.isOf(ToolItems.ETHER_STAFF) || !(patternItem.getItem() instanceof PatternTabletItem pattern)) {
             setStack(3, ItemStack.EMPTY);
             return;
         }

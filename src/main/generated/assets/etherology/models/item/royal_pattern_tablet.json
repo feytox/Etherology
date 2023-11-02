@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "etherology:item/royal_pattern_tablet"
+  }
+}

@@ -2,6 +2,7 @@ package ru.feytox.etherology.block.inventorTable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.GameRenderer;
@@ -47,10 +48,20 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-        drawItem(x + 112, y + 78, 100, handler.getSlot(3).getStack());
+
+        ItemStack staffStack = handler.getSelectedPart() == null ? null : handler.getSlot(3).getStack();
+        if (staffStack != null) drawItem(x + 112, y + 78, 100, staffStack);
 
         List<StaffPart> staffParts = handler.getStaffParts();
         aLotOfParts = staffParts.size() > 12;
+
+        if (handler.getSlot(1).getStack().isEmpty()) {
+            matrices.push();
+            RenderSystem.setShaderTexture(0, new EIdentifier("textures/gui/inventor_table/empty_slot_tablet.png"));
+            RenderSystem.enableBlend();
+            DrawableHelper.drawTexture(matrices, x + 28, y + 13, 0, 0, 16, 16, 16, 16);
+            matrices.pop();
+        }
 
         RenderSystem.setShaderTexture(0, TEXTURE);
         int k = (int) (27.0F * this.scrollPosition);
@@ -64,10 +75,10 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
                 int partIndex = row * 4 + n;
                 if (partIndex >= staffParts.size()) return;
                 StaffPart part = staffParts.get(partIndex);
-
-                RenderSystem.setShaderTexture(0, TEXTURE);
                 int partX = x + 8 + n * 14;
                 int partY = y + 33 + m * 14;
+
+                RenderSystem.setShaderTexture(0, TEXTURE);
                 boolean highlighted = mouseX >= partX && mouseY >= partY && mouseX < partX + 14 && mouseY < partY + 14;
 
                 int textureY = backgroundHeight;
@@ -78,6 +89,13 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
                 }
 
                 this.drawTexture(matrices, partX, partY, 0, textureY, 14, 14);
+
+                matrices.push();
+                // part icon
+                RenderSystem.enableBlend();
+                RenderSystem.setShaderTexture(0, new EIdentifier("textures/gui/inventor_table/it_staff_" + part.getName() + ".png"));
+                DrawableHelper.drawTexture(matrices, partX-1, partY-1, 0, 0, 16, 16, 16, 16);
+                matrices.pop();
             }
         }
     }

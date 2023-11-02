@@ -5,13 +5,13 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import ru.feytox.etherology.magic.staff.StaffStyles;
 
-public class StaffPatternItem extends Item {
+public class PatternTabletItem extends Item {
 
     @Getter
     private final StaffStyles staffStyle;
 
-    public StaffPatternItem(StaffStyles staffStyle) {
-        super(new FabricItemSettings().maxCount(1));
+    public PatternTabletItem(StaffStyles staffStyle) {
+        super(new FabricItemSettings());
         this.staffStyle = staffStyle;
     }
 }

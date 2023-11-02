@@ -70,6 +70,8 @@ public class EItemGroups {
         etherItems.with(HAMMERS);
         etherItems.with(GLAIVES);
         etherItems.with(IRON_SHIELD);
+        // patterns
+        etherItems.with(PATTERN_TABLETS);
         // magic
         etherItems.with(
                 OCULUS, ETHER_STAFF, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA, PRIMOSHARD_VIA,
