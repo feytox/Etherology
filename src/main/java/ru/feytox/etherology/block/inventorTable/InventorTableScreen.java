@@ -57,13 +57,8 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         List<StaffPart> staffParts = handler.getStaffParts();
         aLotOfParts = staffParts.size() > 12;
 
-        if (handler.getSlot(1).getStack().isEmpty()) {
-            matrices.push();
-            RenderSystem.setShaderTexture(0, new EIdentifier("textures/gui/inventor_table/empty_slot_tablet.png"));
-            RenderSystem.enableBlend();
-            DrawableHelper.drawTexture(matrices, x + 28, y + 13, 0, 0, 16, 16, 16, 16);
-            matrices.pop();
-        }
+        renderItemIcon(1, matrices, "textures/gui/inventor_table/empty_slot_tablet.png", x + 28, y + 13);
+        renderItemIcon(2, matrices, "textures/gui/inventor_table/empty_slot_ingot.png", x + 48, y + 13);
 
         RenderSystem.setShaderTexture(0, TEXTURE);
         int k = (int) (27.0F * this.scrollPosition);
@@ -99,6 +94,16 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
                 DrawableHelper.drawTexture(matrices, partX-1, partY-1, 0, 0, 16, 16, 16, 16);
                 matrices.pop();
             }
+        }
+    }
+
+    private void renderItemIcon(int index, MatrixStack matrices, String iconPath, int x, int y) {
+        if (handler.getSlot(index).getStack().isEmpty()) {
+            matrices.push();
+            RenderSystem.setShaderTexture(0, new EIdentifier(iconPath));
+            RenderSystem.enableBlend();
+            DrawableHelper.drawTexture(matrices, x, y, 0, 0, 16, 16, 16, 16);
+            matrices.pop();
         }
     }
 

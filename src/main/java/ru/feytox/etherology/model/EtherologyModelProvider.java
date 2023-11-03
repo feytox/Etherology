@@ -27,7 +27,7 @@ import static ru.feytox.etherology.model.custom.OculusModel.OCULUS_LENS;
 public class EtherologyModelProvider implements ModelVariantProvider {
 
     private static final ModelIdentifier OCULUS_IN_HAND = EtherologyModels.createItemModelId("oculus_in_hand");
-    public static final ModelIdentifier ETHER_STAFF = EtherologyModels.createItemModelId(ToolItems.ETHER_STAFF.toString());
+    public static final ModelIdentifier ETHER_STAFF = EtherologyModels.createItemModelId(ToolItems.STAFF.toString());
 
     public static void register() {
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, identifierConsumer) -> {

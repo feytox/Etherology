@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.item.EtherStaff;
+import ru.feytox.etherology.item.StaffItem;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
@@ -19,10 +19,10 @@ public abstract class ItemStackMixin {
     @Inject(method = "<init>(Lnet/minecraft/item/ItemConvertible;)V", at = @At("RETURN"))
     private void injectDefaultNbt(ItemConvertible item, CallbackInfo ci) {
         if (item == null) return;
-        if (!(item instanceof EtherStaff)) return;
+        if (!(item instanceof StaffItem)) return;
 
         NbtCompound stackNbt = new NbtCompound();
-        EtherStaff.writeDefaultParts(stackNbt);
+        StaffItem.writeDefaultParts(stackNbt);
         setNbt(stackNbt);
     }
 }

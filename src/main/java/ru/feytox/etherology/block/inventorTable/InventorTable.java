@@ -1,10 +1,15 @@
 package ru.feytox.etherology.block.inventorTable;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -14,10 +19,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-public class InventorTable extends Block implements RegistrableBlock, BlockEntityProvider {
+public class InventorTable extends Block implements RegistrableBlock {
 
     private static final VoxelShape OUTLINE_SHAPE;
 
@@ -37,24 +41,20 @@ public class InventorTable extends Block implements RegistrableBlock, BlockEntit
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
-            }
-        }
-        return ActionResult.SUCCESS;
+        if (!world.isClient) player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+        return ActionResult.success(world.isClient);
+    }
+
+    @Override
+    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedScreenHandlerFactory((syncId, inventory, player) ->
+                new InventorTableScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos)),
+                Text.translatable(getTranslationKey()));
     }
 
     @Override
     public String getBlockId() {
         return "inventor_table";
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new InventorTableBlockEntity(pos, state);
     }
 
     static {

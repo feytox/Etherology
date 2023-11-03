@@ -181,12 +181,12 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK, "Творческий бесконечный источник эфира");
         builder.add(LEVITATOR, "Левитатор");
-        builder.add(ETHER_STAFF, "Эфирный посох");
 
+        builder.add(STAFF, "Посох");
         builder.add(EBlocks.INVENTOR_TABLE, "Стол изобретателя");
-        builder.add(EItems.ARISTOCRAT_PATTERN_TABLET, "Скрижаль с Аристократическим Шаблоном");
+        builder.add(EItems.ARISTOCRAT_PATTERN_TABLET, "Скрижаль со Знатным Шаблоном");
         builder.add(EItems.ASTRONOMY_PATTERN_TABLET, "Скрижаль с Астрономическим Шаблоном");
-        builder.add(EItems.HEAVENLY_PATTERN_TABLET, "Скрижаль с Божественным Шаблоном");
+        builder.add(EItems.HEAVENLY_PATTERN_TABLET, "Скрижаль с Вольным Шаблоном");
         builder.add(EItems.OCULAR_PATTERN_TABLET, "Скрижаль с Окулярным Шаблоном");
         builder.add(EItems.RITUAL_PATTERN_TABLET, "Скрижаль с Ритуальным Шаблоном");
         builder.add(EItems.ROYAL_PATTERN_TABLET, "Скрижаль с Королевским Шаблоном");

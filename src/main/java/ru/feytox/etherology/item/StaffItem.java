@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class EtherStaff extends Item {
+public class StaffItem extends Item {
 
     public static final ImmutableList<StaffPartInfo> DEFAULT_STAFF;
 
-    public EtherStaff() {
+    public StaffItem() {
         super(new FabricItemSettings().maxCount(1));
     }
 

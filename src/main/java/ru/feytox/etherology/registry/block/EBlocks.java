@@ -34,7 +34,6 @@ import ru.feytox.etherology.block.etherealStorage.EtherealStorageBlockEntity;
 import ru.feytox.etherology.block.furniture.FurSlabBlock;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.inventorTable.InventorTable;
-import ru.feytox.etherology.block.inventorTable.InventorTableBlockEntity;
 import ru.feytox.etherology.block.jug.AbstractJugBlock;
 import ru.feytox.etherology.block.jug.JugBlockEntity;
 import ru.feytox.etherology.block.jug.JugType;
@@ -183,11 +182,6 @@ public class EBlocks {
     );
 
     public static final InventorTable INVENTOR_TABLE = (InventorTable) new InventorTable().registerAll();
-    public static final BlockEntityType<InventorTableBlockEntity> INVENTOR_TABLE_BLOCK_ENTITY = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            new EIdentifier("inventor_table_block_entity"),
-            FabricBlockEntityTypeBuilder.create(InventorTableBlockEntity::new, INVENTOR_TABLE).build()
-    );
 
     public static void registerAll() {
         DecoBlocks.registerAll();

@@ -9,7 +9,7 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
-import ru.feytox.etherology.item.EtherStaff;
+import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
@@ -28,7 +28,7 @@ public class StaffModel extends MultiItemModel {
         BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
         var modelConsumer = context.bakedModelConsumer();
 
-        Map<StaffPart, StaffPartInfo> parts = EtherStaff.readNbt(stack);
+        Map<StaffPart, StaffPartInfo> parts = StaffItem.readNbt(stack);
         if (parts == null) return;
         parts.values().stream()
                 .map(StaffPartInfo::toModelId)
