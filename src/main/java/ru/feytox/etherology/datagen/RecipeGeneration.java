@@ -2,10 +2,12 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.data.server.recipe.ComplexRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.recipe.book.RecipeCategory;
+import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.function.Consumer;
@@ -35,5 +37,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, TELDER_STEEL_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', TELDER_STEEL_NUGGET).criterion("has_telder_steel_nugget", conditionsFromItem(TELDER_STEEL_NUGGET)).offerTo(exporter, new EIdentifier("telder_steel_ingot_from_nugget"));
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, TELDER_STEEL_INGOT, 9).input(TELDER_STEEL_BLOCK).criterion("has_telder_steel_block", conditionsFromItem(TELDER_STEEL_BLOCK.asItem())).offerTo(exporter, new EIdentifier("telder_steel_ingot_from_block"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, TELDER_STEEL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', TELDER_STEEL_INGOT).criterion("has_telder_steel_ingot", conditionsFromItem(TELDER_STEEL_INGOT)).offerTo(exporter);
+        // special recipes
+        ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET).offerTo(exporter, "staff_carpeting");
     }
 }

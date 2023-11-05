@@ -176,7 +176,7 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
     @Override
     protected void init() {
         super.init();
-        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleX = playerInventoryTitleX;
         titleY = 3;
         playerInventoryTitleY = backgroundHeight - 94;
     }
