@@ -46,6 +46,17 @@ public class StaffItem extends Item {
         writeNbt(stack, staffData);
     }
 
+    public static void removePartInfo(ItemStack stack, StaffPart part) {
+        val staffData = readNbt(stack);
+        if (staffData == null) {
+            Etherology.ELOGGER.error("Null staff data after staff nbt reading");
+            return;
+        }
+
+        staffData.remove(part);
+        writeNbt(stack, staffData);
+    }
+
     public static void writeNbt(ItemStack stack, Map<StaffPart, StaffPartInfo> parts) {
         NbtCompound stackNbt = stack.getOrCreateNbt();
         NbtCompound partsNbt = new NbtCompound();

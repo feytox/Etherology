@@ -39,5 +39,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, TELDER_STEEL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', TELDER_STEEL_INGOT).criterion("has_telder_steel_ingot", conditionsFromItem(TELDER_STEEL_INGOT)).offerTo(exporter);
         // special recipes
         ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET).offerTo(exporter, "staff_carpeting");
+        ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET_CUT).offerTo(exporter, "staff_carpet_cutting");
     }
 }

@@ -16,6 +16,7 @@ import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -23,6 +24,7 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 public class RecipesRegistry {
 
     public static RecipeSerializer<StaffCarpetingRecipe> STAFF_CARPET = registerSerializer("staff_carpeting", new SpecialRecipeSerializer<>(StaffCarpetingRecipe::new));
+    public static RecipeSerializer<StaffCarpetCuttingRecipe> STAFF_CARPET_CUT = registerSerializer("staff_carpet_cutting", new SpecialRecipeSerializer<>(StaffCarpetCuttingRecipe::new));
 
     public static void registerAll() {
         register(CauldronRecipeSerializer.ID, CauldronRecipeSerializer.INSTANCE, CauldronRecipe.Type.ID, CauldronRecipe.Type.INSTANCE);

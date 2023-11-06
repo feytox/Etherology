@@ -4,9 +4,9 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.*;
-import ru.feytox.etherology.item.MatrixRing.EthrilRing;
-import ru.feytox.etherology.item.MatrixRing.NetheriteRing;
-import ru.feytox.etherology.item.MatrixRing.TelderSteelRing;
+import ru.feytox.etherology.item.MatrixRing.EthrilMatrixRing;
+import ru.feytox.etherology.item.MatrixRing.NetheriteMatrixRing;
+import ru.feytox.etherology.item.MatrixRing.TelderSteelMatrixRing;
 import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.magic.staff.StaffStyles;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
@@ -16,9 +16,9 @@ public class EItems {
 
     public static final Teldecore TELDECORE = (Teldecore) new Teldecore().register();
 
-    public static final EthrilRing ETHRIL_RING = (EthrilRing) new EthrilRing().register();
-    public static final TelderSteelRing TELDER_STEEL_RING = (TelderSteelRing) new TelderSteelRing().register();
-    public static final NetheriteRing NETHERITE_RING = (NetheriteRing) new NetheriteRing().register();
+    public static final EthrilMatrixRing ETHRIL_MATRIX_RING = (EthrilMatrixRing) new EthrilMatrixRing().register();
+    public static final TelderSteelMatrixRing TELDER_STEEL_MATRIX_RING = (TelderSteelMatrixRing) new TelderSteelMatrixRing().register();
+    public static final NetheriteMatrixRing NETHERITE_MATRIX_RING = (NetheriteMatrixRing) new NetheriteMatrixRing().register();
     public static final PrimoShard.KetaPrimoShard PRIMOSHARD_KETA = (PrimoShard.KetaPrimoShard) new PrimoShard.KetaPrimoShard().register();
     public static final PrimoShard.RellaPrimoShard PRIMOSHARD_RELLA = (PrimoShard.RellaPrimoShard) new PrimoShard.RellaPrimoShard().register();
     public static final PrimoShard.ClosPrimoShard PRIMOSHARD_CLOS = (PrimoShard.ClosPrimoShard) new PrimoShard.ClosPrimoShard().register();

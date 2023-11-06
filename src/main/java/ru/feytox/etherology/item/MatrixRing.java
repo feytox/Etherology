@@ -13,21 +13,21 @@ public class MatrixRing extends SimpleItem {
         this.ringType = ringType;
     }
 
-    public static class EthrilRing extends MatrixRing {
-        public EthrilRing() {
-            super("ethril_ring", RingType.ETHRIL);
+    public static class EthrilMatrixRing extends MatrixRing {
+        public EthrilMatrixRing() {
+            super("ethril_matrix_ring", RingType.ETHRIL);
         }
     }
 
-    public static class TelderSteelRing extends MatrixRing {
-        public TelderSteelRing() {
-            super("telder_steel_ring", RingType.TELDER_STEEL);
+    public static class TelderSteelMatrixRing extends MatrixRing {
+        public TelderSteelMatrixRing() {
+            super("telder_steel_matrix_ring", RingType.TELDER_STEEL);
         }
     }
 
-    public static class NetheriteRing extends MatrixRing {
-        public NetheriteRing() {
-            super("netherite_ring", RingType.NETHERITE);
+    public static class NetheriteMatrixRing extends MatrixRing {
+        public NetheriteMatrixRing() {
+            super("netherite_matrix_ring", RingType.NETHERITE);
         }
     }
 }

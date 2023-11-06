@@ -18,6 +18,8 @@ import ru.feytox.etherology.magic.staff.StaffPattern;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
 
+import java.util.function.Predicate;
+
 public class StaffCarpetingRecipe extends SpecialCraftingRecipe {
     public StaffCarpetingRecipe(Identifier id, CraftingRecipeCategory category) {
         super(id, category);
@@ -53,33 +55,37 @@ public class StaffCarpetingRecipe extends SpecialCraftingRecipe {
         StaffItem.setPartInfo(resultStack, StaffPart.HANDLE, carpetColor, StaffPattern.EMPTY);
         return resultStack;
     }
-    
+
     @Nullable
     private static Pair<Integer, Integer> getIndexesOfStaffAndCarpet(CraftingInventory inventory) {
-        int staffCount = 0;
-        int carpetCount = 0;
-        int staffIndex = -1;
-        int carpetIndex = -1;
+        return getIndexesOfPair(inventory, stack -> stack.isOf(ToolItems.STAFF), stack -> stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof DyedCarpetBlock);
+    }
+
+    @Nullable
+    public static Pair<Integer, Integer> getIndexesOfPair(CraftingInventory inventory, Predicate<ItemStack> leftPredicate, Predicate<ItemStack> rightPredicate) {
+        int leftCount = 0;
+        int rightCount = 0;
+        int leftIndex = -1;
+        int rightIndex = -1;
 
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
             if (stack.isEmpty()) continue;
-            if (stack.isOf(ToolItems.STAFF)) {
-                staffCount++;
-                staffIndex = i;
+            if (leftPredicate.test(stack)) {
+                leftCount++;
+                leftIndex = i;
             }
             else {
-                if (!(stack.getItem() instanceof BlockItem blockItem)) return null;
-                if (!(blockItem.getBlock() instanceof DyedCarpetBlock)) return null;
-                carpetCount++;
-                carpetIndex = i;
+                if (!rightPredicate.test(stack)) return null;
+                rightCount++;
+                rightIndex = i;
             }
 
-            if (carpetCount > 1 || staffCount > 1) return null;
+            if (rightCount > 1 || leftCount > 1) return null;
         }
 
-        if (carpetCount != 1 || staffCount != 1) return null;
-        return new Pair<>(staffIndex, carpetIndex);
+        if (rightCount != 1 || leftCount != 1) return null;
+        return new Pair<>(leftIndex, rightIndex);
     }
 
     @Override
