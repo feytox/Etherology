@@ -18,6 +18,7 @@ import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.TwoHandHeldAttackC2S;
 import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.util.compatibility.CompatFlags;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
@@ -45,8 +46,10 @@ public class MinecraftClientMixin {
         if (!(player instanceof EtherologyPlayer animatedPlayer)) return;
         ClientWorld world = player.clientWorld;
 
-        TriggerPlayerAnimation animation = TriggerAnimations.getTwohandheldAnim(player.getMainArm(), isHammer, isStrongAttack);
-        animation.play(animatedPlayer, 0, null);
+        if (!CompatFlags.BETTER_COMBAT.isEnable()) {
+            TriggerPlayerAnimation animation = TriggerAnimations.getTwohandheldAnim(player.getMainArm(), isHammer, isStrongAttack);
+            animation.play(animatedPlayer, 0, null);
+        }
         if (!isStrongAttack || !isHammer) return;
 
         player.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, 0.9f);

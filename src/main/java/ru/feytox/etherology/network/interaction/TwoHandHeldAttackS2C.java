@@ -15,6 +15,7 @@ import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.util.compatibility.CompatFlags;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
@@ -61,8 +62,10 @@ public class TwoHandHeldAttackS2C extends AbstractS2CPacket {
             if (!TwoHandheldSword.check(swinger, TwoHandheldSword.class)) return;
 
             boolean isStrongAttack = attackCooldown > 0.9F && !attackGround;
-            TriggerPlayerAnimation animation = TriggerAnimations.getTwohandheldAnim(swinger.getMainArm(), isHammer, isStrongAttack);
-            animation.play(animatedPlayer, 0, null);
+            if (!CompatFlags.BETTER_COMBAT.isEnable()) {
+                TriggerPlayerAnimation animation = TriggerAnimations.getTwohandheldAnim(swinger.getMainArm(), isHammer, isStrongAttack);
+                animation.play(animatedPlayer, 0, null);
+            }
 
             if (!isStrongAttack || !isHammer) return;
             if (!HammerItem.checkHammer(swinger)) return;
