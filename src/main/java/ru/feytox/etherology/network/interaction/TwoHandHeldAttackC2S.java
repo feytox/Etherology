@@ -10,7 +10,6 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.C2SPacketInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
 
 public class TwoHandHeldAttackC2S extends AbstractC2SPacket {
 
@@ -40,8 +39,6 @@ public class TwoHandHeldAttackC2S extends AbstractC2SPacket {
 
         server.execute(() -> {
             if (!TwoHandheldSword.check(sender, TwoHandheldSword.class)) return;
-
-            if (attackGround && attackCooldown > 0.9) ShockwaveUtil.onFullAttack(sender);
 
             TwoHandHeldAttackS2C packet = new TwoHandHeldAttackS2C(sender.getId(), attackCooldown, attackGround, isHammer);
             EtherologyNetwork.sendForTracking(world, sender.getBlockPos(), sender.getId(), packet);

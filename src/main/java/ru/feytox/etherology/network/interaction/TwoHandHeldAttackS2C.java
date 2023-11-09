@@ -60,13 +60,12 @@ public class TwoHandHeldAttackS2C extends AbstractS2CPacket {
             if (!(swinger instanceof EtherologyPlayer animatedPlayer)) return;
             if (!TwoHandheldSword.check(swinger, TwoHandheldSword.class)) return;
 
-            boolean isStrongAttack = attackCooldown > 0.9F;
+            boolean isStrongAttack = attackCooldown > 0.9F && !attackGround;
             TriggerPlayerAnimation animation = TriggerAnimations.getTwohandheldAnim(swinger.getMainArm(), isHammer, isStrongAttack);
             animation.play(animatedPlayer, 0, null);
 
             if (!isStrongAttack || !isHammer) return;
             if (!HammerItem.checkHammer(swinger)) return;
-            if (attackGround) ShockwaveUtil.onFullAttack(swinger);
 
             swinger.playSound(EtherSounds.HAMMER_SWING, SoundCategory.PLAYERS, 0.5f, 0.9f);
             ShockwaveUtil.spawnShockParticles(world, swinger);

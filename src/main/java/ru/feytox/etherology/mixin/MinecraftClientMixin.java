@@ -34,18 +34,13 @@ public class MinecraftClientMixin {
         MinecraftClient client = ((MinecraftClient) (Object) this);
 
         float cooldown = player.getAttackCooldownProgress(0.0F);
-        boolean isStrongAttack = cooldown > 0.9f;
         HitResult hitResult = client.crosshairTarget;
         boolean attackGround = hitResult != null && !hitResult.getType().equals(HitResult.Type.ENTITY);
+        boolean isStrongAttack = cooldown > 0.9f && !attackGround;
         boolean isHammer = HammerItem.checkHammer(player);
 
         TwoHandHeldAttackC2S packet = new TwoHandHeldAttackC2S(attackGround, isHammer);
         EtherologyNetwork.sendToServer(packet);
-
-        if (isStrongAttack && attackGround && isHammer) {
-            ShockwaveUtil.onFullAttack(player);
-            if (hitResult.getType().equals(HitResult.Type.BLOCK)) player.resetLastAttackedTicks();
-        }
 
         if (!(player instanceof EtherologyPlayer animatedPlayer)) return;
         ClientWorld world = player.clientWorld;
