@@ -40,4 +40,10 @@ public class EtherealStorageScreen extends HandledScreen<EtherealStorageScreenHa
         titleY = 6;
         playerInventoryTitleY = backgroundHeight - 124;
     }
+
+    @Override
+    protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+        this.textRenderer.draw(matrices, this.title, (float)this.titleX, (float)this.titleY, 0xFFE5E5E5);
+        this.textRenderer.draw(matrices, this.playerInventoryTitle, (float)this.playerInventoryTitleX, (float)this.playerInventoryTitleY, 0xFFE5E5E5);
+    }
 }
