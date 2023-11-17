@@ -5,6 +5,7 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
@@ -36,7 +37,6 @@ import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -152,7 +152,7 @@ public class OculusItem extends Item {
     }
 
     private static List<Component> createAspectHud(ClientWorld world, HitResult hitResult) {
-        List<Component> components = new ArrayList<>();
+        List<Component> components = new ObjectArrayList<>();
         if (hitResult == null || hitResult.getType().equals(HitResult.Type.MISS)) return components;
 
         Component targetName = createTargetNameHud(world, hitResult);

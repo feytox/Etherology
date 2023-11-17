@@ -27,6 +27,7 @@ public class EtherologyClient implements ClientModInitializer {
         ScreenHandlersRegistry.registerClientSide();
         BlockRenderLayerMapRegistry.registerAll();
         ColorProvidersRegistry.registerAll();
+        KeybindsRegistry.registerAll();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();

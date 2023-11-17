@@ -1,15 +1,23 @@
 package ru.feytox.etherology.item;
 
 import com.google.common.collect.ImmutableList;
+import lombok.NonNull;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2d;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.staff.*;
+import ru.feytox.etherology.registry.util.KeybindsRegistry;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -90,6 +98,58 @@ public class StaffItem extends Item {
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(StaffPartInfo::getPart, part -> part));
+    }
+
+    private static void tickLensesMenu(@NonNull MinecraftClient client) {
+        boolean isOpened = client.currentScreen instanceof StaffLensesScreen;
+
+        if (!client.options.getPerspective().isFirstPerson() || !KeybindsRegistry.isPressed(KeybindsRegistry.OPEN_LENSE_MENU)) {
+            if (isOpened) {
+                checkSelectedLense(client, (StaffLensesScreen) client.currentScreen);
+                client.currentScreen.close();
+            }
+            return;
+        }
+
+        if (isOpened) return;
+
+        client.setScreen(new StaffLensesScreen(client.currentScreen));
+    }
+
+    private static void checkSelectedLense(MinecraftClient client, StaffLensesScreen lensesScreen) {
+        double mouseX = client.mouse.getX();
+        double mouseY = client.mouse.getY();
+
+        double centerX = client.getWindow().getWidth() / 2d;
+        double centerY = client.getWindow().getHeight() / 2d;
+
+        Vector2d mouseVec = new Vector2d(mouseX - centerX, mouseY - centerY);
+        double len = mouseVec.lengthSquared();
+        if (len > 200 * 200 || len < 100 * 100) return;
+
+        List<ItemStack> stacks = StaffLensesScreen.getPlayerLenses(client);
+        if (stacks.isEmpty()) return;
+
+        int chosenItemId = lensesScreen.getChosenItem();
+        if (chosenItemId == -1) return;
+        ItemStack result = stacks.get(chosenItemId);
+
+        // TODO: 14.11.2023 packet send
+        client.player.sendMessage(result.getName());
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        if (!entity.isPlayer() || !world.isClient) return;
+        MinecraftClient client = MinecraftClient.getInstance();
+
+        if (!selected) {
+            if (client.currentScreen instanceof StaffLensesScreen) client.currentScreen.close();
+            return;
+        }
+
+        tickLensesMenu(client);
     }
 
     static {

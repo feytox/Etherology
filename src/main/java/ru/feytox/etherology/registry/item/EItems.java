@@ -39,6 +39,8 @@ public class EItems {
     public static final PatternTabletItem TRADITIONAL_PATTERN_TABLET = (PatternTabletItem) registerItem("traditional_pattern_tablet", new PatternTabletItem(StaffStyles.TRADITIONAL));
     public static final PatternTabletItem[] PATTERN_TABLETS = {ARISTOCRAT_PATTERN_TABLET, ASTRONOMY_PATTERN_TABLET, HEAVENLY_PATTERN_TABLET, OCULAR_PATTERN_TABLET, RITUAL_PATTERN_TABLET, ROYAL_PATTERN_TABLET, TRADITIONAL_PATTERN_TABLET};
 
+    public static final LenseItem TEST_LENSE = (LenseItem) registerItem("test_lense", new LenseItem());
+
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);
     }
