@@ -3,15 +3,13 @@ package ru.feytox.etherology.block.etherealChannel;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
@@ -21,7 +19,6 @@ import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
@@ -138,16 +135,5 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
 
         storedEther = nbt.getFloat("stored_ether");
         isUseless = nbt.getBoolean("is_useless");
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
     }
 }

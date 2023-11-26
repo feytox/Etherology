@@ -2,8 +2,8 @@ package ru.feytox.etherology.tickers;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class Ticker {

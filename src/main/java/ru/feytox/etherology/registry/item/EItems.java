@@ -39,7 +39,8 @@ public class EItems {
     public static final PatternTabletItem TRADITIONAL_PATTERN_TABLET = (PatternTabletItem) registerItem("traditional_pattern_tablet", new PatternTabletItem(StaffStyles.TRADITIONAL));
     public static final PatternTabletItem[] PATTERN_TABLETS = {ARISTOCRAT_PATTERN_TABLET, ASTRONOMY_PATTERN_TABLET, HEAVENLY_PATTERN_TABLET, OCULAR_PATTERN_TABLET, RITUAL_PATTERN_TABLET, ROYAL_PATTERN_TABLET, TRADITIONAL_PATTERN_TABLET};
 
-    public static final LenseItem TEST_LENSE = (LenseItem) registerItem("test_lense", new LenseItem());
+    public static final LenseItem.EmptyLense EMPTY_LENSE = (LenseItem.EmptyLense) registerItem("empty_lense", new LenseItem.EmptyLense());
+    public static final LenseItem.TestLense TEST_LENSE = (LenseItem.TestLense) registerItem("test_lense", new LenseItem.TestLense());
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);

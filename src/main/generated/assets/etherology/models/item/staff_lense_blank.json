@@ -2,6 +2,6 @@
   "parent": "etherology:item/staff_lense",
   "textures": {
     "particle": "etherology:item/staff_core_oak",
-    "style": "etherology:item/staff_lense_red"
+    "style": "etherology:item/staff_lense_blank"
   }
 }

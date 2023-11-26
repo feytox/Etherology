@@ -11,12 +11,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2d;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.staff.*;
+import ru.feytox.etherology.network.EtherologyNetwork;
+import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
 import ru.feytox.etherology.registry.util.KeybindsRegistry;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,24 +45,27 @@ public class StaffItem extends Item {
         stackNbt.put("parts", parts);
     }
 
-    public static void setPartInfo(ItemStack stack, StaffPart part, StaffPattern firstPattern, StaffPattern secondPattern) {
-        val staffData = readNbt(stack);
-        if (staffData == null) {
-            Etherology.ELOGGER.error("Null staff data after staff nbt reading");
-            return;
-        }
+    public static boolean setPartInfo(ItemStack stack, StaffPart part, StaffPattern firstPattern, StaffPattern secondPattern) {
+        val staffData = readNbtSafe(stack);
+        if (staffData == null) return false;
 
         StaffPartInfo partInfo = new StaffPartInfo(part, firstPattern, secondPattern);
         staffData.put(part, partInfo);
         writeNbt(stack, staffData);
+        return true;
+    }
+
+    @Nullable
+    public static StaffPartInfo getPartInfo(ItemStack stack, StaffPart part) {
+        val staffData = readNbtSafe(stack);
+        if (staffData == null) return null;
+
+        return staffData.getOrDefault(part, null);
     }
 
     public static void removePartInfo(ItemStack stack, StaffPart part) {
-        val staffData = readNbt(stack);
-        if (staffData == null) {
-            Etherology.ELOGGER.error("Null staff data after staff nbt reading");
-            return;
-        }
+        val staffData = readNbtSafe(stack);
+        if (staffData == null) return;
 
         staffData.remove(part);
         writeNbt(stack, staffData);
@@ -77,6 +83,16 @@ public class StaffItem extends Item {
 
         stackNbt.put("parts", partsNbt);
         stack.setNbt(stackNbt);
+    }
+
+    @Nullable
+    private static Map<StaffPart, StaffPartInfo> readNbtSafe(ItemStack stack) {
+        val staffData = readNbt(stack);
+        if (staffData == null) {
+            Etherology.ELOGGER.error("Null staff data after staff nbt reading");
+            return null;
+        }
+        return staffData;
     }
 
     @Nullable
@@ -116,26 +132,17 @@ public class StaffItem extends Item {
         client.setScreen(new StaffLensesScreen(client.currentScreen));
     }
 
-    private static void checkSelectedLense(MinecraftClient client, StaffLensesScreen lensesScreen) {
-        double mouseX = client.mouse.getX();
-        double mouseY = client.mouse.getY();
-
-        double centerX = client.getWindow().getWidth() / 2d;
-        double centerY = client.getWindow().getHeight() / 2d;
-
-        Vector2d mouseVec = new Vector2d(mouseX - centerX, mouseY - centerY);
-        double len = mouseVec.lengthSquared();
-        if (len > 200 * 200 || len < 100 * 100) return;
-
+    private static void checkSelectedLense(@NonNull MinecraftClient client, StaffLensesScreen lensesScreen) {
         List<ItemStack> stacks = StaffLensesScreen.getPlayerLenses(client);
-        if (stacks.isEmpty()) return;
 
-        int chosenItemId = lensesScreen.getChosenItem();
-        if (chosenItemId == -1) return;
-        ItemStack result = stacks.get(chosenItemId);
+        val selected = lensesScreen.getSelected();
+        if (selected.equals(LensSelectionType.NONE)) return;
+        if (!selected.isEmptySelectedItem() && stacks.isEmpty()) return;
+        int selectedItemId = lensesScreen.getChosenItem();
 
-        // TODO: 14.11.2023 packet send
-        client.player.sendMessage(result.getName());
+        ItemStack selectedStack = selectedItemId == -1 || selected.isEmptySelectedItem() ? ItemStack.EMPTY : stacks.get(selectedItemId);
+        val packet = new StaffMenuSelectionC2S(selected, selectedStack);
+        EtherologyNetwork.sendToServer(packet);
     }
 
     @Override
@@ -144,12 +151,29 @@ public class StaffItem extends Item {
         if (!entity.isPlayer() || !world.isClient) return;
         MinecraftClient client = MinecraftClient.getInstance();
 
-        if (!selected) {
+        ItemStack selectedStack = getStaffStackFromHand(entity);
+        if (stack == null) {
             if (client.currentScreen instanceof StaffLensesScreen) client.currentScreen.close();
             return;
         }
+        if (!stack.equals(selectedStack)) return;
 
         tickLensesMenu(client);
+    }
+
+    @Nullable
+    public static ItemStack getStaffStackFromHand(Entity entity) {
+        Iterator<ItemStack> stacks = entity.getHandItems().iterator();
+
+        ItemStack result = null;
+        while (stacks.hasNext()) {
+            ItemStack handStack = stacks.next();
+            if (!(handStack.getItem() instanceof StaffItem)) continue;
+            if (result != null) return null;
+            result = handStack;
+        }
+
+        return result;
     }
 
     static {

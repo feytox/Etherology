@@ -5,9 +5,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
-
-import javax.annotation.Nullable;
 
 public interface EtherStorage {
     float getMaxEther();

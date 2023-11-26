@@ -15,6 +15,7 @@ public class InteractionPacketManager extends AbstractPacketManager {
     public void registerC2S(ImmutableMap.Builder<Identifier, AbstractC2SPacket.C2SHandler> builder) {
         builder.put(TwoHandHeldAttackC2S.TWOHANDHELD_ATTACK_C2S_ID, TwoHandHeldAttackC2S::receive);
         builder.put(HammerMiningC2S.HAMMER_MINING_C2S_ID, HammerMiningC2S::receive);
+        builder.put(StaffMenuSelectionC2S.ID, StaffMenuSelectionC2S::receive);
     }
 
     @Override

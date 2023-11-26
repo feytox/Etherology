@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
     id "io.freefair.lombok" version "8.0.1"
 }
@@ -13,6 +13,11 @@ repositories {
     maven {
         name = 'Ladysnake Mods'
         url = 'https://maven.ladysnake.org/releases'
+        content {
+            includeGroup 'io.github.ladysnake'
+            includeGroup 'org.ladysnake'
+            includeGroupByRegex 'dev\\.onyxstudios.*'
+        }
     }
     maven {
         name "KosmX's maven"
@@ -53,6 +58,8 @@ dependencies {
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
 
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixin_extras}")))
+
+//    include modImplementation("com.github.0x3C50:Renderer:${project.renderer_lib}")
 }
 
 processResources {
@@ -91,6 +98,12 @@ java {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}" }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:$loader_version")
     }
 }
 

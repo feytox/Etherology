@@ -2,13 +2,13 @@ package ru.feytox.etherology.enums;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.StringIdentifiable;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.closet.ClosetData;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.block.shelf.ShelfData;
 import ru.feytox.etherology.util.deprecated.EEquality;
 import ru.feytox.etherology.util.feyapi.Nbtable;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 

@@ -13,10 +13,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
-
-import javax.annotation.Nullable;
 
 import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.BOTTOM_TYPE;
 import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_TYPE;
@@ -137,10 +136,5 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
     }
 }

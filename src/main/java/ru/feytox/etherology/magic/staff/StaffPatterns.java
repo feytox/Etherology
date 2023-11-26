@@ -19,6 +19,7 @@ public class StaffPatterns {
         register(StaffMetals.METALS);
         register(StaffColors.COLORS);
         register(StaffMaterial.MATERIALS);
+        register(StaffLenses.LENSES);
     }
 
     public static StaffPattern get(String name) {
@@ -34,6 +35,7 @@ public class StaffPatterns {
     }
 
     private static void register(StaffPattern pattern) {
+        if (PATTERNS.containsKey(pattern.getName())) throw new IllegalArgumentException("Duplicate staff pattern name: " + pattern.getName());
         PATTERNS.put(pattern.getName(), pattern);
     }
 }

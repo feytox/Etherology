@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.JsonHelper;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.enums.RingType;
 import ru.feytox.etherology.util.feyapi.RingIdentifier;
@@ -17,7 +18,6 @@ import software.bernie.geckolib.loading.object.BakedModelFactory;
 import software.bernie.geckolib.loading.object.GeometryTree;
 import software.bernie.geckolib.util.JsonUtil;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
