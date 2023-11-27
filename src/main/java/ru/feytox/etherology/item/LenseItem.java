@@ -22,7 +22,7 @@ public abstract class LenseItem extends Item implements EtherLense {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
 
-        if (!stack.hasNbt()) writeNbt(stack.getOrCreateNbt(), new LenseData(LenseData.LenseMode.OFF));
+        if (!stack.hasNbt()) writeNbt(stack.getOrCreateNbt(), new LenseData(LenseData.LenseMode.UP));
     }
 
     /**

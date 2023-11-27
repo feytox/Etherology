@@ -12,7 +12,6 @@ public class LenseData {
 
     // TODO: 21.11.2023 rename
     public enum LenseMode {
-        OFF,
         UP,
         DOWN
     }

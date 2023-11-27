@@ -23,6 +23,8 @@ public class LensModeSelectionButton extends BaseComponent {
     private final int u;
     @Setter
     private boolean active;
+    @Setter
+    private boolean shouldGlow;
 
 
     @Override
@@ -44,7 +46,7 @@ public class LensModeSelectionButton extends BaseComponent {
 
         drawButtonTexture(matrices, x, scaleX, y, scaleY, 0);
 
-        if (active) drawButtonTexture(matrices, x, scaleX, y, scaleY, 50);
+        if (active || shouldGlow) drawButtonTexture(matrices, x, scaleX, y, scaleY, 50);
 
         RenderSystem.disableBlend();
         matrices.pop();
@@ -55,14 +57,16 @@ public class LensModeSelectionButton extends BaseComponent {
     }
 
     public static LensModeSelectionButton create(boolean isUp, boolean isActive, FlowLayout parent, Consumer<LensSelectionType> selectedConsumer, Supplier<LensSelectionType> selectedSupplier, int backSize) {
-        LensModeSelectionButton button = new LensModeSelectionButton(isUp ? 0 : 50, isActive);
+        LensModeSelectionButton button = new LensModeSelectionButton(isUp ? 0 : 50, isActive, false);
         button.mouseEnter().subscribe(() -> {
             selectedConsumer.accept(isUp ? LensSelectionType.UP_ARROW : LensSelectionType.DOWN_ARROW);
+            button.setShouldGlow(true);
         });
         button.mouseLeave().subscribe(() -> {
             if (selectedSupplier.get().equals(isUp ? LensSelectionType.UP_ARROW : LensSelectionType.DOWN_ARROW)) {
                     selectedConsumer.accept(LensSelectionType.NONE);
             }
+            button.setShouldGlow(false);
         });
 
         float xScale = 1.0f * backSize / 512.0f;
