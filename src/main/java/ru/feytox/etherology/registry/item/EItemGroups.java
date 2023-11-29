@@ -72,9 +72,11 @@ public class EItemGroups {
         etherItems.with(IRON_SHIELD);
         // patterns
         etherItems.with(PATTERN_TABLETS);
+        // staff and lenses
+        etherItems.with(STAFF, UNADJUSTED_LENS, REDSTONE_LENS);
         // magic
         etherItems.with(
-                OCULUS, STAFF, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA, PRIMOSHARD_VIA,
+                OCULUS, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA, PRIMOSHARD_VIA,
                 ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, GLINT, ETHEREAL_OIL, CORRUPTION_BUCKET);
         // plants
         etherItems.with(BEAMER_SEEDS, BEAM_FRUIT);

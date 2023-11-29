@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.LenseItem;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.registry.item.EItems;
 
 import java.util.Arrays;
@@ -14,8 +14,7 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public enum StaffLenses implements StaffPattern {
-    BLANK(EItems.EMPTY_LENSE),
-    TEST(EItems.TEST_LENSE);
+    REDSTONE(EItems.REDSTONE_LENS);
 
     public static final Supplier<List<? extends StaffPattern>> LENSES = StaffPattern.memoize(values());
 
@@ -28,9 +27,9 @@ public enum StaffLenses implements StaffPattern {
     }
 
     @Nullable
-    public static StaffLenses getLense(ItemStack lensStack) {
+    public static StaffLenses getLens(ItemStack lensStack) {
         Item lensItem = lensStack.getItem();
-        if (!(lensItem instanceof LenseItem)) return null;
+        if (!(lensItem instanceof LensItem)) return null;
 
         return Arrays.stream(values()).filter(lensType -> lensType.getLensItem().equals(lensItem)).toList().get(0);
     }

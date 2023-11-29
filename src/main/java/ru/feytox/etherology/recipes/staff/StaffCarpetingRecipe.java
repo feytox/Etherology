@@ -1,5 +1,6 @@
 package ru.feytox.etherology.recipes.staff;
 
+import lombok.val;
 import net.minecraft.block.DyedCarpetBlock;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BlockItem;
@@ -11,11 +12,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffColors;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPattern;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
 
 import java.util.function.Predicate;
@@ -52,7 +53,8 @@ public class StaffCarpetingRecipe extends SpecialCraftingRecipe {
             throw new NullPointerException("Could not find StaffColor for carpet color '" + carpetColorName + "'");
         }
 
-        StaffItem.setPartInfo(resultStack, StaffPart.HANDLE, carpetColor, StaffPattern.EMPTY);
+        val staff = EtherologyComponents.STAFF.get(resultStack);
+        staff.setPartInfo(StaffPart.HANDLE, carpetColor, StaffPattern.EMPTY);
         return resultStack;
     }
 

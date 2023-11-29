@@ -13,9 +13,9 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 import static ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe.getIndexesOfPair;
 import static ru.feytox.etherology.registry.util.RecipesRegistry.STAFF_CARPET_CUT;
@@ -31,9 +31,9 @@ public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
         Pair<Integer, Integer> result = getIndexesOfStaffAndShears(inventory);
         if (result == null) return false;
         ItemStack staffStack = inventory.getStack(result.getRight());
-        val staffData = StaffItem.readNbt(staffStack);
-        if (staffData == null) return false;
-        return staffData.containsKey(StaffPart.HANDLE);
+        val staff = EtherologyComponents.STAFF.get(staffStack);
+        val parts = staff.getParts();
+        return parts.containsKey(StaffPart.HANDLE);
     }
 
     @Override
@@ -46,7 +46,8 @@ public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
         ItemStack staffStack = inventory.getStack(pair.getLeft());
         ItemStack resultStack = staffStack.copy();
 
-        StaffItem.removePartInfo(resultStack, StaffPart.HANDLE);
+        val staff = EtherologyComponents.STAFF.get(resultStack);
+        staff.removePartInfo(StaffPart.HANDLE);
         return resultStack;
     }
 

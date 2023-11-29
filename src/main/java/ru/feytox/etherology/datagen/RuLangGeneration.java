@@ -192,6 +192,9 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EItems.ROYAL_PATTERN_TABLET, "Скрижаль с Королевским Шаблоном");
         builder.add(EItems.TRADITIONAL_PATTERN_TABLET, "Скрижаль с Традиционным Шаблоном");
 
+        builder.add(EItems.UNADJUSTED_LENS, "Ненастроенная линза");
+        builder.add(EItems.REDSTONE_LENS, "Линза красного камня");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

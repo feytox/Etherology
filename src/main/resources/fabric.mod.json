@@ -46,7 +46,9 @@
       "etherology:ether_regen",
       "etherology:ether_points",
       "etherology:corruption",
-      "etherology:essence_zone"
+      "etherology:essence_zone",
+      "etherology:lens",
+      "etherology:staff"
     ]
   },
   "accessWidener" : "etherology.accesswidener"

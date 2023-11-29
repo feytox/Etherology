@@ -1,119 +1,72 @@
 package ru.feytox.etherology.item;
 
-import com.google.common.collect.ImmutableList;
 import lombok.NonNull;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
-import ru.feytox.etherology.magic.staff.*;
+import ru.feytox.etherology.magic.lense.LensMode;
+import ru.feytox.etherology.magic.staff.StaffLenses;
+import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.registry.util.KeybindsRegistry;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class StaffItem extends Item {
-
-    public static final ImmutableList<StaffPartInfo> DEFAULT_STAFF;
 
     public StaffItem() {
         super(new FabricItemSettings().maxCount(1));
     }
 
-    public static void writeDefaultParts(NbtCompound stackNbt) {
-        NbtCompound parts = new NbtCompound();
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        super.use(world, user, hand);
+        ItemStack staffStack = user.getStackInHand(hand);
 
-        DEFAULT_STAFF.forEach(partInfo -> {
-                    NbtCompound nbt = new NbtCompound();
-                    nbt.put(StaffPartInfo.NBT_KEY, partInfo);
-                    parts.put(partInfo.getPart().getName(), nbt);
-                });
-
-        stackNbt.put("parts", parts);
+        useLenseEffect(world, user, staffStack, true);
+        return TypedActionResult.pass(staffStack);
     }
 
-    public static boolean setPartInfo(ItemStack stack, StaffPart part, StaffPattern firstPattern, StaffPattern secondPattern) {
-        val staffData = readNbtSafe(stack);
-        if (staffData == null) return false;
-
-        StaffPartInfo partInfo = new StaffPartInfo(part, firstPattern, secondPattern);
-        staffData.put(part, partInfo);
-        writeNbt(stack, staffData);
-        return true;
+    @Override
+    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        super.usageTick(world, user, stack, remainingUseTicks);
+        useLenseEffect(world, user, stack, true);
     }
 
-    @Nullable
-    public static StaffPartInfo getPartInfo(ItemStack stack, StaffPart part) {
-        val staffData = readNbtSafe(stack);
-        if (staffData == null) return null;
-
-        return staffData.getOrDefault(part, null);
+    @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return 72000;
     }
 
-    public static void removePartInfo(ItemStack stack, StaffPart part) {
-        val staffData = readNbtSafe(stack);
-        if (staffData == null) return;
+    private boolean useLenseEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold) {
+        val staff = EtherologyComponents.STAFF.get(staffStack);
+        val partInfo = staff.getPartInfo(StaffPart.LENS);
+        if (partInfo == null) return false;
 
-        staffData.remove(part);
-        writeNbt(stack, staffData);
-    }
+        val lensPattern = partInfo.getFirstPattern();
+        if (!(lensPattern instanceof StaffLenses lensType)) return false;
+        if (!(lensType.getLensItem() instanceof LensItem lensItem)) return false;
 
-    public static void writeNbt(ItemStack stack, Map<StaffPart, StaffPartInfo> parts) {
-        NbtCompound stackNbt = stack.getOrCreateNbt();
-        NbtCompound partsNbt = new NbtCompound();
+        val lensData = EtherologyComponents.LENS.get(staffStack);
+        if (lensData.isEmpty()) return false;
+        val lensMode = lensData.getLensMode();
 
-        parts.forEach((part, partInfo) -> {
-            NbtCompound nbt = new NbtCompound();
-            nbt.put(StaffPartInfo.NBT_KEY, partInfo);
-            partsNbt.put(partInfo.getPart().getName(), nbt);
-        });
-
-        stackNbt.put("parts", partsNbt);
-        stack.setNbt(stackNbt);
-    }
-
-    @Nullable
-    private static Map<StaffPart, StaffPartInfo> readNbtSafe(ItemStack stack) {
-        val staffData = readNbt(stack);
-        if (staffData == null) {
-            Etherology.ELOGGER.error("Null staff data after staff nbt reading");
-            return null;
-        }
-        return staffData;
-    }
-
-    @Nullable
-    public static Map<StaffPart, StaffPartInfo> readNbt(ItemStack stack) {
-        NbtCompound stackNbt = stack.getNbt();
-        if (stackNbt == null || stackNbt.isEmpty()) return null;
-
-        NbtCompound partsNbt = stackNbt.getCompound("parts");
-        if (partsNbt.isEmpty()) return null;
-        return partsNbt.getKeys().stream()
-                .map(partsNbt::getCompound)
-                .map(nbt -> {
-                    try {
-                        return nbt.get(StaffPartInfo.NBT_KEY);
-                    } catch (Exception e) {
-                        Etherology.ELOGGER.error("Found non-PartInfo element while loading EtherStaff NBT");
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(StaffPartInfo::getPart, part -> part));
+        if (lensMode.equals(LensMode.CHARGE)) return lensItem.onChargeUse(world, user, lensData, hold);
+        return lensItem.onStreamUse(world, user, lensData, hold);
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
@@ -148,7 +101,11 @@ public class StaffItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!entity.isPlayer() || !world.isClient) return;
+        if (!world.isClient) {
+            tickActiveLens(stack);
+            return;
+        }
+        if (!entity.isPlayer()) return;
         MinecraftClient client = MinecraftClient.getInstance();
 
         ItemStack selectedStack = getStaffStackFromHand(entity);
@@ -159,6 +116,13 @@ public class StaffItem extends Item {
         if (!stack.equals(selectedStack)) return;
 
         tickLensesMenu(client);
+    }
+
+    private void tickActiveLens(ItemStack stack) {
+        val staffLens = EtherologyComponents.LENS.get(stack);
+        if (staffLens.isEmpty()) return;
+
+        staffLens.decrementCooldown(1);
     }
 
     @Nullable
@@ -174,14 +138,5 @@ public class StaffItem extends Item {
         }
 
         return result;
-    }
-
-    static {
-        DEFAULT_STAFF = ImmutableList.of(
-                new StaffPartInfo(StaffPart.CORE, StaffMaterial.OAK, StaffPattern.EMPTY),
-                new StaffPartInfo(StaffPart.HEAD, StaffStyles.TRADITIONAL, StaffMetals.IRON),
-                new StaffPartInfo(StaffPart.DECOR, StaffStyles.TRADITIONAL, StaffMetals.IRON),
-                new StaffPartInfo(StaffPart.TIP, StaffStyles.TRADITIONAL, StaffMetals.IRON)
-        );
     }
 }

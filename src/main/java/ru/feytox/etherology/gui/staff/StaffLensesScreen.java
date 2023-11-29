@@ -24,10 +24,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
-import ru.feytox.etherology.item.LenseItem;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
-import ru.feytox.etherology.magic.staff.LenseData;
+import ru.feytox.etherology.magic.lense.LensMode;
 import ru.feytox.etherology.mixin.MinecraftClientAccessor;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.RenderUtils;
 
@@ -110,7 +111,9 @@ public class StaffLensesScreen extends BaseOwoScreen<FlowLayout> {
         PlayerInventory inventory = client.player.getInventory();
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
-            if (stack.getItem() instanceof LenseItem) result.add(stack);
+            if (!(stack.getItem() instanceof LensItem lensItem)) continue;
+            if (!lensItem.isAdjusted()) continue;
+            result.add(stack);
         }
 
         return result;
@@ -132,14 +135,16 @@ public class StaffLensesScreen extends BaseOwoScreen<FlowLayout> {
         circleBack.surface(backgroundSurface());
 
         ItemStack staffCopy = staffStack.copy();
-        ItemStack currentLenseStack = LenseItem.takeLenseFromStaff(staffCopy);
-        LenseData lenseData = currentLenseStack == null ? null : LenseItem.readNbt(currentLenseStack.getNbt());
+        ItemStack currentLenseStack = LensItem.takeLenseFromStaff(staffCopy);
 
-        if (lenseData != null) {
-            boolean isUpActive = lenseData.getLenseMode().equals(LenseData.LenseMode.UP);
-            boolean isDownActive = lenseData.getLenseMode().equals(LenseData.LenseMode.DOWN);
-            val upArrow = LensModeSelectionButton.create(true, isUpActive, circleBack, selected -> this.selected = selected, () -> this.selected, backSize);
-            val downArrow = LensModeSelectionButton.create(false, isDownActive, circleBack, selected -> this.selected = selected, () -> this.selected, backSize);
+        val lens = currentLenseStack == null ? null : EtherologyComponents.LENS.get(staffStack);
+
+        if (lens != null && !lens.isEmpty()) {
+            val lensMode = lens.getLensMode();
+            boolean isUpActive = lensMode.equals(LensMode.STREAM);
+            boolean isDownActive = lensMode.equals(LensMode.CHARGE);
+            LensModeSelectionButton.create(true, isUpActive, circleBack, selected -> this.selected = selected, () -> this.selected, backSize);
+            LensModeSelectionButton.create(false, isDownActive, circleBack, selected -> this.selected = selected, () -> this.selected, backSize);
 
             ItemComponent currentLens = Components.item(currentLenseStack);
             result.add(currentLens.positioning(Positioning.relative(50, 50)));

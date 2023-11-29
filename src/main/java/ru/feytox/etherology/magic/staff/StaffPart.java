@@ -13,7 +13,7 @@ public enum StaffPart {
     HANDLE(false, StaffColors.COLORS),
     DECOR(true, StaffStyles.STYLES, StaffMetals.METALS),
     HEAD(true, StaffStyles.STYLES, StaffMetals.METALS),
-    LENSE(false, StaffLenses.LENSES),
+    LENS(false, StaffLenses.LENSES),
     TIP(true, StaffStyles.STYLES, StaffMetals.METALS);
 
     @Getter

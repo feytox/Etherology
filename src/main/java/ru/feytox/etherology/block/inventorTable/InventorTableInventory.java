@@ -2,6 +2,7 @@ package ru.feytox.etherology.block.inventorTable;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -10,11 +11,11 @@ import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.item.PatternTabletItem;
-import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffMetals;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffStyles;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 public class InventorTableInventory implements UpdatableInventory {
@@ -64,7 +65,8 @@ public class InventorTableInventory implements UpdatableInventory {
 
         StaffStyles patternStyle = pattern.getStaffStyle();
         ItemStack result = inputStaff.copy();
-        StaffItem.setPartInfo(result, selectedPart, patternStyle, patternMetal);
+        val staff = EtherologyComponents.STAFF.get(result);
+        staff.setPartInfo(selectedPart, patternStyle, patternMetal);
         setStack(3, result);
     }
 

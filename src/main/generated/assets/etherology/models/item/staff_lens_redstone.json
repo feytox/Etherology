@@ -1,0 +1,7 @@
+{
+  "parent": "etherology:item/staff_lens",
+  "textures": {
+    "particle": "etherology:item/staff_core_oak",
+    "style": "etherology:item/staff_lens_redstone"
+  }
+}
