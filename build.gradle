@@ -57,10 +57,6 @@ dependencies {
         exclude (group: "net.fabricmc.fabric-api")
     }
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
-
-    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixin_extras}")))
-
-//    include modImplementation("com.github.0x3C50:Renderer:${project.renderer_lib}")
 }
 
 processResources {
