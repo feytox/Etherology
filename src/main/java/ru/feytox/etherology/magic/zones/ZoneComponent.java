@@ -1,4 +1,4 @@
-package ru.feytox.etherology.components;
+package ru.feytox.etherology.magic.zones;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
@@ -15,8 +15,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.zones.EssenceZone;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 import java.util.List;
@@ -119,6 +117,7 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
             if (zoneY == null) continue;
 
             markAsInitialized(zoneType, zoneY);
+            // TODO: 01.12.2023 remove
             log.info("{} zone generated at {} {} {}", zoneType.name(), centerPos.getX(), zoneY, centerPos.getZ());
             return;
         }

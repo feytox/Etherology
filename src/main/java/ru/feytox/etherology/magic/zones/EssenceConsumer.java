@@ -3,11 +3,10 @@ package ru.feytox.etherology.magic.zones;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import ru.feytox.etherology.components.ZoneComponent;
 
 import java.util.Optional;
 
-public interface NewEssenceConsumer {
+public interface EssenceConsumer {
     float getConsumingValue();
     void increment(float value);
 

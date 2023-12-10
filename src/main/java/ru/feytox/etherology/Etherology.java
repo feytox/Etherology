@@ -8,6 +8,7 @@ import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
 import ru.feytox.etherology.block.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.commands.DevCommands;
+import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
@@ -48,5 +49,6 @@ public class Etherology implements ModInitializer {
         TradeOffersModificationRegistry.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
+        ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));
     }
 }

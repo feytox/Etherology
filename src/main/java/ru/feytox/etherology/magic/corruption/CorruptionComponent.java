@@ -1,4 +1,4 @@
-package ru.feytox.etherology.components;
+package ru.feytox.etherology.magic.corruption;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
@@ -11,7 +11,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import ru.feytox.etherology.components.ZoneComponent;
+import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import static ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlock.POWER;

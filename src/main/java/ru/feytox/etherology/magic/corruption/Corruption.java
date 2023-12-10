@@ -7,7 +7,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
-import ru.feytox.etherology.components.CorruptionComponent;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.Nbtable;

@@ -3,9 +3,6 @@ package ru.feytox.etherology.block.sedimentary;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -15,8 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.magic.zones.EssenceConsumer;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.magic.zones.NewEssenceConsumer;
 import ru.feytox.etherology.particle.info.SedimentarySparkInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
@@ -28,7 +25,7 @@ import static ru.feytox.etherology.block.sedimentary.SedimentaryStone.ESSENCE_ST
 import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK;
 import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 
-public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements NewEssenceConsumer {
+public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements EssenceConsumer {
     private static final float MAX_POINTS = 32.0f;
     private float points = 0;
 
@@ -100,16 +97,5 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         super.readNbt(nbt);
 
         points = nbt.getFloat("points");
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
     }
 }

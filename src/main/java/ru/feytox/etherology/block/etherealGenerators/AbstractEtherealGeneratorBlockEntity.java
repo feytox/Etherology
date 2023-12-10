@@ -5,9 +5,6 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -15,9 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.components.ZoneComponent;
 import ru.feytox.etherology.magic.ether.EtherStorage;
+import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
@@ -197,17 +193,6 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     @Override
     public boolean isActivated() {
         return false;
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override
