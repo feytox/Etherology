@@ -13,6 +13,8 @@ import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
 @Mixin(World.class)
 public class WorldMixin {
 
+    // TODO: 13.12.2023 simplify redstone lens injects
+
     @ModifyReturnValue(method = "isReceivingRedstonePower", at = @At("RETURN"))
     private boolean injectRedstoneLens(boolean original, @Local BlockPos pos) {
         World world = (World)(Object) this;
@@ -22,5 +24,16 @@ public class WorldMixin {
 
         if (effect == null) return original;
         return original || effect.getPower() > 0;
+    }
+
+    @ModifyReturnValue(method = "getReceivedRedstonePower", at = @At("RETURN"))
+    private int injectRedstoneLens2(int original, @Local BlockPos pos) {
+        World world = (World)(Object) this;
+        if (!(world instanceof ServerWorld serverWorld)) return original;
+        RedstoneLensEffects effects = RedstoneLensEffects.getServerState(serverWorld);
+        val effect = effects.getUsage(pos);
+
+        if (effect == null) return original;
+        return Math.max(original, effect.getPower());
     }
 }

@@ -14,34 +14,49 @@ public class RedstoneLens extends LensItem {
 
     @Override
     public boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold) {
-        if (world.isClient || !(world instanceof ServerWorld serverWorld)) return true;
-
-        int cooldown = lenseData.getCooldown();
-        if (cooldown > 0) {
-            entity.sendMessage(Text.of("Reloading: " + cooldown + " ticks"));
-            return false;
-        }
+        if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
 
         // TODO: 29.11.2023 use projectile
-        HitResult hitResult = entity.raycast(16.0f, 1.0f, false);
+        HitResult hitResult = entity.raycast(32.0f, 1.0f, false);
         if (!hitResult.getType().equals(HitResult.Type.BLOCK)) return false;
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
 
         BlockPos hitPos = blockHitResult.getBlockPos();
-        RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, 60);
+        RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, 4);
 
-        lenseData.incrementCooldown(60, 60);
         return true;
     }
 
     @Override
     public boolean onChargeUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold) {
-        if (world.isClient) return true;
+        if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
+        if (!lenseData.checkCooldown(serverWorld)) {
+            entity.sendMessage(Text.of("Cooldown!"));
+            return false;
+        }
         if (!hold) return true;
 
-        lenseData.incrementCooldown(2, 100);
-        int cooldown = lenseData.getCooldown();
-        entity.sendMessage(Text.of("Charge: " + cooldown + "%"));
+        lenseData.incrementCharge(1, 120);
+        entity.sendMessage(Text.of("Increment charge"));
+
         return true;
+    }
+
+
+    @Override
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData) {
+        if (world.isClient || !(world instanceof ServerWorld serverWorld)) return;
+
+        int charge = lenseData.getCharge();
+        lenseData.setCharge(0);
+        lenseData.incrementCooldown(serverWorld, 60);
+        if (charge == 0) return;
+
+        HitResult hitResult = entity.raycast(32.0f, 1.0f, false);
+        if (!hitResult.getType().equals(HitResult.Type.BLOCK)) return;
+        if (!(hitResult instanceof BlockHitResult blockHitResult)) return;
+
+        BlockPos hitPos = blockHitResult.getBlockPos();
+        RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, charge);
     }
 }

@@ -3,6 +3,7 @@ package ru.feytox.etherology;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.util.math.random.Random;
 import org.slf4j.Logger;
 import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
@@ -25,6 +26,7 @@ public class Etherology implements ModInitializer {
 
     public static final Logger ELOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "etherology";
+    public static final int GAME_ID;
 
     @Override
     public void onInitialize() {
@@ -50,5 +52,9 @@ public class Etherology implements ModInitializer {
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));
+    }
+
+    static {
+        GAME_ID = Random.create().nextBetween(0, 999999999);
     }
 }

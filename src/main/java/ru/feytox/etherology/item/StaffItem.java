@@ -37,7 +37,7 @@ public class StaffItem extends Item {
         super.use(world, user, hand);
         ItemStack staffStack = user.getStackInHand(hand);
 
-        useLenseEffect(world, user, staffStack, true);
+        if (useLenseEffect(world, user, staffStack, false)) user.setCurrentHand(hand);
         return TypedActionResult.pass(staffStack);
     }
 
@@ -67,6 +67,25 @@ public class StaffItem extends Item {
 
         if (lensMode.equals(LensMode.CHARGE)) return lensItem.onChargeUse(world, user, lensData, hold);
         return lensItem.onStreamUse(world, user, lensData, hold);
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        super.onStoppedUsing(stack, world, user, remainingUseTicks);
+        val staff = EtherologyComponents.STAFF.get(stack);
+        val partInfo = staff.getPartInfo(StaffPart.LENS);
+        if (partInfo == null) return;
+
+        val lensPattern = partInfo.getFirstPattern();
+        if (!(lensPattern instanceof StaffLenses lensType)) return;
+        if (!(lensType.getLensItem() instanceof LensItem lensItem)) return;
+
+        val lensData = EtherologyComponents.LENS.get(stack);
+        if (lensData.isEmpty()) return;
+        val lensMode = lensData.getLensMode();
+
+        if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData);
+        else lensItem.onStreamStop(world, user, lensData);
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
@@ -101,10 +120,7 @@ public class StaffItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!world.isClient) {
-            tickActiveLens(stack);
-            return;
-        }
+        if (!world.isClient) return;
         if (!entity.isPlayer()) return;
         MinecraftClient client = MinecraftClient.getInstance();
 
@@ -116,13 +132,6 @@ public class StaffItem extends Item {
         if (!stack.equals(selectedStack)) return;
 
         tickLensesMenu(client);
-    }
-
-    private void tickActiveLens(ItemStack stack) {
-        val staffLens = EtherologyComponents.LENS.get(stack);
-        if (staffLens.isEmpty()) return;
-
-        staffLens.decrementCooldown(1);
     }
 
     @Nullable

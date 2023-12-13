@@ -5,8 +5,10 @@ import dev.onyxstudios.cca.api.v3.item.CcaNbtType;
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import lombok.val;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import org.apache.commons.lang3.EnumUtils;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffPart;
@@ -15,12 +17,16 @@ import ru.feytox.etherology.registry.util.EtherologyComponents;
 public class LensComponent extends ItemComponent implements CopyableComponent<LensComponent> {
 
     @Nullable
-    // TODO: 28.11.2023 do not save
-    // TODO: 29.11.2023 or save???
-    private Integer cachedCooldown;
+    private Long cachedEndTick;
+
+    @Nullable
+    private Integer cachedCharge;
 
     @Nullable
     private LensMode cachedMode;
+
+    @Nullable
+    private Integer cachedGameId;
 
     @Nullable
     private Boolean cachedEmpty;
@@ -29,11 +35,34 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         super(stack);
     }
 
-    public int getCooldown() {
-        if (cachedCooldown != null) return cachedCooldown;
-        if (!hasTag("cooldown", CcaNbtType.INT)) putInt("cooldown", 0);
-        cachedCooldown = getInt("cooldown");
-        return cachedCooldown;
+    public boolean checkCooldown(ServerWorld world) {
+        if (getEndTick() != -1) return getEndTick() <= world.getTime();
+        setEndTick(world.getTime());
+        return true;
+    }
+
+    private long getEndTick() {
+        if (cachedEndTick != null) return cachedEndTick;
+        if (!hasTag("end_tick", CcaNbtType.LONG)) putLong("end_tick", -1);
+        cachedEndTick = getLong("end_tick");
+        return cachedEndTick;
+    }
+
+    public int getCharge() {
+        if (cachedCharge != null) return cachedCharge;
+        if (!hasTag("charge", CcaNbtType.INT)) putInt("charge", 0);
+        cachedCharge = getInt("charge");
+        return cachedCharge;
+    }
+
+    public void incrementCharge(int amount, int maxCharge) {
+        putInt("charge", Math.min(getCharge() + amount, maxCharge));
+        resetCache();
+    }
+
+    public void setCharge(int amount) {
+        putInt("charge", amount);
+        resetCache();
     }
 
     public LensMode getLensMode() {
@@ -43,24 +72,37 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         return cachedMode;
     }
 
-    public void incrementCooldown(int value, int maxCooldown) {
-        putInt("cooldown", Math.min(maxCooldown, getCooldown() + value));
+    public int getGameId() {
+        if (cachedGameId != null) return cachedGameId;
+        if (!hasTag("game_id", CcaNbtType.INT)) putInt("game_id", Etherology.GAME_ID);
+        cachedGameId = getInt("game_id");
+        return cachedGameId;
+    }
+
+    public boolean isCurrentGameId() {
+        return getGameId() == Etherology.GAME_ID;
+    }
+
+    public void refreshGameId() {
+        if (isCurrentGameId()) return;
+        putInt("game_id", Etherology.GAME_ID);
         resetCache();
     }
 
-    public void decrementCooldown(int value) {
-        putInt("cooldown", Math.max(0, getCooldown() - value));
+    public void incrementCooldown(ServerWorld world, long cooldown) {
+        if (checkCooldown(world)) putLong("end_tick", world.getTime() + cooldown);
+        else putLong("end_tick", getEndTick() + cooldown);
         resetCache();
     }
 
-    public void setCooldown(int value) {
-        if (value == getCooldown()) return;
-        putInt("cooldown", value);
+    private void setEndTick(long value) {
+        if (value == getEndTick()) return;
+        putLong("end_tick", value);
         resetCache();
     }
 
     public void setLensMode(LensMode newMode) {
-        if (newMode.equals(LensMode.STREAM)) setCooldown(0);
+        if (newMode.equals(LensMode.STREAM)) setEndTick(-1);
         putString("mode", newMode.name());
         resetCache();
     }
@@ -71,11 +113,13 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         resetCache();
     }
 
-    public void resetCache() {
+    private void resetCache() {
         // TODO: 29.11.2023 рассмотреть раздельный ресет кэша, если необходимо
         cachedMode = null;
-        cachedCooldown = null;
+        cachedEndTick = null;
         cachedEmpty = null;
+        cachedGameId = null;
+        cachedCharge = null;
     }
 
     public boolean isEmpty() {
@@ -93,9 +137,10 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
     }
 
     @Override
-    public void copyFrom(LensComponent source) {
-        cachedCooldown = source.cachedCooldown;
-        cachedMode = source.cachedMode;
-        cachedEmpty = source.cachedEmpty;
+    public void copyFrom(LensComponent other) {
+        setEndTick(other.getEndTick());
+        setLensMode(other.getLensMode());
+        setCharge(other.getCharge());
+        refreshGameId();
     }
 }
