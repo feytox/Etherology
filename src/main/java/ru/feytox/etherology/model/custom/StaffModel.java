@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.val;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
@@ -25,17 +26,21 @@ import java.util.function.Supplier;
 public class StaffModel extends MultiItemModel {
 
     @Override
-    public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
-        BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
+    public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier,
+                              RenderContext context) {
+        BakedModelManager modelManager =
+                MinecraftClient.getInstance().getBakedModelManager();
         var modelConsumer = context.bakedModelConsumer();
 
         val staff = EtherologyComponents.STAFF.get(stack);
         Map<StaffPart, StaffPartInfo> parts = staff.getParts();
+
         if (parts == null) return;
-        parts.values().stream()
-                .map(StaffPartInfo::toModelId)
-                .map(modelManager::getModel)
-                .forEach(modelConsumer);
+        for (StaffPartInfo partInfo : parts.values()) {
+            ModelIdentifier modelId = partInfo.toModelId();
+            BakedModel model = modelManager.getModel(modelId);
+            modelConsumer.accept(model);
+        }
     }
 
     public static void loadPartModels(Consumer<Identifier> idConsumer) {

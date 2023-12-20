@@ -1,6 +1,7 @@
 package ru.feytox.etherology.item;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
@@ -9,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.lense.LensComponent;
 import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.deprecated.EVec3d;
 
 public class RedstoneLens extends LensItem {
 
@@ -23,6 +26,9 @@ public class RedstoneLens extends LensItem {
 
         BlockPos hitPos = blockHitResult.getBlockPos();
         RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, 4);
+
+        EVec3d.lineOf(entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF)), hitPos.toCenterPos(), 0.33d)
+                .forEach(pos -> serverWorld.spawnParticles(new DustParticleEffect(DustParticleEffect.RED, 0.5f), pos.x, pos.y, pos.z, 1, 0, 0, 0, 0));
 
         return true;
     }
