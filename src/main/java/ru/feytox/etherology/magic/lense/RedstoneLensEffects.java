@@ -17,12 +17,14 @@ import java.util.Map;
 // TODO: rename and maybe move
 public class RedstoneLensEffects extends PersistentState {
 
-    private Map<BlockPos, RedstoneLensEffect> effects = new Object2ObjectOpenHashMap<>();
+    private final Map<BlockPos, RedstoneLensEffect> effects = new Object2ObjectOpenHashMap<>();
 
     public void addUsage(ServerWorld world, BlockPos pos, int power, int tickDelay) {
+        boolean shouldUpdate = getUsage(pos) == null;
         effects.put(pos, new RedstoneLensEffect(power, tickDelay));
-        updateBlockAndNeighbors(world, pos);
+
         markDirty();
+        if (shouldUpdate) updateBlockAndNeighbors(world, pos);
     }
 
     @Nullable
@@ -30,29 +32,20 @@ public class RedstoneLensEffects extends PersistentState {
         if (!effects.containsKey(pos)) return null;
 
         RedstoneLensEffect effect = effects.get(pos);
-        if (effect.ticks > 0) return effect;
-
-        effects.remove(pos);
-        markDirty();
-        return null;
+        return effect.ticks > 0 ? effect : null;
     }
 
     public void tick(ServerWorld world) {
         if (effects.isEmpty()) return;
 
-        Map<BlockPos, RedstoneLensEffect> newEffects = new Object2ObjectOpenHashMap<>();
-        effects.entrySet().stream()
-                .filter(entry -> {
-                    RedstoneLensEffect effect = entry.getValue();
-                    if (!effect.tick()) return true;
+        effects.entrySet().removeIf(entry -> {
+            BlockPos pos = entry.getKey();
+            RedstoneLensEffect effect = entry.getValue();
+            if (!effect.tick()) return false;
 
-                    BlockPos pos = entry.getKey();
-                    updateBlockAndNeighbors(world, pos);
-                    return false;
-                })
-                .forEach(entry -> newEffects.put(entry.getKey(), entry.getValue()));
-
-        effects = newEffects;
+            updateBlockAndNeighbors(world, pos);
+            return true;
+        });
     }
 
     private void updateBlockAndNeighbors(ServerWorld world, BlockPos pos) {
@@ -102,6 +95,13 @@ public class RedstoneLensEffects extends PersistentState {
         private int power;
         private int ticks;
 
+        /**
+         * Decrements the tick counter and checks if it has reached
+         * zero or less.
+         *
+         * @return     True if the tick counter is zero or less,
+         *             False otherwise.
+         */
         private boolean tick() {
             return ticks-- <= 0;
         }
