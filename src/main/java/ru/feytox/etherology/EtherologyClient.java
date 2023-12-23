@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.network.ClientPlayerEntity;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
+import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.particle.ClientParticleTypes;
 import ru.feytox.etherology.registry.util.*;
@@ -28,6 +29,7 @@ public class EtherologyClient implements ClientModInitializer {
         BlockRenderLayerMapRegistry.registerAll();
         ColorProvidersRegistry.registerAll();
         KeybindsRegistry.registerAll();
+        EntityRegistry.registerClientSide();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();

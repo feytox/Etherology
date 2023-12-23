@@ -15,6 +15,7 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
+import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.item.EtherEnchantments;
@@ -49,6 +50,7 @@ public class Etherology implements ModInitializer {
         EItemGroups.registerAll();
         LootTablesModifyRegistry.registerAll();
         TradeOffersModificationRegistry.registerAll();
+        EntityRegistry.registerServerSide();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));
