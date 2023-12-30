@@ -1,7 +1,8 @@
 package ru.feytox.etherology.item;
 
+import lombok.val;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -12,8 +13,8 @@ import net.minecraft.world.World;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneBlob;
 import ru.feytox.etherology.magic.lense.LensComponent;
 import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.util.deprecated.EVec3d;
 
 import java.util.function.Supplier;
 
@@ -32,9 +33,14 @@ public class RedstoneLens extends LensItem {
         RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, 4);
         if (world.getTime() % 3 != 0) return true;
 
-        EVec3d.lineOf(entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF)), hitPos.toCenterPos(), 0.5d)
-                .forEach(pos -> serverWorld.spawnParticles(new DustParticleEffect(DustParticleEffect.RED, 0.5f), pos.x, pos.y, pos.z, 1, 0, 0, 0, 0));
+        Vec3d startPos = entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF));
+        val packet = new RedstoneLensStreamS2C(startPos, hitPos.toCenterPos());
+        if (entity instanceof ServerPlayerEntity player) {
+            packet.sendForTrackingAndSelf(player);
+            return true;
+        }
 
+        packet.sendForTracking(serverWorld, entity.getBlockPos(), 0);
         return true;
     }
 

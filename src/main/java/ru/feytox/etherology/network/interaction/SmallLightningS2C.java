@@ -44,9 +44,8 @@ public class SmallLightningS2C extends AbstractS2CPacket {
 
     @Override
     public PacketByteBuf encode(PacketByteBuf buf) {
-        val vecArg = SimpleArgs.VEC3D.get();
-        vecArg.write(buf, startPos);
-        vecArg.write(buf, endPos);
+        SimpleArgs.writeVec3d(buf, startPos);
+        SimpleArgs.writeVec3d(buf, endPos);
         buf.writeInt(lineCount);
         buf.writeFloat(matrixInstability);
         return buf;
@@ -60,9 +59,8 @@ public class SmallLightningS2C extends AbstractS2CPacket {
     public static void receive(S2CPacketInfo packetInfo) {
         val client = packetInfo.client();
         val buf = packetInfo.buf();
-        val vecArg = SimpleArgs.VEC3D.get();
-        Vec3d startPos = vecArg.read(buf);
-        Vec3d endPos = vecArg.read(buf);
+        Vec3d startPos = SimpleArgs.readVec3d(buf);
+        Vec3d endPos = SimpleArgs.readVec3d(buf);
         int lineCount = buf.readInt();
         float matrixInstability = buf.readFloat();
 

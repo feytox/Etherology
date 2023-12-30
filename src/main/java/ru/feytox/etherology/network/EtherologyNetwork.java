@@ -40,16 +40,9 @@ public class EtherologyNetwork {
                         handler.receive(new C2SPacketInfo(server, player, handler1, buf, responseSender)))));
     }
 
-    public static void sendForTrackingAndSelf(AbstractS2CPacket packet, ServerPlayerEntity relatedPlayer) {
-        for (ServerPlayerEntity player : PlayerLookup.tracking(relatedPlayer)) {
-            if (player.getUuid().equals(relatedPlayer.getUuid())) continue;
-            PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-            ServerPlayNetworking.send(player, packet.getPacketID(), buf);
-        }
-        PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-        ServerPlayNetworking.send(relatedPlayer, packet.getPacketID(), buf);
-    }
+    // TODO: 30.12.2023 replace to this.send...
 
+    @Deprecated
     public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
             PacketByteBuf buf = packet.encode(PacketByteBufs.create());
@@ -57,6 +50,7 @@ public class EtherologyNetwork {
         }
     }
 
+    @Deprecated
     public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity, int exceptId) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
             if (player.getId() == exceptId) continue;
@@ -65,6 +59,7 @@ public class EtherologyNetwork {
         }
     }
 
+    @Deprecated
     public static void sendForTracking(ServerWorld world, BlockPos pos, int exceptId, AbstractS2CPacket packet) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
             if (player.getId() == exceptId) continue;
@@ -73,16 +68,7 @@ public class EtherologyNetwork {
         }
     }
 
-    public static void sendForTrackingAndSelf(ServerWorld world, BlockPos pos, ServerPlayerEntity relatedPlayer, AbstractS2CPacket packet) {
-        for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
-            if (player.getUuid().equals(relatedPlayer.getUuid())) continue;
-            PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-            ServerPlayNetworking.send(player, packet.getPacketID(), buf);
-        }
-        PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-        ServerPlayNetworking.send(relatedPlayer, packet.getPacketID(), buf);
-    }
-
+    @Deprecated
     public static void sendToServer(AbstractC2SPacket packet) {
         PacketByteBuf buf = packet.encode(PacketByteBufs.create());
         ClientPlayNetworking.send(packet.getPacketID(), buf);

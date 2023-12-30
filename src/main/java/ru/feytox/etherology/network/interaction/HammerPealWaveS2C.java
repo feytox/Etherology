@@ -8,10 +8,10 @@ import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.particle.PealWaveParticle;
-import ru.feytox.etherology.particle.effects.args.ParticleArg;
 import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
+@Deprecated
 public class HammerPealWaveS2C extends AbstractS2CPacket {
     public static final Identifier HAMMER_PEAL_S2C_ID = new EIdentifier("hammer_peal_s2c");
     private final Vec3d fromPos;
@@ -28,18 +28,16 @@ public class HammerPealWaveS2C extends AbstractS2CPacket {
         ClientWorld world = client.world;
         if (world == null) return;
 
-        ParticleArg<Vec3d> vec3dArg = SimpleArgs.VEC3D.get();
-        Vec3d fromPos = vec3dArg.read(buf);
-        Vec3d toPos = vec3dArg.read(buf);
+        Vec3d fromPos = SimpleArgs.readVec3d(buf);
+        Vec3d toPos = SimpleArgs.readVec3d(buf);
 
         client.execute(() -> PealWaveParticle.spawnWave(world, fromPos, toPos));
     }
 
     @Override
     public PacketByteBuf encode(PacketByteBuf buf) {
-        ParticleArg<Vec3d> vec3dArg = SimpleArgs.VEC3D.get();
-        vec3dArg.write(buf, fromPos);
-        vec3dArg.write(buf, toPos);
+        SimpleArgs.writeVec3d(buf, fromPos);
+        SimpleArgs.writeVec3d(buf, toPos);
         return buf;
     }
 

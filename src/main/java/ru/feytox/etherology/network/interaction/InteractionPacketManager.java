@@ -24,5 +24,6 @@ public class InteractionPacketManager extends AbstractPacketManager {
         builder.put(HammerPealWaveS2C.HAMMER_PEAL_S2C_ID, HammerPealWaveS2C::receive);
         builder.put(SmallLightningS2C.ID, SmallLightningS2C::receive);
         builder.put(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C::receive);
+        builder.put(RedstoneLensStreamS2C.ID, RedstoneLensStreamS2C::receive);
     }
 }

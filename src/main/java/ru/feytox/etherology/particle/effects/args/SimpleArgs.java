@@ -19,6 +19,17 @@ public class SimpleArgs {
     public static final Supplier<ParticleArg<Float>> FLOAT;
     public static final Supplier<ParticleArg<String>> STRING;
 
+    public static PacketByteBuf writeVec3d(PacketByteBuf buf, @NonNull Vec3d value) {
+        buf.writeDouble(value.x);
+        buf.writeDouble(value.y);
+        buf.writeDouble(value.z);
+        return buf;
+    }
+
+    public static Vec3d readVec3d(PacketByteBuf buf) {
+        return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+    }
+
     static {
         VEC3D = () -> new ParticleArg<>() {
             @Override
@@ -33,15 +44,12 @@ public class SimpleArgs {
 
             @Override
             public Vec3d read(PacketByteBuf buf) {
-                return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+                return readVec3d(buf);
             }
 
             @Override
             public PacketByteBuf write(PacketByteBuf buf, @NotNull Vec3d value) {
-                buf.writeDouble(value.x);
-                buf.writeDouble(value.y);
-                buf.writeDouble(value.z);
-                return buf;
+                return writeVec3d(buf, value);
             }
 
             @Override
@@ -83,7 +91,7 @@ public class SimpleArgs {
             }
         };
 
-        STRING = () -> new ParticleArg<String>() {
+        STRING = () -> new ParticleArg<>() {
             @Override
             public String read(StringReader reader) throws CommandSyntaxException {
                 return reader.readString();
