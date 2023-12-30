@@ -25,6 +25,7 @@ import ru.feytox.etherology.registry.util.KeybindsRegistry;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class StaffItem extends Item {
 
@@ -37,14 +38,14 @@ public class StaffItem extends Item {
         super.use(world, user, hand);
         ItemStack staffStack = user.getStackInHand(hand);
 
-        if (useLenseEffect(world, user, staffStack, false)) user.setCurrentHand(hand);
-        return TypedActionResult.pass(staffStack);
+        if (useLenseEffect(world, user, staffStack, false, () -> hand)) return TypedActionResult.pass(staffStack);
+        return TypedActionResult.fail(staffStack);
     }
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         super.usageTick(world, user, stack, remainingUseTicks);
-        useLenseEffect(world, user, stack, true);
+        useLenseEffect(world, user, stack, true, () -> getHandFromStack(user, stack));
     }
 
     @Override
@@ -52,7 +53,10 @@ public class StaffItem extends Item {
         return 72000;
     }
 
-    private boolean useLenseEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold) {
+    /**
+     * @return True if pass or False if fail
+     */
+    private boolean useLenseEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
         val staff = EtherologyComponents.STAFF.get(staffStack);
         val partInfo = staff.getPartInfo(StaffPart.LENS);
         if (partInfo == null) return false;
@@ -65,8 +69,8 @@ public class StaffItem extends Item {
         if (lensData.isEmpty()) return false;
         val lensMode = lensData.getLensMode();
 
-        if (lensMode.equals(LensMode.CHARGE)) return lensItem.onChargeUse(world, user, lensData, hold);
-        return lensItem.onStreamUse(world, user, lensData, hold);
+        if (lensMode.equals(LensMode.CHARGE)) return lensItem.onChargeUse(world, user, lensData, hold, handGetter);
+        return lensItem.onStreamUse(world, user, lensData, hold, handGetter);
     }
 
     @Override
@@ -84,8 +88,9 @@ public class StaffItem extends Item {
         if (lensData.isEmpty()) return;
         val lensMode = lensData.getLensMode();
 
-        if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData);
-        else lensItem.onStreamStop(world, user, lensData);
+        int holdTicks = getMaxUseTime(stack) - remainingUseTicks;
+        if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData, holdTicks);
+        else lensItem.onStreamStop(world, user, lensData, holdTicks);
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
@@ -147,5 +152,13 @@ public class StaffItem extends Item {
         }
 
         return result;
+    }
+
+    @Nullable
+    public static Hand getHandFromStack(LivingEntity entity, ItemStack stack) {
+        for (Hand hand : Hand.values()) {
+            if (entity.getStackInHand(hand).equals(stack)) return hand;
+        }
+        return null;
     }
 }

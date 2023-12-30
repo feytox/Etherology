@@ -24,7 +24,6 @@ public class EntityRegistry {
     public static void registerServerSide() {}
 
     public static void registerClientSide() {
-        // TODO: 21.12.2023 register renderer and test
         EntityRendererRegistry.register(REDSTONE_BLOB, RedstoneBlobRenderer::new);
     }
 

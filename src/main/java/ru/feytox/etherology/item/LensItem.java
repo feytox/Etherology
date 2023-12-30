@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.lense.EtherLense;
@@ -15,16 +16,18 @@ import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.magic.staff.StaffPattern;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 
+import java.util.function.Supplier;
+
 public abstract class LensItem extends Item implements EtherLense {
 
     public LensItem() {
         super(new FabricItemSettings().maxCount(1));
     }
 
-    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold);
-    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold);
-    public void onStreamStop(World world, LivingEntity entity, LensComponent lenseData) {}
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData) {}
+    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);
+    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);
+    public void onStreamStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks) {}
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks) {}
 
     /**
      * Places a lens on a staff.
