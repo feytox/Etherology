@@ -26,8 +26,8 @@ public abstract class LensItem extends Item implements EtherLense {
 
     public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);
     public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);
-    public void onStreamStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks) {}
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks) {}
+    public void onStreamStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks, Supplier<Hand> handGetter) {}
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks, Supplier<Hand> handGetter) {}
 
     /**
      * Places a lens on a staff.

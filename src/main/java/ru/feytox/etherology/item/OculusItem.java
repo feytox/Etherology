@@ -52,7 +52,7 @@ public class OculusItem extends Item {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return EArmPose.OCULUS.getUseAction();
+        return EArmPose.OCULUS_ETHEROLOGY.getUseAction();
     }
 
     public static boolean isUsingOculus(LivingEntity entity) {

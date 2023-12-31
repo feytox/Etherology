@@ -31,10 +31,11 @@ public class RedstoneLens extends LensItem {
 
         BlockPos hitPos = blockHitResult.getBlockPos();
         RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, 4);
+        // TODO: 31.12.2023 optimize or not
         if (world.getTime() % 3 != 0) return true;
 
         Vec3d startPos = entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF));
-        val packet = new RedstoneLensStreamS2C(startPos, hitPos.toCenterPos());
+        val packet = new RedstoneLensStreamS2C(startPos, blockHitResult.getPos());
         if (entity instanceof ServerPlayerEntity player) {
             packet.sendForTrackingAndSelf(player);
             return true;
@@ -57,8 +58,11 @@ public class RedstoneLens extends LensItem {
 
 
     @Override
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks) {
-        if (world.isClient || !(world instanceof ServerWorld serverWorld)) return;
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks, Supplier<Hand> handGetter) {
+        if (world.isClient || !(world instanceof ServerWorld serverWorld)) {
+            entity.swingHand(handGetter.get());
+            return;
+        }
 
         lenseData.incrementCooldown(serverWorld, 60);
         if (holdTicks == 0) return;

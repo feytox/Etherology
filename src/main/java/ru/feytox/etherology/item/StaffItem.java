@@ -11,14 +11,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.lense.LensMode;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.registry.util.KeybindsRegistry;
@@ -40,6 +41,11 @@ public class StaffItem extends Item {
 
         if (useLenseEffect(world, user, staffStack, false, () -> hand)) return TypedActionResult.pass(staffStack);
         return TypedActionResult.fail(staffStack);
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return EArmPose.STAFF_ETHEROLOGY.getUseAction();
     }
 
     @Override
@@ -89,8 +95,9 @@ public class StaffItem extends Item {
         val lensMode = lensData.getLensMode();
 
         int holdTicks = getMaxUseTime(stack) - remainingUseTicks;
-        if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData, holdTicks);
-        else lensItem.onStreamStop(world, user, lensData, holdTicks);
+        Supplier<Hand> handGetter = () -> getHandFromStack(user, stack);
+        if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData, holdTicks, handGetter);
+        else lensItem.onStreamStop(world, user, lensData, holdTicks, handGetter);
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
@@ -119,7 +126,7 @@ public class StaffItem extends Item {
 
         ItemStack selectedStack = selectedItemId == -1 || selected.isEmptySelectedItem() ? ItemStack.EMPTY : stacks.get(selectedItemId);
         val packet = new StaffMenuSelectionC2S(selected, selectedStack);
-        EtherologyNetwork.sendToServer(packet);
+        packet.sendToServer();
     }
 
     @Override
