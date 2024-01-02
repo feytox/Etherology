@@ -35,12 +35,13 @@ import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.util.feyapi.DoubleModel;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class OculusItem extends Item {
+public class OculusItem extends Item implements DoubleModel {
     @Getter
     private static final FlowLayout displayedHud = createRoot();
     @Nullable

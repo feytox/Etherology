@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
 import ru.feytox.etherology.model.EtherologyModels;
-import ru.feytox.etherology.model.ModelTransformations;
+import ru.feytox.etherology.model.ModelComponents;
 import ru.feytox.etherology.model.MultiItemModel;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -27,6 +27,6 @@ public class OculusModel extends MultiItemModel {
 
     @Override
     public ModelTransformation getTransformation() {
-        return ModelTransformations.loadTransformFromJson(new EIdentifier("models/item/oculus_base"));
+        return ModelComponents.loadTransformFromJson(new EIdentifier("models/item/oculus_base"));
     }
 }

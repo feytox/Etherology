@@ -27,13 +27,17 @@ import static ru.feytox.etherology.model.custom.OculusModel.OCULUS_LENS;
 public class EtherologyModelProvider implements ModelVariantProvider {
 
     private static final ModelIdentifier OCULUS_IN_HAND = EtherologyModels.createItemModelId("oculus_in_hand");
-    public static final ModelIdentifier ETHER_STAFF = EtherologyModels.createItemModelId(ToolItems.STAFF.toString());
+    public static final ModelIdentifier STAFF = EtherologyModels.createItemModelId(ToolItems.STAFF.toString());
+    public static final ModelIdentifier STAFF_STREAM = EtherologyModels.createItemModelId(STAFF.getPath() + "_stream");
+    public static final ModelIdentifier STAFF_CHARGE = EtherologyModels.createItemModelId(STAFF.getPath() + "_charge");
+    public static final ModelIdentifier STAFF_CORE = EtherologyModels.createItemModelId("staff_core_oak");
 
     public static void register() {
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, identifierConsumer) -> {
             identifierConsumer.accept(OCULUS_BASE);
             identifierConsumer.accept(OCULUS_LENS);
             StaffModel.loadPartModels(identifierConsumer);
+            identifierConsumer.accept(STAFF_CORE);
         });
 
         ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> new EtherologyModelProvider());
@@ -42,7 +46,9 @@ public class EtherologyModelProvider implements ModelVariantProvider {
     @Override
     public @Nullable UnbakedModel loadModelVariant(ModelIdentifier modelId, ModelProviderContext context) {
         if (modelId.equals(OCULUS_IN_HAND)) return new UnbakedMultiItemModel(OculusModel::new);
-        if (modelId.equals(ETHER_STAFF)) return new UnbakedMultiItemModel(StaffModel::new);
+        if (modelId.equals(STAFF)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM));
+        if (modelId.equals(STAFF_CHARGE)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_CHARGE));
+        if (modelId.equals(STAFF_STREAM)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_STREAM));
         return null;
 
     }
