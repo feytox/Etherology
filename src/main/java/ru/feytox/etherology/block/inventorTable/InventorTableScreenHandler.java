@@ -31,7 +31,7 @@ public class InventorTableScreenHandler extends ScreenHandler {
     }
 
     public InventorTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-        super(ScreenHandlersRegistry.CONSTRUCTOR_TABLE_SCREEN_HANDLER, syncId);
+        super(ScreenHandlersRegistry.INVENTOR_TABLE_SCREEN_HANDLER, syncId);
         tableInv = new InventorTableInventory();
         this.context = context;
         tableInv.onOpen(playerInventory.player);

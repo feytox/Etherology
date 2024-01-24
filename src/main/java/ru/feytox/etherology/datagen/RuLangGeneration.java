@@ -184,6 +184,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(STAFF, "Посох");
         builder.add(EBlocks.INVENTOR_TABLE, "Стол изобретателя");
+        builder.add(EBlocks.JEWELRY_TABLE, "Стол ювелира");
         builder.add(EItems.ARISTOCRAT_PATTERN_TABLET, "Скрижаль со Знатным Шаблоном");
         builder.add(EItems.ASTRONOMY_PATTERN_TABLET, "Скрижаль с Астрономическим Шаблоном");
         builder.add(EItems.HEAVENLY_PATTERN_TABLET, "Скрижаль с Вольным Шаблоном");

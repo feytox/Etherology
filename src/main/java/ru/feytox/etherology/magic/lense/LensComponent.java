@@ -31,6 +31,9 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
     @Nullable
     private Boolean cachedEmpty;
 
+    @Nullable
+    private LensPattern cachedPattern;
+
     public LensComponent(ItemStack stack) {
         super(stack);
     }
@@ -53,11 +56,6 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         if (!hasTag("charge", CcaNbtType.INT)) putInt("charge", 0);
         cachedCharge = getInt("charge");
         return cachedCharge;
-    }
-
-    public void incrementCharge(int amount, int maxCharge) {
-        putInt("charge", Math.min(getCharge() + amount, maxCharge));
-        resetCache();
     }
 
     public void setCharge(int amount) {
@@ -86,6 +84,20 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
     public void refreshGameId() {
         if (isCurrentGameId()) return;
         putInt("game_id", Etherology.GAME_ID);
+        resetCache();
+    }
+
+    public LensPattern getPattern() {
+        if (cachedPattern != null) return cachedPattern.copy();
+        if (!hasTag("pattern", CcaNbtType.COMPOUND)) putCompound("pattern", LensPattern.empty().writeNbt());
+        cachedPattern = LensPattern.readNbt(getCompound("pattern"));
+        if (cachedPattern == null) throw new IllegalStateException("Failed to read lens pattern");
+        return cachedPattern.copy();
+    }
+
+    public void setPattern(LensPattern pattern) {
+        if (pattern.equals(getPattern())) return;
+        putCompound("pattern", pattern.writeNbt());
         resetCache();
     }
 
@@ -120,6 +132,7 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         cachedEmpty = null;
         cachedGameId = null;
         cachedCharge = null;
+        cachedPattern = null;
     }
 
     public boolean isEmpty() {

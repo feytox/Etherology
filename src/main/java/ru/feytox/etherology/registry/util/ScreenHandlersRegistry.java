@@ -17,6 +17,8 @@ import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreen;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageScreenHandler;
 import ru.feytox.etherology.block.inventorTable.InventorTableScreen;
 import ru.feytox.etherology.block.inventorTable.InventorTableScreenHandler;
+import ru.feytox.etherology.block.jewelryTable.JewelryTableScreen;
+import ru.feytox.etherology.block.jewelryTable.JewelryTableScreenHandler;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 @UtilityClass
@@ -27,7 +29,8 @@ public class ScreenHandlersRegistry {
     public static final ScreenHandlerType<EtherealFurnaceScreenHandler> ETHEREAL_FURNACE_SCREEN_HANDLER = new ScreenHandlerType<>(EtherealFurnaceScreenHandler::new);
     public static final ScreenHandlerType<EmpowerTableScreenHandler> EMPOWER_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(EmpowerTableScreenHandler::new);
     public static final ScreenHandlerType<CrateScreenHandler> CRATE_SCREEN_HANDLER = new ScreenHandlerType<>(CrateScreenHandler::new);
-    public static final ScreenHandlerType<InventorTableScreenHandler> CONSTRUCTOR_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(InventorTableScreenHandler::new);
+    public static final ScreenHandlerType<InventorTableScreenHandler> INVENTOR_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(InventorTableScreenHandler::new);
+    public static final ScreenHandlerType<JewelryTableScreenHandler> JEWELRY_TABLE_SCREEN_HANDLER = new ScreenHandlerType<>(JewelryTableScreenHandler::new);
 
     public static void registerServerSide() {
         registerHandler("closet_screen_handler", CLOSET_SCREEN_HANDLER);
@@ -35,7 +38,8 @@ public class ScreenHandlersRegistry {
         registerHandler("ethereal_furnace_screen_handler", ETHEREAL_FURNACE_SCREEN_HANDLER);
         registerHandler("empower_table_screen_handler", EMPOWER_TABLE_SCREEN_HANDLER);
         registerHandler("crate_screen_handler", CRATE_SCREEN_HANDLER);
-        registerHandler("constructor_table_screen_handler", CONSTRUCTOR_TABLE_SCREEN_HANDLER);
+        registerHandler("inventor_table_screen_handler", INVENTOR_TABLE_SCREEN_HANDLER);
+        registerHandler("jewelry_table_screen_handler", JEWELRY_TABLE_SCREEN_HANDLER);
     }
 
     public static void registerClientSide() {
@@ -44,7 +48,8 @@ public class ScreenHandlersRegistry {
         HandledScreens.register(ETHEREAL_FURNACE_SCREEN_HANDLER, EtherealFurnaceScreen::new);
         HandledScreens.register(EMPOWER_TABLE_SCREEN_HANDLER, EmpowerTableScreen::new);
         HandledScreens.register(CRATE_SCREEN_HANDLER, CrateScreen::new);
-        HandledScreens.register(CONSTRUCTOR_TABLE_SCREEN_HANDLER, InventorTableScreen::new);
+        HandledScreens.register(INVENTOR_TABLE_SCREEN_HANDLER, InventorTableScreen::new);
+        HandledScreens.register(JEWELRY_TABLE_SCREEN_HANDLER, JewelryTableScreen::new);
     }
 
     private static void registerHandler(String id, ScreenHandlerType<?> screenHandlerType) {
