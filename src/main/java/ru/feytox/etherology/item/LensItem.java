@@ -21,7 +21,12 @@ import java.util.function.Supplier;
 public abstract class LensItem extends Item implements EtherLense {
 
     public LensItem() {
-        super(new FabricItemSettings().maxCount(1));
+        super(new FabricItemSettings().maxCount(1).maxDamage(100));
+    }
+
+    @Override
+    public boolean isDamageable() {
+        return true;
     }
 
     public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);

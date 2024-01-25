@@ -1,28 +1,22 @@
 package ru.feytox.etherology.block.jewelryTable;
 
-import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.systems.RenderSystem;
-import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import lombok.val;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.RenderUtils;
-
-import java.util.Map;
-import java.util.function.Supplier;
 
 public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler> {
 
     public static final Identifier TEXTURE = new EIdentifier("textures/gui/jewelry_table.png");
-    public static final Supplier<Map<Integer, Pair<Integer, Integer>>> buttonPositions = Suppliers.memoize(JewelryTableScreen::getButtonPositions);
 
     public JewelryTableScreen(JewelryTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -37,7 +31,8 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-        renderButtons(matrices, x+40, y+11);
+        renderButtons(matrices, x+40, y+11, mouseX, mouseY);
+        renderBar(matrices, x+147, y+10);
     }
 
     @Override
@@ -53,24 +48,48 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
         playerInventoryTitleY = backgroundHeight - 94;
     }
+
+    private void renderBar(MatrixStack matrices, int x0, int y0) {
+        ItemStack lens = handler.getTableInv().getStack(0);
+        if (lens.isEmpty()) return;
+
+        int height = MathHelper.ceil(98 * (1 - (float) lens.getDamage() / lens.getMaxDamage()));
+        int y = y0 + 98 - height;
+        int v = 110 - height;
+
+        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableDepthTest();
+
+        RenderUtils.renderTexture(matrices, x0, y, 176, v, 8, height, 8, height, 256, 256);
+    }
     
-    private void renderButtons(MatrixStack matrices, int x0, int y0) {
+    private void renderButtons(MatrixStack matrices, int x0, int y0, int mouseX, int mouseY) {
         if (handler.getTableInv().isEmpty()) return;
-        val poses = buttonPositions.get();
 
-        // TODO: 23.01.2024 simplfy to for-loop if it is faster
-        poses.forEach((index, pos) -> {
-            int offset = handler.getTableInv().getTextureOffset(index);
+        for (int pos = 0; pos < 64; pos++) {
+            if (JewelryTableInventory.EMPTY_CELLS.contains(pos)) continue;
+            int x = x0 + (pos & 0b111) * 12;
+            int y = y0 + ((pos >> 3) & 0b111) * 12;
+            int offset = handler.getTableInv().getTextureOffset(pos);
 
-            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderTexture(0, TEXTURE);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
 
-            RenderUtils.renderTexture(matrices, x0 + pos.left(), y0 + pos.right(), 176 + 12 * offset, 0, 12, 12, 12, 12, 256, 256);
-        });
+            RenderUtils.renderTexture(matrices, x, y, 176 + 12 * offset, 0, 12, 12, 12, 12, 256, 256);
+            if (mouseX <= x || mouseX >= x + 12 || mouseY <= y || mouseY >= y + 12) continue;
+
+            RenderSystem.disableDepthTest();
+            RenderSystem.colorMask(true, true, true, false);
+            fillGradient(matrices, x, y, x + 12, y + 12, -2130706433, -2130706433, getZOffset());
+            RenderSystem.colorMask(true, true, true, true);
+            RenderSystem.enableDepthTest();
+        }
     }
 
     @Override
@@ -81,48 +100,15 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
 
     private void handleClick(int x0, int y0, double mouseX, double mouseY, int button) {
         if (handler.getTableInv().isEmpty()) return;
-        val poses = buttonPositions.get();
 
-        poses.forEach((index, pos) -> {
-            int x = x0 + pos.left();
-            int y = y0 + pos.right();
-            if (mouseX < x || mouseX > x + 12 || mouseY < y || mouseY > y + 12) return;
+        for (int pos = 0; pos < 64; pos++) {
+            int x = x0 + (pos & 0b111) * 12;
+            int y = y0 + ((pos >> 3) & 0b111) * 12;
+            if (mouseX <= x || mouseX >= x + 12 || mouseY <= y || mouseY >= y + 12) continue;
 
             val manager = MinecraftClient.getInstance().interactionManager;
             if (manager == null) return;
-            manager.clickButton(handler.syncId, index + button * 100);
-        });
-    }
-
-    private static Map<Integer, Pair<Integer, Integer>> getButtonPositions() {
-        Map<Integer, Pair<Integer, Integer>> result = new Int2ObjectOpenHashMap<>();
-
-        for (int index = 0; index < 52; index++) {
-            int x, y;
-            if (index < 4) {
-                x = 24 + index * 12;
-                y = 0;
-            } else if (index < 10) {
-                int i = index - 4;
-                x = 12 + i * 12;
-                y = 12;
-            } else if (index < 42) {
-                int i = index - 10;
-                x = (i % 8) * 12;
-                y = 24 + (i / 8) * 12;
-            } else if (index < 48) {
-                int i = index - 42;
-                x = 12 + i * 12;
-                y = 72;
-            } else {
-                int i = index - 48;
-                x = 24 + i * 12;
-                y = 84;
-            }
-
-            result.put(index, new IntIntImmutablePair(x, y));
+            manager.clickButton(handler.syncId, pos + button * 100);
         }
-
-        return result;
     }
 }

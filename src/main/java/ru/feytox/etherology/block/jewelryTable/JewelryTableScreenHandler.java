@@ -48,7 +48,7 @@ public class JewelryTableScreenHandler extends ScreenHandler {
 
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
-        if (id < 0 || id >= 152) return false;
+        if (id < 0 || id >= 164) return false;
 
         boolean isSoft = false;
         if (id >= 100) {
@@ -59,7 +59,8 @@ public class JewelryTableScreenHandler extends ScreenHandler {
         boolean result = tableInv.markCell(isSoft, id);
         if (!result) return false;
 
-        if (!isSoft) tableInv.updateCells(id);
+        boolean broken = tableInv.damageLens(isSoft ? 1 : 2);
+        if (!isSoft && !broken) tableInv.updateCells(id);
         tableInv.markDirty();
         return true;
     }
