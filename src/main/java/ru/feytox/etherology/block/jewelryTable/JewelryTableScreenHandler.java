@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.world.ServerWorld;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
 import ru.feytox.etherology.util.feyapi.TrackedPredictableSlot;
@@ -61,6 +62,11 @@ public class JewelryTableScreenHandler extends ScreenHandler {
 
         boolean broken = tableInv.damageLens(isSoft ? 1 : 2);
         if (!isSoft && !broken) tableInv.updateCells(id);
+
+        if (player.getWorld() instanceof ServerWorld serverWorld) {
+            tableInv.tryCraft(serverWorld);
+        }
+
         tableInv.markDirty();
         return true;
     }

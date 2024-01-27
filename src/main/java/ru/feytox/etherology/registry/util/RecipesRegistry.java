@@ -16,6 +16,8 @@ import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
+import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
@@ -27,10 +29,12 @@ public class RecipesRegistry {
     public static RecipeSerializer<StaffCarpetCuttingRecipe> STAFF_CARPET_CUT = registerSerializer("staff_carpet_cutting", new SpecialRecipeSerializer<>(StaffCarpetCuttingRecipe::new));
 
     public static void registerAll() {
+        // TODO: 27.01.2024 simplify
         register(CauldronRecipeSerializer.ID, CauldronRecipeSerializer.INSTANCE, CauldronRecipe.Type.ID, CauldronRecipe.Type.INSTANCE);
         register(AlchemyRecipeSerializer.ID, AlchemyRecipeSerializer.INSTANCE, AlchemyRecipe.Type.ID, AlchemyRecipe.Type.INSTANCE);
         register(EmpowerRecipeSerializer.ID, EmpowerRecipeSerializer.INSTANCE, EmpowerRecipe.Type.ID, EmpowerRecipe.Type.INSTANCE);
         register(ArmillaryRecipeSerializer.ID, ArmillaryRecipeSerializer.INSTANCE, ArmillaryRecipe.Type.ID, ArmillaryRecipe.Type.INSTANCE);
+        register(JewelryRecipeSerializer.ID, JewelryRecipeSerializer.INSTANCE, JewelryRecipe.Type.ID, JewelryRecipe.Type.INSTANCE);
     }
 
     private static <T extends Recipe<?>> void register(Identifier serializerId, RecipeSerializer<T> serializerInstance, String recipeTypeId, RecipeType<T> recipeTypeInstance) {

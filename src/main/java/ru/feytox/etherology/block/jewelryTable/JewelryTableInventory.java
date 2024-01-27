@@ -4,13 +4,16 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import lombok.val;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.magic.lense.LensPattern;
+import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 import java.util.List;
+import java.util.Optional;
 
 public class JewelryTableInventory implements UpdatableInventory {
 
@@ -25,6 +28,18 @@ public class JewelryTableInventory implements UpdatableInventory {
     @Override
     public void onTrackedUpdate(int index) {
         // TODO: 21.01.2024 implement?
+    }
+
+    public boolean tryCraft(ServerWorld world) {
+        Optional<JewelryRecipe> match = world.getRecipeManager().getFirstMatch(JewelryRecipe.Type.INSTANCE, this, world);
+        if (match.isEmpty()) return false;
+
+        JewelryRecipe recipe = match.get();
+        ItemStack newLens = new ItemStack(recipe.getOutputItem());
+        newLens.setNbt(getStack(0).getNbt());
+        setStack(0, newLens);
+        markDirty();
+        return true;
     }
 
     public void updateCells(int crackPos) {

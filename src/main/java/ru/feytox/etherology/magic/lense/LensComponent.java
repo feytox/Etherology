@@ -88,11 +88,11 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
     }
 
     public LensPattern getPattern() {
-        if (cachedPattern != null) return cachedPattern.copy();
+        if (cachedPattern != null) return cachedPattern.clone();
         if (!hasTag("pattern", CcaNbtType.COMPOUND)) putCompound("pattern", LensPattern.empty().writeNbt());
         cachedPattern = LensPattern.readNbt(getCompound("pattern"));
         if (cachedPattern == null) throw new IllegalStateException("Failed to read lens pattern");
-        return cachedPattern.copy();
+        return cachedPattern.clone();
     }
 
     public void setPattern(LensPattern pattern) {

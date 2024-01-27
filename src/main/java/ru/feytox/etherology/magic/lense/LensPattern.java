@@ -1,28 +1,29 @@
 package ru.feytox.etherology.magic.lense;
 
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtIntArray;
+import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode
 @RequiredArgsConstructor
-public class LensPattern {
+public class LensPattern implements Cloneable {
 
-    // TODO: 24.01.2024 revise cell storage strategy from id-based to intpos-based.
     @NonNull
-    private final Set<Integer> cracks;
+    private final IntArraySet cracks;
     @NonNull
-    private final Set<Integer> softCells;
+    private final IntArraySet softCells;
 
     public static LensPattern empty() {
-        return new LensPattern(new ObjectArraySet<>(), new ObjectArraySet<>());
+        return new LensPattern(new IntArraySet(), new IntArraySet());
     }
 
     public int getTextureOffset(int index) {
@@ -51,10 +52,6 @@ public class LensPattern {
         return !isSoft(index) && cracks.add(index);
     }
 
-    public LensPattern copy() {
-        return new LensPattern(new ObjectArraySet<>(cracks), new ObjectArraySet<>(softCells));
-    }
-
     public NbtCompound writeNbt() {
         return writeNbt(new NbtCompound());
     }
@@ -67,26 +64,57 @@ public class LensPattern {
 
     @Nullable
     public static LensPattern readNbt(NbtCompound nbt) {
-        Set<Integer> cracks = readCells(nbt, "cracks");
-        Set<Integer> softCells = readCells(nbt, "soft_cells");
+        IntArraySet cracks = readCells(nbt, "cracks");
+        IntArraySet softCells = readCells(nbt, "soft_cells");
         // TODO: 22.01.2024 maybe replace with try-catch or smth else
         if (cracks == null || softCells == null) return null;
         return new LensPattern(cracks, softCells);
     }
 
-    private static void writeCells(NbtCompound nbt, String key, Set<Integer> intSet) {
-        int[] arr = intSet.stream().mapToInt(Number::intValue).toArray();
+    private static void writeCells(NbtCompound nbt, String key, IntArraySet intSet) {
+        int[] arr = intSet.toArray(new int[]{});
         NbtIntArray cellsArr = new NbtIntArray(arr);
         nbt.put(key, cellsArr);
     }
 
     @Nullable
-    private static Set<Integer> readCells(NbtCompound nbt, String key) {
+    private static IntArraySet readCells(NbtCompound nbt, String key) {
         NbtElement element = nbt.get(key);
         if (!(element instanceof NbtIntArray nbtArr)) return null;
 
         return nbtArr.stream()
                 .map(NbtInt::intValue)
-                .collect(Collectors.toCollection(ObjectArraySet::new));
+                .collect(Collectors.toCollection(IntArraySet::new));
+    }
+
+    public void writeBuf(PacketByteBuf buf) {
+        writeIntSet(buf, cracks);
+        writeIntSet(buf, softCells);
+    }
+
+    public static LensPattern readBuf(PacketByteBuf buf) {
+        return new LensPattern(readIntSet(buf), readIntSet(buf));
+    }
+
+    private void writeIntSet(PacketByteBuf buf, IntArraySet intSet) {
+        buf.writeVarInt(intSet.size());
+        intSet.forEach(buf::writeVarInt);
+    }
+
+    private static IntArraySet readIntSet(PacketByteBuf buf) {
+        int size = buf.readVarInt();
+        IntArraySet intSet = new IntArraySet();
+
+        for (int i = 0; i < size; i++) {
+            intSet.add(buf.readVarInt());
+        }
+
+        return intSet;
+    }
+
+    @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod") // TODO: 27.01.2024 huh?
+    public LensPattern clone() {
+        return new LensPattern(cracks.clone(), softCells.clone());
     }
 }
