@@ -1,54 +1,27 @@
 package ru.feytox.etherology.recipes.empower;
 
 import io.wispforest.owo.util.ImplementedInventory;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import ru.feytox.etherology.recipes.FeyRecipe;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
-public class EmpowerRecipe implements Recipe<ImplementedInventory> {
+@Getter
+@RequiredArgsConstructor
+public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
+
     private final DefaultedList<Ingredient> gridInput;
     private final int relaCount;
     private final int viaCount;
     private final int closCount;
     private final int ketaCount;
-    private final ItemStack output;
+    private final ItemStack outputStack;
     private final Identifier id;
-
-    public EmpowerRecipe(DefaultedList<Ingredient> gridInput, int relaCount, int viaCount, int closCount,
-                         int ketaCount, ItemStack output, Identifier id) {
-        this.gridInput = gridInput;
-        this.relaCount = relaCount;
-        this.viaCount = viaCount;
-        this.closCount = closCount;
-        this.ketaCount = ketaCount;
-        this.output = output;
-        this.id = id;
-    }
-
-    public DefaultedList<Ingredient> gridInput() {
-        return gridInput;
-    }
-
-    public int relaCount() {
-        return relaCount;
-    }
-
-    public int viaCount() {
-        return viaCount;
-    }
-
-    public int closCount() {
-        return closCount;
-    }
-
-    public int ketaCount() {
-        return ketaCount;
-    }
 
     @Override
     public boolean matches(ImplementedInventory inventory, World world) {
@@ -90,28 +63,11 @@ public class EmpowerRecipe implements Recipe<ImplementedInventory> {
 
     @Override
     public ItemStack getOutput() {
-        return output.copy();
+        return outputStack.copy();
     }
 
     @Override
-    public Identifier getId() {
-        return id;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public FeyRecipeSerializer<?> getSerializer() {
         return EmpowerRecipeSerializer.INSTANCE;
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return Type.INSTANCE;
-    }
-
-    public static class Type implements RecipeType<EmpowerRecipe> {
-        private Type() {}
-        public static final Type INSTANCE = new Type();
-
-        public static final String ID = "empower_recipe";
     }
 }

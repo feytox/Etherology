@@ -5,19 +5,18 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.aspects.EtherAspect;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.recipes.FeyRecipe;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class CauldronRecipe implements Recipe<CauldronRecipeInventory> {
+public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
     @Getter
     private final Ingredient inputItem;
     @Getter
@@ -25,6 +24,7 @@ public class CauldronRecipe implements Recipe<CauldronRecipeInventory> {
     @Getter
     private final EtherAspectsContainer inputAspects;
     private final ItemStack outputStack;
+    @Getter
     private final Identifier id;
 
     @Override
@@ -57,23 +57,7 @@ public class CauldronRecipe implements Recipe<CauldronRecipeInventory> {
     }
 
     @Override
-    public Identifier getId() {
-        return id;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public FeyRecipeSerializer<?> getSerializer() {
         return CauldronRecipeSerializer.INSTANCE;
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return Type.INSTANCE;
-    }
-
-    public static class Type implements RecipeType<CauldronRecipe> {
-        private Type() {}
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "brewing_cauldron_recipe";
     }
 }

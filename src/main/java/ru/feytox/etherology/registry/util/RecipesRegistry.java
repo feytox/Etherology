@@ -1,22 +1,18 @@
 package ru.feytox.etherology.registry.util;
 
 import lombok.experimental.UtilityClass;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
-import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
-import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
-import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
-import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
-import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
@@ -29,20 +25,23 @@ public class RecipesRegistry {
     public static RecipeSerializer<StaffCarpetCuttingRecipe> STAFF_CARPET_CUT = registerSerializer("staff_carpet_cutting", new SpecialRecipeSerializer<>(StaffCarpetCuttingRecipe::new));
 
     public static void registerAll() {
-        // TODO: 27.01.2024 simplify
-        register(CauldronRecipeSerializer.ID, CauldronRecipeSerializer.INSTANCE, CauldronRecipe.Type.ID, CauldronRecipe.Type.INSTANCE);
-        register(AlchemyRecipeSerializer.ID, AlchemyRecipeSerializer.INSTANCE, AlchemyRecipe.Type.ID, AlchemyRecipe.Type.INSTANCE);
-        register(EmpowerRecipeSerializer.ID, EmpowerRecipeSerializer.INSTANCE, EmpowerRecipe.Type.ID, EmpowerRecipe.Type.INSTANCE);
-        register(ArmillaryRecipeSerializer.ID, ArmillaryRecipeSerializer.INSTANCE, ArmillaryRecipe.Type.ID, ArmillaryRecipe.Type.INSTANCE);
-        register(JewelryRecipeSerializer.ID, JewelryRecipeSerializer.INSTANCE, JewelryRecipe.Type.ID, JewelryRecipe.Type.INSTANCE);
-    }
-
-    private static <T extends Recipe<?>> void register(Identifier serializerId, RecipeSerializer<T> serializerInstance, String recipeTypeId, RecipeType<T> recipeTypeInstance) {
-        Registry.register(Registries.RECIPE_SERIALIZER, serializerId, serializerInstance);
-        Registry.register(Registries.RECIPE_TYPE, new EIdentifier(recipeTypeId), recipeTypeInstance);
+        register(JewelryRecipeSerializer.INSTANCE);
+        register(CauldronRecipeSerializer.INSTANCE);
+        register(EmpowerRecipeSerializer.INSTANCE);
+        register(ArmillaryRecipeSerializer.INSTANCE);
     }
 
     private static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {
         return Registry.register(Registries.RECIPE_SERIALIZER, new EIdentifier(id), serializer);
+    }
+
+    private static <T extends Recipe<?>> void register(FeyRecipeSerializer<T> serializer) {
+        Registry.register(Registries.RECIPE_SERIALIZER, serializer.getId(), serializer);
+        Registry.register(Registries.RECIPE_TYPE, serializer.getId(), serializer.getRecipeType());
+    }
+
+    @Nullable
+    public static <T extends Recipe<M>, M extends Inventory> T getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
+        return world.getRecipeManager().getFirstMatch(serializer.getRecipeType(), inventory, world).orElse(null);
     }
 }

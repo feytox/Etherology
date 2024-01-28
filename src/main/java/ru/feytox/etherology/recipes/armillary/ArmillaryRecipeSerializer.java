@@ -7,19 +7,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArmillaryRecipeSerializer implements RecipeSerializer<ArmillaryRecipe> {
-    private ArmillaryRecipeSerializer() {}
+public class ArmillaryRecipeSerializer extends FeyRecipeSerializer<ArmillaryRecipe> {
 
     public static final ArmillaryRecipeSerializer INSTANCE = new ArmillaryRecipeSerializer();
-    public static final Identifier ID = new EIdentifier("armillary_recipe");
+
+    public ArmillaryRecipeSerializer() {
+        super("armillary_recipe");
+    }
 
     @Override
     public ArmillaryRecipe read(Identifier id, JsonObject json) {

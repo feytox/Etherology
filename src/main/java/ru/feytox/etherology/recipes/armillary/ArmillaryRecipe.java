@@ -1,39 +1,34 @@
 package ru.feytox.etherology.recipes.armillary;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enums.InstabilityType;
+import ru.feytox.etherology.recipes.FeyRecipe;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArmillaryRecipe implements Recipe<Inventory> {
-    @Getter
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class ArmillaryRecipe implements FeyRecipe<Inventory> {
+
     private final List<Ingredient> inputs;
-    @Getter
     private final Ingredient centerInput;
-    @Getter
     private final InstabilityType instability;
-    @Getter
     private final float etherPoints;
     private final ItemStack outputStack;
     private final Identifier id;
 
     public ArmillaryRecipe(List<Ingredient> inputs, Ingredient centerInput, String instability,
                            float etherPoints, ItemStack outputStack, Identifier id) {
-        this.inputs = inputs;
-        this.centerInput = centerInput;
-        this.instability = InstabilityType.valueOf(instability);
-        this.etherPoints = etherPoints;
-        this.outputStack = outputStack;
-        this.id = id;
+        this(inputs, centerInput, InstabilityType.valueOf(instability), etherPoints, outputStack, id);
     }
 
     @Override
@@ -78,24 +73,7 @@ public class ArmillaryRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public Identifier getId() {
-        return id;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public FeyRecipeSerializer<?> getSerializer() {
         return ArmillaryRecipeSerializer.INSTANCE;
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return Type.INSTANCE;
-    }
-
-    public static class Type implements RecipeType<ArmillaryRecipe> {
-        private Type() {}
-        public static final Type INSTANCE = new Type();
-
-        public static final String ID = "armillary_recipe";
     }
 }

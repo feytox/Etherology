@@ -17,9 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -46,8 +43,10 @@ import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
+import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.MatrixRecipe;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
@@ -215,9 +214,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (!centerStack.isEmpty()) allItems.add(centerStack);
         SimpleInventory fakeInventory = new SimpleInventory(allItems.toArray(ItemStack[]::new));
 
-        Optional<ArmillaryRecipe> match = world.getRecipeManager().getFirstMatch(ArmillaryRecipe.Type.INSTANCE, fakeInventory, world);
-        if (match.isEmpty()) return;
-        val recipe = match.get();
+        ArmillaryRecipe recipe = RecipesRegistry.getFirstMatch(world, fakeInventory, ArmillaryRecipeSerializer.INSTANCE);
+        if (recipe == null) return;
 
         currentRecipe = MatrixRecipe.of(recipe);
         matrixInstability = 1.0f;
@@ -587,17 +585,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         currentRecipe = MatrixRecipe.readFromNbt(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override

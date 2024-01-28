@@ -6,18 +6,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.registry.util.ResourceReloaders;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
 
-public class CauldronRecipeSerializer implements RecipeSerializer<CauldronRecipe> {
+public class CauldronRecipeSerializer extends FeyRecipeSerializer<CauldronRecipe> {
+
     public static final CauldronRecipeSerializer INSTANCE = new CauldronRecipeSerializer();
-    public static final Identifier ID = new EIdentifier("brewing_cauldron_recipe");
 
-    private CauldronRecipeSerializer() {}
+    public CauldronRecipeSerializer() {
+        super("brewing_cauldron_recipe");
+    }
 
     @Override
     public CauldronRecipe read(Identifier id, JsonObject json) {

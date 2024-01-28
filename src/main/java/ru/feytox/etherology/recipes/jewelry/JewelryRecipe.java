@@ -5,18 +5,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
 import ru.feytox.etherology.magic.lense.LensPattern;
+import ru.feytox.etherology.recipes.FeyRecipe;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 @Getter
 @RequiredArgsConstructor
-public class JewelryRecipe implements Recipe<JewelryTableInventory> {
+public class JewelryRecipe implements FeyRecipe<JewelryTableInventory> {
 
     private final LensPattern pattern;
     private final Item outputItem;
@@ -44,19 +43,7 @@ public class JewelryRecipe implements Recipe<JewelryTableInventory> {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public FeyRecipeSerializer<?> getSerializer() {
         return JewelryRecipeSerializer.INSTANCE;
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return Type.INSTANCE;
-    }
-
-    public static class Type implements RecipeType<JewelryRecipe> {
-        private Type() {}
-        public static final JewelryRecipe.Type INSTANCE = new JewelryRecipe.Type();
-
-        public static final String ID = "jewelry_recipe";
     }
 }

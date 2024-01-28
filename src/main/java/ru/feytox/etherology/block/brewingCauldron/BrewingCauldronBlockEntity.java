@@ -11,9 +11,6 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
@@ -34,14 +31,14 @@ import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeInventory;
+import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
+import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import java.util.Optional;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.STEAM;
@@ -206,11 +203,10 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     private boolean tryCraft(ServerWorld world, ItemStack inputStack, BlockState state) {
         CauldronRecipeInventory inventory = new CauldronRecipeInventory(aspects, inputStack);
-        Optional<CauldronRecipe> match = world.getRecipeManager()
-                .getFirstMatch(CauldronRecipe.Type.INSTANCE, inventory, world);
-        if (match.isEmpty()) return false;
+        CauldronRecipe recipe = RecipesRegistry.getFirstMatch(world, inventory, CauldronRecipeSerializer.INSTANCE);
+        if (recipe == null) return false;
 
-        ItemStack resultStack = craft(world, inputStack, match.get(), state);
+        ItemStack resultStack = craft(world, inputStack, recipe, state);
         CauldronItemEntity.spawn(world, pos.up().toCenterPos(), resultStack);
         syncData(world);
         spawnCraftParticle(world);
@@ -268,17 +264,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
     }
 
     @Override

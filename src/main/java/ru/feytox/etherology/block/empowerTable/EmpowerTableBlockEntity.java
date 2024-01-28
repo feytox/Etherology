@@ -18,9 +18,9 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
+import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.feyapi.UpdatableInventory;
-
-import java.util.Optional;
 
 import static ru.feytox.etherology.registry.block.EBlocks.EMPOWERMENT_TABLE_BLOCK_ENTITY;
 
@@ -109,10 +109,10 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
         for (int i = 0; i < 5; i++) {
             removeStack(i, 1);
         }
-        removeStack(5, recipe.relaCount());
-        removeStack(6, recipe.viaCount());
-        removeStack(7, recipe.closCount());
-        removeStack(8, recipe.ketaCount());
+        removeStack(5, recipe.getRelaCount());
+        removeStack(6, recipe.getViaCount());
+        removeStack(7, recipe.getClosCount());
+        removeStack(8, recipe.getKetaCount());
         markDirty();
 
         if (shouldUpdate) updateResult();
@@ -134,17 +134,16 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
 
     public void cacheShards(EmpowerRecipe recipe) {
         boolean isNull = recipe == null;
-        cachedRela = isNull ? 0 : recipe.relaCount();
-        cachedVia = isNull ? 0 : recipe.viaCount();
-        cachedClos = isNull ? 0 : recipe.closCount();
-        cachedKeta = isNull ? 0 : recipe.ketaCount();
+        cachedRela = isNull ? 0 : recipe.getRelaCount();
+        cachedVia = isNull ? 0 : recipe.getViaCount();
+        cachedClos = isNull ? 0 : recipe.getClosCount();
+        cachedKeta = isNull ? 0 : recipe.getKetaCount();
     }
 
     @Nullable
     public EmpowerRecipe getRecipe() {
         if (world == null) return null;
-        Optional<EmpowerRecipe> match = world.getRecipeManager().getFirstMatch(EmpowerRecipe.Type.INSTANCE, this, world);
-        return match.orElse(null);
+        return RecipesRegistry.getFirstMatch(world, this, EmpowerRecipeSerializer.INSTANCE);
     }
 
     @Override

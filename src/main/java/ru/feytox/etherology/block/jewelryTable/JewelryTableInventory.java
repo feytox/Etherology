@@ -9,11 +9,12 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.magic.lense.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
+import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 import java.util.List;
-import java.util.Optional;
 
 public class JewelryTableInventory implements UpdatableInventory {
 
@@ -31,10 +32,9 @@ public class JewelryTableInventory implements UpdatableInventory {
     }
 
     public boolean tryCraft(ServerWorld world) {
-        Optional<JewelryRecipe> match = world.getRecipeManager().getFirstMatch(JewelryRecipe.Type.INSTANCE, this, world);
-        if (match.isEmpty()) return false;
+        JewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, JewelryRecipeSerializer.INSTANCE);
+        if (recipe == null) return false;
 
-        JewelryRecipe recipe = match.get();
         ItemStack newLens = new ItemStack(recipe.getOutputItem());
         newLens.setNbt(getStack(0).getNbt());
         setStack(0, newLens);

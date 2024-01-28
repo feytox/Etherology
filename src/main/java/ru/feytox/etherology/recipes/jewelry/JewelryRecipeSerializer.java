@@ -7,19 +7,22 @@ import com.google.gson.JsonSyntaxException;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import ru.feytox.etherology.magic.lense.LensPattern;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class JewelryRecipeSerializer implements RecipeSerializer<JewelryRecipe> {
+public class JewelryRecipeSerializer extends FeyRecipeSerializer<JewelryRecipe> {
+
     public static final JewelryRecipeSerializer INSTANCE = new JewelryRecipeSerializer();
-    public static final Identifier ID = new EIdentifier("jewelry_recipe");
+
+    public JewelryRecipeSerializer() {
+        super("jewelry_recipe");
+    }
 
     @Override
     public JewelryRecipe read(Identifier id, JsonObject json) {

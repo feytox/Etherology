@@ -9,23 +9,24 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class EmpowerRecipeSerializer implements RecipeSerializer<EmpowerRecipe> {
-    private EmpowerRecipeSerializer() {}
+public class EmpowerRecipeSerializer extends FeyRecipeSerializer<EmpowerRecipe> {
 
     public static final EmpowerRecipeSerializer INSTANCE = new EmpowerRecipeSerializer();
-    public static final Identifier ID = new EIdentifier("empower_recipe");
+
+    public EmpowerRecipeSerializer() {
+        super("empower_recipe");
+    }
 
     @Override
     public EmpowerRecipe read(Identifier id, JsonObject json) {
@@ -54,11 +55,11 @@ public class EmpowerRecipeSerializer implements RecipeSerializer<EmpowerRecipe> 
 
     @Override
     public void write(PacketByteBuf buf, EmpowerRecipe recipe) {
-        buf.writeCollection(recipe.gridInput(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
-        buf.writeInt(recipe.relaCount());
-        buf.writeInt(recipe.viaCount());
-        buf.writeInt(recipe.closCount());
-        buf.writeInt(recipe.ketaCount());
+        buf.writeCollection(recipe.getGridInput(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
+        buf.writeInt(recipe.getRelaCount());
+        buf.writeInt(recipe.getViaCount());
+        buf.writeInt(recipe.getClosCount());
+        buf.writeInt(recipe.getKetaCount());
         buf.writeItemStack(recipe.getOutput());
     }
 
@@ -163,7 +164,7 @@ public class EmpowerRecipeSerializer implements RecipeSerializer<EmpowerRecipe> 
 
     private static DefaultedList<Ingredient> createPatternMatrix(String[] pattern, Map<String, Ingredient> symbols) {
         DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(3 * 3, Ingredient.EMPTY);
-        Set<String> set = Sets.newHashSet((Iterable)symbols.keySet());
+        Set<String> set = Sets.newHashSet(symbols.keySet());
         set.remove(" ");
 
         for(int i = 0; i < pattern.length; ++i) {
