@@ -7,6 +7,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
@@ -43,5 +44,10 @@ public class RecipesRegistry {
     @Nullable
     public static <T extends Recipe<M>, M extends Inventory> T getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
         return world.getRecipeManager().getFirstMatch(serializer.getRecipeType(), inventory, world).orElse(null);
+    }
+
+    @Nullable
+    public static Recipe<?> get(World world, Identifier id) {
+        return world.getRecipeManager().get(id).orElse(null);
     }
 }

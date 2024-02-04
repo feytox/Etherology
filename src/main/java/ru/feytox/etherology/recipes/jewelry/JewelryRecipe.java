@@ -19,6 +19,7 @@ public class JewelryRecipe implements FeyRecipe<JewelryTableInventory> {
 
     private final LensPattern pattern;
     private final Item outputItem;
+    private final int ether;
     private final Identifier id;
 
     @Override

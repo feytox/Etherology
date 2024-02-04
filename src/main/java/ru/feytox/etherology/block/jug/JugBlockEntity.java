@@ -39,6 +39,7 @@ public class JugBlockEntity extends BlockEntity implements ImplementedInventory,
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        inventory.clear();
         Inventories.readNbt(nbt, inventory);
     }
 

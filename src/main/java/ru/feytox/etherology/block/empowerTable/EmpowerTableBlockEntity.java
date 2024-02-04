@@ -188,6 +188,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        inventory.clear();
         Inventories.readNbt(nbt, inventory);
         hasResult = nbt.getBoolean("has_result");
         cachedRela = nbt.getInt("cached_rela");

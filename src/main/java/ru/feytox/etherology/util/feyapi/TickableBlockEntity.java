@@ -2,6 +2,7 @@ package ru.feytox.etherology.util.feyapi;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
@@ -20,6 +21,12 @@ public abstract class TickableBlockEntity extends BlockEntity {
 
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {}
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {}
+
+    // TODO: 28.01.2024 replace block's getTicker to this
+    public static <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockEntityType<T> providedType, BlockEntityType<?> type) {
+        if (providedType != type) return null;
+        return world.isClient ? TickableBlockEntity::clientTicker : TickableBlockEntity::serverTicker;
+    }
 
     public static void clientTicker(World world, BlockPos blockPos, BlockState state, BlockEntity blockEntity) {
         if (blockEntity instanceof TickableBlockEntity be) {

@@ -17,7 +17,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherStorage;
@@ -178,12 +177,10 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     }
 
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        int weak = neighborState.getWeakRedstonePower(world, neighborPos, direction);
-        int strong = neighborState.getStrongRedstonePower(world, neighborPos, direction);
-        boolean result = weak > 0 || strong > 0;
-
-        return getChannelState(world, state, pos).with(ACTIVATED, result);
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        int power = world.getReceivedRedstonePower(pos);
+        boolean result = power > 0;
+        world.setBlockState(pos, getChannelState(world, state, pos).with(ACTIVATED, result));
     }
 
     @Nullable

@@ -49,10 +49,10 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         if (outputDirection == null) return;
         if (world.getBlockEntity(pos.add(outputDirection.getVector())) instanceof EtherStorage) return;
 
-        if (isUseless) spawnParticles(world, outputDirection);
+        if (isUseless) spawnParticles(pos, world, outputDirection);
     }
 
-    public void spawnParticles(ClientWorld world, Direction direction) {
+    public static void spawnParticles(BlockPos pos, ClientWorld world, Direction direction) {
         if (world.getTime() % 2 != 0) return;
         Random random = world.getRandom();
 

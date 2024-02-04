@@ -12,6 +12,7 @@ import ru.feytox.etherology.particle.info.SparkRisingInfo;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.particle.utility.ParticleInfoProvider;
 
+@Getter
 @RequiredArgsConstructor
 public enum SparkSubtype implements ParticleInfoProvider<SparkParticle, SparkParticleEffect> {
     SIMPLE(null),
@@ -21,7 +22,6 @@ public enum SparkSubtype implements ParticleInfoProvider<SparkParticle, SparkPar
     CLOS(SedimentarySparkInfo.of(EssenceZoneType.CLOS)),
     RISING(SparkRisingInfo::new);
 
-    @Getter
     private final ParticleInfo.Factory<SparkParticle, SparkParticleEffect> factory;
 
     @Nullable

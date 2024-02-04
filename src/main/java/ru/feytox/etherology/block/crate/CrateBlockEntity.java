@@ -85,6 +85,7 @@ public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, Im
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        items.clear();
         Inventories.readNbt(nbt, items);
     }
 

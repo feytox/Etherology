@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public class PredictableSlot extends Slot {
     private final Predicate<Item> predicate;
 
-    public PredictableSlot(Predicate<Item> predicate, Inventory inventory, int index, int x, int y) {
+    public PredictableSlot(Inventory inventory, int index, int x, int y, Predicate<Item> predicate) {
         super(inventory, index, x, y);
         this.predicate = predicate;
     }

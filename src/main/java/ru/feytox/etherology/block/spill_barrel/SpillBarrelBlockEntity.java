@@ -130,6 +130,7 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        items.clear();
         Inventories.readNbt(nbt, items);
     }
 

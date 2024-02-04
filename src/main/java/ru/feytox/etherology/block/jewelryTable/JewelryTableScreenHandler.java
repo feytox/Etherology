@@ -5,31 +5,28 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
-import ru.feytox.etherology.util.feyapi.TrackedPredictableSlot;
+import ru.feytox.etherology.util.feyapi.PredictableSlot;
 
+@Getter
 public class JewelryTableScreenHandler extends ScreenHandler {
 
-    @Getter
     private final JewelryTableInventory tableInv;
-    private final ScreenHandlerContext context;
 
     public JewelryTableScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, ScreenHandlerContext.EMPTY);
+        this(syncId, playerInventory, new JewelryTableInventory());
     }
 
-    public JewelryTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+    public JewelryTableScreenHandler(int syncId, PlayerInventory playerInventory, JewelryTableInventory tableInventory) {
         super(ScreenHandlersRegistry.JEWELRY_TABLE_SCREEN_HANDLER, syncId);
-        tableInv = new JewelryTableInventory();
-        this.context = context;
+        tableInv = tableInventory;
         tableInv.onOpen(playerInventory.player);
 
         // input lens
-        this.addSlot(new TrackedPredictableSlot(tableInv, 0, 8, 17, stack -> stack.getItem() instanceof LensItem));
+        this.addSlot(new PredictableSlot(tableInv, 0, 8, 17, stack -> stack instanceof LensItem));
 
         int m;
         int l;
@@ -64,7 +61,7 @@ public class JewelryTableScreenHandler extends ScreenHandler {
         if (!isSoft && !broken) tableInv.updateCells(id);
 
         if (player.getWorld() instanceof ServerWorld serverWorld) {
-            tableInv.tryCraft(serverWorld);
+            tableInv.updateRecipe(serverWorld);
         }
 
         tableInv.markDirty();
@@ -78,13 +75,13 @@ public class JewelryTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
-        context.run((world, pos) -> dropInventory(player, tableInv));
+    public boolean canUse(PlayerEntity player) {
+        return true;
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return true;
+    public void close(PlayerEntity player) {
+        tableInv.onClose(player);
+        super.close(player);
     }
 }

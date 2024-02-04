@@ -8,6 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 
+// TODO: 29.01.2024 translate docs
 public interface EtherStorage {
     float getMaxEther();
     float getStoredEther();
@@ -41,6 +42,7 @@ public interface EtherStorage {
         return consumer instanceof EtherPipe;
     }
 
+    // TODO: 29.01.2024 rename???
     boolean isActivated();
 
     default void transfer(ServerWorld world) {
@@ -92,7 +94,7 @@ public interface EtherStorage {
      */
     default float decrement(float value) {
         float storedEther = getStoredEther();
-        float newVal = value <= storedEther ? storedEther - value : storedEther;
+        float newVal = Math.max(storedEther - value, 0);
         setStoredEther(newVal);
         return storedEther - newVal;
     }

@@ -121,6 +121,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
     @Override
     public Nbtable readNbt(NbtCompound nbt) {
+        inventory.clear();
         Inventories.readNbt(nbt, this.inventory);
         return this;
     }

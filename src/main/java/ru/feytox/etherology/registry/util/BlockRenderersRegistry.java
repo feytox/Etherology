@@ -14,6 +14,7 @@ import ru.feytox.etherology.block.etherealGenerators.spinner.EtherealSpinnerRend
 import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.furniture.FurnitureBlockEntityRenderer;
+import ru.feytox.etherology.block.jewelryTable.JewelryTableRenderer;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.ETHEROLOGY_SIGN;
@@ -33,6 +34,7 @@ public class BlockRenderersRegistry {
         register(BREWING_CAULDRON_BLOCK_ENTITY, BrewingCauldronRenderer::new);
         register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
         register(ARMILLARY_MATRIX_BLOCK_ENTITY, ArmillaryMatrixRenderer::new);
+        register(JEWELRY_TABLE_BLOCK_ENTITY, JewelryTableRenderer::new);
     }
 
     private static <T extends BlockEntity> void register(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererFactory<T> rendererFactory) {

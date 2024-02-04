@@ -1,45 +1,74 @@
 package ru.feytox.etherology.block.jewelryTable;
 
+import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.lense.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
-import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 import java.util.List;
 
-public class JewelryTableInventory implements UpdatableInventory {
+@RequiredArgsConstructor
+@NoArgsConstructor(force = true)
+public class JewelryTableInventory implements ImplementedInventory {
 
     public static final List<Integer> EMPTY_CELLS;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
-
-    @Override
-    public void onTrackedSlotTake(PlayerEntity player, ItemStack stack, int index) {
-        // TODO: 21.01.2024 implement?
-    }
-
-    @Override
-    public void onTrackedUpdate(int index) {
-        // TODO: 21.01.2024 implement?
-    }
+    @Nullable
+    private final JewelryBlockEntity parent;
+    @Nullable
+    private Identifier currentRecipe;
 
     public boolean tryCraft(ServerWorld world) {
-        JewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, JewelryRecipeSerializer.INSTANCE);
+        JewelryRecipe recipe = getRecipe(world);
         if (recipe == null) return false;
 
         ItemStack newLens = new ItemStack(recipe.getOutputItem());
         newLens.setNbt(getStack(0).getNbt());
+        val lens = EtherologyComponents.LENS.get(newLens);
+        lens.setPattern(LensPattern.empty());
+
         setStack(0, newLens);
         markDirty();
         return true;
+    }
+
+    public boolean updateRecipe(ServerWorld world) {
+        JewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, JewelryRecipeSerializer.INSTANCE);
+        if (recipe == null) currentRecipe = null;
+        else currentRecipe = recipe.getId();
+        return currentRecipe != null;
+    }
+
+    public boolean hasRecipe() {
+        return currentRecipe != null;
+    }
+
+    @Nullable
+    public JewelryRecipe getRecipe(ServerWorld world) {
+        if (currentRecipe != null && RecipesRegistry.get(world, currentRecipe) instanceof JewelryRecipe recipe) {
+            return recipe;
+        }
+        return null;
+    }
+
+    public void resetRecipe() {
+        boolean updated = currentRecipe != null;
+        currentRecipe = null;
+        if (updated) markDirty();
     }
 
     public void updateCells(int crackPos) {
@@ -137,11 +166,27 @@ public class JewelryTableInventory implements UpdatableInventory {
     }
 
     @Override
-    public void onSpecialEvent(int eventId, ItemStack stack) {}
-
-    @Override
     public DefaultedList<ItemStack> getItems() {
         return items;
+    }
+
+    @Override
+    public void markDirty() {
+        ImplementedInventory.super.markDirty();
+        if (parent != null) parent.trySyncData();
+    }
+
+    public void writeNbt(NbtCompound nbt) {
+        Inventories.writeNbt(nbt, items);
+        String recipeStr = currentRecipe == null ? "" : currentRecipe.toString();
+        nbt.putString("recipe", recipeStr);
+    }
+
+    public void readNbt(NbtCompound nbt) {
+        items.clear();
+        Inventories.readNbt(nbt, items);
+        String recipeStr = nbt.getString("recipe");
+        currentRecipe = recipeStr.isEmpty() ? null : Identifier.tryParse(recipeStr);
     }
 
     static {

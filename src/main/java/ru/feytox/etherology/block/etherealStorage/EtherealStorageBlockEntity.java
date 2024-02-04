@@ -9,9 +9,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -186,6 +183,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
         super.readNbt(nbt);
         storageEther = nbt.getFloat("storage_ether");
 
+        inventory.clear();
         Inventories.readNbt(nbt, inventory);
     }
 
@@ -252,17 +250,6 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     static {
         OPEN_ANIM = RawAnimation.begin().thenPlayAndHold("animation.ether_storage.open");
         CLOSE_ANIM = RawAnimation.begin().thenPlay("animation.ether_storage.close");
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override

@@ -11,9 +11,6 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -234,21 +231,11 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
         super.readNbt(nbt);
 
         storedEther = nbt.getFloat("stored_ether");
+        inventory.clear();
         Inventories.readNbt(nbt, inventory);
         fuel = nbt.getInt("fuel");
         cookTime = nbt.getInt("cook_time");
         totalCookTime = nbt.getInt("total_cook_time");
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override

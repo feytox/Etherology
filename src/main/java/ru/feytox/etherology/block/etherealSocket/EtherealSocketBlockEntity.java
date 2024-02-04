@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.etherealSocket;
 
 import io.wispforest.owo.util.ImplementedInventory;
+import lombok.Getter;
 import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
@@ -9,9 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -43,6 +41,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
     private Boolean wasWithGlint = null;
     // TODO: 09.08.2023 deprecate
     private boolean isUpdated = false;
+    @Getter
     private float cachedPercent = 0;
 
     public EtherealSocketBlockEntity(BlockPos pos, BlockState state) {
@@ -264,21 +263,8 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
 
+        inventory.clear();
         Inventories.readNbt(nbt, inventory);
     }
 
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
-    }
-
-    public float getCachedPercent() {
-        return cachedPercent;
-    }
 }

@@ -43,21 +43,25 @@ public class JewelryRecipeSerializer extends FeyRecipeSerializer<JewelryRecipe> 
         Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(outputId))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + outputId));
 
-        return new JewelryRecipe(pattern, outputItem, id);
+        int ether = JsonHelper.getInt(json, "ether");
+
+        return new JewelryRecipe(pattern, outputItem, ether, id);
     }
 
     @Override
     public JewelryRecipe read(Identifier id, PacketByteBuf buf) {
         LensPattern pattern = LensPattern.readBuf(buf);
         String outputId = buf.readString();
+        int ether = buf.readInt();
         Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(outputId))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + outputId));
-        return new JewelryRecipe(pattern, outputItem, id);
+        return new JewelryRecipe(pattern, outputItem, ether, id);
     }
 
     @Override
     public void write(PacketByteBuf buf, JewelryRecipe recipe) {
         recipe.getPattern().writeBuf(buf);
         buf.writeString(recipe.getOutputItem().toString());
+        buf.writeInt(recipe.getEther());
     }
 }

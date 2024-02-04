@@ -47,7 +47,8 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
         matrices.translate(offset.x, offset.y, offset.z);
         BakedModel bakedModel = itemRenderer.getModel(itemStack, world, null, 5678);
         boolean hasDepth = bakedModel.hasDepth();
-        float yOffset = MathHelper.sin((world.getTime() + tickDelta) / 10.0F + uniqueOffset) * 0.1F + 0.1F;
+        long time = world.getTime();
+        float yOffset = MathHelper.sin((time + tickDelta) / 10.0F + uniqueOffset) * 0.1F + 0.1F;
         float deltaYOffset = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.y();
         matrices.translate(0.0F, yOffset + 0.25F * deltaYOffset, 0.0F);
         float yRotation = (world.getTime() + tickDelta) / 20.0F + uniqueOffset;
