@@ -17,10 +17,6 @@ public class BrewingLightInfo extends ParticleInfo<LightParticle, LightParticleE
         super(clientWorld, x, y, z, parameters, spriteProvider);
     }
 
-    @Override
-    public void extraInit(LightParticle particle) {
-        particle.setSpriteForAge();
-    }
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {

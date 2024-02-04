@@ -20,11 +20,6 @@ public class SparkLightInfo extends ParticleInfo<LightParticle, LightParticleEff
     }
 
     @Override
-    public void extraInit(LightParticle particle) {
-        particle.setSpriteForAge();
-    }
-
-    @Override
     public float getScale(Random random) {
         return 0.1f;
     }

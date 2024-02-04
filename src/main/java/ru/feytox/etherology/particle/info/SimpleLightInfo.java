@@ -18,13 +18,13 @@ public class SimpleLightInfo extends ParticleInfo<LightParticle, LightParticleEf
     }
 
     @Override
-    public void extraInit(LightParticle particle) {
-        particle.setSpriteForAge();
+    public RGBColor getStartColor(Random random) {
+        return new RGBColor(244, 194, 133);
     }
 
     @Override
-    public RGBColor getStartColor(Random random) {
-        return new RGBColor(244, 194, 133);
+    public float getScale(Random random) {
+        return 0.3f;
     }
 
     @Override

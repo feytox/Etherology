@@ -37,7 +37,6 @@ public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParti
 
     @Override
     public void extraInit(SparkParticle particle) {
-        particle.setSpriteForAge();
         particle.setAge(particle.getRandom().nextBetween(0, 10));
     }
 

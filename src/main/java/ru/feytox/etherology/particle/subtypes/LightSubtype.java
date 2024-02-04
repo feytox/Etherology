@@ -12,7 +12,6 @@ import ru.feytox.etherology.particle.utility.ParticleInfoProvider;
 public enum LightSubtype implements ParticleInfoProvider<LightParticle, LightParticleEffect> {
     SIMPLE(SimpleLightInfo::new),
     SPARK(SparkLightInfo::new),
-    VITAL(VitalLightInfo::new),
     PUSHING(PushingLightInfo::new),
     ATTRACT(AttractLightInfo::new),
     BREWING(BrewingLightInfo::new);

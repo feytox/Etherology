@@ -4,6 +4,7 @@ import lombok.val;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
+import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.utility.FeyParticle;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
@@ -18,12 +19,18 @@ public class ElectricityParticle extends FeyParticle<ElectricityParticleEffect> 
         setAngle(random.nextFloat() * 360.0f);
 
         val electricityType = parameters.getElectricityType();
+        if (electricityType.equals(ElectricitySubtype.JEWELRY)) {
+            maxAge = 7;
+            age = random.nextBetween(0, 3);
+        }
+
         switch (electricityType) {
             case MATRIX -> scale(1.4f);
             case PEAL -> {
                 setRGB(RGBColor.of(0x00ffe5));
                 scale(2.5f);
             }
+            case JEWELRY -> setRGB(RGBColor.of(0x9773ff));
         }
         Float instability = parameters.getInstability();
         if (instability != null && instability != -1.0f) {

@@ -10,13 +10,11 @@ import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class SparkRisingInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
+public class SparkJewelryInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
 
     private final Vec3d endPos;
-    private float acceleration = 0.0f;
-    private float startSpeed = 0.0f;
 
-    public SparkRisingInfo(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider) {
+    public SparkJewelryInfo(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
         Vec3d startPos = new Vec3d(x, y, z);
         endPos = startPos.add(parameters.getMoveVec());
@@ -24,29 +22,23 @@ public class SparkRisingInfo extends ParticleInfo<SparkParticle, SparkParticleEf
 
     @Override
     public float getScale(Random random) {
-        return 0.2f + 0.3f * random.nextFloat();
-    }
-
-    @Override
-    public void extraInit(SparkParticle particle) {
-        acceleration = 0.005f * particle.getRandom().nextFloat();
-        startSpeed = 0.001f * particle.getRandom().nextFloat();
+        return 0.35f + 0.3f * random.nextFloat();
     }
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {
-        return RGBColor.of(0xFFBFF6);
+        return RGBColor.of(0xffd700);
     }
 
     @Override
     public void tick(SparkParticle particle) {
         if (particle.tickAge()) return;
-        particle.timeAcceleratedMovingTick(acceleration, startSpeed, endPos, false);
+        particle.simpleMovingTick(0.015f, endPos, false);
         particle.setSpriteForAge();
     }
 
     @Override
     public int getMaxAge(Random random) {
-        return random.nextBetween(10, 40);
+        return 80 + random.nextBetween(0, 20);
     }
 }

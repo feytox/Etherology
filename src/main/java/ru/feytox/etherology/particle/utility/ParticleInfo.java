@@ -18,7 +18,9 @@ public abstract class ParticleInfo<T extends FeyParticle<M>, M extends FeyPartic
     @Nullable
     abstract public RGBColor getStartColor(Random random);
 
-    public void extraInit(T particle) {}
+    public void extraInit(T particle) {
+        particle.setSpriteForAge();
+    }
 
     abstract public void tick(T particle);
 

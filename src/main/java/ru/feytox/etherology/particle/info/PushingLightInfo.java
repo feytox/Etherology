@@ -20,7 +20,6 @@ public class PushingLightInfo extends ParticleInfo<LightParticle, LightParticleE
 
     @Override
     public void extraInit(LightParticle particle) {
-        particle.setSpriteForAge();
         endPos = particle.getStartPos().add(particle.getParameters().getMoveVec());
     }
 

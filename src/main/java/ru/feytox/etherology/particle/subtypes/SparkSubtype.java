@@ -8,6 +8,7 @@ import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.info.SedimentarySparkInfo;
+import ru.feytox.etherology.particle.info.SparkJewelryInfo;
 import ru.feytox.etherology.particle.info.SparkRisingInfo;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.particle.utility.ParticleInfoProvider;
@@ -20,7 +21,8 @@ public enum SparkSubtype implements ParticleInfoProvider<SparkParticle, SparkPar
     RELLA(SedimentarySparkInfo.of(EssenceZoneType.RELLA)),
     VIA(SedimentarySparkInfo.of(EssenceZoneType.VIA)),
     CLOS(SedimentarySparkInfo.of(EssenceZoneType.CLOS)),
-    RISING(SparkRisingInfo::new);
+    RISING(SparkRisingInfo::new),
+    JEWELRY(SparkJewelryInfo::new);
 
     private final ParticleInfo.Factory<SparkParticle, SparkParticleEffect> factory;
 

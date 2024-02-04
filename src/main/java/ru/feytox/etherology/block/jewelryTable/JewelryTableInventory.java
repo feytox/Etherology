@@ -32,9 +32,9 @@ public class JewelryTableInventory implements ImplementedInventory {
     @Nullable
     private Identifier currentRecipe;
 
-    public boolean tryCraft(ServerWorld world) {
+    public void tryCraft(ServerWorld world) {
         JewelryRecipe recipe = getRecipe(world);
-        if (recipe == null) return false;
+        if (recipe == null) return;
 
         ItemStack newLens = new ItemStack(recipe.getOutputItem());
         newLens.setNbt(getStack(0).getNbt());
@@ -43,14 +43,24 @@ public class JewelryTableInventory implements ImplementedInventory {
 
         setStack(0, newLens);
         markDirty();
-        return true;
     }
 
-    public boolean updateRecipe(ServerWorld world) {
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+        ImplementedInventory.super.setStack(slot, stack);
+        if (stack.isEmpty()) {
+            resetRecipe();
+            return;
+        }
+
+        if (parent == null || !(parent.getWorld() instanceof ServerWorld serverWorld)) return;
+        updateRecipe(serverWorld);
+    }
+
+    public void updateRecipe(ServerWorld world) {
         JewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, JewelryRecipeSerializer.INSTANCE);
         if (recipe == null) currentRecipe = null;
         else currentRecipe = recipe.getId();
-        return currentRecipe != null;
     }
 
     public boolean hasRecipe() {

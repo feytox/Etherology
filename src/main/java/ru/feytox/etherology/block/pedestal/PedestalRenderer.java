@@ -12,10 +12,10 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.joml.Math;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
 
 @RequiredArgsConstructor
@@ -48,10 +48,10 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
         BakedModel bakedModel = itemRenderer.getModel(itemStack, world, null, 5678);
         boolean hasDepth = bakedModel.hasDepth();
         long time = world.getTime();
-        float yOffset = MathHelper.sin((time + tickDelta) / 10.0F + uniqueOffset) * 0.1F + 0.1F;
+        float yOffset = Math.sin((time + tickDelta) / 10.0F + uniqueOffset) * 0.1F + 0.1F;
         float deltaYOffset = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.y();
         matrices.translate(0.0F, yOffset + 0.25F * deltaYOffset, 0.0F);
-        float yRotation = (world.getTime() + tickDelta) / 20.0F + uniqueOffset;
+        float yRotation = (time + tickDelta) / 20.0F + uniqueOffset;
         matrices.multiply(RotationAxis.POSITIVE_Y.rotation(yRotation));
         float zScale = bakedModel.getTransformation().ground.scale.z();
 

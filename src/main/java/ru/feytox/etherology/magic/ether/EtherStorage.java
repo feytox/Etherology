@@ -29,6 +29,10 @@ public interface EtherStorage {
         return getStoredEther();
     }
 
+    default boolean isCrossEvaporate(Direction fromSide) {
+        return false;
+    }
+
     default boolean isOutputSide(Direction direction) {
         Direction outputSide = getOutputSide();
         return outputSide != null && outputSide.equals(direction);
@@ -48,7 +52,7 @@ public interface EtherStorage {
     default void transfer(ServerWorld world) {
         float etherValue = getTransportableEther();
         if (etherValue == 0 || isActivated()) {
-            if (this instanceof EtherealChannelBlockEntity channel) channel.setUseless(false);
+            if (this instanceof EtherealChannelBlockEntity channel) channel.setEvaporating(false);
             return;
         }
 
@@ -62,8 +66,15 @@ public interface EtherStorage {
         BlockPos nextPos = pos.add(outputVec);
 
         if (world.getBlockEntity(nextPos) instanceof EtherStorage consumer) {
-            if (this instanceof EtherealChannelBlockEntity channel) channel.setUseless(false);
+            if (this instanceof EtherealChannelBlockEntity channel) {
+                channel.setEvaporating(false);
+                channel.setCrossEvaporating(false);
+            }
 
+            if (consumer.isCrossEvaporate(outputSide.getOpposite())) {
+                evaporate(true);
+                return;
+            }
             if (!consumer.isInputSide(outputSide.getOpposite())) return;
             if (!consumer.canInputFrom(this)) return;
             if (!canOutputTo(consumer)) return;
@@ -72,8 +83,13 @@ public interface EtherStorage {
             float points = decrement(transferSize);
             float excess = consumer.increment(points);
             increment(excess);
-        } else if (this instanceof EtherealChannelBlockEntity channel) {
-            channel.setUseless(getStoredEther() != 0);
+        } else evaporate(false);
+    }
+
+    private void evaporate(boolean crossUseless) {
+        if (this instanceof EtherealChannelBlockEntity channel) {
+            channel.setEvaporating(getStoredEther() != 0);
+            channel.setCrossEvaporating(crossUseless);
             decrement(1);
         }
     }

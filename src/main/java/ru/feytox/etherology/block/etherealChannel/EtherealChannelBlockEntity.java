@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.etherealChannel;
 
+import lombok.Setter;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
@@ -13,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
-import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
@@ -26,14 +26,13 @@ import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK
 
 public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe {
     private float storedEther = 0;
-    private boolean isUseless = false;
+    @Setter
+    private boolean isEvaporating = false;
+    @Setter
+    private boolean isCrossEvaporating = false;
 
     public EtherealChannelBlockEntity(BlockPos pos, BlockState state) {
         super(ETHEREAL_CHANNEL_BLOCK_ENTITY, pos, state);
-    }
-
-    public void setUseless(boolean useless) {
-        isUseless = useless;
     }
 
     @Override
@@ -47,9 +46,11 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
 
         Direction outputDirection = getOutputSide();
         if (outputDirection == null) return;
-        if (world.getBlockEntity(pos.add(outputDirection.getVector())) instanceof EtherStorage) return;
 
-        if (isUseless) spawnParticles(pos, world, outputDirection);
+        BlockPos outputPos = isCrossEvaporating ? pos.up() : pos;
+        if (isEvaporating) {
+            spawnParticles(outputPos, world, outputDirection);
+        }
     }
 
     public static void spawnParticles(BlockPos pos, ClientWorld world, Direction direction) {
@@ -118,13 +119,14 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     public void transferTick(ServerWorld world) {
         if (world.getTime() % 5 != 0) return;
         transfer(world);
-        world.getChunkManager().markForUpdate(pos);
+        syncData(world);
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
         nbt.putFloat("stored_ether", storedEther);
-        nbt.putBoolean("is_useless", isUseless);
+        nbt.putBoolean("evaporating", isEvaporating);
+        nbt.putBoolean("cross_evaporating", isCrossEvaporating);
 
         super.writeNbt(nbt);
     }
@@ -134,6 +136,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         super.readNbt(nbt);
 
         storedEther = nbt.getFloat("stored_ether");
-        isUseless = nbt.getBoolean("is_useless");
+        isEvaporating = nbt.getBoolean("evaporating");
+        isCrossEvaporating = nbt.getBoolean("cross_evaporating");
     }
 }

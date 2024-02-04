@@ -19,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
@@ -45,16 +44,14 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
         inventory = new JewelryTableInventory(this);
     }
 
-    // STOPSHIP: сделать так, чтобы было сохранение предмета, а то он просто пропадает
-
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
+        int tickRate = 10;
         if (inventory.isEmpty() || !inventory.hasRecipe()) {
             inventory.resetRecipe();
-            // TODO: 30.01.2024 hard code to cross-block useless transfer
-            decrement(1f);
+            tickRate = 7;
         }
-        if (world.getTime() % 40 == 0) decrement(1);
+        if (world.getTime() % tickRate == 0) decrement(1);
         if (!inventory.hasRecipe() || world.getTime() % 5 != 0) return;
 
         inventory.updateRecipe(world);
@@ -68,25 +65,27 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
         inventory.resetRecipe();
 
         Vec3d particlePos = blockPos.toCenterPos().add(0, 0.75d, 0);
-        val effect = new SparkParticleEffect(ServerParticleTypes.SPARK, particlePos.add(0, 1.5d, 0), SparkSubtype.SIMPLE);
+        val effect = new SparkParticleEffect(ServerParticleTypes.SPARK, new Vec3d(0, 2.0d, 0), SparkSubtype.JEWELRY);
         effect.spawnParticles(world, 10, 0.25d, particlePos);
     }
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (inventory.isEmpty()) {
-            EtherealChannelBlockEntity.spawnParticles(pos, world, Direction.UP);
-            return;
-        }
+        if (inventory.isEmpty()) return;
+        if (world.getTime() % 4 != 0) return;
 
-        if (world.getTime() % 7 != 0) return;
-        val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.SIMPLE);
+        val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
         effect.spawnParticles(world, 3, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
     }
 
     @Override
+    public boolean isCrossEvaporate(Direction fromSide) {
+        return inventory.isEmpty();
+    }
+
+    @Override
     public float getMaxEther() {
-        return Integer.MAX_VALUE;
+        return inventory.hasRecipe() ? Integer.MAX_VALUE : 4.0f;
     }
 
     @Override

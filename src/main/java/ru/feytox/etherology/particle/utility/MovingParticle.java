@@ -20,7 +20,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
         if (tickAge()) return;
         markPrevPos();
 
-        Vec3d pathVec = getFullPathVec(endPos);
+        Vec3d pathVec = getPathVec(endPos);
         double inverseLen = getInverseLen(pathVec);
         if (inverseCheckDeadPos(deadOnEnd, inverseLen, 0.5d)) return;
 
@@ -44,7 +44,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
         if (tickAge()) return;
         markPrevPos();
 
-        Vec3d pathVec = getFullPathVec(endPos);
+        Vec3d pathVec = getPathVec(endPos);
         double pathLen = pathVec.length();
         if (checkDeadPos(deadOnEnd, pathLen)) return;
 
