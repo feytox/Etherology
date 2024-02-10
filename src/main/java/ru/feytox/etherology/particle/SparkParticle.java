@@ -10,6 +10,8 @@ import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class SparkParticle extends MovingParticle<SparkParticleEffect> {
+    // TODO: 08.02.2024 un-hardcode
+    public static final int SPRITES_COUNT = 6;
     private final ParticleInfo<SparkParticle, SparkParticleEffect> particleInfo;
     private final Vec3d endPos;
 

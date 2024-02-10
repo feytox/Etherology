@@ -5,10 +5,13 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Math;
 import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.RGBColor;
+
+import static ru.feytox.etherology.particle.SparkParticle.SPRITES_COUNT;
 
 public class SparkJewelryInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
 
@@ -21,24 +24,31 @@ public class SparkJewelryInfo extends ParticleInfo<SparkParticle, SparkParticleE
     }
 
     @Override
+    public void extraInit(SparkParticle particle) {
+        int age = Math.round(particle.getMaxAge() * (float) particle.getRandom().nextBetween(0, 2) / SPRITES_COUNT);
+        particle.setAge(age);
+        super.extraInit(particle);
+    }
+
+    @Override
     public float getScale(Random random) {
-        return 0.35f + 0.3f * random.nextFloat();
+        return 0.8f + 0.3f * random.nextFloat();
     }
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {
-        return RGBColor.of(0xffd700);
+        return RGBColor.of(0xFFBFF6);
     }
 
     @Override
     public void tick(SparkParticle particle) {
         if (particle.tickAge()) return;
-        particle.simpleMovingTick(0.015f, endPos, false);
+        particle.simpleMovingTick(0.0075f, endPos, false);
         particle.setSpriteForAge();
     }
 
     @Override
     public int getMaxAge(Random random) {
-        return 80 + random.nextBetween(0, 20);
+        return 30;
     }
 }

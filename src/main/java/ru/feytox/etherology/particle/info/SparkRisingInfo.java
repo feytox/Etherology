@@ -29,6 +29,7 @@ public class SparkRisingInfo extends ParticleInfo<SparkParticle, SparkParticleEf
 
     @Override
     public void extraInit(SparkParticle particle) {
+        super.extraInit(particle);
         acceleration = 0.005f * particle.getRandom().nextFloat();
         startSpeed = 0.001f * particle.getRandom().nextFloat();
     }

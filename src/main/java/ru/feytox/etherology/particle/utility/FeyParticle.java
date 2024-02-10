@@ -14,12 +14,10 @@ import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
+@Getter
 public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends SpriteBillboardParticle {
-    @Getter
     protected final T parameters;
-    @Getter
     protected final SpriteProvider spriteProvider;
-    @Getter
     protected Vec3d startPos;
 
     public FeyParticle(ClientWorld clientWorld, double x, double y, double z, T parameters, SpriteProvider spriteProvider) {
@@ -55,12 +53,6 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         z += deltaVec.z;
     }
 
-    public void updatePos(Vec3d newPos) {
-        x = newPos.x;
-        y = newPos.y;
-        z = newPos.z;
-    }
-
     public boolean inverseCheckDeadPos(boolean deadOnEnd, double inverseLen, double deadDistance) {
         if (!deadOnEnd || inverseLen < 1 / deadDistance) return false;
         this.markDead();
@@ -74,7 +66,7 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
     }
 
     public boolean tickAge() {
-        if (this.age++ < this.maxAge) return false;
+        if (age++ < maxAge) return false;
         this.markDead();
         return true;
     }
@@ -131,6 +123,11 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         setSpriteForAge(spriteProvider);
     }
 
+    public void setSpriteForAge(int age) {
+        if (dead) return;
+        setSprite(spriteProvider.getSprite(age, maxAge));
+    }
+
     public void setSpriteForAgeCycle(int cycleAge) {
         if (dead) return;
 
@@ -149,12 +146,12 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
         if (infoFactory == null) return null;
 
         ParticleInfo<A, B> particleInfo = infoFactory.createInfo(clientWorld, x, y, z, parameters, spriteProvider);
-        particleInfo.extraInit(particle);
         particle.scale(particleInfo.getScale(particle.random));
         particle.setMaxAge(particleInfo.getMaxAge(particle.random));
 
         RGBColor color = particleInfo.getStartColor(particle.random);
         if (color != null) particle.setRGB(color);
+        particleInfo.extraInit(particle);
         return particleInfo;
     }
 

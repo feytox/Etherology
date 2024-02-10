@@ -20,6 +20,7 @@ public class PushingLightInfo extends ParticleInfo<LightParticle, LightParticleE
 
     @Override
     public void extraInit(LightParticle particle) {
+        super.extraInit(particle);
         endPos = particle.getStartPos().add(particle.getParameters().getMoveVec());
     }
 

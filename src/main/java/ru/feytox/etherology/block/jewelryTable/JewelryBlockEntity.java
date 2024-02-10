@@ -66,7 +66,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
 
         Vec3d particlePos = blockPos.toCenterPos().add(0, 0.75d, 0);
         val effect = new SparkParticleEffect(ServerParticleTypes.SPARK, new Vec3d(0, 2.0d, 0), SparkSubtype.JEWELRY);
-        effect.spawnParticles(world, 10, 0.25d, particlePos);
+        effect.spawnParticles(world, 6, 0.25d, particlePos);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
         if (world.getTime() % 4 != 0) return;
 
         val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
-        effect.spawnParticles(world, 3, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
+        effect.spawnParticles(world, 2, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
     }
 
     @Override

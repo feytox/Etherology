@@ -5,6 +5,8 @@ import net.minecraft.util.math.random.Random;
 
 public class FeyColor {
 
+    // TODO: 08.02.2024 move to RGBColor + maybe RGBColor -> hex
+
     public static RGBColor lerp(RGBColor startColor, RGBColor endColor, float percent) {
         return new RGBColor(lerpComponent(startColor.r(), endColor.r(), percent), lerpComponent(startColor.g(), endColor.g(), percent), lerpComponent(startColor.b(), endColor.b(), percent));
     }
