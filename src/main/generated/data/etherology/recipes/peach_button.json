@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "etherology:peach_planks"
+    }
+  ],
+  "result": {
+    "item": "etherology:peach_button"
+  }
+}

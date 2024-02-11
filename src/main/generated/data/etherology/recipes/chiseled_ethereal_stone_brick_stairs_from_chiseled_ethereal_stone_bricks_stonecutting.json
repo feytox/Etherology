@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "etherology:chiseled_ethereal_stone_bricks"
+  },
+  "result": "etherology:chiseled_ethereal_stone_brick_stairs"
+}

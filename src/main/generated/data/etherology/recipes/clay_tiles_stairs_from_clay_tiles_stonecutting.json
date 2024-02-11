@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "etherology:clay_tiles"
+  },
+  "result": "etherology:clay_tiles_stairs"
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "etherology:mossy_cobbled_ethereal_stone"
+  },
+  "result": "etherology:mossy_cobbled_ethereal_stone_stairs"
+}

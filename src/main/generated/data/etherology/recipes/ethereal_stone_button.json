@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "etherology:ethereal_stone"
+    }
+  ],
+  "result": {
+    "item": "etherology:ethereal_stone_button"
+  }
+}

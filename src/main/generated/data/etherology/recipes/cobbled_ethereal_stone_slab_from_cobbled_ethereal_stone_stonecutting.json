@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 2,
+  "ingredient": {
+    "item": "etherology:cobbled_ethereal_stone"
+  },
+  "result": "etherology:cobbled_ethereal_stone_slab"
+}
