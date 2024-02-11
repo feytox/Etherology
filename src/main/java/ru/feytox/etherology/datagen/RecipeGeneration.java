@@ -2,8 +2,10 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.data.server.recipe.*;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
@@ -60,6 +62,12 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
         // clay tile
         offerStonecuttingRecipe(exporter, EBlockFamilies.CLAY_TILE, EBlockFamilies.BLUE_CLAY_TILE, EBlockFamilies.GREEN_CLAY_TILE, EBlockFamilies.RED_CLAY_TILE, EBlockFamilies.YELLOW_CLAY_TILE);
+        offer2x2Recipe(exporter, RecipeCategory.BUILDING_BLOCKS, CLAY_TILES, Blocks.TERRACOTTA, 4);
+        offer2x2Recipe(exporter, RecipeCategory.BUILDING_BLOCKS, BLUE_CLAY_TILES, Blocks.BLUE_TERRACOTTA, 4);
+        offer2x2Recipe(exporter, RecipeCategory.BUILDING_BLOCKS, GREEN_CLAY_TILES, Blocks.GREEN_TERRACOTTA, 4);
+        offer2x2Recipe(exporter, RecipeCategory.BUILDING_BLOCKS, RED_CLAY_TILES, Blocks.RED_TERRACOTTA, 4);
+        offer2x2Recipe(exporter, RecipeCategory.BUILDING_BLOCKS, YELLOW_CLAY_TILES, Blocks.YELLOW_TERRACOTTA, 4);
+
     }
 
     private void registerFamilies(List<BlockFamily> blockFamilies, Consumer<RecipeJsonProvider> exporter, FeatureSet enabledFeatures) {
@@ -83,5 +91,9 @@ public class RecipeGeneration extends FabricRecipeProvider {
             if (exclude) return;
             offerStonecuttingRecipe(exporter, category, block, family.getBaseBlock(), count);
         }));
+    }
+
+    private void offer2x2Recipe(Consumer<RecipeJsonProvider> exporter, RecipeCategory category, ItemConvertible output, ItemConvertible input, int count) {
+        ShapedRecipeJsonBuilder.create(category, output, count).input('#', input).pattern("##").pattern("##").criterion(hasItem(input), conditionsFromItem(input)).offerTo(exporter);
     }
 }
