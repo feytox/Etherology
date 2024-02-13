@@ -7,11 +7,11 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.text.Text;
-import ru.feytox.etherology.magic.aspects.EtherAspect;
+import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 public class AspectComponent extends FlowLayout {
-    public AspectComponent(EtherAspect aspect, int value) {
+    public AspectComponent(Aspect aspect, int value) {
         super(Sizing.content(), Sizing.content(), Algorithm.VERTICAL);
 
         TextureComponent aspectTexture = Components

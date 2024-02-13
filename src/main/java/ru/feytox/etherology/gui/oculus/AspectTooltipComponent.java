@@ -9,8 +9,8 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.magic.aspects.EtherAspect;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.magic.aspects.Aspect;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Map;
@@ -20,9 +20,9 @@ import static net.minecraft.client.gui.DrawableHelper.drawTexture;
 public class AspectTooltipComponent implements TooltipComponent {
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/aspects.png");
     private static final int LINE_MAX = 5;
-    private final EtherAspectsContainer aspects;
+    private final AspectContainer aspects;
 
-    public AspectTooltipComponent(EtherAspectsContainer aspects) {
+    public AspectTooltipComponent(AspectContainer aspects) {
         this.aspects = aspects;
     }
 
@@ -44,8 +44,8 @@ public class AspectTooltipComponent implements TooltipComponent {
         matrices.scale(0.5f, 0.5f, 1);
 
         int i = 0;
-        for (Map.Entry<EtherAspect, Integer> entry : aspects.getAspects().entrySet()) {
-            EtherAspect aspect = entry.getKey();
+        for (Map.Entry<Aspect, Integer> entry : aspects.getAspects().entrySet()) {
+            Aspect aspect = entry.getKey();
             Integer value = entry.getValue();
 
             int xIndex = i % LINE_MAX;
@@ -58,7 +58,7 @@ public class AspectTooltipComponent implements TooltipComponent {
         matrices.pop();
     }
 
-    private void renderIcon(int x, int y, int z, MatrixStack matrices, EtherAspect aspect, int xIndex, int yIndex) {
+    private void renderIcon(int x, int y, int z, MatrixStack matrices, Aspect aspect, int xIndex, int yIndex) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);

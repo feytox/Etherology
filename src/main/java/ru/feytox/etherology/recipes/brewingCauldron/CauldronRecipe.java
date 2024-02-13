@@ -8,8 +8,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import ru.feytox.etherology.magic.aspects.EtherAspect;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.magic.aspects.Aspect;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
@@ -22,7 +22,7 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
     @Getter
     private final int inputAmount;
     @Getter
-    private final EtherAspectsContainer inputAspects;
+    private final AspectContainer inputAspects;
     private final ItemStack outputStack;
     @Getter
     private final Identifier id;
@@ -32,8 +32,8 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
         DefaultedList<ItemStack> stacks = inventory.stacks;
         if (stacks.size() != 1 || !inputItem.test(stacks.get(0)) || stacks.get(0).getCount() < inputAmount) return false;
 
-        ImmutableMap<EtherAspect, Integer> cauldronAspects = inventory.getCauldronAspects().getAspects();
-        for (Map.Entry<EtherAspect, Integer> inputEntry : inputAspects.getAspects().entrySet()) {
+        ImmutableMap<Aspect, Integer> cauldronAspects = inventory.getCauldronAspects().getAspects();
+        for (Map.Entry<Aspect, Integer> inputEntry : inputAspects.getAspects().entrySet()) {
             Integer cauldronValue = cauldronAspects.get(inputEntry.getKey());
             if (cauldronValue == null || cauldronValue < inputEntry.getValue()) return false;
         }

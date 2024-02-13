@@ -11,7 +11,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.registry.item.EItems;
 
@@ -22,7 +22,7 @@ public class CorruptionBucket extends Item {
     }
 
     @Nullable
-    public static ItemStack createBucketStack(EtherAspectsContainer aspects) {
+    public static ItemStack createBucketStack(AspectContainer aspects) {
         ItemStack stack = EItems.CORRUPTION_BUCKET.getDefaultStack();
         Corruption corruption = Corruption.of(aspects);
         if (corruption == null) return null;

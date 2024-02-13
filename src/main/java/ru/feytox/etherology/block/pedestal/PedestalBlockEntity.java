@@ -10,9 +10,6 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -22,15 +19,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
-import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
+import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspects.AspectProvider;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
-public class PedestalBlockEntity extends TickableBlockEntity implements ImplementedInventory, EtherAspectsProvider, UniqueProvider {
+public class PedestalBlockEntity extends TickableBlockEntity implements ImplementedInventory, AspectProvider, UniqueProvider {
     // 0 - item, 1 - carpet
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
     @Getter
@@ -163,20 +160,9 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         return 1;
     }
 
-    @Nullable
     @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Override
-    public @Nullable EtherAspectsContainer getStoredAspects() {
-        return ItemAspectsLoader.getAspectsOf(items.get(0).getItem()).orElse(null);
+    public @Nullable AspectContainer getStoredAspects() {
+        return AspectsLoader.getAspects(items.get(0), false).orElse(null);
     }
 
     @Override

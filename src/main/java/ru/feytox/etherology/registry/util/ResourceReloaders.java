@@ -12,9 +12,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import org.apache.commons.io.IOUtils;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsRegistry;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.data.item_aspects.AspectsRegistry;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -24,12 +24,8 @@ import java.nio.charset.Charset;
 public class ResourceReloaders {
     public static final Gson EGSON;
 
-    public static void registerClientResources() {
-        // TODO: 28.06.2023 impl for smth for client. For example, aspect textures
-    }
-
     public static void registerServerData() {
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ItemAspectsLoader());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new AspectsLoader());
     }
 
     public static JsonObject loadFile(Identifier location, Resource resource) {
@@ -51,8 +47,8 @@ public class ResourceReloaders {
 
     static {
         EGSON = new GsonBuilder().setLenient()
-                .registerTypeAdapter(ItemAspectsRegistry.class, ItemAspectsRegistry.deserializer())
-                .registerTypeAdapter(EtherAspectsContainer.class, EtherAspectsContainer.deserializer())
+                .registerTypeAdapter(AspectsRegistry.class, AspectsRegistry.deserializer())
+                .registerTypeAdapter(AspectContainer.class, AspectContainer.deserializer())
                 .create();
     }
 }

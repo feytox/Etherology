@@ -28,8 +28,8 @@ import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
-import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspects.AspectProvider;
 import ru.feytox.etherology.magic.zones.EssenceZone;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
@@ -145,7 +145,7 @@ public class OculusItem extends Item implements DoubleModel {
 
     @Nullable
     private static Component createTargetNameHud(ClientWorld world, @NonNull HitResult hitResult) {
-        Text targetName = EtherAspectsProvider.getTargetName(world, hitResult);
+        Text targetName = AspectProvider.getTargetName(world, hitResult);
         if (targetName == null) return null;
 
         return new ScaledLabelComponent(targetName, 1.5f).shadow(true)
@@ -161,7 +161,7 @@ public class OculusItem extends Item implements DoubleModel {
 
         FlowLayout aspectsRoot = Containers.horizontalFlow(Sizing.content(), Sizing.content());
         aspectsRoot.positioning(Positioning.relative(50, 60));
-        EtherAspectsContainer aspects = EtherAspectsProvider.getAspects(world, hitResult);
+        AspectContainer aspects = AspectProvider.getAspects(world, hitResult);
         if (aspects == null || aspects.isEmpty()) return components;
 
         aspects.getAspects().forEach((aspect, value) -> {

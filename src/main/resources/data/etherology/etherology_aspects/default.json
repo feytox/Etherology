@@ -1,6 +1,0 @@
-{
-  "minecraft:dirt": {"netha": 2},
-  "minecraft:diamond": { "defenta": 2 },
-  "minecraft:moss_block": { "rella": 1, "etha": 2, "dizord": 3, "vacuo": 4, "netha": 5, "gravia": 6, "mounta": 7, "soworda": 8, "clos": 9 },
-  "minecraft:torch": { "rella": 100, "etha": 2000, "dizord": 10, "vacuo": 41, "netha": 569 }
-}

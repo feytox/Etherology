@@ -7,19 +7,19 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.Nbtable;
 
 
+@Getter
 @RequiredArgsConstructor
 public class Corruption implements Nbtable {
 
-    @Getter
     private final float corruptionValue;
 
     @Nullable
-    public static Corruption of(EtherAspectsContainer aspects) {
+    public static Corruption of(AspectContainer aspects) {
         Integer aspectsCount = aspects.count().orElse(null);
         if (aspectsCount == null || aspectsCount == 0) return null;
 

@@ -22,9 +22,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.item_aspects.ItemAspectsLoader;
-import ru.feytox.etherology.magic.aspects.EtherAspectsContainer;
-import ru.feytox.etherology.magic.aspects.EtherAspectsProvider;
+import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspects.AspectProvider;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
@@ -43,11 +43,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.STEAM;
 
-public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity, EtherAspectsProvider {
+public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity, AspectProvider {
     private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
 
     @Getter
-    private EtherAspectsContainer aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
+    private AspectContainer aspects = new AspectContainer(new Object2ObjectOpenHashMap<>());
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(8, ItemStack.EMPTY);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     @Getter
@@ -157,7 +157,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     public void clearAspects(ServerWorld world) {
-        aspects = new EtherAspectsContainer(new Object2ObjectOpenHashMap<>());
+        aspects = new AspectContainer(new Object2ObjectOpenHashMap<>());
         wasWithAspects = false;
         syncData(world);
     }
@@ -188,7 +188,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     private void mixItems(ServerWorld world, BlockState state) {
         items.forEach(stack -> {
-            EtherAspectsContainer itemAspects = ItemAspectsLoader.getAspectsOf(stack).orElse(null);
+            AspectContainer itemAspects = AspectsLoader.getAspects(stack, true).orElse(null);
             if (itemAspects == null) return;
 
             aspects = aspects.add(itemAspects);
@@ -261,7 +261,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         temperature = nbt.getInt("temperature");
         wasWithAspects = nbt.getBoolean("wasWithAspects");
-        aspects = (EtherAspectsContainer) aspects.readNbt(nbt);
+        aspects = (AspectContainer) aspects.readNbt(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
     }
@@ -335,7 +335,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
-    public @Nullable EtherAspectsContainer getStoredAspects() {
+    public @Nullable AspectContainer getStoredAspects() {
         return aspects;
     }
 
