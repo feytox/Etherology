@@ -32,7 +32,7 @@ public class EtherealForkBlock extends Block implements RegistrableBlock, BlockE
     private static final VoxelShape CENTER_SHAPE;
 
     public EtherealForkBlock() {
-        super(FabricBlockSettings.of(Material.METAL).nonOpaque());
+        super(FabricBlockSettings.of(Material.METAL).strength(1.0F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(NORTH, PipeSide.EMPTY)

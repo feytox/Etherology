@@ -2,7 +2,7 @@ package ru.feytox.etherology.block.etherealGenerators.spinner;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +14,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SPINNER_BLOCK
 public class EtherealSpinnerBlock extends AbstractEtherealGenerator {
 
     public EtherealSpinnerBlock() {
-        super(FabricBlockSettings.of(Material.METAL),
+        super(FabricBlockSettings.copy(Blocks.IRON_BLOCK),
                 "ethereal_spinner", 30*20, 120*20, 0.1f);
     }
 

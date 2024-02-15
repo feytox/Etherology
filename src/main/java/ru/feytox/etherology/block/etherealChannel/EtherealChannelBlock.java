@@ -47,7 +47,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public static final VoxelShape UP_SHAPE;
 
     public EtherealChannelBlock() {
-        super(FabricBlockSettings.of(Material.METAL).nonOpaque());
+        super(FabricBlockSettings.of(Material.METAL).strength(1.0f).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(FACING, Direction.NORTH)

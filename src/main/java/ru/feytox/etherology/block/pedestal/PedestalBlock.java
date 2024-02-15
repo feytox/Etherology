@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.pedestal;
 
+import lombok.val;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -24,7 +25,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PedestalShape;
-import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.RemoveBlockEntityS2C;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
@@ -41,7 +41,7 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
     private static final VoxelShape FULL_SHAPE;
 
     public PedestalBlock() {
-        super(FabricBlockSettings.of(Material.STONE).strength(3.0f).nonOpaque());
+        super(FabricBlockSettings.copy(Blocks.STONE).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH)
                 .with(SHAPE, PedestalShape.FULL)
@@ -112,7 +112,8 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
         if ((oldShape.get().isHasItem() && (newShape.isEmpty() || !newShape.get().isHasItem())) || !state.isOf(newState.getBlock())) {
             ItemScatterer.spawn(world, pos.up(), pedestal);
             world.removeBlockEntity(pos);
-            EtherologyNetwork.sendForTracking(new RemoveBlockEntityS2C(pos), pedestal);
+            val packet = new RemoveBlockEntityS2C(pos);
+            packet.sendForTracking(pedestal);
         }
     }
 

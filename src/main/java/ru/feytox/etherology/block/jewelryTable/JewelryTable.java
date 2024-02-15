@@ -26,7 +26,7 @@ public class JewelryTable extends Block implements RegistrableBlock, BlockEntity
     private static final VoxelShape OUTLINE_SHAPE;
 
     public JewelryTable() {
-        super(FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE));
+        super(FabricBlockSettings.copy(Blocks.STONE));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
 
 
     public CrateBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.CHEST).nonOpaque());
+        super(FabricBlockSettings.copy(Blocks.CHEST).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH)
                 .with(FALLING, false));

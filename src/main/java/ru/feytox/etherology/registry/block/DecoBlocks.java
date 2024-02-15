@@ -43,13 +43,13 @@ public class DecoBlocks {
     public static final Block PEACH_FENCE_GATE = register("peach_fence_gate", new FenceGateBlock(copy(PEACH_PLANKS), SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundEvents.BLOCK_FENCE_GATE_OPEN)).withItem();
     public static final Block PEACH_PRESSURE_PLATE = registerWoodenPressurePlate("peach_pressure_plate", PEACH_PLANKS).withItem();
     public static final Block PEACH_SIGN = register("peach_sign", new EtherSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withoutItem();
-    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withItem();
+    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withItem(false);
     public static final Block PEACH_TRAPDOOR = register("peach_trapdoor", new TrapdoorBlock(copy(PEACH_PLANKS)
             .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never), SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN)).withItem();
-    public static final Block PEACH_LEAVES = register("peach_leaves", Blocks.createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem();
+    public static final Block PEACH_LEAVES = register("peach_leaves", Blocks.createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem(false);
 
     // ethereal stone
-    public static final Block ETHEREAL_STONE = registerSimple("ethereal_stone", copy(Blocks.STONE)).withItem();
+    public static final Block ETHEREAL_STONE = registerSimple("ethereal_stone", copy(Blocks.STONE)).withItem(false);
     public static final Block ETHEREAL_STONE_STAIRS = registerStairs("ethereal_stone_stairs", ETHEREAL_STONE).withItem();
     public static final Block ETHEREAL_STONE_SLAB = registerSlab("ethereal_stone_slab", ETHEREAL_STONE).withItem();
     public static final Block ETHEREAL_STONE_BUTTON = register("ethereal_stone_button", Blocks.createStoneButtonBlock()).withItem();
@@ -180,7 +180,7 @@ public class DecoBlocks {
     }
 
     private static AbstractBlock.Settings copy(AbstractBlock original) {
-        return FabricBlockSettings.copyOf(original);
+        return FabricBlockSettings.copy(original);
     }
 
     public static void registerAll() {

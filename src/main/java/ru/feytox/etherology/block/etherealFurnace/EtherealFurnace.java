@@ -34,7 +34,7 @@ public class EtherealFurnace extends Block implements BlockEntityProvider, Regis
     public static final BooleanProperty LIT = Properties.LIT;
 
     public EtherealFurnace() {
-        super(FabricBlockSettings.copyOf(Blocks.BLAST_FURNACE));
+        super(FabricBlockSettings.copy(Blocks.STONE));
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(LIT, false));
     }
 

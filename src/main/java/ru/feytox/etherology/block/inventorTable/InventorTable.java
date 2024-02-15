@@ -26,7 +26,7 @@ public class InventorTable extends Block implements RegistrableBlock {
     private static final VoxelShape OUTLINE_SHAPE;
 
     public InventorTable() {
-        super(FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE).nonOpaque());
+        super(FabricBlockSettings.copy(Blocks.SMITHING_TABLE).nonOpaque());
     }
 
     @Override

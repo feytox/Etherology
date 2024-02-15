@@ -23,7 +23,7 @@ public class EssenceDetectorBlock extends Block implements BlockEntityProvider, 
     private static final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
 
     public EssenceDetectorBlock() {
-        super(FabricBlockSettings.of(Material.STONE));
+        super(FabricBlockSettings.copy(Blocks.DAYLIGHT_DETECTOR));
         setDefaultState(getDefaultState().with(POWER, 0));
     }
 

@@ -46,7 +46,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     private static final VoxelShape INPUT_SHAPE;
 
     public BrewingCauldronBlock() {
-        super(FabricBlockSettings.of(Material.METAL).strength(4.0f).nonOpaque());
+        super(FabricBlockSettings.copy(Blocks.CAULDRON).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH)
                 .with(LEVEL, 0)

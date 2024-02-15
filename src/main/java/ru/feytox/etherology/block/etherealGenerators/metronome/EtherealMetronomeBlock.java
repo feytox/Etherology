@@ -13,7 +13,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_METRONOME_BLO
 
 public class EtherealMetronomeBlock extends AbstractEtherealGenerator {
     public EtherealMetronomeBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.GOLD_BLOCK),
+        super(FabricBlockSettings.copy(Blocks.GOLD_BLOCK),
                 "ethereal_metronome", 20*20, 60*20, 0.05f);
     }
 

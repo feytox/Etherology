@@ -28,7 +28,7 @@ public class LevitatorBlock extends FacingBlock implements RegistrableBlock, Blo
     protected static final BooleanProperty WITH_FUEL = BooleanProperty.of("with_fuel");
 
     public LevitatorBlock() {
-        super(FabricBlockSettings.of(Material.WOOD));
+        super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.DOWN)
                 .with(PUSHING, true)

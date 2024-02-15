@@ -29,7 +29,7 @@ public class EtherealStorageBlock extends HorizontalFacingBlock implements Regis
     protected static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
     public EtherealStorageBlock() {
-        super(FabricBlockSettings.of(Material.METAL).nonOpaque());
+        super(FabricBlockSettings.copy(Blocks.STONE).nonOpaque());
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 

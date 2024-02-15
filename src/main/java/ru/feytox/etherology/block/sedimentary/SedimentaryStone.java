@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -30,7 +30,7 @@ public class SedimentaryStone extends Block implements RegistrableBlock, BlockEn
     public static final IntProperty ESSENCE_LEVEL = IntProperty.of("essence_level", 0, 4);
 
     public SedimentaryStone() {
-        super(FabricBlockSettings.of(Material.STONE));
+        super(FabricBlockSettings.copy(Blocks.STONE));
         setDefaultState(getDefaultState().with(ESSENCE_STATE, EssenceZoneType.EMPTY).with(ESSENCE_LEVEL, 0));
     }
 

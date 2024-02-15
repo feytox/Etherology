@@ -17,7 +17,7 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 public class EmpowerTableBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public EmpowerTableBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE));
+        super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
     }
 
     @Override

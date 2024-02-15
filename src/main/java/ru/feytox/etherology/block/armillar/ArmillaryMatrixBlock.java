@@ -1,7 +1,10 @@
 package ru.feytox.etherology.block.armillar;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -21,6 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.ArmillaryState;
 import ru.feytox.etherology.enums.InstabilityType;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
@@ -32,7 +36,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     private static final VoxelShape OUTLINE_SHAPE;
 
     public ArmillaryMatrixBlock() {
-        super(FabricBlockSettings.of(Material.STONE).strength(3.0f).nonOpaque());
+        super(FabricBlockSettings.copy(EBlocks.PEDESTAL_BLOCK).nonOpaque());
         setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.OFF).with(CRAFT_INSTABILITY, InstabilityType.NULL));
     }
 

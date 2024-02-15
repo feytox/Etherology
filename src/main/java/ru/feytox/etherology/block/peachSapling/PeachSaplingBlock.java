@@ -7,7 +7,7 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 public class PeachSaplingBlock extends SaplingBlock implements RegistrableBlock {
     public PeachSaplingBlock() {
-        super(new PeachSaplingGenerator(), FabricBlockSettings.copyOf(Blocks.ACACIA_SAPLING));
+        super(new PeachSaplingGenerator(), FabricBlockSettings.copy(Blocks.ACACIA_SAPLING));
     }
 
     @Override

@@ -7,6 +7,6 @@ import ru.feytox.etherology.enums.FurnitureType;
 
 public class ShelfSlabBlock extends AbstractFurSlabBlock {
     public ShelfSlabBlock() {
-        super("shelf_slab", FabricBlockSettings.copyOf(Blocks.CHEST), FurnitureType.SHELF);
+        super("shelf_slab", FabricBlockSettings.copy(Blocks.CHEST), FurnitureType.SHELF);
     }
 }

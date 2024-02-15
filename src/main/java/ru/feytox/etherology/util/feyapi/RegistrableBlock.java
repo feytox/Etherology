@@ -4,8 +4,11 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.datagen.BlockLootTableGeneration;
 
 public interface RegistrableBlock {
     String getBlockId();
@@ -15,8 +18,17 @@ public interface RegistrableBlock {
     }
 
     default Block registerAll() {
+        return registerAll(true, null);
+    }
+
+    default Block registerAll(boolean generateDrop) {
+        return registerAll(generateDrop, null);
+    }
+
+    default Block registerAll(boolean generateDrop, @Nullable ItemConvertible drop) {
         Block block = registerBlock();
         registerItem();
+        if (generateDrop) BlockLootTableGeneration.generateDrop(block, drop);
         return block;
     }
 
@@ -25,9 +37,9 @@ public interface RegistrableBlock {
         return Registry.register(Registries.BLOCK, new EIdentifier(blockId), (Block) this);
     }
 
-    default BlockItem registerItem() {
+    default void registerItem() {
         String blockId = getBlockId();
         BlockItem blockItem = new BlockItem((Block) this, new FabricItemSettings());
-        return Registry.register(Registries.ITEM, new EIdentifier(blockId), blockItem);
+        Registry.register(Registries.ITEM, new EIdentifier(blockId), blockItem);
     }
 }

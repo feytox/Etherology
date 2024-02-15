@@ -196,6 +196,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EItems.UNADJUSTED_LENS, "Ненастроенная линза");
         builder.add(EItems.REDSTONE_LENS, "Линза красного камня");
 
+        builder.add(EBlocks.ESSENCE_DETECTOR_BLOCK, "Детектор эссенции");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

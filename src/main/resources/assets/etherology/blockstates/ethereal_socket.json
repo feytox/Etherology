@@ -1,4 +1,7 @@
 {
+  "textures": {
+    "particle": "etherology:block/ethereal_socket"
+  },
   "multipart": [
     {
       "apply": { "model": "etherology:block/ethereal_socket" },

@@ -45,7 +45,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
 
 
     public SpillBarrelBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.BARREL).nonOpaque());
+        super(FabricBlockSettings.copy(Blocks.BARREL).nonOpaque());
         this.setDefaultState(this.getDefaultState()
                 .with(WITH_FRAME, false)
                 .with(HorizontalFacingBlock.FACING, Direction.NORTH));

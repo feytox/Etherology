@@ -25,10 +25,10 @@ public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEn
     private final JugType jugType;
 
     public AbstractJugBlock(String blockId, JugType jugType) {
-        this(blockId, jugType, FabricBlockSettings.copyOf(Blocks.TERRACOTTA));
+        this(blockId, jugType, FabricBlockSettings.copy(Blocks.TERRACOTTA));
     }
 
-    public AbstractJugBlock(String blockId, JugType jugType, FabricBlockSettings settings) {
+    public AbstractJugBlock(String blockId, JugType jugType, AbstractBlock.Settings settings) {
         super(settings.nonOpaque());
         this.blockId = blockId;
         this.jugType = jugType;

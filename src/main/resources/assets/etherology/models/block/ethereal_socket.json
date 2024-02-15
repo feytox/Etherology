@@ -4,7 +4,8 @@
 	"textures": {
 		"top": "etherology:block/ethereal_socket_top",
 		"bottom": "etherology:block/ethereal_socket_bottom",
-		"side": "etherology:block/ethereal_socket_side"
+		"side": "etherology:block/ethereal_socket_side",
+		"particle": "etherology:block/ethereal_socket_side"
 	},
 	"elements": [
 		{

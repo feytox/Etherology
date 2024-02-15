@@ -36,7 +36,7 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     private static final VoxelShape WEST_SHAPE;
 
     public EtherealSocketBlock() {
-        super(FabricBlockSettings.of(Material.METAL).nonOpaque());
+        super(FabricBlockSettings.of(Material.METAL).strength(1.5F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.DOWN)
                 .with(WITH_GLINT, false));

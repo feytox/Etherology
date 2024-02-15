@@ -155,7 +155,7 @@ public class EBlocks {
     );
 
     public static final AbstractJugBlock JUG = (AbstractJugBlock) new AbstractJugBlock("jug", JugType.BURN).registerAll();
-    public static final AbstractJugBlock CLAY_JUG = (AbstractJugBlock) new AbstractJugBlock("clay_jug", JugType.RAW, FabricBlockSettings.copyOf(Blocks.CLAY)).registerAll();
+    public static final AbstractJugBlock CLAY_JUG = (AbstractJugBlock) new AbstractJugBlock("clay_jug", JugType.RAW, FabricBlockSettings.copy(Blocks.CLAY)).registerAll();
     public static final BlockEntityType<JugBlockEntity> JUG_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("jug_block_entity"),

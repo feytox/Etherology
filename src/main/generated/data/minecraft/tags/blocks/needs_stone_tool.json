@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "etherology:brewing_cauldron",
+    "etherology:ethereal_storage",
+    "etherology:ethereal_channel",
+    "etherology:ethereal_fork",
+    "etherology:ethereal_socket",
+    "etherology:ethereal_furnace",
+    "etherology:ethereal_spinner",
+    "etherology:samovar"
+  ]
+}
