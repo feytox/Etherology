@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
-import ru.feytox.etherology.magic.lense.LensMode;
+import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.mixin.MinecraftClientAccessor;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.EIdentifier;

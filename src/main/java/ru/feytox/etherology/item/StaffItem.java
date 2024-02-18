@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
-import ru.feytox.etherology.magic.lense.LensMode;
+import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;

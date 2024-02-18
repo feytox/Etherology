@@ -1,4 +1,4 @@
-package ru.feytox.etherology.magic.lense;
+package ru.feytox.etherology.magic.lens;
 
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import lombok.EqualsAndHashCode;

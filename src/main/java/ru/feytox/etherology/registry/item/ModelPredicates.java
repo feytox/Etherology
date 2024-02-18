@@ -10,7 +10,7 @@ import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
-import ru.feytox.etherology.magic.lense.LensMode;
+import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
 

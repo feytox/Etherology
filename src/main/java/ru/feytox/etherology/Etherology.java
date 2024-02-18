@@ -9,7 +9,7 @@ import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
 import ru.feytox.etherology.block.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.commands.DevCommands;
-import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;

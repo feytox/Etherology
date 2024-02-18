@@ -15,7 +15,7 @@ import ru.feytox.etherology.components.FloatComponent;
 import ru.feytox.etherology.components.IFloatComponent;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.corruption.CorruptionComponent;
-import ru.feytox.etherology.magic.lense.LensComponent;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.registry.item.ToolItems;

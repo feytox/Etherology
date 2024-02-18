@@ -3,7 +3,7 @@ package ru.feytox.etherology.item;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import ru.feytox.etherology.magic.lense.LensComponent;
+import ru.feytox.etherology.magic.lens.LensComponent;
 
 import java.util.function.Supplier;
 

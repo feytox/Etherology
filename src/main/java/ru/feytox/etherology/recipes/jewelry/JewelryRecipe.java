@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
-import ru.feytox.etherology.magic.lense.LensPattern;
+import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;

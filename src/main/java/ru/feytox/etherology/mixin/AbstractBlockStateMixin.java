@@ -10,13 +10,13 @@ import net.minecraft.world.BlockView;
 import org.joml.Math;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public abstract class AbstractBlockStateMixin {
 
     @ModifyReturnValue(method = "getWeakRedstonePower", at = @At("RETURN"))
-    public int injectRedstoneLens(int original, @Local BlockView blockView, @Local BlockPos pos) {
+    public int injectRedstoneLens(int original, @Local(argsOnly = true) BlockView blockView, @Local(argsOnly = true) BlockPos pos) {
         if (!(blockView instanceof ServerWorld world)) return original;
         RedstoneLensEffects effects = RedstoneLensEffects.getServerState(world);
         val effect = effects.getUsage(pos);

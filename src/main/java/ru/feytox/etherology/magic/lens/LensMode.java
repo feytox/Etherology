@@ -1,4 +1,4 @@
-package ru.feytox.etherology.magic.lense;
+package ru.feytox.etherology.magic.lens;
 
 public enum LensMode {
     STREAM,

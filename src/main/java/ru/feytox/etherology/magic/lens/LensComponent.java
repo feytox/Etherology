@@ -1,4 +1,4 @@
-package ru.feytox.etherology.magic.lense;
+package ru.feytox.etherology.magic.lens;
 
 import dev.onyxstudios.cca.api.v3.component.CopyableComponent;
 import dev.onyxstudios.cca.api.v3.item.CcaNbtType;

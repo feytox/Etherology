@@ -14,7 +14,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 
 public class RedstoneBlob extends ProjectileEntity {

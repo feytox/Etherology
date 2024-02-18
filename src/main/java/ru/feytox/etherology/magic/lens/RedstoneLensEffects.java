@@ -1,4 +1,4 @@
-package ru.feytox.etherology.magic.lense;
+package ru.feytox.etherology.magic.lens;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.AllArgsConstructor;

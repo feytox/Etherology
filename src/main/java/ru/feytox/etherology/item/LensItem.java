@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.lense.EtherLense;
-import ru.feytox.etherology.magic.lense.LensComponent;
+import ru.feytox.etherology.magic.lens.EtherLens;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
@@ -18,7 +18,7 @@ import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 import java.util.function.Supplier;
 
-public abstract class LensItem extends Item implements EtherLense {
+public abstract class LensItem extends Item implements EtherLens {
 
     public LensItem() {
         super(new FabricItemSettings().maxCount(1).maxDamage(100));

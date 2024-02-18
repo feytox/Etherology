@@ -8,9 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
-import ru.feytox.etherology.magic.lense.LensMode;
+import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 
+@Getter
 @RequiredArgsConstructor
 public enum LensSelectionType {
     NONE(true, (p, s, l) -> {}),
@@ -18,10 +19,9 @@ public enum LensSelectionType {
     DOWN_ARROW(true, arrowHandler(LensMode.CHARGE)),
     ITEM(false, itemHandler());
 
-    @Getter
     private final boolean emptySelectedItem;
 
-    @Getter @NonNull
+    @NonNull
     private final SelectionHandler handler;
 
     private static SelectionHandler arrowHandler(LensMode lensMode) {

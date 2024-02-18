@@ -13,14 +13,14 @@ import org.joml.Math;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 
 @Debug(export = true)
 @Mixin(value = RedstoneWireBlock.class, priority = 2001) // apply after lithium
 public class RedstoneWireBlockMixin {
 
     @ModifyReturnValue(method = "getStrongRedstonePower", at = @At("RETURN"))
-    private int injectRedstoneLens(int original, @Local BlockView blockView, @Local BlockPos pos) {
+    private int injectRedstoneLens(int original, @Local(argsOnly = true) BlockView blockView, @Local(argsOnly = true) BlockPos pos) {
         if (!(blockView instanceof ServerWorld world)) return original;
         RedstoneLensEffects effects = RedstoneLensEffects.getServerState(world);
         val effect = effects.getUsage(pos);
@@ -30,7 +30,7 @@ public class RedstoneWireBlockMixin {
     }
 
     @ModifyExpressionValue(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/RedstoneWireBlock;getReceivedRedstonePower(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)I"))
-    private int injectRedstoneLens2(int original, @Local World world, @Local BlockPos pos) {
+    private int injectRedstoneLens2(int original, @Local(argsOnly = true) World world, @Local(argsOnly = true) BlockPos pos) {
         if (!(world instanceof ServerWorld serverWorld)) return original;
         RedstoneLensEffects effects = RedstoneLensEffects.getServerState(serverWorld);
         val effect = effects.getUsage(pos);

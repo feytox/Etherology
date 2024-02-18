@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.lense.LensPattern;
+import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;

@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneBlob;
-import ru.feytox.etherology.magic.lense.LensComponent;
-import ru.feytox.etherology.magic.lense.RedstoneLensEffects;
+import ru.feytox.etherology.magic.lens.LensComponent;
+import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
 import ru.feytox.etherology.registry.item.ToolItems;
 

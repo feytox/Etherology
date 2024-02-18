@@ -10,7 +10,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import ru.feytox.etherology.magic.lense.LensPattern;
+import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.stream.Collectors;
