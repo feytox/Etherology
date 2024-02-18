@@ -61,7 +61,7 @@ public class JewelryRecipeSerializer extends FeyRecipeSerializer<JewelryRecipe> 
     @Override
     public void write(PacketByteBuf buf, JewelryRecipe recipe) {
         recipe.getPattern().writeBuf(buf);
-        buf.writeString(recipe.getOutputItem().toString());
+        buf.writeString(Registries.ITEM.getId(recipe.getOutputItem()).toString());
         buf.writeInt(recipe.getEther());
     }
 }

@@ -4,9 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -50,6 +47,8 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
 
     private boolean tickFuel(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (fuel-- > 0) return true;
+        int power = state.get(POWER);
+        if (power <= 0) return false;
 
         boolean wasFueled = state.get(LevitatorBlock.WITH_FUEL);
         if (storedEther > 0) {
@@ -179,16 +178,5 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
 
         fuel = nbt.getInt("fuel");
         storedEther = nbt.getFloat("stored_ether");
-    }
-
-    @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
     }
 }

@@ -73,6 +73,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         if (inventory.isEmpty()) return;
         if (world.getTime() % 4 != 0) return;
+        if (storedEther == 0.0f) return;
 
         val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
         effect.spawnParticles(world, 2, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));

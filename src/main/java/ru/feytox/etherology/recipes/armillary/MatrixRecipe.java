@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.val;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -46,14 +45,17 @@ public class MatrixRecipe implements Nbtable {
 
     public Optional<PedestalBlockEntity> findMatchedPedestal(List<PedestalBlockEntity> pedestals) {
         if (inputs.isEmpty()) return Optional.empty();
-        Ingredient input = inputs.get(0);
 
         for (PedestalBlockEntity pedestal : pedestals) {
-            ItemStack stack = pedestal.getStack(0);
-            if (input.test(stack)) return Optional.of(pedestal);
+            if (testPedestal(pedestal)) return Optional.of(pedestal);
         }
 
         return Optional.empty();
+    }
+
+    public boolean testPedestal(PedestalBlockEntity pedestal) {
+        if (inputs.isEmpty()) return true;
+        return inputs.get(0).test(pedestal.getStack(0));
     }
 
     public boolean testCenterStack(ArmillaryMatrixBlockEntity matrix) {

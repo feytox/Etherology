@@ -152,7 +152,7 @@ public class DecoBlocks {
     }
 
     private static EBlock registerWoodenDoor(String id, Block originalBlock, float strength) {
-        return registerDoor(id, originalBlock, strength, SoundEvents.BLOCK_WOODEN_DOOR_CLOSE, SoundEvents.BLOCK_WOODEN_DOOR_OPEN);
+        return registerDoor(id, originalBlock, strength, SoundEvents.BLOCK_WOODEN_DOOR_OPEN, SoundEvents.BLOCK_WOODEN_DOOR_CLOSE);
     }
 
     private static EBlock registerWoodenPressurePlate(String id, Block originalBlock) {

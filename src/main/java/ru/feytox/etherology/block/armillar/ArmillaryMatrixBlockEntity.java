@@ -525,8 +525,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
             setMatrixState(world, state, ArmillaryState.CRAFTING);
             return;
         }
-        if (currentTick++ >= 60) {
-            pedestal.clear();
+        if (currentTick++ >= 60 && currentRecipe.testPedestal(pedestal)) {
+            pedestal.removeStack(0);
             pedestal.syncData(world);
             currentRecipe.getInputs().remove(0);
             setMatrixState(world, state, ArmillaryState.CRAFTING);

@@ -66,6 +66,7 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
                 ItemScatterer.spawn(world, pos, socket);
             }
         }
+        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     @Override

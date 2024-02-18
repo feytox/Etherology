@@ -73,12 +73,14 @@ public class OculusItem extends Item implements DoubleModel {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (!entity.isPlayer() || !world.isClient) return;
+        if (OculusItem.isUsingOculus((LivingEntity) entity)) {
+            tickZoneParticles((ClientWorld) world, (ClientPlayerEntity) entity);
+        }
         if (!selected) {
             displayedHud.clearChildren();
             return;
         }
 
-        tickZoneParticles((ClientWorld) world, (ClientPlayerEntity) entity);
         tickHud((ClientWorld) world);
     }
 

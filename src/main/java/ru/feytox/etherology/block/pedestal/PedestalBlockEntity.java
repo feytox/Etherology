@@ -72,7 +72,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         }
 
         // взятие ковра в пустую руку
-        if (pedestalStack.isEmpty()) {
+        if (pedestalStack.isEmpty() && handStack.isEmpty()) {
             if (carpetStack.isEmpty()) return;
 
             player.setStackInHand(hand, carpetStack);
@@ -82,9 +82,11 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         }
 
         // взятие предмета в пустую руку
-        player.setStackInHand(hand, pedestalStack);
-        setStack(0, ItemStack.EMPTY);
-        playItemTakeSound(world, pos);
+        if (handStack.isEmpty()) {
+            player.setStackInHand(hand, pedestalStack);
+            setStack(0, ItemStack.EMPTY);
+            playItemTakeSound(world, pos);
+        }
     }
 
     private boolean placeCarpet(ServerWorld world, BlockState state, PlayerEntity player, Hand hand, ItemStack handStack, ItemStack carpetStack) {

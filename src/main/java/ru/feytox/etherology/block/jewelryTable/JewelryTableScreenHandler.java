@@ -69,9 +69,27 @@ public class JewelryTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int slot) {
-        // TODO: 21.01.2024 implement
-        return null;
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
+        ItemStack newStack = ItemStack.EMPTY;
+        Slot slot = slots.get(invSlot);
+        if (!slot.hasStack()) return newStack;
+
+        ItemStack originalStack = slot.getStack();
+        if (!(originalStack.getItem() instanceof LensItem)) return newStack;
+
+        newStack = originalStack.copy();
+        if (invSlot < tableInv.size()) {
+            if (!this.insertItem(originalStack, tableInv.size(), slots.size(), true)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!this.insertItem(originalStack, 0, tableInv.size(), false)) {
+            return ItemStack.EMPTY;
+        }
+
+        if (originalStack.isEmpty()) slot.setStack(ItemStack.EMPTY);
+        else slot.markDirty();
+
+        return newStack;
     }
 
     @Override

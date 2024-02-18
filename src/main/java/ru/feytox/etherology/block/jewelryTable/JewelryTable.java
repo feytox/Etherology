@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -46,6 +47,15 @@ public class JewelryTable extends Block implements RegistrableBlock, BlockEntity
             if (screenHandlerFactory != null) player.openHandledScreen(screenHandlerFactory);
         }
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.isOf(newState.getBlock())) return;
+        if (!(world.getBlockEntity(pos) instanceof JewelryBlockEntity table)) return;
+
+        ItemScatterer.spawn(world, pos.up(), table);
+        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     @Override
