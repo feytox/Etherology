@@ -4,15 +4,18 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
@@ -43,6 +46,10 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
 
         addItems(ItemTags.BEACON_PAYMENT_ITEMS, DecoBlockItems.TELDER_STEEL_INGOT, DecoBlockItems.ETHRIL_INGOT);
         copy(BlockTagGeneration.PEACH_LOGS, PEACH_LOGS);
+        addItems(ItemTags.STONE_CRAFTING_MATERIALS, DecoBlocks.COBBLED_ETHEREAL_STONE);
+        addItems(ItemTags.STONE_TOOL_MATERIALS, DecoBlocks.COBBLED_ETHEREAL_STONE);
+
+        // TODO: 18.02.2024 add to common tags
     }
 
     public void copy(TagKey<Block>[] blockTags, TagKey<Item>[] itemTags) throws Exception {
@@ -52,7 +59,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         }
     }
 
-    private void addItems(TagKey<Item> tagKey, Item... items) {
-        getOrCreateTagBuilder(tagKey).add(items);
+    private void addItems(TagKey<Item> tagKey, ItemConvertible... items) {
+        Arrays.stream(items).map(ItemConvertible::asItem).forEach(getOrCreateTagBuilder(tagKey)::add);
     }
 }

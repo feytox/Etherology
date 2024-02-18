@@ -6,6 +6,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
@@ -59,6 +61,16 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
         // ethereal stones
         offerStonecuttingRecipe(exporter, EBlockFamilies.ETHEREAL_STONE, EBlockFamilies.COBBLED_ETHEREAL_STONE, EBlockFamilies.CRACKED_ETHEREAL_STONE_BRICKS, EBlockFamilies.CHISELED_ETHEREAL_STONE_BRICKS, EBlockFamilies.ETHEREAL_STONE_BRICKS, EBlockFamilies.MOSSY_COBBLED_ETHEREAL_STONE, EBlockFamilies.MOSSY_ETHEREAL_STONE_BRICKS, EBlockFamilies.POLISHED_ETHEREAL_STONE);
+
+        // stone -> ethereal stone
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.COMPARATOR).input('#', Blocks.REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', ETHEREAL_STONE).pattern(" # ").pattern("#X#").pattern("III").criterion("has_quartz", conditionsFromItem(Items.QUARTZ)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.REPEATER).input('#', Blocks.REDSTONE_TORCH).input('X', Items.REDSTONE).input('I', ETHEREAL_STONE).pattern("#X#").pattern("III").criterion("has_redstone_torch", conditionsFromItem(Blocks.REDSTONE_TORCH)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ETHEREAL_STONE_BRICKS, 4).input('#', ETHEREAL_STONE).pattern("##").pattern("##").criterion("has_ethereal_stone", conditionsFromItem(ETHEREAL_STONE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, Blocks.STONECUTTER).input('I', Items.IRON_INGOT).input('#', ETHEREAL_STONE).pattern(" I ").pattern("###").criterion("has_ethereal_stone", conditionsFromItem(ETHEREAL_STONE)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(COBBLED_ETHEREAL_STONE), RecipeCategory.BUILDING_BLOCKS, ETHEREAL_STONE, 0.1F, 200).criterion("has_cobbled_ethereal_stone", conditionsFromItem(COBBLED_ETHEREAL_STONE)).offerTo(exporter);
+        
+        // cobblestone -> cobbled ethereal stone
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.DISPENSER).input('R', Items.REDSTONE).input('#', COBBLED_ETHEREAL_STONE).input('X', Items.BOW).pattern("###").pattern("#X#").pattern("#R#").criterion("has_bow", conditionsFromItem(Items.BOW)).offerTo(exporter);
 
         // clay tile
         offerStonecuttingRecipe(exporter, EBlockFamilies.CLAY_TILE, EBlockFamilies.BLUE_CLAY_TILE, EBlockFamilies.GREEN_CLAY_TILE, EBlockFamilies.RED_CLAY_TILE, EBlockFamilies.YELLOW_CLAY_TILE);

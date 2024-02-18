@@ -79,6 +79,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.AXE_MINEABLE, ESSENCE_DETECTOR_BLOCK, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB, EMPOWERMENT_TABLE, SPILL_BARREL, CRATE, LEVITATOR, INVENTOR_TABLE);
 
         addBlocks(BlockTags.HOE_MINEABLE, PEACH_LEAVES);
+
+        // TODO: 18.02.2024 add to common tags
     }
 
     private void addBlocks(TagKey<Block> tagKey, Block... blocks) {
