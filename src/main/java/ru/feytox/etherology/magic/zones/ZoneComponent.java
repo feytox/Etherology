@@ -2,7 +2,6 @@ package ru.feytox.etherology.magic.zones;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
-import io.wispforest.owo.nbt.NbtKey;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,6 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     // ~8 in 64x64 chunks (4096 chunks or 1024x1024 blocks)
     private static final float INIT_CHANCE = 1 / 111.0f;
     private static final float MAX_VALUE = 128.0f;
-    private static final int Y_RADIUS = 7;
 
     private final Chunk chunk;
 
@@ -37,10 +35,6 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     @Nullable
     @Getter
     private EssenceZone essenceZone = null;
-
-    @Nullable
-    @Getter
-    private Integer zoneY = null;
 
     /**
      * Retrieves the ZoneComponent associated with the given Chunk.
@@ -72,10 +66,6 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
         }
 
         return result;
-    }
-
-    public int getZoneRadius() {
-        return Y_RADIUS;
     }
 
     public boolean isEmpty() {
@@ -114,9 +104,10 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
             val generationSetting = zoneType.getGenerationSetting();
             if (generationSetting == null) continue;
             Integer zoneY = generationSetting.test(world, centerPos, random);
+            // TODO: 18.02.2024 deprecate maybe
             if (zoneY == null) continue;
 
-            markAsInitialized(zoneType, zoneY);
+            markAsInitialized(zoneType);
             // TODO: 01.12.2023 remove
             log.info("{} zone generated at {} {} {}", zoneType.name(), centerPos.getX(), zoneY, centerPos.getZ());
             return;
@@ -135,11 +126,10 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     /**
      * Marks the essence zone as initialized.
      */
-    private void markAsInitialized(EssenceZoneType zoneType, int zoneY) {
+    private void markAsInitialized(EssenceZoneType zoneType) {
         this.zoneType = zoneType;
         // TODO: 24.07.2023 change value
         this.essenceZone = new EssenceZone(MAX_VALUE);
-        this.zoneY = zoneY;
         save();
     }
 
@@ -152,7 +142,6 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     public void readFromNbt(@NotNull NbtCompound nbt) {
         zoneType = EssenceZoneType.valueOf(nbt.getString("zone_type"));
         essenceZone = EssenceZone.readFromNbt(nbt.getCompound("zone"));
-        zoneY = nbt.getOr(new NbtKey<>("y", NbtKey.Type.INT), null);
     }
 
     @Override
@@ -161,7 +150,6 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
         NbtCompound zoneNbt = new NbtCompound();
         if (essenceZone != null) essenceZone.writeNbt(zoneNbt);
         nbt.put("zone", zoneNbt);
-        if (zoneY != null) nbt.putInt("y", zoneY);
     }
 
     /**

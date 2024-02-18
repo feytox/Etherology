@@ -2,7 +2,6 @@ package ru.feytox.etherology.magic.zones;
 
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.Optional;
 
@@ -14,10 +13,6 @@ public interface EssenceConsumer {
         ZoneComponent zoneComponent = ZoneComponent.getZone(world.getChunk(pos));
         if (zoneComponent == null || zoneComponent.isEmpty()) return Optional.empty();
         if (blockType.isZone() && !zoneComponent.getZoneType().equals(blockType)) return Optional.empty();
-
-        Integer zoneY = zoneComponent.getZoneY();
-        if (zoneY == null) return Optional.empty();
-        if (MathHelper.abs(pos.getY() - zoneY) > zoneComponent.getZoneRadius()) return Optional.empty();
 
         float consumedPoints = zoneComponent.decrement(getConsumingValue());
         increment(consumedPoints);

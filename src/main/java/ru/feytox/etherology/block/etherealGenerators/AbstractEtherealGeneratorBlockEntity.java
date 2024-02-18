@@ -8,7 +8,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -138,10 +137,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
 
     public boolean isInZone(World world) {
         ZoneComponent zoneComponent = ZoneComponent.getZone(world.getChunk(pos));
-        if (zoneComponent == null || zoneComponent.isEmpty()) return false;
-        Integer zoneY = zoneComponent.getZoneY();
-        if (zoneY == null) return false;
-        return MathHelper.abs(pos.getY() - zoneY) <= 15;
+        return zoneComponent != null && !zoneComponent.isEmpty();
     }
 
     @Override

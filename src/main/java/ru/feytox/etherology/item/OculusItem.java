@@ -46,6 +46,8 @@ public class OculusItem extends Item implements DoubleModel {
     private static final FlowLayout displayedHud = createRoot();
     @Nullable
     private static CompletableFuture<Void> componentFuture = null;
+    private static final int ESSENCE_PARTICLE_Y_DISTANCE = 16;
+    private static final int ESSENCE_PARTICLE_CHUNK_DISTANCE = 1;
 
     public OculusItem() {
         super(new FabricItemSettings().maxCount(1));
@@ -72,9 +74,9 @@ public class OculusItem extends Item implements DoubleModel {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!entity.isPlayer() || !world.isClient) return;
-        if (OculusItem.isUsingOculus((LivingEntity) entity)) {
-            tickZoneParticles((ClientWorld) world, (ClientPlayerEntity) entity);
+        if (!(entity instanceof ClientPlayerEntity player) || !world.isClient) return;
+        if (OculusItem.isUsingOculus(player)) {
+            tickZoneParticles((ClientWorld) world, player);
         }
         if (!selected) {
             displayedHud.clearChildren();
@@ -86,34 +88,36 @@ public class OculusItem extends Item implements DoubleModel {
 
     private void tickZoneParticles(ClientWorld world, ClientPlayerEntity player) {
         ChunkPos centerChunk = player.getChunkPos();
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
-                trySpawnZoneParticles(world, centerChunk, x, z);
+        int d = ESSENCE_PARTICLE_CHUNK_DISTANCE;
+        for (int x = -d; x <= d; x++) {
+            for (int z = -d; z <= d; z++) {
+                trySpawnZoneParticles(world, player, centerChunk, x, z);
             }
         }
     }
 
-    private void trySpawnZoneParticles(ClientWorld world, ChunkPos centerChunk, int x, int z) {
+    private void trySpawnZoneParticles(ClientWorld world, ClientPlayerEntity player, ChunkPos centerChunk, int x, int z) {
         Chunk chunk = world.getChunk(x + centerChunk.x, z + centerChunk.z);
         ZoneComponent zone = ZoneComponent.getZone(chunk);
         if (zone == null || zone.isEmpty()) return;
 
         EssenceZoneType zoneType = zone.getZoneType();
         EssenceZone essenceZone = zone.getEssenceZone();
-        Integer zoneY = zone.getZoneY();
-        if (essenceZone == null || zoneY == null) return;
+        if (essenceZone == null) return;
 
-        spawnZoneParticles(world, chunk, zoneType, essenceZone, zoneY, zone.getZoneRadius());
+        spawnZoneParticles(world, player, chunk, zoneType, essenceZone);
     }
 
-    private void spawnZoneParticles(ClientWorld world, Chunk chunk, EssenceZoneType zoneType, EssenceZone essenceZone, int zoneY, int zoneRadius) {
+    private void spawnZoneParticles(ClientWorld world, ClientPlayerEntity player, Chunk chunk, EssenceZoneType zoneType, EssenceZone essenceZone) {
         float k = essenceZone.getValue() / 64.0f;
 
         int count = MathHelper.ceil(5 * k);
         ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneType);
         ChunkPos chunkPos = chunk.getPos();
-        BlockPos startPos = new BlockPos(chunkPos.getStartX(), zoneY - zoneRadius, chunkPos.getStartZ());
-        BlockPos endPos = new BlockPos(chunkPos.getEndX(), zoneY + zoneRadius, chunkPos.getEndZ());
+        int botY = player.getBlockY() - ESSENCE_PARTICLE_Y_DISTANCE;
+        int topY = player.getBlockY() + ESSENCE_PARTICLE_Y_DISTANCE;
+        BlockPos startPos = new BlockPos(chunkPos.getStartX(), botY, chunkPos.getStartZ());
+        BlockPos endPos = new BlockPos(chunkPos.getEndX(), topY, chunkPos.getEndZ());
 
         BlockPos.iterate(startPos, endPos).forEach(particlePos -> {
             if (world.getRandom().nextDouble() > k * 1/300d) return;
