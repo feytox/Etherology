@@ -23,6 +23,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
@@ -112,16 +113,20 @@ public class OculusItem extends Item implements DoubleModel {
         float k = essenceZone.getValue() / 64.0f;
 
         int count = MathHelper.ceil(5 * k);
-        ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneType);
         ChunkPos chunkPos = chunk.getPos();
         int botY = player.getBlockY() - ESSENCE_PARTICLE_Y_DISTANCE;
         int topY = player.getBlockY() + ESSENCE_PARTICLE_Y_DISTANCE;
         BlockPos startPos = new BlockPos(chunkPos.getStartX(), botY, chunkPos.getStartZ());
         BlockPos endPos = new BlockPos(chunkPos.getEndX(), topY, chunkPos.getEndZ());
-
+        Random random = world.getRandom();
+        
         BlockPos.iterate(startPos, endPos).forEach(particlePos -> {
-            if (world.getRandom().nextDouble() > k * 1/300d) return;
-            effect.spawnParticles(world, count, 0.5, particlePos.toCenterPos());
+            if (random.nextFloat() > k * 1/300f) return;
+            Vec3d pos = particlePos.toCenterPos();
+            Vec3d targetPos = pos.add(6 * (random.nextDouble() - 0.5d), 4 * (random.nextDouble() - 0.5d), 6 * (random.nextDouble() - 0.5d));
+
+            ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneType, targetPos);
+            effect.spawnParticles(world, count, 0.5, pos);
         });
     }
 

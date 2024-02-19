@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.sedimentary;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
@@ -57,6 +58,11 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         consumingTick(world, state);
+    }
+
+    @Override
+    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
+        tickZoneParticles(world, blockPos, state.get(ESSENCE_STATE));
     }
 
     public void consumingTick(ServerWorld world, BlockState state) {

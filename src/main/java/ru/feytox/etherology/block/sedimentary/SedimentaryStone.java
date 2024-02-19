@@ -67,9 +67,7 @@ public class SedimentaryStone extends Block implements RegistrableBlock, BlockEn
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (type != SEDIMENTARY_BLOCK_ENTITY) return null;
-
-        return world.isClient ? null : SedimentaryStoneBlockEntity::serverTicker;
+        return SedimentaryStoneBlockEntity.getTicker(world, type, SEDIMENTARY_BLOCK_ENTITY);
     }
 
     @Override

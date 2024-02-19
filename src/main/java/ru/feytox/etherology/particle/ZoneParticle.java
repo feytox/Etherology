@@ -16,7 +16,7 @@ public class ZoneParticle extends MovingParticle<ZoneParticleEffect> {
 
     public ZoneParticle(ClientWorld clientWorld, double x, double y, double z, ZoneParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
-        endPos = startPos.add(6 * (random.nextDouble() - 0.5d), 4 * (random.nextDouble() - 0.5d), 6 * (random.nextDouble() - 0.5d));
+        endPos = parameters.getEndPos();
         setSpriteForAge();
         maxAge = 20 * random.nextBetween(1, 2);
         scale(0.15f);
