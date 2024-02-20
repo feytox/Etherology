@@ -1,0 +1,25 @@
+{
+  "type": "etherology:empower_recipe",
+  "key": {
+    "A": {
+      "item": "etherology:attrahite_ingot"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "R": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    "   ",
+    "ABA",
+    " R "
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:water_bucket"
+  },
+  "viaCount": 1,
+  "ketaCount": 2
+}

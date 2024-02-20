@@ -32,7 +32,15 @@ public enum Aspect implements EtherologyAspect {
     SECRA(3, 4),
     ISKIL(3, 5),
     ALCHEMA(3, 6),
-    GROSEAL(3, 7);
+    GROSEAL(3, 7),
+    VITER(4, 0),
+    TALO(4, 1),
+    AZU(4, 2),
+    FRADO(4, 3),
+    SOCE(4, 4),
+    PLANTA(4, 5),
+    LUMOS(4, 6),
+    NOX(4, 7);
 
     private final int textureRow;
     private final int textureColumn;

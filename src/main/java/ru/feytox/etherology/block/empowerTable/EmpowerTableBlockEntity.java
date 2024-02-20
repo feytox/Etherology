@@ -109,7 +109,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
         for (int i = 0; i < 5; i++) {
             removeStack(i, 1);
         }
-        removeStack(5, recipe.getRelaCount());
+        removeStack(5, recipe.getRellaCount());
         removeStack(6, recipe.getViaCount());
         removeStack(7, recipe.getClosCount());
         removeStack(8, recipe.getKetaCount());
@@ -134,7 +134,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
 
     public void cacheShards(EmpowerRecipe recipe) {
         boolean isNull = recipe == null;
-        cachedRela = isNull ? 0 : recipe.getRelaCount();
+        cachedRela = isNull ? 0 : recipe.getRellaCount();
         cachedVia = isNull ? 0 : recipe.getViaCount();
         cachedClos = isNull ? 0 : recipe.getClosCount();
         cachedKeta = isNull ? 0 : recipe.getKetaCount();

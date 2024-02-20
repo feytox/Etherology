@@ -16,7 +16,7 @@ import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
 
     private final DefaultedList<Ingredient> gridInput;
-    private final int relaCount;
+    private final int rellaCount;
     private final int viaCount;
     private final int closCount;
     private final int ketaCount;
@@ -32,7 +32,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
             for (int j = 0; j < 3; j++) {
                 if ((i == 0 || i == 2) && (j == 0 || j == 2)) continue;
 
-                Ingredient ingredient = this.gridInput.get(i + j * 3);
+                Ingredient ingredient = this.gridInput.get(j + i * 3);
                 if (!ingredient.test(inventory.getStack(invSlot))) {
                     return false;
                 }
@@ -45,7 +45,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
     }
 
     public boolean checkShards(ImplementedInventory inventory) {
-        return inventory.getStack(5).getCount() >= relaCount
+        return inventory.getStack(5).getCount() >= rellaCount
                 && inventory.getStack(6).getCount() >= viaCount
                 && inventory.getStack(7).getCount() >= closCount
                 && inventory.getStack(8).getCount() >= ketaCount;

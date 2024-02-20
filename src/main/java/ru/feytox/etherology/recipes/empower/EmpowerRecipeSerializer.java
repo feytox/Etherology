@@ -31,14 +31,14 @@ public class EmpowerRecipeSerializer extends FeyRecipeSerializer<EmpowerRecipe> 
     @Override
     public EmpowerRecipe read(Identifier id, JsonObject json) {
         Map<String, Ingredient> map = readSymbols(JsonHelper.getObject(json, "key"));
-        String[] strings = removePadding(getPattern(JsonHelper.getArray(json, "pattern")));
+        String[] strings = getPattern(JsonHelper.getArray(json, "pattern"));
         DefaultedList<Ingredient> gridInput = createPatternMatrix(strings, map);
         ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
-        int heavenlyCount = JsonHelper.getInt(json, "relaCount", 0);
-        int aquaticCount = JsonHelper.getInt(json, "viaCount", 0);
-        int deepCount = JsonHelper.getInt(json, "closCount", 0);
-        int terrestrialCount = JsonHelper.getInt(json, "ketaCount", 0);
-        return new EmpowerRecipe(gridInput, heavenlyCount, aquaticCount, deepCount, terrestrialCount, output, id);
+        int rellaCount = JsonHelper.getInt(json, "rellaCount", 0);
+        int viaCount = JsonHelper.getInt(json, "viaCount", 0);
+        int closCount = JsonHelper.getInt(json, "closCount", 0);
+        int ketaCount = JsonHelper.getInt(json, "ketaCount", 0);
+        return new EmpowerRecipe(gridInput, rellaCount, viaCount, closCount, ketaCount, output, id);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class EmpowerRecipeSerializer extends FeyRecipeSerializer<EmpowerRecipe> 
     @Override
     public void write(PacketByteBuf buf, EmpowerRecipe recipe) {
         buf.writeCollection(recipe.getGridInput(), (packetByteBuf, ingredient) -> ingredient.write(packetByteBuf));
-        buf.writeInt(recipe.getRelaCount());
+        buf.writeInt(recipe.getRellaCount());
         buf.writeInt(recipe.getViaCount());
         buf.writeInt(recipe.getClosCount());
         buf.writeInt(recipe.getKetaCount());

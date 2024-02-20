@@ -10,12 +10,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.joml.Math;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 
-@Debug(export = true)
 @Mixin(value = RedstoneWireBlock.class, priority = 2001) // apply after lithium
 public class RedstoneWireBlockMixin {
 

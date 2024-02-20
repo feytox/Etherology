@@ -44,13 +44,13 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
             }
         }
 
-        // keta
+        // rella
         this.addSlot(new TrackedPredictableSlot(inventory, 5, 23, 17, (stack) -> stack.isOf(EItems.PRIMOSHARD_RELLA)));
         // via
         this.addSlot(new TrackedPredictableSlot(inventory, 6, 69, 17, (stack) -> stack.isOf(EItems.PRIMOSHARD_VIA)));
         // clos
         this.addSlot(new TrackedPredictableSlot(inventory, 7, 23, 63, (stack) -> stack.isOf(EItems.PRIMOSHARD_CLOS)));
-        // rela
+        // keta
         this.addSlot(new TrackedPredictableSlot(inventory, 8, 69, 63, (stack) -> stack.isOf(EItems.PRIMOSHARD_KETA)));
 
         // output

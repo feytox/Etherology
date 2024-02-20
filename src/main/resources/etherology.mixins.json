@@ -16,6 +16,7 @@
     "EntityHitResultAccessor",
     "FabricShieldLibClientMixin",
     "FabricShieldLibMixin",
+    "FallingBlockEntityMixin",
     "ForgingScreenHandlerAccessor",
     "GeoModelAccessor",
     "ItemEntityAccessor",
