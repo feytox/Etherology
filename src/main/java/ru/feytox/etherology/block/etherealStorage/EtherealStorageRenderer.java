@@ -1,9 +1,9 @@
 package ru.feytox.etherology.block.etherealStorage;
 
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
 
-public class EtherealStorageRenderer extends GeoBlockRenderer<EtherealStorageBlockEntity> {
+public class EtherealStorageRenderer extends EGeoBlockRenderer<EtherealStorageBlockEntity> {
     public EtherealStorageRenderer(BlockEntityRendererFactory.Context context) {
         super(new EtherealStorageModel());
     }

@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
 import ru.feytox.etherology.mixin.MinecraftClientAccessor;
 import ru.feytox.etherology.mixin.RenderTickCounterAccessor;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
 
-public class ArmillaryMatrixRenderer extends GeoBlockRenderer<ArmillaryMatrixBlockEntity> {
+public class ArmillaryMatrixRenderer extends EGeoBlockRenderer<ArmillaryMatrixBlockEntity> {
 
     private final BlockEntityRendererFactory.Context ctx;
 

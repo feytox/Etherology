@@ -16,18 +16,21 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
 
 import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.LIGHT;
 
-public class BrewingCauldronRenderer extends GeoBlockRenderer<BrewingCauldronBlockEntity> {
+public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBlockEntity> {
     private final BlockEntityRendererFactory.Context ctx;
 
     public BrewingCauldronRenderer(BlockEntityRendererFactory.Context ctx) {
         super(new BrewingCauldronModel());
         this.ctx = ctx;
     }
+
+    @Override
+    public void fixYOffset(MatrixStack poseStack) {}
 
     @Override
     public void defaultRender(MatrixStack matrices, BrewingCauldronBlockEntity cauldron, VertexConsumerProvider vertexConsumers, @Nullable RenderLayer renderType, @Nullable VertexConsumer buffer, float yaw, float tickDelta, int light) {
