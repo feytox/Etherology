@@ -1,23 +1,30 @@
 package ru.feytox.etherology.block.empowerTable;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-public class EmpowerTableBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+public class EmpowerTableBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
     public EmpowerTableBlock() {
         super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
+        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 
     @Override
@@ -30,6 +37,12 @@ public class EmpowerTableBlock extends Block implements RegistrableBlock, BlockE
         }
 
         return ActionResult.SUCCESS;
+    }
+
+    @Nullable
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
     @Override

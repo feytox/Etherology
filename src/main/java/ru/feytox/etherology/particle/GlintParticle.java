@@ -61,12 +61,12 @@ public class GlintParticle extends MovingParticle<MovingParticleEffect> {
         if (tickAge()) return;
         markPrevPos();
 
-        double invPathLen = getInverseLen(currentVec);
+        double currentLen = currentVec.length();
 
-        double acceleration = inverted ? 1 : 0;
+        double acceleration = inverted ? currentLen : 1 - currentLen;
         double delta = speed_k * Math.pow(acceleration + start_speed, 3);
 
-        Vec3d deltaVec = currentVec.multiply(Math.min(delta * invPathLen, 1));
+        Vec3d deltaVec = currentVec.multiply(Math.min(delta / currentLen, 1));
         modifyPos(deltaVec);
     }
 

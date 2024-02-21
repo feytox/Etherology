@@ -158,11 +158,13 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
         // rings place
         int rings = getRingsNum();
-        if (rings < 5 && handStack.getItem() instanceof MatrixRing) {
-            setStack(rings + 1, handStack.copyWithCount(1));
-            handStack.decrement(1);
-            player.setStackInHand(hand, handStack);
-            return;
+        if (rings < 5 && handStack.getItem() instanceof MatrixRing handRing) {
+            if (rings == 0 || (getStack(rings).getItem() instanceof MatrixRing ring && ring.getRingType().equals(handRing.getRingType()))) {
+                setStack(rings + 1, handStack.copyWithCount(1));
+                handStack.decrement(1);
+                player.setStackInHand(hand, handStack);
+                return;
+            }
         }
 
         // item place
