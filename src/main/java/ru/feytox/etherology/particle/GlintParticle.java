@@ -58,15 +58,14 @@ public class GlintParticle extends MovingParticle<MovingParticleEffect> {
      * @see MovingParticle#acceleratedMovingTick(float, float, boolean, Vec3d)
      */
     public void tickMovement(float speed_k, float start_speed, boolean inverted) {
-        if (tickAge()) return;
         markPrevPos();
 
-        double currentLen = currentVec.length();
+        double invPathLen = getInverseLen(currentVec);
 
-        double acceleration = inverted ? currentLen : 1 - currentLen;
+        double acceleration = inverted ? 1 : 0;
         double delta = speed_k * Math.pow(acceleration + start_speed, 3);
 
-        Vec3d deltaVec = currentVec.multiply(Math.min(delta / currentLen, 1));
+        Vec3d deltaVec = currentVec.multiply(Math.min(delta * invPathLen, 1));
         modifyPos(deltaVec);
     }
 
