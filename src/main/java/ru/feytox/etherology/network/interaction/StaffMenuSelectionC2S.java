@@ -17,7 +17,7 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 @RequiredArgsConstructor
 public class StaffMenuSelectionC2S extends AbstractC2SPacket {
 
-    public static final Identifier ID = new EIdentifier("staff_place_lens_c2s");
+    public static final Identifier ID = new EIdentifier("staff_menu_c2s");
 
     private final LensSelectionType selected;
     private final ItemStack lensStack;

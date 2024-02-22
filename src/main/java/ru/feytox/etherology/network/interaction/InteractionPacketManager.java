@@ -16,6 +16,7 @@ public class InteractionPacketManager extends AbstractPacketManager {
         builder.put(TwoHandHeldAttackC2S.TWOHANDHELD_ATTACK_C2S_ID, TwoHandHeldAttackC2S::receive);
         builder.put(HammerMiningC2S.HAMMER_MINING_C2S_ID, HammerMiningC2S::receive);
         builder.put(StaffMenuSelectionC2S.ID, StaffMenuSelectionC2S::receive);
+        builder.put(StaffTakeLensC2S.ID, StaffTakeLensC2S::receive);
     }
 
     @Override

@@ -103,7 +103,7 @@ public class StaffItem extends Item {
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
         boolean isOpened = client.currentScreen instanceof StaffLensesScreen;
 
-        if (!client.options.getPerspective().isFirstPerson() || !KeybindsRegistry.isPressed(KeybindsRegistry.OPEN_LENSE_MENU)) {
+        if (!client.options.getPerspective().isFirstPerson() || !KeybindsRegistry.isPressed(KeybindsRegistry.STAFF_INTERACTION)) {
             if (isOpened) {
                 checkSelectedLense(client, (StaffLensesScreen) client.currentScreen);
                 client.currentScreen.close();
@@ -111,7 +111,7 @@ public class StaffItem extends Item {
             return;
         }
 
-        if (isOpened || client.currentScreen != null) return;
+        if (isOpened || client.currentScreen != null || KeybindsRegistry.isPressed(client.options.sneakKey)) return;
 
         client.setScreen(new StaffLensesScreen(null));
     }
