@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractTaskManager {
-    private List<DelayedTask> taskList = new ArrayList<>();
+    private final List<DelayedTask> taskList = new ArrayList<>();
 
     /**
      * Executes all delayed tasks in the task list.
      */
     public void tickTasks() {
-        List<DelayedTask> newTaskList = new ArrayList<>();
-        for (DelayedTask task : taskList) {
+        taskList.removeIf(task -> {
             boolean result = task.tick();
-
             if (result) task.execute();
-            else newTaskList.add(task);
-        }
-        taskList = newTaskList;
+            return !result;
+        });
     }
 
     protected void addTask(DelayedTask task) {

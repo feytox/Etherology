@@ -111,9 +111,9 @@ public class StaffItem extends Item {
             return;
         }
 
-        if (isOpened) return;
+        if (isOpened || client.currentScreen != null) return;
 
-        client.setScreen(new StaffLensesScreen(client.currentScreen));
+        client.setScreen(new StaffLensesScreen(null));
     }
 
     private static void checkSelectedLense(@NonNull MinecraftClient client, StaffLensesScreen lensesScreen) {

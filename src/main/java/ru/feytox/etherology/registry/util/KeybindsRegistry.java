@@ -18,8 +18,7 @@ public class KeybindsRegistry {
     public static final FeyKeybind OPEN_LENSE_MENU = register("open_lense_menu", GLFW.GLFW_KEY_R);
     public static final FeyKeybind TAKE_LENSE = register("take_lense", GLFW.GLFW_KEY_K);
 
-    public static void registerAll() {
-    }
+    public static void registerAll() {}
 
     private static FeyKeybind register(String keyName, int defaultKey) {
         FeyKeybind keybind = new FeyKeybind(

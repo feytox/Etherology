@@ -67,6 +67,8 @@ public class OculusItem extends Item implements DoubleModel {
         return false;
     }
 
+
+    // TODO: 21.02.2024 move to another class
     @NonNull
     public static Component initHud() {
         return displayedHud;

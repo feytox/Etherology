@@ -7,13 +7,20 @@ import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.input.Input;
+import net.minecraft.client.input.KeyboardInput;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.StickyKeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -27,12 +34,15 @@ import org.joml.Math;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.lens.LensMode;
+import ru.feytox.etherology.mixin.KeyBindingAccessor;
 import ru.feytox.etherology.mixin.MinecraftClientAccessor;
+import ru.feytox.etherology.mixin.StickyKeyBindingAccessor;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.RenderUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
@@ -47,6 +57,7 @@ public class StaffLensesScreen extends BaseOwoScreen<FlowLayout> {
     @Getter
     private LensSelectionType selected = LensSelectionType.NONE;
     private final FlowLayout menuRootComponent = Containers.horizontalFlow(Sizing.fill(100), Sizing.fill(100));
+    private final Map<String, Boolean> wasToggleKeyDown = new Object2BooleanOpenHashMap<>();
 
     private static Surface backgroundSurface() {
         return (matrices, component) -> {
@@ -96,12 +107,43 @@ public class StaffLensesScreen extends BaseOwoScreen<FlowLayout> {
     @Override
     public void tick() {
         super.tick();
-        if (client == null || refreshedMenu == null || !refreshedMenu.isDone()) return;
+        if (client == null || client.player == null) return;
+        tickMovement(client.player);
+        if (refreshedMenu == null || !refreshedMenu.isDone()) return;
 
         List<Component> components = refreshedMenu.join();
         menuRootComponent.clearChildren();
         menuRootComponent.children(components);
         refreshedMenu = null;
+    }
+
+    /**
+     * <a href="https://github.com/PieKing1215/InvMove/blob/master/crossversion/common/src/main/java/me/pieking1215/invmove/InvMove.java#L165">source</a>
+     */
+    private void tickMovement(ClientPlayerEntity player) {
+        if (FabricLoader.getInstance().isModLoaded("invmove")) return;
+        Input input = player.input;
+
+        if (input.getClass() != KeyboardInput.class) return;
+
+        // TODO: 22.02.2024 maybe fix toggle sneak
+        KeyBindingAccessor.getKEYS_BY_ID().forEach((id, key) -> {
+            if (!key.boundKey.getCategory().equals(InputUtil.Type.KEYSYM) || key.boundKey.getCode() == InputUtil.UNKNOWN_KEY.getCode()) return;
+
+            boolean pressed = InputUtil.isKeyPressed(client.getWindow().getHandle(), key.boundKey.getCode());
+
+            if (key instanceof StickyKeyBinding stickyKey && ((StickyKeyBindingAccessor) stickyKey).getToggleGetter().getAsBoolean()) {
+                if (wasToggleKeyDown.containsKey(id)) {
+                    if (!wasToggleKeyDown.get(id) && pressed) key.setPressed(true);
+                }
+                wasToggleKeyDown.put(id, pressed);
+                key.setPressed(wasToggleKeyDown.get(id));
+            } else {
+                key.setPressed(pressed);
+            }
+
+            client.options.dropKey.setPressed(false);
+        });
     }
 
     public static List<ItemStack> getPlayerLenses(@NonNull MinecraftClient client) {
