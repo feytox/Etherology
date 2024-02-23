@@ -25,7 +25,6 @@ public class EItems {
     public static final PrimoShard.ViaPrimoShard PRIMOSHARD_VIA = (PrimoShard.ViaPrimoShard) new PrimoShard.ViaPrimoShard().register();
     public static final GlintItem GLINT = (GlintItem) new GlintItem().register();
     public static final EtherShard ETHER_SHARD = (EtherShard) new EtherShard().register();
-    public static final EtherOil ETHEREAL_OIL = (EtherOil) new EtherOil().register();
     public static final SpillBarrelItem SPILL_BARREL = (SpillBarrelItem) registerItem("spill_barrel", new SpillBarrelItem());
     public static final CarriedCrateItem CARRIED_CRATE = (CarriedCrateItem) registerItem("carried_crate", new CarriedCrateItem());
     public static final CorruptionBucket CORRUPTION_BUCKET = (CorruptionBucket) registerItem("corruption_bucket", new CorruptionBucket());
@@ -41,6 +40,10 @@ public class EItems {
 
     public static final UnadjustedLens UNADJUSTED_LENS = (UnadjustedLens) registerItem("unadjusted_lens", new UnadjustedLens());
     public static final RedstoneLens REDSTONE_LENS = (RedstoneLens) registerItem("redstone_lens", new RedstoneLens());
+
+    public static final EtheroscopeItem ETHEROSCOPE = (EtheroscopeItem) registerItem("etheroscope", new EtheroscopeItem());
+    public static final ThujaSeedsItem THUJA_SEEDS = (ThujaSeedsItem) registerItem("thuja_seeds", new ThujaSeedsItem());
+    public static final ThujaOilItem THUJA_OIL = (ThujaOilItem) registerItem("thuja_oil", new ThujaOilItem());
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);

@@ -3,7 +3,7 @@
 	"parent": "minecraft:block/block",
 	"texture_size": [128, 128],
 	"textures": {
-		"particle": "etherology:block/ethereal_spinner",
+		"particle": "minecraft:block/smooth_stone",
 		"spinner": "etherology:block/ethereal_spinner"
 	},
 	"elements": [

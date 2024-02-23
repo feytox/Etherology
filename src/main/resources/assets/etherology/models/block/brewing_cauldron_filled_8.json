@@ -3,7 +3,7 @@
 	"parent": "minecraft:block/block",
 	"texture_size": [32, 32],
 	"textures": {
-		"particle": "etherology:block/brewing_cauldron",
+		"particle": "minecraft:block/cauldron_side",
 		"brewing_cauldron": "etherology:block/brewing_cauldron",
 		"water": "minecraft:block/water_still"
 	},
@@ -194,7 +194,7 @@
 			"from": [3, 12, 3],
 			"to": [13, 14, 13],
 			"faces": {
-				"up": {"uv": [3, 3, 13, 13], "texture": "#water", "tintindex": 0}
+				"up": {"uv": [3, 3, 13, 13], "texture": "#water", "tintindex": 1}
 			}
 		}
 	]

@@ -43,6 +43,8 @@ public class ModelGeneration extends FabricModelProvider {
         generator.registerTintableCross(DecoBlocks.PEACH_SAPLING, BlockStateModelGenerator.TintType.NOT_TINTED);
         // dev blocks
         registerSimpleBlock(generator, DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK);
+        // plants
+        registerOnlyPottedPlant(generator, DecoBlocks.BEAMER, DecoBlocks.POTTED_BEAMER, BlockStateModelGenerator.TintType.NOT_TINTED);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class ModelGeneration extends FabricModelProvider {
         // glint
         registerGlint(EItems.GLINT, generator);
         // all simple items
-        registerItems(generator, Models.GENERATED, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, REDSTONE_LENS, UNADJUSTED_LENS);
+        registerItems(generator, Models.GENERATED, ATTRAHITE_INGOT, ATTRAHITE_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, REDSTONE_LENS, UNADJUSTED_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE);
         // all handheld (swords, pickaxe etc.)
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
         registerItems(generator, Models.HANDHELD, BATTLE_PICKAXES);
@@ -122,5 +124,11 @@ public class ModelGeneration extends FabricModelProvider {
 
             EtherologyModels.getStaffPartModel(partInfo).upload(fileId, textures, generator.writer);
         });
+    }
+
+    private static void registerOnlyPottedPlant(BlockStateModelGenerator generator, Block plantBlock, Block flowerPotBlock, BlockStateModelGenerator.TintType tintType) {
+        TextureMap textureMap = TextureMap.plant(plantBlock);
+        Identifier identifier = tintType.getFlowerPotCrossModel().upload(flowerPotBlock, textureMap, generator.modelCollector);
+        generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(flowerPotBlock, identifier));
     }
 }

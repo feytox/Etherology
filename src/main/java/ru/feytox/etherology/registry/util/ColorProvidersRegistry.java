@@ -14,7 +14,7 @@ public class ColorProvidersRegistry {
 
     public static void registerAll() {
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
-            if (world == null || pos == null) return -1;
+            if (tintIndex != 1 || world == null || pos == null) return -1;
             int biomeColor = BiomeColors.getWaterColor(world, pos);
             int aspectsPercent = state.get(BrewingCauldronBlock.ASPECTS_LVL);
             return FeyColor.getGradientColor(RGBColor.of(biomeColor), RGBColor.of(0x8032B5), aspectsPercent / 200f).asHex();

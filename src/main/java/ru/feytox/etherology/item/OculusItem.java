@@ -161,7 +161,7 @@ public class OculusItem extends Item implements DoubleModel {
         Text targetName = AspectProvider.getTargetName(world, hitResult);
         if (targetName == null) return null;
 
-        return new ScaledLabelComponent(targetName, 1.5f).shadow(true)
+        return new ScaledLabelComponent(targetName, 1.2f).shadow(true)
                 .positioning(Positioning.relative(50, 45));
     }
 

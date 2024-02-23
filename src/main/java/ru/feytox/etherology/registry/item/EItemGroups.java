@@ -77,9 +77,11 @@ public class EItemGroups {
         // magic
         etherItems.with(
                 OCULUS, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA, PRIMOSHARD_VIA,
-                ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, GLINT, ETHEREAL_OIL, CORRUPTION_BUCKET);
+                ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
+        // materials
+        etherItems.with(ETHEROSCOPE);
         // plants
-        etherItems.with(BEAMER_SEEDS, BEAM_FRUIT);
+        etherItems.with(BEAMER_SEEDS, THUJA_SEEDS, BEAM_FRUIT);
 
         ItemGroupEvents.modifyEntriesEvent(ETHEROLOGY_ITEMS).register(content -> etherItems.build().forEach(content::add));
     }

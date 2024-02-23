@@ -1,7 +1,4 @@
 {
-  "textures": {
-    "particle": "etherology:block/brewing_cauldron"
-  },
   "variants": {
     "level=0,facing=east": {
       "model": "etherology:block/brewing_cauldron",

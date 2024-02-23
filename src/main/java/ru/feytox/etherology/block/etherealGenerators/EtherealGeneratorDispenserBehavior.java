@@ -32,6 +32,6 @@ public class EtherealGeneratorDispenserBehavior extends ItemDispenserBehavior {
     }
 
     public static void register() {
-        DispenserBlock.registerBehavior(EItems.ETHEREAL_OIL, new EtherealGeneratorDispenserBehavior());
+        DispenserBlock.registerBehavior(EItems.THUJA_OIL, new EtherealGeneratorDispenserBehavior());
     }
 }

@@ -25,6 +25,7 @@ public class BlockRenderLayerMapRegistry {
         registerCutout(ETHEREAL_STORAGE);
         registerCutout(BREWING_CAULDRON);
         registerCutout(PEDESTAL_BLOCK);
+        registerCutout(POTTED_BEAMER);
     }
 
     private static void registerCutout(Block block) {

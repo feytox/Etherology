@@ -198,6 +198,10 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(EBlocks.ESSENCE_DETECTOR_BLOCK, "Детектор эссенции");
 
+        builder.add(EItems.ETHEROSCOPE, "Эфироскоп");
+        builder.add(EItems.THUJA_OIL, "Хвойное масло");
+        builder.add(EItems.THUJA_SEEDS, "Семена туи");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

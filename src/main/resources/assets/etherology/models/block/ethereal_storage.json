@@ -3,7 +3,7 @@
 	"parent": "minecraft:block/block",
 	"texture_size": [128, 128],
 	"textures": {
-		"particle": "etherology:block/ethereal_storage",
+		"particle": "etherology:block/ethereal_channel_central_line",
 		"storage": "etherology:block/ethereal_storage"
 	},
 	"elements": [

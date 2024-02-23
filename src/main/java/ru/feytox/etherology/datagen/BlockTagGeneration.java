@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.PEACH_LEAVES;
+import static ru.feytox.etherology.registry.block.DecoBlocks.POTTED_BEAMER;
 import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 
@@ -65,7 +66,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
         addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
         addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
-
+        addBlocks(BlockTags.FLOWER_POTS, POTTED_BEAMER);
 
         Block[] needsStonePick = {BREWING_CAULDRON, ETHEREAL_STORAGE, ETHEREAL_CHANNEL, ETHEREAL_FORK, ETHEREAL_SOCKET, ETHEREAL_FURNACE, ETHEREAL_SPINNER, SAMOVAR_BLOCK};
         Block[] needsIronPick = {DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};

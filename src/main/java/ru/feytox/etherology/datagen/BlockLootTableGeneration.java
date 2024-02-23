@@ -34,6 +34,8 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(PEACH_LEAVES, leavesDrops(PEACH_LEAVES, PEACH_SAPLING, SAPLING_DROP_CHANCE));
         addDrop(ETHEREAL_STONE, drops(ETHEREAL_STONE, COBBLED_ETHEREAL_STONE));
 
+        addPottedPlantDrops(POTTED_BEAMER);
+
         BLOCKS_TO_DROP = null;
     }
 

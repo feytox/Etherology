@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.etherealGenerators;
 
+import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -33,8 +34,11 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     private static final VoxelShape SOUTH_SHAPE;
     private static final VoxelShape WEST_SHAPE;
     public static final BooleanProperty STALLED = BooleanProperty.of("stalled");
+    @Getter
     private final String blockId;
+    @Getter
     private final int minCooldown;
+    @Getter
     private final int maxCooldown;
     private final float stopChance;
 
@@ -55,7 +59,7 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
 
         // TODO: 31/03/2023 добавить более логичную очистку
         ItemStack handStack = player.getStackInHand(Hand.MAIN_HAND);
-        if (!handStack.isOf(EItems.ETHEREAL_OIL)) return ActionResult.FAIL;
+        if (!handStack.isOf(EItems.THUJA_OIL)) return ActionResult.FAIL;
 
         if (world.getBlockEntity(pos) instanceof AbstractEtherealGeneratorBlockEntity generator) {
             handStack.decrement(1);
@@ -125,18 +129,6 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     }
     public VoxelShape getWestShape() {
         return WEST_SHAPE;
-    }
-
-    public String getBlockId() {
-        return blockId;
-    }
-
-    public int getMinCooldown() {
-        return minCooldown;
-    }
-
-    public int getMaxCooldown() {
-        return maxCooldown;
     }
 
     public float getStopChance(boolean isInZone) {

@@ -1,6 +1,5 @@
 {
-  "parent": "block/block",
-  "textures": {
-    "particle": "etherology:block/ethereal_storage"
+  "variants": {
+    "": { "model": "etherology:block/ethereal_storage" }
   }
 }

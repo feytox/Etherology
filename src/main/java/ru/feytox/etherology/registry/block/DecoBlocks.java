@@ -123,8 +123,8 @@ public class DecoBlocks {
     public static final Block YELLOW_CLAY_TILES_WALL = registerWall("yellow_clay_tiles_wall", YELLOW_CLAY_TILES).withItem();
 
     // plants
-    // TODO: 29/04/2023 add potted variant
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
+    public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();
