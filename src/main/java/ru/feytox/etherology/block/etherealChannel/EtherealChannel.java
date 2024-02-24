@@ -1,18 +1,28 @@
 package ru.feytox.etherology.block.etherealChannel;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -20,6 +30,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherStorage;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
 import java.util.ArrayList;
@@ -27,9 +38,10 @@ import java.util.List;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
-public class EtherealChannelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+public class EtherealChannel extends Block implements RegistrableBlock, BlockEntityProvider {
     public static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
     public static final DirectionProperty FACING = FacingBlock.FACING;
+    public static final BooleanProperty IN_CASE = BooleanProperty.of("in_case");
     public static final BooleanProperty IS_CROSS = BooleanProperty.of("is_cross");
     public static final EnumProperty<PipeSide> NORTH = EnumProperty.of("north", PipeSide.class);
     public static final EnumProperty<PipeSide> EAST = EnumProperty.of("east", PipeSide.class);
@@ -46,11 +58,12 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public static final VoxelShape DOWN_SHAPE;
     public static final VoxelShape UP_SHAPE;
 
-    public EtherealChannelBlock() {
+    public EtherealChannel() {
         super(FabricBlockSettings.of(Material.METAL).strength(1.0f).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(FACING, Direction.NORTH)
+                .with(IN_CASE, false)
                 .with(IS_CROSS, false)
                 .with(NORTH, PipeSide.EMPTY)
                 .with(SOUTH, PipeSide.EMPTY)
@@ -62,12 +75,40 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ACTIVATED, IS_CROSS, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+        builder.add(FACING, ACTIVATED, IN_CASE, IS_CROSS, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (state.get(IN_CASE)) return super.onUse(state, world, pos, player, hand, hit);
+        ItemStack handStack = player.getStackInHand(hand);
+        if (!handStack.isOf(EBlocks.ETHEREAL_CHANNEL_CASE.getItem())) return super.onUse(state, world, pos, player, hand, hit);
+
+        if (!player.isCreative()) handStack.decrement(1);
+        world.setBlockState(pos, state.with(IN_CASE, true));
+        world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
+
+        return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        tryDropCaseOnBreak(state, world, pos, newState);
+        super.onStateReplaced(state, world, pos, newState, moved);
+    }
+
+    private void tryDropCaseOnBreak(BlockState state, World world, BlockPos pos, BlockState newState) {
+        if (state.isOf(newState.getBlock())) return;
+        if (!state.get(IN_CASE)) return;
+
+        Vec3d dropPos = pos.toCenterPos();
+        ItemScatterer.spawn(world, dropPos.x, dropPos.y, dropPos.z, EBlocks.ETHEREAL_CHANNEL_CASE.getItem().getDefaultStack());
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        List<VoxelShape> shapes = new ArrayList<>();
+        if (state.get(IN_CASE)) return VoxelShapes.fullCube();
+        List<VoxelShape> shapes = new ObjectArrayList<>();
         if (!state.get(NORTH).equals(PipeSide.EMPTY)) shapes.add(NORTH_SHAPE);
         if (!state.get(SOUTH).equals(PipeSide.EMPTY)) shapes.add(SOUTH_SHAPE);
         if (!state.get(EAST).equals(PipeSide.EMPTY)) shapes.add(EAST_SHAPE);
@@ -90,7 +131,8 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
 
     public BlockState getChannelState(BlockView world, BlockState state, BlockPos pos) {
         Direction pipeDirection = state.get(FACING);
-        state = this.getDefaultState().with(FACING, pipeDirection);
+        boolean inCase = state.get(IN_CASE);
+        state = getDefaultState().with(FACING, pipeDirection).with(IN_CASE, inCase);
         List<Direction> directions = new ArrayList<>();
         directions.addAll(Direction.Type.HORIZONTAL.stream().toList());
         directions.addAll(Direction.Type.VERTICAL.stream().toList());
@@ -188,7 +230,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (type != ETHEREAL_CHANNEL_BLOCK_ENTITY) return null;
 
-        return world.isClient ? EtherealChannelBlockEntity::clientTicker : EtherealChannelBlockEntity::serverTicker;
+        return world.isClient ? EtherealChannelPipeBlockEntity::clientTicker : EtherealChannelPipeBlockEntity::serverTicker;
     }
 
     @Override
@@ -199,7 +241,7 @@ public class EtherealChannelBlock extends Block implements RegistrableBlock, Blo
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new EtherealChannelBlockEntity(pos, state);
+        return new EtherealChannelPipeBlockEntity(pos, state);
     }
 
     static {

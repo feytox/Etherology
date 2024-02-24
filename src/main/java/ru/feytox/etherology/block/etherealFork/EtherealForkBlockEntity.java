@@ -11,7 +11,7 @@ import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.ACTIVATED;
+import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.ACTIVATED;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
 public class EtherealForkBlockEntity extends TickableBlockEntity implements EtherFork {

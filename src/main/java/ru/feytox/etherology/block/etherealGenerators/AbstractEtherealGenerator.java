@@ -57,7 +57,6 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient || !state.get(STALLED)) return super.onUse(state, world, pos, player, hand, hit);
 
-        // TODO: 31/03/2023 добавить более логичную очистку
         ItemStack handStack = player.getStackInHand(Hand.MAIN_HAND);
         if (!handStack.isOf(EItems.THUJA_OIL)) return ActionResult.FAIL;
 

@@ -21,17 +21,17 @@ import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
 import java.util.List;
 
-import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
+import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
-public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe {
+public class EtherealChannelPipeBlockEntity extends TickableBlockEntity implements EtherPipe {
     private float storedEther = 0;
     @Setter
     private boolean isEvaporating = false;
     @Setter
     private boolean isCrossEvaporating = false;
 
-    public EtherealChannelBlockEntity(BlockPos pos, BlockState state) {
+    public EtherealChannelPipeBlockEntity(BlockPos pos, BlockState state) {
         super(ETHEREAL_CHANNEL_BLOCK_ENTITY, pos, state);
     }
 

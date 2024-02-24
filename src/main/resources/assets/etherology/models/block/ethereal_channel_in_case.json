@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "etherology:block/ethereal_channel_case_front",
+    "side": "etherology:block/ethereal_channel_case",
+    "bottom": "etherology:block/ethereal_channel_case",
+    "top": "etherology:block/ethereal_channel_case"
+  }
+}

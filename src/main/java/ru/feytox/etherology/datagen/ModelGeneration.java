@@ -14,6 +14,7 @@ import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
+import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -37,7 +38,7 @@ public class ModelGeneration extends FabricModelProvider {
         // block families
         registerBlockFamilies(generator, FAMILIES);
         // all simple blocks
-        registerSimpleBlock(generator, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.ETHRIL_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK);
+        registerSimpleBlock(generator, DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.ETHRIL_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, EBlocks.ETHEREAL_CHANNEL_CASE);
         // peach models
         generator.registerSingleton(DecoBlocks.PEACH_LEAVES, TexturedModel.LEAVES);
         generator.registerTintableCross(DecoBlocks.PEACH_SAPLING, BlockStateModelGenerator.TintType.NOT_TINTED);

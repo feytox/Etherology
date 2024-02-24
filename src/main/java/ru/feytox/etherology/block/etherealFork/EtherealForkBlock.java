@@ -25,7 +25,7 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.feytox.etherology.block.etherealChannel.EtherealChannelBlock.*;
+import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
 public class EtherealForkBlock extends Block implements RegistrableBlock, BlockEntityProvider {
