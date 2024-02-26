@@ -26,6 +26,11 @@ public class DecoBlockItems {
     public static final Item TELDER_STEEL_INGOT = registerSimpleItem("telder_steel_ingot");
     public static final Item TELDER_STEEL_NUGGET = registerSimpleItem("telder_steel_nugget");
 
+    // attrahite
+    public static final Item ENRICHED_ATTRAHITE = registerSimpleItem("enriched_attrahite");
+    public static final Item RAW_AZEL = registerSimpleItem("raw_azel");
+    public static final Item ATTRAHITE_BRICK = registerSimpleItem("attrahite_brick");
+
     private static Item registerSimpleItem(String id) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), new Item(new FabricItemSettings()));
     }

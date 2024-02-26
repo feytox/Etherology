@@ -31,6 +31,8 @@ public class EBlockFamilies {
     public static final BlockFamily RED_CLAY_TILE;
     public static final BlockFamily YELLOW_CLAY_TILE;
 
+    public static final BlockFamily ATTRAHITE_BRICKS;
+
 
     public static void registerFamilies() {}
 
@@ -68,5 +70,7 @@ public class EBlockFamilies {
         GREEN_CLAY_TILE = register(GREEN_CLAY_TILES).slab(GREEN_CLAY_TILES_SLAB).stairs(GREEN_CLAY_TILES_STAIRS).wall(GREEN_CLAY_TILES_WALL).build();
         RED_CLAY_TILE = register(RED_CLAY_TILES).slab(RED_CLAY_TILES_SLAB).stairs(RED_CLAY_TILES_STAIRS).wall(RED_CLAY_TILES_WALL).build();
         YELLOW_CLAY_TILE = register(YELLOW_CLAY_TILES).slab(YELLOW_CLAY_TILES_SLAB).stairs(YELLOW_CLAY_TILES_STAIRS).wall(YELLOW_CLAY_TILES_WALL).build();
+
+        ATTRAHITE_BRICKS = register(DecoBlocks.ATTRAHITE_BRICKS).slab(ATTRAHITE_BRICK_SLAB).stairs(ATTRAHITE_BRICK_STAIRS).build();
     }
 }

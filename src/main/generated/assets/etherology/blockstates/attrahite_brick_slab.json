@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "etherology:block/attrahite_brick_slab"
+    },
+    "type=double": {
+      "model": "etherology:block/attrahite_bricks"
+    },
+    "type=top": {
+      "model": "etherology:block/attrahite_brick_slab_top"
+    }
+  }
+}

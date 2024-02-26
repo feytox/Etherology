@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 2,
+  "ingredient": {
+    "item": "etherology:attrahite_bricks"
+  },
+  "result": "etherology:attrahite_brick_slab"
+}

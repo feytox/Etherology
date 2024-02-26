@@ -62,6 +62,13 @@ public class RecipeGeneration extends FabricRecipeProvider {
         // ethereal stones
         offerStonecuttingRecipe(exporter, EBlockFamilies.ETHEREAL_STONE, EBlockFamilies.COBBLED_ETHEREAL_STONE, EBlockFamilies.CRACKED_ETHEREAL_STONE_BRICKS, EBlockFamilies.CHISELED_ETHEREAL_STONE_BRICKS, EBlockFamilies.ETHEREAL_STONE_BRICKS, EBlockFamilies.MOSSY_COBBLED_ETHEREAL_STONE, EBlockFamilies.MOSSY_ETHEREAL_STONE_BRICKS, EBlockFamilies.POLISHED_ETHEREAL_STONE);
 
+        // attrahite
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(ATTRAHITE), RecipeCategory.MISC, ATTRAHITE_BRICK, 0.1F, 200).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ATTRAHITE_BRICKS).input('#', ATTRAHITE_BRICK).pattern("##").pattern("##").criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, RAW_AZEL).input('#', ENRICHED_ATTRAHITE).input('C', Blocks.CALCITE).pattern("#C").pattern("C#").criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(RAW_AZEL), RecipeCategory.MISC, AZEL_INGOT, 0.3F, 200).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        offerStonecuttingRecipe(exporter, EBlockFamilies.ATTRAHITE_BRICKS);
+
         // stone -> ethereal stone
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.COMPARATOR).input('#', Blocks.REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', ETHEREAL_STONE).pattern(" # ").pattern("#X#").pattern("III").criterion("has_quartz", conditionsFromItem(Items.QUARTZ)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.REPEATER).input('#', Blocks.REDSTONE_TORCH).input('X', Items.REDSTONE).input('I', ETHEREAL_STONE).pattern("#X#").pattern("III").criterion("has_redstone_torch", conditionsFromItem(Blocks.REDSTONE_TORCH)).offerTo(exporter);

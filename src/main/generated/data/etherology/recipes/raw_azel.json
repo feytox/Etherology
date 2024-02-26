@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "etherology:enriched_attrahite"
+    },
+    "C": {
+      "item": "minecraft:calcite"
+    }
+  },
+  "pattern": [
+    "#C",
+    "C#"
+  ],
+  "result": {
+    "item": "etherology:raw_azel"
+  }
+}

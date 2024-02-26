@@ -4,14 +4,12 @@ import com.google.common.collect.ImmutableList;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
@@ -59,6 +57,10 @@ public class EItemGroups {
                 CLAY_TILES_SLAB, BLUE_CLAY_TILES_SLAB, GREEN_CLAY_TILES_SLAB, RED_CLAY_TILES_SLAB, YELLOW_CLAY_TILES_SLAB,
                 CLAY_TILES_STAIRS, BLUE_CLAY_TILES_STAIRS, GREEN_CLAY_TILES_STAIRS, RED_CLAY_TILES_STAIRS, YELLOW_CLAY_TILES_STAIRS,
                 CLAY_TILES_WALL, BLUE_CLAY_TILES_WALL, GREEN_CLAY_TILES_WALL, RED_CLAY_TILES_WALL, YELLOW_CLAY_TILES_WALL);
+        // attrahite
+        etherItems.with(
+                ATTRAHITE, ATTRAHITE_BRICKS, ATTRAHITE_BRICK_SLAB, ATTRAHITE_BRICK_STAIRS, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, RAW_AZEL
+        );
         // metals
         etherItems.with(AZEL_INGOT, ETHRIL_INGOT, TELDER_STEEL_INGOT, AZEL_NUGGET, ETHRIL_NUGGET, TELDER_STEEL_NUGGET);
         etherItems.with(AZEL_BLOCK, ETHRIL_BLOCK, TELDER_STEEL_BLOCK);
@@ -87,19 +89,14 @@ public class EItemGroups {
     }
 
     private class Builder {
-        private final ImmutableList.Builder<Item> listBuilder = new ImmutableList.Builder<>();
+        private final ImmutableList.Builder<ItemConvertible> listBuilder = new ImmutableList.Builder<>();
 
-        public Builder with(Item... items) {
+        public Builder with(ItemConvertible... items) {
             listBuilder.add(items);
             return this;
         }
 
-        public Builder with(Block... blocks) {
-            listBuilder.addAll(Arrays.stream(blocks).map(Block::asItem).toList());
-            return this;
-        }
-
-        public List<Item> build() {
+        public List<ItemConvertible> build() {
             return listBuilder.build();
         }
     }

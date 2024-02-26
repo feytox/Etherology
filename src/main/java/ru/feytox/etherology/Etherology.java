@@ -51,6 +51,7 @@ public class Etherology implements ModInitializer {
         LootTablesModifyRegistry.registerAll();
         TradeOffersModificationRegistry.registerAll();
         EntityRegistry.registerServerSide();
+        LootConditions.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));

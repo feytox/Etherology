@@ -134,6 +134,13 @@ public class DecoBlocks {
     public static final Block ETHRIL_BLOCK = registerSimple("ethril_block", copy(Blocks.GOLD_BLOCK)).withItem();
     public static final Block TELDER_STEEL_BLOCK = registerSimple("telder_steel_block", copy(Blocks.DIAMOND_BLOCK).mapColor(MapColor.ORANGE)).withItem();
 
+    // attrahite
+    public static final Block ATTRAHITE = registerSimple("attrahite", copy(Blocks.STONE).sounds(BlockSoundGroup.GILDED_BLACKSTONE)).withItem(false);
+    public static final Block ATTRAHITE_BRICKS = registerSimple("attrahite_bricks", copy(Blocks.STONE_BRICKS)).withItem();
+    public static final Block ATTRAHITE_BRICK_SLAB = registerSlab("attrahite_brick_slab", ATTRAHITE_BRICKS).withItem();
+    public static final Block ATTRAHITE_BRICK_STAIRS = registerStairs("attrahite_brick_stairs", ATTRAHITE_BRICKS).withItem();
+
+
     private static EBlock register(String id, Block block) {
         Block registredBlock = Registry.register(Registries.BLOCK, new EIdentifier(id), block);
         return new EBlock(registredBlock);

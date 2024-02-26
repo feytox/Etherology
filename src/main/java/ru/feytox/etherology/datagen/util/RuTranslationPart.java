@@ -6,6 +6,8 @@ public class RuTranslationPart {
     private final BlockRuTranslationBuilder builder;
     private final String suffix;
 
+    // TODO: 26.02.2024 new instance -> of()
+
     public RuTranslationPart(BlockRuTranslationBuilder builder, String suffix) {
         this.builder = builder;
         this.suffix = suffix;

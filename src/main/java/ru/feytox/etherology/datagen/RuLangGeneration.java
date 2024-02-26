@@ -111,6 +111,16 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(AZEL_INGOT, "Азельный слиток");
         builder.add(AZEL_NUGGET, "Азельный самородок");
 
+        // attrahite
+        builder.add(ATTRAHITE, "Аттрахит");
+        builder.add(ATTRAHITE_BRICKS, "Аттрахитовые кирпичи");
+        new RuTranslationPart(builder, "аттрахитовых кирпичей")
+                .slab(ATTRAHITE_BRICK_SLAB)
+                .stairs(ATTRAHITE_BRICK_STAIRS);
+        builder.add(ATTRAHITE_BRICK, "Аттрахитовый кирпич");
+        builder.add(RAW_AZEL, "Сырой азель");
+        builder.add(ENRICHED_ATTRAHITE, "Обогащённый аттрахит");
+
         // ethril
         builder.add(ETHRIL_BLOCK, "Эфриловый блок");
         builder.add(ETHRIL_INGOT, "Эфриловый слиток");
