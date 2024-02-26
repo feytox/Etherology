@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "etherology:azel_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "etherology:azel_nugget"
+  }
+}

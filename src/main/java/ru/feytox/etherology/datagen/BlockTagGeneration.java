@@ -69,7 +69,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.FLOWER_POTS, POTTED_BEAMER);
 
         Block[] needsStonePick = {BREWING_CAULDRON, ETHEREAL_STORAGE, ETHEREAL_CHANNEL, ETHEREAL_FORK, ETHEREAL_SOCKET, ETHEREAL_FURNACE, ETHEREAL_SPINNER, SAMOVAR_BLOCK};
-        Block[] needsIronPick = {DecoBlocks.ATTRAHITE_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};
+        Block[] needsIronPick = {DecoBlocks.AZEL_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};
         addBlocks(BlockTags.PICKAXE_MINEABLE, PEDESTAL_BLOCK, SEDIMENTARY_BLOCK, JUG, CLAY_JUG, ARMILLARY_MATRIX, JEWELRY_TABLE);
         addBlocks(BlockTags.PICKAXE_MINEABLE, needsStonePick);
         addBlocks(BlockTags.PICKAXE_MINEABLE, needsIronPick);

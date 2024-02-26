@@ -106,10 +106,10 @@ public class RuLangGeneration extends FabricLanguageProvider {
                 .slab(YELLOW_CLAY_TILES_SLAB)
                 .wall(YELLOW_CLAY_TILES_WALL);
 
-        // attrahite
-        builder.add(ATTRAHITE_BLOCK, "Аттрахитовый блок");
-        builder.add(ATTRAHITE_INGOT, "Аттрахитовый слиток");
-        builder.add(ATTRAHITE_NUGGET, "Аттрахитовый самородок");
+        // azel
+        builder.add(AZEL_BLOCK, "Азельный блок");
+        builder.add(AZEL_INGOT, "Азельный слиток");
+        builder.add(AZEL_NUGGET, "Азельный самородок");
 
         // ethril
         builder.add(ETHRIL_BLOCK, "Эфриловый блок");

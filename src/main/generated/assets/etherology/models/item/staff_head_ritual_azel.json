@@ -1,0 +1,7 @@
+{
+  "parent": "etherology:item/staff_head_ritual",
+  "textures": {
+    "particle": "etherology:item/staff_core_oak",
+    "style": "etherology:trims/textures/staff_style_ritual_azel"
+  }
+}

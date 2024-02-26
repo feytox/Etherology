@@ -13,9 +13,10 @@ import ru.feytox.etherology.registry.item.DecoBlockItems;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Getter
 @RequiredArgsConstructor
 public enum StaffMetals implements StaffPattern {
-    ATTRAHITE(DecoBlockItems.ATTRAHITE_INGOT),
+    AZEL(DecoBlockItems.AZEL_INGOT),
     COPPER(Items.COPPER_INGOT),
     ETHRIL(DecoBlockItems.ETHRIL_INGOT),
     GOLD(Items.GOLD_INGOT),
@@ -24,8 +25,6 @@ public enum StaffMetals implements StaffPattern {
     TELDER(DecoBlockItems.TELDER_STEEL_INGOT);
 
     public static final Supplier<List<? extends StaffPattern>> METALS = StaffPattern.memoize(values());
-
-    @Getter
     private final Item metalItem;
 
     @Override

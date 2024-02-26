@@ -19,8 +19,8 @@ public class DecoBlockItems {
     public static final Item BEAM_FRUIT = registerAliasedBlockItem("beam_fruit", DecoBlocks.BEAMER);
 
     // metals
-    public static final Item ATTRAHITE_INGOT = registerSimpleItem("attrahite_ingot");
-    public static final Item ATTRAHITE_NUGGET = registerSimpleItem("attrahite_nugget");
+    public static final Item AZEL_INGOT = registerSimpleItem("azel_ingot");
+    public static final Item AZEL_NUGGET = registerSimpleItem("azel_nugget");
     public static final Item ETHRIL_INGOT = registerSimpleItem("ethril_ingot");
     public static final Item ETHRIL_NUGGET = registerSimpleItem("ethril_nugget");
     public static final Item TELDER_STEEL_INGOT = registerSimpleItem("telder_steel_ingot");
@@ -33,11 +33,6 @@ public class DecoBlockItems {
     private static Item registerBlockItem(BlockItem blockItem) {
         blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
         return Registry.register(Registries.ITEM, Registries.BLOCK.getId(blockItem.getBlock()), blockItem);
-    }
-
-    private static Item registerBlockItem(Block block) {
-        BlockItem blockItem = new BlockItem(block, new FabricItemSettings());
-        return registerBlockItem(blockItem);
     }
 
     public static Item registerAliasedBlockItem(String id, Block block) {

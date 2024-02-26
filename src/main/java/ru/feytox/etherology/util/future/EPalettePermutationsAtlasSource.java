@@ -38,6 +38,7 @@ import java.util.Optional;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
+@Getter
 @Environment(EnvType.CLIENT)
 public class EPalettePermutationsAtlasSource implements AtlasSource {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -50,11 +51,8 @@ public class EPalettePermutationsAtlasSource implements AtlasSource {
                             Codec.unboundedMap(Codec.STRING, Identifier.CODEC).fieldOf("permutations").forGetter(EPalettePermutationsAtlasSource::getPermutations))
             .apply(instance, EPalettePermutationsAtlasSource::new));
 
-    @Getter
     private final List<Identifier> textures;
-    @Getter
     private final Map<String, Identifier> permutations;
-    @Getter
     private final Identifier paletteKey;
 
     private EPalettePermutationsAtlasSource(List<Identifier> textures, Identifier paletteKey, Map<String, Identifier> permutations) {
@@ -78,7 +76,7 @@ public class EPalettePermutationsAtlasSource implements AtlasSource {
                 "gold", new EIdentifier("trims/palettes/gold"),
                 "netherite", new EIdentifier("trims/palettes/netherite"),
                 "copper", new EIdentifier("trims/palettes/copper"),
-                "attrahite", new EIdentifier("trims/palettes/attrahite"),
+                "azel", new EIdentifier("trims/palettes/azel"),
                 "telder", new EIdentifier("trims/palettes/telder"),
                 "ethril", new EIdentifier("trims/palettes/ethril"));
         this.paletteKey = new EIdentifier("trims/palettes/trim_palette");

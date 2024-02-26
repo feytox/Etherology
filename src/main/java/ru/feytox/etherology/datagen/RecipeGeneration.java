@@ -29,11 +29,11 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
-        // attrahite
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ATTRAHITE_NUGGET, 9).input(ATTRAHITE_INGOT).criterion("has_attrahite_ingot", conditionsFromItem(ATTRAHITE_INGOT)).offerTo(exporter, new EIdentifier("attrahite_nugget_from_ingot"));
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ATTRAHITE_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', ATTRAHITE_NUGGET).criterion("has_attrahite_nugget", conditionsFromItem(ATTRAHITE_NUGGET)).offerTo(exporter, new EIdentifier("attrahite_ingot_from_nugget"));
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ATTRAHITE_INGOT, 9).input(ATTRAHITE_BLOCK).criterion("has_attrahite_block", conditionsFromItem(ATTRAHITE_BLOCK.asItem())).offerTo(exporter, new EIdentifier("attrahite_ingot_from_block"));
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ATTRAHITE_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', ATTRAHITE_INGOT).criterion("has_attrahite_ingot", conditionsFromItem(ATTRAHITE_INGOT)).offerTo(exporter);
+        // azel
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, AZEL_NUGGET, 9).input(AZEL_INGOT).criterion("has_azel_ingot", conditionsFromItem(AZEL_INGOT)).offerTo(exporter, new EIdentifier("azel_nugget_from_ingot"));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, AZEL_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', AZEL_NUGGET).criterion("has_azel_nugget", conditionsFromItem(AZEL_NUGGET)).offerTo(exporter, new EIdentifier("azel_ingot_from_nugget"));
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, AZEL_INGOT, 9).input(AZEL_BLOCK).criterion("has_azel_block", conditionsFromItem(AZEL_BLOCK.asItem())).offerTo(exporter, new EIdentifier("azel_ingot_from_block"));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, AZEL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', AZEL_INGOT).criterion("has_azel_ingot", conditionsFromItem(AZEL_INGOT)).offerTo(exporter);
 
         // ethril
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ETHRIL_NUGGET, 9).input(ETHRIL_INGOT).criterion("has_ethril_ingot", conditionsFromItem(ETHRIL_INGOT)).offerTo(exporter, new EIdentifier("ethril_nugget_from_ingot"));

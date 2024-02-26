@@ -1,6 +1,6 @@
 {
   "block.etherology.armillary_base": "Пьедестал для Армиллярной Матрицы",
-  "block.etherology.attrahite_block": "Аттрахитовый блок",
+  "block.etherology.azel_block": "Азельный блок",
   "block.etherology.beamer": "Лучевод",
   "block.etherology.blue_clay_tiles": "Синяя керамическая плитка",
   "block.etherology.blue_clay_tiles_slab": "Плита из синей керамической плитки",
@@ -108,8 +108,8 @@
   "item.etherology.aquatic_shard": "Водный осколок",
   "item.etherology.aristocrat_pattern_tablet": "Скрижаль со Знатным Шаблоном",
   "item.etherology.astronomy_pattern_tablet": "Скрижаль с Астрономическим Шаблоном",
-  "item.etherology.attrahite_ingot": "Аттрахитовый слиток",
-  "item.etherology.attrahite_nugget": "Аттрахитовый самородок",
+  "item.etherology.azel_ingot": "Азельный слиток",
+  "item.etherology.azel_nugget": "Азельный самородок",
   "item.etherology.beam_fruit": "Лучеплод",
   "item.etherology.beamer_seeds": "Семена лучевода",
   "item.etherology.corruption_bucket": "Ведро с мутной водой",
