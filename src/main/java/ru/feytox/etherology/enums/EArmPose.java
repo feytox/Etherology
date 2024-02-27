@@ -45,13 +45,17 @@ public enum EArmPose {
 
     private static void staffPoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
         ItemStack staffStack = entity.getActiveItem();
-        if (!(staffStack.getItem() instanceof StaffItem)) return;
+        val arm = isRightArm ? model.rightArm : model.leftArm;
+        if (!(staffStack.getItem() instanceof StaffItem)) {
+            // staff in arm, but not using = vanilla
+            arm.pitch = arm.pitch * 0.5F - 0.31415927F;
+            return;
+        }
 
         val lensData = EtherologyComponents.LENS.get(staffStack);
         if (lensData.isEmpty()) return;
         val lensMode = lensData.getLensMode();
 
-        val arm = isRightArm ? model.rightArm : model.leftArm;
         switch (lensMode) {
             case STREAM -> {
                 float angle = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
