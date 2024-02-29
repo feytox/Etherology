@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:smooth_stone"
+    },
+    "C": {
+      "item": "minecraft:iron_nugget"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "etherology:sedimentary_stone"
+    }
+  },
+  "pattern": [
+    "CIC",
+    "ISI",
+    "#E#"
+  ],
+  "result": {
+    "item": "etherology:ethereal_spinner"
+  }
+}

@@ -1,8 +1,8 @@
 {
   "type": "etherology:brewing_cauldron_recipe",
   "inputItem": {
-    "item": "minecraft:iron_ingot"
+    "item": "etherology:peach_planks"
   },
   "inputAspects": {"defenta": 4, "netha": 4},
-  "outputItem": "minecraft:netherite_ingot"
+  "outputItem": "etherology:ethril_ingot"
 }

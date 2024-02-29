@@ -9,6 +9,7 @@ import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 // TODO: 16.06.2023 rename
+// TODO: 29.02.2024 move to EItems
 public class DecoBlockItems {
     // peach wood
     public static final Item PEACH_DOOR = registerBlockItem(new TallBlockItem(DecoBlocks.PEACH_DOOR, new FabricItemSettings()));
@@ -30,6 +31,8 @@ public class DecoBlockItems {
     public static final Item ENRICHED_ATTRAHITE = registerSimpleItem("enriched_attrahite");
     public static final Item RAW_AZEL = registerSimpleItem("raw_azel");
     public static final Item ATTRAHITE_BRICK = registerSimpleItem("attrahite_brick");
+
+    public static final Item BINDER = registerSimpleItem("binder");
 
     private static Item registerSimpleItem(String id) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), new Item(new FabricItemSettings()));

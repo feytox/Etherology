@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "etherology:azel_ingot"
+    },
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "C": {
+      "item": "etherology:azel_nugget"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "IAI",
+    "IBI",
+    "CEC"
+  ],
+  "result": {
+    "item": "etherology:ethereal_furnace"
+  }
+}

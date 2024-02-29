@@ -1,0 +1,15 @@
+{
+  "type": "etherology:armillary_recipe",
+  "inputs": [
+    {"item": "minecraft:netherite_ingot"},
+    {"item": "etherology:primoshard_via"},
+    {"item": "etherology:primoshard_via"},
+    {"item": "minecraft:ender_pearl"}
+  ],
+  "center_input": {
+    "item": "etherology:telder_steel_matrix_ring"
+  },
+  "ether_points": 7,
+  "instability": "LOW",
+  "outputItem": "etherology:netherite_matrix_ring"
+}

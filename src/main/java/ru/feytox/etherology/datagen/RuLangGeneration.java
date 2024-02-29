@@ -8,7 +8,6 @@ import ru.feytox.etherology.datagen.util.RuTranslationPart;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.registry.item.EItems;
 
 import java.nio.file.Path;
 
@@ -17,6 +16,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.CRATE;
 import static ru.feytox.etherology.registry.block.EBlocks.LEVITATOR;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
+import static ru.feytox.etherology.registry.item.EItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 public class RuLangGeneration extends FabricLanguageProvider {
@@ -195,22 +195,27 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(STAFF, "Посох");
         builder.add(EBlocks.INVENTOR_TABLE, "Стол изобретателя");
         builder.add(EBlocks.JEWELRY_TABLE, "Стол ювелира");
-        builder.add(EItems.ARISTOCRAT_PATTERN_TABLET, "Скрижаль со Знатным Шаблоном");
-        builder.add(EItems.ASTRONOMY_PATTERN_TABLET, "Скрижаль с Астрономическим Шаблоном");
-        builder.add(EItems.HEAVENLY_PATTERN_TABLET, "Скрижаль с Вольным Шаблоном");
-        builder.add(EItems.OCULAR_PATTERN_TABLET, "Скрижаль с Окулярным Шаблоном");
-        builder.add(EItems.RITUAL_PATTERN_TABLET, "Скрижаль с Ритуальным Шаблоном");
-        builder.add(EItems.ROYAL_PATTERN_TABLET, "Скрижаль с Королевским Шаблоном");
-        builder.add(EItems.TRADITIONAL_PATTERN_TABLET, "Скрижаль с Традиционным Шаблоном");
+        builder.add(ARISTOCRAT_PATTERN_TABLET, "Скрижаль со Знатным Шаблоном");
+        builder.add(ASTRONOMY_PATTERN_TABLET, "Скрижаль с Астрономическим Шаблоном");
+        builder.add(HEAVENLY_PATTERN_TABLET, "Скрижаль с Вольным Шаблоном");
+        builder.add(OCULAR_PATTERN_TABLET, "Скрижаль с Окулярным Шаблоном");
+        builder.add(RITUAL_PATTERN_TABLET, "Скрижаль с Ритуальным Шаблоном");
+        builder.add(ROYAL_PATTERN_TABLET, "Скрижаль с Королевским Шаблоном");
+        builder.add(TRADITIONAL_PATTERN_TABLET, "Скрижаль с Традиционным Шаблоном");
 
-        builder.add(EItems.UNADJUSTED_LENS, "Ненастроенная линза");
-        builder.add(EItems.REDSTONE_LENS, "Линза красного камня");
+        builder.add(UNADJUSTED_LENS, "Ненастроенная линза");
+        builder.add(REDSTONE_LENS, "Линза красного камня");
 
         builder.add(EBlocks.ESSENCE_DETECTOR_BLOCK, "Детектор эссенции");
 
-        builder.add(EItems.ETHEROSCOPE, "Эфироскоп");
-        builder.add(EItems.THUJA_OIL, "Хвойное масло");
-        builder.add(EItems.THUJA_SEEDS, "Семена туи");
+        builder.add(ETHEROSCOPE, "Эфироскоп");
+        builder.add(THUJA_OIL, "Хвойное масло");
+        builder.add(THUJA_SEEDS, "Семена туи");
+        builder.add(BINDER, "Связующий элемент");
+
+        builder.add(ETHRIL_MATRIX_RING, "Эфриловое кольцо матрицы");
+        builder.add(TELDER_STEEL_MATRIX_RING, "Телдер-стальное кольцо матрицы");
+        builder.add(NETHERITE_MATRIX_RING, "Незеритовое кольцо матрицы");
 
         builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка эфирного канала");
 

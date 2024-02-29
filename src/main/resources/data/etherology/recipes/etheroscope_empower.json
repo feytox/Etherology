@@ -2,23 +2,23 @@
   "type": "etherology:empower_recipe",
   "key": {
     "A": {
-      "item": "etherology:attrahite_ingot"
+      "item": "etherology:azel_ingot"
     },
-    "B": {
-      "item": "minecraft:bucket"
+    "Q": {
+      "item": "minecraft:quartz"
     },
     "R": {
-      "item": "minecraft:quartz"
+      "item": "minecraft:redstone"
     }
   },
   "pattern": [
     "   ",
-    "ABA",
+    "AQA",
     " R "
   ],
   "result": {
     "count": 2,
-    "item": "minecraft:water_bucket"
+    "item": "etherology:etheroscope"
   },
   "viaCount": 1,
   "ketaCount": 2

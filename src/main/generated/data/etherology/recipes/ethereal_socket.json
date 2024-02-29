@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_bars"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    " # ",
+    "SES"
+  ],
+  "result": {
+    "item": "etherology:ethereal_socket"
+  }
+}

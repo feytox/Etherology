@@ -28,6 +28,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * @see ru.feytox.etherology.magic.staff.StaffComponent
+ * @see ru.feytox.etherology.magic.lens.LensComponent
+ */
 public class StaffItem extends Item {
 
     public StaffItem() {

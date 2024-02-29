@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "minecraft:stone_crafting_materials"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "G": {
+      "item": "etherology:glint_shard"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "T": {
+      "item": "etherology:telder_steel_ingot"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "NGN",
+    "CEC"
+  ],
+  "result": {
+    "item": "etherology:ethereal_storage"
+  }
+}

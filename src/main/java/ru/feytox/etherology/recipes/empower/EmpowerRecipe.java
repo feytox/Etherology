@@ -1,6 +1,7 @@
 package ru.feytox.etherology.recipes.empower;
 
 import io.wispforest.owo.util.ImplementedInventory;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
     private final int viaCount;
     private final int closCount;
     private final int ketaCount;
+    @Getter(value = AccessLevel.PRIVATE)
     private final ItemStack outputStack;
     private final Identifier id;
 

@@ -18,6 +18,9 @@ import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 import java.util.function.Supplier;
 
+/**
+ * @see ru.feytox.etherology.magic.lens.LensComponent
+ */
 public abstract class LensItem extends Item implements EtherLens {
 
     public LensItem() {

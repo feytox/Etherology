@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    "S#S",
+    "# #",
+    "S#S"
+  ],
+  "result": {
+    "item": "etherology:spill_barrel"
+  }
+}

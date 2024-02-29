@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:iron_nugget"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "O": {
+      "item": "etherology:thuja_oil"
+    },
+    "T": {
+      "item": "etherology:telder_steel_ingot"
+    }
+  },
+  "pattern": [
+    " O ",
+    "TET",
+    " C "
+  ],
+  "result": {
+    "count": 2,
+    "item": "etherology:ethereal_channel"
+  }
+}

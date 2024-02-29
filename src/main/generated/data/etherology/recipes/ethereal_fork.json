@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "etherology:ethereal_channel"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    " C ",
+    "IEI",
+    " C "
+  ],
+  "result": {
+    "item": "etherology:ethereal_fork"
+  }
+}

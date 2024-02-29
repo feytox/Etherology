@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "etherology:polished_ethereal_stone"
+    },
+    "S": {
+      "item": "etherology:polished_ethereal_stone_slab"
+    }
+  },
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "result": {
+    "count": 2,
+    "item": "etherology:pedestal"
+  }
+}

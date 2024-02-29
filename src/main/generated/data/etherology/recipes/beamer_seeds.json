@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "etherology:beam_fruit"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "item": "etherology:beamer_seeds"
+  }
+}

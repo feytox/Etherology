@@ -1,0 +1,19 @@
+{
+  "type": "etherology:armillary_recipe",
+  "inputs": [
+    {"item": "etherology:oculus"},
+    {"item": "minecraft:gold_ingot"},
+    {"item": "minecraft:gold_ingot"},
+    {"item": "etherology:peach_log"},
+    {"item": "etherology:peach_log"},
+    {"item": "minecraft:chorus_fruit"},
+    {"item": "etherology:enriched_attrahite"},
+    {"item": "etherology:primoshard_clos"}
+  ],
+  "center_input": {
+    "item": "etherology:ethereal_spinner"
+  },
+  "ether_points": 9.0,
+  "instability": "MEDIUM",
+  "outputItem": "etherology:ethereal_metronome"
+}

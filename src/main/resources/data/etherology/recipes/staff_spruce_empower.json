@@ -1,0 +1,26 @@
+{
+  "type": "etherology:empower_recipe",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "etherology:binder"
+    },
+    "W": {
+      "item": "minecraft:stripped_spruce_log"
+    }
+  },
+  "pattern": [
+    " I ",
+    "WBW",
+    " B "
+  ],
+  "result": {
+    "item": "etherology:staff"
+  },
+  "staff_core": "spruce",
+  "closCount": 4,
+  "ketaCount": 6,
+  "viaCount": 6
+}

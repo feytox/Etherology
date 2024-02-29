@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "M": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "MM ",
+    " IM",
+    " I "
+  ],
+  "result": {
+    "item": "etherology:iron_battle_pickaxe"
+  }
+}

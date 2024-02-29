@@ -1,0 +1,8 @@
+{
+  "type": "etherology:brewing_cauldron_recipe",
+  "inputItem": {
+    "item": "minecraft:iron_ingot"
+  },
+  "inputAspects": {"etha": 5},
+  "outputItem": "etherology:telder_steel_ingot"
+}

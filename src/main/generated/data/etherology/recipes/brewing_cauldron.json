@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "etherology:azel_nugget"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "#I#",
+    "#C#",
+    " # "
+  ],
+  "result": {
+    "item": "etherology:brewing_cauldron"
+  }
+}

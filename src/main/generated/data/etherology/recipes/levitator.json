@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:logs"
+    },
+    "E": {
+      "item": "etherology:etheroscope"
+    },
+    "F": {
+      "item": "minecraft:rabbit_hide"
+    },
+    "L": {
+      "item": "etherology:redstone_lens"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "pattern": [
+    "#N#",
+    "FLF",
+    "#E#"
+  ],
+  "result": {
+    "item": "etherology:levitator"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "etherology:empower_recipe",
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GAG",
+    " G "
+  ],
+  "result": {
+    "item": "etherology:oculus"
+  }
+}

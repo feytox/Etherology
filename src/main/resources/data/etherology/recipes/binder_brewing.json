@@ -1,0 +1,8 @@
+{
+  "type": "etherology:brewing_cauldron_recipe",
+  "inputItem": {
+    "item": "etherology:raw_azel"
+  },
+  "inputAspects": {"memo": 6, "soce": 4, "felka": 4},
+  "outputItem": "etherology:binder"
+}

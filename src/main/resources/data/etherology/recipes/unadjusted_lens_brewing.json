@@ -1,0 +1,8 @@
+{
+  "type": "etherology:brewing_cauldron_recipe",
+  "inputItem": {
+    "item": "etherology:ethereal_stone"
+  },
+  "inputAspects": {"frado": 5, "vibra": 3, "hendall": 5},
+  "outputItem": "etherology:unadjusted_lens"
+}
