@@ -11,16 +11,16 @@ public interface EGeoBlockEntity extends GeoBlockEntity {
         triggerAnim(animName + "_controller", animName);
     }
 
-    default AnimationController<EGeoBlockEntity> getTriggerController(String animName, RawAnimation animation) {
-        return getTriggerController(animName, animation, 0);
+    default AnimationController<EGeoBlockEntity> createTriggerController(String animName, RawAnimation animation) {
+        return createTriggerController(animName, animation, 0);
     }
 
-    default AnimationController<EGeoBlockEntity> getTriggerController(String animName, RawAnimation animation, int transitionTicks) {
+    default AnimationController<EGeoBlockEntity> createTriggerController(String animName, RawAnimation animation, int transitionTicks) {
         return new AnimationController<>(this, animName + "_controller", transitionTicks, state -> PlayState.STOP)
                 .triggerableAnim(animName, animation);
     }
 
-    default AnimationController<EGeoBlockEntity> getController(RawAnimation animation) {
+    default AnimationController<EGeoBlockEntity> createController(RawAnimation animation) {
         return new AnimationController<>(this, state -> state.setAndContinue(animation));
     }
 

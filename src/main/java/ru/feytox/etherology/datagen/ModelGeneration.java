@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamily;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.datagen.util.ModelOverride;
 import ru.feytox.etherology.datagen.util.ModelUtil;
@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static ru.feytox.etherology.registry.block.EBlockFamilies.FAMILIES;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL;
+import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.EItems.*;
@@ -46,6 +48,7 @@ public class ModelGeneration extends FabricModelProvider {
         registerSimpleBlock(generator, DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK);
         // plants
         registerOnlyPottedPlant(generator, DecoBlocks.BEAMER, DecoBlocks.POTTED_BEAMER, BlockStateModelGenerator.TintType.NOT_TINTED);
+
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ModelGeneration extends FabricModelProvider {
         // glint
         registerGlint(EItems.GLINT, generator);
         // all simple items
-        registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, REDSTONE_LENS, UNADJUSTED_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER);
+        registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, TELDER_STEEL_INGOT, TELDER_STEEL_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, REDSTONE_LENS, UNADJUSTED_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER, ETHEREAL_CHANNEL, ETHEREAL_FORK);
         // all handheld (swords, pickaxe etc.)
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, TELDER_STEEL_AXE, TELDER_STEEL_PICKAXE, TELDER_STEEL_HOE, TELDER_STEEL_SHOVEL, TELDER_STEEL_SWORD);
         registerItems(generator, Models.HANDHELD, BATTLE_PICKAXES);
@@ -74,8 +77,8 @@ public class ModelGeneration extends FabricModelProvider {
         blockFamilies.forEach(family -> generator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family));
     }
 
-    private static void registerItems(ItemModelGenerator generator, Model model, Item... items) {
-        Arrays.stream(items).forEach(item -> generator.register(item, model));
+    private static void registerItems(ItemModelGenerator generator, Model model, ItemConvertible... items) {
+        Arrays.stream(items).map(ItemConvertible::asItem).forEach(item -> generator.register(item, model));
     }
 
     private static void registerInHandGlaives(ItemModelGenerator generator) {

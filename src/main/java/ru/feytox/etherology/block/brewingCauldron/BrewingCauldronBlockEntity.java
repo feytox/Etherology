@@ -307,7 +307,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(getTriggerController("mixing", MIXING));
+        controllers.add(createTriggerController("mixing", MIXING));
     }
 
     @Override

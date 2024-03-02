@@ -597,11 +597,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(
-                getController(BASE_ANIM), getTriggerController("inactively", INACTIVELY_ANIM),
-                getTriggerController("flying", FLYING_ANIM), getTriggerController("startloop", STARTLOOP_ANIM),
-                getTriggerController("start", START_ANIM), getTriggerController("work", WORK_ANIM),
-                getTriggerController("end", END_ANIM), getTriggerController("accepted", ACCEPTED_ANIM),
-                getTriggerController("instability", INSTABILITY_ANIM)
+                createController(BASE_ANIM), createTriggerController("inactively", INACTIVELY_ANIM),
+                createTriggerController("flying", FLYING_ANIM), createTriggerController("startloop", STARTLOOP_ANIM),
+                createTriggerController("start", START_ANIM), createTriggerController("work", WORK_ANIM),
+                createTriggerController("end", END_ANIM), createTriggerController("accepted", ACCEPTED_ANIM),
+                createTriggerController("instability", INSTABILITY_ANIM)
         );
     }
 

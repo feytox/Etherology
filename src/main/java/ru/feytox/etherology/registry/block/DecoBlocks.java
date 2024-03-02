@@ -19,6 +19,8 @@ import ru.feytox.etherology.block.signs.EtherSignBlock;
 import ru.feytox.etherology.block.signs.EtherSignBlockEntity;
 import ru.feytox.etherology.block.signs.EtherSignType;
 import ru.feytox.etherology.block.signs.EtherWallSignBlock;
+import ru.feytox.etherology.block.thuja.ThujaBlock;
+import ru.feytox.etherology.block.thuja.ThujaPlantBlock;
 import ru.feytox.etherology.util.feyapi.EBlock;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -125,6 +127,8 @@ public class DecoBlocks {
     // plants
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
     public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
+    public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
+    public static final ThujaPlantBlock THUJA_PLANT = (ThujaPlantBlock) new ThujaPlantBlock().registerBlock();
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();

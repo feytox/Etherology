@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "shape=bush": {
+      "model": "etherology:block/thuja_bush"
+    },
+    "shape=root": {
+      "model": "etherology:block/thuja_root"
+    },
+    "shape=stem": {
+      "model": "etherology:block/thuja_stem"
+    },
+    "shape=crown": {
+      "model": "etherology:block/thuja_crown"
+    }
+  }
+}

@@ -42,7 +42,6 @@ public class EItems {
     public static final RedstoneLens REDSTONE_LENS = (RedstoneLens) registerItem("redstone_lens", new RedstoneLens());
 
     public static final EtheroscopeItem ETHEROSCOPE = (EtheroscopeItem) registerItem("etheroscope", new EtheroscopeItem());
-    public static final ThujaSeedsItem THUJA_SEEDS = (ThujaSeedsItem) registerItem("thuja_seeds", new ThujaSeedsItem());
     public static final ThujaOilItem THUJA_OIL = (ThujaOilItem) registerItem("thuja_oil", new ThujaOilItem());
 
     private static Item registerItem(String itemId, Item item) {

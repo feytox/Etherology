@@ -26,6 +26,8 @@ public class BlockRenderLayerMapRegistry {
         registerCutout(BREWING_CAULDRON);
         registerCutout(PEDESTAL_BLOCK);
         registerCutout(POTTED_BEAMER);
+        registerCutout(THUJA);
+        registerCutout(THUJA_PLANT);
     }
 
     private static void registerCutout(Block block) {

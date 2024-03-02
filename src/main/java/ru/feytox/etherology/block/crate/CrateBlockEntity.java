@@ -97,8 +97,8 @@ public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, Im
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(getTriggerController("open", OPEN_ANIM));
-        controllers.add(getTriggerController("close", CLOSE_ANIM));
+        controllers.add(createTriggerController("open", OPEN_ANIM));
+        controllers.add(createTriggerController("close", CLOSE_ANIM));
     }
 
     @Override

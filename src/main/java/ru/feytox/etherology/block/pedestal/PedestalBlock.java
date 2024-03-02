@@ -24,7 +24,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.PedestalShape;
 import ru.feytox.etherology.network.interaction.RemoveBlockEntityS2C;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 

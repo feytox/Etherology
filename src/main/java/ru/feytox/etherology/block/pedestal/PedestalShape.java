@@ -1,4 +1,4 @@
-package ru.feytox.etherology.enums;
+package ru.feytox.etherology.block.pedestal;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +16,14 @@ public enum PedestalShape implements StringIdentifiable {
 
     private final boolean hasItem;
 
-    public static PedestalShape getShape(BlockState underState, BlockState upperState) {
+    public static PedestalShape getShape(BlockState underState, BlockState topState) {
         boolean isUnder = underState.isOf(EBlocks.PEDESTAL_BLOCK);
-        boolean isUpper = upperState.isOf(EBlocks.PEDESTAL_BLOCK);
+        boolean isTop = topState.isOf(EBlocks.PEDESTAL_BLOCK);
         if (isUnder) {
-            if (isUpper) return MIDDLE;
+            if (isTop) return MIDDLE;
             return TOP;
         }
-        if (isUpper) return BOTTOM;
+        if (isTop) return BOTTOM;
         return FULL;
     }
 

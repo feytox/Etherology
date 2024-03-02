@@ -214,8 +214,8 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(getTriggerController("spin", getSpinAnimation()));
-        controllers.add(getTriggerController("stalled", getStalledAnimation()));
+        controllers.add(createTriggerController("spin", getSpinAnimation()));
+        controllers.add(createTriggerController("stalled", getStalledAnimation()));
     }
 
     @Override

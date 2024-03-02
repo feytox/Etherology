@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.ENRICHED_ATTRAHITE;
+import static ru.feytox.etherology.registry.item.DecoBlockItems.THUJA_SEEDS;
 
 public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
 
@@ -37,6 +38,9 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(PEACH_LEAVES, leavesDrops(PEACH_LEAVES, PEACH_SAPLING, SAPLING_DROP_CHANCE));
         addDrop(ETHEREAL_STONE, drops(ETHEREAL_STONE, COBBLED_ETHEREAL_STONE));
         addDrop(ATTRAHITE, dropsWithSilkTouch(ATTRAHITE, applyExplosionDecay(ATTRAHITE, ItemEntry.builder(ENRICHED_ATTRAHITE).conditionally(RandomChanceWithFortuneCondition.builder(0.02F, 0.02F)))));
+
+        addDrop(THUJA, THUJA_SEEDS);
+        addDrop(THUJA_PLANT, THUJA_SEEDS);
 
         addPottedPlantDrops(POTTED_BEAMER);
 
