@@ -124,7 +124,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         Direction playerDirection = ctx.getPlayerLookDirection();
-        BlockState playerPlacementState = this.getDefaultState().with(FACING, playerDirection);
+        BlockState playerPlacementState = getDefaultState().with(FACING, playerDirection);
 
         return getChannelState(ctx.getWorld(), playerPlacementState, ctx.getBlockPos());
     }
@@ -140,7 +140,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
         int inputCount = 0;
         for (Direction direction: directions) {
             boolean result = isNeighborOutput(world, pos, direction);
-            if (!result) continue;
+            if (!result || state.get(FACING).equals(direction)) continue;
 
             inputCount++;
             EnumProperty<PipeSide> inSide = getAsIn(direction.getOpposite());
@@ -195,6 +195,8 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
         }
     }
 
+    // TODO: 03.03.2024 rename below and above because they are confusing
+
     public static EnumProperty<PipeSide> getAsOut(Direction direction) {
         switch (direction) {
             case SOUTH -> {
@@ -230,7 +232,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (type != ETHEREAL_CHANNEL_BLOCK_ENTITY) return null;
 
-        return world.isClient ? EtherealChannelPipeBlockEntity::clientTicker : EtherealChannelPipeBlockEntity::serverTicker;
+        return world.isClient ? EtherealChannelBlockEntity::clientTicker : EtherealChannelBlockEntity::serverTicker;
     }
 
     @Override
@@ -241,7 +243,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new EtherealChannelPipeBlockEntity(pos, state);
+        return new EtherealChannelBlockEntity(pos, state);
     }
 
     static {

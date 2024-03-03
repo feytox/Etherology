@@ -18,8 +18,8 @@ import ru.feytox.etherology.block.empowerTable.EmpowerTableBlockEntity;
 import ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlock;
 import ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlockEntity;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
+import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelCase;
-import ru.feytox.etherology.block.etherealChannel.EtherealChannelPipeBlockEntity;
 import ru.feytox.etherology.block.etherealFork.EtherealForkBlock;
 import ru.feytox.etherology.block.etherealFork.EtherealForkBlockEntity;
 import ru.feytox.etherology.block.etherealFurnace.EtherealFurnace;
@@ -98,10 +98,10 @@ public class EBlocks {
     );
 
     public static final EtherealChannel ETHEREAL_CHANNEL = (EtherealChannel) new EtherealChannel().registerAll();
-    public static final BlockEntityType<EtherealChannelPipeBlockEntity> ETHEREAL_CHANNEL_BLOCK_ENTITY = Registry.register(
+    public static final BlockEntityType<EtherealChannelBlockEntity> ETHEREAL_CHANNEL_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_channel_block_entity"),
-            FabricBlockEntityTypeBuilder.create(EtherealChannelPipeBlockEntity::new, ETHEREAL_CHANNEL).build()
+            FabricBlockEntityTypeBuilder.create(EtherealChannelBlockEntity::new, ETHEREAL_CHANNEL).build()
     );
 
     public static final EtherealForkBlock ETHEREAL_FORK = (EtherealForkBlock) new EtherealForkBlock().registerAll();

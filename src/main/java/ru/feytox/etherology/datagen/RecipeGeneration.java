@@ -28,6 +28,7 @@ import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.EItems.*;
+import static ru.feytox.etherology.registry.item.ToolItems.STREAM_KEY;
 
 public class RecipeGeneration extends FabricRecipeProvider {
     public RecipeGeneration(FabricDataOutput output) {
@@ -103,6 +104,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
         registerPicks(exporter);
         registerGlaives(exporter);
         registerHammers(exporter);
+        ShapedRecipeJsonBuilder.create(TOOLS, STREAM_KEY).input('N', Items.IRON_NUGGET).input('T', TELDER_STEEL_INGOT).input('I', Items.STICK)
+                .pattern("N")
+                .pattern("T")
+                .pattern("I").criterion("has_teldet_steel_ingot", conditionsFromItem(TELDER_STEEL_INGOT)).offerTo(exporter);
 
         // furniture
         ShapelessRecipeJsonBuilder.create(DECORATIONS, SHELF_SLAB).input(Items.ITEM_FRAME).input(FURNITURE_SLAB).criterion("has_furniture_slab", conditionsFromItem(FURNITURE_SLAB)).offerTo(exporter);

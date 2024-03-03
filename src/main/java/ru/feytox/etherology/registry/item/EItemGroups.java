@@ -71,7 +71,7 @@ public class EItemGroups {
         etherItems.with(BATTLE_PICKAXES);
         etherItems.with(HAMMERS);
         etherItems.with(GLAIVES);
-        etherItems.with(IRON_SHIELD);
+        etherItems.with(IRON_SHIELD, STREAM_KEY);
         // patterns
         etherItems.with(PATTERN_TABLETS);
         // staff and lenses

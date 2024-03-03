@@ -6,7 +6,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.etherealChannel.EtherealChannelPipeBlockEntity;
+import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 
 // TODO: 29.01.2024 translate docs
 public interface EtherStorage {
@@ -52,7 +52,7 @@ public interface EtherStorage {
     default void transfer(ServerWorld world) {
         float etherValue = getTransportableEther();
         if (etherValue == 0 || isActivated()) {
-            if (this instanceof EtherealChannelPipeBlockEntity channel) channel.setEvaporating(false);
+            if (this instanceof EtherealChannelBlockEntity channel) channel.setEvaporating(false);
             return;
         }
 
@@ -66,7 +66,7 @@ public interface EtherStorage {
         BlockPos nextPos = pos.add(outputVec);
 
         if (world.getBlockEntity(nextPos) instanceof EtherStorage consumer) {
-            if (this instanceof EtherealChannelPipeBlockEntity channel) {
+            if (this instanceof EtherealChannelBlockEntity channel) {
                 channel.setEvaporating(false);
                 channel.setCrossEvaporating(false);
             }
@@ -87,7 +87,7 @@ public interface EtherStorage {
     }
 
     private void evaporate(boolean crossUseless) {
-        if (this instanceof EtherealChannelPipeBlockEntity channel) {
+        if (this instanceof EtherealChannelBlockEntity channel) {
             channel.setEvaporating(getStoredEther() != 0);
             channel.setCrossEvaporating(crossUseless);
             decrement(1);

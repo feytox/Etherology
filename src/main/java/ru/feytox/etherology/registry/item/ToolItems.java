@@ -67,6 +67,7 @@ public class ToolItems {
     // single tools
     public static final Item OCULUS = register("oculus", new OculusItem());
     public static final Item STAFF = register("staff", new StaffItem());
+    public static final Item STREAM_KEY = register("stream_key", new StreamKeyItem());
 
     public static Item register(String id, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), item);

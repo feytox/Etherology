@@ -24,14 +24,14 @@ import java.util.List;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
-public class EtherealChannelPipeBlockEntity extends TickableBlockEntity implements EtherPipe {
+public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe {
     private float storedEther = 0;
     @Setter
     private boolean isEvaporating = false;
     @Setter
     private boolean isCrossEvaporating = false;
 
-    public EtherealChannelPipeBlockEntity(BlockPos pos, BlockState state) {
+    public EtherealChannelBlockEntity(BlockPos pos, BlockState state) {
         super(ETHEREAL_CHANNEL_BLOCK_ENTITY, pos, state);
     }
 
@@ -95,8 +95,8 @@ public class EtherealChannelPipeBlockEntity extends TickableBlockEntity implemen
 
     @Override
     public boolean isInputSide(Direction side) {
-        // TODO: 13/03/2023 по факту, можно возвращать всегда true, но ты подумай и проверь
-        return true;
+        BlockState state = getCachedState();
+        return !state.get(EtherealChannel.getAsOut(side)).isOutput();
     }
 
     @Nullable

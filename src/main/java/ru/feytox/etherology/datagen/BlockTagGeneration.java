@@ -63,6 +63,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
         addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
         addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
+        addBlocks(BlockTags.REPLACEABLE_PLANTS, DecoBlocks.THUJA, DecoBlocks.THUJA_PLANT);
 
         addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
         addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
