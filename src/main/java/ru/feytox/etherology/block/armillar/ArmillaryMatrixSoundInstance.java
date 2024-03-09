@@ -35,7 +35,7 @@ public class ArmillaryMatrixSoundInstance extends MovingSoundInstance {
             fading = Math.min(1, this.fading + 0.05f);
         }
 
-        double distance = player.squaredDistanceTo(armillary.getCenterPos(matrixState));
+        double distance = player.squaredDistanceTo(armillary.getCenterPos());
         volume = (float) (fading * 4 / distance);
     }
 }

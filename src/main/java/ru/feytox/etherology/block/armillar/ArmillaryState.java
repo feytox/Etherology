@@ -1,21 +1,19 @@
-package ru.feytox.etherology.enums;
+package ru.feytox.etherology.block.armillar;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.util.StringIdentifiable;
 
+@Getter
 @RequiredArgsConstructor
 public enum ArmillaryState implements StringIdentifiable {
-    OFF(false),
-    RAISING(false),
-    STORING(true),
-    CRAFTING(true),
+    IDLE(false),
+    TESTED(true),
+    PREPARED(true),
     CONSUMING(true),
-    DAMAGING(true),
-    SHINING(true),
-    LOWERING(false);
+    DECRYPTING(true),
+    RESULTING(true); // TODO: 03.03.2024 rename
 
-    @Getter
     private final boolean working;
 
     @Override

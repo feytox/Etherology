@@ -22,8 +22,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.ArmillaryState;
-import ru.feytox.etherology.enums.InstabilityType;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
@@ -37,7 +35,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
 
     public ArmillaryMatrixBlock() {
         super(FabricBlockSettings.copy(EBlocks.PEDESTAL_BLOCK).nonOpaque());
-        setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.OFF).with(CRAFT_INSTABILITY, InstabilityType.NULL));
+        setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.IDLE).with(CRAFT_INSTABILITY, InstabilityType.NULL));
     }
 
     @Override

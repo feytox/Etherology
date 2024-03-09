@@ -1,5 +1,6 @@
-package ru.feytox.etherology.enums;
+package ru.feytox.etherology.block.armillar;
 
+@Deprecated
 public enum RingType {
     ETHRIL(0, 0, 0, 73),
     TELDER_STEEL(0, 138, 0, 211),

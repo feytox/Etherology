@@ -1,9 +1,10 @@
 package ru.feytox.etherology.item;
 
 import lombok.Getter;
-import ru.feytox.etherology.enums.RingType;
+import ru.feytox.etherology.block.armillar.RingType;
 import ru.feytox.etherology.util.deprecated.SimpleItem;
 
+@Deprecated
 public class MatrixRing extends SimpleItem {
     @Getter
     private final RingType ringType;

@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import ru.feytox.etherology.enums.InstabilityType;
+import ru.feytox.etherology.block.armillar.InstabilityType;
 import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 

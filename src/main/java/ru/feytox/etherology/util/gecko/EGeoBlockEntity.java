@@ -1,5 +1,7 @@
 package ru.feytox.etherology.util.gecko;
 
+import lombok.val;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -25,8 +27,20 @@ public interface EGeoBlockEntity extends GeoBlockEntity {
     }
 
     default void stopAnim(String animName) {
-        AnimationController<?> controller = getAnimatableInstanceCache().getManagerForId(0).getAnimationControllers()
-                .getOrDefault(animName + "_controller", null);
+        AnimationController<?> controller = getAnimationController(animName);
         if (controller != null) controller.stop();
+    }
+
+    default boolean isAnimationPlaying(String animName) {
+        AnimationController<?> controller = getAnimationController(animName);
+        if (controller == null) return false;
+        val state = controller.getAnimationState();
+        return state.equals(AnimationController.State.RUNNING) || state.equals(AnimationController.State.PAUSED);
+    }
+
+    @Nullable
+    private AnimationController<?> getAnimationController(String animName) {
+        return getAnimatableInstanceCache().getManagerForId(0).getAnimationControllers()
+                .getOrDefault(animName + "_controller", null);
     }
 }

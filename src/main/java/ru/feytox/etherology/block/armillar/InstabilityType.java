@@ -1,4 +1,4 @@
-package ru.feytox.etherology.enums;
+package ru.feytox.etherology.block.armillar;
 
 import lombok.RequiredArgsConstructor;
 import net.minecraft.entity.LivingEntity;
@@ -10,7 +10,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.interaction.SmallLightningS2C;
@@ -18,6 +17,7 @@ import ru.feytox.etherology.network.interaction.SmallLightningS2C;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated
 @RequiredArgsConstructor
 public enum InstabilityType implements StringIdentifiable {
     // TODO: 11.08.2023 change chances
@@ -46,11 +46,11 @@ public enum InstabilityType implements StringIdentifiable {
         corruption.placeInChunk(world, pos);
     }
 
-    public void lightningEvent(ServerWorld world, ArmillaryMatrixBlockEntity matrix, ArmillaryState matrixState, float instability) {
+    public void lightningEvent(ServerWorld world, ArmillaryMatrixBlockEntity matrix, float instability) {
         if (shouldSkip(world, instability, lightningChance)) return;
 
         Random random = world.getRandom();
-        Vec3d centerPos = matrix.getCenterPos(matrixState);
+        Vec3d centerPos = matrix.getCenterPos();
         Optional<? extends LivingEntity> entityMatch = matrix.findClosestEntity(world, centerPos);
 
         Vec3d endPos = matrix.getPos().toCenterPos().add(0, -0.5, 0);

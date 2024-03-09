@@ -37,19 +37,7 @@ public class ArmillaryMatrixRenderer extends EGeoBlockRenderer<ArmillaryMatrixBl
             animatable.animationTime += tickDelta;
 
             switch (matrixState) {
-                case OFF -> {
-                    offset = new Vec3d(0.5, 0.9, 0.5);
-                    animatable.animationTime = 0.0f;
-                }
-                case RAISING -> {
-                    float percent = animatable.animationTime / 1800.0f;
-                    offset = new Vec3d(0.5, 0.9 + 1.4 * Math.min(1, percent), 0.5);
-                }
-                case LOWERING -> {
-                    float percent = animatable.animationTime / 2000.0f;
-                    offset = new Vec3d(0.5, 2.3 - 1.4 * Math.min(1, percent), 0.5);
-                }
-                default -> animatable.animationTime = 0.0f;
+                // TODO: 04.03.2024 item render
             }
 
             ItemStack stack = animatable.getStack(0);
