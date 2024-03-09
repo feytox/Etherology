@@ -4,5 +4,5 @@
     "item": "minecraft:calcite"
   },
   "inputAspects": {"etha": 3, "mora": 5, "area": 4},
-  "outputItem": "etherology:glint"
+  "outputItem": "etherology:glint_shard"
 }
