@@ -8,6 +8,7 @@ import net.minecraft.util.StringIdentifiable;
 @RequiredArgsConstructor
 public enum ArmillaryState implements StringIdentifiable {
     IDLE(false),
+    RESETTING(true),
     TESTED(true),
     PREPARED(true),
     CONSUMING(true),

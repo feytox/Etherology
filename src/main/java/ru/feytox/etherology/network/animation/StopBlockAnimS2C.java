@@ -11,6 +11,7 @@ import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 
+@Deprecated
 public class StopBlockAnimS2C extends AbstractS2CPacket {
     public static final Identifier STOP_BLOCK_ANIM_PACKET_ID = new EIdentifier("stop_block_anim_packet");
     private final BlockPos blockPos;
@@ -37,7 +38,7 @@ public class StopBlockAnimS2C extends AbstractS2CPacket {
             BlockEntity be = client.world.getBlockEntity(blockPos);
 
             if (be instanceof EGeoBlockEntity geoBlock) {
-                geoBlock.stopAnim(animName);
+                geoBlock.stopClientAnim(animName);
             }
         });
     }

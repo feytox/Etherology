@@ -3,6 +3,7 @@ package ru.feytox.etherology.block.armillar;
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -43,40 +44,37 @@ import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
-import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
+import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
+import ru.feytox.etherology.util.gecko.EGeoAnimation;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static ru.feytox.etherology.block.armillar.ArmillaryState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 
-public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeoBlockEntity, UniqueProvider {
+public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, EGeo2BlockEntity, UniqueProvider {
 
     // constants
     private static final int HORIZONTAL_RADIUS = 7;
     private static final int UP_RADIUS = 3;
     private static final int DOWN_RADIUS = 1;
     public static final double TICKS_PER_RUNE = 2.0d;
-    @Getter(lazy = true)
-    private static final ImmutableList<String> runeNames = ImmutableList.of("rune_0", "rune_1", "rune_2");
 
     // animations
-    private static final RawAnimation IDLE;
-    private static final RawAnimation RUNE_0;
-    private static final RawAnimation RUNE_1;
-    private static final RawAnimation RUNE_2;
-    private static final RawAnimation DECRYPTING;
-    private static final RawAnimation RESET;
-
+    private static final EGeoAnimation IDLE_ANIM;
+    private static final EGeoAnimation RUNE_0;
+    private static final EGeoAnimation RUNE_1;
+    private static final EGeoAnimation RUNE_2;
+    private static final EGeoAnimation DECRYPTING;
+    private static final EGeoAnimation RESET;
+    private static final EGeoAnimation[] ANIMATIONS;
+    @Getter(lazy = true)
+    private static final ImmutableList<EGeoAnimation> runeAnimations = ImmutableList.of(RUNE_0, RUNE_1, RUNE_2);
 
     // final fields
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -90,6 +88,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private List<Aspect> currentAspects = null;
     @Nullable
     private Identifier recipeId = null;
+    private Set<String> activeAnimations = new ObjectOpenHashSet<>();
 
     // server cache
     @Nullable
@@ -100,7 +99,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private BlockPos cachedTargetPedestal = null;
 
     // client cache
-    public float animationTime = 0.0f;
+    public float animationTime;
     @Getter
     @Setter
     private Float cachedUniqueOffset = null;
@@ -133,7 +132,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         tickSound(state);
-        tickAnimations(world, state);
+        tickAnimations(state);
     }
 
     /**
@@ -148,17 +147,21 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         ItemStack handStack = player.getStackInHand(hand);
         ItemStack matrixStack = getStack(0);
         val matrixState = getMatrixState(state);
-        if (matrixState.equals(ArmillaryState.PREPARED)) {
-            // TODO: 03.03.2024 start crafting
-            if (!testForRecipe(world, state)) return;
+        if (matrixState.equals(PREPARED)) {
+            boolean isTested = refreshAspectsPedestals(world, state);
+            val stateToSet = isTested && testForRecipe(world) ? CONSUMING : IDLE;
+            setMatrixState(world, state, stateToSet);
+            getRuneAnimations().forEach(anim -> anim.stop(this));
+            IDLE_ANIM.trigger(this);
+            syncData(world);
             return;
         }
-        if (!matrixState.equals(ArmillaryState.IDLE)) return;
+        if (!matrixState.equals(IDLE)) return;
 
         // matrix activation
         if (handStack.isOf(ToolItems.STAFF)) {
-            refreshAspectsPedestals(world, state);
-            testForRecipe(world, state);
+            setMatrixState(world, state, RESETTING);
+            IDLE_ANIM.switchTo(this, RESET);
             syncData(world);
             return;
         }
@@ -189,7 +192,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         PedestalBlockEntity.playItemTakeSound(world, pos);
     }
 
-    public void refreshAspectsPedestals(ServerWorld world, BlockState state) {
+    public boolean refreshAspectsPedestals(ServerWorld world, BlockState state) {
         List<PedestalBlockEntity> pedestals = getAndCachePedestals(world);
         val container = pedestals.stream()
                 .map(inv -> inv.getStack(0))
@@ -197,7 +200,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 .filter(Optional::isPresent).map(Optional::get)
                 .reduce(AspectContainer::add).orElse(null);
 
-        if (container == null) return;
+        if (container == null) return false;
 
         val aspectsMap = container.getAspects();
         List<Aspect> sortedAspects = aspectsMap.keySet().stream()
@@ -209,43 +212,29 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (size > 3) currentAspects = new ObjectArrayList<>(sortedAspects.subList(0, 3));
         else currentAspects = sortedAspects;
 
-        setMatrixState(world, state, ArmillaryState.TESTED);
+        setMatrixState(world, state, TESTED);
+        return true;
     }
 
-    public boolean testForRecipe(ServerWorld world, BlockState state) {
+    public boolean testForRecipe(ServerWorld world) {
         val recipe = RecipesRegistry.getFirstMatch(world, this, ArmillaryNewRecipeSerializer.INSTANCE);
         if (recipe == null) return false;
 
         recipeId = recipe.getId();
         recipeCache = recipe;
-        setMatrixState(world, state, ArmillaryState.PREPARED);
         return true;
     }
 
-    private void startRandomRuneAnimation(World world) {
-        val runes = getRuneNames();
+    private static EGeoAnimation getRandomRuneAnimation(World world) {
+        val runes = getRuneAnimations();
         Random random = world.getRandom();
-        String runeAnim = runes.get(random.nextInt(runes.size()));
-        stopAnim("idle");
-        triggerAnim(runeAnim);
+        return runes.get(random.nextInt(runes.size()));
     }
 
-    private void tickAnimations(World world, BlockState state) {
+    private void tickAnimations(BlockState state) {
         val matrixState = getMatrixState(state);
-        switch (matrixState) {
-            case IDLE -> triggerAnim("idle");
-            case TESTED, PREPARED -> {
-                val runes = getRuneNames();
-                boolean flag = true;
-                for (val runeAnim : runes) {
-                    if (!isAnimationPlaying(runeAnim)) continue;
-                    flag = false;
-                    break;
-                }
-
-                if (flag) startRandomRuneAnimation(world);
-            }
-        }
+        if (matrixState.equals(IDLE)) IDLE_ANIM.triggerOnce(this);
+        else activeAnimations.forEach(this::triggerOnce);
     }
 
     /**
@@ -277,11 +266,17 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  state  the block state
      */
     private void tickMatrixState(ServerWorld world, BlockState state) {
-        // TODO: 03.03.2024 states logic
         val matrixState = getMatrixState(state);
         switch (matrixState) {
-            case PREPARED -> {
-                // TODO: 03.03.2024 ???
+            case RESETTING -> {
+                if (currentTick++ >= 16) {
+                    if (!refreshAspectsPedestals(world, state)) {
+                        setMatrixState(world, state, IDLE);
+                        break;
+                    }
+                    testForRecipe(world);
+                    RESET.switchTo(this, getRandomRuneAnimation(world));
+                }
             }
             case IDLE -> {
                 return;
@@ -372,10 +367,21 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
+    public void markAnimationActive(String animName) {
+        activeAnimations.add(animName);
+    }
+
+    @Override
+    public void markAnimationStop(String animName) {
+        activeAnimations.remove(animName);
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbt) {
         nbt.putInt("current_tick", currentTick);
         writeAspects(nbt);
         Inventories.writeNbt(nbt, items);
+        writeActiveAnimations(nbt);
 
         if (recipeId == null) nbt.putString("recipe_id", "");
         else nbt.putString("recipe_id", recipeId.toString());
@@ -391,9 +397,26 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         currentAspects = readAspects(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
+        activeAnimations = readActiveAnimations(nbt);
 
         String id = nbt.getString("recipe_id");
         recipeId = id.isEmpty() ? null : new Identifier(id);
+    }
+
+    private void writeActiveAnimations(NbtCompound nbt) {
+        if (activeAnimations.isEmpty()) return;
+        NbtList nbtList = new NbtList();
+        activeAnimations.stream().map(NbtString::of).forEach(nbtList::add);
+        nbt.put("active_animations", nbtList);
+    }
+
+    private Set<String> readActiveAnimations(NbtCompound nbt) {
+        if (!nbt.contains("active_animations")) return new ObjectOpenHashSet<>();
+
+        NbtList nbtList = nbt.getList("active_animations", NbtElement.STRING_TYPE);
+        return nbtList.stream()
+                .map(element -> (NbtString) element).map(NbtString::asString)
+                .collect(Collectors.toCollection(ObjectOpenHashSet::new));
     }
 
     private void writeAspects(NbtCompound nbt) {
@@ -426,22 +449,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // TODO: 08.03.2024 strings -> keys
-
-        controllers.add(
-                createTriggerController("idle", IDLE),
-                createTriggerController("rune_0", RUNE_0),
-                createTriggerController("rune_1", RUNE_1),
-                createTriggerController("rune_2", RUNE_2),
-                createTriggerController("decrypting", DECRYPTING),
-                createTriggerController("reset", RESET)
-        );
-    }
-
-    @Deprecated
-    private AnimationController<ArmillaryMatrixBlockEntity> createRingController(String animName, int ringId, RawAnimation animation, AnimationController<ArmillaryMatrixBlockEntity> parent) {
-        return new RingAnimationController<>(this, ringId, animName + "_controller", animName + "_impulse", parent, 0, state -> PlayState.STOP)
-                .triggerableAnim(animName, animation);
+        Arrays.stream(ANIMATIONS).map(anim -> anim.generateController(this))
+                        .forEach(controllers::add);
     }
 
     /**
@@ -515,21 +524,20 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     static {
-        IDLE = RawAnimation.begin()
+        IDLE_ANIM = EGeoAnimation.begin("idle")
                 .thenLoop("animation.armillary_matrix.idle");
-        RUNE_0 = RawAnimation.begin()
-                .thenPlay("animation.armillary_matrix.reset")
+        RUNE_0 = EGeoAnimation.begin("rune_0")
                 .thenPlayAndHold("animation.armillary_matrix.rune_0");
-        RUNE_1 = RawAnimation.begin()
-                .thenPlay("animation.armillary_matrix.reset")
+        RUNE_1 = EGeoAnimation.begin("rune_1")
                 .thenPlayAndHold("animation.armillary_matrix.rune_1");
-        RUNE_2 = RawAnimation.begin()
-                .thenPlay("animation.armillary_matrix.reset")
+        RUNE_2 = EGeoAnimation.begin("rune_2")
                 .thenPlayAndHold("animation.armillary_matrix.rune_2");
-        DECRYPTING = RawAnimation.begin()
+        DECRYPTING = EGeoAnimation.begin("decrypting")
                 .thenPlay("animation.armillary_matrix.decrypting_start")
                 .thenLoop("animation.armillary_matrix.decrypting_loop");
-        RESET = RawAnimation.begin()
+        RESET = EGeoAnimation.begin("reset").withoutMarking()
                 .thenPlay("animation.armillary_matrix.reset");
+
+        ANIMATIONS = new EGeoAnimation[]{IDLE_ANIM, RUNE_0, RUNE_1, RUNE_2, DECRYPTING, RESET};
     }
 }
