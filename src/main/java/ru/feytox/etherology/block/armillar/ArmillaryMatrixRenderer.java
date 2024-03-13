@@ -1,7 +1,5 @@
 package ru.feytox.etherology.block.armillar;
 
-import lombok.val;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -12,8 +10,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
-import ru.feytox.etherology.mixin.MinecraftClientAccessor;
-import ru.feytox.etherology.mixin.RenderTickCounterAccessor;
 import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
 
 public class ArmillaryMatrixRenderer extends EGeoBlockRenderer<ArmillaryMatrixBlockEntity> {
@@ -30,16 +26,6 @@ public class ArmillaryMatrixRenderer extends EGeoBlockRenderer<ArmillaryMatrixBl
         World world = animatable.getWorld();
         if (world != null) {
             Vec3d offset = new Vec3d(0.5, 2.3, 0.5);
-            val matrixState = animatable.getMatrixState(animatable.getCachedState());
-            val client = MinecraftClient.getInstance();
-            val tickCounter = ((MinecraftClientAccessor) client).getRenderTickCounter();
-            float tickDelta = tickCounter.lastFrameDuration * ((RenderTickCounterAccessor) tickCounter).getTickTime();
-            animatable.animationTime += tickDelta;
-
-            switch (matrixState) {
-                // TODO: 04.03.2024 item render
-            }
-
             ItemStack stack = animatable.getStack(0);
             PedestalRenderer.renderPedestalItem(animatable, poseStack, world, stack, bufferSource, partialTick, packedLight, ctx.getItemRenderer(), offset);
         }
