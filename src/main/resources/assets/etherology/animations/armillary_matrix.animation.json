@@ -615,6 +615,17 @@
 						}
 					}
 				}
+			},
+			"sound_effects": {
+				"1.75": {
+					"effect": "anvil"
+				},
+				"2.75": {
+					"effect": "anvil"
+				},
+				"3.75": {
+					"effect": "anvil"
+				}
 			}
 		},
 		"animation.armillary_matrix.rune_1": {
@@ -686,6 +697,17 @@
 						}
 					}
 				}
+			},
+			"sound_effects": {
+				"1.25": {
+					"effect": "anvil"
+				},
+				"1.75": {
+					"effect": "anvil"
+				},
+				"2.75": {
+					"effect": "anvil"
+				}
 			}
 		},
 		"animation.armillary_matrix.rune_2": {
@@ -756,6 +778,17 @@
 							"easing": "easeInOutSine"
 						}
 					}
+				}
+			},
+			"sound_effects": {
+				"2.25": {
+					"effect": "anvil"
+				},
+				"3.75": {
+					"effect": "anvil"
+				},
+				"5.0": {
+					"effect": "anvil"
 				}
 			}
 		}

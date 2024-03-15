@@ -31,7 +31,11 @@ public class EGeoAnimation {
 
     @Nullable
     public <T extends EGeo2BlockEntity> AnimationController<T> generateController(T animatable) {
-        return !generateController ? null : new AnimationController<>(animatable, animName + "_controller", transitionTicks, state -> PlayState.STOP).triggerableAnim(animName, animation);
+        return !generateController ? null : forceGenerateController(animatable);
+    }
+
+    public <T extends EGeo2BlockEntity> AnimationController<T> forceGenerateController(T animatable) {
+        return new AnimationController<>(animatable, animName + "_controller", transitionTicks, state -> PlayState.STOP).triggerableAnim(animName, animation);
     }
 
     public <T extends EGeo2BlockEntity> void trigger(T animatable) {

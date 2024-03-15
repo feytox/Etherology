@@ -14,7 +14,8 @@ public enum LightSubtype implements ParticleInfoProvider<LightParticle, LightPar
     SPARK(SparkLightInfo::new),
     PUSHING(PushingLightInfo::new),
     ATTRACT(AttractLightInfo::new),
-    BREWING(BrewingLightInfo::new);
+    BREWING(BrewingLightInfo::new),
+    MATRIX(MatrixLightInfo::new);
 
     @Nullable
     private final ParticleInfo.Factory<LightParticle, LightParticleEffect> infoFactory;

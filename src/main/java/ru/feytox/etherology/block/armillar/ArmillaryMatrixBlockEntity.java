@@ -57,6 +57,7 @@ import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoAnimation;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
@@ -160,7 +161,22 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                     world.playSound(centerPos.x, centerPos.y, centerPos.z, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.066f, 0.7f * world.getRandom().nextFloat() + 0.55f, true);
                 }
             }
+            case RESETTING, DECRYPTING -> {
+                spawnMatrixLightParticles(world);
+                spawnMatrixLightParticles(world);
+            }
         }
+    }
+
+    private void spawnMatrixLightParticles(ClientWorld world) {
+        Random random = world.getRandom();
+        Vec3d centerPos = getCenterPos();
+        Vec3d randomVec = new Vec3d(2 * random.nextDouble() - 1, 2 * random.nextDouble() - 1, 2 * random.nextDouble() - 1);
+        Vec3d startPos = centerPos.add(randomVec);
+        Vec3d endPos = startPos.add(randomVec.multiply(1 + 2 * random.nextFloat()));
+
+        val effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.MATRIX, endPos);
+        effect.spawnParticles(world, 1, 0, startPos);
     }
 
     /**
@@ -517,7 +533,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @return              the matrix center position
      */
     public Vec3d getCenterPos() {
-        return pos.toCenterPos().add(0, 2.25, 0);
+        return getCenterBlockPos().toCenterPos();
+    }
+
+    public BlockPos getCenterBlockPos() {
+        return pos.add(0, 2.25, 0);
     }
 
     @Override
@@ -628,7 +648,19 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         Arrays.stream(ANIMATIONS).map(anim -> anim.generateController(this))
-                        .forEach(controllers::add);
+                .filter(Objects::nonNull).forEach(controllers::add);
+        controllers.add(registerRuneController(RUNE_0), registerRuneController(RUNE_1), registerRuneController(RUNE_2));
+    }
+
+    private AnimationController<?> registerRuneController(EGeoAnimation animation) {
+        return animation.forceGenerateController(this)
+                .setSoundKeyframeHandler(state -> {
+                    PlayerEntity player = MinecraftClient.getInstance().player;
+                    if (player == null || player.world == null) return;
+
+                    Vec3d pos = getCenterPos();
+                    player.world.playSound(pos.x, pos.y, pos.z, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.75f, 1.0f, true);
+                });
     }
 
     @Nullable
@@ -730,11 +762,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     static {
         IDLE_ANIM = EGeoAnimation.begin("idle")
                 .thenLoop("animation.armillary_matrix.idle");
-        RUNE_0 = EGeoAnimation.begin("rune_0")
+        RUNE_0 = EGeoAnimation.begin("rune_0").withoutController()
                 .thenPlayAndHold("animation.armillary_matrix.rune_0");
-        RUNE_1 = EGeoAnimation.begin("rune_1")
+        RUNE_1 = EGeoAnimation.begin("rune_1").withoutController()
                 .thenPlayAndHold("animation.armillary_matrix.rune_1");
-        RUNE_2 = EGeoAnimation.begin("rune_2")
+        RUNE_2 = EGeoAnimation.begin("rune_2").withoutController()
                 .thenPlayAndHold("animation.armillary_matrix.rune_2");
         DECRYPTING_ANIM = EGeoAnimation.begin("decrypting")
                 .thenPlay("animation.armillary_matrix.decrypting_start")
