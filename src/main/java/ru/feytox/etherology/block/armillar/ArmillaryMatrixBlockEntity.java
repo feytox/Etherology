@@ -171,11 +171,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private void spawnMatrixLightParticles(ClientWorld world) {
         Random random = world.getRandom();
         Vec3d centerPos = getCenterPos();
-        Vec3d randomVec = new Vec3d(2 * random.nextDouble() - 1, 2 * random.nextDouble() - 1, 2 * random.nextDouble() - 1);
+        Vec3d randomVec = new Vec3d(0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4);
+        randomVec = randomVec.multiply(random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1);
         Vec3d startPos = centerPos.add(randomVec);
-        Vec3d endPos = startPos.add(randomVec.multiply(1 + 2 * random.nextFloat()));
 
-        val effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.MATRIX, endPos);
+        val effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.MATRIX, randomVec);
         effect.spawnParticles(world, 1, 0, startPos);
     }
 

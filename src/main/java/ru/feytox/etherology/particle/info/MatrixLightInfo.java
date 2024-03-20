@@ -12,12 +12,12 @@ import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class MatrixLightInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
 
-    private final Vec3d endPos;
+    private final Vec3d moveVec;
 
     public MatrixLightInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
 
-        endPos = parameters.getMoveVec();
+        moveVec = parameters.getMoveVec();
     }
 
     @Override
@@ -32,12 +32,12 @@ public class MatrixLightInfo extends ParticleInfo<LightParticle, LightParticleEf
 
     @Override
     public void tick(LightParticle particle) {
-        particle.acceleratedMovingTick(0.1f, 0.75f, true, endPos);
+        particle.simpleMovingTickOnVec(0.25f, moveVec);
         particle.setSpriteForAge();
     }
 
     @Override
     public int getMaxAge(Random random) {
-        return 80;
+        return 5;
     }
 }
