@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar;
+package ru.feytox.etherology.block.armillary;
 
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.util.ImplementedInventory;
@@ -64,7 +64,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ru.feytox.etherology.block.armillar.ArmillaryState.*;
+import static ru.feytox.etherology.block.armillary.ArmillaryState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 

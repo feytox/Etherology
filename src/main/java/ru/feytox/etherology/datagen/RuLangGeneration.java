@@ -213,10 +213,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(THUJA_SEEDS, "Семена туи");
         builder.add(BINDER, "Связующий элемент");
 
-        builder.add(ETHRIL_MATRIX_RING, "Эфриловое кольцо матрицы");
-        builder.add(TELDER_STEEL_MATRIX_RING, "Телдер-стальное кольцо матрицы");
-        builder.add(NETHERITE_MATRIX_RING, "Незеритовое кольцо матрицы");
-
         builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка эфирного канала");
         builder.add(STREAM_KEY, "Ключ трансляции");
 

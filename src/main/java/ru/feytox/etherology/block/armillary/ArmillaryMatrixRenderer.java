@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar;
+package ru.feytox.etherology.block.armillary;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;

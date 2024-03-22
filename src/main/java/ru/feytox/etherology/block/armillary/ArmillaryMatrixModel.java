@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar;
+package ru.feytox.etherology.block.armillary;
 
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.util.feyapi.EIdentifier;

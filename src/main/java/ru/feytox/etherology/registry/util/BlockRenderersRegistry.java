@@ -6,7 +6,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixRenderer;
+import ru.feytox.etherology.block.armillary.ArmillaryMatrixRenderer;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
 import ru.feytox.etherology.block.etherealGenerators.metronome.EtherealMetronomeRenderer;

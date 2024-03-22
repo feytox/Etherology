@@ -79,7 +79,7 @@ public class EItemGroups {
         // magic
         etherItems.with(
                 OCULUS, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA, PRIMOSHARD_VIA,
-                ETHRIL_MATRIX_RING, TELDER_STEEL_MATRIX_RING, NETHERITE_MATRIX_RING, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
+                GLINT, THUJA_OIL, CORRUPTION_BUCKET);
         // materials
         etherItems.with(ETHEROSCOPE, BINDER);
         // plants

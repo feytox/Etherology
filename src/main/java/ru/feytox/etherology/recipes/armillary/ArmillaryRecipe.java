@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import ru.feytox.etherology.block.armillar.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.armillary.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
