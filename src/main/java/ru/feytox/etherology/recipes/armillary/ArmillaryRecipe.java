@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.armillary_new;
+package ru.feytox.etherology.recipes.armillary;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-public class ArmillaryNewRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
+public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
 
     private final Ingredient centerInput;
     private final List<Aspect> aspects;
@@ -51,6 +51,6 @@ public class ArmillaryNewRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity>
 
     @Override
     public FeyRecipeSerializer<?> getSerializer() {
-        return ArmillaryNewRecipeSerializer.INSTANCE;
+        return ArmillaryRecipeSerializer.INSTANCE;
     }
 }

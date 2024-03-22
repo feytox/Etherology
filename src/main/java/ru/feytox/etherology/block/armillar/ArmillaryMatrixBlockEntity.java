@@ -46,8 +46,8 @@ import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
-import ru.feytox.etherology.recipes.armillary_new.ArmillaryNewRecipe;
-import ru.feytox.etherology.recipes.armillary_new.ArmillaryNewRecipeSerializer;
+import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
+import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
@@ -74,7 +74,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private static final int HORIZONTAL_RADIUS = 7;
     private static final int UP_RADIUS = 3;
     private static final int DOWN_RADIUS = 1;
-    public static final double TICKS_PER_RUNE = 2.0d;
 
     // animations
     private static final EGeoAnimation IDLE_ANIM;
@@ -106,7 +105,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     // server cache
     @Nullable
-    private ArmillaryNewRecipe recipeCache = null;
+    private ArmillaryRecipe recipeCache = null;
     @Nullable
     private List<BlockPos> pedestalsCache = null;
     @Nullable
@@ -284,7 +283,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     public boolean testForRecipe(ServerWorld world) {
-        val recipe = RecipesRegistry.getFirstMatch(world, this, ArmillaryNewRecipeSerializer.INSTANCE);
+        val recipe = RecipesRegistry.getFirstMatch(world, this, ArmillaryRecipeSerializer.INSTANCE);
         if (recipe == null) return false;
 
         recipeId = recipe.getId();
@@ -293,7 +292,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     @Nullable
-    public ArmillaryNewRecipe getRecipe(ServerWorld world, boolean refresh) {
+    public ArmillaryRecipe getRecipe(ServerWorld world, boolean refresh) {
         if (refresh || recipeId == null) {
             if (!refreshAspectsPedestals(world) || !testForRecipe(world)) return null;
         }
@@ -301,7 +300,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (recipeId == null) return null;
 
         val recipe = RecipesRegistry.get(world, recipeId);
-        if (!(recipe instanceof ArmillaryNewRecipe armillaryRecipe)) return null;
+        if (!(recipe instanceof ArmillaryRecipe armillaryRecipe)) return null;
         recipeCache = armillaryRecipe;
         return armillaryRecipe;
     }
@@ -733,10 +732,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      */
     public ArmillaryState getMatrixState(BlockState blockState) {
         return blockState.get(ArmillaryMatrixBlock.MATRIX_STATE);
-    }
-
-    public ArmillaryState getCachedMatrixState() {
-        return getMatrixState(getCachedState());
     }
 
     /**

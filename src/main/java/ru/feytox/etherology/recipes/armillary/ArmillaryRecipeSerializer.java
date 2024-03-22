@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.armillary_new;
+package ru.feytox.etherology.recipes.armillary;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -18,17 +18,17 @@ import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ArmillaryNewRecipeSerializer extends FeyRecipeSerializer<ArmillaryNewRecipe> {
+public class ArmillaryRecipeSerializer extends FeyRecipeSerializer<ArmillaryRecipe> {
 
-    public static final ArmillaryNewRecipeSerializer INSTANCE = new ArmillaryNewRecipeSerializer();
+    public static final ArmillaryRecipeSerializer INSTANCE = new ArmillaryRecipeSerializer();
 
-    public ArmillaryNewRecipeSerializer() {
-        super("armillary_new_recipe");
+    public ArmillaryRecipeSerializer() {
+        super("armillary_recipe");
     }
 
     @Override
-    public ArmillaryNewRecipe read(Identifier id, JsonObject json) {
-        ArmillaryNewRecipeJsonFormat recipeJson = new Gson().fromJson(json, ArmillaryNewRecipeJsonFormat.class);
+    public ArmillaryRecipe read(Identifier id, JsonObject json) {
+        ArmillaryRecipeJsonFormat recipeJson = new Gson().fromJson(json, ArmillaryRecipeJsonFormat.class);
 
         if (recipeJson.aspects == null || recipeJson.center_input == null || recipeJson.outputItem == null) {
             throw new JsonSyntaxException("A required attribute is missing!");
@@ -45,20 +45,20 @@ public class ArmillaryNewRecipeSerializer extends FeyRecipeSerializer<ArmillaryN
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.outputItem));
         ItemStack output = new ItemStack(outputItem, recipeJson.outputAmount);
 
-        return new ArmillaryNewRecipe(centerInput, aspects, recipeJson.ether_points, output, id);
+        return new ArmillaryRecipe(centerInput, aspects, recipeJson.ether_points, output, id);
     }
 
     @Override
-    public ArmillaryNewRecipe read(Identifier id, PacketByteBuf buf) {
+    public ArmillaryRecipe read(Identifier id, PacketByteBuf buf) {
         List<Aspect> aspects = buf.readCollection(ObjectArrayList::new, packetBuf -> packetBuf.readEnumConstant(Aspect.class));
         Ingredient centerInput = Ingredient.fromPacket(buf);
         float etherPoints = buf.readFloat();
         ItemStack outputStack = buf.readItemStack();
-        return new ArmillaryNewRecipe(centerInput, aspects, etherPoints, outputStack, id);
+        return new ArmillaryRecipe(centerInput, aspects, etherPoints, outputStack, id);
     }
 
     @Override
-    public void write(PacketByteBuf buf, ArmillaryNewRecipe recipe) {
+    public void write(PacketByteBuf buf, ArmillaryRecipe recipe) {
         buf.writeCollection(recipe.getAspects(), PacketByteBuf::writeEnumConstant);
         recipe.getCenterInput().write(buf);
         buf.writeFloat(recipe.getEtherPoints());
