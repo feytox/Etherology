@@ -1,5 +1,6 @@
 package ru.feytox.etherology.registry.util;
 
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
@@ -47,7 +48,7 @@ public class RecipesRegistry {
     }
 
     @Nullable
-    public static Recipe<?> get(World world, Identifier id) {
+    public static Recipe<?> get(World world, @NonNull Identifier id) {
         return world.getRecipeManager().get(id).orElse(null);
     }
 }

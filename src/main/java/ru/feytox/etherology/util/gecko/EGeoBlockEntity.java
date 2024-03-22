@@ -1,10 +1,12 @@
 package ru.feytox.etherology.util.gecko;
 
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
+@Deprecated
 public interface EGeoBlockEntity extends GeoBlockEntity {
 
     default void triggerAnim(String animName) {
@@ -20,13 +22,14 @@ public interface EGeoBlockEntity extends GeoBlockEntity {
                 .triggerableAnim(animName, animation);
     }
 
-    default AnimationController<EGeoBlockEntity> createController(RawAnimation animation) {
-        return new AnimationController<>(this, state -> state.setAndContinue(animation));
+    default void stopClientAnim(String animName) {
+        AnimationController<?> controller = getAnimationController(animName);
+        if (controller != null) controller.stop();
     }
 
-    default void stopAnim(String animName) {
-        AnimationController<?> controller = getAnimatableInstanceCache().getManagerForId(0).getAnimationControllers()
+    @Nullable
+    private AnimationController<?> getAnimationController(String animName) {
+        return getAnimatableInstanceCache().getManagerForId(0).getAnimationControllers()
                 .getOrDefault(animName + "_controller", null);
-        if (controller != null) controller.stop();
     }
 }

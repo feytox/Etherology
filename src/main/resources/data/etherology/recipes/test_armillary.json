@@ -1,15 +1,9 @@
 {
   "type": "etherology:armillary_recipe",
-  "inputs": [
-    {"item": "minecraft:stick"},
-    {"item": "minecraft:stone"},
-    {"item": "minecraft:netherite_ingot"},
-    {"item": "minecraft:diamond"}
-  ],
+  "aspects": ["GROSEAL", "ALCHEMA", "MEMO"],
   "center_input": {
     "item": "minecraft:iron_ingot"
   },
   "ether_points": 6.9,
-  "instability": "VERY_LOW",
   "outputItem": "etherology:peach_planks"
 }

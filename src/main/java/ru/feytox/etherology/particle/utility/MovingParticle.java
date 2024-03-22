@@ -28,6 +28,18 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
         modifyPos(deltaVec);
     }
 
+    /**
+     * Performs a tick to move with static speed without end pos.
+     */
+    public void simpleMovingTickOnVec(float speed, Vec3d pathVec) {
+        if (tickAge()) return;
+        markPrevPos();
+
+        double inverseLen = getInverseLen(pathVec);
+        Vec3d deltaVec = pathVec.multiply(inverseLen).multiply(speed);
+        modifyPos(deltaVec);
+    }
+
 
     /**
      * Performs a tick to move with acceleration. The speed increases every tick.

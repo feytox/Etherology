@@ -43,6 +43,10 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         return items;
     }
 
+    public boolean hasItem() {
+        return !getStack(0).isEmpty();
+    }
+
     public void interact(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
         ItemStack pedestalStack = getStack(0);

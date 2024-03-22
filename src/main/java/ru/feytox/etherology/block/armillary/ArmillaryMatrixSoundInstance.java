@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillar;
+package ru.feytox.etherology.block.armillary;
 
 import lombok.val;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -35,7 +35,7 @@ public class ArmillaryMatrixSoundInstance extends MovingSoundInstance {
             fading = Math.min(1, this.fading + 0.05f);
         }
 
-        double distance = player.squaredDistanceTo(armillary.getCenterPos(matrixState));
+        double distance = player.squaredDistanceTo(armillary.getCenterPos());
         volume = (float) (fading * 4 / distance);
     }
 }
