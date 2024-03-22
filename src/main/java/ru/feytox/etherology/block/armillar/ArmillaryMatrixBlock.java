@@ -30,12 +30,11 @@ import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK
 public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, BlockEntityProvider {
 
     public static final EnumProperty<ArmillaryState> MATRIX_STATE = EnumProperty.of("matrix_state", ArmillaryState.class);
-    public static final EnumProperty<InstabilityType> CRAFT_INSTABILITY = EnumProperty.of("craft_instability", InstabilityType.class);
     private static final VoxelShape OUTLINE_SHAPE;
 
     public ArmillaryMatrixBlock() {
         super(FabricBlockSettings.copy(EBlocks.PEDESTAL_BLOCK).nonOpaque());
-        setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.IDLE).with(CRAFT_INSTABILITY, InstabilityType.NULL));
+        setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.IDLE));
     }
 
     @Override
@@ -59,7 +58,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(MATRIX_STATE, CRAFT_INSTABILITY);
+        builder.add(MATRIX_STATE);
     }
 
     @Nullable
