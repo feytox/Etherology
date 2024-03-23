@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractBlockStateMixin",
-    "AnvilScreenHandlerMixin",
     "AxeItemMixin",
     "BlockFamilyMixin",
     "BlockTexturePoolMixin",
@@ -13,6 +12,7 @@
     "DataPackContentsMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
+    "EnchantmentTargetMixin",
     "EntityHitResultAccessor",
     "FabricShieldLibClientMixin",
     "FabricShieldLibMixin",

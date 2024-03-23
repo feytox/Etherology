@@ -1,5 +1,19 @@
 {
   "variants": {
-    "": { "model": "etherology:block/inventor_table" }
+    "facing=east": {
+      "model": "etherology:block/inventor_table",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "etherology:block/inventor_table"
+    },
+    "facing=south": {
+      "model": "etherology:block/inventor_table",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "etherology:block/inventor_table",
+      "y": 270
+    }
   }
 }

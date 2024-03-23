@@ -42,6 +42,12 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(MISC, AZEL_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', AZEL_NUGGET).criterion("has_azel_nugget", conditionsFromItem(AZEL_NUGGET)).offerTo(exporter, new EIdentifier("azel_ingot_from_nugget"));
         ShapelessRecipeJsonBuilder.create(MISC, AZEL_INGOT, 9).input(AZEL_BLOCK).criterion("has_azel_block", conditionsFromItem(AZEL_BLOCK.asItem())).offerTo(exporter, new EIdentifier("azel_ingot_from_block"));
         ShapedRecipeJsonBuilder.create(MISC, AZEL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', AZEL_INGOT).criterion("has_azel_ingot", conditionsFromItem(AZEL_INGOT)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(ATTRAHITE), MISC, ATTRAHITE_BRICK, 0.1F, 200).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, ATTRAHITE_BRICKS).input('#', ATTRAHITE_BRICK).pattern("##").pattern("##").criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(MISC, RAW_AZEL).input('#', ENRICHED_ATTRAHITE).input('C', CALCITE).pattern("#C").pattern("C#").criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(RAW_AZEL), MISC, AZEL_INGOT, 0.3F, 200).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createBlasting(Ingredient.ofItems(RAW_AZEL), MISC, AZEL_INGOT, 0.3F, 100).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter, getBlastingItemPath(AZEL_INGOT));
+        offerStonecuttingRecipe(exporter, EBlockFamilies.ATTRAHITE_BRICKS);
 
         // ethril
         ShapelessRecipeJsonBuilder.create(MISC, ETHRIL_NUGGET, 9).input(ETHRIL_INGOT).criterion("has_ethril_ingot", conditionsFromItem(ETHRIL_INGOT)).offerTo(exporter, new EIdentifier("ethril_nugget_from_ingot"));
@@ -69,13 +75,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
         // ethereal stones
         offerStonecuttingRecipe(exporter, EBlockFamilies.ETHEREAL_STONE, EBlockFamilies.COBBLED_ETHEREAL_STONE, EBlockFamilies.CRACKED_ETHEREAL_STONE_BRICKS, EBlockFamilies.CHISELED_ETHEREAL_STONE_BRICKS, EBlockFamilies.ETHEREAL_STONE_BRICKS, EBlockFamilies.MOSSY_COBBLED_ETHEREAL_STONE, EBlockFamilies.MOSSY_ETHEREAL_STONE_BRICKS, EBlockFamilies.POLISHED_ETHEREAL_STONE);
-
-        // attrahite
-        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(ATTRAHITE), MISC, ATTRAHITE_BRICK, 0.1F, 200).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, ATTRAHITE_BRICKS).input('#', ATTRAHITE_BRICK).pattern("##").pattern("##").criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(MISC, RAW_AZEL).input('#', ENRICHED_ATTRAHITE).input('C', CALCITE).pattern("#C").pattern("C#").criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
-        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(RAW_AZEL), MISC, AZEL_INGOT, 0.3F, 200).criterion("has_attrahite", conditionsFromItem(ATTRAHITE)).offerTo(exporter);
-        offerStonecuttingRecipe(exporter, EBlockFamilies.ATTRAHITE_BRICKS);
 
         // stone -> ethereal stone
         ShapedRecipeJsonBuilder.create(REDSTONE, COMPARATOR).input('#', REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', ETHEREAL_STONE).pattern(" # ").pattern("#X#").pattern("III").criterion("has_quartz", conditionsFromItem(Items.QUARTZ)).offerTo(exporter);
