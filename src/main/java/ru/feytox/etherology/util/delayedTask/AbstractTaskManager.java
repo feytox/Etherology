@@ -13,7 +13,7 @@ public abstract class AbstractTaskManager {
         taskList.removeIf(task -> {
             boolean result = task.tick();
             if (result) task.execute();
-            return !result;
+            return result;
         });
     }
 

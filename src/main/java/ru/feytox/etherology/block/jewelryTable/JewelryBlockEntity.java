@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -31,7 +32,8 @@ import ru.feytox.etherology.util.feyapi.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.JEWELRY_TABLE_BLOCK_ENTITY;
 
-public class JewelryBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, UniqueProvider, NamedScreenHandlerFactory {
+public class JewelryBlockEntity extends TickableBlockEntity
+        implements EtherStorage, ImplementedInventory, UniqueProvider, NamedScreenHandlerFactory, SidedInventory {
 
     private final JewelryTableInventory inventory;
     private float storedEther = 0;
@@ -73,7 +75,6 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         if (inventory.isEmpty()) return;
         if (world.getTime() % 4 != 0) return;
-        if (storedEther == 0.0f) return;
 
         val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
         effect.spawnParticles(world, 2, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
@@ -162,5 +163,20 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new JewelryTableScreenHandler(syncId, inv, inventory);
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+        return false;
     }
 }

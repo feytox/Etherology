@@ -131,7 +131,7 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     }
 
     public float getStopChance(boolean isInZone) {
-        return isInZone ? stopChance * 1.5f : stopChance;
+        return isInZone ? stopChance * 3.0f : stopChance;
     }
 
     static {

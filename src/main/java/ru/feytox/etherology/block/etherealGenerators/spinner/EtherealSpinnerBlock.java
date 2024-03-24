@@ -15,7 +15,7 @@ public class EtherealSpinnerBlock extends AbstractEtherealGenerator {
 
     public EtherealSpinnerBlock() {
         super(FabricBlockSettings.copy(Blocks.IRON_BLOCK),
-                "ethereal_spinner", 30*20, 120*20, 0.1f);
+                "ethereal_spinner", 30*20, 120*20, 0.2f);
     }
 
     @Override

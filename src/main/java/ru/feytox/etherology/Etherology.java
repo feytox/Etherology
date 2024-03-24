@@ -7,7 +7,6 @@ import net.minecraft.util.math.random.Random;
 import org.slf4j.Logger;
 import ru.feytox.etherology.animation.PredicateAnimations;
 import ru.feytox.etherology.animation.TriggerAnimations;
-import ru.feytox.etherology.block.etherealGenerators.EtherealGeneratorDispenserBehavior;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffPatterns;
@@ -43,7 +42,6 @@ public class Etherology implements ModInitializer {
         EtherEnchantments.registerAll();
         RecipesRegistry.registerAll();
         ScreenHandlersRegistry.registerServerSide();
-        EtherealGeneratorDispenserBehavior.register();
         EWorldGeneration.generateWorldGen();
         EtherologyRegistry.buildRegistry();
         StaffPatterns.registerAll();
@@ -52,6 +50,7 @@ public class Etherology implements ModInitializer {
         TradeOffersModificationRegistry.registerAll();
         EntityRegistry.registerServerSide();
         LootConditions.registerAll();
+        DispenserBehaviors.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));

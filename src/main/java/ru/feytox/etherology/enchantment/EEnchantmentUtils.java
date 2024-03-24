@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.enchantment;
 
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
@@ -9,11 +9,12 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.HammerItem;
+import ru.feytox.etherology.item.glints.GlintItem;
 
 import java.util.List;
 import java.util.Map;
 
-public class EtherEnchantments {
+public class EEnchantmentUtils {
 
     @Getter
     private static boolean battlePickWeaponMatched = true;
@@ -21,7 +22,8 @@ public class EtherEnchantments {
     private static final Map<Class<?>, List<Enchantment>> bannedEnchantments = Map.of(
             BattlePickaxe.class, ImmutableList.of(Enchantments.FORTUNE, Enchantments.SILK_TOUCH),
             HammerItem.class, ImmutableList.of(Enchantments.SHARPNESS, Enchantments.LOOTING, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING),
-            GlaiveItem.class, ImmutableList.of(Enchantments.LOOTING)
+            GlaiveItem.class, ImmutableList.of(Enchantments.LOOTING),
+            GlintItem.class, ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING, Enchantments.VANISHING_CURSE)
     );
 
     @Nullable

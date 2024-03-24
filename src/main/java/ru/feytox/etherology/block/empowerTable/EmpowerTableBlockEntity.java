@@ -5,6 +5,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -16,6 +17,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
@@ -24,8 +26,7 @@ import ru.feytox.etherology.util.feyapi.UpdatableInventory;
 
 import static ru.feytox.etherology.registry.block.EBlocks.EMPOWERMENT_TABLE_BLOCK_ENTITY;
 
-public class EmpowerTableBlockEntity extends BlockEntity implements
-        UpdatableInventory, NamedScreenHandlerFactory {
+public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInventory, SidedInventory, NamedScreenHandlerFactory {
     // 0-4 - items, 5 - rela, 6 - via, 7 - clos, 8 - keta, 9 - result
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(10, ItemStack.EMPTY);
     private boolean hasResult = false;
@@ -195,5 +196,20 @@ public class EmpowerTableBlockEntity extends BlockEntity implements
         cachedVia = nbt.getInt("cached_via");
         cachedClos = nbt.getInt("cached_clos");
         cachedKeta = nbt.getInt("cached_keta");
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+        return false;
     }
 }

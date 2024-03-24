@@ -8,6 +8,7 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -36,7 +37,8 @@ import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
-public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory {
+public class EtherealSocketBlockEntity extends TickableBlockEntity
+        implements EtherStorage, ImplementedInventory, SidedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private Boolean wasWithGlint = null;
     // TODO: 09.08.2023 deprecate
@@ -267,4 +269,18 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
         Inventories.readNbt(nbt, inventory);
     }
 
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+        return false;
+    }
 }

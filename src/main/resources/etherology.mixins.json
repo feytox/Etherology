@@ -10,6 +10,7 @@
     "BlockTexturePoolMixin",
     "ClientPlayerInteractionManagerAccessor",
     "DataPackContentsMixin",
+    "DispenserBlockMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
     "EnchantmentTargetMixin",
@@ -38,6 +39,7 @@
     "ServerPlayerInteractionManagerAccessor",
     "StickyKeyBindingAccessor",
     "TrunkPlacerTypeAccessor",
+    "UnbreakingEnchantmentMixin",
     "WorldMixin",
     "WorldRendererAccessor"
   ],

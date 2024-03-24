@@ -8,7 +8,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import ru.feytox.etherology.registry.item.EItems;
 
 import static ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
@@ -19,19 +18,15 @@ public class EtherealGeneratorDispenserBehavior extends ItemDispenserBehavior {
         BlockPos checkPos = pointer.getPos().add(direction.getVector());
         ServerWorld world = pointer.getWorld();
 
-        if (world.getBlockEntity(checkPos) instanceof AbstractEtherealGeneratorBlockEntity generator) {
-            BlockState state = generator.getCachedState();
-            if (state.get(STALLED)) {
-                stack.decrement(1);
-                generator.unstall(world, state);
-                return stack;
-            }
+        if (!(world.getBlockEntity(checkPos) instanceof AbstractEtherealGeneratorBlockEntity generator)) return super.dispenseSilently(pointer, stack);
+
+        BlockState state = generator.getCachedState();
+        if (state.get(STALLED)) {
+            stack.decrement(1);
+            generator.unstall(world, state);
+            return stack;
         }
 
         return super.dispenseSilently(pointer, stack);
-    }
-
-    public static void register() {
-        DispenserBlock.registerBehavior(EItems.THUJA_OIL, new EtherealGeneratorDispenserBehavior());
     }
 }

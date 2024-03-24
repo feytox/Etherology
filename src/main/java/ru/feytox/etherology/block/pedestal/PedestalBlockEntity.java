@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DyedCarpetBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -18,6 +19,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
@@ -27,7 +29,8 @@ import ru.feytox.etherology.util.feyapi.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
-public class PedestalBlockEntity extends TickableBlockEntity implements ImplementedInventory, AspectProvider, UniqueProvider {
+public class PedestalBlockEntity extends TickableBlockEntity
+        implements ImplementedInventory, AspectProvider, UniqueProvider, SidedInventory {
     // 0 - item, 1 - carpet
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
     @Getter
@@ -47,6 +50,7 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         return !getStack(0).isEmpty();
     }
 
+    // TODO: 24.03.2024 consider simplifying so PedestalDispenserBehavior can use simpler code
     public void interact(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
         ItemStack pedestalStack = getStack(0);
@@ -126,10 +130,14 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
     }
 
     private void setCarpetColor(ServerWorld world, PlayerEntity player, BlockState state, DyeColor dyeColor, boolean withCarpet) {
+        setCarpetColor(world, player.getHorizontalFacing().getOpposite(), state, dyeColor, withCarpet);
+    }
+
+    public void setCarpetColor(ServerWorld world, Direction direction, BlockState state, DyeColor dyeColor, boolean withCarpet) {
         world.setBlockState(pos, state
                 .with(PedestalBlock.CLOTH_COLOR, dyeColor)
                 .with(PedestalBlock.DECORATION, withCarpet)
-                .with(PedestalBlock.FACING, player.getHorizontalFacing().getOpposite()));
+                .with(PedestalBlock.FACING, direction));
         playCarpetSound(world);
     }
 
@@ -176,5 +184,20 @@ public class PedestalBlockEntity extends TickableBlockEntity implements Implemen
         String pedestalText = Text.translatable(getCachedState().getBlock().getTranslationKey()).getString();
         String itemText = items.get(0).getName().getString();
         return Text.of(pedestalText + " (" + itemText + ")");
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+        return false;
     }
 }
