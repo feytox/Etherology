@@ -1,28 +1,28 @@
 package ru.feytox.etherology.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.StringIdentifiable;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.closet.ClosetData;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.block.shelf.ShelfData;
-import ru.feytox.etherology.util.deprecated.EEquality;
 import ru.feytox.etherology.util.feyapi.Nbtable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public enum FurnitureType implements StringIdentifiable, Nbtable, EEquality {
-    EMPTY(null),
-    FURNITURE(null),
-    CLOSET(ClosetData::new),
-    SHELF(ShelfData::new);
+@RequiredArgsConstructor
+public enum FurnitureType implements StringIdentifiable, Nbtable {
+    EMPTY(null, true),
+    FURNITURE(null, false),
+    CLOSET(ClosetData::new, false),
+    SHELF(ShelfData::new, true);
 
     private final Factory<? extends FurnitureData> factory;
-
-    FurnitureType(Factory<? extends FurnitureData> factory) {
-        this.factory = factory;
-    }
+    @Getter
+    private final boolean sidedTransparent;
 
     @Nullable
     public FurnitureData createDataInstance(boolean isBottom) {

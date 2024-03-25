@@ -32,10 +32,11 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
     @Override
     public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
+        if (hand.equals(Hand.OFF_HAND)) return;
+
         boolean isLeft = hitPos.x < 0.5;
         int slot = isLeft ? 0 : 1;
         ItemStack currentStack = getStack(slot);
-        hand = player.getActiveHand();
         ItemStack playerStack = player.getStackInHand(hand);
         boolean isSameItem = playerStack.isOf(currentStack.getItem());
 
@@ -47,7 +48,6 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
             player.setStackInHand(hand, playerStack);
             setStack(slot, currentStack);
-            world.markDirty(pos);
             updateData(world, pos);
 
         } else if (!currentStack.isEmpty() && !playerStack.isEmpty()) {
@@ -57,8 +57,6 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
             playerStack.decrement(takingStack.getCount());
             currentStack.increment(takingStack.getCount());
-
-            world.markDirty(pos);
             updateData(world, pos);
 
         } else if (!currentStack.isEmpty()) {
@@ -67,7 +65,6 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             currentStack.setCount(0);
 
             player.setStackInHand(hand, takingStack);
-            world.markDirty(pos);
             updateData(world, pos);
         }
     }

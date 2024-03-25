@@ -30,7 +30,6 @@ import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 import java.util.Optional;
 
 import static ru.feytox.etherology.enums.FurnitureType.EMPTY;
-import static ru.feytox.etherology.enums.FurnitureType.SHELF;
 import static ru.feytox.etherology.registry.block.EBlocks.FURNITURE_BLOCK_ENTITY;
 
 public abstract class AbstractFurSlabBlock extends Block implements RegistrableBlock, BlockEntityProvider {
@@ -171,8 +170,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
         FurnitureType bottomType = state.get(BOTTOM_TYPE);
         FurnitureType topType = state.get(TOP_TYPE);
 
-        // TODO: 11.08.2023 deprecate
-        return bottomType.equalsAny(EMPTY, SHELF) || topType.equalsAny(EMPTY, SHELF);
+        return bottomType.isSidedTransparent() || topType.isSidedTransparent();
     }
 
     @Override

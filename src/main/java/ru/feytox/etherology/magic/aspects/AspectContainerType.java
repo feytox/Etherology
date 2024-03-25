@@ -16,7 +16,8 @@ public enum AspectContainerType {
     ENTITY,
     POTION,
     SPLASH_POTION,
-    LINGERING_POTION;
+    LINGERING_POTION,
+    TIPPED_ARROW;
 
     @Nullable
     private final String prefix;

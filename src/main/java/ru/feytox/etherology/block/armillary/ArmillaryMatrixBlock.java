@@ -87,8 +87,9 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
 
     static {
         OUTLINE_SHAPE = VoxelShapes.union(
-                Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 8.0, 16.0),
-                Block.createCuboidShape(2.0, 8.0, 2.0, 14.0, 12.0, 14.0)
+                Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0),
+                Block.createCuboidShape(3.0, 5.0, 3.0, 13.0, 10.0, 13.0),
+                Block.createCuboidShape(2.0, 10.0, 2.0, 14.0, 14.0, 14.0)
         );
     }
 }

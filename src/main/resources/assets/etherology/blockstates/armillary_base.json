@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "etherology:block/armillary_base" }
+    "": { "model": "minecraft:block/air" }
   }
 }

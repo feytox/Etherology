@@ -29,24 +29,24 @@ public class AspectsLoader implements IdentifiableResourceReloadListener {
     private static boolean isInitialized = false;
 
     public static Optional<AspectContainer> getAspects(ItemStack stack, boolean multiplyCount) {
+        if (!isInitialized) return Optional.empty();
+
+        // TODO: 25.03.2024 replace with serializers
         if (stack.getItem() instanceof PotionItem) return getPotionAspects(stack);
-        AspectContainer itemAspects = getAspects(stack.getItem()).orElse(null);
+        if (stack.getItem() instanceof TippedArrowItem) return getTippedAspects(stack);
+        AspectContainer itemAspects = getAspects(stack).orElse(null);
         if (itemAspects == null) return Optional.empty();
 
         if (multiplyCount) itemAspects = itemAspects.map(value -> value * stack.getCount());
         return Optional.of(itemAspects);
     }
 
-    private static Optional<AspectContainer> getAspects(Item item) {
-        if (!isInitialized) return Optional.empty();
-
-        val itemId = AspectContainerId.of(Registries.ITEM.getId(item), AspectContainerType.ITEM);
+    private static Optional<AspectContainer> getAspects(ItemStack stack) {
+        val itemId = AspectContainerId.of(Registries.ITEM.getId(stack.getItem()), AspectContainerType.ITEM);
         return Optional.ofNullable(cache.get(itemId));
     }
 
     public static Optional<AspectContainer> getPotionAspects(ItemStack potionStack) {
-        if (!isInitialized) return Optional.empty();
-
         AspectContainerType type = AspectContainerType.POTION;
         if (potionStack.getItem() instanceof SplashPotionItem) type = AspectContainerType.SPLASH_POTION;
         if (potionStack.getItem() instanceof LingeringPotionItem) type = AspectContainerType.LINGERING_POTION;
@@ -56,9 +56,13 @@ public class AspectsLoader implements IdentifiableResourceReloadListener {
         return Optional.ofNullable(cache.get(potionId));
     }
 
-    public static Optional<AspectContainer> getEntityAspects(Entity entity) {
-        if (!isInitialized) return Optional.empty();
+    public static Optional<AspectContainer> getTippedAspects(ItemStack tippedStack) {
+        Potion potion = PotionUtil.getPotion(tippedStack);
+        val tippedId = AspectContainerId.of(Registries.POTION.getId(potion), AspectContainerType.TIPPED_ARROW);
+        return Optional.ofNullable(cache.get(tippedId));
+    }
 
+    public static Optional<AspectContainer> getEntityAspects(Entity entity) {
         val entityId = AspectContainerId.of(Registries.ENTITY_TYPE.getId(entity.getType()), AspectContainerType.ENTITY);
         return Optional.ofNullable(cache.get(entityId));
     }

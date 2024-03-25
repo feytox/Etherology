@@ -20,6 +20,7 @@ public abstract class FurnitureData implements Nbtable {
     }
 
     public static void updateData(ServerWorld world, BlockPos pos) {
+        world.markDirty(pos);
         world.getChunkManager().markForUpdate(pos);
     }
 

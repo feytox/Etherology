@@ -1,20 +1,28 @@
 package ru.feytox.etherology.block.etherealGenerators;
 
+import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
+import ru.feytox.etherology.particle.subtypes.LightSubtype;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -65,6 +73,18 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
             triggerAnim(state.get(STALLED) ? "stalled" : "spin");
             isLaunched = true;
         }
+
+        if (world.getTime() % 10 != 0) return;
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) return;
+        if (!OculusItem.isUsingOculus(player)) return;
+        if (state.get(STALLED)) return;
+
+        Vec3d targetPos = blockPos.toCenterPos();
+        Direction direction = state.get(AbstractEtherealGenerator.FACING).getOpposite();
+        Vec3d particlePos = blockPos.add(direction.getVector()).toCenterPos();
+        val effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.GENERATOR, targetPos);
+        effect.spawnParticles(world, 4, 1.0d, particlePos);
     }
 
     @Override
