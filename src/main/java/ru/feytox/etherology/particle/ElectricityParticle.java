@@ -26,7 +26,10 @@ public class ElectricityParticle extends FeyParticle<ElectricityParticleEffect> 
         }
 
         switch (electricityType) {
-            case MATRIX -> scale(1.4f);
+            case MATRIX -> {
+                setRGB(RGBColor.of(0x9600a3));
+                scale(1.4f);
+            }
             case PEAL -> {
                 setRGB(RGBColor.of(0x00ffe5));
                 scale(2.5f);
@@ -35,10 +38,6 @@ public class ElectricityParticle extends FeyParticle<ElectricityParticleEffect> 
                 setRGB(FeyColor.getRandomColor(RGBColor.of(0xA24CFF), RGBColor.of(0xD866FF), random));
                 scale(1.1f);
             }
-        }
-        Float instability = parameters.getInstability();
-        if (instability != null && instability != -1.0f) {
-            setRGB(255 - (104 * instability / 33.33369d), 115, 255);
         }
     }
 

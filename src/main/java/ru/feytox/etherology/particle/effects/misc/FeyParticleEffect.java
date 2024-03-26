@@ -52,16 +52,24 @@ public abstract class FeyParticleEffect<T extends ParticleEffect> implements Par
     }
 
     public void spawnParticles(World world, int count, double delta, Vec3d centerPos) {
-        spawnParticles(world, count, delta, delta, delta, centerPos);
+        spawnParticles(this, world, count, delta, centerPos);
     }
 
     public void spawnParticles(World world, int count, double deltaX, double deltaY, double deltaZ, Vec3d centerPos) {
+        spawnParticles(this, world, count, deltaX, deltaY, deltaZ, centerPos);
+    }
+
+    public static void spawnParticles(ParticleEffect effect, World world, int count, double delta, Vec3d centerPos) {
+        spawnParticles(effect, world, count, delta, delta, delta, centerPos);
+    }
+
+    public static void spawnParticles(ParticleEffect effect, World world, int count, double deltaX, double deltaY, double deltaZ, Vec3d centerPos) {
         Random random = world.getRandom();
         for (int i = 0; i < count; i++) {
             Vec3d start = centerPos.add(getRandomPos(random, deltaX, deltaY, deltaZ));
 
-            if (world.isClient) world.addParticle(this, start.x, start.y, start.z, 0, 0, 0);
-            else ((ServerWorld) world).spawnParticles(this, start.x, start.y, start.z, 1, 0, 0, 0, 0);
+            if (world.isClient) world.addParticle(effect, start.x, start.y, start.z, 0, 0, 0);
+            else ((ServerWorld) world).spawnParticles(effect, start.x, start.y, start.z, 1, 0, 0, 0, 0);
         }
     }
 

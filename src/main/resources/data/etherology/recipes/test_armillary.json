@@ -1,9 +1,9 @@
 {
   "type": "etherology:armillary_recipe",
-  "aspects": ["GROSEAL", "ALCHEMA", "MEMO"],
+  "aspects": ["PLANTA", "ALCHEMA", "STRALFA"],
   "center_input": {
     "item": "minecraft:iron_ingot"
   },
-  "ether_points": 6.9,
+  "ether_points": 3.0,
   "outputItem": "etherology:peach_planks"
 }

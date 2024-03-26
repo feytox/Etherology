@@ -13,11 +13,11 @@ import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class GeneratorLightInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
+public class LightGeneratorInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
 
     private final Vec3d endPos;
 
-    public GeneratorLightInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
+    public LightGeneratorInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
 
         endPos = parameters.getMoveVec();

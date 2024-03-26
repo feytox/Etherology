@@ -23,7 +23,6 @@ public class InteractionPacketManager extends AbstractPacketManager {
     public void registerS2C(ImmutableMap.Builder<Identifier, AbstractS2CPacket.S2CHandler> builder) {
         builder.put(TwoHandHeldAttackS2C.TWOHANDHELD_ATTACK_S2C_ID, TwoHandHeldAttackS2C::receive);
         builder.put(HammerPealWaveS2C.HAMMER_PEAL_S2C_ID, HammerPealWaveS2C::receive);
-        builder.put(SmallLightningS2C.ID, SmallLightningS2C::receive);
         builder.put(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C::receive);
         builder.put(RedstoneLensStreamS2C.ID, RedstoneLensStreamS2C::receive);
     }

@@ -13,7 +13,7 @@ public enum ArmillaryState implements StringIdentifiable {
     PREPARED(true),
     CONSUMING(true),
     DECRYPTING(true),
-    RESULTING(true); // TODO: 03.03.2024 rename
+    RESULTING(true);
 
     private final boolean working;
 

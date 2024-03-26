@@ -2,7 +2,6 @@ package ru.feytox.etherology.util.gecko;
 
 import lombok.val;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.Etherology;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animation.AnimationController;
 
@@ -10,7 +9,6 @@ public interface EGeo2BlockEntity extends GeoBlockEntity {
 
     default void triggerAnimByName(String animName) {
         triggerAnim(animName + "_controller", animName);
-        Etherology.ELOGGER.info("{} started", animName);
     }
 
     // TODO: 10.03.2024 rename maybe
@@ -23,7 +21,6 @@ public interface EGeo2BlockEntity extends GeoBlockEntity {
         AnimationController<?> controller = getAnimationController(animName);
         boolean test = controller != null;
         if (test) controller.stop();
-        Etherology.ELOGGER.info("{} stopped | {}", animName, test);
     }
 
     void markAnimationActive(String animName);

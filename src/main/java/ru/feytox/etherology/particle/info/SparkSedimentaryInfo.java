@@ -19,12 +19,12 @@ import ru.feytox.etherology.util.feyapi.RGBColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
+public class SparkSedimentaryInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
     private final Vec3d endPos;
     private final RGBColor startColor;
     private final RGBColor endColor;
 
-    public SedimentarySparkInfo(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider, RGBColor startColor, RGBColor endColor) {
+    public SparkSedimentaryInfo(ClientWorld clientWorld, double x, double y, double z, SparkParticleEffect parameters, SpriteProvider spriteProvider, RGBColor startColor, RGBColor endColor) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
         endPos = parameters.getMoveVec();
         this.startColor = startColor;
@@ -32,7 +32,7 @@ public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParti
     }
 
     public static ParticleInfo.Factory<SparkParticle, SparkParticleEffect> of(EssenceZoneType zoneType) {
-        return (clientWorld, x, y, z, parameters, spriteProvider) -> new SedimentarySparkInfo(clientWorld, x, y, z, parameters, spriteProvider, zoneType.getStartColor(), zoneType.getEndColor());
+        return (clientWorld, x, y, z, parameters, spriteProvider) -> new SparkSedimentaryInfo(clientWorld, x, y, z, parameters, spriteProvider, zoneType.getStartColor(), zoneType.getEndColor());
     }
 
     @Override
@@ -77,6 +77,7 @@ public class SedimentarySparkInfo extends ParticleInfo<SparkParticle, SparkParti
     }
 
     private static List<Vec3d> listOf(Vec3d startPos, Vec3d endPos, double step) {
+        // TODO: 26.03.2024 optimize
         List<Vec3d> result = new ArrayList<>();
 
         double minX = Math.min(startPos.x, endPos.x);

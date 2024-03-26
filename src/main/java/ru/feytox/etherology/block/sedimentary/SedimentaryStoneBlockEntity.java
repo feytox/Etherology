@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceConsumer;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.particle.info.SedimentarySparkInfo;
+import ru.feytox.etherology.particle.info.SparkSedimentaryInfo;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 
@@ -40,7 +40,7 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         EssenceZoneType zoneType = state.get(ESSENCE_STATE);
 
         if (world.isClient) {
-            SedimentarySparkInfo.spawnSedimentaryParticle(world, pos, zoneType);
+            SparkSedimentaryInfo.spawnSedimentaryParticle(world, pos, zoneType);
             return true;
         }
 

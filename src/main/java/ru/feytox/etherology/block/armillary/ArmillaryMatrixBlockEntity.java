@@ -21,6 +21,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -42,10 +43,9 @@ import ru.feytox.etherology.components.IFloatComponent;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
-import ru.feytox.etherology.particle.effects.ItemParticleEffect;
-import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.effects.MovingParticleEffect;
-import ru.feytox.etherology.particle.effects.SparkParticleEffect;
+import ru.feytox.etherology.particle.effects.*;
+import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
+import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
@@ -63,6 +63,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -162,22 +163,51 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                     world.playSound(centerPos.x, centerPos.y, centerPos.z, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.066f, 0.7f * world.getRandom().nextFloat() + 0.55f, true);
                 }
             }
-            case RESETTING, DECRYPTING -> {
+            case RESETTING -> {
+//                spawnMatrixLightParticles(world);
+                spawnMatrixSparkParticles(world);
+            }
+            case DECRYPTING -> {
                 spawnMatrixLightParticles(world);
                 spawnMatrixLightParticles(world);
+                spawnFireworkParticles(world);
+                spawnElectricityParticles(world);
+            }
+            case RESULTING -> {
+                spawnElectricityParticles(world);
             }
         }
     }
 
     private void spawnMatrixLightParticles(ClientWorld world) {
+        spawnResettingParticles(world, (randomVec) -> new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.MATRIX, randomVec));
+    }
+
+    private void spawnMatrixSparkParticles(ClientWorld world) {
+        spawnResettingParticles(world, (randomVec) -> new SparkParticleEffect(ServerParticleTypes.SPARK, randomVec, SparkSubtype.MATRIX));
+    }
+
+    private void spawnResettingParticles(ClientWorld world, Function<Vec3d, FeyParticleEffect<?>> factory) {
         Random random = world.getRandom();
         Vec3d centerPos = getCenterPos();
         Vec3d randomVec = new Vec3d(0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4);
         randomVec = randomVec.multiply(random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1);
         Vec3d startPos = centerPos.add(randomVec);
 
-        val effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.MATRIX, randomVec);
+        val effect = factory.apply(randomVec);
         effect.spawnParticles(world, 1, 0, startPos);
+    }
+
+    private void spawnFireworkParticles(ClientWorld world) {
+        if (world.getTime() % 12 != 0) return;
+        FeyParticleEffect.spawnParticles(ParticleTypes.FIREWORK, world, 1, 0.5, getCenterPos());
+    }
+
+    private void spawnElectricityParticles(ClientWorld world) {
+        if (world.getTime() % 7 != 0) return;
+        Random random = world.getRandom();
+        val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.MATRIX);
+        effect.spawnParticles(world, 1, 1, getCenterPos());
     }
 
     /**
@@ -403,6 +433,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                     val recipe = getRecipe(world, true);
                     if (recipe != null) {
                         setStack(0, recipe.getOutput());
+                        spawnResultingParticles(world);
                     }
 
                     resetMatrix(world, state);
@@ -420,6 +451,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         recipeId = null;
         storedEther = 0.0f;
         syncData(world);
+    }
+
+    private void spawnResultingParticles(ServerWorld world) {
+        Random random = world.getRandom();
+        FeyParticleEffect.spawnParticles(ParticleTypes.CLOUD, world, random.nextBetween(4, 8), 0.65, getCenterPos());
     }
 
     private boolean tickConsuming(ServerWorld world) {

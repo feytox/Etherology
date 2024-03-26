@@ -85,7 +85,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         Random random = world.getRandom();
         for (int i = 0; i < random.nextBetween(1, 4); i++) {
-            DefaultParticleType effect = random.nextDouble() > 0.5 ? ParticleTypes.BUBBLE : ParticleTypes.BUBBLE_POP;
+            DefaultParticleType effect = random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.BUBBLE_POP;
             Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
             start = start.add(FeyParticleEffect.getRandomPos(random, 0.25, 0.05, 0.25));
             world.addParticle(effect, start.x, start.y, start.z, 0, 0.001, 0);

@@ -10,13 +10,13 @@ import ru.feytox.etherology.particle.utility.ParticleInfoProvider;
 
 @RequiredArgsConstructor
 public enum LightSubtype implements ParticleInfoProvider<LightParticle, LightParticleEffect> {
-    SIMPLE(SimpleLightInfo::new),
-    SPARK(SparkLightInfo::new),
-    PUSHING(PushingLightInfo::new),
-    ATTRACT(AttractLightInfo::new),
-    BREWING(BrewingLightInfo::new),
-    MATRIX(MatrixLightInfo::new),
-    GENERATOR(GeneratorLightInfo::new);
+    SIMPLE(LightSimpleInfo::new),
+    SPARK(LightSparkInfo::new),
+    PUSHING(LightPushingInfo::new),
+    ATTRACT(LightAttractInfo::new),
+    BREWING(LightBrewingInfo::new),
+    MATRIX(LightMatrixInfo::new),
+    GENERATOR(LightGeneratorInfo::new);
 
     @Nullable
     private final ParticleInfo.Factory<LightParticle, LightParticleEffect> infoFactory;

@@ -11,37 +11,37 @@ import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class SparkLightInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
-    private final Vec3d endPos;
+public class LightPushingInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
+    protected Vec3d endPos;
 
-    public SparkLightInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
+    public LightPushingInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
-        endPos = parameters.getMoveVec();
+    }
+
+    @Override
+    public void extraInit(LightParticle particle) {
+        super.extraInit(particle);
+        endPos = particle.getStartPos().add(particle.getParameters().getMoveVec());
     }
 
     @Override
     public float getScale(Random random) {
-        return 0.1f;
+        return 0.3f;
     }
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {
-        return null;
+        return FeyColor.getRandomColor(RGBColor.of(0xA0FF55), RGBColor.of(0x71ED3D), random);
     }
 
     @Override
     public void tick(LightParticle particle) {
-        particle.acceleratedMovingTick(0.4f, 0.5f, true, endPos);
+        particle.simpleMovingTick(0.025f, endPos, false);
         particle.setSpriteForAge();
-
-        double passedLen = particle.getPassedVec().length();
-        double invFullPathLen = particle.getInverseLen(particle.getFullPathVec(endPos));
-        double percent = passedLen * invFullPathLen;
-        particle.setRGB(FeyColor.lerp(RGBColor.of(0xffffff), RGBColor.of(0x530eff), (float) percent));
     }
 
     @Override
     public int getMaxAge(Random random) {
-        return 80;
+        return 40;
     }
 }

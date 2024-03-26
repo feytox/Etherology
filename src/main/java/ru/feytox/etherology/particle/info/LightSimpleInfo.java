@@ -9,11 +9,11 @@ import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class SimpleLightInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
+public class LightSimpleInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
 
     private final Vec3d endPos;
 
-    public SimpleLightInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
+    public LightSimpleInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
         endPos = parameters.getMoveVec();
     }

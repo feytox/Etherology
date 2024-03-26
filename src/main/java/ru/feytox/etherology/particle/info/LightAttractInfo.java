@@ -9,8 +9,8 @@ import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.util.feyapi.FeyColor;
 import ru.feytox.etherology.util.feyapi.RGBColor;
 
-public class AttractLightInfo extends PushingLightInfo {
-    public AttractLightInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
+public class LightAttractInfo extends LightPushingInfo {
+    public LightAttractInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
     }
 
