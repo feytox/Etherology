@@ -30,7 +30,7 @@ public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
     public boolean matches(CraftingInventory inventory, World world) {
         Pair<Integer, Integer> result = getIndexesOfStaffAndShears(inventory);
         if (result == null) return false;
-        ItemStack staffStack = inventory.getStack(result.getRight());
+        ItemStack staffStack = inventory.getStack(result.getLeft());
         val staff = EtherologyComponents.STAFF.get(staffStack);
         val parts = staff.getParts();
         return parts.containsKey(StaffPart.HANDLE);
