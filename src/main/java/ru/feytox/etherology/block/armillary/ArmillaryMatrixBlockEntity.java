@@ -166,23 +166,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         }
     }
 
-    private void spawnMatrixSparkParticles(ClientWorld world) {
-        Random random = world.getRandom();
-        Vec3d centerPos = getCenterPos();
-        Vec3d randomVec = new Vec3d(0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4);
-        randomVec = randomVec.multiply(random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1);
-        Vec3d startPos = centerPos.add(randomVec);
-
-        val effect = new MovingParticleEffect(ServerParticleTypes.ETHER, randomVec);
-        effect.spawnParticles(world, 1, 0, startPos);
-    }
-
-    private void spawnFlashParticles(ClientWorld world) {
-        if (world.getTime() % 3 != 0) return;
-        val effect = new SimpleParticleEffect(ServerParticleTypes.ENERGY_ABSORPTION);
-        effect.spawnParticles(world, 1, 0.2, getCenterPos());
-    }
-
     private void spawnElectricityParticles(ClientWorld world) {
         Random random = world.getRandom();
         val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.MATRIX);
