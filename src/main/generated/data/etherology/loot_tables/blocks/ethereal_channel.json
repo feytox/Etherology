@@ -3,15 +3,39 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "etherology:ethereal_channel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "block": "etherology:ethereal_channel",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "in_case": "true"
+          }
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "etherology:ethereal_channel"
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "etherology:ethereal_channel_case"
         }
       ],
       "rolls": 1.0

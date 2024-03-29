@@ -97,7 +97,7 @@ public class EBlocks {
             FabricBlockEntityTypeBuilder.create(EtherealStorageBlockEntity::new, ETHEREAL_STORAGE).build()
     );
 
-    public static final EtherealChannel ETHEREAL_CHANNEL = (EtherealChannel) new EtherealChannel().registerAll();
+    public static final EtherealChannel ETHEREAL_CHANNEL = (EtherealChannel) new EtherealChannel().registerAll(false);
     public static final BlockEntityType<EtherealChannelBlockEntity> ETHEREAL_CHANNEL_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new EIdentifier("ethereal_channel_block_entity"),

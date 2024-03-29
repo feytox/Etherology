@@ -17,12 +17,10 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -89,20 +87,6 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
         world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
         return ActionResult.SUCCESS;
-    }
-
-    @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        tryDropCaseOnBreak(state, world, pos, newState);
-        super.onStateReplaced(state, world, pos, newState, moved);
-    }
-
-    private void tryDropCaseOnBreak(BlockState state, World world, BlockPos pos, BlockState newState) {
-        if (state.isOf(newState.getBlock())) return;
-        if (!state.get(IN_CASE)) return;
-
-        Vec3d dropPos = pos.toCenterPos();
-        ItemScatterer.spawn(world, dropPos.x, dropPos.y, dropPos.z, EBlocks.ETHEREAL_CHANNEL_CASE.getItem().getDefaultStack());
     }
 
     @Override
