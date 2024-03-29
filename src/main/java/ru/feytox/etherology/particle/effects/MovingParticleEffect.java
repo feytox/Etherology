@@ -12,6 +12,7 @@ import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
 public class MovingParticleEffect extends FeyParticleEffect<MovingParticleEffect> {
+
     private final ParticleArg<Vec3d> moveVecArg = SimpleArgs.VEC3D.get();
 
     public MovingParticleEffect(ParticleType<MovingParticleEffect> type, Vec3d moveVec) {

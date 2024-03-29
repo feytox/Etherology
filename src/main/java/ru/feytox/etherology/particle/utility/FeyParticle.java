@@ -90,7 +90,6 @@ public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends Sprite
     }
 
     public void modifyAngle(float deltaDegrees) {
-        prevAngle = angle;
         angle += (float) (deltaDegrees * Math.PI / 180f);
         if (angle >= 2 * Math.PI) angle = (float) (angle - 2 * Math.PI);
     }

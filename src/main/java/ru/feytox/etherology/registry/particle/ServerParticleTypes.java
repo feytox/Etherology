@@ -23,6 +23,8 @@ public class ServerParticleTypes {
     public static final FeyParticleType<MovingParticleEffect> VITAL = register("vital", MovingParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> SHOCKWAVE = register("shockwave", SimpleParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> GLINT = register("glint_particle", MovingParticleEffect::new);
+    public static final FeyParticleType<MovingParticleEffect> ETHER = register("ether", MovingParticleEffect::new);
+    public static final FeyParticleType<SimpleParticleEffect> ENERGY_ABSORPTION = register("energy_absorption", SimpleParticleEffect::new);
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);

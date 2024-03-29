@@ -28,6 +28,8 @@ public class ClientParticleTypes {
         register(VITAL, VitalParticle::new);
         register(SHOCKWAVE, ShockwaveParticle::new);
         register(GLINT, GlintParticle::new);
+        register(ETHER, EtherParticle::new);
+        register(ENERGY_ABSORPTION, EnergyAbsorptionParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {
