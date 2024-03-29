@@ -20,7 +20,6 @@ public class EItems {
     public static final GlintItem GLINT = (GlintItem) new GlintItem().register();
     public static final EtherShard ETHER_SHARD = (EtherShard) new EtherShard().register();
     public static final SpillBarrelItem SPILL_BARREL = (SpillBarrelItem) registerItem("spill_barrel", new SpillBarrelItem());
-    public static final CarriedCrateItem CARRIED_CRATE = (CarriedCrateItem) registerItem("carried_crate", new CarriedCrateItem());
     public static final CorruptionBucket CORRUPTION_BUCKET = (CorruptionBucket) registerItem("corruption_bucket", new CorruptionBucket());
 
     public static final PatternTabletItem ARISTOCRAT_PATTERN_TABLET = (PatternTabletItem) registerItem("aristocrat_pattern_tablet", new PatternTabletItem(StaffStyles.ARISTOCRAT));

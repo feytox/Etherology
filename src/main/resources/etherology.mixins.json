@@ -22,7 +22,6 @@
     "ForgingScreenHandlerAccessor",
     "GeoModelAccessor",
     "ItemEntityAccessor",
-    "ItemEntityMixin",
     "KeyBindingAccessor",
     "KeyframeAnimationAccessor",
     "LivingEntityMixin",

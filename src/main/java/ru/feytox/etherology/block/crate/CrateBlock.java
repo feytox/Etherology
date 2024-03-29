@@ -3,37 +3,27 @@ package ru.feytox.etherology.block.crate;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.feyapi.RegistrableBlock;
 
-public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockEntityProvider, LandingBlock {
-    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
-    public static final BooleanProperty FALLING = BooleanProperty.of("falling");
+public class CrateBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
+
     private static final VoxelShape NORTH_SHAPE;
     private static final VoxelShape WEST_SHAPE;
 
@@ -41,8 +31,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
     public CrateBlock() {
         super(FabricBlockSettings.copy(Blocks.CHEST).nonOpaque());
         setDefaultState(getDefaultState()
-                .with(FACING, Direction.NORTH)
-                .with(FALLING, false));
+                .with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -57,12 +46,7 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FALLING);
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return state.get(FALLING) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
+        builder.add(FACING);
     }
 
     @Override
@@ -75,29 +59,17 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            if (player.isSneaking() && player.getMainHandStack().isEmpty() && world.getBlockEntity(pos) instanceof CrateBlockEntity crate) {
-                ItemStack crateStack = EItems.CARRIED_CRATE.getDefaultStack();
-                crate.setStackNbt(crateStack);
-                crate.clear();
-                crate.markDirty();
-                player.setStackInHand(Hand.MAIN_HAND, crateStack);
-                world.removeBlock(pos, true);
-                return ActionResult.SUCCESS;
-            }
-
-            NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
-            }
-        }
-        return ActionResult.SUCCESS;
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.INVISIBLE;
     }
 
     @Override
-    public void onLanding(World world, BlockPos pos, BlockState fallingBlockState, BlockState currentStateInPos, FallingBlockEntity fallingBlockEntity) {
-        world.setBlockState(pos, fallingBlockState.with(FALLING, false));
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (world.isClient) return ActionResult.SUCCESS;
+
+        NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
+        if (screenHandlerFactory != null) player.openHandledScreen(screenHandlerFactory);
+        return ActionResult.SUCCESS;
     }
 
     @Override
@@ -106,19 +78,10 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
     }
 
     @Override
-    public void onDestroyedOnLanding(World world, BlockPos pos, FallingBlockEntity fallingBlockEntity) {
-        if (fallingBlockEntity.blockEntityData == null) return;
-        DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
-        Inventories.readNbt(fallingBlockEntity.blockEntityData, items);
-        ItemScatterer.spawn(world, pos, items);
-        fallingBlockEntity.blockEntityData = null;
-    }
-
-    @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (state.getBlock() != newState.getBlock() && !moved && !state.get(FALLING)) {
+        if (state.getBlock() != newState.getBlock() && !moved) {
             dropInventory(world, pos);
-            super.onStateReplaced(state, world, pos, newState, moved);
+            super.onStateReplaced(state, world, pos, newState, false);
         }
     }
 
@@ -127,27 +90,6 @@ public class CrateBlock extends FallingBlock implements RegistrableBlock, BlockE
         if (be instanceof CrateBlockEntity crate) {
             ItemScatterer.spawn(world, pos, crate);
         }
-    }
-
-    @Override
-    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (!state.get(FALLING) || !FallingBlock.canFallThrough(world.getBlockState(pos.down())) || pos.getY() < world.getBottomY()) {
-            return;
-        }
-        FallingBlockEntity fallingBlockEntity = FallingBlockEntity.spawnFromBlock(world, pos, state);
-        this.configureFallingBlockEntity(fallingBlockEntity);
-    }
-
-    @Override
-    protected void configureFallingBlockEntity(FallingBlockEntity entity) {
-        if (!(entity.world.getBlockEntity(entity.getBlockPos()) instanceof CrateBlockEntity crate)) return;
-
-        NbtCompound nbtCompound = crate.createNbt();
-        crate.readNbt(nbtCompound);
-        entity.blockEntityData = nbtCompound;
-        crate.clear();
-        crate.markDirty();
-        entity.dropItem = true;
     }
 
     @Nullable
