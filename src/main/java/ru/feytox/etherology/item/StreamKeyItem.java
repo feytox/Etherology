@@ -20,7 +20,7 @@ import ru.feytox.etherology.registry.util.EtherToolMaterials;
 public class StreamKeyItem extends ToolItem {
 
     public StreamKeyItem() {
-        super(EtherToolMaterials.TELDER_STEEL, new Settings());
+        super(EtherToolMaterials.EBONY, new Settings());
     }
 
     @Override

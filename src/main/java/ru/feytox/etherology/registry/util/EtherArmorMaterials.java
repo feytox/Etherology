@@ -2,6 +2,7 @@ package ru.feytox.etherology.registry.util;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import lombok.Getter;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
@@ -11,16 +12,21 @@ import ru.feytox.etherology.registry.item.DecoBlockItems;
 
 @SuppressWarnings("Guava")
 public enum EtherArmorMaterials implements ArmorMaterial {
-    TELDER_STEEL("telder_steel", 18, new int[]{2, 6, 5, 2}, 16, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0, 0, () -> Ingredient.ofItems(DecoBlockItems.TELDER_STEEL_INGOT)),
+    EBONY("ebony", 18, new int[]{2, 6, 5, 2}, 16, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0, 0, () -> Ingredient.ofItems(DecoBlockItems.EBONY_INGOT)),
     ETHRIL("ethril", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.ofItems(DecoBlockItems.ETHRIL_INGOT));
 
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
+    @Getter
     private final String name;
     private final int durabilityMultiplier;
     private final int[] protectionAmounts;
+    @Getter
     private final int enchantability;
+    @Getter
     private final SoundEvent equipSound;
+    @Getter
     private final float toughness;
+    @Getter
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredientSupplier;
 
@@ -43,27 +49,8 @@ public enum EtherArmorMaterials implements ArmorMaterial {
         return this.protectionAmounts[slot.getEntitySlotId()];
     }
 
-    public int getEnchantability() {
-        return this.enchantability;
-    }
-
-    public SoundEvent getEquipSound() {
-        return this.equipSound;
-    }
-
     public Ingredient getRepairIngredient() {
         return this.repairIngredientSupplier.get();
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public float getToughness() {
-        return this.toughness;
-    }
-
-    public float getKnockbackResistance() {
-        return this.knockbackResistance;
-    }
 }

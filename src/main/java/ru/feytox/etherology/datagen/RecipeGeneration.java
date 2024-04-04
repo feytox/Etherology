@@ -55,11 +55,11 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapelessRecipeJsonBuilder.create(MISC, ETHRIL_INGOT, 9).input(ETHRIL_BLOCK).criterion("has_ethril_block", conditionsFromItem(ETHRIL_BLOCK.asItem())).offerTo(exporter, new EIdentifier("ethril_ingot_from_block"));
         ShapedRecipeJsonBuilder.create(MISC, ETHRIL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', ETHRIL_INGOT).criterion("has_ethril_ingot", conditionsFromItem(ETHRIL_INGOT)).offerTo(exporter);
 
-        // telder steel
-        ShapelessRecipeJsonBuilder.create(MISC, TELDER_STEEL_NUGGET, 9).input(TELDER_STEEL_INGOT).criterion("has_telder_steel_ingot", conditionsFromItem(TELDER_STEEL_INGOT)).offerTo(exporter, new EIdentifier("telder_steel_nugget_from_ingot"));
-        ShapedRecipeJsonBuilder.create(MISC, TELDER_STEEL_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', TELDER_STEEL_NUGGET).criterion("has_telder_steel_nugget", conditionsFromItem(TELDER_STEEL_NUGGET)).offerTo(exporter, new EIdentifier("telder_steel_ingot_from_nugget"));
-        ShapelessRecipeJsonBuilder.create(MISC, TELDER_STEEL_INGOT, 9).input(TELDER_STEEL_BLOCK).criterion("has_telder_steel_block", conditionsFromItem(TELDER_STEEL_BLOCK.asItem())).offerTo(exporter, new EIdentifier("telder_steel_ingot_from_block"));
-        ShapedRecipeJsonBuilder.create(MISC, TELDER_STEEL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', TELDER_STEEL_INGOT).criterion("has_telder_steel_ingot", conditionsFromItem(TELDER_STEEL_INGOT)).offerTo(exporter);
+        // ebony
+        ShapelessRecipeJsonBuilder.create(MISC, EBONY_NUGGET, 9).input(EBONY_INGOT).criterion("has_ebony_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter, new EIdentifier("ebony_nugget_from_ingot"));
+        ShapedRecipeJsonBuilder.create(MISC, EBONY_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', EBONY_NUGGET).criterion("has_ebony_nugget", conditionsFromItem(EBONY_NUGGET)).offerTo(exporter, new EIdentifier("ebony_ingot_from_nugget"));
+        ShapelessRecipeJsonBuilder.create(MISC, EBONY_INGOT, 9).input(EBONY_BLOCK).criterion("has_ebony_block", conditionsFromItem(EBONY_BLOCK.asItem())).offerTo(exporter, new EIdentifier("ebony_ingot_from_block"));
+        ShapedRecipeJsonBuilder.create(MISC, EBONY_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', EBONY_INGOT).criterion("has_ebony_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter);
 
         // special recipes
         ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET).offerTo(exporter, "staff_carpeting");
@@ -103,10 +103,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
         registerPicks(exporter);
         registerGlaives(exporter);
         registerHammers(exporter);
-        ShapedRecipeJsonBuilder.create(TOOLS, STREAM_KEY).input('N', Items.IRON_NUGGET).input('T', TELDER_STEEL_INGOT).input('I', Items.STICK)
+        ShapedRecipeJsonBuilder.create(TOOLS, STREAM_KEY).input('N', Items.IRON_NUGGET).input('T', EBONY_INGOT).input('I', Items.STICK)
                 .pattern("N")
                 .pattern("T")
-                .pattern("I").criterion("has_teldet_steel_ingot", conditionsFromItem(TELDER_STEEL_INGOT)).offerTo(exporter);
+                .pattern("I").criterion("has_teldet_steel_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter);
 
         // furniture
         ShapelessRecipeJsonBuilder.create(DECORATIONS, SHELF_SLAB).input(Items.ITEM_FRAME).input(FURNITURE_SLAB).criterion("has_furniture_slab", conditionsFromItem(FURNITURE_SLAB)).offerTo(exporter);
@@ -145,7 +145,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("CIC")
                 .pattern("ISI")
                 .pattern("#E#").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_CHANNEL, 2).input('O', THUJA_OIL).input('T', TELDER_STEEL_INGOT).input('E', ETHEROSCOPE).input('C', Items.IRON_NUGGET)
+        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_CHANNEL, 2).input('O', THUJA_OIL).input('T', EBONY_INGOT).input('E', ETHEROSCOPE).input('C', Items.IRON_NUGGET)
                 .pattern(" O ")
                 .pattern("TET")
                 .pattern(" C ").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
@@ -164,7 +164,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("SSS")
                 .pattern("SAS")
                 .pattern("SRS").criterion("has_azel_ingot", conditionsFromItem(AZEL_INGOT)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_STORAGE).input('T', TELDER_STEEL_INGOT).input('N', Items.IRON_NUGGET).input('G', GLINT).input('C', ItemTags.STONE_CRAFTING_MATERIALS).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_STORAGE).input('T', EBONY_INGOT).input('N', Items.IRON_NUGGET).input('G', GLINT).input('C', ItemTags.STONE_CRAFTING_MATERIALS).input('E', ETHEROSCOPE)
                 .pattern("TTT")
                 .pattern("NGN")
                 .pattern("CEC").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);

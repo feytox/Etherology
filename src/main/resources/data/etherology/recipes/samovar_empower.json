@@ -2,7 +2,7 @@
   "type": "etherology:empower_recipe",
   "key": {
     "#": {
-      "item": "etherology:telder_steel_ingot"
+      "item": "etherology:ebony_ingot"
     },
     "H": {
       "item": "minecraft:heart_of_the_sea"

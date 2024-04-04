@@ -126,10 +126,10 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHRIL_INGOT, "Эфриловый слиток");
         builder.add(ETHRIL_NUGGET, "Эфриловый самородок");
 
-        // telder steel
-        builder.add(TELDER_STEEL_BLOCK, "Телдер-стальной блок");
-        builder.add(TELDER_STEEL_INGOT, "Телдер-стальной слиток");
-        builder.add(TELDER_STEEL_NUGGET, "Телдер-стальной самородок");
+        // ebony
+        builder.add(EBONY_BLOCK, "Эбонитовый блок");
+        builder.add(EBONY_INGOT, "Эбонитовый слиток");
+        builder.add(EBONY_NUGGET, "Эбонитовый самородок");
 
         // beamer
         builder.add(BEAMER, "Лучевод");
@@ -147,11 +147,11 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHRIL_SHOVEL, "Эфриловая лопата");
         builder.add(ETHRIL_SWORD, "Эфриловый меч");
 
-        builder.add(TELDER_STEEL_AXE, "Телдер-стальной меч");
-        builder.add(TELDER_STEEL_HOE, "Телдер-стальная мотыга");
-        builder.add(TELDER_STEEL_PICKAXE, "Телдер-стальная кирка");
-        builder.add(TELDER_STEEL_SHOVEL, "Телдер-стальная лопата");
-        builder.add(TELDER_STEEL_SWORD, "Телдер-стальный меч");
+        builder.add(EBONY_AXE, "Эбонитовый меч");
+        builder.add(EBONY_HOE, "Эбонитовая мотыга");
+        builder.add(EBONY_PICKAXE, "Эбонитовая кирка");
+        builder.add(EBONY_SHOVEL, "Эбонитовая лопата");
+        builder.add(EBONY_SWORD, "Эбонитовый меч");
 
         builder.add(WOODEN_BATTLE_PICKAXE, "Деревянное кайло");
         builder.add(STONE_BATTLE_PICKAXE, "Каменное кайло");
@@ -160,7 +160,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(DIAMOND_BATTLE_PICKAXE, "Алмазное кайло");
         builder.add(NETHERITE_BATTLE_PICKAXE, "Незеритовое кайло");
         builder.add(ETHRIL_BATTLE_PICKAXE, "Эфриловое кайло");
-        builder.add(TELDER_STEEL_BATTLE_PICKAXE, "Телдер-стальное кайло");
+        builder.add(EBONY_BATTLE_PICKAXE, "Эбонитовое кайло");
 
         builder.add(WOODEN_HAMMER, "Деревянный молот");
         builder.add(STONE_HAMMER, "Каменный молот");
@@ -169,7 +169,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(DIAMOND_HAMMER, "Алмазный молот");
         builder.add(NETHERITE_HAMMER, "Незеритовый молот");
         builder.add(ETHRIL_HAMMER, "Эфриловый молот");
-        builder.add(TELDER_STEEL_HAMMER, "Телдер-стальной молот");
+        builder.add(EBONY_HAMMER, "Эбонитовый молот");
 
         builder.add(WOODEN_GLAIVE, "Деревянная глефа");
         builder.add(STONE_GLAIVE, "Каменная глефа");
@@ -178,16 +178,16 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(DIAMOND_GLAIVE, "Алмазная глефа");
         builder.add(NETHERITE_GLAIVE, "Незеритовая глефа");
         builder.add(ETHRIL_GLAIVE, "Эфриловая глефа");
-        builder.add(TELDER_STEEL_GLAIVE, "Телдер-стальная глефа");
+        builder.add(EBONY_GLAIVE, "Эбонитовая глефа");
 
         builder.add(ETHRIL_HELMET, "Эфриловый шлем");
         builder.add(ETHRIL_CHESTPLATE, "Эфриловый нагрудник");
         builder.add(ETHRIL_LEGGINGS, "Эфриловые поножи");
         builder.add(ETHRIL_BOOTS, "Эфриловые ботинки");
-        builder.add(TELDER_STEEL_HELMET, "Телдер-стальной шлем");
-        builder.add(TELDER_STEEL_CHESTPLATE, "Телдер-стальной нагрудник");
-        builder.add(TELDER_STEEL_LEGGINGS, "Телдер-стальные поножи");
-        builder.add(TELDER_STEEL_BOOTS, "Телдер-стальные ботинки");
+        builder.add(EBONY_HELMET, "Эбонитовый шлем");
+        builder.add(EBONY_CHESTPLATE, "Эбонитовый нагрудник");
+        builder.add(EBONY_LEGGINGS, "Эбонитовые поножи");
+        builder.add(EBONY_BOOTS, "Эбонитовые ботинки");
 
         builder.add(DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK, "Творческий бесконечный источник эфира");
         builder.add(LEVITATOR, "Левитатор");

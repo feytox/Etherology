@@ -22,7 +22,7 @@ public enum StaffMetals implements StaffPattern {
     GOLD(Items.GOLD_INGOT),
     IRON(Items.IRON_INGOT),
     NETHERITE(Items.NETHERITE_INGOT),
-    TELDER(DecoBlockItems.TELDER_STEEL_INGOT);
+    EBONY(DecoBlockItems.EBONY_INGOT);
 
     public static final Supplier<List<? extends StaffPattern>> METALS = StaffPattern.memoize(values());
     private final Item metalItem;

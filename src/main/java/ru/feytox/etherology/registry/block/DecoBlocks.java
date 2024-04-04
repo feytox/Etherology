@@ -136,7 +136,7 @@ public class DecoBlocks {
     // metals
     public static final Block AZEL_BLOCK = registerSimple("azel_block", copy(Blocks.IRON_BLOCK).mapColor(MapColor.LAPIS_BLUE)).withItem();
     public static final Block ETHRIL_BLOCK = registerSimple("ethril_block", copy(Blocks.GOLD_BLOCK)).withItem();
-    public static final Block TELDER_STEEL_BLOCK = registerSimple("telder_steel_block", copy(Blocks.DIAMOND_BLOCK).mapColor(MapColor.ORANGE)).withItem();
+    public static final Block EBONY_BLOCK = registerSimple("ebony_block", copy(Blocks.DIAMOND_BLOCK).mapColor(MapColor.ORANGE)).withItem();
 
     // attrahite
     public static final Block ATTRAHITE = registerSimple("attrahite", copy(Blocks.STONE).sounds(BlockSoundGroup.GILDED_BLACKSTONE)).withItem(false);

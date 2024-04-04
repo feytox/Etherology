@@ -77,7 +77,7 @@ public class EPalettePermutationsAtlasSource implements AtlasSource {
                 "netherite", new EIdentifier("trims/palettes/netherite"),
                 "copper", new EIdentifier("trims/palettes/copper"),
                 "azel", new EIdentifier("trims/palettes/azel"),
-                "telder", new EIdentifier("trims/palettes/telder"),
+                "ebony", new EIdentifier("trims/palettes/ebony"),
                 "ethril", new EIdentifier("trims/palettes/ethril"));
         this.paletteKey = new EIdentifier("trims/palettes/trim_palette");
     }

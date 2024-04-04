@@ -44,7 +44,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS);
         copy(BlockTags.FENCES, ItemTags.FENCES);
 
-        addItems(ItemTags.BEACON_PAYMENT_ITEMS, DecoBlockItems.TELDER_STEEL_INGOT, DecoBlockItems.ETHRIL_INGOT);
+        addItems(ItemTags.BEACON_PAYMENT_ITEMS, DecoBlockItems.EBONY_INGOT, DecoBlockItems.ETHRIL_INGOT);
         copy(BlockTagGeneration.PEACH_LOGS, PEACH_LOGS);
         addItems(ItemTags.STONE_CRAFTING_MATERIALS, DecoBlocks.COBBLED_ETHEREAL_STONE);
         addItems(ItemTags.STONE_TOOL_MATERIALS, DecoBlocks.COBBLED_ETHEREAL_STONE);

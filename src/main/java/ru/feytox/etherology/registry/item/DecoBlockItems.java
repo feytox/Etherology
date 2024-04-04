@@ -25,8 +25,8 @@ public class DecoBlockItems {
     public static final Item AZEL_NUGGET = registerSimpleItem("azel_nugget");
     public static final Item ETHRIL_INGOT = registerSimpleItem("ethril_ingot");
     public static final Item ETHRIL_NUGGET = registerSimpleItem("ethril_nugget");
-    public static final Item TELDER_STEEL_INGOT = registerSimpleItem("telder_steel_ingot");
-    public static final Item TELDER_STEEL_NUGGET = registerSimpleItem("telder_steel_nugget");
+    public static final Item EBONY_INGOT = registerSimpleItem("ebony_ingot");
+    public static final Item EBONY_NUGGET = registerSimpleItem("ebony_nugget");
 
     // attrahite
     public static final Item ENRICHED_ATTRAHITE = registerSimpleItem("enriched_attrahite");

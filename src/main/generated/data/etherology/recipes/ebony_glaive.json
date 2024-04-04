@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "M": {
+      "item": "etherology:ebony_ingot"
+    }
+  },
+  "pattern": [
+    " M ",
+    "MI ",
+    " I "
+  ],
+  "result": {
+    "item": "etherology:ebony_glaive"
+  }
+}

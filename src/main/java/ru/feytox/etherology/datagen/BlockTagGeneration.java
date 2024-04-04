@@ -65,12 +65,12 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
         addBlocks(BlockTags.REPLACEABLE_PLANTS, DecoBlocks.THUJA, DecoBlocks.THUJA_PLANT);
 
-        addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK);
+        addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK);
         addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
         addBlocks(BlockTags.FLOWER_POTS, POTTED_BEAMER);
 
         Block[] needsStonePick = {BREWING_CAULDRON, ETHEREAL_STORAGE, ETHEREAL_CHANNEL, ETHEREAL_FORK, ETHEREAL_SOCKET, ETHEREAL_FURNACE, ETHEREAL_SPINNER, SAMOVAR_BLOCK, DecoBlocks.ATTRAHITE};
-        Block[] needsIronPick = {DecoBlocks.AZEL_BLOCK, DecoBlocks.TELDER_STEEL_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};
+        Block[] needsIronPick = {DecoBlocks.AZEL_BLOCK, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};
         addBlocks(BlockTags.PICKAXE_MINEABLE, PEDESTAL_BLOCK, SEDIMENTARY_BLOCK, JUG, CLAY_JUG, ARMILLARY_MATRIX, JEWELRY_TABLE);
         addBlocks(BlockTags.PICKAXE_MINEABLE, needsStonePick);
         addBlocks(BlockTags.PICKAXE_MINEABLE, needsIronPick);

@@ -1,8 +1,0 @@
-{
-  "type": "etherology:brewing_cauldron_recipe",
-  "inputItem": {
-    "item": "etherology:telder_steel_block"
-  },
-  "inputAspects": {"gravia": 5, "azu": 3, "hendall": 7, "gema": 8},
-  "outputItem": "etherology:telder_steel_matrix_ring"
-}
