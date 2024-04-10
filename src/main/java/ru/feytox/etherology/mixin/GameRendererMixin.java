@@ -20,6 +20,6 @@ public class GameRendererMixin {
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void noBobbingWhenOculus(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         if (client.player == null) return;
-        if (OculusItem.isUsingOculus(client.player)) ci.cancel();
+        if (OculusItem.isUsing(client.player)) ci.cancel();
     }
 }

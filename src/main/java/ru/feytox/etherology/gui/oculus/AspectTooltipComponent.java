@@ -11,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Map;
@@ -64,7 +65,7 @@ public class AspectTooltipComponent implements TooltipComponent {
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.enableBlend();
 
-        drawTexture(matrices, x * 2 + xIndex * 34, y * 2 + yIndex * 34, z, aspect.getTextureMinX(), aspect.getTextureMinY(), 32, 32, 320, 192);
+        drawTexture(matrices, x * 2 + xIndex * 34, y * 2 + yIndex * 34, z, aspect.getTextureMinX(), aspect.getTextureMinY(), 32, 32, EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
     }
 
     private static void renderCount(TextRenderer textRenderer, ItemRenderer itemRenderer, int x, int y, int count) {

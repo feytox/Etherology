@@ -8,7 +8,6 @@ import io.wispforest.owo.ui.core.Sizing;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -37,6 +36,7 @@ import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.feyapi.DoubleModel;
+import ru.feytox.etherology.util.feyapi.ItemUtils;
 import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
 
 import java.util.List;
@@ -59,12 +59,8 @@ public class OculusItem extends Item implements DoubleModel {
         return EArmPose.OCULUS_ETHEROLOGY.getUseAction();
     }
 
-    public static boolean isUsingOculus(LivingEntity entity) {
-        val items = entity.getHandItems();
-        for (ItemStack stack : items) {
-            if (stack.getItem() instanceof OculusItem) return true;
-        }
-        return false;
+    public static boolean isUsing(LivingEntity entity) {
+        return ItemUtils.isUsingItem(entity, OculusItem.class);
     }
 
 
@@ -78,7 +74,7 @@ public class OculusItem extends Item implements DoubleModel {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (!(entity instanceof ClientPlayerEntity player) || !world.isClient) return;
-        if (OculusItem.isUsingOculus(player)) {
+        if (OculusItem.isUsing(player)) {
             tickZoneParticles((ClientWorld) world, player);
         }
         if (!selected) {

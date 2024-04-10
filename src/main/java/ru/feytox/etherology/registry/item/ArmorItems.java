@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import ru.feytox.etherology.item.RevelationViewItem;
 
 import static ru.feytox.etherology.registry.item.ToolItems.register;
 import static ru.feytox.etherology.registry.util.EtherArmorMaterials.EBONY;
@@ -23,6 +24,9 @@ public class ArmorItems {
     public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new ArmorItem(EBONY, EquipmentSlot.CHEST, new FabricItemSettings()));
     public static final Item EBONY_LEGGINGS = register("ebony_leggings", new ArmorItem(EBONY, EquipmentSlot.LEGS, new FabricItemSettings()));
     public static final Item EBONY_BOOTS = register("ebony_boots", new ArmorItem(EBONY, EquipmentSlot.FEET, new FabricItemSettings()));
+
+    // trinkets
+    public static final Item REVELATION_VIEW = register("revelation_view", new RevelationViewItem());
 
     public static void registerAll() {}
 }

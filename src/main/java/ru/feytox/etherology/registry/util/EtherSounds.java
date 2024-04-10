@@ -1,11 +1,13 @@
 package ru.feytox.etherology.registry.util;
 
+import lombok.experimental.UtilityClass;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
+@UtilityClass
 public class EtherSounds {
     public static final SoundEvent ELECTRICITY = register("electricity_sound");
     public static final SoundEvent MATRIX_WORK = register("matrix_work_sound");

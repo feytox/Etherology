@@ -1,6 +1,7 @@
 package ru.feytox.etherology.registry.block;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.experimental.UtilityClass;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 
+@UtilityClass
 public class EBlockFamilies {
 
     public static final List<BlockFamily> FAMILIES = new ObjectArrayList<>();

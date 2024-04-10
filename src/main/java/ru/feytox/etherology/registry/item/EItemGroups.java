@@ -78,8 +78,8 @@ public class EItemGroups {
         etherItems.with(STAFF, UNADJUSTED_LENS, REDSTONE_LENS);
         // magic
         etherItems.with(
-                OCULUS, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA, PRIMOSHARD_VIA,
-                GLINT, THUJA_OIL, CORRUPTION_BUCKET);
+                OCULUS, REVELATION_VIEW, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
+                PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
         // materials
         etherItems.with(ETHEROSCOPE, BINDER);
         // plants

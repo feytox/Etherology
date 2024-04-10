@@ -1,5 +1,6 @@
 package ru.feytox.etherology.registry.block;
 
+import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Blocks;
@@ -52,6 +53,7 @@ import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
+@UtilityClass
 public class EBlocks {
     public static final BrewingCauldronBlock BREWING_CAULDRON = (BrewingCauldronBlock) new BrewingCauldronBlock().registerAll();
     public static final BlockEntityType<BrewingCauldronBlockEntity> BREWING_CAULDRON_BLOCK_ENTITY = Registry.register(

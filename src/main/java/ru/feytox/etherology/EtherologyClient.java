@@ -30,13 +30,14 @@ public class EtherologyClient implements ClientModInitializer {
         ColorProvidersRegistry.registerAll();
         KeybindsRegistry.registerAll();
         EntityRegistry.registerClientSide();
+        EventsRegistry.registerClientSide();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();
 
             ClientPlayerEntity player = client.player;
             if (player == null) return;
-            if (!OculusItem.isUsingOculus(player)) OculusItem.getDisplayedHud().clearChildren();
+            if (!OculusItem.isUsing(player)) OculusItem.getDisplayedHud().clearChildren();
         }));
     }
 }

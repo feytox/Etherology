@@ -3,6 +3,7 @@ package ru.feytox.etherology.magic.aspects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum Aspect implements EtherologyAspect {
     RELLA(0, 0, 0),
@@ -46,11 +47,8 @@ public enum Aspect implements EtherologyAspect {
     LUMOS(4, 6, 38),
     NOX(4, 7, 39);
 
-    @Getter
     private final int textureRow;
-    @Getter
     private final int textureColumn;
-    @Getter
     private final int runeId;
 
     @Override

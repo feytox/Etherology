@@ -77,7 +77,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
         if (world.getTime() % 10 != 0) return;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
-        if (!OculusItem.isUsingOculus(player)) return;
+        if (!OculusItem.isUsing(player)) return;
         if (state.get(STALLED)) return;
 
         Vec3d targetPos = blockPos.toCenterPos();

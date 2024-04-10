@@ -113,7 +113,7 @@
 
     "minecraft:oak_log": {"solista": 2, "planta": 6, "stralfa": 2},
     "minecraft:spruce_log": {"groseal": 2, "planta": 6, "stralfa": 2},
-    "minecraft:birch_log": {"anema": 2, "planta": 6, "stralfa": 2},
+    "minecraft:birch_log": {"anema": 2, "planta": 6, "stralfa": 2, "enn": 1, "talo": 3, "secra": 3, "defenta": 1, "viter": 8, "gema": 8},
     "minecraft:jungle_log": {"lumos": 2, "planta": 6, "stralfa": 4},
     "minecraft:acacia_log": {"lumos": 2, "planta": 6, "stralfa": 2},
     "minecraft:dark_oak_log": {"nox": 2, "planta": 6, "stralfa": 2},

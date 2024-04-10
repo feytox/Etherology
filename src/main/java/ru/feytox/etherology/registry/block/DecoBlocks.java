@@ -1,5 +1,6 @@
 package ru.feytox.etherology.registry.block;
 
+import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.*;
@@ -26,6 +27,7 @@ import ru.feytox.etherology.util.feyapi.EIdentifier;
 
 import java.util.Map;
 
+@UtilityClass
 public class DecoBlocks {
     // various types registries
     public static final SignType PEACH_SIGN_TYPE = SignType.register(new EtherSignType("peach"));

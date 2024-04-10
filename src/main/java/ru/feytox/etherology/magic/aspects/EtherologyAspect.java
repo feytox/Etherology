@@ -1,6 +1,10 @@
 package ru.feytox.etherology.magic.aspects;
 
 public interface EtherologyAspect {
+
+    int TEXTURE_WIDTH = 320;
+    int TEXTURE_HEIGHT = 192;
+
     String getAspectName();
     int getTextureRow();
     int getTextureColumn();

@@ -31,7 +31,7 @@ public interface EssenceConsumer {
     default void tickZoneParticles(ClientWorld world, BlockPos pos, EssenceZoneType blockType) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
-        if (!OculusItem.isUsingOculus(player)) return;
+        if (!OculusItem.isUsing(player)) return;
 
         ZoneComponent zoneComponent = getZone(world, pos, blockType);
         if (zoneComponent == null) return;

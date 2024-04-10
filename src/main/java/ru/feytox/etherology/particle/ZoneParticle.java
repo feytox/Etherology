@@ -32,7 +32,7 @@ public class ZoneParticle extends MovingParticle<ZoneParticleEffect> {
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
-        float alpha = MathHelper.lerp(0.25f, getAlpha(), OculusItem.isUsingOculus(player) ? 1.0f : 0.0f);
+        float alpha = MathHelper.lerp(0.25f, getAlpha(), OculusItem.isUsing(player) ? 1.0f : 0.0f);
         setAlpha(alpha);
     }
 }
