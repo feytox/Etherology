@@ -23,7 +23,7 @@
       "ru.feytox.etherology.Etherology"
     ],
     "preLaunch": [
-      "ru.feytox.etherology.util.feyapi.EtherologyPreLaunch"
+      "ru.feytox.etherology.util.misc.EtherologyPreLaunch"
     ],
     "cardinal-components": [
       "ru.feytox.etherology.registry.util.EtherologyComponents"

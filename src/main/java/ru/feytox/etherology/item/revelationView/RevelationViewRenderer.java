@@ -72,13 +72,13 @@ public class RevelationViewRenderer {
             return;
         }
 
-        refreshData(world, hitResult);
+        refreshData(world, player, hitResult);
     }
 
-    private static void refreshData(World world, HitResult hitResult) {
+    private static void refreshData(World world, PlayerEntity player, HitResult hitResult) {
         aspects = RevelationAspectProvider.getSortedAspects(world, hitResult);
         targetPos = getPosFromTarget(hitResult);
-        offsetVec = getOffset(world, hitResult);
+        offsetVec = getOffset(world, player, hitResult);
     }
 
     public static void registerRendering() {
@@ -94,12 +94,11 @@ public class RevelationViewRenderer {
 
         if (isNewTarget(hitResult)) {
             progress = 0.0f;
-            refreshData(world, hitResult);
+            refreshData(world, client.player, hitResult);
         }
 
         progress = MathHelper.lerp(0.1f*context.tickDelta(), progress, 1.0f);
         MatrixStack matrices = context.matrixStack();
-//        refreshData(world, hitResult);
         if (aspects == null || aspects.isEmpty() || targetPos == null || offsetVec == null) return;
 
         matrices.push();
@@ -178,11 +177,15 @@ public class RevelationViewRenderer {
         };
     }
 
-    private static Vec3d getOffset(World world, HitResult hitResult) {
+    private static Vec3d getOffset(World world, PlayerEntity player, HitResult hitResult) {
         return switch (hitResult.getType()) {
             case MISS, ENTITY -> Vec3d.ZERO;
             case BLOCK -> {
                 if (!(hitResult instanceof BlockHitResult target)) yield new Vec3d(0, 1, 0);
+                if (player.getPitch() > 0.0f && world.getBlockState(target.getBlockPos().up()).isAir()) {
+                    yield new Vec3d(0, 1, 0);
+                }
+
                 Vec3i sideVec = target.getSide().getVector();
                 Vec3d offset = Vec3d.of(sideVec);
                 if (!world.getBlockState(target.getBlockPos().add(sideVec)).isAir()) offset = offset.multiply(0.5);
