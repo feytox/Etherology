@@ -1,7 +1,6 @@
 package ru.feytox.etherology.block.brewingCauldron;
 
 import io.wispforest.owo.util.ImplementedInventory;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.Getter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,7 +15,6 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -26,7 +24,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
-import ru.feytox.etherology.magic.aspects.AspectProvider;
+import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
@@ -45,11 +43,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.STEAM;
 
-public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeoBlockEntity, AspectProvider {
+public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeoBlockEntity, RevelationAspectProvider {
     private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
 
     @Getter
-    private AspectContainer aspects = new AspectContainer(new Object2ObjectOpenHashMap<>());
+    private AspectContainer aspects = new AspectContainer();
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(8, ItemStack.EMPTY);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     @Getter
@@ -106,7 +104,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
             return;
         }
 
-        int oldCount = aspects.count().orElse(0);
+        int oldCount = aspects.sum().orElse(0);
         updateAspectsLvl(world, state, oldCount);
 
         if (world.getTime() % 20 != 0 || oldCount == 0) return;
@@ -133,7 +131,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     private void tickAspectsCorruption(ServerWorld world, BlockState state, int oldCount) {
-        int deltaCount = oldCount - aspects.count().orElse(0);
+        int deltaCount = oldCount - aspects.sum().orElse(0);
         if (deltaCount <= 0) return;
 
         Corruption corruption = Corruption.of(deltaCount);
@@ -159,7 +157,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     public void clearAspects(ServerWorld world) {
-        aspects = new AspectContainer(new Object2ObjectOpenHashMap<>());
+        aspects = new AspectContainer();
         wasWithAspects = false;
         syncData(world);
     }
@@ -198,7 +196,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (!aspects.isEmpty()) wasWithAspects = true;
         clear();
 
-        int oldCount = aspects.count().orElse(0);
+        int oldCount = aspects.sum().orElse(0);
         if (oldCount != 0) vaporizeAspects(world, state, 0.2d, 0.1d, world.getRandom(), oldCount);
         syncData(world);
     }
@@ -337,13 +335,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
-    public @Nullable AspectContainer getStoredAspects() {
+    public @Nullable AspectContainer getRevelationAspects() {
         return aspects;
-    }
-
-    @Override
-    public Text getAspectsSourceName() {
-        return Text.translatable(getCachedState().getBlock().getTranslationKey());
     }
 
     @Override

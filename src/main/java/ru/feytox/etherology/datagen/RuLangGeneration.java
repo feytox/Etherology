@@ -215,6 +215,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка эфирного канала");
         builder.add(STREAM_KEY, "Ключ трансляции");
+        builder.add(REVELATION_VIEW, "Окуляр");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

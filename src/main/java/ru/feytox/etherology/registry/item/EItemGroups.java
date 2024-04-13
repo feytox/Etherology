@@ -77,6 +77,7 @@ public class EItemGroups {
         // staff and lenses
         etherItems.with(STAFF, UNADJUSTED_LENS, REDSTONE_LENS);
         // magic
+        // TODO: 12.04.2024 fix corruption bucket
         etherItems.with(
                 OCULUS, REVELATION_VIEW, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
                 PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET);

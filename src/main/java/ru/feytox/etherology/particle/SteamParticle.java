@@ -9,11 +9,11 @@ import ru.feytox.etherology.util.feyapi.RGBColor;
 
 public class SteamParticle extends MovingParticle<MovingParticleEffect> {
 
-    private final Vec3d endPos;
+    private final Vec3d moveVec;
 
     public SteamParticle(ClientWorld clientWorld, double x, double y, double z, MovingParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
-        endPos = parameters.getMoveVec().add(startPos);
+        moveVec = parameters.getMoveVec();
 
         scale(0.66f);
         maxAge = 20 + random.nextBetween(0, 15);
@@ -24,6 +24,6 @@ public class SteamParticle extends MovingParticle<MovingParticleEffect> {
     @Override
     public void tick() {
         setSpriteForAgeCycle(5);
-        timeAcceleratedMovingTick(0.0078f, 0.010f, endPos, false);
+        timeAcceleratedMovingTickOnVec(0.0078f, 0.010f, moveVec);
     }
 }

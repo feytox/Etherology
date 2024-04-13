@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.feytox.etherology.item.revelationView.RevelationViewRenderer;
 import ru.feytox.etherology.util.deprecated.IdkLib;
 import ru.feytox.etherology.util.feyapi.EIdentifier;
 
@@ -30,5 +31,10 @@ public class InGameHudMixin {
             RenderSystem.setShaderTexture(0, new Identifier("minecraft", "textures/gui/icons.png"));
             ci.cancel();
         }
+    }
+
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I"))
+    private void injectRevelationRendering(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
+        RevelationViewRenderer.renderOverlay(((InGameHud)(Object) this), tickDelta);
     }
 }

@@ -5,6 +5,7 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
@@ -28,8 +29,9 @@ import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
+import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
-import ru.feytox.etherology.magic.aspects.AspectProvider;
+import ru.feytox.etherology.magic.aspects.OculusAspectProvider;
 import ru.feytox.etherology.magic.zones.EssenceZone;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
@@ -43,6 +45,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class OculusItem extends Item implements DoubleModel {
+
     @Getter
     private static final FlowLayout displayedHud = createRoot();
     @Nullable
@@ -154,7 +157,7 @@ public class OculusItem extends Item implements DoubleModel {
 
     @Nullable
     private static Component createTargetNameHud(ClientWorld world, @NonNull HitResult hitResult) {
-        Text targetName = AspectProvider.getTargetName(world, hitResult);
+        Text targetName = OculusAspectProvider.getTargetName(world, hitResult);
         if (targetName == null) return null;
 
         return new ScaledLabelComponent(targetName, 1.2f).shadow(true)
@@ -170,11 +173,12 @@ public class OculusItem extends Item implements DoubleModel {
 
         FlowLayout aspectsRoot = Containers.horizontalFlow(Sizing.content(), Sizing.content());
         aspectsRoot.positioning(Positioning.relative(50, 60));
-        AspectContainer aspects = AspectProvider.getAspects(world, hitResult);
+        AspectContainer aspects = OculusAspectProvider.getAspects(world, hitResult);
         if (aspects == null || aspects.isEmpty()) return components;
 
-        aspects.getAspects().forEach((aspect, value) -> {
-            AspectComponent aspectComponent = new AspectComponent(aspect, value);
+        List<Pair<Aspect, Integer>> sortedAspects = aspects.sorted(true, -1);
+        sortedAspects.forEach(pair -> {
+            AspectComponent aspectComponent = new AspectComponent(pair.key(), pair.value());
             aspectsRoot.child(aspectComponent);
         });
         components.add(aspectsRoot);

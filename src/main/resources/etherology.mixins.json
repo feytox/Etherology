@@ -21,6 +21,7 @@
     "FlowerPotBlockMixin",
     "ForgingScreenHandlerAccessor",
     "GeoModelAccessor",
+    "InGameHudAccessor",
     "ItemEntityAccessor",
     "KeyBindingAccessor",
     "KeyframeAnimationAccessor",

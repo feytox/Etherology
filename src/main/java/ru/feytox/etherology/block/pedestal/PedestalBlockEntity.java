@@ -14,7 +14,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
@@ -23,14 +22,14 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
-import ru.feytox.etherology.magic.aspects.AspectProvider;
+import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
 import ru.feytox.etherology.util.feyapi.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 
 public class PedestalBlockEntity extends TickableBlockEntity
-        implements ImplementedInventory, AspectProvider, UniqueProvider, SidedInventory {
+        implements ImplementedInventory, RevelationAspectProvider, UniqueProvider, SidedInventory {
     // 0 - item, 1 - carpet
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
     @Getter
@@ -175,15 +174,9 @@ public class PedestalBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    public @Nullable AspectContainer getStoredAspects() {
+    public @Nullable AspectContainer getRevelationAspects() {
+        if (items.get(0).isEmpty()) return null;
         return AspectsLoader.getAspects(items.get(0), false).orElse(null);
-    }
-
-    @Override
-    public Text getAspectsSourceName() {
-        String pedestalText = Text.translatable(getCachedState().getBlock().getTranslationKey()).getString();
-        String itemText = items.get(0).getName().getString();
-        return Text.of(pedestalText + " (" + itemText + ")");
     }
 
     @Override

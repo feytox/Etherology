@@ -29,7 +29,7 @@ public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
     public boolean matches(ArmillaryMatrixBlockEntity inventory, World world) {
         if (!centerInput.test(inventory.getStack(0))) return false;
 
-        List<Aspect> aspects = inventory.getCurrentAspects();
+        List<Aspect> aspects = inventory.getSortedAspects();
         if (aspects == null) return false;
         return aspects.equals(this.aspects);
     }

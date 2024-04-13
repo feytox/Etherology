@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import ru.feytox.etherology.item.RevelationViewItem;
+import ru.feytox.etherology.item.revelationView.RevelationViewItem;
 
 import static ru.feytox.etherology.registry.item.ToolItems.register;
 import static ru.feytox.etherology.registry.util.EtherArmorMaterials.EBONY;

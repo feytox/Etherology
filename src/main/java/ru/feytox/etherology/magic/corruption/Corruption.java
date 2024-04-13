@@ -20,7 +20,7 @@ public class Corruption implements Nbtable {
 
     @Nullable
     public static Corruption of(AspectContainer aspects) {
-        Integer aspectsCount = aspects.count().orElse(null);
+        Integer aspectsCount = aspects.sum().orElse(null);
         if (aspectsCount == null || aspectsCount == 0) return null;
 
         return of(aspectsCount);

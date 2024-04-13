@@ -6,7 +6,9 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import lombok.Getter;
 import lombok.NonNull;
@@ -42,6 +44,10 @@ public class AspectContainer implements Nbtable {
 
     public AspectContainer(Map<Aspect, Integer> mutableAspects) {
         this(mutableAspects, null);
+    }
+
+    public AspectContainer() {
+        this(new Object2ObjectOpenHashMap<>(), null);
     }
 
     public AspectContainer(Map<Aspect, Integer> mutableAspects, boolean clearZeros) {
@@ -177,8 +183,21 @@ public class AspectContainer implements Nbtable {
         return aspects.values().stream().max(Comparator.comparingInt(Integer::intValue));
     }
 
-    public Optional<Integer> count() {
+    public Optional<Integer> sum() {
         return aspects.values().stream().reduce(Integer::sum);
+    }
+
+    // TODO: 13.04.2024 test results if aspects have same values
+    public List<Pair<Aspect, Integer>> sorted(boolean reverse, int limit) {
+        val sortedAspects = aspects.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toCollection(ObjectArrayList::new));
+
+        if (reverse) Collections.reverse(sortedAspects);
+        if (limit < 0 || sortedAspects.size() <= limit) return sortedAspects;
+
+        return sortedAspects.subList(0, limit);
     }
 
     public static AspectContainer readBuf(PacketByteBuf buf) {

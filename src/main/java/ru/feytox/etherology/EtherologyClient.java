@@ -22,7 +22,7 @@ public class EtherologyClient implements ClientModInitializer {
         GeckoLibNetwork.registerClientReceiverPackets();
         ClientParticleTypes.registerAll();
         ModelPredicates.registerAll();
-        GuiRegistry.registerAll();
+        RenderingRegistry.registerAll();
         EtherologyModelProvider.register();
         BlockRenderersRegistry.registerAll();
         ScreenHandlersRegistry.registerClientSide();
@@ -35,6 +35,7 @@ public class EtherologyClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();
 
+            // TODO: 12.04.2024 simplify
             ClientPlayerEntity player = client.player;
             if (player == null) return;
             if (!OculusItem.isUsing(player)) OculusItem.getDisplayedHud().clearChildren();

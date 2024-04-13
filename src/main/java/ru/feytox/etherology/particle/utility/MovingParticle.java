@@ -50,6 +50,14 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     }
 
     /**
+     * Performs a tick to move with acceleration without end pos. The speed increases every tick.
+     */
+    public void timeAcceleratedMovingTickOnVec(float acceleration, float start_speed, Vec3d moveVec) {
+        float speed = start_speed + acceleration * age;
+        simpleMovingTickOnVec(speed, moveVec);
+    }
+
+    /**
      * Performs a tick to move with acceleration. The speed increases as particle approach the end point.
      */
     public void acceleratedMovingTick(float speed_k, float start_speed, boolean deadOnEnd, Vec3d endPos) {

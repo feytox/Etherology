@@ -13,19 +13,21 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 
-public interface AspectProvider {
+public interface OculusAspectProvider {
 
+    @Deprecated
     @Nullable
-    AspectContainer getStoredAspects();
+    AspectContainer getOculusAspects();
 
+    @Deprecated
     Text getAspectsSourceName();
 
     @Nullable
     static AspectContainer getAspects(ClientWorld world, HitResult hitResult) {
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos pos = blockHitResult.getBlockPos();
-            if (world.getBlockEntity(pos) instanceof AspectProvider provider) {
-                return provider.getStoredAspects();
+            if (world.getBlockEntity(pos) instanceof OculusAspectProvider provider) {
+                return provider.getOculusAspects();
             }
 
             BlockState state = world.getBlockState(pos);
@@ -39,10 +41,6 @@ public interface AspectProvider {
             return AspectsLoader.getAspects(itemEntity.getStack(), false).orElse(null);
         }
 
-        if (entity instanceof ItemFrameEntity itemFrame) {
-            return AspectsLoader.getAspects(itemFrame.getHeldItemStack(), false).orElse(null);
-        }
-
         return AspectsLoader.getEntityAspects(entity).orElse(null);
     }
 
@@ -50,7 +48,7 @@ public interface AspectProvider {
     static Text getTargetName(ClientWorld world, HitResult hitResult) {
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos pos = blockHitResult.getBlockPos();
-            if (world.getBlockEntity(pos) instanceof AspectProvider provider) {
+            if (world.getBlockEntity(pos) instanceof OculusAspectProvider provider) {
                 return provider.getAspectsSourceName();
             }
 

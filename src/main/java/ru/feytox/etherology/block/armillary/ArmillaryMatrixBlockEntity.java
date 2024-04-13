@@ -2,6 +2,7 @@ package ru.feytox.etherology.block.armillary;
 
 import com.google.common.collect.ImmutableList;
 import io.wispforest.owo.util.ImplementedInventory;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Getter;
@@ -36,13 +37,13 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.EnumUtils;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.components.IFloatComponent;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.particle.effects.*;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
@@ -70,7 +71,7 @@ import static ru.feytox.etherology.block.armillary.ArmillaryState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
 
-public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider {
+public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
 
     // constants
     private static final int HORIZONTAL_RADIUS = 7;
@@ -96,9 +97,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     // armillary info
     private int currentTick;
-    @Getter
-    @Nullable
-    private List<Aspect> currentAspects = new ObjectArrayList<>();
+    private AspectContainer allCurrentAspects = new AspectContainer();
     private List<Item> decryptedItems = new ObjectArrayList<>();
     @Nullable
     private Identifier recipeId = null;
@@ -266,18 +265,12 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 .filter(Optional::isPresent).map(Optional::get)
                 .reduce(AspectContainer::add).orElse(null);
 
-        if (container == null) return false;
+        if (container == null) {
+            allCurrentAspects = new AspectContainer();
+            return false;
+        }
 
-        val aspectsMap = container.getAspects();
-        List<Aspect> sortedAspects = aspectsMap.keySet().stream()
-                .sorted(Comparator.comparingInt(aspectsMap::get))
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toCollection(ObjectArrayList::new));
-
-        int size = sortedAspects.size();
-        if (size > 3) currentAspects = new ObjectArrayList<>(sortedAspects.subList(0, 3));
-        else currentAspects = sortedAspects;
-
+        allCurrentAspects = container;
         return true;
     }
 
@@ -370,7 +363,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 val recipe = getRecipe(world, true);
                 stopAllRuneAnimations();
                 if (recipe == null) {
-                    // TODO: 11.03.2024 animation is not resetting to idle
                     resetMatrix(world, state);
                     IDLE_ANIM.trigger(this);
                     return;
@@ -383,7 +375,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 currentTick = 0;
                 val recipe = getRecipe(world, true);
                 if (recipe == null) {
-                    // TODO: 11.03.2024 fix pls
                     DECRYPTING_ANIM.switchTo(this, IDLE_ANIM);
                     resetMatrix(world, state);
                     return;
@@ -414,7 +405,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     private void resetMatrix(ServerWorld world, BlockState state) {
         setMatrixState(world, state, IDLE);
-        currentAspects = null;
+        allCurrentAspects = new AspectContainer();
+        decryptedItems.clear();
         recipeId = null;
         storedEther = 0.0f;
         syncData(world);
@@ -557,10 +549,10 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     @Override
     protected void writeNbt(NbtCompound nbt) {
         nbt.putInt("current_tick", currentTick);
-        writeAspects(nbt);
         Inventories.writeNbt(nbt, items);
         writeActiveAnimations(nbt);
         writeDecryptedItems(nbt);
+        allCurrentAspects.writeNbt(nbt);
 
         if (recipeId == null) nbt.putString("recipe_id", "");
         else nbt.putString("recipe_id", recipeId.toString());
@@ -573,11 +565,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         super.readNbt(nbt);
 
         currentTick = nbt.getInt("current_tick");
-        currentAspects = readAspects(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
         activeAnimations = readActiveAnimations(nbt);
         decryptedItems = readDecryptedItems(nbt);
+        allCurrentAspects = (AspectContainer) allCurrentAspects.readNbt(nbt);
 
         String id = nbt.getString("recipe_id");
         recipeId = id.isEmpty() ? null : new Identifier(id);
@@ -614,29 +606,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         return nbtList.stream()
                 .map(element -> (NbtString) element).map(NbtString::asString)
                 .collect(Collectors.toCollection(ObjectOpenHashSet::new));
-    }
-
-    private void writeAspects(NbtCompound nbt) {
-        if (currentAspects == null) {
-            nbt.putInt("current_aspects", -1);
-            return;
-        }
-        NbtList nbtList = new NbtList();
-        currentAspects.stream().map(Aspect::name).map(NbtString::of).forEach(nbtList::add);
-        nbt.put("current_aspects", nbtList);
-    }
-
-    @Nullable
-    private List<Aspect> readAspects(NbtCompound nbt) {
-        if (!nbt.contains("current_aspects")) return null;
-        if (!nbt.contains("current_aspects", NbtElement.LIST_TYPE)) return null;
-
-        NbtList nbtList = nbt.getList("current_aspects", NbtElement.STRING_TYPE);
-        return nbtList.stream()
-                .map(element -> (NbtString) element)
-                .map(NbtString::asString)
-                .map(s -> EnumUtils.getEnumIgnoreCase(Aspect.class, s))
-                .collect(Collectors.toCollection(ObjectArrayList::new));
     }
 
     @Override
@@ -712,7 +681,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  world  the ServerWorld
      * @return        the list of Pedestals
      */
-    private List<PedestalBlockEntity> getAndCachePedestals(ServerWorld world) {
+    private List<PedestalBlockEntity> getAndCachePedestals(World world) {
         val result = new ObjectArrayList<PedestalBlockEntity>();
         val newCache = new ObjectArrayList<BlockPos>();
         BlockPos.iterate(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS)).forEach(blockPos -> {
@@ -788,5 +757,20 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 .thenPlay("animation.armillary_matrix.reset");
 
         ANIMATIONS = new EGeoAnimation[]{IDLE_ANIM, RUNE_0, RUNE_1, RUNE_2, DECRYPTING_ANIM, DECRYPTING_END, RESET};
+    }
+
+    @Override
+    public @Nullable AspectContainer getRevelationAspects() {
+        return allCurrentAspects;
+    }
+
+    @Override
+    public int getRevelationAspectsLimit() {
+        return 3;
+    }
+
+    public List<Aspect> getSortedAspects() {
+        return allCurrentAspects.sorted(true, 3).stream()
+                .map(Pair::key).collect(Collectors.toCollection(ObjectArrayList::new));
     }
 }

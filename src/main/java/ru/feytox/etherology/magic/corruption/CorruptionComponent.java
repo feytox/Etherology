@@ -17,7 +17,7 @@ import ru.feytox.etherology.registry.util.EtherologyComponents;
 public class CorruptionComponent implements ServerTickingComponent, AutoSyncedComponent {
     private static final int TICK_RATE = 20;
     private static final float MIN_CORRUPTION = 1 / 256f;
-    private static final float MAX_CHUNK_CORRUPTION = 64.0f;
+    public static final float MAX_CHUNK_CORRUPTION = 64.0f;
 
     private final Chunk chunk;
 

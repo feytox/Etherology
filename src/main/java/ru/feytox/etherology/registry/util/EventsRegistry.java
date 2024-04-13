@@ -2,12 +2,12 @@ package ru.feytox.etherology.registry.util;
 
 
 import lombok.experimental.UtilityClass;
-import ru.feytox.etherology.item.RevelationViewItem;
+import ru.feytox.etherology.item.revelationView.RevelationViewRenderer;
 
 @UtilityClass
 public class EventsRegistry {
 
     public static void registerClientSide() {
-        RevelationViewItem.registerRendering();
+        RevelationViewRenderer.registerRendering();
     }
 }
