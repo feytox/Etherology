@@ -12,7 +12,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;

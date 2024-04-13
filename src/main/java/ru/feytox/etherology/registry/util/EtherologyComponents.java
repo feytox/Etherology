@@ -19,7 +19,7 @@ import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EtherologyComponents implements EntityComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer {
     public static final ComponentKey<IFloatComponent> ETHER_MAX =

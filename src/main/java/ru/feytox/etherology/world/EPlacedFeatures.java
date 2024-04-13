@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.feature.PlacedFeatures;
 import net.minecraft.world.gen.placementmodifier.*;
 import ru.feytox.etherology.registry.block.DecoBlocks;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 

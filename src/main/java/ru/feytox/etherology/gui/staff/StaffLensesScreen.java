@@ -38,8 +38,8 @@ import ru.feytox.etherology.mixin.KeyBindingAccessor;
 import ru.feytox.etherology.mixin.MinecraftClientAccessor;
 import ru.feytox.etherology.mixin.StickyKeyBindingAccessor;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.RenderUtils;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 import java.util.Map;

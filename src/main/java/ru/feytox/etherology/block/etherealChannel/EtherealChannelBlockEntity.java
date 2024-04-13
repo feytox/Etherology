@@ -17,7 +17,7 @@ import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.List;
 

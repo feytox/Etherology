@@ -27,8 +27,8 @@ import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
-import ru.feytox.etherology.util.feyapi.UniqueProvider;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.JEWELRY_TABLE_BLOCK_ENTITY;
 

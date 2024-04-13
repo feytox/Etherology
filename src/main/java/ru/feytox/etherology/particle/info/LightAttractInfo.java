@@ -6,8 +6,8 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.LightParticle;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.FeyColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class LightAttractInfo extends LightPushingInfo {
     public LightAttractInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {

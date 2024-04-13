@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.ethersource.EtherSources;
 import ru.feytox.etherology.magic.ether.EtherCounter;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.Collections;
 import java.util.List;

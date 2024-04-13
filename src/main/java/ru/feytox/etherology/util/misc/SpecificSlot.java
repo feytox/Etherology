@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;

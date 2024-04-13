@@ -9,7 +9,7 @@ import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.particle.PealWaveParticle;
 import ru.feytox.etherology.particle.effects.args.SimpleArgs;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @Deprecated
 public class HammerPealWaveS2C extends AbstractS2CPacket {

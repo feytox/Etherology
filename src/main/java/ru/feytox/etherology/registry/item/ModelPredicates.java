@@ -12,7 +12,7 @@ import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.Arrays;
 

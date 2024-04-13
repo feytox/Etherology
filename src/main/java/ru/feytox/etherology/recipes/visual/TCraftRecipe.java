@@ -2,7 +2,7 @@ package ru.feytox.etherology.recipes.visual;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import ru.feytox.etherology.util.feyapi.EIngredient;
+import ru.feytox.etherology.util.misc.EIngredient;
 
 import java.util.Arrays;
 import java.util.HashMap;

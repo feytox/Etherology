@@ -20,7 +20,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class CrateBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
 

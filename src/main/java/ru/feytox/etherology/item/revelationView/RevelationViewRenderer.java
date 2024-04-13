@@ -27,8 +27,8 @@ import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.corruption.CorruptionComponent;
 import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.RenderUtils;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 

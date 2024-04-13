@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import lombok.experimental.UtilityClass;
 import lombok.val;

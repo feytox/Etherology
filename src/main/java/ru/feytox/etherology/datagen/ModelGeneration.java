@@ -16,7 +16,7 @@ import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.EItems;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
 import java.util.List;

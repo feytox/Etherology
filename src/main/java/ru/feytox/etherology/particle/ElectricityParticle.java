@@ -5,8 +5,8 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
 import ru.feytox.etherology.particle.utility.FeyParticle;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.FeyColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class ElectricityParticle extends FeyParticle<ElectricityParticleEffect> {
 

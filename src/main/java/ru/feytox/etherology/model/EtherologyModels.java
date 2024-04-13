@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
-import ru.feytox.etherology.util.feyapi.DoubleModel;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.DoubleModel;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Optional;
 

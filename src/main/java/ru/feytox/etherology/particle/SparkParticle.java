@@ -6,8 +6,8 @@ import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.FeyColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class SparkParticle extends MovingParticle<SparkParticleEffect> {
     // TODO: 08.02.2024 un-hardcode

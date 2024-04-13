@@ -29,7 +29,7 @@ import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.deprecated.EVec3d;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.List;
 

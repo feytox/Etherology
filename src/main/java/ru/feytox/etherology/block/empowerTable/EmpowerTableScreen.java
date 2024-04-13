@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler> {
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/empowerment_table.png");

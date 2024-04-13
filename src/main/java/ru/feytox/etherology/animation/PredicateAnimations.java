@@ -4,7 +4,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Arm;
 import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.item.TwoHandheldSword;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class PredicateAnimations {
 

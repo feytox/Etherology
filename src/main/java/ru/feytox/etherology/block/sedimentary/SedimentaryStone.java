@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 

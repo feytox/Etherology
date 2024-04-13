@@ -4,8 +4,8 @@ import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.color.world.BiomeColors;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.FeyColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON;
 

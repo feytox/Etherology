@@ -13,8 +13,8 @@ import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.FeyColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 import java.util.ArrayList;
 import java.util.List;

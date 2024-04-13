@@ -14,8 +14,8 @@ import ru.feytox.etherology.animation.AbstractPlayerAnimation;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 @AllArgsConstructor
 public class PlayerAnimationS2C extends AbstractS2CPacket {

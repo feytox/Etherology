@@ -8,7 +8,7 @@ import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.io.BufferedReader;
 import java.io.IOException;

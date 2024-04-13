@@ -17,7 +17,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
-import ru.feytox.etherology.util.feyapi.Nbtable;
+import ru.feytox.etherology.util.misc.Nbtable;
 
 import java.util.*;
 import java.util.function.BiFunction;

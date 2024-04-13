@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class SparkRisingInfo extends ParticleInfo<SparkParticle, SparkParticleEffect> {
 

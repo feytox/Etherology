@@ -9,7 +9,7 @@ import io.wispforest.owo.ui.core.Sizing;
 import net.minecraft.text.Text;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class AspectComponent extends FlowLayout {
 

@@ -9,8 +9,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
-import ru.feytox.etherology.util.feyapi.ClosedSlot;
-import ru.feytox.etherology.util.feyapi.TypedSlot;
+import ru.feytox.etherology.util.misc.ClosedSlot;
+import ru.feytox.etherology.util.misc.TypedSlot;
 
 public class EtherealStorageScreenHandler extends ScreenHandler {
     private final Inventory inventory;

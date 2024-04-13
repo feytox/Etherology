@@ -11,8 +11,8 @@ import ru.feytox.etherology.mixin.ClientPlayerInteractionManagerAccessor;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.HammerMiningC2S;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.function.Consumer;
 

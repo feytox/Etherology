@@ -37,9 +37,9 @@ import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
-import ru.feytox.etherology.util.feyapi.DoubleModel;
-import ru.feytox.etherology.util.feyapi.ItemUtils;
-import ru.feytox.etherology.util.feyapi.ScaledLabelComponent;
+import ru.feytox.etherology.util.misc.DoubleModel;
+import ru.feytox.etherology.util.misc.ItemUtils;
+import ru.feytox.etherology.util.misc.ScaledLabelComponent;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

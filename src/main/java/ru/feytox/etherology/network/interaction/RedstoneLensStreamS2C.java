@@ -11,7 +11,7 @@ import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.util.deprecated.EVec3d;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @RequiredArgsConstructor
 public class RedstoneLensStreamS2C extends AbstractS2CPacket {

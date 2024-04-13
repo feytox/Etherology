@@ -6,7 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.enchantment.ReflectionEnchantment;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.function.Supplier;
 

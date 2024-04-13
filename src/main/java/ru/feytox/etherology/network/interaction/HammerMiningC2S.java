@@ -13,7 +13,7 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.animation.PlayerAnimationS2C;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.C2SPacketInfo;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @AllArgsConstructor
 public class HammerMiningC2S extends AbstractC2SPacket {

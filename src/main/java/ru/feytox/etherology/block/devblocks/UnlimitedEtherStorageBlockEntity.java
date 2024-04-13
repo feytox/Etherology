@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import static ru.feytox.etherology.registry.block.DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK_ENTITY_TYPE;
 

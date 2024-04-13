@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;

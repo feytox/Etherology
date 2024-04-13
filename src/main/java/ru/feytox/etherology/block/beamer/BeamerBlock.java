@@ -24,7 +24,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class BeamerBlock extends PlantBlock implements Fertilizable, RegistrableBlock, SuspiciousStewIngredient {
     public static final int MAX_AGE = 3;

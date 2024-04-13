@@ -13,7 +13,7 @@ import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;

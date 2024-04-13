@@ -7,7 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class CrateScreen extends HandledScreen<CrateScreenHandler> {
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/closet.png");

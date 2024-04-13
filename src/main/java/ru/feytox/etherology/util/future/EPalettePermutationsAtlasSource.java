@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
 import org.slf4j.Logger;
 import ru.feytox.etherology.mixin.NativeImageAccessor;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.io.IOException;
 import java.io.InputStream;

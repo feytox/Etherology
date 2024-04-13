@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherFork;
 import ru.feytox.etherology.magic.ether.EtherPipe;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.ArrayList;
 import java.util.List;

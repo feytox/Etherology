@@ -24,7 +24,7 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
 import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 

@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 public class SpillBarrelBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, Nameable {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(16, ItemStack.EMPTY);

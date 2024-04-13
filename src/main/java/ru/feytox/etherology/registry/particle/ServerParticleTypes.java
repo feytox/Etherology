@@ -7,7 +7,7 @@ import net.minecraft.registry.Registry;
 import ru.feytox.etherology.particle.effects.*;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleType;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
 public class ServerParticleTypes {

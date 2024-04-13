@@ -11,7 +11,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK_ENTITY_TYPE;
 

@@ -6,7 +6,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.world.gen.EtherTreesGeneration;
 
 public class EConfiguredFeatures {

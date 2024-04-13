@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.custom.EtherRegistrable;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;

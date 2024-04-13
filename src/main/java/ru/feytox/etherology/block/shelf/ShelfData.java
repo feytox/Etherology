@@ -19,7 +19,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.furniture.FurnitureData;
-import ru.feytox.etherology.util.feyapi.Nbtable;
+import ru.feytox.etherology.util.misc.Nbtable;
 
 import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
 

@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.RenderUtils;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.RenderUtils;
 
 public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler> {
 

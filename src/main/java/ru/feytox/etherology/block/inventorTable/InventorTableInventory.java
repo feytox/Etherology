@@ -16,7 +16,7 @@ import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffStyles;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.util.feyapi.UpdatableInventory;
+import ru.feytox.etherology.util.misc.UpdatableInventory;
 
 public class InventorTableInventory implements UpdatableInventory {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(4, ItemStack.EMPTY);

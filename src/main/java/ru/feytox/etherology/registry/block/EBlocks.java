@@ -51,7 +51,7 @@ import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
 public class EBlocks {

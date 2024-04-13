@@ -12,7 +12,7 @@ import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.C2SPacketInfo;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @RequiredArgsConstructor
 public class StaffMenuSelectionC2S extends AbstractC2SPacket {

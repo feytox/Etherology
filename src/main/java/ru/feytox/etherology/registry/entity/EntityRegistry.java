@@ -12,7 +12,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneBlob;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneBlobRenderer;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.function.Consumer;
 

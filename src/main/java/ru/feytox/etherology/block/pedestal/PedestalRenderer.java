@@ -16,7 +16,7 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.joml.Math;
-import ru.feytox.etherology.util.feyapi.UniqueProvider;
+import ru.feytox.etherology.util.misc.UniqueProvider;
 
 @RequiredArgsConstructor
 public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity> {

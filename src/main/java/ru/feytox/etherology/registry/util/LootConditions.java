@@ -6,8 +6,8 @@ import net.minecraft.loot.condition.LootConditionType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.JsonSerializer;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.RandomChanceWithFortuneCondition;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.RandomChanceWithFortuneCondition;
 
 @UtilityClass
 public class LootConditions {

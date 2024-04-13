@@ -25,7 +25,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FURNACE_BLOCK_ENTITY;
 

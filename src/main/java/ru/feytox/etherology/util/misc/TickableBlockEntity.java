@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

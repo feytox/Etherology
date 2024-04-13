@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.Nbtable;
+import ru.feytox.etherology.util.misc.Nbtable;
 
 public class EssenceZone implements Nbtable {
 

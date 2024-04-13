@@ -7,8 +7,8 @@ import net.minecraft.client.item.TooltipContext;
 import ru.feytox.etherology.gui.teldecore.IngredientComponent;
 import ru.feytox.etherology.gui.teldecore.TitleComponent;
 import ru.feytox.etherology.recipes.visual.TCraftRecipe;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.EIngredient;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.EIngredient;
 
 import java.util.Map;
 

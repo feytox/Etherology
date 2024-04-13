@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceConsumer;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.info.SparkSedimentaryInfo;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.Optional;
 

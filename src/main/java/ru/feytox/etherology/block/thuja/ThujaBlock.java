@@ -15,7 +15,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.DecoBlocks;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlock, ThujaShapeController {
 

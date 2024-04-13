@@ -14,9 +14,9 @@ import ru.feytox.etherology.magic.staff.StaffMetals;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
-import ru.feytox.etherology.util.feyapi.OutputSlot;
-import ru.feytox.etherology.util.feyapi.TrackedPredictableSlot;
-import ru.feytox.etherology.util.feyapi.TrackedSlot;
+import ru.feytox.etherology.util.misc.OutputSlot;
+import ru.feytox.etherology.util.misc.TrackedPredictableSlot;
+import ru.feytox.etherology.util.misc.TrackedSlot;
 
 import java.util.List;
 

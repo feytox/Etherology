@@ -16,9 +16,9 @@ import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.compatibility.CompatFlags;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
-import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 public class TwoHandHeldAttackS2C extends AbstractS2CPacket {
 

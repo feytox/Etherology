@@ -6,7 +6,7 @@ import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.registry.block.DecoBlocks;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 // TODO: 16.06.2023 rename
 // TODO: 29.02.2024 move to EItems

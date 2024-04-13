@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.extern.slf4j.Slf4j;

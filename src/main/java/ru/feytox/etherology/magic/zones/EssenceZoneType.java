@@ -12,7 +12,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 import java.util.Collections;
 import java.util.List;

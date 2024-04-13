@@ -11,7 +11,7 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;

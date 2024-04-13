@@ -10,7 +10,7 @@ import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.network.interaction.StaffTakeLensC2S;
-import ru.feytox.etherology.util.feyapi.FeyKeybind;
+import ru.feytox.etherology.util.misc.FeyKeybind;
 
 import java.util.function.Consumer;
 

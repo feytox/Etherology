@@ -8,7 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.registry.item.ArmorItems;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
 @Environment(EnvType.CLIENT)

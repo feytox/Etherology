@@ -15,7 +15,7 @@ import net.minecraft.predicate.StatePredicate;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
-import ru.feytox.etherology.util.feyapi.RandomChanceWithFortuneCondition;
+import ru.feytox.etherology.util.misc.RandomChanceWithFortuneCondition;
 
 import java.util.Map;
 

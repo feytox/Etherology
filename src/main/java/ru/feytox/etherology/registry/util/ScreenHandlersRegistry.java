@@ -19,7 +19,7 @@ import ru.feytox.etherology.block.inventorTable.InventorTableScreen;
 import ru.feytox.etherology.block.inventorTable.InventorTableScreenHandler;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableScreen;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableScreenHandler;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
 public class ScreenHandlersRegistry {

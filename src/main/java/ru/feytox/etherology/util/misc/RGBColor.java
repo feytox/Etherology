@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 public record RGBColor(int r, int g, int b) {
     public int asHex() {

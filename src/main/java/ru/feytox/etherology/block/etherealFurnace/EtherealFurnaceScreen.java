@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EtherealFurnaceScreen extends HandledScreen<EtherealFurnaceScreenHandler> {
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/ethereal_furnace.png");

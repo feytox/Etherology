@@ -9,8 +9,8 @@ import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class StartBlockAnimS2C extends AbstractS2CPacket {
     public static final Identifier START_BLOCK_ANIM_PACKET_ID = new EIdentifier("start_block_anim");

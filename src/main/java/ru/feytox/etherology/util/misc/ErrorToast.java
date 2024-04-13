@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ui.util.Drawer;

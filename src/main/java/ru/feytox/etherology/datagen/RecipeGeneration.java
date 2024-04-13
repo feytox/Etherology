@@ -16,7 +16,7 @@ import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
 import java.util.List;

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import ru.feytox.etherology.data.feyperms.Permission;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EssenceVisualPermission extends Permission {
     public EssenceVisualPermission() {

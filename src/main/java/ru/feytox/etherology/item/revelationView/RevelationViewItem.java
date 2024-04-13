@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import ru.feytox.etherology.model.custom.RevelationViewModel;
 import ru.feytox.etherology.registry.item.ArmorItems;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class RevelationViewItem extends TrinketItem implements Wearable, TrinketRenderer {
 

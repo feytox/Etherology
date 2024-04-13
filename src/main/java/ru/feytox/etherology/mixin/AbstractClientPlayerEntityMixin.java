@@ -15,7 +15,7 @@ import ru.feytox.etherology.animation.AbstractPlayerAnimation;
 import ru.feytox.etherology.animation.PredicatePlayerAnimation;
 import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.HashMap;
 import java.util.Map;

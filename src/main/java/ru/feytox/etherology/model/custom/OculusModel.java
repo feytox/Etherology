@@ -6,7 +6,7 @@ import net.minecraft.client.util.ModelIdentifier;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.model.ModelComponents;
 import ru.feytox.etherology.model.MultiItemModel;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 

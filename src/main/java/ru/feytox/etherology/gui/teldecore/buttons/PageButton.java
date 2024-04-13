@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.gui.teldecore.Chapters;
 import ru.feytox.etherology.util.deprecated.UwuLib;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.function.Consumer;
 

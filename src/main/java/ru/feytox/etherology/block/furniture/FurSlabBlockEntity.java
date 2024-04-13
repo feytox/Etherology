@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.BOTTOM_TYPE;
 import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_TYPE;

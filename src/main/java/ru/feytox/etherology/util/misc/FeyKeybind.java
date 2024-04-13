@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;

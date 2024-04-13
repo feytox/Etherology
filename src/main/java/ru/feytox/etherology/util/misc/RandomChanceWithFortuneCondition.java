@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonDeserializationContext;

@@ -23,7 +23,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.item.EItems;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 
 public abstract class AbstractEtherealGenerator extends FacingBlock implements RegistrableBlock, BlockEntityProvider {

@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @RequiredArgsConstructor
 public class RemoveBlockEntityS2C extends AbstractS2CPacket {

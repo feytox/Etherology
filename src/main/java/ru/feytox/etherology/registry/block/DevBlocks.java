@@ -7,7 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.block.devblocks.UnlimitedEtherStorageBlock;
 import ru.feytox.etherology.block.devblocks.UnlimitedEtherStorageBlockEntity;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
 public class DevBlocks {

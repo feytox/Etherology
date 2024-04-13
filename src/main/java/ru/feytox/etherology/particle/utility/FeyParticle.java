@@ -11,8 +11,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
-import ru.feytox.etherology.util.feyapi.FeyColor;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.FeyColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 @Getter
 public abstract class FeyParticle<T extends FeyParticleEffect<T>> extends SpriteBillboardParticle {

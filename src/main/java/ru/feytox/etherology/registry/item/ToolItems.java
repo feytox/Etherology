@@ -6,7 +6,7 @@ import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.*;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import static net.minecraft.item.ToolMaterials.*;
 import static ru.feytox.etherology.registry.util.EtherToolMaterials.EBONY;

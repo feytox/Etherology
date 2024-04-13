@@ -18,7 +18,7 @@ import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
 public class RecipesRegistry {

@@ -10,8 +10,8 @@ import lombok.Setter;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.joml.Math;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
-import ru.feytox.etherology.util.feyapi.RenderUtils;
+import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;

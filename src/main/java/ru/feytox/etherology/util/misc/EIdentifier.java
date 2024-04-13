@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;

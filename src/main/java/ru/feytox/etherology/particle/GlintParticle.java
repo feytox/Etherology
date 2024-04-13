@@ -6,7 +6,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class GlintParticle extends MovingParticle<MovingParticleEffect> {
 

@@ -7,7 +7,7 @@ import io.wispforest.owo.ui.core.Surface;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.gui.teldecore.buttons.PageButton;
 import ru.feytox.etherology.util.deprecated.UwuLib;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EmptyPage extends FlowLayout {
     ButtonComponent last_prev_button;

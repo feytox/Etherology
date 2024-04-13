@@ -19,8 +19,8 @@ import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.interaction.TwoHandHeldAttackC2S;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.compatibility.CompatFlags;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
-import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {

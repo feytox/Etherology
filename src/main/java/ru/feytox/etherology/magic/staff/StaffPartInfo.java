@@ -10,7 +10,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.EnumUtils;
 import ru.feytox.etherology.model.EtherologyModels;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
 import java.util.List;

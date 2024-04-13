@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.data.feyperms.permissions.EssenceVisualPermission;
 import ru.feytox.etherology.data.feyperms.permissions.XpPermissionDeserializer;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.*;
 

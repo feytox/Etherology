@@ -22,8 +22,8 @@ import ru.feytox.etherology.block.signs.EtherSignType;
 import ru.feytox.etherology.block.signs.EtherWallSignBlock;
 import ru.feytox.etherology.block.thuja.ThujaBlock;
 import ru.feytox.etherology.block.thuja.ThujaPlantBlock;
-import ru.feytox.etherology.util.feyapi.EBlock;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EBlock;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Map;
 

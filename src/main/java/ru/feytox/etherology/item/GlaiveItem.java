@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ToolMaterial;
-import ru.feytox.etherology.util.feyapi.DoubleModel;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.DoubleModel;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 public class GlaiveItem extends TwoHandheldSword implements DoubleModel {
     public GlaiveItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed) {

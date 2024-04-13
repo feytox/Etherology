@@ -15,7 +15,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Matrix4f;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 

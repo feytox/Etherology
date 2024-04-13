@@ -2,7 +2,7 @@ package ru.feytox.etherology.animation;
 
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;

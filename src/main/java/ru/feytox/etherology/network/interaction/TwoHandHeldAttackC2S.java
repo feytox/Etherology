@@ -9,7 +9,7 @@ import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.C2SPacketInfo;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class TwoHandHeldAttackC2S extends AbstractC2SPacket {
 

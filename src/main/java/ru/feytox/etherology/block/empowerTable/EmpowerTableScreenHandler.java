@@ -9,7 +9,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.item.PrimoShard;
 import ru.feytox.etherology.registry.item.EItems;
-import ru.feytox.etherology.util.feyapi.*;
+import ru.feytox.etherology.util.misc.*;
 
 import static ru.feytox.etherology.registry.util.ScreenHandlersRegistry.EMPOWER_TABLE_SCREEN_HANDLER;
 

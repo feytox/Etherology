@@ -28,7 +28,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     private static final BooleanProperty WITH_FRAME = BooleanProperty.of("with_frame");

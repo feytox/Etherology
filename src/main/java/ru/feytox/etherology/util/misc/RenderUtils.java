@@ -1,4 +1,4 @@
-package ru.feytox.etherology.util.feyapi;
+package ru.feytox.etherology.util.misc;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.experimental.UtilityClass;

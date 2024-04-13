@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.ArrayList;
 import java.util.List;

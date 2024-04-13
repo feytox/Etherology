@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Map;
 

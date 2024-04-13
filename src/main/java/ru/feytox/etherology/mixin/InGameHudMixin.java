@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.item.revelationView.RevelationViewRenderer;
 import ru.feytox.etherology.util.deprecated.IdkLib;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {

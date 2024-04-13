@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
-import ru.feytox.etherology.util.feyapi.TickableBlockEntity;
-import ru.feytox.etherology.util.feyapi.UniqueProvider;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
+import ru.feytox.etherology.util.misc.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.PEDESTAL_BLOCK_ENTITY;
 

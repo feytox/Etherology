@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import ru.feytox.etherology.gui.teldecore.IngredientComponent;
 import ru.feytox.etherology.gui.teldecore.TitleComponent;
 import ru.feytox.etherology.recipes.visual.TFurnaceRecipe;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class FurnacePage extends EmptyPage {
     public FurnacePage(boolean is_left, TFurnaceRecipe recipe) {

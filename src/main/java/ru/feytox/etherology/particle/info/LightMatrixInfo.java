@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.particle.LightParticle;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class LightMatrixInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
 

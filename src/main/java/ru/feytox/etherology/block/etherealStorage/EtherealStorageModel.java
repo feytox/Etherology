@@ -1,7 +1,7 @@
 package ru.feytox.etherology.block.etherealStorage;
 
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 import software.bernie.geckolib.model.GeoModel;
 
 public class EtherealStorageModel extends GeoModel<EtherealStorageBlockEntity> {

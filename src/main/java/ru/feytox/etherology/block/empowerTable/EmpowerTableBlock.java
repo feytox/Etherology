@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class EmpowerTableBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
     public EmpowerTableBlock() {

@@ -6,7 +6,7 @@ import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.*;
 import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.magic.staff.StaffStyles;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 
 public class EItems {

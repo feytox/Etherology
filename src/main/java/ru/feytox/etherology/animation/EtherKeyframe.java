@@ -5,7 +5,7 @@ import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 /**
  * Represents a keyframe animation player with extended information for Etherology animations.

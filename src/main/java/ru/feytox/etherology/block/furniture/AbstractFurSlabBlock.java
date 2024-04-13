@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
 import ru.feytox.etherology.util.deprecated.IdkLib;
-import ru.feytox.etherology.util.feyapi.RegistrableBlock;
+import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.Optional;
 

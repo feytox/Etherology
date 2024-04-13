@@ -7,7 +7,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.feyapi.EtherologyPlayer;
+import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;

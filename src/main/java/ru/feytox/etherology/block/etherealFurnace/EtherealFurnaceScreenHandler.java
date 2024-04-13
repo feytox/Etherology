@@ -10,8 +10,8 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import ru.feytox.etherology.util.feyapi.ClosedSlot;
-import ru.feytox.etherology.util.feyapi.SpecificSlot;
+import ru.feytox.etherology.util.misc.ClosedSlot;
+import ru.feytox.etherology.util.misc.SpecificSlot;
 
 import static ru.feytox.etherology.registry.util.ScreenHandlersRegistry.ETHEREAL_FURNACE_SCREEN_HANDLER;
 

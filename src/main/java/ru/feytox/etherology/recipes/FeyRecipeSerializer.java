@@ -5,7 +5,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public abstract class FeyRecipeSerializer<T extends Recipe<?>> implements RecipeSerializer<T> {
 

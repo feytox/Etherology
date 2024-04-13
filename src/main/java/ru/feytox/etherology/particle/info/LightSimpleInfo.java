@@ -7,7 +7,7 @@ import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.particle.LightParticle;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
-import ru.feytox.etherology.util.feyapi.RGBColor;
+import ru.feytox.etherology.util.misc.RGBColor;
 
 public class LightSimpleInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
 

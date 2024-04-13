@@ -17,7 +17,7 @@ import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.AspectContainerId;
 import ru.feytox.etherology.magic.aspects.AspectContainerType;
 import ru.feytox.etherology.registry.util.ResourceReloaders;
-import ru.feytox.etherology.util.feyapi.EIdentifier;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 import java.util.Optional;

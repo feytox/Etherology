@@ -23,7 +23,7 @@ import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.util.EtherSounds;
-import ru.feytox.etherology.util.feyapi.ShockwaveUtil;
+import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
