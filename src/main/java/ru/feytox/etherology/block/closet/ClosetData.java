@@ -24,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.furniture.FurnitureData;
-import ru.feytox.etherology.util.misc.Nbtable;
 
 import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.BOTTOM_ACTIVE;
 import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_ACTIVE;
@@ -85,7 +84,7 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, N
     }
 
     @Override
-    public Nbtable readNbt(NbtCompound nbt) {
+    public FurnitureData readNbt(NbtCompound nbt) {
         inventory.clear();
         Inventories.readNbt(nbt, this.inventory);
         return this;

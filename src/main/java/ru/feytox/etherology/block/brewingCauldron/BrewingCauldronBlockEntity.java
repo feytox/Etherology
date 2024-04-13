@@ -261,7 +261,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         temperature = nbt.getInt("temperature");
         wasWithAspects = nbt.getBoolean("wasWithAspects");
-        aspects = (AspectContainer) aspects.readNbt(nbt);
+        aspects = aspects.readNbt(nbt);
         items.clear();
         Inventories.readNbt(nbt, items);
     }

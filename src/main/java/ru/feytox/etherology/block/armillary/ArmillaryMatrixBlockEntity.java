@@ -569,7 +569,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         Inventories.readNbt(nbt, items);
         activeAnimations = readActiveAnimations(nbt);
         decryptedItems = readDecryptedItems(nbt);
-        allCurrentAspects = (AspectContainer) allCurrentAspects.readNbt(nbt);
+        allCurrentAspects = allCurrentAspects.readNbt(nbt);
 
         String id = nbt.getString("recipe_id");
         recipeId = id.isEmpty() ? null : new Identifier(id);

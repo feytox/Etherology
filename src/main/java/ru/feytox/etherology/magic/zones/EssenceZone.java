@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.misc.Nbtable;
+import ru.feytox.etherology.util.misc.NbtReadable;
 
-public class EssenceZone implements Nbtable {
+public class EssenceZone implements NbtReadable<EssenceZone> {
 
     @Setter
     @Getter
@@ -28,7 +28,7 @@ public class EssenceZone implements Nbtable {
     }
 
     @Override
-    public Nbtable readNbt(NbtCompound nbt) {
+    public EssenceZone readNbt(NbtCompound nbt) {
         return readFromNbt(nbt);
     }
 }

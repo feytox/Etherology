@@ -17,7 +17,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
-import ru.feytox.etherology.util.misc.Nbtable;
+import ru.feytox.etherology.util.misc.NbtReadable;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -25,7 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
-public class AspectContainer implements Nbtable {
+public class AspectContainer implements NbtReadable<AspectContainer> {
 
     @NonNull
     private final ImmutableMap<Aspect, Integer> aspects;
@@ -161,7 +161,7 @@ public class AspectContainer implements Nbtable {
 
     @Override
     @CheckReturnValue
-    public Nbtable readNbt(NbtCompound nbt) {
+    public AspectContainer readNbt(NbtCompound nbt) {
         Map<Aspect, Integer> result = new Object2ObjectOpenHashMap<>();
 
         NbtCompound nbtContainer = nbt.getCompound("aspects");

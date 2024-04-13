@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.util.misc.Nbtable;
+import ru.feytox.etherology.util.misc.NbtReadable;
 
 
 @Getter
 @RequiredArgsConstructor
-public class Corruption implements Nbtable {
+public class Corruption implements NbtReadable<Corruption> {
 
     private final float corruptionValue;
 
@@ -63,7 +63,7 @@ public class Corruption implements Nbtable {
 
     @Nullable
     @Override
-    public Nbtable readNbt(NbtCompound nbt) {
+    public Corruption readNbt(NbtCompound nbt) {
         return readFromNbt(nbt);
     }
 }

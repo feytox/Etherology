@@ -8,13 +8,13 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.closet.ClosetData;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.block.shelf.ShelfData;
-import ru.feytox.etherology.util.misc.Nbtable;
+import ru.feytox.etherology.util.misc.NbtReadable;
 
 import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
-public enum FurnitureType implements StringIdentifiable, Nbtable {
+public enum FurnitureType implements StringIdentifiable, NbtReadable<FurnitureType> {
     EMPTY(null, true),
     FURNITURE(null, false),
     CLOSET(ClosetData::new, false),
@@ -53,10 +53,9 @@ public enum FurnitureType implements StringIdentifiable, Nbtable {
     }
 
     @Override
-    public Nbtable readNbt(NbtCompound nbt) {
+    public FurnitureType readNbt(NbtCompound nbt) {
         return readFromNbt(nbt);
     }
-
 
     @FunctionalInterface
     public interface Factory<T extends FurnitureData> {

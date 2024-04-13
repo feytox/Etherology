@@ -10,9 +10,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
-import ru.feytox.etherology.util.misc.Nbtable;
+import ru.feytox.etherology.util.misc.NbtReadable;
 
-public abstract class FurnitureData implements Nbtable {
+public abstract class FurnitureData implements NbtReadable<FurnitureData> {
     public final boolean isBottom;
 
     public FurnitureData(boolean isBottom) {

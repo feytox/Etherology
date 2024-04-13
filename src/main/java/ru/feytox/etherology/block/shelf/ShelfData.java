@@ -19,7 +19,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.furniture.FurnitureData;
-import ru.feytox.etherology.util.misc.Nbtable;
 
 import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
 
@@ -117,7 +116,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
     }
 
     @Override
-    public Nbtable readNbt(NbtCompound nbt) {
+    public FurnitureData readNbt(NbtCompound nbt) {
         inventory.clear();
         Inventories.readNbt(nbt, this.inventory);
         return this;
