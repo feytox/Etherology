@@ -15,8 +15,12 @@ import ru.feytox.etherology.registry.util.EtherologyComponents;
 
 @RequiredArgsConstructor
 public class CorruptionComponent implements ServerTickingComponent, AutoSyncedComponent {
-    private static final int TICK_RATE = 20;
-    private static final float MIN_CORRUPTION = 1 / 256f;
+    private static final int INFECTION_TICK_RATE = 60*20;
+    private static final int EVAPORATION_TICK_RATE = 20;
+    private static final float EVAPORATION_SPEED = 1/3f;
+    private static final float EVAPORATION_DELTA = 14;
+    private static final float MIN_CORRUPTION = 1/256f;
+    private static final float INFECTION_LIMIT = 48.0f;
     public static final float MAX_CHUNK_CORRUPTION = 64.0f;
 
     private final Chunk chunk;
@@ -57,24 +61,42 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
 
     @Override
     public void serverTick() {
-        if (ticks++ % TICK_RATE != 0) return;
-        if (corruption == null || corruption.getCorruptionValue() <= MAX_CHUNK_CORRUPTION) return;
-        if (!(chunk instanceof WorldChunk worldChunk)) return;
+        ticks++;
+        if (tickInfection() && tickEvaporation()) return;
+
+        save();
+    }
+
+    private boolean tickInfection() {
+        if (ticks % INFECTION_TICK_RATE != 0) return true;
+        if (corruption == null || corruption.getCorruptionValue() <= INFECTION_LIMIT) return true;
+        if (!(chunk instanceof WorldChunk worldChunk)) return true;
 
         World world = worldChunk.getWorld();
-        float tipValue = (corruption.getCorruptionValue() - MAX_CHUNK_CORRUPTION) / 4;
+        float value = corruption.getCorruptionValue();
+        float tipValue = Math.min(value - INFECTION_LIMIT, 1.0f);
         ChunkPos chunkPos = worldChunk.getPos();
-        corruption = new Corruption(MAX_CHUNK_CORRUPTION);
+        increment(tipValue);
 
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 if (x == z || x == -z) continue;
                 Chunk sideChunk = world.getChunk(x + chunkPos.x, z + chunkPos.z);
                 CorruptionComponent component = sideChunk.getComponent(EtherologyComponents.CORRUPTION);
-                component.increment(tipValue);
+                component.increment(tipValue / 4);
             }
         }
+        return false;
+    }
 
-        save();
+    private boolean tickEvaporation() {
+        if (ticks % EVAPORATION_TICK_RATE != 0) return true;
+        if (corruption == null) return true;
+
+        float value = corruption.getCorruptionValue();
+        if (ticks % (1200 * EVAPORATION_TICK_RATE * EVAPORATION_SPEED * (value + EVAPORATION_DELTA)) != 0) return true;
+
+        increment(-1);
+        return false;
     }
 }

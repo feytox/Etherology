@@ -65,7 +65,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (!BrewingCauldronBlock.isFilled(state)) return;
-        tickMixingItems(world, state);
+        tickMixingItems(world);
         tickAspects(world, state);
         tickTemperature(world, blockPos);
     }
@@ -75,6 +75,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (!BrewingCauldronBlock.isFilled(state)) return;
 
         tickBubbleParticles(world, state);
+        tickCorruptionParticles(world, state);
     }
 
     private void tickBubbleParticles(ClientWorld world, BlockState state) {
@@ -90,11 +91,11 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
     }
 
-    private void tickMixingItems(ServerWorld world, BlockState state) {
+    private void tickMixingItems(ServerWorld world) {
         if (!shouldMixItems || mixItemsTicks-- > 0) return;
 
         shouldMixItems = false;
-        mixItems(world, state);
+        mixItems(world);
     }
 
     private void tickAspects(ServerWorld world, BlockState state) {
@@ -107,19 +108,25 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         int oldCount = aspects.sum().orElse(0);
         updateAspectsLvl(world, state, oldCount);
 
-        if (world.getTime() % 20 != 0 || oldCount == 0) return;
+        if (world.getTime() % 100 != 0 || oldCount == 0) return;
         Random random = world.getRandom();
 
-        vaporizeAspects(world, state, 0.1d, 0.05d, random, oldCount);
+        vaporizeAspects(world, 0.1d, 0.05d, random, oldCount);
     }
 
-    private void vaporizeAspects(ServerWorld world, BlockState state, double minChance, double perAspectChance, Random random, int oldCount) {
+    private void vaporizeAspects(ServerWorld world, double minChance, double perAspectChance, Random random, int oldCount) {
         aspects = aspects.map(value -> {
             double chance = minChance + perAspectChance * value;
             if (random.nextDouble() > chance) return value;
             return value - 1;
         });
-        tickAspectsCorruption(world, state, oldCount);
+
+        int deltaCount = oldCount - aspects.sum().orElse(0);
+        if (deltaCount > 0) {
+            Corruption corruption = Corruption.of(deltaCount);
+            corruption.placeInChunk(world, pos);
+        }
+
         syncData(world);
     }
 
@@ -130,18 +137,16 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         world.setBlockState(pos, state.with(BrewingCauldronBlock.ASPECTS_LVL, aspectsLvl));
     }
 
-    private void tickAspectsCorruption(ServerWorld world, BlockState state, int oldCount) {
-        int deltaCount = oldCount - aspects.sum().orElse(0);
-        if (deltaCount <= 0) return;
-
-        Corruption corruption = Corruption.of(deltaCount);
-        corruption.placeInChunk(world, pos);
+    private void tickCorruptionParticles(ClientWorld world, BlockState state) {
+        int count = aspects.sum().orElse(0);
+        if (count == 0) return;
+        if (world.getTime() % Math.max(MathHelper.floor(250.0f / count + 2), 1) != 0) return;
 
         Vec3d moveVec = new Vec3d(0, 3, 0);
         Vec3d centerPos = getWaterPos(state).add(Vec3d.of(pos));
 
         MovingParticleEffect effect = new MovingParticleEffect(STEAM, moveVec);
-        effect.spawnParticles(world, deltaCount, 0.35, 0, 0.35, centerPos);
+        effect.spawnParticles(world, 1, 0.35, 0, 0.35, centerPos);
     }
 
     private void tickTemperature(ServerWorld world, BlockPos blockPos) {
@@ -186,7 +191,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         mixItemsTicks = 10;
     }
 
-    private void mixItems(ServerWorld world, BlockState state) {
+    private void mixItems(ServerWorld world) {
         items.forEach(stack -> {
             AspectContainer itemAspects = AspectsLoader.getAspects(stack, true).orElse(null);
             if (itemAspects == null) return;
@@ -197,7 +202,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         clear();
 
         int oldCount = aspects.sum().orElse(0);
-        if (oldCount != 0) vaporizeAspects(world, state, 0.2d, 0.1d, world.getRandom(), oldCount);
+        if (oldCount != 0) vaporizeAspects(world, 0.2d, 0.1d, world.getRandom(), oldCount);
         syncData(world);
     }
 

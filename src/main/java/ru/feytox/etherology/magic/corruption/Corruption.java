@@ -30,9 +30,10 @@ public class Corruption implements NbtReadable<Corruption> {
         return new Corruption(aspectsCount * 0.1f);
     }
 
+    @Nullable
     @CheckReturnValue
     public Corruption increment(float value) {
-        return new Corruption(corruptionValue + value);
+        return corruptionValue + value > 0 ? new Corruption(corruptionValue + value) : null;
     }
 
     public void placeInChunk(ServerWorld world, BlockPos pos) {
@@ -44,6 +45,7 @@ public class Corruption implements NbtReadable<Corruption> {
         return corruptionValue <= 0;
     }
 
+    @Nullable
     @CheckReturnValue
     public Corruption add(@Nullable Corruption corruption) {
         if (corruption == null) return new Corruption(corruptionValue);
