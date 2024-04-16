@@ -83,7 +83,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private static final EGeoAnimation RUNE_0;
     private static final EGeoAnimation RUNE_1;
     private static final EGeoAnimation RUNE_2;
-    private static final EGeoAnimation DECRYPTING_ANIM;
+    private static final EGeoAnimation DECRYPTING_START;
+    private static final EGeoAnimation DECRYPTING_LOOP;
     private static final EGeoAnimation DECRYPTING_END;
     private static final EGeoAnimation RESET;
     private static final EGeoAnimation[] ANIMATIONS;
@@ -161,8 +162,24 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                     world.playSound(centerPos.x, centerPos.y, centerPos.z, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.066f, 0.7f * world.getRandom().nextFloat() + 0.55f, true);
                 }
             }
-            case DECRYPTING, RESULTING -> spawnElectricityParticles(world);
+            case RESETTING -> spawnSphereParticles(world);
+            case DECRYPTING_START, RESULTING -> spawnElectricityParticles(world);
+            case DECRYPTING -> {
+                spawnElectricityParticles(world);
+                spawnSphereParticles(world);
+            }
         }
+    }
+
+    private void spawnSphereParticles(ClientWorld world) {
+        Random random = world.getRandom();
+        Vec3d centerPos = getCenterPos();
+        Vec3d randomVec = new Vec3d(0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4);
+        randomVec = randomVec.multiply(random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1);
+        Vec3d startPos = centerPos.add(randomVec);
+
+        val effect = new MovingParticleEffect(ServerParticleTypes.ARMILLARY_SPHERE, randomVec);
+        effect.spawnParticles(world, 2, 0, startPos);
     }
 
     private void spawnElectricityParticles(ClientWorld world) {
@@ -261,6 +278,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
             stackStream = Stream.concat(stackStream, decryptedStream);
         }
         val container = stackStream
+                .filter(stack -> !stack.isEmpty())
                 .map(stack -> AspectsLoader.getAspects(stack, false))
                 .filter(Optional::isPresent).map(Optional::get)
                 .reduce(AspectContainer::add).orElse(null);
@@ -367,15 +385,21 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                     IDLE_ANIM.trigger(this);
                     return;
                 }
-                DECRYPTING_ANIM.trigger(this);
-                setMatrixState(world, state, DECRYPTING);
+                DECRYPTING_START.trigger(this);
+                setMatrixState(world, state, ArmillaryState.DECRYPTING_START);
+            }
+            case DECRYPTING_START -> {
+                if (currentTick++ >= 59) {
+                    DECRYPTING_START.switchTo(this, DECRYPTING_LOOP);
+                    setMatrixState(world, state, DECRYPTING);
+                }
             }
             case DECRYPTING -> {
                 if (tickItemDecrypting(world)) break;
                 currentTick = 0;
                 val recipe = getRecipe(world, true);
                 if (recipe == null) {
-                    DECRYPTING_ANIM.switchTo(this, IDLE_ANIM);
+                    DECRYPTING_LOOP.switchTo(this, IDLE_ANIM);
                     resetMatrix(world, state);
                     return;
                 }
@@ -383,7 +407,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 if (!isPedestalsEmpty(world)) break;
 
                 setMatrixState(world, state, RESULTING);
-                DECRYPTING_ANIM.switchTo(this, DECRYPTING_END);
+                DECRYPTING_LOOP.switchTo(this, DECRYPTING_END);
             }
             case RESULTING -> {
                 if (currentTick++ >= 74) {
@@ -748,15 +772,16 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                 .thenPlayAndHold("animation.armillary_matrix.rune_1");
         RUNE_2 = EGeoAnimation.begin("rune_2").withoutController()
                 .thenPlayAndHold("animation.armillary_matrix.rune_2");
-        DECRYPTING_ANIM = EGeoAnimation.begin("decrypting")
-                .thenPlay("animation.armillary_matrix.decrypting_start")
+        DECRYPTING_START = EGeoAnimation.begin("decrypting_start")
+                .thenPlay("animation.armillary_matrix.decrypting_start");
+        DECRYPTING_LOOP = EGeoAnimation.begin("decrypting_loop")
                 .thenLoop("animation.armillary_matrix.decrypting_loop");
         DECRYPTING_END = EGeoAnimation.begin("decrypting_end").withoutMarking()
                 .thenPlay("animation.armillary_matrix.decrypting_end");
         RESET = EGeoAnimation.begin("reset").withoutMarking()
                 .thenPlay("animation.armillary_matrix.reset");
 
-        ANIMATIONS = new EGeoAnimation[]{IDLE_ANIM, RUNE_0, RUNE_1, RUNE_2, DECRYPTING_ANIM, DECRYPTING_END, RESET};
+        ANIMATIONS = new EGeoAnimation[]{IDLE_ANIM, RUNE_0, RUNE_1, RUNE_2, DECRYPTING_START, DECRYPTING_LOOP, DECRYPTING_END, RESET};
     }
 
     @Override

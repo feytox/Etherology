@@ -30,6 +30,7 @@ public class ClientParticleTypes {
         register(GLINT, GlintParticle::new);
         register(ETHER, EtherParticle::new);
         register(ENERGY_ABSORPTION, EnergyAbsorptionParticle::new);
+        register(ARMILLARY_SPHERE, SphereParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {

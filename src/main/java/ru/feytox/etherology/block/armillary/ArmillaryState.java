@@ -12,6 +12,7 @@ public enum ArmillaryState implements StringIdentifiable {
     TESTED(true),
     PREPARED(true),
     CONSUMING(true),
+    DECRYPTING_START(true),
     DECRYPTING(true),
     RESULTING(true);
 

@@ -187,14 +187,16 @@ public class AspectContainer implements NbtReadable<AspectContainer> {
         return aspects.values().stream().reduce(Integer::sum);
     }
 
-    // TODO: 13.04.2024 test results if aspects have same values
     public List<Pair<Aspect, Integer>> sorted(boolean reverse, int limit) {
-        val sortedAspects = aspects.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
+        Comparator<Map.Entry<Aspect, Integer>> comparator = Map.Entry.comparingByValue();
+        comparator = comparator.thenComparing(Map.Entry.comparingByKey());
+        if (reverse) comparator = comparator.reversed();
+
+        ObjectArrayList<Pair<Aspect, Integer>> sortedAspects = aspects.entrySet().stream()
+                .sorted(comparator)
                 .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toCollection(ObjectArrayList::new));
 
-        if (reverse) Collections.reverse(sortedAspects);
         if (limit < 0 || sortedAspects.size() <= limit) return sortedAspects;
 
         return sortedAspects.subList(0, limit);

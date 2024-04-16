@@ -25,12 +25,14 @@ public class ServerParticleTypes {
     public static final FeyParticleType<MovingParticleEffect> GLINT = register("glint_particle", MovingParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ETHER = register("ether", MovingParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> ENERGY_ABSORPTION = register("energy_absorption", SimpleParticleEffect::new);
+    public static final FeyParticleType<MovingParticleEffect> ARMILLARY_SPHERE = register("armillary_sphere", MovingParticleEffect::new);
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);
         return Registry.register(Registries.PARTICLE_TYPE, new EIdentifier(name), particleType);
     }
 
+    @Deprecated
     private static <T extends Enum<T>> FeyParticleType<TypedParticleEffect<T>> registerTyped(String name, Class<T> enumClass) {
         return register(name, type -> new TypedParticleEffect<>(type, enumClass));
     }
