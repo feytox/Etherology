@@ -21,7 +21,7 @@ public class EtherParticle extends MovingParticle<MovingParticleEffect> {
 
     @Override
     public void tick() {
-        simpleMovingTickOnVec(0.033f, moveVec);
+        simpleMovingTickInDirection(0.033f, moveVec);
         setSpriteForAge();
     }
 }

@@ -51,7 +51,6 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
             if (world.getBlockEntity(pos) instanceof ArmillaryMatrixBlockEntity matrix) {
                 ItemScatterer.spawn(world, pos, matrix);
             }
-
             super.onStateReplaced(state, world, pos, newState, false);
         }
     }

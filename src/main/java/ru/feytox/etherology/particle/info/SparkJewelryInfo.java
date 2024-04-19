@@ -42,13 +42,12 @@ public class SparkJewelryInfo extends ParticleInfo<SparkParticle, SparkParticleE
 
     @Override
     public void tick(SparkParticle particle) {
-        if (particle.tickAge()) return;
         particle.simpleMovingTick(0.0075f, endPos, false);
         particle.setSpriteForAge();
     }
 
     @Override
     public int getMaxAge(Random random) {
-        return 30;
+        return 15;
     }
 }

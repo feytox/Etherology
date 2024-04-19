@@ -2,8 +2,10 @@ package ru.feytox.etherology.block.brewingCauldron;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import lombok.Getter;
+import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventories;
@@ -15,6 +17,7 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -28,10 +31,13 @@ import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
+import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeInventory;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
@@ -57,6 +63,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     private int mixItemsTicks = 0;
     @Getter
     private boolean wasWithAspects = false;
+    @Nullable
+    private BrewingCauldronSoundInstance soundInstance = null;
 
     public BrewingCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BREWING_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -76,6 +84,33 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         tickBubbleParticles(world, state);
         tickCorruptionParticles(world, state);
+        tickHazeParticles(world, state);
+        tickSound();
+    }
+
+    private void tickSound() {
+        if (temperature < 100) return;
+        val client = MinecraftClient.getInstance();
+        if (client.player == null) return;
+
+        if (soundInstance == null && client.player.squaredDistanceTo(pos.toCenterPos()) < 36) {
+            soundInstance = new BrewingCauldronSoundInstance(this, client.player);
+            client.getSoundManager().play(soundInstance);
+            return;
+        }
+
+        if (soundInstance == null) return;
+        if (soundInstance.isDone()) soundInstance = null;
+    }
+
+    private void tickHazeParticles(ClientWorld world, BlockState state) {
+        if (world.getTime() % 12 != 0) return;
+        if (temperature < 100) return;
+        if (world.getRandom().nextFloat() < 0.5) return;
+
+        Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
+        val effect = new SimpleParticleEffect(ServerParticleTypes.HAZE);
+        effect.spawnParticles(world, 1, 0.1, start);
     }
 
     private void tickBubbleParticles(ClientWorld world, BlockState state) {
@@ -173,12 +208,24 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         ItemStack stack = itemEntity.getStack();
         if (isEmpty() && tryCraft(world, stack, state)) {
             itemEntity.discard();
+            spawnResultParticles(world, state);
+            Random random = world.getRandom();
+            world.playSound(null, pos, EtherSounds.POUF, SoundCategory.BLOCKS, 1.0f, random.nextFloat()*0.2f+0.9f);
             return;
         }
 
         if (!BrewingCauldronBlock.isFilled(world, pos)) return;
-        if (putStack(stack).isEmpty()) itemEntity.discard();
+        if (putStack(stack).isEmpty()) {
+            itemEntity.discard();
+        }
         syncData(world);
+    }
+
+    private void spawnResultParticles(ServerWorld world, BlockState state) {
+        Random random = world.getRandom();
+        Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
+        val effect = new SimpleParticleEffect(ServerParticleTypes.ALCHEMY);
+        effect.spawnParticles(world, random.nextBetween(6, 10), 0.1f, start);
     }
 
     public void mixWater() {

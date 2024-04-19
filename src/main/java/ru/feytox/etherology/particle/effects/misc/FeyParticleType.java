@@ -5,18 +5,20 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 
 public class FeyParticleType<T extends ParticleEffect> extends ParticleType<T> {
-    private final FeyParticleEffect<T> dummy;
+
+    private final Codec<T> codec;
     private final ParticleEffect.Factory<T> dummyFactory;
 
     public FeyParticleType(boolean alwaysShow, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         super(alwaysShow, null);
-        dummy = dummyConstructor.createDummy(this);
+        FeyParticleEffect<T> dummy = dummyConstructor.createDummy(this);
+        codec = dummy.createCodec();
         dummyFactory = dummy.createFactory();
     }
 
     @Override
     public Codec<T> getCodec() {
-        return dummy.createCodec();
+        return codec;
     }
 
     @Override

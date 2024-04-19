@@ -11,10 +11,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.registry.util.EtherToolMaterials;
 
 public class StreamKeyItem extends ToolItem {
@@ -26,7 +28,11 @@ public class StreamKeyItem extends ToolItem {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         ActionResult result = tryUseOnChannel(context);
-        return result == null ? super.useOnBlock(context) : result;
+        if (result == null) return super.useOnBlock(context);
+
+        Random random = context.getWorld().getRandom();
+        context.getWorld().playSound(null, context.getBlockPos(), EtherSounds.RATCHET, SoundCategory.BLOCKS, 0.8f, random.nextFloat()*0.2f+0.9f);
+        return result;
     }
 
     @Nullable

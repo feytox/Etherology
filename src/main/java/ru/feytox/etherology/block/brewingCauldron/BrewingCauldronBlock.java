@@ -19,6 +19,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +36,6 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 
-@SuppressWarnings("deprecation")
 public class BrewingCauldronBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
 
     public static final IntProperty LEVEL = IntProperty.of("level", 0, 8);
@@ -64,6 +64,16 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING, LEVEL, ASPECTS_LVL);
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.getBlock() != newState.getBlock() && !moved) {
+            if (world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron) {
+                ItemScatterer.spawn(world, pos, cauldron);
+            }
+            super.onStateReplaced(state, world, pos, newState, false);
+        }
     }
 
     @Nullable
@@ -113,6 +123,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
         world.setBlockState(pos, state.with(LEVEL, 0).with(ASPECTS_LVL, 0));
         cauldron.clearAspects((ServerWorld) world);
+        ItemScatterer.spawn(world, pos.up(), cauldron);
         world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
         return ActionResult.SUCCESS;
     }

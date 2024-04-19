@@ -19,7 +19,7 @@ public class SphereParticle extends MovingParticle<MovingParticleEffect> {
 
     @Override
     public void tick() {
-        simpleMovingTickOnVec(0.25f, moveVec);
+        simpleMovingTickInDirection(0.25f, moveVec);
         setSpriteForAge();
     }
 }

@@ -7,16 +7,14 @@ import net.minecraft.util.StringIdentifiable;
 @Getter
 @RequiredArgsConstructor
 public enum ArmillaryState implements StringIdentifiable {
-    IDLE(false),
-    RESETTING(true),
-    TESTED(true),
-    PREPARED(true),
-    CONSUMING(true),
-    DECRYPTING_START(true),
-    DECRYPTING(true),
-    RESULTING(true);
-
-    private final boolean working;
+    IDLE,
+    RESETTING,
+    TESTED,
+    PREPARED,
+    CONSUMING,
+    DECRYPTING_START,
+    DECRYPTING,
+    RESULTING;
 
     @Override
     public String asString() {

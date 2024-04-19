@@ -13,6 +13,8 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     @Override
     public abstract void tick();
 
+    // TODO: 19.04.2024 rename "movingTick" methods
+
     /**
      * Performs a tick to move with static speed.
      */
@@ -31,7 +33,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
     /**
      * Performs a tick to move with static speed without end pos.
      */
-    public void simpleMovingTickOnVec(float speed, Vec3d pathVec) {
+    public void simpleMovingTickInDirection(float speed, Vec3d pathVec) {
         if (tickAge()) return;
         markPrevPos();
 
@@ -40,6 +42,12 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
         modifyPos(deltaVec);
     }
 
+    public void movingTick(Vec3d velocity) {
+        if (tickAge()) return;
+        markPrevPos();
+
+        modifyPos(velocity);
+    }
 
     /**
      * Performs a tick to move with acceleration. The speed increases every tick.
@@ -54,7 +62,7 @@ public abstract class MovingParticle<T extends FeyParticleEffect<T>> extends Fey
      */
     public void timeAcceleratedMovingTickOnVec(float acceleration, float start_speed, Vec3d moveVec) {
         float speed = start_speed + acceleration * age;
-        simpleMovingTickOnVec(speed, moveVec);
+        simpleMovingTickInDirection(speed, moveVec);
     }
 
     /**

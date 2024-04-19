@@ -69,14 +69,16 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
 
     private boolean tickInfection() {
         if (ticks % INFECTION_TICK_RATE != 0) return true;
-        if (corruption == null || corruption.getCorruptionValue() <= INFECTION_LIMIT) return true;
+        if (corruption == null) return true;
+
+        float corruptionLevel = corruption.getCorruptionValue();
+        if (corruptionLevel <= INFECTION_LIMIT) return true;
         if (!(chunk instanceof WorldChunk worldChunk)) return true;
 
         World world = worldChunk.getWorld();
-        float value = corruption.getCorruptionValue();
-        float tipValue = Math.min(value - INFECTION_LIMIT, 1.0f);
+        float tipValue = Math.min(corruptionLevel - INFECTION_LIMIT, 1.0f);
         ChunkPos chunkPos = worldChunk.getPos();
-        increment(tipValue);
+        increment(-tipValue);
 
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {

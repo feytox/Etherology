@@ -10,11 +10,14 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 @UtilityClass
 public class EtherSounds {
     public static final SoundEvent ELECTRICITY = register("electricity_sound");
-    public static final SoundEvent MATRIX_WORK = register("matrix_work_sound");
+    public static final SoundEvent MATRIX_WORK = register("matrix_idle_sound");
     public static final SoundEvent HAMMER_SWING = register("hammer_swing_sound");
     public static final SoundEvent HAMMER_DAMAGE = register("hammer_damage_sound");
     public static final SoundEvent THUNDER_ZAP = register("thunder_zap_sound");
     public static final SoundEvent DEFLECT = register("deflect");
+    public static final SoundEvent BUBBLES = register("bubbles");
+    public static final SoundEvent POUF = register("pouf");
+    public static final SoundEvent RATCHET = register("ratchet");
 
     public static void registerAll() {}
 

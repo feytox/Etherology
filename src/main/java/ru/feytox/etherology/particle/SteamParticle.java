@@ -25,7 +25,7 @@ public class SteamParticle extends MovingParticle<MovingParticleEffect> {
     @Override
     public void tick() {
         setSpriteForAgeCycle(5);
-        simpleMovingTickOnVec(0.07f, moveVec);
+        simpleMovingTickInDirection(0.07f, moveVec);
         scale(Math.min(1.0f, 1.75f*(1f - (float) age / maxAge)));
     }
 }

@@ -1,6 +1,5 @@
 package ru.feytox.etherology.block.armillary;
 
-import lombok.val;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
@@ -17,15 +16,14 @@ public class ArmillaryMatrixSoundInstance extends MovingSoundInstance {
         super(MATRIX_WORK, SoundCategory.BLOCKS, SoundInstance.createRandom());
         this.armillary = armillary;
         this.player = player;
-        this.attenuationType = SoundInstance.AttenuationType.NONE;
+        this.attenuationType = AttenuationType.NONE;
         this.repeat = true;
         this.repeatDelay = 0;
     }
 
     @Override
     public void tick() {
-        val matrixState = armillary.getMatrixState(armillary.getCachedState());
-        if (armillary.isRemoved() || !matrixState.isWorking()) {
+        if (armillary.isRemoved()) {
             fading = Math.max(0, this.fading - 0.05f);
             if (fading == 0) {
                 setDone();

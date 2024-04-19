@@ -146,7 +146,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      */
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        tickSound(state);
+        tickSound();
         tickAnimations(state);
         tickClientParticles(world, state);
     }
@@ -333,24 +333,19 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     /**
      * Tick the sound if matrix is working.
-     *
-     * @param  state  the block state
      */
-    private void tickSound(BlockState state) {
-        // TODO: 03.03.2024 ask about sound
-
+    private void tickSound() {
         val client = MinecraftClient.getInstance();
         if (client.player == null) return;
-        val matrixState = getMatrixState(state);
 
-        if (soundInstance == null && matrixState.isWorking() && client.player.squaredDistanceTo(getCenterPos()) < 36) {
+        if (soundInstance == null && client.player.squaredDistanceTo(getCenterPos()) < 36) {
             soundInstance = new ArmillaryMatrixSoundInstance(this, client.player);
             client.getSoundManager().play(soundInstance);
             return;
         }
 
         if (soundInstance == null) return;
-        if (!matrixState.isWorking() || soundInstance.isDone()) soundInstance = null;
+        if (soundInstance.isDone()) soundInstance = null;
     }
 
     /**

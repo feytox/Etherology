@@ -26,6 +26,8 @@ public class ServerParticleTypes {
     public static final FeyParticleType<MovingParticleEffect> ETHER = register("ether", MovingParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> ENERGY_ABSORPTION = register("energy_absorption", SimpleParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ARMILLARY_SPHERE = register("armillary_sphere", MovingParticleEffect::new);
+    public static final FeyParticleType<SimpleParticleEffect> HAZE = register("haze", SimpleParticleEffect::new);
+    public static final FeyParticleType<SimpleParticleEffect> ALCHEMY = register("alchemy", SimpleParticleEffect::new);
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);

@@ -7,10 +7,10 @@
       "etherology:electricity_3"
     ]
   },
-  "matrix_work_sound": {
-    "subtitle": "subtitles.etherology.armillary_matrix_work",
+  "matrix_idle_sound": {
+    "subtitle": "subtitles.etherology.armillary_matrix_idle",
     "sounds": [
-      "etherology:armillary_matrix_work_loop"
+      "etherology:armillary_matrix_idle_loop"
     ]
   },
   "hammer_swing_sound": {
@@ -45,6 +45,29 @@
     "subtitle": "subtitles.etherology.deflect",
     "sounds": [
       "etherology:deflect"
+    ]
+  },
+  "bubbles": {
+    "subtitle": "subtitles.etherology.bubbles",
+    "sounds": [
+      "etherology:bubbles_0",
+      "etherology:bubbles_1",
+      "etherology:bubbles_2",
+      "etherology:bubbles_3",
+      "etherology:bubbles_4"
+    ]
+  },
+  "pouf": {
+    "subtitle": "subtitles.etherology.pouf",
+    "sounds": [
+      "etherology:pouf_0",
+      "etherology:pouf_1"
+    ]
+  },
+  "ratchet": {
+    "subtitle": "subtitles.etherology.ratchet",
+    "sounds": [
+      "etherology:ratchet_0"
     ]
   }
 }

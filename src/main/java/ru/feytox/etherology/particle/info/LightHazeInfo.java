@@ -10,33 +10,38 @@ import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
 import ru.feytox.etherology.util.misc.RGBColor;
 
-public class LightMatrixInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
+@Deprecated
+public class LightHazeInfo extends ParticleInfo<LightParticle, LightParticleEffect> {
 
-    private final Vec3d moveVec;
+    private Vec3d moveVec;
 
-    public LightMatrixInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
+    public LightHazeInfo(ClientWorld clientWorld, double x, double y, double z, LightParticleEffect parameters, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z, parameters, spriteProvider);
-        moveVec = parameters.getMoveVec();
+
+        Random random = clientWorld.getRandom();
+        moveVec = new Vec3d(random.nextDouble()*14-7, random.nextDouble()*20+10, random.nextDouble()*14-7)
+                .multiply(1/250f);
     }
 
     @Override
     public @Nullable RGBColor getStartColor(Random random) {
-        return new RGBColor(244, 194, 133);
+        return RGBColor.of(0xE16BFF);
     }
 
     @Override
     public float getScale(Random random) {
-        return 0.3f;
+        return 0.5f;
     }
 
     @Override
     public void tick(LightParticle particle) {
-        particle.simpleMovingTickInDirection(0.25f, moveVec);
+        moveVec = moveVec.add(0, -0.0075, 0);
+        particle.movingTick(moveVec);
         particle.setSpriteForAge();
     }
 
     @Override
     public int getMaxAge(Random random) {
-        return 5;
+        return random.nextBetween(7, 15);
     }
 }
