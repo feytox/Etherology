@@ -52,9 +52,7 @@
     "sounds": [
       "etherology:bubbles_0",
       "etherology:bubbles_1",
-      "etherology:bubbles_2",
-      "etherology:bubbles_3",
-      "etherology:bubbles_4"
+      "etherology:bubbles_2"
     ]
   },
   "pouf": {
@@ -68,6 +66,12 @@
     "subtitle": "subtitles.etherology.ratchet",
     "sounds": [
       "etherology:ratchet_0"
+    ]
+  },
+  "brewing_dissolution": {
+    "subtitle": "subtitles.etherology.brewing_dissolution",
+    "sounds": [
+      "etherology:brewing_dissolution_0"
     ]
   }
 }

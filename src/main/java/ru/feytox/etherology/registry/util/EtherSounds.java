@@ -18,6 +18,7 @@ public class EtherSounds {
     public static final SoundEvent BUBBLES = register("bubbles");
     public static final SoundEvent POUF = register("pouf");
     public static final SoundEvent RATCHET = register("ratchet");
+    public static final SoundEvent BREWING_DISSOLUTION = register("brewing_dissolution");
 
     public static void registerAll() {}
 

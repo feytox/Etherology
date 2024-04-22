@@ -144,7 +144,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ActionResult.PASS;
         if (cauldron.getTemperature() < 100) return ActionResult.PASS;
 
-        cauldron.mixWater();
+        cauldron.mixWater(world);
         return ActionResult.SUCCESS;
     }
 

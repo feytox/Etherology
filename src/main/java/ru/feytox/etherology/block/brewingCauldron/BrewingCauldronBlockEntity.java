@@ -24,6 +24,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
@@ -221,9 +222,10 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         effect.spawnParticles(world, random.nextBetween(6, 10), 0.1f, start);
     }
 
-    public void mixWater() {
+    public void mixWater(World world) {
         StartBlockAnimS2C.sendForTracking(this, "mixing");
         scheduleMixItems();
+        world.playSound(null, pos, EtherSounds.BREWING_DISSOLUTION, SoundCategory.BLOCKS, 1.5f, world.getRandom().nextFloat()*0.2f+0.9f);
     }
 
     private void scheduleMixItems() {
