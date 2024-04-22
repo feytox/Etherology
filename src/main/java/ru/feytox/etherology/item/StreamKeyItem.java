@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolItem;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +59,6 @@ public class StreamKeyItem extends ToolItem {
 
         state = EBlocks.ETHEREAL_CHANNEL.getChannelState(world, state.with(EtherealChannel.FACING, pipeFacing), pos);
         world.setBlockState(pos, state, EtherealChannel.NOTIFY_ALL);
-        world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
         Hand hand = context.getHand();
         if (isPlayer) stack.damage(1, player, playerx -> playerx.sendToolBreakStatus(hand));

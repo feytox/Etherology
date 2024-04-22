@@ -17,7 +17,7 @@ public class BrewingCauldronSoundInstance extends MovingSoundInstance {
         this.cauldron = cauldron;
         this.player = player;
         attenuationType = AttenuationType.NONE;
-        repeat = true;
+        repeat = false;
         repeatDelay = 0;
     }
 

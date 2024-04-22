@@ -14,12 +14,9 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
 
 import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
-import static ru.feytox.etherology.registry.particle.ServerParticleTypes.LIGHT;
 
 public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBlockEntity> {
     private final BlockEntityRendererFactory.Context ctx;
@@ -51,7 +48,6 @@ public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBl
 
         BlockState state = cauldron.getCachedState();
         Vec3d centerPoint = BrewingCauldronBlockEntity.getWaterPos(state);
-        Vec3d cauldronPos = Vec3d.of(cauldron.getPos()).add(centerPoint);
 
         boolean notRenderItem = itemCount == 0;
         int steps = notRenderItem && lightParticlesCount != 0 ? lightParticlesCount : itemCount;
@@ -64,16 +60,9 @@ public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBl
             double dx = MathHelper.cos(angle) * 0.225d;
             double dz = MathHelper.sin(angle) * 0.225d;
 
-            if (notRenderItem) spawnLightParticles(world, cauldronPos, dx, dz);
-            else renderItem(matrices, vertexConsumers, light, overlay, itemRenderer, centerPoint, itemStack, dx, dz);
+            if (!notRenderItem) renderItem(matrices, vertexConsumers, light, overlay, itemRenderer, centerPoint, itemStack, dx, dz);
         }
         cauldron.cacheItems();
-    }
-
-    private void spawnLightParticles(World world, Vec3d cauldronPos, double dx, double dz) {
-        LightParticleEffect effect = new LightParticleEffect(LIGHT, LightSubtype.BREWING, new Vec3d(0, 0, 0));
-        Vec3d particlePos = cauldronPos.add(dx, 0.05, dz);
-        effect.spawnParticles(world, 1, 0, 0, 0, particlePos);
     }
 
     private void renderItem(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ItemRenderer itemRenderer, Vec3d centerPoint, ItemStack itemStack, double dx, double dz) {

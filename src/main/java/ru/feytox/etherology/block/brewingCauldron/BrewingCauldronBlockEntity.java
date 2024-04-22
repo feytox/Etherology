@@ -30,7 +30,6 @@ import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
-import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
@@ -45,6 +44,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
 import static ru.feytox.etherology.registry.particle.ServerParticleTypes.STEAM;
@@ -73,7 +75,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (!BrewingCauldronBlock.isFilled(state)) return;
-        tickMixingItems(world);
+        tickMixingItems(world, state);
         tickAspects(world, state);
         tickTemperature(world, blockPos);
     }
@@ -84,14 +86,15 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         tickBubbleParticles(world, state);
         tickCorruptionParticles(world, state);
-        tickHazeParticles(world, state);
-        tickSound();
+        tickSound(world);
     }
 
-    private void tickSound() {
+    private void tickSound(ClientWorld world) {
         if (temperature < 100) return;
         val client = MinecraftClient.getInstance();
         if (client.player == null) return;
+        if (world.getTime() % 3 != 0) return;
+        if (world.getRandom().nextFloat() > 0.25f) return;
 
         if (soundInstance == null && client.player.squaredDistanceTo(pos.toCenterPos()) < 36) {
             soundInstance = new BrewingCauldronSoundInstance(this, client.player);
@@ -100,17 +103,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
 
         if (soundInstance == null) return;
-        if (soundInstance.isDone()) soundInstance = null;
-    }
-
-    private void tickHazeParticles(ClientWorld world, BlockState state) {
-        if (world.getTime() % 12 != 0) return;
-        if (temperature < 100) return;
-        if (world.getRandom().nextFloat() < 0.5) return;
-
-        Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
-        val effect = new SimpleParticleEffect(ServerParticleTypes.HAZE);
-        effect.spawnParticles(world, 1, 0.1, start);
+        if (soundInstance.isDone() || !client.getSoundManager().isPlaying(soundInstance)) soundInstance = null;
     }
 
     private void tickBubbleParticles(ClientWorld world, BlockState state) {
@@ -126,11 +119,11 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
     }
 
-    private void tickMixingItems(ServerWorld world) {
+    private void tickMixingItems(ServerWorld world, BlockState state) {
         if (!shouldMixItems || mixItemsTicks-- > 0) return;
 
         shouldMixItems = false;
-        mixItems(world);
+        mixItems(world, state);
     }
 
     private void tickAspects(ServerWorld world, BlockState state) {
@@ -173,15 +166,15 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     private void tickCorruptionParticles(ClientWorld world, BlockState state) {
+        if (temperature < 100) return;
         int count = aspects.sum().orElse(0);
         if (count == 0) return;
         if (world.getTime() % Math.max(MathHelper.floor(250.0f / count + 2), 1) != 0) return;
+        if (world.getRandom().nextFloat() < 0.5) return;
 
-        Vec3d moveVec = new Vec3d(0, 3, 0);
-        Vec3d centerPos = getWaterPos(state).add(Vec3d.of(pos));
-
-        MovingParticleEffect effect = new MovingParticleEffect(STEAM, moveVec);
-        effect.spawnParticles(world, 1, 0.35, 0, 0.35, centerPos);
+        Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
+        val effect = new SimpleParticleEffect(ServerParticleTypes.HAZE);
+        effect.spawnParticles(world, 1, 0.1, start);
     }
 
     private void tickTemperature(ServerWorld world, BlockPos blockPos) {
@@ -238,18 +231,27 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         mixItemsTicks = 10;
     }
 
-    private void mixItems(ServerWorld world) {
-        items.forEach(stack -> {
-            AspectContainer itemAspects = AspectsLoader.getAspects(stack, true).orElse(null);
-            if (itemAspects == null) return;
+    private void mixItems(ServerWorld world, BlockState state) {
+        AtomicInteger count = new AtomicInteger();
+        items.stream()
+                .filter(stack -> !stack.isEmpty())
+                .map(stack -> AspectsLoader.getAspects(stack, true).orElse(null))
+                .filter(Objects::nonNull)
+                .forEach(itemAspects -> {
+                    count.addAndGet(1);
+                    aspects = aspects.add(itemAspects);
+                });
 
-            aspects = aspects.add(itemAspects);
-        });
         if (!aspects.isEmpty()) wasWithAspects = true;
         clear();
 
         int oldCount = aspects.sum().orElse(0);
         if (oldCount != 0) vaporizeAspects(world, 0.2d, 0.1d, world.getRandom(), oldCount);
+
+        Vec3d centerPos = getWaterPos(state).add(Vec3d.of(pos));
+        val effect = new SimpleParticleEffect(STEAM);
+        effect.spawnParticles(world, count.get(), 0.35, centerPos);
+
         syncData(world);
     }
 

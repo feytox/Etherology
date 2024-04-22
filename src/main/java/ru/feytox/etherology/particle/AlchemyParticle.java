@@ -16,7 +16,6 @@ public class AlchemyParticle extends MovingParticle<SimpleParticleEffect> {
         moveVec = new Vec3d(random.nextDouble()*14-7, random.nextDouble()*20+10, random.nextDouble()*14-7)
                 .multiply(1/250f);
         maxAge = random.nextBetween(7, 15);
-        scale(0.5f);
 
         setSpriteForAge();
     }
