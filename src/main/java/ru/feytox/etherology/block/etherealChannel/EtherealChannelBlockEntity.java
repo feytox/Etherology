@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.etherealChannel;
 
 import lombok.Setter;
+import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
@@ -11,11 +12,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
-import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
+import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
@@ -54,18 +53,14 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     }
 
     public static void spawnParticles(BlockPos pos, ClientWorld world, Direction direction) {
-        if (world.getTime() % 2 != 0) return;
+        if (world.getTime() % 4 != 0) return;
         Random random = world.getRandom();
 
-        Vector3f vec = direction.getUnitVector();
-        Vec3d startPos = new Vec3d(vec.mul(0.5f)).add(pos.toCenterPos());
-        Vector3f endVec = vec.mul(2 + random.nextFloat() * 1.5f)
-                .rotateY(random.nextFloat() - 0.5f)
-                .add(0, random.nextFloat()*0.5f, 0);
-        Vec3d endPos = new Vec3d(endVec).add(pos.toCenterPos());
-
-        LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.SIMPLE, endPos);
-        effect.spawnParticles(world, 1, 0.07d, startPos);
+        Vec3d channelVec = Vec3d.of(direction.getVector());
+        Vec3d startPos = pos.toCenterPos().add(channelVec.multiply(0.5d));
+        val particleType = random.nextFloat() < 0.25 ? ServerParticleTypes.ETHER_STAR : ServerParticleTypes.ETHER_DOT;
+        val effect = new MovingParticleEffect(particleType, channelVec);
+        effect.spawnParticles(world, random.nextBetween(1, 2), 0, startPos);
     }
 
     @Override
