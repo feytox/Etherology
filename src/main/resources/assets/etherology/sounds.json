@@ -13,34 +13,6 @@
       "etherology:armillary_matrix_idle_loop"
     ]
   },
-  "hammer_swing_sound": {
-    "subtitle": "subtitles.etherology.hammer_swing",
-    "sounds": [
-      "etherology:hammer_swing_0",
-      "etherology:hammer_swing_1",
-      "etherology:hammer_swing_2"
-    ]
-  },
-  "hammer_damage_sound": {
-    "subtitle": "subtitles.etherology.hammer_damage",
-    "sounds": [
-      "etherology:hammer_damage_0",
-      "etherology:hammer_damage_1",
-      "etherology:hammer_damage_2",
-      "etherology:hammer_damage_3",
-      "etherology:hammer_damage_4",
-      "etherology:hammer_damage_5",
-      "etherology:hammer_damage_6"
-    ]
-  },
-  "thunder_zap_sound": {
-    "subtitle": "subtitles.etherology.thunder_zap",
-    "sounds": [
-      "etherology:thunder_zap_0",
-      "etherology:thunder_zap_1",
-      "etherology:thunder_zap_2"
-    ]
-  },
   "deflect": {
     "subtitle": "subtitles.etherology.deflect",
     "sounds": [
