@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.GlaiveItem;
-import ru.feytox.etherology.item.HammerItem;
 import ru.feytox.etherology.item.glints.GlintItem;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class EEnchantmentUtils {
 
     private static final Map<Class<?>, List<Enchantment>> bannedEnchantments = Map.of(
             BattlePickaxe.class, ImmutableList.of(Enchantments.FORTUNE, Enchantments.SILK_TOUCH),
-            HammerItem.class, ImmutableList.of(Enchantments.SHARPNESS, Enchantments.LOOTING, Enchantments.FIRE_ASPECT, Enchantments.SWEEPING),
             GlaiveItem.class, ImmutableList.of(Enchantments.LOOTING),
             GlintItem.class, ImmutableList.of(Enchantments.UNBREAKING, Enchantments.MENDING, Enchantments.VANISHING_CURSE)
     );

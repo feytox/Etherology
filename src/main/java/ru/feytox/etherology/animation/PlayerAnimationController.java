@@ -10,13 +10,13 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.enums.HammerState;
 import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.util.misc.EtherologyPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;
 
+@Deprecated
 @UtilityClass
 public class PlayerAnimationController {
 
@@ -86,15 +86,5 @@ public class PlayerAnimationController {
         }
 
         return true;
-    }
-
-    /**
-     * Returns a Consumer that sets the hammer state of an EtherologyPlayer.
-     *
-     * @param  state  the hammer state to be set
-     * @return        a Consumer that sets the hammer state of an EtherologyPlayer
-     */
-    public static Consumer<EtherologyPlayer> setHammerState(HammerState state) {
-        return player -> player.etherology$setHammerState(state);
     }
 }

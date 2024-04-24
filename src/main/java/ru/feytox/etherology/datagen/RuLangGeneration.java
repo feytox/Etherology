@@ -162,15 +162,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHRIL_BATTLE_PICKAXE, "Эфриловое кайло");
         builder.add(EBONY_BATTLE_PICKAXE, "Эбонитовое кайло");
 
-        builder.add(WOODEN_HAMMER, "Деревянный молот");
-        builder.add(STONE_HAMMER, "Каменный молот");
-        builder.add(IRON_HAMMER, "Железный молот");
-        builder.add(GOLDEN_HAMMER, "Золотой молот");
-        builder.add(DIAMOND_HAMMER, "Алмазный молот");
-        builder.add(NETHERITE_HAMMER, "Незеритовый молот");
-        builder.add(ETHRIL_HAMMER, "Эфриловый молот");
-        builder.add(EBONY_HAMMER, "Эбонитовый молот");
-
         builder.add(WOODEN_GLAIVE, "Деревянная глефа");
         builder.add(STONE_GLAIVE, "Каменная глефа");
         builder.add(IRON_GLAIVE, "Железная глефа");

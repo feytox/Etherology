@@ -39,17 +39,6 @@ public class ToolItems {
     public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f, new FabricItemSettings().fireproof()));
     public static final Item[] BATTLE_PICKAXES = {WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, EBONY_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE};
 
-    // hammers
-    public static final Item WOODEN_HAMMER = register("wooden_hammer", new HammerItem(WOOD, 9, -3.7f));
-    public static final Item STONE_HAMMER = register("stone_hammer", new HammerItem(STONE, 8, -3.7f));
-    public static final Item IRON_HAMMER = register("iron_hammer", new HammerItem(IRON, 9, -3.6f));
-    public static final Item GOLDEN_HAMMER = register("golden_hammer", new HammerItem(GOLD, 9, -3.6f));
-    public static final Item ETHRIL_HAMMER = register("ethril_hammer", new HammerItem(ETHRIL, 8, -3.6f));
-    public static final Item EBONY_HAMMER = register("ebony_hammer", new HammerItem(EBONY, 8, -3.5f));
-    public static final Item DIAMOND_HAMMER = register("diamond_hammer", new HammerItem(DIAMOND, 8, -3.5f));
-    public static final Item NETHERITE_HAMMER = register("netherite_hammer", new HammerItem(NETHERITE, 7, -3.5f, new FabricItemSettings().fireproof()));
-    public static final Item[] HAMMERS = {WOODEN_HAMMER, STONE_HAMMER, IRON_HAMMER, GOLDEN_HAMMER, ETHRIL_HAMMER, EBONY_HAMMER, DIAMOND_HAMMER, NETHERITE_HAMMER};
-
     // glaives
     public static final Item WOODEN_GLAIVE = register("wooden_glaive", new GlaiveItem(WOOD, 1, -3.2f));
     public static final Item STONE_GLAIVE = register("stone_glaive", new GlaiveItem(STONE, 1, -3.2f));

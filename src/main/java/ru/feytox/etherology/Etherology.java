@@ -5,8 +5,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.util.math.random.Random;
 import org.slf4j.Logger;
-import ru.feytox.etherology.animation.PredicateAnimations;
-import ru.feytox.etherology.animation.TriggerAnimations;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffPatterns;
@@ -37,8 +35,6 @@ public class Etherology implements ModInitializer {
         EBlockFamilies.registerFamilies();
         DevCommands.register();
         EtherSounds.registerAll();
-        PredicateAnimations.registerAll();
-        TriggerAnimations.registerAll();
         EtherEnchantments.registerAll();
         RecipesRegistry.registerAll();
         ScreenHandlersRegistry.registerServerSide();

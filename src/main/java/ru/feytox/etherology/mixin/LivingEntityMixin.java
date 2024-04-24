@@ -1,13 +1,11 @@
 package ru.feytox.etherology.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.math.Vec3d;
@@ -18,13 +16,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.EtherShield;
-import ru.feytox.etherology.item.HammerItem;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 
     @ModifyExpressionValue(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"))
-    private float getDamageByPick(float original, @Local DamageSource source) {
+    private float getDamageByPick(float original, @Local(argsOnly = true) DamageSource source) {
         if (!(source instanceof EntityDamageSource entitySource)) return original;
         if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return original;
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
@@ -35,7 +32,7 @@ public abstract class LivingEntityMixin {
     }
 
     @ModifyExpressionValue(method = "modifyAppliedDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I"))
-    private int getProtectionOnPick(int original, @Local DamageSource source) {
+    private int getProtectionOnPick(int original, @Local(argsOnly = true) DamageSource source) {
         if (!(source instanceof EntityDamageSource entitySource)) return original;
         if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return original;
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
@@ -71,12 +68,5 @@ public abstract class LivingEntityMixin {
         }
 
         return false;
-    }
-
-    @ModifyReturnValue(method = "disablesShield", at = @At("RETURN"))
-    private boolean onDisablesShield(boolean original) {
-        LivingEntity it = ((LivingEntity) (Object) this);
-        if (!(it instanceof PlayerEntity player)) return original || it.getMainHandStack().getItem() instanceof HammerItem;
-        return original || HammerItem.checkHammer(player);
     }
 }

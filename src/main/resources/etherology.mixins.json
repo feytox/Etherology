@@ -56,7 +56,6 @@
     "HangingSignEditScreenMixin",
     "InGameHudMixin",
     "ItemRendererMixin",
-    "MinecraftClientMixin",
     "ModelLoaderMixin",
     "PlayerEntityModelMixin",
     "PlayerEntityRendererMixin",
