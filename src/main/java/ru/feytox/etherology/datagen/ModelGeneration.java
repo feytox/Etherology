@@ -55,19 +55,19 @@ public class ModelGeneration extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator generator) {
         // glint
         registerGlint(EItems.GLINT, generator);
-        // all simple items
+        // simple items
         registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, EBONY_INGOT, EBONY_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, REDSTONE_LENS, UNADJUSTED_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER, ETHEREAL_CHANNEL, ETHEREAL_FORK, REVELATION_VIEW);
-        // all handheld (swords, pickaxe etc.)
+        // handheld (swords, pickaxe etc.)
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD, STREAM_KEY);
         registerItems(generator, Models.HANDHELD, BATTLE_PICKAXES);
-        // all glaives
+        // glaives
         registerInHandGlaives(generator);
         registerItems(generator, Models.HANDHELD, GLAIVES);
-        // all armor
+        // armor
         registerItems(generator, Models.GENERATED, ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, EBONY_HELMET, EBONY_CHESTPLATE, EBONY_LEGGINGS, EBONY_BOOTS);
-        // all staff parts
+        // staff parts
         registerStaffParts(generator);
-        // all pattern tablets
+        // pattern tablets
         registerItems(generator, Models.GENERATED, PATTERN_TABLETS);
     }
 

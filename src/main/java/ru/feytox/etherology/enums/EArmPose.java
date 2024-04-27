@@ -15,12 +15,17 @@ import ru.feytox.etherology.registry.util.EtherologyComponents;
 import java.util.Optional;
 
 import static net.minecraft.util.math.MathHelper.PI;
+import static net.minecraft.util.math.MathHelper.RADIANS_PER_DEGREE;
 
+/**
+ * @see ru.feytox.etherology.mixin.EarlyRisers
+ */
 @Getter
 @RequiredArgsConstructor
 public enum EArmPose {
     OCULUS_ETHEROLOGY(EArmPose::oculusPoser),
-    STAFF_ETHEROLOGY(EArmPose::staffPoser);
+    STAFF_ETHEROLOGY(EArmPose::staffPoser),
+    TUNING_MACE_ETHEROLOGY(EArmPose::macePoser);
 
     private final ModelPoser modelPoser;
 
@@ -64,6 +69,20 @@ public enum EArmPose {
             }
             case CHARGE -> arm.pitch = PI;
         }
+    }
+
+    private static void macePoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
+        val mainArm = isRightArm ? model.rightArm : model.leftArm;
+        val otherArm = isRightArm ? model.leftArm : model.rightArm;
+        int d = isRightArm ? 1 : -1;
+
+        mainArm.pitch = -55 * RADIANS_PER_DEGREE;
+        mainArm.yaw = -15 * RADIANS_PER_DEGREE * d;
+        mainArm.roll = -32 * RADIANS_PER_DEGREE * d;
+
+        otherArm.pitch = -35 * RADIANS_PER_DEGREE;
+        otherArm.yaw = 43 * RADIANS_PER_DEGREE * d;
+        otherArm.roll = 5 * RADIANS_PER_DEGREE * d;
     }
 
     public interface ModelPoser {

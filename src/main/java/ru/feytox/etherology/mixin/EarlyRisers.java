@@ -20,9 +20,13 @@ public class EarlyRisers implements Runnable {
 //            ClassTinkerers.enumBuilder(useAction).addEnum(customArmPose.name()).build();
 //        });
 
-        ClassTinkerers.enumBuilder(armPose, boolean.class).addEnum("OCULUS_ETHEROLOGY", true).build();
-        ClassTinkerers.enumBuilder(armPose, boolean.class).addEnum("STAFF_ETHEROLOGY", false).build();
-        ClassTinkerers.enumBuilder(useAction).addEnum("OCULUS_ETHEROLOGY").build();
-        ClassTinkerers.enumBuilder(useAction).addEnum("STAFF_ETHEROLOGY").build();
+        addEArmPose(armPose, useAction, "OCULUS_ETHEROLOGY", true);
+        addEArmPose(armPose, useAction, "STAFF_ETHEROLOGY", false);
+        addEArmPose(armPose, useAction, "TUNING_MACE_ETHEROLOGY", true);
+    }
+
+    private void addEArmPose(String armPath, String actionPath, String name, boolean twohanded) {
+        ClassTinkerers.enumBuilder(armPath, boolean.class).addEnum(name, twohanded).build();
+        ClassTinkerers.enumBuilder(actionPath).addEnum(name).build();
     }
 }

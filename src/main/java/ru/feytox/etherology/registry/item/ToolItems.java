@@ -50,8 +50,9 @@ public class ToolItems {
     public static final Item NETHERITE_GLAIVE = register("netherite_glaive", new GlaiveItem(NETHERITE, 1, -3.0f, new FabricItemSettings().fireproof()));
     public static final Item[] GLAIVES = {WOODEN_GLAIVE, STONE_GLAIVE, IRON_GLAIVE, GOLDEN_GLAIVE, ETHRIL_GLAIVE, EBONY_GLAIVE, DIAMOND_GLAIVE, NETHERITE_GLAIVE};
 
-    // custom shields
+    // combat tools
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
+    public static final Item TUNING_MACE = register("tuning_mace", new TuningMaceItem());
 
     // single tools
     public static final Item OCULUS = register("oculus", new OculusItem());
