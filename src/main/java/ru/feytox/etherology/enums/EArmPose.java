@@ -41,6 +41,17 @@ public enum EArmPose {
         return Optional.ofNullable(EnumUtils.getEnum(EArmPose.class, name));
     }
 
+    public static <T extends LivingEntity> boolean injectArmPoses(BipedEntityModel<?> model, T entity, boolean isRightArm) {
+        BipedEntityModel.ArmPose checkPose = isRightArm ? model.rightArmPose : model.leftArmPose;
+        Optional<EArmPose> poseOptional = EArmPose.getIfValid(checkPose.name());
+        if (poseOptional.isEmpty()) return false;
+
+        poseOptional.get().getModelPoser().accept(model, entity, isRightArm);
+        return true;
+    }
+
+    // TODO: 27.04.2024 consider move posers to their item classes
+
     private static void oculusPoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
         val arm = isRightArm ? model.rightArm : model.leftArm;
         val value = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
