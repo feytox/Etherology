@@ -3,6 +3,7 @@ package ru.feytox.etherology.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -39,5 +41,11 @@ public class PlayerEntityMixin {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
         if (!GlaiveItem.checkGlaive(attacker)) return original.call(instance, x, y, z);
         return original.call(instance, 4.0, 1.0, 4.0);
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
+    private void injectPealEffect(Entity target, CallbackInfo ci) {
+        PlayerEntity attacker = ((PlayerEntity) (Object) this);
+        if (ShockwaveUtil.onAttack(attacker)) ci.cancel();
     }
 }

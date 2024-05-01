@@ -45,5 +45,13 @@
     "sounds": [
       "etherology:brewing_dissolution_0"
     ]
+  },
+  "thunder_zap": {
+    "subtitle": "subtitles.etherology.thunder_zap",
+    "sounds": [
+      "etherology:thunder_zap_0",
+      "etherology:thunder_zap_1",
+      "etherology:thunder_zap_2"
+    ]
   }
 }
