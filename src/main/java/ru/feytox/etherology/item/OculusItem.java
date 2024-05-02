@@ -36,7 +36,7 @@ import ru.feytox.etherology.magic.zones.EssenceZone;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.DoubleModel;
 import ru.feytox.etherology.util.misc.ItemUtils;
 import ru.feytox.etherology.util.misc.ScaledLabelComponent;
@@ -126,7 +126,7 @@ public class OculusItem extends Item implements DoubleModel {
             Vec3d pos = particlePos.toCenterPos();
             Vec3d targetPos = pos.add(6 * (random.nextDouble() - 0.5d), 4 * (random.nextDouble() - 0.5d), 6 * (random.nextDouble() - 0.5d));
 
-            ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneType, targetPos);
+            ZoneParticleEffect effect = new ZoneParticleEffect(EtherParticleTypes.ZONE_PARTICLE, zoneType, targetPos);
             effect.spawnParticles(world, count, 0.5, pos);
         });
     }

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
 
         Vec3d channelVec = Vec3d.of(direction.getVector());
         Vec3d startPos = pos.toCenterPos().add(channelVec.multiply(0.5d));
-        val particleType = random.nextFloat() < 0.25 ? ServerParticleTypes.ETHER_STAR : ServerParticleTypes.ETHER_DOT;
+        val particleType = random.nextFloat() < 0.25 ? EtherParticleTypes.ETHER_STAR : EtherParticleTypes.ETHER_DOT;
         val effect = new MovingParticleEffect(particleType, channelVec);
         effect.spawnParticles(world, random.nextBetween(1, 2), 0, startPos);
     }

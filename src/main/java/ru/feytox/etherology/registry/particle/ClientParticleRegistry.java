@@ -10,11 +10,11 @@ import net.minecraft.particle.ParticleType;
 import ru.feytox.etherology.particle.*;
 import ru.feytox.etherology.particle.utility.FactoryProvider;
 
-import static ru.feytox.etherology.registry.particle.ServerParticleTypes.*;
+import static ru.feytox.etherology.registry.particle.EtherParticleTypes.*;
 
 @Environment(EnvType.CLIENT)
 @UtilityClass
-public class ClientParticleTypes {
+public class ClientParticleRegistry {
     public static void registerAll() {
         register(LIGHT, LightParticle::new);
         register(STEAM, SteamParticle::new);

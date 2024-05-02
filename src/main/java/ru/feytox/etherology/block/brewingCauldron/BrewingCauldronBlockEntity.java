@@ -36,7 +36,7 @@ import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeInventory;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
@@ -50,7 +50,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK_ENTITY;
-import static ru.feytox.etherology.registry.particle.ServerParticleTypes.STEAM;
+import static ru.feytox.etherology.registry.particle.EtherParticleTypes.STEAM;
 
 public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeoBlockEntity, RevelationAspectProvider {
     private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
@@ -174,7 +174,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (world.getRandom().nextFloat() < 0.5) return;
 
         Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
-        val effect = new SimpleParticleEffect(ServerParticleTypes.HAZE);
+        val effect = new SimpleParticleEffect(EtherParticleTypes.HAZE);
         effect.spawnParticles(world, 1, 0.1, start);
     }
 
@@ -218,7 +218,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     private void spawnResultParticles(ServerWorld world, BlockState state) {
         Random random = world.getRandom();
         Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
-        val effect = new SimpleParticleEffect(ServerParticleTypes.ALCHEMY);
+        val effect = new SimpleParticleEffect(EtherParticleTypes.ALCHEMY);
         effect.spawnParticles(world, random.nextBetween(6, 10), 0.1f, start);
     }
 

@@ -22,7 +22,7 @@ import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -83,7 +83,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
         Vec3d targetPos = blockPos.toCenterPos();
         Direction direction = state.get(AbstractEtherealGenerator.FACING).getOpposite();
         Vec3d particlePos = blockPos.add(direction.getVector()).toCenterPos();
-        val effect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.GENERATOR, targetPos);
+        val effect = new LightParticleEffect(EtherParticleTypes.LIGHT, LightSubtype.GENERATOR, targetPos);
         effect.spawnParticles(world, 4, 1.0d, particlePos);
     }
 

@@ -27,7 +27,7 @@ import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.deprecated.EVec3d;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
@@ -119,7 +119,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
                     .subtract(centerPos)
                     .multiply(random.nextDouble() * 1);
             path = particlePos.add(path);
-            val effect = new MovingParticleEffect(ServerParticleTypes.GLINT, path);
+            val effect = new MovingParticleEffect(EtherParticleTypes.GLINT, path);
             effect.spawnParticles(world, 2, 0.01, particlePos);
         }
     }

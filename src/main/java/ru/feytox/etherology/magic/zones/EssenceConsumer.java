@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 
 import java.util.Optional;
 
@@ -40,7 +40,7 @@ public interface EssenceConsumer {
 
         float zonePercent = zone.getValue() / 64.0f;
         int count = MathHelper.ceil(5 * zonePercent);
-        ZoneParticleEffect effect = new ZoneParticleEffect(ServerParticleTypes.ZONE_PARTICLE, zoneComponent.getZoneType(), pos.toCenterPos());
+        ZoneParticleEffect effect = new ZoneParticleEffect(EtherParticleTypes.ZONE_PARTICLE, zoneComponent.getZoneType(), pos.toCenterPos());
         Random random = world.getRandom();
 
         for (int dx = -2; dx <= 2; dx++) {

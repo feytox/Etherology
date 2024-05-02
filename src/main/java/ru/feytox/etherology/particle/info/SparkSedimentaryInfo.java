@@ -12,7 +12,7 @@ import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.particle.utility.ParticleInfo;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.FeyColor;
 import ru.feytox.etherology.util.misc.RGBColor;
 
@@ -71,7 +71,7 @@ public class SparkSedimentaryInfo extends ParticleInfo<SparkParticle, SparkParti
         Random random = world.getRandom();
         particlePoses.forEach(pos -> {
             if (random.nextDouble() > 0.005) return;
-            SparkParticleEffect effect = new SparkParticleEffect(ServerParticleTypes.SPARK, pos.add(0, -0.2, 0), sparkType);
+            SparkParticleEffect effect = new SparkParticleEffect(EtherParticleTypes.SPARK, pos.add(0, -0.2, 0), sparkType);
             effect.spawnParticles(world, 1, 0, pos);
         });
     }

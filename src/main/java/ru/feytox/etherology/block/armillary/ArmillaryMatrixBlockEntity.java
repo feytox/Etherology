@@ -52,7 +52,7 @@ import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoAnimation;
@@ -178,7 +178,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         randomVec = randomVec.multiply(random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1);
         Vec3d startPos = centerPos.add(randomVec);
 
-        val effect = new MovingParticleEffect(ServerParticleTypes.ARMILLARY_SPHERE, randomVec);
+        val effect = new MovingParticleEffect(EtherParticleTypes.ARMILLARY_SPHERE, randomVec);
         effect.spawnParticles(world, 2, 0, startPos);
     }
 
@@ -461,13 +461,13 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         Vec3d centerPos = getCenterPos();
         Random random = world.getRandom();
 
-        ItemParticleEffect itemEffect = new ItemParticleEffect(ServerParticleTypes.ITEM, target.getStack(0), centerPos);
+        ItemParticleEffect itemEffect = new ItemParticleEffect(EtherParticleTypes.ITEM, target.getStack(0), centerPos);
         itemEffect.spawnParticles(world, 5, 0.2, pedestalPos);
 
-        LightParticleEffect sparkLightEffect = new LightParticleEffect(ServerParticleTypes.LIGHT, LightSubtype.SPARK, centerPos);
+        LightParticleEffect sparkLightEffect = new LightParticleEffect(EtherParticleTypes.LIGHT, LightSubtype.SPARK, centerPos);
         sparkLightEffect.spawnParticles(world, random.nextBetween(10, 25), 0.35, pedestalPos);
 
-        SparkParticleEffect sparkEffect = new SparkParticleEffect(ServerParticleTypes.SPARK, centerPos, SparkSubtype.SIMPLE);
+        SparkParticleEffect sparkEffect = new SparkParticleEffect(EtherParticleTypes.SPARK, centerPos, SparkSubtype.SIMPLE);
         sparkEffect.spawnParticles(world, random.nextBetween(1, 5), 0.35, pedestalPos);
         return true;
     }
@@ -533,7 +533,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      */
     private void spawnConsumingParticle(World world, LivingEntity entity, Vec3d centerPos) {
         if (world.getTime() % 2 == 0) return;
-        val effect = new MovingParticleEffect(ServerParticleTypes.VITAL, centerPos);
+        val effect = new MovingParticleEffect(EtherParticleTypes.VITAL, centerPos);
         effect.spawnParticles(world, 1, 0.1, entity.getBoundingBox().getCenter());
     }
 

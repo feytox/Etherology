@@ -26,7 +26,7 @@ import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
 
@@ -67,7 +67,7 @@ public class JewelryBlockEntity extends TickableBlockEntity
         inventory.resetRecipe();
 
         Vec3d particlePos = blockPos.toCenterPos().add(0, 0.75d, 0);
-        val effect = new SparkParticleEffect(ServerParticleTypes.SPARK, new Vec3d(0, 2.0d, 0), SparkSubtype.JEWELRY);
+        val effect = new SparkParticleEffect(EtherParticleTypes.SPARK, new Vec3d(0, 2.0d, 0), SparkSubtype.JEWELRY);
         effect.spawnParticles(world, 6, 0.25d, particlePos);
     }
 

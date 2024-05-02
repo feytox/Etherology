@@ -12,7 +12,7 @@ import ru.feytox.etherology.particle.effects.args.ParticleArg;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleType;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 
 public class ElectricityParticleEffect extends FeyParticleEffect<ElectricityParticleEffect> {
 
@@ -66,6 +66,6 @@ public class ElectricityParticleEffect extends FeyParticleEffect<ElectricityPart
     }
 
     public static FeyParticleType<ElectricityParticleEffect> getRandomType(Random random) {
-        return random.nextBoolean() ? ServerParticleTypes.ELECTRICITY1 : ServerParticleTypes.ELECTRICITY2;
+        return random.nextBoolean() ? EtherParticleTypes.ELECTRICITY1 : EtherParticleTypes.ELECTRICITY2;
     }
 }

@@ -10,7 +10,7 @@ import ru.feytox.etherology.particle.effects.misc.FeyParticleType;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
-public class ServerParticleTypes {
+public class EtherParticleTypes {
     public static final FeyParticleType<LightParticleEffect> LIGHT = register("light", LightParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> STEAM = register("steam", SimpleParticleEffect::new);
     public static final FeyParticleType<ZoneParticleEffect> ZONE_PARTICLE = register("zone_particle", ZoneParticleEffect::new);

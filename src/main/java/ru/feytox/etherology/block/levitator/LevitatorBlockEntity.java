@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
-import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.List;
@@ -115,7 +115,7 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
             Vec3d centerPos = blockPos.toCenterPos();
             Vec3d moveVec = target.subtract(centerPos);
 
-            LightParticleEffect effect = new LightParticleEffect(ServerParticleTypes.LIGHT, lightType, moveVec);
+            LightParticleEffect effect = new LightParticleEffect(EtherParticleTypes.LIGHT, lightType, moveVec);
             effect.spawnParticles(world, 1, 0.5, centerPos);
         });
     }
