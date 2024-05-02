@@ -3,44 +3,56 @@ package ru.feytox.etherology.enchantment;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.GlaiveItem;
 import ru.feytox.etherology.item.TuningMaceItem;
 import ru.feytox.etherology.item.glints.GlintItem;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static net.minecraft.enchantment.Enchantments.*;
 
 @UtilityClass
-public class EEnchantmentUtils {
+public class EtherEnchantments {
 
-    @Getter
+    @Setter @Getter
     private static boolean battlePickWeaponMatched = true;
     private static final Map<Class<? extends Item>, List<Enchantment>> bannedEnchantments = new Object2ObjectOpenHashMap<>();
 
-    public static void registerBannedEnchantments() {
-        register(BattlePickaxe.class, FORTUNE, SILK_TOUCH);
-        register(GlaiveItem.class, LOOTING);
-        register(GlintItem.class, UNBREAKING, MENDING, VANISHING_CURSE);
-        register(TuningMaceItem.class, SHARPNESS, FIRE_ASPECT, LOOTING, SWEEPING);
+    public static void registerAll() {
+        registerBannedEnchantments();
+
+        register("reflection", ReflectionEnchantment.INSTANCE);
+        register("peal", PealEnchantment.INSTANCE);
     }
 
-    private static void register(Class<? extends Item> itemClass, Enchantment... enchantments) {
+    private void register(String id, Supplier<? extends Enchantment> enchantSupplier) {
+        Registry.register(Registries.ENCHANTMENT, new EIdentifier(id), enchantSupplier.get());
+    }
+
+    private static void registerBannedEnchantments() {
+        banEnchant(BattlePickaxe.class, FORTUNE, SILK_TOUCH);
+        banEnchant(GlaiveItem.class, LOOTING);
+        banEnchant(GlintItem.class, UNBREAKING, MENDING, VANISHING_CURSE);
+        banEnchant(TuningMaceItem.class, SHARPNESS, FIRE_ASPECT, LOOTING, SWEEPING);
+    }
+
+    private static void banEnchant(Class<? extends Item> itemClass, Enchantment... enchantments) {
         bannedEnchantments.put(itemClass, new ObjectArrayList<>(enchantments));
     }
 
     @Nullable
     public static List<Enchantment> getBannedEnchantments(Item item) {
         return bannedEnchantments.getOrDefault(item.getClass(), null);
-    }
-
-    public static void markBattlePickNotMatched() {
-        battlePickWeaponMatched = false;
     }
 }

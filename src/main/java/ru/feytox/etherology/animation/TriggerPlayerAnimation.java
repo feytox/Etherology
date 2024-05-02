@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 /**
  * Represents a Etherology animation based on a predicate.
  */
+@Deprecated
 public class TriggerPlayerAnimation extends AbstractPlayerAnimation {
 
     public TriggerPlayerAnimation(Identifier animationId, boolean firstPerson, boolean shouldBreak, @Nullable Consumer<EtherologyPlayer> startAction, @Nullable Consumer<EtherologyPlayer> endAction, Identifier... replacements) {

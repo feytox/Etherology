@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 /**
  * Represents a Etherology animation based on a predicate.
  */
+@Deprecated
 public class PredicatePlayerAnimation extends AbstractPlayerAnimation {
 
     @NonNull

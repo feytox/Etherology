@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.util.math.random.Random;
 import org.slf4j.Logger;
 import ru.feytox.etherology.commands.DevCommands;
-import ru.feytox.etherology.enchantment.EEnchantmentUtils;
+import ru.feytox.etherology.enchantment.EtherEnchantments;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
@@ -16,7 +16,6 @@ import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
-import ru.feytox.etherology.registry.item.EtherEnchantments;
 import ru.feytox.etherology.registry.util.*;
 import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
 import ru.feytox.etherology.world.gen.EWorldGeneration;
@@ -48,7 +47,6 @@ public class Etherology implements ModInitializer {
         EntityRegistry.registerServerSide();
         LootConditions.registerAll();
         DispenserBehaviors.registerAll();
-        EEnchantmentUtils.registerBannedEnchantments();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));

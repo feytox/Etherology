@@ -1,11 +1,14 @@
 package ru.feytox.etherology.registry.custom;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.experimental.UtilityClass;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@Deprecated
+@UtilityClass
 public class EtherologyRegistry {
 
     @Nullable
@@ -41,7 +44,7 @@ public class EtherologyRegistry {
         if (registry == null) throw new RuntimeException("The registry has not been completed yet.");
         ERegistryEntry<?> result = registry.getOrDefault(identifier, null);
         if (result == null) return null;
-        Object value = result.getValue();
+        Object value = result.value();
         if (cls.isInstance(value)) return cls.cast(value);
         return null;
     }
@@ -54,7 +57,7 @@ public class EtherologyRegistry {
 
         List<T> result = new ArrayList<>();
         registry.forEach((id, entry) -> {
-            Object value = entry.getValue();
+            Object value = entry.value();
             if (cls.isInstance(value)) result.add(cls.cast(value));
         });
         registryCache.put(cls, result);

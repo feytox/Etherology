@@ -10,6 +10,7 @@ import ru.feytox.etherology.util.misc.EtherologyPlayer;
 /**
  * Represents a keyframe animation player with extended information for Etherology animations.
  */
+@Deprecated
 public class EtherKeyframe extends KeyframeAnimationPlayer {
     @Getter
     private final AbstractPlayerAnimation playerAnimation;

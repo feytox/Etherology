@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 @Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@Deprecated
 public abstract class AbstractPlayerAnimation implements EtherRegistrable {
 
     /**

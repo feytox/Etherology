@@ -7,7 +7,7 @@ import net.minecraft.enchantment.UnbreakingEnchantment;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import ru.feytox.etherology.enchantment.EEnchantmentUtils;
+import ru.feytox.etherology.enchantment.EtherEnchantments;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class UnbreakingEnchantmentMixin {
 
     @ModifyReturnValue(method = "isAcceptableItem", at = @At("RETURN"))
     private boolean disallowUnbreaking(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        List<Enchantment> banned = EEnchantmentUtils.getBannedEnchantments(stack.getItem());
+        List<Enchantment> banned = EtherEnchantments.getBannedEnchantments(stack.getItem());
         if (banned == null) return original;
 
         Enchantment it = ((Enchantment) (Object) this);
