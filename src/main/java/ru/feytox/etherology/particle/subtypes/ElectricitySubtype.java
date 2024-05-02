@@ -6,6 +6,5 @@ import lombok.RequiredArgsConstructor;
 public enum ElectricitySubtype {
     SIMPLE,
     MATRIX,
-    PEAL,
     JEWELRY
 }

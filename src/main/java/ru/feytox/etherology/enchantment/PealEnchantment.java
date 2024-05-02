@@ -13,11 +13,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.target.TuningMaceEnchantmentTarget;
-import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
-import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
+import ru.feytox.etherology.particle.effects.LightningBoltParticleEffect;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
 
@@ -54,7 +53,7 @@ public class PealEnchantment extends Enchantment {
 
         DelayedTask.createTaskWithMs(world, 600, () -> {
             boolean result = activatePeal((ServerWorld) world, attacker, target.getType(), shockPos, pealLevel);
-            if (result) world.playSound(null, target.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 0.5f, 1f);
+            if (result) world.playSound(null, target.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 1.0f, 1f);
         });
     }
 
@@ -70,15 +69,15 @@ public class PealEnchantment extends Enchantment {
         if (pealEntities.isEmpty()) return false;
 
         pealEntities.forEach(target -> {
-            spawnElectricity(world, target.getBoundingBox().getCenter());
+            spawnLightningParticle(world, target);
             target.damage(DamageSource.player(attacker), pealLevel);
         });
         return true;
     }
 
-    private static void spawnElectricity(ServerWorld world, Vec3d pos) {
-        Random random = world.getRandom();
-        val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.PEAL);
-        effect.spawnParticles(world, random.nextBetween(3, 6), 0.5, pos);
+    private static void spawnLightningParticle(ServerWorld world, Entity target) {
+        float scale = target.getWidth() / 0.5f;
+        val effect = new LightningBoltParticleEffect(ServerParticleTypes.LIGHTNING_BOLT, scale);
+        effect.spawnParticles(world, 1, 0.05, target.getBoundingBox().getCenter());
     }
 }

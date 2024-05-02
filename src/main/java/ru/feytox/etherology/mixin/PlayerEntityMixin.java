@@ -46,6 +46,6 @@ public class PlayerEntityMixin {
     @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
     private void injectPealEffect(Entity target, CallbackInfo ci) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (ShockwaveUtil.onAttack(attacker)) ci.cancel();
+        if (ShockwaveUtil.onAttack(attacker, target)) ci.cancel();
     }
 }

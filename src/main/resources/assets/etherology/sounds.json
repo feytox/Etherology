@@ -53,5 +53,11 @@
       "etherology:thunder_zap_1",
       "etherology:thunder_zap_2"
     ]
+  },
+  "tuning_mace": {
+    "subtitle": "subtitles.etherology.tuning_mace",
+    "sounds": [
+      "etherology:tuning_mace"
+    ]
   }
 }

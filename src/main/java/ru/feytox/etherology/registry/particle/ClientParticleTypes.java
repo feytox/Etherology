@@ -17,7 +17,6 @@ import static ru.feytox.etherology.registry.particle.ServerParticleTypes.*;
 public class ClientParticleTypes {
     public static void registerAll() {
         register(LIGHT, LightParticle::new);
-        register(THUNDER_ZAP, PealWaveParticle::new);
         register(STEAM, SteamParticle::new);
         register(ZONE_PARTICLE, ZoneParticle::new);
         register(SPARK, SparkParticle::new);
@@ -34,6 +33,8 @@ public class ClientParticleTypes {
         register(ALCHEMY, AlchemyParticle::new);
         register(ETHER_STAR, EtherParticle.EtherStarParticle::new);
         register(ETHER_DOT, EtherParticle.EtherDotParticle::new);
+        register(RESONATION, ResonationParticle::new);
+        register(LIGHTNING_BOLT, LightningBoltParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {

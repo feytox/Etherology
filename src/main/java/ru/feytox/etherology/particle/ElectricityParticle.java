@@ -33,10 +33,6 @@ public class ElectricityParticle extends FeyParticle<ElectricityParticleEffect> 
                 scale(1.75f);
                 deltaAngle = 0.0f;
             }
-            case PEAL -> {
-                setRGB(RGBColor.of(0x00ffe5));
-                scale(2.5f);
-            }
             case JEWELRY -> {
                 maxAge = 7;
                 age = random.nextBetween(0, 3);

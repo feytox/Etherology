@@ -17,6 +17,7 @@ public class EtherSounds {
     public static final SoundEvent RATCHET = register("ratchet");
     public static final SoundEvent BREWING_DISSOLUTION = register("brewing_dissolution");
     public static final SoundEvent THUNDER_ZAP = register("thunder_zap");
+    public static final SoundEvent TUNING_MACE = register("tuning_mace");
 
     public static void registerAll() {}
 

@@ -1,7 +1,8 @@
 package ru.feytox.etherology.util.misc;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -15,26 +16,30 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.TuningMaceItem;
+import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
+import ru.feytox.etherology.registry.particle.ServerParticleTypes;
+import ru.feytox.etherology.registry.util.EtherSounds;
 
 import java.util.Comparator;
 import java.util.List;
 
-@Slf4j
 public class ShockwaveUtil {
 
-    public static boolean onAttack(PlayerEntity attacker) {
+    public static boolean onAttack(PlayerEntity attacker, Entity target) {
+        if (!target.isAttackable()) return false;
         float cooldown = attacker.getAttackCooldownProgress(0.0f);
         if (cooldown < 0.9) return false;
-
         if (!(attacker.getMainHandStack().getItem() instanceof TuningMaceItem)) return false;
-        World world = attacker.getWorld();
-        Vec3d shockPos = getShockPos(attacker.getYaw(), attacker.getPos());
 
+        World world = attacker.getWorld();
+        spawnResonationParticle(world, target);
+        playAttackSound(world, attacker, target);
+
+        Vec3d shockPos = target.getPos();
         Box attackBox = Box.of(shockPos, 6.0, 2.0, 6.0);
         List<LivingEntity> attackedEntities = world.getNonSpectatingEntities(LivingEntity.class, attackBox);
         attackedEntities.sort(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(shockPos)));
@@ -47,36 +52,37 @@ public class ShockwaveUtil {
         float knockback = EnchantmentHelper.getKnockback(attacker);
         if (attacker.isSprinting()) knockback++;
 
+        boolean attackedOnce = true;
         LivingEntity firstTarget = null;
         LivingEntity targetForPeal = null;
         float firstTargetHealth = 0.0f;
-        for (int i = 0, size = attackedEntities.size(); i < size; i++) {
-            LivingEntity target = attackedEntities.get(i);
-            if (!target.isAttackable()) continue;
-            if (target.equals(attacker)) continue;
-            if (target.handleAttack(attacker)) continue;
+        for (LivingEntity attackTarget : attackedEntities) {
+            if (!attackTarget.isAttackable()) continue;
+            if (attackTarget.equals(attacker)) continue;
+            if (attackTarget.handleAttack(attacker)) continue;
 
-            Vec3d attackVec = shockPos.subtract(target.getPos());
+            Vec3d attackVec = shockPos.subtract(attackTarget.getPos());
             double vecLen = attackVec.length();
             double attackK = Math.max(1 - vecLen / 3, 0);
-            damage += EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), target.getGroup());
+            damage += EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), attackTarget.getGroup());
 
-            Vec3d oldVelocity = target.getVelocity();
-            if (i == 0) {
-                firstTarget = target;
-                firstTargetHealth = target.getHealth();
-                if (!target.isOnGround()) {
-                    target.setVelocity(target.getVelocity().multiply(1, 2.5, 1));
+            Vec3d oldVelocity = attackTarget.getVelocity();
+            if (attackedOnce) {
+                attackedOnce = false;
+                firstTarget = attackTarget;
+                firstTargetHealth = attackTarget.getHealth();
+                if (!attackTarget.isOnGround()) {
+                    attackTarget.setVelocity(attackTarget.getVelocity().multiply(1, 2.5, 1));
                 }
             } else {
                 damage *= 0.25d * attackK * attackK;
             }
 
             if (targetForPeal == null || targetForPeal.isDead()) {
-                targetForPeal = target;
+                targetForPeal = attackTarget;
             }
 
-            tryAttack(attacker, target, damage, knockback, attackVec, vecLen, attackK, oldVelocity);
+            tryAttack(attacker, attackTarget, damage, knockback, attackVec, vecLen, attackK, oldVelocity);
         }
 
         PealEnchantment.trySchedulePeal(world, attacker, targetForPeal, shockPos);
@@ -129,9 +135,19 @@ public class ShockwaveUtil {
         }
     }
 
-    public static Vec3d getShockPos(float playerYaw, Vec3d playerPos) {
-        float yawAngle = -playerYaw * 0.017453292F;
-        Vec3d attackVec = new Vec3d(MathHelper.sin(yawAngle), 0, MathHelper.cos(yawAngle));
-        return playerPos.add(attackVec.multiply(1.5)).add(0, 0.025, 0);
+    private static void spawnResonationParticle(World world, Entity target) {
+        if (world.isClient) return;
+        val effect = new SimpleParticleEffect(ServerParticleTypes.RESONATION);
+        Vec3d targetCenter = target.getBoundingBox().getCenter();
+        effect.spawnParticles(world, 1, 0.05, targetCenter);
+    }
+
+    private static void playAttackSound(World world, PlayerEntity attacker, Entity target) {
+        if (target == null || world.isClient) return;
+        float pitch = 0.9f + world.random.nextFloat() * 0.2f;
+        double x = target.getX();
+        double y = target.getY();
+        double z = target.getZ();
+        world.playSound(null, x, y, z, EtherSounds.TUNING_MACE, attacker.getSoundCategory(), 0.5f, pitch);
     }
 }

@@ -12,7 +12,6 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 @UtilityClass
 public class ServerParticleTypes {
     public static final FeyParticleType<LightParticleEffect> LIGHT = register("light", LightParticleEffect::new);
-    public static final FeyParticleType<MovingParticleEffect> THUNDER_ZAP = register("thunder_zap", MovingParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> STEAM = register("steam", SimpleParticleEffect::new);
     public static final FeyParticleType<ZoneParticleEffect> ZONE_PARTICLE = register("zone_particle", ZoneParticleEffect::new);
     public static final FeyParticleType<SparkParticleEffect> SPARK = register("spark", SparkParticleEffect::new);
@@ -29,6 +28,8 @@ public class ServerParticleTypes {
     public static final FeyParticleType<SimpleParticleEffect> ALCHEMY = register("alchemy", SimpleParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ETHER_STAR = register("ether_star", MovingParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ETHER_DOT = register("ether_dot", MovingParticleEffect::new);
+    public static final FeyParticleType<SimpleParticleEffect> RESONATION = register("resonation", SimpleParticleEffect::new);
+    public static final FeyParticleType<LightningBoltParticleEffect> LIGHTNING_BOLT = register("lightning_bolt", LightningBoltParticleEffect::new);
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);
