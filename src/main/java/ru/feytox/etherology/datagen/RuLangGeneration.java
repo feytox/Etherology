@@ -163,15 +163,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EBONY_BATTLE_PICKAXE, "Эбонитовое кайло");
 
         builder.add(TUNING_MACE, "Тональная булава");
-
-        builder.add(WOODEN_GLAIVE, "Деревянная глефа");
-        builder.add(STONE_GLAIVE, "Каменная глефа");
-        builder.add(IRON_GLAIVE, "Железная глефа");
-        builder.add(GOLDEN_GLAIVE, "Золотая глефа");
-        builder.add(DIAMOND_GLAIVE, "Алмазная глефа");
-        builder.add(NETHERITE_GLAIVE, "Незеритовая глефа");
-        builder.add(ETHRIL_GLAIVE, "Эфриловая глефа");
-        builder.add(EBONY_GLAIVE, "Эбонитовая глефа");
+        builder.add(BROADSWORD, "Палаш");
 
         builder.add(ETHRIL_HELMET, "Эфриловый шлем");
         builder.add(ETHRIL_CHESTPLATE, "Эфриловый нагрудник");

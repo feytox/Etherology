@@ -23,7 +23,7 @@ public class EarlyRisers implements Runnable {
 
         addEArmPose(armPose, useAction, "OCULUS_ETHEROLOGY", true);
         addEArmPose(armPose, useAction, "STAFF_ETHEROLOGY", false);
-        addEArmPose(armPose, useAction, "TUNING_MACE_ETHEROLOGY", true);
+        addEArmPose(armPose, useAction, "TWOHANDHELD_ETHEROLOGY", true);
     }
 
     private void addEArmPose(String armPath, String actionPath, String name, boolean twohanded) {

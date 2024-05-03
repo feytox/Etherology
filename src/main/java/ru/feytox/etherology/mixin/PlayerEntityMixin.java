@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.PlayerAnimationController;
-import ru.feytox.etherology.item.GlaiveItem;
+import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
@@ -37,9 +37,9 @@ public class PlayerEntityMixin {
     }
 
     @WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"))
-    private Box glaiveSweepExpand(Box instance, double x, double y, double z, Operation<Box> original) {
+    private Box broadSwordSweepExpand(Box instance, double x, double y, double z, Operation<Box> original) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (!GlaiveItem.checkGlaive(attacker)) return original.call(instance, x, y, z);
+        if (!BroadSwordItem.checkBroadSword(attacker)) return original.call(instance, x, y, z);
         return original.call(instance, 4.0, 1.0, 4.0);
     }
 

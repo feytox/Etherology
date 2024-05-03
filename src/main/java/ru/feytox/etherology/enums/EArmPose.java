@@ -25,7 +25,7 @@ import static net.minecraft.util.math.MathHelper.RADIANS_PER_DEGREE;
 public enum EArmPose {
     OCULUS_ETHEROLOGY(EArmPose::oculusPoser),
     STAFF_ETHEROLOGY(EArmPose::staffPoser),
-    TUNING_MACE_ETHEROLOGY(EArmPose::macePoser);
+    TWOHANDHELD_ETHEROLOGY(EArmPose::twoPoser);
 
     private final ModelPoser modelPoser;
 
@@ -82,7 +82,7 @@ public enum EArmPose {
         }
     }
 
-    private static void macePoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
+    private static void twoPoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
         val mainArm = isRightArm ? model.rightArm : model.leftArm;
         val otherArm = isRightArm ? model.leftArm : model.rightArm;
         int d = isRightArm ? 1 : -1;

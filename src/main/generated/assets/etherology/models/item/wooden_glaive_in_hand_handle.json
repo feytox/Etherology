@@ -1,6 +1,0 @@
-{
-  "parent": "etherology:item/glaive_in_hand_handle",
-  "textures": {
-    "glaive": "etherology:item/wooden_glaive_in_hand"
-  }
-}

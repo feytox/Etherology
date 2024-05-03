@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import ru.feytox.etherology.item.GlaiveItem;
+import ru.feytox.etherology.item.BroadSwordItem;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public class ClientPlayerInteractionManagerMixin {
@@ -16,8 +16,8 @@ public class ClientPlayerInteractionManagerMixin {
     @Shadow @Final private MinecraftClient client;
 
     @ModifyReturnValue(method = "hasExtendedReach", at = @At("RETURN"))
-    private boolean extendReachWithGlaive(boolean original) {
+    private boolean extendReachWithBroadSword(boolean original) {
         ClientPlayerEntity player = client.player;
-        return original || GlaiveItem.checkGlaive(player);
+        return original || BroadSwordItem.checkBroadSword(player);
     }
 }

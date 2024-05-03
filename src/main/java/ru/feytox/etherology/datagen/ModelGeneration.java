@@ -7,8 +7,6 @@ import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.datagen.util.ModelOverride;
-import ru.feytox.etherology.datagen.util.ModelUtil;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
@@ -58,11 +56,8 @@ public class ModelGeneration extends FabricModelProvider {
         // simple items
         registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, EBONY_INGOT, EBONY_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, REDSTONE_LENS, UNADJUSTED_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER, ETHEREAL_CHANNEL, ETHEREAL_FORK, REVELATION_VIEW);
         // handheld (swords, pickaxe etc.)
-        registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD, STREAM_KEY);
+        registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD, STREAM_KEY, BROADSWORD);
         registerItems(generator, Models.HANDHELD, BATTLE_PICKAXES);
-        // glaives
-        registerInHandGlaives(generator);
-        registerItems(generator, Models.HANDHELD, GLAIVES);
         // armor
         registerItems(generator, Models.GENERATED, ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, EBONY_HELMET, EBONY_CHESTPLATE, EBONY_LEGGINGS, EBONY_BOOTS);
         // staff parts
@@ -77,21 +72,6 @@ public class ModelGeneration extends FabricModelProvider {
 
     private static void registerItems(ItemModelGenerator generator, Model model, ItemConvertible... items) {
         Arrays.stream(items).map(ItemConvertible::asItem).forEach(item -> generator.register(item, model));
-    }
-
-    private static void registerInHandGlaives(ItemModelGenerator generator) {
-        Arrays.stream(GLAIVES).forEach(item -> {
-            Identifier fileId = TextureMap.getSubId(item, "_in_hand");
-            Identifier handleFileId = TextureMap.getSubId(item, "_in_hand_handle");
-            TextureMap textures = TextureMap.of(EtherologyModels.GLAIVE, fileId);
-
-            // MATERIAL_glaive_in_hand generator
-            ModelOverride override = new ModelOverride(handleFileId, "glaive_handle", 1);
-            ModelUtil.registerItemWithOverride(generator, EtherologyModels.GLAIVE_IN_HAND, fileId, textures, override);
-
-            // MATERIAL_glaive_in_hand_handle generator
-            EtherologyModels.GLAIVE_IN_HAND_HANDLE.upload(handleFileId, textures, generator.writer);
-        });
     }
 
     private static void registerSimpleBlock(BlockStateModelGenerator generator, Block... blocks) {

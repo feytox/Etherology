@@ -2,13 +2,13 @@
 	"credit": "Made with Blockbench",
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "#glaive",
-		"particle": "#glaive"
+		"layer0": "etherology:item/broadsword_in_hand",
+		"particle": "etherology:item/broadsword_in_hand"
 	},
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [-45, -90, 0],
-			"translation": [0, 12, 1],
+			"translation": [0, 10.75, 1],
 			"scale": [2, 2, 1]
 		},
 		"thirdperson_lefthand": {
@@ -18,8 +18,8 @@
 		},
 		"firstperson_righthand": {
 			"rotation": [-30, -90, 0],
-			"translation": [2, 0, 0],
-			"scale": [1.5, 1.5, 0.75]
+			"translation": [4, 0, -4],
+			"scale": [2, 2, 1]
 		},
 		"firstperson_lefthand": {
 			"rotation": [-30, 90, 0],

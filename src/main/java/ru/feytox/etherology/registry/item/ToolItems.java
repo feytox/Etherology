@@ -39,20 +39,10 @@ public class ToolItems {
     public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f, new FabricItemSettings().fireproof()));
     public static final Item[] BATTLE_PICKAXES = {WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, EBONY_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE};
 
-    // glaives
-    public static final Item WOODEN_GLAIVE = register("wooden_glaive", new GlaiveItem(WOOD, 1, -3.2f));
-    public static final Item STONE_GLAIVE = register("stone_glaive", new GlaiveItem(STONE, 1, -3.2f));
-    public static final Item IRON_GLAIVE = register("iron_glaive", new GlaiveItem(IRON, 1, -3.1f));
-    public static final Item GOLDEN_GLAIVE = register("golden_glaive", new GlaiveItem(GOLD, 1, -3.0f));
-    public static final Item ETHRIL_GLAIVE = register("ethril_glaive", new GlaiveItem(ETHRIL, 1, -3.0f));
-    public static final Item EBONY_GLAIVE = register("ebony_glaive", new GlaiveItem(EBONY, 1, -3.1f));
-    public static final Item DIAMOND_GLAIVE = register("diamond_glaive", new GlaiveItem(DIAMOND, 1, -3.0f));
-    public static final Item NETHERITE_GLAIVE = register("netherite_glaive", new GlaiveItem(NETHERITE, 1, -3.0f, new FabricItemSettings().fireproof()));
-    public static final Item[] GLAIVES = {WOODEN_GLAIVE, STONE_GLAIVE, IRON_GLAIVE, GOLDEN_GLAIVE, ETHRIL_GLAIVE, EBONY_GLAIVE, DIAMOND_GLAIVE, NETHERITE_GLAIVE};
-
     // combat tools
     public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new FabricItemSettings().maxDamage(452), 140, 14, Items.IRON_INGOT));
     public static final Item TUNING_MACE = register("tuning_mace", new TuningMaceItem());
+    public static final Item BROADSWORD = register("broadsword", new BroadSwordItem());
 
     // single tools
     public static final Item OCULUS = register("oculus", new OculusItem());

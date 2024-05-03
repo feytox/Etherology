@@ -101,7 +101,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
         // TODO: 28.02.2024 try replace to c:stick etc
         // TODO: 28.02.2024 criterion
         registerPicks(exporter);
-        registerGlaives(exporter);
         ShapedRecipeJsonBuilder.create(TOOLS, STREAM_KEY).input('N', Items.IRON_NUGGET).input('T', EBONY_INGOT).input('I', Items.STICK)
                 .pattern("N")
                 .pattern("T")
@@ -184,15 +183,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 ShapedRecipeJsonBuilder.create(TOOLS, tool).input('I', Items.STICK).input('M', material)
                 .pattern("MM ")
                 .pattern(" IM")
-                .pattern(" I ")
-                .criterion("has_material", conditionsFromItemPredicates(criterionPredicate)).offerTo(exporter));
-    }
-
-    private void registerGlaives(Consumer<RecipeJsonProvider> exporter) {
-        registerTools(ToolItems.GLAIVES, (tool, material, criterionPredicate) ->
-                ShapedRecipeJsonBuilder.create(TOOLS, tool).input('I', Items.STICK).input('M', material)
-                .pattern(" M ")
-                .pattern("MI ")
                 .pattern(" I ")
                 .criterion("has_material", conditionsFromItemPredicates(criterionPredicate)).offerTo(exporter));
     }

@@ -14,6 +14,6 @@ public class TuningMaceItem extends TwoHandheldSword {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return EArmPose.TUNING_MACE_ETHEROLOGY.getUseAction();
+        return EArmPose.TWOHANDHELD_ETHEROLOGY.getUseAction();
     }
 }

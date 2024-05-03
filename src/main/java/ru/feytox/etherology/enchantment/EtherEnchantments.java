@@ -11,7 +11,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.BattlePickaxe;
-import ru.feytox.etherology.item.GlaiveItem;
+import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.item.TuningMaceItem;
 import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -42,7 +42,7 @@ public class EtherEnchantments {
 
     private static void registerBannedEnchantments() {
         banEnchant(BattlePickaxe.class, FORTUNE, SILK_TOUCH);
-        banEnchant(GlaiveItem.class, LOOTING);
+        banEnchant(BroadSwordItem.class, LOOTING);
         banEnchant(GlintItem.class, UNBREAKING, MENDING, VANISHING_CURSE);
         banEnchant(TuningMaceItem.class, SHARPNESS, FIRE_ASPECT, LOOTING, SWEEPING);
     }
