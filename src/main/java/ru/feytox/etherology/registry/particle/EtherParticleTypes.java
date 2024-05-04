@@ -29,7 +29,8 @@ public class EtherParticleTypes {
     public static final FeyParticleType<MovingParticleEffect> ETHER_STAR = register("ether_star", MovingParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ETHER_DOT = register("ether_dot", MovingParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> RESONATION = register("resonation", SimpleParticleEffect::new);
-    public static final FeyParticleType<LightningBoltParticleEffect> LIGHTNING_BOLT = register("lightning_bolt", LightningBoltParticleEffect::new);
+    public static final FeyParticleType<ScalableParticleEffect> LIGHTNING_BOLT = register("lightning_bolt", ScalableParticleEffect::new);
+    public static final FeyParticleType<ScalableParticleEffect> SCALABLE_SWEEP = register("scalable_sweep", ScalableParticleEffect::new);
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);

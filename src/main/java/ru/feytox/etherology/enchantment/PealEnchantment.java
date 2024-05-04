@@ -15,7 +15,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.target.TuningMaceEnchantmentTarget;
-import ru.feytox.etherology.particle.effects.LightningBoltParticleEffect;
+import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
@@ -77,7 +77,7 @@ public class PealEnchantment extends Enchantment {
 
     private static void spawnLightningParticle(ServerWorld world, Entity target) {
         float scale = target.getWidth() / 0.5f;
-        val effect = new LightningBoltParticleEffect(EtherParticleTypes.LIGHTNING_BOLT, scale);
+        val effect = new ScalableParticleEffect(EtherParticleTypes.LIGHTNING_BOLT, scale);
         effect.spawnParticles(world, 1, 0.05, target.getBoundingBox().getCenter());
     }
 }

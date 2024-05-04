@@ -20,6 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.TuningMaceItem;
+import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.registry.util.EtherSounds;
@@ -33,7 +34,7 @@ public class ShockwaveUtil {
         if (!target.isAttackable()) return false;
         float cooldown = attacker.getAttackCooldownProgress(0.0f);
         if (cooldown < 0.9) return false;
-        if (!(attacker.getMainHandStack().getItem() instanceof TuningMaceItem)) return false;
+        if (!TwoHandheldSword.isUsing(attacker, TuningMaceItem.class)) return false;
 
         World world = attacker.getWorld();
         spawnResonationParticle(world, target);

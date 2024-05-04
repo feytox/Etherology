@@ -1,5 +1,6 @@
 package ru.feytox.etherology.mixin;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -7,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,7 +42,7 @@ public class PlayerEntityMixin {
     @WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"))
     private Box broadSwordSweepExpand(Box instance, double x, double y, double z, Operation<Box> original) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
-        if (!BroadSwordItem.checkBroadSword(attacker)) return original.call(instance, x, y, z);
+        if (!BroadSwordItem.isUsing(attacker)) return original.call(instance, x, y, z);
         return original.call(instance, 4.0, 1.0, 4.0);
     }
 
@@ -47,5 +50,13 @@ public class PlayerEntityMixin {
     private void injectPealEffect(Entity target, CallbackInfo ci) {
         PlayerEntity attacker = ((PlayerEntity) (Object) this);
         if (ShockwaveUtil.onAttack(attacker, target)) ci.cancel();
+    }
+
+    @WrapWithCondition(method = "spawnSweepAttackParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;spawnParticles(Lnet/minecraft/particle/ParticleEffect;DDDIDDDD)I"))
+    private <T extends ParticleEffect> boolean replaceBroadSwordSweepParticles(ServerWorld instance, T particle, double x, double y, double z, int count, double deltaX, double deltaY, double deltaZ, double speed) {
+        PlayerEntity player = ((PlayerEntity) (Object) this);
+        if (!BroadSwordItem.isUsing(player)) return true;
+        BroadSwordItem.replaceSweepParticle(instance, x, y, z);
+        return false;
     }
 }

@@ -18,6 +18,6 @@ public class ClientPlayerInteractionManagerMixin {
     @ModifyReturnValue(method = "hasExtendedReach", at = @At("RETURN"))
     private boolean extendReachWithBroadSword(boolean original) {
         ClientPlayerEntity player = client.player;
-        return original || BroadSwordItem.checkBroadSword(player);
+        return original || BroadSwordItem.isUsing(player);
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +35,6 @@ public class EnchantmentHelperMixin {
 
     @ModifyReturnValue(method = "getSweepingMultiplier", at = @At("RETURN"))
     private static float getBroadSwordSweeping(float original, @Local(argsOnly = true) LivingEntity entity) {
-        if (!(entity instanceof PlayerEntity player)) return original;
-        return BroadSwordItem.checkBroadSword(player) ? original + 1.0f : original;
+        return BroadSwordItem.getBroadSwordSweeping(original, entity);
     }
 }

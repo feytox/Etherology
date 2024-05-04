@@ -35,6 +35,7 @@ public class ClientParticleRegistry {
         register(ETHER_DOT, EtherParticle.EtherDotParticle::new);
         register(RESONATION, ResonationParticle::new);
         register(LIGHTNING_BOLT, LightningBoltParticle::new);
+        register(SCALABLE_SWEEP, ScalableSweepParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {

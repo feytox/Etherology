@@ -10,30 +10,30 @@ import ru.feytox.etherology.particle.effects.args.ParticleArg;
 import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
-public class LightningBoltParticleEffect extends FeyParticleEffect<LightningBoltParticleEffect> {
+public class ScalableParticleEffect extends FeyParticleEffect<ScalableParticleEffect> {
 
     private final ParticleArg<Float> scaleArg = SimpleArgs.FLOAT.get();
 
-    public LightningBoltParticleEffect(ParticleType<LightningBoltParticleEffect> type, float scale) {
+    public ScalableParticleEffect(ParticleType<ScalableParticleEffect> type, float scale) {
         this(type);
         scaleArg.setValue(scale);
     }
 
-    public LightningBoltParticleEffect(ParticleType<LightningBoltParticleEffect> type) {
+    public ScalableParticleEffect(ParticleType<ScalableParticleEffect> type) {
         super(type);
     }
 
     @Override
-    public LightningBoltParticleEffect read(ParticleType<LightningBoltParticleEffect> type, StringReader reader) throws CommandSyntaxException {
+    public ScalableParticleEffect read(ParticleType<ScalableParticleEffect> type, StringReader reader) throws CommandSyntaxException {
         reader.expect(' ');
         float scale = scaleArg.read(reader);
-        return new LightningBoltParticleEffect(type, scale);
+        return new ScalableParticleEffect(type, scale);
     }
 
     @Override
-    public LightningBoltParticleEffect read(ParticleType<LightningBoltParticleEffect> type, PacketByteBuf buf) {
+    public ScalableParticleEffect read(ParticleType<ScalableParticleEffect> type, PacketByteBuf buf) {
         float scale = scaleArg.read(buf);
-        return new LightningBoltParticleEffect(type, scale);
+        return new ScalableParticleEffect(type, scale);
     }
 
     @Override
@@ -42,11 +42,11 @@ public class LightningBoltParticleEffect extends FeyParticleEffect<LightningBolt
     }
 
     @Override
-    public Codec<LightningBoltParticleEffect> createCodec() {
+    public Codec<ScalableParticleEffect> createCodec() {
         return RecordCodecBuilder.create((instance) -> instance.group(
                 scaleArg.getCodec("scale")
-                        .forGetter(LightningBoltParticleEffect::getScale)
-        ).apply(instance, (scale) -> new LightningBoltParticleEffect(type, scale)));
+                        .forGetter(ScalableParticleEffect::getScale)
+        ).apply(instance, (scale) -> new ScalableParticleEffect(type, scale)));
     }
 
     @Override

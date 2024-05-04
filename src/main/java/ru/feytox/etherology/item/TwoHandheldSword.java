@@ -13,11 +13,11 @@ public abstract class TwoHandheldSword extends SwordItem {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
 
-    public static <T extends TwoHandheldSword> boolean check(PlayerEntity player, Class<T> cls) {
-        return cls.isInstance(player.getMainHandStack().getItem()) && player.getOffHandStack().isEmpty();
+    public static <T extends TwoHandheldSword> boolean isUsing(PlayerEntity player, Class<T> cls) {
+        return cls.isInstance(player.getMainHandStack().getItem());
     }
 
-    public static boolean isUsing(LivingEntity entity) {
+    private static boolean isInHands(LivingEntity entity) {
         for (val stack : entity.getHandItems()) {
             if (stack.getItem() instanceof TwoHandheldSword) return true;
         }
@@ -25,6 +25,6 @@ public abstract class TwoHandheldSword extends SwordItem {
     }
 
     public static boolean hideExtraItem(LivingEntity entity, ItemStack stack) {
-        return TwoHandheldSword.isUsing(entity) && !(stack.getItem() instanceof TwoHandheldSword);
+        return TwoHandheldSword.isInHands(entity) && !(stack.getItem() instanceof TwoHandheldSword);
     }
 }
