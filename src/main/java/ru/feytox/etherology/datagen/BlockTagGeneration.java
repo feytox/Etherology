@@ -60,6 +60,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.LEAVES, PEACH_LEAVES);
         addTags(BlockTags.LOGS, PEACH_LOGS);
         addTags(BlockTags.LOGS_THAT_BURN, PEACH_LOGS);
+        addBlocks(BlockTags.LOGS, DecoBlocks.WEEPING_PEACH_LOG);
+        addBlocks(BlockTags.LOGS_THAT_BURN, DecoBlocks.WEEPING_PEACH_LOG);
 
         addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
         addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);

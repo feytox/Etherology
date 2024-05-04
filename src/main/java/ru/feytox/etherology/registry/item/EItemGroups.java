@@ -41,7 +41,7 @@ public class EItemGroups {
                 SAMOVAR_BLOCK, JUG, CLAY_JUG, CRATE).with(EItems.SPILL_BARREL);
         // peach
         etherItems.with(
-                PEACH_LOG, STRIPPED_PEACH_LOG, PEACH_WOOD, STRIPPED_PEACH_WOOD, PEACH_PLANKS, PEACH_STAIRS, PEACH_SLAB, PEACH_BUTTON)
+                PEACH_LOG, STRIPPED_PEACH_LOG, PEACH_WOOD, STRIPPED_PEACH_WOOD, WEEPING_PEACH_LOG, PEACH_PLANKS, PEACH_STAIRS, PEACH_SLAB, PEACH_BUTTON)
                 .with(DecoBlockItems.PEACH_DOOR, DecoBlockItems.PEACH_SIGN).with(PEACH_FENCE, PEACH_FENCE_GATE, PEACH_PRESSURE_PLATE, PEACH_TRAPDOOR, PEACH_LEAVES, PEACH_SAPLING);
         // ethereal stones
         etherItems.with(
@@ -80,7 +80,7 @@ public class EItemGroups {
                 OCULUS, REVELATION_VIEW, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
                 PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
         // materials
-        etherItems.with(ETHEROSCOPE, BINDER);
+        etherItems.with(ETHEROSCOPE, BINDER, EBONY, RESONATING_WAND);
         // plants
         etherItems.with(BEAMER_SEEDS, THUJA_SEEDS, BEAM_FRUIT);
 

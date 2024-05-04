@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.peachSapling;
+package ru.feytox.etherology.block.peach;
 
 import net.minecraft.block.sapling.SaplingGenerator;
 import net.minecraft.registry.RegistryKey;

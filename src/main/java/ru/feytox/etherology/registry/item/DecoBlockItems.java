@@ -34,6 +34,8 @@ public class DecoBlockItems {
     public static final Item ATTRAHITE_BRICK = registerSimpleItem("attrahite_brick");
 
     public static final Item BINDER = registerSimpleItem("binder");
+    public static final Item EBONY = registerSimpleItem("ebony");
+    public static final Item RESONATING_WAND = registerSimpleItem("resonating_wand");
 
     private static Item registerSimpleItem(String id) {
         return Registry.register(Registries.ITEM, new EIdentifier(id), new Item(new FabricItemSettings()));

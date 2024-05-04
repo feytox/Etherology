@@ -140,6 +140,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(PEACH_SAPLING, "Саженец персикового дерева");
         builder.add(PEACH_LEAVES, "Персиковая листва");
+        builder.add(WEEPING_PEACH_LOG, "Плакучее персиковое бревно");
 
         builder.add(ETHRIL_AXE, "Эфриловый топор");
         builder.add(ETHRIL_HOE, "Эфриловая мотыга");
@@ -197,6 +198,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(THUJA_OIL, "Хвойное масло");
         builder.add(THUJA_SEEDS, "Семена туи");
         builder.add(BINDER, "Связующий элемент");
+        builder.add(EBONY, "Эбен");
+        builder.add(RESONATING_WAND, "Резонирующая палочка");
 
         builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка эфирного канала");
         builder.add(STREAM_KEY, "Ключ трансляции");

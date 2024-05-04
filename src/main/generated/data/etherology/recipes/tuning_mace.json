@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "item": "minecraft:iron_ingot"
+    },
+    "W": {
+      "item": "etherology:resonating_wand"
+    }
+  },
+  "pattern": [
+    "W W",
+    "WSW",
+    " I "
+  ],
+  "result": {
+    "item": "etherology:tuning_mace"
+  }
+}

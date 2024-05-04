@@ -1,0 +1,22 @@
+{
+  "type": "etherology:empower_recipe",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:echo_shard"
+    }
+  },
+  "pattern": [
+    " I ",
+    " S ",
+    " I "
+  ],
+  "result": {
+    "count": 2,
+    "item": "etherology:resonating_wand"
+  },
+  "rellaCount": 2,
+  "ketaCount": 1
+}

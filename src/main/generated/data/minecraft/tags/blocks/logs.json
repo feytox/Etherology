@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#etherology:peach_logs"
+    "#etherology:peach_logs",
+    "etherology:weeping_peach_log"
   ]
 }

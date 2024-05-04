@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.peachSapling;
+package ru.feytox.etherology.block.peach;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Blocks;

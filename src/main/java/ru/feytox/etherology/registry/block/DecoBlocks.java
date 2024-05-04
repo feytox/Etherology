@@ -15,7 +15,8 @@ import net.minecraft.util.SignType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import ru.feytox.etherology.block.beamer.BeamerBlock;
-import ru.feytox.etherology.block.peachSapling.PeachSaplingBlock;
+import ru.feytox.etherology.block.peach.PeachSaplingBlock;
+import ru.feytox.etherology.block.peach.WeepingPeachLogBlock;
 import ru.feytox.etherology.block.signs.EtherSignBlock;
 import ru.feytox.etherology.block.signs.EtherSignBlockEntity;
 import ru.feytox.etherology.block.signs.EtherSignType;
@@ -38,6 +39,7 @@ public class DecoBlocks {
     public static final Block STRIPPED_PEACH_LOG = register("stripped_peach_log", Blocks.createLogBlock(MapColor.OAK_TAN, MapColor.OAK_TAN)).withItem();
     public static final Block PEACH_WOOD = register("peach_wood", new PillarBlock(copy(PEACH_LOG))).withItem();
     public static final Block STRIPPED_PEACH_WOOD = register("stripped_peach_wood", new PillarBlock(copy(STRIPPED_PEACH_LOG))).withItem();
+    public static final Block WEEPING_PEACH_LOG = register("weeping_peach_log", new WeepingPeachLogBlock(MapColor.OAK_TAN, MapColor.SPRUCE_BROWN)).withItem(false);
     public static final Block PEACH_PLANKS = register("peach_planks", new Block(AbstractBlock.Settings.of(Material.WOOD, MapColor.OAK_TAN).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD))).withItem();
     public static final Block PEACH_STAIRS = registerStairs("peach_stairs", PEACH_PLANKS).withItem();
     public static final Block PEACH_SLAB = registerSlab("peach_slab", PEACH_PLANKS).withItem();
@@ -206,6 +208,7 @@ public class DecoBlocks {
         fireBlock.registerFlammableBlock(STRIPPED_PEACH_LOG, 5, 5);
         fireBlock.registerFlammableBlock(PEACH_WOOD, 5, 5);
         fireBlock.registerFlammableBlock(STRIPPED_PEACH_WOOD, 5, 5);
+        fireBlock.registerFlammableBlock(WEEPING_PEACH_LOG, 5, 5);
 
         fireBlock.registerFlammableBlock(PEACH_PLANKS, 5, 20);
         fireBlock.registerFlammableBlock(PEACH_STAIRS, 5, 20);
@@ -220,7 +223,8 @@ public class DecoBlocks {
     // logs registry
     public static final Map<Block, Block> ETHER_LOGS = Map.of(
             PEACH_LOG, STRIPPED_PEACH_LOG,
-            PEACH_WOOD, STRIPPED_PEACH_WOOD
+            PEACH_WOOD, STRIPPED_PEACH_WOOD,
+            WEEPING_PEACH_LOG, STRIPPED_PEACH_LOG
     );
 
     static {

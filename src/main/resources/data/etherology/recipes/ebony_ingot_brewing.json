@@ -1,0 +1,8 @@
+{
+  "type": "etherology:brewing_cauldron_recipe",
+  "inputItem": {
+    "item": "etherology:ebony"
+  },
+  "inputAspects": {"talo": 3, "flima": 2},
+  "outputItem": "etherology:ebony_ingot"
+}
