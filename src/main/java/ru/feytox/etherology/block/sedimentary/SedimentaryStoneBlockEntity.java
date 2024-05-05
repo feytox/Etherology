@@ -29,6 +29,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTI
 public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements EssenceConsumer {
     private static final float MAX_POINTS = 32.0f;
     private float points = 0;
+    private boolean validated = false;
 
     public SedimentaryStoneBlockEntity(BlockPos pos, BlockState state) {
         super(SEDIMENTARY_BLOCK_ENTITY, pos, state);
@@ -39,24 +40,25 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f, true);
         EssenceZoneType zoneType = state.get(ESSENCE_STATE);
 
-        if (world.isClient) {
+        if (!(world instanceof ServerWorld serverWorld)) {
             SparkSedimentaryInfo.spawnSedimentaryParticle(world, pos, zoneType);
             return true;
         }
 
         points = 0;
-        markDirty();
-        updateBlockState((ServerWorld) world, state, EssenceZoneType.EMPTY);
+        syncData(serverWorld);
+        updateBlockState(serverWorld, state, EssenceZoneType.EMPTY);
 
         Optional<Item> match = Registries.ITEM.getOrEmpty(new EIdentifier("primoshard_" + zoneType.name().toLowerCase()));
         match.ifPresent(item ->
-                ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
+                ItemScatterer.spawn(serverWorld, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
 
         return true;
     }
 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
+        validateState(world, state);
         consumingTick(world, state);
     }
 
@@ -65,14 +67,25 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         tickZoneParticles(world, blockPos, state.get(ESSENCE_STATE));
     }
 
-    public void consumingTick(ServerWorld world, BlockState state) {
+    private void validateState(ServerWorld world, BlockState state) {
+        if (validated) return;
+        EssenceZoneType zoneType = state.get(ESSENCE_STATE);
+        int essenceLevel = state.get(ESSENCE_LEVEL);
+        if (points != 0.0f || !zoneType.isZone() || essenceLevel == 0) validated = true;
+        if (validated) return;
+
+        points = essenceLevel * MAX_POINTS;
+        syncData(world);
+    }
+
+    private void consumingTick(ServerWorld world, BlockState state) {
         if (world.getTime() % 200 != 0 || points >= MAX_POINTS) return;
         EssenceZoneType zoneType = tickConsuming(world, pos, state.get(ESSENCE_STATE)).orElse(null);
         updateBlockState(world, state, zoneType);
     }
 
-    public void updateBlockState(ServerWorld world, BlockState state, @Nullable EssenceZoneType newZoneType) {
-        float k = points / MAX_POINTS;
+    private void updateBlockState(ServerWorld world, BlockState state, @Nullable EssenceZoneType newZoneType) {
+        float k = Math.min(points / MAX_POINTS, 1.0f);
         BlockState newState = SEDIMENTARY_BLOCK.getDefaultState();
         if (k > 0) newState = state.with(ESSENCE_LEVEL, MathHelper.floor(4*k));
         if (newZoneType != null) newState = newState.with(ESSENCE_STATE, newZoneType);

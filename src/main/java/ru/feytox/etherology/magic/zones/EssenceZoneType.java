@@ -17,6 +17,7 @@ import ru.feytox.etherology.util.misc.RGBColor;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 @RequiredArgsConstructor
 public enum EssenceZoneType implements StringIdentifiable {
     NOT_INITIALIZED,
@@ -30,19 +31,19 @@ public enum EssenceZoneType implements StringIdentifiable {
     private static final float VERY_RARE_CHANCE = 0.25f;
 
     @Nullable
-    @Getter
     private final GenerationSetting generationSetting;
 
     @Nullable
-    @Getter
     private final RGBColor startColor;
 
     @Nullable
-    @Getter
     private final RGBColor endColor;
+
+    private boolean isZone = true;
 
     EssenceZoneType() {
         this(null, null, null);
+        isZone = false;
     }
 
     public static List<EssenceZoneType> getShuffledTypes(Random random) {
@@ -101,10 +102,6 @@ public enum EssenceZoneType implements StringIdentifiable {
             if (world.isAir(lastPos)) return lastPos;
         }
         return lastPos;
-    }
-
-    public boolean isZone() {
-        return !this.equals(EMPTY) && !this.equals(NOT_INITIALIZED);
     }
 
     @Override
