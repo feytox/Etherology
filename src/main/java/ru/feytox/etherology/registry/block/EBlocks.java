@@ -51,6 +51,7 @@ import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
+import ru.feytox.etherology.block.tuningFork.TuningFork;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
@@ -196,6 +197,8 @@ public class EBlocks {
     );
 
     public static final EtherealChannelCase ETHEREAL_CHANNEL_CASE = (EtherealChannelCase) new EtherealChannelCase().registerAll();
+
+    public static final TuningFork TUNING_FORK = (TuningFork) new TuningFork().registerAll();
 
     public static void registerAll() {
         DecoBlocks.registerAll();

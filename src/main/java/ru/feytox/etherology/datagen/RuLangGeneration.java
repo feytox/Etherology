@@ -12,8 +12,7 @@ import ru.feytox.etherology.registry.block.EBlocks;
 import java.nio.file.Path;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
-import static ru.feytox.etherology.registry.block.EBlocks.CRATE;
-import static ru.feytox.etherology.registry.block.EBlocks.LEVITATOR;
+import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.EItems.*;
@@ -204,6 +203,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка эфирного канала");
         builder.add(STREAM_KEY, "Ключ трансляции");
         builder.add(REVELATION_VIEW, "Окуляр");
+
+        builder.add(TUNING_FORK, "Камертон");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

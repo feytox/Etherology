@@ -1,0 +1,76 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "etherology:block/tuning_fork",
+		"tuning_fork": "etherology:block/tuning_fork"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 4, 11],
+			"faces": {
+				"north": {"uv": [0, 12, 6, 16], "texture": "#tuning_fork"},
+				"east": {"uv": [6, 12, 12, 16], "texture": "#tuning_fork"},
+				"south": {"uv": [0, 12, 6, 16], "texture": "#tuning_fork"},
+				"west": {"uv": [6, 12, 12, 16], "texture": "#tuning_fork"},
+				"up": {"uv": [8, 2, 14, 8], "texture": "#tuning_fork"},
+				"down": {"uv": [8, 2, 14, 8], "texture": "#tuning_fork"}
+			}
+		},
+		{
+			"from": [7, 4, 7],
+			"to": [9, 6, 9],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 2], "texture": "#tuning_fork"},
+				"east": {"uv": [16, 0, 14, 2], "texture": "#tuning_fork"},
+				"south": {"uv": [14, 0, 16, 2], "texture": "#tuning_fork"},
+				"west": {"uv": [16, 0, 14, 2], "texture": "#tuning_fork"}
+			}
+		},
+		{
+			"from": [5, 6, 7],
+			"to": [11, 16, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 10], "texture": "#tuning_fork"},
+				"east": {"uv": [6, 0, 8, 10], "texture": "#tuning_fork"},
+				"south": {"uv": [0, 0, 6, 10], "texture": "#tuning_fork"},
+				"west": {"uv": [6, 0, 8, 10], "texture": "#tuning_fork"},
+				"up": {"uv": [8, 0, 14, 2], "texture": "#tuning_fork"},
+				"down": {"uv": [0, 10, 6, 12], "texture": "#tuning_fork"}
+			}
+		},
+		{
+			"from": [9, 8, 7],
+			"to": [7, 16, 9],
+			"faces": {
+				"east": {"uv": [14, 2, 16, 10], "texture": "#tuning_fork"},
+				"west": {"uv": [14, 2, 16, 10], "texture": "#tuning_fork"},
+				"down": {"uv": [12, 8, 14, 10], "texture": "#tuning_fork"}
+			}
+		},
+		{
+			"from": [10, 1, 5],
+			"to": [6, 3, 6],
+			"faces": {
+				"east": {"uv": [5, 13, 6, 15], "texture": "#tuning_fork"},
+				"south": {"uv": [6, 10, 10, 12], "texture": "#tuning_fork"},
+				"west": {"uv": [0, 13, 1, 15], "texture": "#tuning_fork"},
+				"up": {"uv": [1, 12, 5, 13], "texture": "#tuning_fork"},
+				"down": {"uv": [1, 15, 5, 16], "texture": "#tuning_fork"}
+			}
+		},
+		{
+			"from": [10, 1, 10],
+			"to": [6, 3, 11],
+			"faces": {
+				"north": {"uv": [6, 10, 10, 12], "texture": "#tuning_fork"},
+				"east": {"uv": [0, 13, 1, 15], "texture": "#tuning_fork"},
+				"west": {"uv": [5, 13, 6, 15], "texture": "#tuning_fork"},
+				"up": {"uv": [1, 12, 5, 13], "texture": "#tuning_fork"},
+				"down": {"uv": [1, 15, 5, 16], "texture": "#tuning_fork"}
+			}
+		}
+	],
+	"display": {}
+}

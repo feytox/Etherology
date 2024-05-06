@@ -18,6 +18,9 @@ public class EtherSounds {
     public static final SoundEvent BREWING_DISSOLUTION = register("brewing_dissolution");
     public static final SoundEvent THUNDER_ZAP = register("thunder_zap");
     public static final SoundEvent TUNING_MACE = register("tuning_mace");
+    public static final SoundEvent TUNING_FORK_ACTIVATE = register("tuning_fork_activate");
+    public static final SoundEvent TUNING_FORK_TUNING = register("tuning_fork_tuning");
+    public static final SoundEvent TUNING_FORK_RESONANCE = register("tuning_fork_resonance");
 
     public static void registerAll() {}
 

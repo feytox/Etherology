@@ -1,0 +1,48 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "etherology:block/tuning_fork" },
+      "when": { "OR": [
+        { "horizontal_facing": "north", "vertical_facing": "up" },
+        { "horizontal_facing": "south", "vertical_facing": "up" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "x": 180 },
+      "when": { "OR": [
+        { "horizontal_facing": "north", "vertical_facing": "down" },
+        { "horizontal_facing": "south", "vertical_facing": "down" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "y": 90 },
+      "when": { "OR": [
+        { "horizontal_facing": "west", "vertical_facing": "up" },
+        { "horizontal_facing": "east", "vertical_facing": "up" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "x": 180, "y": 90 },
+      "when": { "OR": [
+        { "horizontal_facing": "west", "vertical_facing": "down" },
+        { "horizontal_facing": "east", "vertical_facing": "down" }
+      ]}
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "x": 90 },
+      "when": { "vertical_facing": "north" }
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "x": 90, "y": 90 },
+      "when": { "vertical_facing": "east" }
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "x": 90, "y": 180 },
+      "when": { "vertical_facing": "south" }
+    },
+    {
+      "apply": { "model": "etherology:block/tuning_fork", "x": 90, "y": 270 },
+      "when": { "vertical_facing": "west" }
+    }
+  ]
+}

@@ -28,6 +28,7 @@ public class BlockRenderLayerMapRegistry {
         registerCutout(POTTED_BEAMER);
         registerCutout(THUJA);
         registerCutout(THUJA_PLANT);
+        registerCutout(TUNING_FORK);
     }
 
     private static void registerCutout(Block block) {
