@@ -8,7 +8,7 @@ import ru.feytox.etherology.network.util.AbstractS2CPacket;
 
 public class AnimationPacketManager extends AbstractPacketManager {
 
-    // TODO: 05/05/2023 maybe add sync anim packet
+    // TODO: 06.05.2024 try to use .onSyncedBlockEvent (if possible)
 
     public static final AnimationPacketManager INSTANCE = new AnimationPacketManager();
 

@@ -28,7 +28,7 @@ public class EtherParticleTypes {
     public static final FeyParticleType<SimpleParticleEffect> ALCHEMY = register("alchemy", SimpleParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ETHER_STAR = register("ether_star", MovingParticleEffect::new);
     public static final FeyParticleType<MovingParticleEffect> ETHER_DOT = register("ether_dot", MovingParticleEffect::new);
-    public static final FeyParticleType<SimpleParticleEffect> RESONATION = register("resonation", SimpleParticleEffect::new);
+    public static final FeyParticleType<ScalableParticleEffect> RESONATION = register("resonation", ScalableParticleEffect::new);
     public static final FeyParticleType<ScalableParticleEffect> LIGHTNING_BOLT = register("lightning_bolt", ScalableParticleEffect::new);
     public static final FeyParticleType<ScalableParticleEffect> SCALABLE_SWEEP = register("scalable_sweep", ScalableParticleEffect::new);
 

@@ -66,7 +66,6 @@ public class LevitatorBlock extends FacingBlock implements RegistrableBlock, Blo
 
         if (oldPower == 0 || power == 0) world.setBlockState(pos, state.with(POWERED, power > 0).with(POWER, power));
         else world.setBlockState(pos, state.with(POWER, power));
-
     }
 
     @Nullable

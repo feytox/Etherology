@@ -14,7 +14,7 @@ import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
 @ApiStatus.Experimental
-@Deprecated // i forgor what is this
+@Deprecated
 public class TypedParticleEffect<T extends Enum<T>> extends FeyParticleEffect<TypedParticleEffect<T>> {
 
     private final ParticleArg<T> enumArg;

@@ -63,7 +63,10 @@
   "tuning_fork_activate": {
     "subtitle": "subtitles.etherology.tuning_fork_activate",
     "sounds": [
-      "etherology:tuning_fork_activate"
+      {
+        "attenuation_distance": 7,
+        "name": "etherology:tuning_fork_activate"
+      }
     ]
   },
   "tuning_fork_tuning": {
@@ -75,7 +78,10 @@
   "tuning_fork_resonance": {
     "subtitle": "subtitles.etherology.tuning_fork_resonance",
     "sounds": [
-      "etherology:tuning_fork_resonance"
+      {
+        "attenuation_distance": 7,
+        "name": "etherology:tuning_fork_resonance"
+      }
     ]
   }
 }

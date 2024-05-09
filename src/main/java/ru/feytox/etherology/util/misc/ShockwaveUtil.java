@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.TuningMaceItem;
 import ru.feytox.etherology.item.TwoHandheldSword;
-import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
+import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.registry.util.EtherSounds;
 
@@ -138,7 +138,7 @@ public class ShockwaveUtil {
 
     private static void spawnResonationParticle(World world, Entity target) {
         if (world.isClient) return;
-        val effect = new SimpleParticleEffect(EtherParticleTypes.RESONATION);
+        val effect = new ScalableParticleEffect(EtherParticleTypes.RESONATION, 1.0f);
         Vec3d targetCenter = target.getBoundingBox().getCenter();
         effect.spawnParticles(world, 1, 0.05, targetCenter);
     }

@@ -3,23 +3,38 @@ package ru.feytox.etherology.block.tuningFork;
 import lombok.val;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-public class TuningFork extends FacingBlock implements RegistrableBlock {
+public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
 
-    private static final EnumProperty<Direction> VERTICAL_FACING = DirectionProperty.of("vertical_facing");
+    public static final EnumProperty<Direction> VERTICAL_FACING = DirectionProperty.of("vertical_facing");
     private static final EnumProperty<Direction> HORIZONTAL_FACING = DirectionProperty.of("horizontal_facing");
-    private static final BooleanProperty POWERED = Properties.POWERED;
-    private static final IntProperty NOTE = Properties.NOTE;
+    public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final IntProperty NOTE = Properties.NOTE;
+    public static final BooleanProperty RESONATING = BooleanProperty.of("resonating");
     private static final VoxelShape UP_NORTH_SOUTH_SHAPE;
     private static final VoxelShape UP_WEST_EAST_SHAPE;
     private static final VoxelShape NORTH_SHAPE;
@@ -36,18 +51,91 @@ public class TuningFork extends FacingBlock implements RegistrableBlock {
                 .with(HORIZONTAL_FACING, Direction.NORTH)
                 .with(POWERED, false)
                 .with(NOTE, 0)
+                .with(RESONATING, false)
         );
+    }
+
+    /**
+     * @see NoteBlock#onUse(BlockState, World, BlockPos, PlayerEntity, Hand, BlockHitResult)
+     */
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (world.isClient) return ActionResult.SUCCESS;
+
+        state = state.cycle(NOTE);
+        world.setBlockState(pos, state, NOTIFY_ALL);
+        world.addSyncedBlockEvent(pos, this, 0, 0);
+        return ActionResult.CONSUME;
+    }
+
+    @Override
+    public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
+        int note = state.get(NOTE);
+        world.addParticle(ParticleTypes.NOTE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, note / 24.0, 0.0, 0.0);
+        float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
+        world.playSound(null, pos, EtherSounds.TUNING_FORK_TUNING, SoundCategory.BLOCKS, 0.5f, pitch);
+        return true;
+    }
+
+    @Override
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        if (!(sourceBlock instanceof NoteBlock)) return;
+        Direction bottomFacing = state.get(VERTICAL_FACING).getOpposite();
+        if (!pos.add(bottomFacing.getVector()).equals(sourcePos)) return;
+
+        int power = world.getReceivedRedstonePower(sourcePos);
+        boolean powered = power > 0;
+        boolean wasPowered = state.get(POWERED);
+        if (powered == wasPowered) return;
+
+        state = state.with(POWERED, powered);
+        world.setBlockState(pos, state);
+        if (!(world instanceof ServerWorld serverWorld) || !(world.getBlockEntity(pos) instanceof TuningForkBlockEntity fork)) return;
+
+        if (powered) fork.tryActivate(serverWorld, state, false, -1);
+    }
+
+    @Override
+    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(RESONATING) ? 15 : 0;
+    }
+
+    @Override
+    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(RESONATING) && direction.equals(state.get(VERTICAL_FACING)) ? 15 : 0;
+    }
+
+    @Override
+    public boolean emitsRedstonePower(BlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> GameEventListener getGameEventListener(ServerWorld world, T blockEntity) {
+        if (blockEntity instanceof TuningForkBlockEntity fork) return fork;
+        return null;
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(VERTICAL_FACING, HORIZONTAL_FACING, POWERED, NOTE);
+        builder.add(VERTICAL_FACING, HORIZONTAL_FACING, POWERED, NOTE, RESONATING);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getDefaultState().with(VERTICAL_FACING, ctx.getSide()).with(HORIZONTAL_FACING, ctx.getPlayerFacing().getOpposite());
+        int power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
+        boolean powered = power > 0;
+        return getDefaultState().with(VERTICAL_FACING, ctx.getSide())
+                .with(HORIZONTAL_FACING, ctx.getPlayerFacing().getOpposite())
+                .with(POWERED, powered);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return TuningForkBlockEntity.getTicker(world, type, EBlocks.TUNING_FORK_BLOCK_ENTITY);
     }
 
     @Override
@@ -135,5 +223,11 @@ public class TuningFork extends FacingBlock implements RegistrableBlock {
                 Block.createCuboidShape(7, 0, 5, 9, 10, 7),
                 Block.createCuboidShape(7, 8, 5, 9, 10, 11)
         ).simplify();
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new TuningForkBlockEntity(pos, state);
     }
 }
