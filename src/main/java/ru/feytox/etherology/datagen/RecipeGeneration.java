@@ -95,6 +95,9 @@ public class RecipeGeneration extends FabricRecipeProvider {
         offer2x2Recipe(exporter, BUILDING_BLOCKS, RED_CLAY_TILES, RED_TERRACOTTA, 4);
         offer2x2Recipe(exporter, BUILDING_BLOCKS, YELLOW_CLAY_TILES, YELLOW_TERRACOTTA, 4);
 
+        ShapelessRecipeJsonBuilder.create(MISC, THUJA_OIL, 2).input(THUJA_SEEDS).criterion("has_thuja_seeds", conditionsFromItem(THUJA_SEEDS)).offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(MISC, BEAMER_SEEDS, 3).input(BEAM_FRUIT).criterion("has_beam_fruit", conditionsFromItem(BEAM_FRUIT)).offerTo(exporter);
+
         // NOTE: complicated crafts = more than 1 line for recipe
 
         // tools
@@ -179,8 +182,9 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("#N#")
                 .pattern("FLF")
                 .pattern("#E#").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapelessRecipeJsonBuilder.create(MISC, THUJA_OIL, 2).input(THUJA_SEEDS).criterion("has_thuja_seeds", conditionsFromItem(THUJA_SEEDS)).offerTo(exporter);
-        ShapelessRecipeJsonBuilder.create(MISC, BEAMER_SEEDS, 3).input(BEAM_FRUIT).criterion("has_beam_fruit", conditionsFromItem(BEAM_FRUIT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(REDSTONE, TUNING_FORK, 2).input('#', ItemTags.PLANKS).input('R', Items.REDSTONE).input('I', RESONATING_WAND)
+                .pattern("IRI")
+                .pattern(" # ").criterion("has_resonating_wand", conditionsFromItem(RESONATING_WAND)).offerTo(exporter);
     }
 
     private void registerPicks(Consumer<RecipeJsonProvider> exporter) {

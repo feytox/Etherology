@@ -49,14 +49,15 @@ public class TuningForkBlockEntity extends TickableBlockEntity implements GameEv
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        tickParticles(world, blockPos);
+        tickParticles(world, blockPos, state);
     }
 
-    private void tickParticles(ClientWorld world, BlockPos blockPos) {
+    private void tickParticles(ClientWorld world, BlockPos blockPos, BlockState state) {
         if (!isResonating() || world.getTime() % PARTICLE_TICK_RATE != 0) return;
 
+        Vec3d offset = Vec3d.of(state.get(TuningFork.VERTICAL_FACING).getVector()).multiply(0.25d);
         val effect = new ScalableParticleEffect(EtherParticleTypes.RESONATION, 0.5f);
-        effect.spawnParticles(world, 1, 0, blockPos.toCenterPos().add(0, 0.25d, 0));
+        effect.spawnParticles(world, 1, 0, blockPos.toCenterPos().add(offset));
     }
 
     public void tryActivate(ServerWorld world, BlockState state, boolean isResonance, int sourceNote) {
