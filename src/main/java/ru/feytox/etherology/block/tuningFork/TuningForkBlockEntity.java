@@ -66,11 +66,13 @@ public class TuningForkBlockEntity extends TickableBlockEntity implements GameEv
         int note = state.get(TuningFork.NOTE);
         if (sourceNote != -1 && note != sourceNote) return;
 
-        float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
-        SoundEvent sound = isResonance ? EtherSounds.TUNING_FORK_RESONANCE : EtherSounds.TUNING_FORK_ACTIVATE;
-        world.playSound(null, pos, sound, SoundCategory.BLOCKS, 0.5f, pitch);
-        resonatingTicks = RESONANCE_COOLDOWN;
+        if (!state.get(TuningFork.WATERLOGGED)) {
+            float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
+            SoundEvent sound = isResonance ? EtherSounds.TUNING_FORK_RESONANCE : EtherSounds.TUNING_FORK_ACTIVATE;
+            world.playSound(null, pos, sound, SoundCategory.BLOCKS, 0.5f, pitch);
+        }
 
+        resonatingTicks = RESONANCE_COOLDOWN;
         world.setBlockState(pos, state.with(TuningFork.RESONATING, true));
         updateNeighbors(world, state);
         syncData(world);

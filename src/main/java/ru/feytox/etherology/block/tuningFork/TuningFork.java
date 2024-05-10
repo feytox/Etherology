@@ -7,6 +7,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -22,19 +24,21 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
+public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
     public static final EnumProperty<Direction> VERTICAL_FACING = DirectionProperty.of("vertical_facing");
     private static final EnumProperty<Direction> HORIZONTAL_FACING = DirectionProperty.of("horizontal_facing");
     public static final BooleanProperty POWERED = Properties.POWERED;
     public static final IntProperty NOTE = Properties.NOTE;
     public static final BooleanProperty RESONATING = BooleanProperty.of("resonating");
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     private static final VoxelShape UP_NORTH_SOUTH_SHAPE;
     private static final VoxelShape UP_WEST_EAST_SHAPE;
     private static final VoxelShape NORTH_SHAPE;
@@ -52,6 +56,7 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
                 .with(POWERED, false)
                 .with(NOTE, 0)
                 .with(RESONATING, false)
+                .with(WATERLOGGED, false)
         );
     }
 
@@ -72,8 +77,10 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
         int note = state.get(NOTE);
         world.addParticle(ParticleTypes.NOTE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, note / 24.0, 0.0, 0.0);
-        float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
-        world.playSound(null, pos, EtherSounds.TUNING_FORK_TUNING, SoundCategory.BLOCKS, 0.5f, pitch);
+        if (!state.get(WATERLOGGED)) {
+            float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
+            world.playSound(null, pos, EtherSounds.TUNING_FORK_TUNING, SoundCategory.BLOCKS, 0.5f, pitch);
+        }
         return true;
     }
 
@@ -119,17 +126,29 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(VERTICAL_FACING, HORIZONTAL_FACING, POWERED, NOTE, RESONATING);
+        builder.add(VERTICAL_FACING, HORIZONTAL_FACING, POWERED, NOTE, RESONATING, WATERLOGGED);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
+        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
         int power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
         boolean powered = power > 0;
         return getDefaultState().with(VERTICAL_FACING, ctx.getSide())
                 .with(HORIZONTAL_FACING, ctx.getPlayerFacing().getOpposite())
-                .with(POWERED, powered);
+                .with(POWERED, powered).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED)) world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Nullable
