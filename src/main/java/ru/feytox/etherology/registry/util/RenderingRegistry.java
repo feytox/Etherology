@@ -6,6 +6,8 @@ import io.wispforest.owo.ui.hud.Hud;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import ru.feytox.etherology.entity.feature.RedstoneRayRenderer;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.registry.item.ArmorItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -17,6 +19,8 @@ public class RenderingRegistry {
     public static void registerAll() {
         registerHUD();
         TrinketRendererRegistry.registerRenderer(ArmorItems.REVELATION_VIEW, (TrinketRenderer) ArmorItems.REVELATION_VIEW);
+
+        WorldRenderEvents.END.register(RedstoneRayRenderer::render);
     }
 
     private static void registerHUD() {
