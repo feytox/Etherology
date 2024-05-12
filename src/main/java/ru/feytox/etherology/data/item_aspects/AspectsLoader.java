@@ -16,7 +16,7 @@ import net.minecraft.util.profiler.Profiler;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.AspectContainerId;
 import ru.feytox.etherology.magic.aspects.AspectContainerType;
-import ru.feytox.etherology.registry.util.ResourceReloaders;
+import ru.feytox.etherology.registry.misc.ResourceReloaders;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;

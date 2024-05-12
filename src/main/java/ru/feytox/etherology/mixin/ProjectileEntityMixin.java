@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.enchantment.ReflectionEnchantment;
 import ru.feytox.etherology.item.EtherShield;
-import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.registry.misc.EtherSounds;
 
 import java.util.Optional;
 

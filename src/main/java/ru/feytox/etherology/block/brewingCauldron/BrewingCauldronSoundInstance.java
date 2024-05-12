@@ -4,7 +4,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
-import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.registry.misc.EtherSounds;
 
 public class BrewingCauldronSoundInstance extends MovingSoundInstance {
 

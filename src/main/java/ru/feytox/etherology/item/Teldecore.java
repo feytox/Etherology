@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import ru.feytox.etherology.gui.teldecore.TestScreen;
 import ru.feytox.etherology.util.deprecated.SimpleItem;
 
-import static ru.feytox.etherology.registry.util.EtherologyComponents.*;
+import static ru.feytox.etherology.registry.misc.EtherologyComponents.*;
 
 public class Teldecore extends SimpleItem {
 

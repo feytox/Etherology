@@ -12,7 +12,7 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 public class LensComponent extends ItemComponent implements CopyableComponent<LensComponent> {
 

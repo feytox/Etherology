@@ -16,8 +16,8 @@ import ru.feytox.etherology.magic.staff.StaffColors;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPattern;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.registry.util.RecipesRegistry;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
 import java.util.function.Predicate;
 

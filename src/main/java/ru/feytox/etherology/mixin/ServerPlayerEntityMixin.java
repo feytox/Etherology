@@ -11,8 +11,8 @@ import ru.feytox.etherology.util.deprecated.IdkLib;
 
 import java.util.Optional;
 
-import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
-import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_REGEN;
+import static ru.feytox.etherology.registry.misc.EtherologyComponents.ETHER_POINTS;
+import static ru.feytox.etherology.registry.misc.EtherologyComponents.ETHER_REGEN;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin {

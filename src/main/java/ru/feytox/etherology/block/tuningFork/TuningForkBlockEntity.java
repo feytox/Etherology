@@ -18,9 +18,9 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.event.listener.GameEventListener;
 import ru.feytox.etherology.mixin.VibrationListenerAccessor;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
+import ru.feytox.etherology.registry.misc.EtherSounds;
+import ru.feytox.etherology.registry.misc.EventsRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
-import ru.feytox.etherology.registry.util.EtherSounds;
-import ru.feytox.etherology.registry.util.EventsRegistry;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import static ru.feytox.etherology.registry.block.EBlocks.TUNING_FORK_BLOCK_ENTITY;

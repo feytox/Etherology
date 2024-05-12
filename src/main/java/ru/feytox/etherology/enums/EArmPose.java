@@ -10,7 +10,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.EnumUtils;
 import ru.feytox.etherology.item.StaffItem;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.Optional;
 

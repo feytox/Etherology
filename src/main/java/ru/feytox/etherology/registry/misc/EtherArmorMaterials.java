@@ -1,4 +1,4 @@
-package ru.feytox.etherology.registry.util;
+package ru.feytox.etherology.registry.misc;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;

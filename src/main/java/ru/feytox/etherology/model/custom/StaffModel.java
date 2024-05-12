@@ -15,7 +15,7 @@ import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.MultiItemModel;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.List;
 import java.util.Map;

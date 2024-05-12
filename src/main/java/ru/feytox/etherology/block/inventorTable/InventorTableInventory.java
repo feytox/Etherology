@@ -15,7 +15,7 @@ import ru.feytox.etherology.magic.staff.StaffMetals;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffStyles;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.UpdatableInventory;
 
 public class InventorTableInventory implements UpdatableInventory {

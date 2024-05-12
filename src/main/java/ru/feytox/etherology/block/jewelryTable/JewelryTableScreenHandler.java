@@ -8,7 +8,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
 import ru.feytox.etherology.item.LensItem;
-import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
+import ru.feytox.etherology.registry.misc.ScreenHandlersRegistry;
 import ru.feytox.etherology.util.misc.PredictableSlot;
 
 @Getter

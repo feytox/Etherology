@@ -5,7 +5,7 @@ import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundCategory;
 
-import static ru.feytox.etherology.registry.util.EtherSounds.MATRIX_WORK;
+import static ru.feytox.etherology.registry.misc.EtherSounds.MATRIX_WORK;
 
 public class ArmillaryMatrixSoundInstance extends MovingSoundInstance {
     private final ArmillaryMatrixBlockEntity armillary;

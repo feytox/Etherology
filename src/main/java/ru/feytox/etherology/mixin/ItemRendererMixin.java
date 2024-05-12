@@ -23,7 +23,7 @@ import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.model.EtherologyModels;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {

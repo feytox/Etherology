@@ -10,7 +10,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
-import ru.feytox.etherology.registry.util.ResourceReloaders;
+import ru.feytox.etherology.registry.misc.ResourceReloaders;
 
 public class CauldronRecipeSerializer extends FeyRecipeSerializer<CauldronRecipe> {
 

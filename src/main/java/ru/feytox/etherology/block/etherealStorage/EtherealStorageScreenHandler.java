@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import ru.feytox.etherology.item.glints.AbstractGlintItem;
-import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
+import ru.feytox.etherology.registry.misc.ScreenHandlersRegistry;
 import ru.feytox.etherology.util.misc.ClosedSlot;
 import ru.feytox.etherology.util.misc.TypedSlot;
 

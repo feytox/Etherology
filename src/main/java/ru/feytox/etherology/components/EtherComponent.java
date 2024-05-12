@@ -3,9 +3,9 @@ package ru.feytox.etherology.components;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
-import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_MAX;
+import static ru.feytox.etherology.registry.misc.EtherologyComponents.ETHER_MAX;
 
 public class EtherComponent extends FloatComponent implements AutoSyncedComponent {
     public EtherComponent(PlayerEntity player, float def_value) {

@@ -16,8 +16,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.enchantment.target.TuningMaceEnchantmentTarget;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
+import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
-import ru.feytox.etherology.registry.util.EtherSounds;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
 
 import java.util.Comparator;

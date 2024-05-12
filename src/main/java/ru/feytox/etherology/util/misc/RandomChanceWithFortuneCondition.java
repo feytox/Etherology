@@ -16,7 +16,7 @@ import net.minecraft.loot.context.LootContextParameter;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.JsonSerializer;
-import ru.feytox.etherology.registry.util.LootConditions;
+import ru.feytox.etherology.registry.misc.LootConditions;
 
 import java.util.Set;
 

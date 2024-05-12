@@ -37,7 +37,7 @@ import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.mixin.KeyBindingAccessor;
 import ru.feytox.etherology.mixin.MinecraftClientAccessor;
 import ru.feytox.etherology.mixin.StickyKeyBindingAccessor;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 

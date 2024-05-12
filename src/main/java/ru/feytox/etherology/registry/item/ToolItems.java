@@ -9,8 +9,8 @@ import ru.feytox.etherology.item.*;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import static net.minecraft.item.ToolMaterials.*;
-import static ru.feytox.etherology.registry.util.EtherToolMaterials.EBONY;
-import static ru.feytox.etherology.registry.util.EtherToolMaterials.ETHRIL;
+import static ru.feytox.etherology.registry.misc.EtherToolMaterials.EBONY;
+import static ru.feytox.etherology.registry.misc.EtherToolMaterials.ETHRIL;
 
 @UtilityClass
 public class ToolItems {

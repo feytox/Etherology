@@ -11,7 +11,7 @@ import ru.feytox.etherology.item.PrimoShard;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.misc.*;
 
-import static ru.feytox.etherology.registry.util.ScreenHandlersRegistry.EMPOWER_TABLE_SCREEN_HANDLER;
+import static ru.feytox.etherology.registry.misc.ScreenHandlersRegistry.EMPOWER_TABLE_SCREEN_HANDLER;
 
 public class EmpowerTableScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;

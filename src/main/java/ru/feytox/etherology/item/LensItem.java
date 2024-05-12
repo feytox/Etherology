@@ -14,7 +14,7 @@ import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.magic.staff.StaffPattern;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.function.Supplier;
 
@@ -32,10 +32,10 @@ public abstract class LensItem extends Item implements EtherLens {
         return true;
     }
 
-    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);
-    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter);
-    public void onStreamStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks, Supplier<Hand> handGetter) {}
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks, Supplier<Hand> handGetter) {}
+    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
+    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
+    public void onStreamStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
 
     /**
      * Places a lens on a staff.

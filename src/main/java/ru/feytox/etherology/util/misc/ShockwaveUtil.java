@@ -22,8 +22,8 @@ import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.item.TuningMaceItem;
 import ru.feytox.etherology.item.TwoHandheldSword;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
+import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
-import ru.feytox.etherology.registry.util.EtherSounds;
 
 import java.util.Comparator;
 import java.util.List;

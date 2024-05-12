@@ -14,7 +14,7 @@ import ru.feytox.etherology.components.IFloatComponent;
 
 import java.util.Optional;
 
-import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
+import static ru.feytox.etherology.registry.misc.EtherologyComponents.ETHER_POINTS;
 
 /**
  * random 'useful' things

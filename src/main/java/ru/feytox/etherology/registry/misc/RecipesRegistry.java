@@ -1,4 +1,4 @@
-package ru.feytox.etherology.registry.util;
+package ru.feytox.etherology.registry.misc;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

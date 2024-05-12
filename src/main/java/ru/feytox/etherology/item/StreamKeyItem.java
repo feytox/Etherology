@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.registry.util.EtherSounds;
-import ru.feytox.etherology.registry.util.EtherToolMaterials;
+import ru.feytox.etherology.registry.misc.EtherSounds;
+import ru.feytox.etherology.registry.misc.EtherToolMaterials;
 
 public class StreamKeyItem extends ToolItem {
 

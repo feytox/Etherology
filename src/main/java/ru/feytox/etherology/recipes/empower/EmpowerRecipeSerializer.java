@@ -19,7 +19,7 @@ import ru.feytox.etherology.magic.staff.StaffMaterial;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPattern;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.ArrayList;
 import java.util.List;

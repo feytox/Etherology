@@ -52,8 +52,8 @@ import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
-import ru.feytox.etherology.registry.util.RecipesRegistry;
 import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoAnimation;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
@@ -69,7 +69,7 @@ import java.util.stream.Stream;
 
 import static ru.feytox.etherology.block.armillary.ArmillaryState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
-import static ru.feytox.etherology.registry.util.EtherologyComponents.ETHER_POINTS;
+import static ru.feytox.etherology.registry.misc.EtherologyComponents.ETHER_POINTS;
 
 public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
 

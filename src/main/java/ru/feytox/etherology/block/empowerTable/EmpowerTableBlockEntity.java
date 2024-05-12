@@ -21,7 +21,7 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
-import ru.feytox.etherology.registry.util.RecipesRegistry;
+import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.util.misc.UpdatableInventory;
 
 import static ru.feytox.etherology.registry.block.EBlocks.EMPOWERMENT_TABLE_BLOCK_ENTITY;

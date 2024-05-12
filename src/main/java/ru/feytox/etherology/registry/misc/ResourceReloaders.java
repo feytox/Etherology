@@ -1,4 +1,4 @@
-package ru.feytox.etherology.registry.util;
+package ru.feytox.etherology.registry.misc;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

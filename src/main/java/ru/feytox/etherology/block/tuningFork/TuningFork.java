@@ -28,7 +28,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.listener.GameEventListener;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.registry.util.EtherSounds;
+import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEntityProvider, Waterloggable {

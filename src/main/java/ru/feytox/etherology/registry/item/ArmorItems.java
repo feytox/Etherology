@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import ru.feytox.etherology.item.revelationView.RevelationViewItem;
 
 import static ru.feytox.etherology.registry.item.ToolItems.register;
-import static ru.feytox.etherology.registry.util.EtherArmorMaterials.EBONY;
-import static ru.feytox.etherology.registry.util.EtherArmorMaterials.ETHRIL;
+import static ru.feytox.etherology.registry.misc.EtherArmorMaterials.EBONY;
+import static ru.feytox.etherology.registry.misc.EtherArmorMaterials.ETHRIL;
 
 @UtilityClass
 public class ArmorItems {

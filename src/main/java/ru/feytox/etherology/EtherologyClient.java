@@ -9,8 +9,8 @@ import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.ModelPredicates;
+import ru.feytox.etherology.registry.misc.*;
 import ru.feytox.etherology.registry.particle.ClientParticleRegistry;
-import ru.feytox.etherology.registry.util.*;
 import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
 import software.bernie.geckolib.network.GeckoLibNetwork;
 

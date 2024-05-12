@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.AspectContainerId;
-import ru.feytox.etherology.registry.util.ResourceReloaders;
+import ru.feytox.etherology.registry.misc.ResourceReloaders;
 
 import java.util.Map;
 

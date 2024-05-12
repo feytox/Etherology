@@ -7,7 +7,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import ru.feytox.etherology.registry.util.ScreenHandlersRegistry;
+import ru.feytox.etherology.registry.misc.ScreenHandlersRegistry;
 
 public class ClosetScreenHandler extends ScreenHandler {
     private final Inventory inventory;

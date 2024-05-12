@@ -1,4 +1,4 @@
-package ru.feytox.etherology.registry.util;
+package ru.feytox.etherology.registry.misc;
 
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;

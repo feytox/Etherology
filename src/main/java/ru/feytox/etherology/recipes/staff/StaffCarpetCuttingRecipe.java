@@ -15,10 +15,10 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import static ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe.getIndexesOfPair;
-import static ru.feytox.etherology.registry.util.RecipesRegistry.STAFF_CARPET_CUT;
+import static ru.feytox.etherology.registry.misc.RecipesRegistry.STAFF_CARPET_CUT;
 
 public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
 

@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.registry.util.RecipesRegistry;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
 import java.util.List;
 

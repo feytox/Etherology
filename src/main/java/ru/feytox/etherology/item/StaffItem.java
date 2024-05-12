@@ -21,8 +21,8 @@ import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
-import ru.feytox.etherology.registry.util.KeybindsRegistry;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
 import java.util.Iterator;
 import java.util.List;

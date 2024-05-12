@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.lens.LensMode;
-import ru.feytox.etherology.registry.util.EtherologyComponents;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.Arrays;
 

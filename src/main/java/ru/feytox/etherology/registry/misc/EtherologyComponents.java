@@ -1,4 +1,4 @@
-package ru.feytox.etherology.registry.util;
+package ru.feytox.etherology.registry.misc;
 
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentInitializer;

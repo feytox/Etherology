@@ -15,7 +15,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.util.RecipesRegistry;
+import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
