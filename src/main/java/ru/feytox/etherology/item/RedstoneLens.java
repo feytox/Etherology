@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 public class RedstoneLens extends LensItem {
 
     @Override
-    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
         
         HitResult hitResult = entity.raycast(32.0f, 1.0f, false);
@@ -46,9 +46,9 @@ public class RedstoneLens extends LensItem {
     }
 
     @Override
-    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lenseData, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
-        if (!lenseData.checkCooldown(serverWorld)) return false;
+        if (!lensData.checkCooldown(serverWorld)) return false;
         if (hold) return true;
 
         entity.setCurrentHand(handGetter.get());
@@ -58,13 +58,13 @@ public class RedstoneLens extends LensItem {
 
 
     @Override
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lenseData, int holdTicks, Supplier<Hand> handGetter) {
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) {
             entity.swingHand(handGetter.get());
             return;
         }
 
-        lenseData.incrementCooldown(serverWorld, 60);
+        lensData.incrementCooldown(serverWorld, 60);
         if (holdTicks == 0) return;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);

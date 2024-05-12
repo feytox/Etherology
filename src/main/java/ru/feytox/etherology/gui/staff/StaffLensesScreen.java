@@ -177,9 +177,9 @@ public class StaffLensesScreen extends BaseOwoScreen<FlowLayout> {
         circleBack.surface(backgroundSurface());
 
         ItemStack staffCopy = staffStack.copy();
-        ItemStack currentLenseStack = LensItem.takeLenseFromStaff(staffCopy);
+        ItemStack currentLensStack = LensItem.takeLensFromStaff(staffCopy);
 
-        val lens = currentLenseStack == null ? null : EtherologyComponents.LENS.get(staffStack);
+        val lens = currentLensStack == null ? null : EtherologyComponents.LENS.get(staffStack);
 
         if (lens != null && !lens.isEmpty()) {
             val lensMode = lens.getLensMode();
@@ -188,7 +188,7 @@ public class StaffLensesScreen extends BaseOwoScreen<FlowLayout> {
             LensModeSelectionButton.create(true, isUpActive, circleBack, selected -> this.selected = selected, () -> this.selected, backSize);
             LensModeSelectionButton.create(false, isDownActive, circleBack, selected -> this.selected = selected, () -> this.selected, backSize);
 
-            ItemComponent currentLens = Components.item(currentLenseStack);
+            ItemComponent currentLens = Components.item(currentLensStack);
             result.add(currentLens.positioning(Positioning.relative(50, 50)));
         }
 

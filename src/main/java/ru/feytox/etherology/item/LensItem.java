@@ -41,38 +41,38 @@ public abstract class LensItem extends Item implements EtherLens {
      * Places a lens on a staff.
      *
      * @param staffStack the ItemStack representing the staff
-     * @param lenseStack the ItemStack representing the lense
+     * @param lensStack the ItemStack representing the lens
      */
-    public static void placeLenseOnStaff(ItemStack staffStack, ItemStack lenseStack) {
+    public static void placeLensOnStaff(ItemStack staffStack, ItemStack lensStack) {
         if (!(staffStack.getItem() instanceof StaffItem)) return;
-        if (!(lenseStack.getItem() instanceof LensItem lensItem)) return;
+        if (!(lensStack.getItem() instanceof LensItem lensItem)) return;
         if (!lensItem.isAdjusted()) return;
 
-        val lense = EtherologyComponents.LENS.get(lenseStack);
+        val lens = EtherologyComponents.LENS.get(lensStack);
         val staff = EtherologyComponents.STAFF.get(staffStack);
-        val staffLense = EtherologyComponents.LENS.get(staffStack);
+        val staffLens = EtherologyComponents.LENS.get(staffStack);
 
-        staffLense.copyFrom(lense);
+        staffLens.copyFrom(lens);
 
-        StaffLenses lensType = StaffLenses.getLens(lenseStack);
+        StaffLenses lensType = StaffLenses.getLens(lensStack);
         if (lensType == null) return;
 
         staff.setPartInfo(StaffPart.LENS, lensType, StaffPattern.EMPTY);
-        lenseStack.decrement(1);
+        lensStack.decrement(1);
     }
 
     /**
-     * Takes a lense from the staff.
+     * Takes a lens from the staff.
      *
      * @param  staffStack  the staff item stack
      * @return             the lens item stack, or null if the staff does not have a lens
      */
     @Nullable
-    public static ItemStack takeLenseFromStaff(ItemStack staffStack) {
+    public static ItemStack takeLensFromStaff(ItemStack staffStack) {
         if (!(staffStack.getItem() instanceof StaffItem)) return null;
 
         val staff = EtherologyComponents.STAFF.get(staffStack);
-        val staffLense = EtherologyComponents.LENS.get(staffStack);
+        val staffLens = EtherologyComponents.LENS.get(staffStack);
 
         StaffPartInfo lensInfo = staff.getPartInfo(StaffPart.LENS);
         if (lensInfo == null || !(lensInfo.getFirstPattern() instanceof StaffLenses lensType)) return null;
@@ -80,8 +80,8 @@ public abstract class LensItem extends Item implements EtherLens {
         staff.removePartInfo(StaffPart.LENS);
 
         ItemStack lensStack = lensType.getLensItem().getDefaultStack();
-        val lense = EtherologyComponents.LENS.get(lensStack);
-        lense.copyFrom(staffLense);
+        val lens = EtherologyComponents.LENS.get(lensStack);
+        lens.copyFrom(staffLens);
         return lensStack;
     }
 

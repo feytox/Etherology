@@ -43,7 +43,7 @@ public class StaffItem extends Item {
         super.use(world, user, hand);
         ItemStack staffStack = user.getStackInHand(hand);
 
-        if (useLenseEffect(world, user, staffStack, false, () -> hand)) return TypedActionResult.pass(staffStack);
+        if (useLensEffect(world, user, staffStack, false, () -> hand)) return TypedActionResult.pass(staffStack);
         return TypedActionResult.fail(staffStack);
     }
 
@@ -55,7 +55,7 @@ public class StaffItem extends Item {
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         super.usageTick(world, user, stack, remainingUseTicks);
-        useLenseEffect(world, user, stack, true, () -> getHandFromStack(user, stack));
+        useLensEffect(world, user, stack, true, () -> getHandFromStack(user, stack));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class StaffItem extends Item {
     /**
      * @return True if pass or False if fail
      */
-    private boolean useLenseEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
+    private boolean useLensEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
         val staff = EtherologyComponents.STAFF.get(staffStack);
         val partInfo = staff.getPartInfo(StaffPart.LENS);
         if (partInfo == null) return false;
@@ -109,7 +109,7 @@ public class StaffItem extends Item {
 
         if (!client.options.getPerspective().isFirstPerson() || !KeybindsRegistry.isPressed(KeybindsRegistry.STAFF_INTERACTION)) {
             if (isOpened) {
-                checkSelectedLense(client, (StaffLensesScreen) client.currentScreen);
+                checkSelectedLens(client, (StaffLensesScreen) client.currentScreen);
                 client.currentScreen.close();
             }
             return;
@@ -120,7 +120,7 @@ public class StaffItem extends Item {
         client.setScreen(new StaffLensesScreen(null));
     }
 
-    private static void checkSelectedLense(@NonNull MinecraftClient client, StaffLensesScreen lensesScreen) {
+    private static void checkSelectedLens(@NonNull MinecraftClient client, StaffLensesScreen lensesScreen) {
         List<ItemStack> stacks = StaffLensesScreen.getPlayerLenses(client);
 
         val selected = lensesScreen.getSelected();

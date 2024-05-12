@@ -2,15 +2,15 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"particle": "etherology:item/oculus_lens",
-		"lense": "etherology:item/oculus_lens"
+		"lens": "etherology:item/oculus_lens"
 	},
 	"elements": [
 		{
 			"from": [0, 0, 8],
 			"to": [16, 16, 8],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#lense"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#lense"}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#lens"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#lens"}
 			}
 		}
 	],
