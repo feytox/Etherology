@@ -34,7 +34,7 @@ public enum LensSelectionType {
     private static SelectionHandler itemHandler() {
         return (player, staffStack, lensStack) -> {
             if (lensStack == null || lensStack.isEmpty()) throw new NullPointerException("Null or empty lens stack provided for item selection handler");
-            ItemStack prevLens = LensItem.takeLensFromStaff(staffStack);
+            ItemStack prevLens = LensItem.takeLensFromStaff(staffStack, true);
             if (prevLens != null) player.giveItemStack(prevLens);
 
             LensItem.placeLensOnStaff(staffStack, lensStack);

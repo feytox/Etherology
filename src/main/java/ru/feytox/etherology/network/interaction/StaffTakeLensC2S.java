@@ -23,7 +23,7 @@ public class StaffTakeLensC2S extends AbstractC2SPacket {
             ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
             if (staffStack == null) return;
 
-            ItemStack lensStack = LensItem.takeLensFromStaff(staffStack);
+            ItemStack lensStack = LensItem.takeLensFromStaff(staffStack, true);
             if (lensStack != null) player.giveItemStack(lensStack);
         });
     }

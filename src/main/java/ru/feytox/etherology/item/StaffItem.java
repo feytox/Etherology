@@ -1,5 +1,6 @@
 package ru.feytox.etherology.item;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.NonNull;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -7,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -15,12 +17,10 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
-import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
@@ -105,32 +105,38 @@ public class StaffItem extends Item {
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
-        boolean isOpened = client.currentScreen instanceof StaffLensesScreen;
+        boolean isPressed = KeybindsRegistry.isPressed(KeybindsRegistry.STAFF_INTERACTION);
+        boolean isSneakPressed = KeybindsRegistry.isPressed(client.options.sneakKey);
 
-        if (!client.options.getPerspective().isFirstPerson() || !KeybindsRegistry.isPressed(KeybindsRegistry.STAFF_INTERACTION)) {
-            if (isOpened) {
-                checkSelectedLens(client, (StaffLensesScreen) client.currentScreen);
-                client.currentScreen.close();
+        if (!(client.currentScreen instanceof StaffLensesScreen screen)) {
+            if (isSneakPressed) return;
+            if (isPressed && client.currentScreen == null) {
+                client.setScreen(new StaffLensesScreen(null));
             }
             return;
         }
 
-        if (isOpened || client.currentScreen != null || KeybindsRegistry.isPressed(client.options.sneakKey)) return;
+        if (!isPressed) {
+            screen.tryClose();
+            return;
+        }
 
-        client.setScreen(new StaffLensesScreen(null));
+        screen.tryOpen();
     }
 
-    private static void checkSelectedLens(@NonNull MinecraftClient client, StaffLensesScreen lensesScreen) {
-        List<ItemStack> stacks = StaffLensesScreen.getPlayerLenses(client);
+    public static List<ItemStack> getPlayerLenses(@NonNull MinecraftClient client) {
+        List<ItemStack> result = new ObjectArrayList<>();
+        if (client.player == null) return result;
 
-        val selected = lensesScreen.getSelected();
-        if (selected.equals(LensSelectionType.NONE)) return;
-        if (!selected.isEmptySelectedItem() && stacks.isEmpty()) return;
-        int selectedItemId = lensesScreen.getChosenItem();
+        PlayerInventory inventory = client.player.getInventory();
+        for (int i = 0; i < inventory.size(); i++) {
+            ItemStack stack = inventory.getStack(i);
+            if (!(stack.getItem() instanceof LensItem lensItem)) continue;
+            if (!lensItem.isAdjusted()) continue;
+            result.add(stack);
+        }
 
-        ItemStack selectedStack = selectedItemId == -1 || selected.isEmptySelectedItem() ? ItemStack.EMPTY : stacks.get(selectedItemId);
-        val packet = new StaffMenuSelectionC2S(selected, selectedStack);
-        packet.sendToServer();
+        return result;
     }
 
     @Override
@@ -142,7 +148,7 @@ public class StaffItem extends Item {
 
         ItemStack selectedStack = getStaffStackFromHand(entity);
         if (stack == null) {
-            if (client.currentScreen instanceof StaffLensesScreen) client.currentScreen.close();
+            if (client.currentScreen instanceof StaffLensesScreen screen) screen.tryClose();
             return;
         }
         if (!stack.equals(selectedStack)) return;
