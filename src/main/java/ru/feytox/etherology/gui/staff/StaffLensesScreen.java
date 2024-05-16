@@ -1,8 +1,6 @@
 package ru.feytox.etherology.gui.staff;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.ints.Int2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
@@ -14,11 +12,7 @@ import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.StickyKeyBinding;
-import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -43,7 +37,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-// TODO: 14.05.2024 consider to replace lenses with widgets
 public class StaffLensesScreen extends Screen {
 
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/lens_selection_bg.png");
@@ -55,23 +48,21 @@ public class StaffLensesScreen extends Screen {
     private static final float BUTTON_SCALE = 0.75f;
     private static final float BUTTON_WIDTH = 29.0f;
     private static final float BUTTON_HEIGHT = 47.0f;
-    private static final float ITEM_RADIUS = 74.0f;
-    private static final float LENS_OPEN_DELAY = 3.0f;
+    public static final float ITEM_RADIUS = 74.0f;
+    public static final float LENS_OPEN_DELAY = 3.0f;
 
     private final Map<String, Boolean> wasToggleKeyDown = new Object2BooleanOpenHashMap<>();
     private final Screen parent;
     private final VertexConsumerProvider.Immediate immediate;
-    private final Map<Integer, Float> openingLenses = new Int2FloatArrayMap();
-    private final Map<Integer, Float> closingLenses = new Int2FloatArrayMap();
 
     @Nullable
     private ItemStack selectedStack = null;
     @Getter
     private LensSelectionType selected = LensSelectionType.NONE;
     @Nullable
-    private List<Pair<ItemStack, Float>> lensesData = null;
+    private List<LensWidget> lensWidgets = null;
     @Nullable
-    private ItemStack mainLens = null;
+    private LensWidget mainLensWidget = null;
     @Nullable
     private LensMode lensMode = null;
     private float ticks; // TODO: 12.05.2024 consider to replace with smth else
@@ -100,58 +91,27 @@ public class StaffLensesScreen extends Screen {
         float centerX = width / 2.0f;
         float centerY = height / 2.0f;
 
-        if (percent == 1.0f) updateMouse(matrices, centerX, centerY, mouseX, mouseY, progress, circleScale);
+        if (percent == 1.0f) updateMouse(centerX, centerY, mouseX, mouseY, progress, circleScale);
         renderCircle(matrices, centerX, centerY, progress, circleScale);
-        renderLenses(centerX, centerY, progress, circleScale);
+        renderLenses(matrices, centerX, centerY, progress, circleScale);
         renderButtons(matrices, centerX, centerY, progress, circleScale);
     }
 
     private void renderTick(float delta) {
         ticks += delta;
         progressTicks += delta;
-
-        tickLensesProgress(openingLenses, delta);
-        tickLensesProgress(closingLenses, delta);
-        closingLenses.entrySet().removeIf(entry -> entry.getValue() >= LENS_OPEN_DELAY);
-    }
-
-    private void tickLensesProgress(Map<Integer, Float> lenses, float delta) {
-        for (int index : lenses.keySet()) {
-            float lensTicks = Math.min(lenses.get(index) + delta, LENS_OPEN_DELAY);
-            lenses.put(index, lensTicks);
-        }
-    }
-
-    private void openLens(int index) {
-        float lensTicks = 0.0f;
-        if (closingLenses.containsKey(index)) {
-            lensTicks = LENS_OPEN_DELAY - lensTicks;
-            closingLenses.remove(index);
-        }
-        openingLenses.put(index, lensTicks);
-    }
-
-    private void closeLenses() {
-        openingLenses.forEach((index, lensTicks) -> closingLenses.put(index, LENS_OPEN_DELAY-lensTicks));
-        openingLenses.clear();
-    }
-
-    private float getLensScale(int index) {
-        Float lensTicks = openingLenses.getOrDefault(index, null);
-        if (lensTicks == null) lensTicks = LENS_OPEN_DELAY - closingLenses.getOrDefault(index, LENS_OPEN_DELAY);
-        float progress = lensTicks / LENS_OPEN_DELAY;
-        return (1 - MathHelper.cos(MathHelper.PI * progress)) / 6;
+        if (lensWidgets != null) lensWidgets.forEach(widget -> widget.tick(delta));
     }
 
     private float getProgress(float percent) {
         return isClosing ? 1 - percent * percent : 1 - (1 - percent) * (1 - percent);
     }
 
-    private void updateMouse(MatrixStack matrices, float centerX, float centerY, int mouseX, int mouseY, float progress, float circleScale) {
+    private void updateMouse(float centerX, float centerY, int mouseX, int mouseY, float progress, float circleScale) {
         if (isClosing) return;
         if (updateButtons(centerX, centerY, mouseX, mouseY, progress, circleScale)) return;
 
-        updateChosenItem(matrices, centerX, centerY, mouseX, mouseY, progress, circleScale);
+        updateChosenItem(centerX, centerY, mouseX, mouseY, progress, circleScale);
     }
 
     private boolean updateButtons(float centerX, float centerY, int mouseX, int mouseY, float progress, float circleScale) {
@@ -178,48 +138,23 @@ public class StaffLensesScreen extends Screen {
         return false;
     }
 
-    private void updateChosenItem(MatrixStack matrices, float centerX, float centerY, int mouseX, int mouseY, float progress, float circleScale) {
-        if (lensesData == null || lensesData.isEmpty()) return;
+    private void updateChosenItem(float centerX, float centerY, int mouseX, int mouseY, float progress, float circleScale) {
+        if (lensWidgets == null || lensWidgets.isEmpty()) return;
 
-        Pair<ItemStack, Float> selectedLens = null;
-        int lensIndex = -1;
-        for (int i = 0, lensesDataSize = lensesData.size(); i < lensesDataSize; i++) {
-            if (lensesData == null) return;
-            val data = lensesData.get(i);
-            float angle = data.second();
-
-            float dx = ITEM_RADIUS * progress * circleScale * MathHelper.cos(angle) - 8.0f * progress;
-            float dy = ITEM_RADIUS * progress * circleScale * MathHelper.sin(angle) - 8.0f * progress;
-            if (isInBox(mouseX, mouseY, centerX + dx, centerY + dy, 16.0f * progress, 16.0f * progress)) {
-                selectedLens = data;
-                lensIndex = i;
-                break;
-            }
+        for (val widget : lensWidgets) {
+            selectedStack = widget.updateMouse(mouseX, mouseY, centerX, centerY, progress, circleScale);
+            if (selectedStack != null) break;
         }
 
-        if (selectedLens == null) {
-            closeLenses();
+        if (selectedStack == null) {
+            selected = LensSelectionType.NONE;
             return;
         }
 
         selected = LensSelectionType.ITEM;
-        selectedStack = selectedLens.first();
-        if (!openingLenses.containsKey(lensIndex)) {
-            closeLenses();
-            openLens(lensIndex);
-        }
-
-        matrices.push();
-        float angle = selectedLens.second();
-        float dx = ITEM_RADIUS * progress * circleScale * MathHelper.cos(angle) - 8.0f * progress;
-        float dy = ITEM_RADIUS * progress * circleScale * MathHelper.sin(angle) - 8.0f * progress;
-
-        matrices.translate(centerX+dx, centerY+dy, 0);
-        renderTooltip(matrices, selectedStack, 0, 0);
-        matrices.pop();
     }
 
-    private boolean isInBox(int mouseX, int mouseY, float x0, float y0, float width, float height) {
+    public static boolean isInBox(int mouseX, int mouseY, float x0, float y0, float width, float height) {
         return mouseX >= x0 && mouseX <= x0+width && mouseY >= y0 && mouseY <= y0+height;
     }
 
@@ -248,49 +183,18 @@ public class StaffLensesScreen extends Screen {
         matrices.pop();
     }
 
-    private void renderLenses(float centerX, float centerY, float baseScale, float circleScale) {
-        renderLens(mainLens, centerX, centerY, baseScale);
-
-        if (lensesData == null || lensesData.isEmpty()) return;
-
-        for (int i = 0, lensesDataSize = lensesData.size(); i < lensesDataSize; i++) {
-            val data = lensesData.get(i);
-            ItemStack stack = data.first();
-            float itemAngle = data.second();
-            float dx = ITEM_RADIUS * baseScale * circleScale * MathHelper.cos(itemAngle);
-            float dy = ITEM_RADIUS * baseScale * circleScale * MathHelper.sin(itemAngle);
-            float selectionScale = 1.0f + getLensScale(i);
-            renderLens(stack, centerX + dx, centerY + dy, baseScale*selectionScale);
+    private void renderLenses(MatrixStack matrices, float centerX, float centerY, float progress, float circleScale) {
+        if (mainLensWidget != null) {
+            mainLensWidget.render(this, immediate, matrices, itemRenderer, centerX, centerY, progress, circleScale);
         }
+
+        if (lensWidgets == null || lensWidgets.isEmpty()) return;
+
+        lensWidgets.forEach(widget -> widget.render(this, immediate, matrices, itemRenderer, centerX, centerY, progress, circleScale));
     }
 
     private static float getItemAngle(int index, int size) {
         return MathHelper.PI * (-0.5f + 2f * index / size);
-    }
-
-    /**
-     * @see io.wispforest.owo.ui.component.ItemComponent#draw(MatrixStack, int, int, float, float)
-     */
-    private void renderLens(@Nullable ItemStack stack, float dx, float dy, float baseScale) {
-        if (stack == null) return;
-        boolean notSideLit = !this.itemRenderer.getModel(stack, null, null, 0).isSideLit();
-        if (notSideLit) DiffuseLighting.disableGuiDepthLighting();
-
-        DiffuseLighting.disableGuiDepthLighting();
-        MatrixStack modelView = RenderSystem.getModelViewStack();
-        modelView.push();
-
-        modelView.translate(dx, dy, 100);
-        modelView.scale(baseScale, baseScale, baseScale);
-        modelView.scale(16, -16, 16);
-
-        RenderSystem.applyModelViewMatrix();
-        itemRenderer.renderItem(stack, ModelTransformation.Mode.GUI, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, new MatrixStack(), immediate, 0);
-        immediate.draw();
-
-        modelView.pop();
-        RenderSystem.applyModelViewMatrix();
-        if (notSideLit) DiffuseLighting.enableGuiDepthLighting();
     }
 
     private void renderButtons(MatrixStack matrices, float centerX, float centerY, float progress, float circleScale) {
@@ -343,16 +247,17 @@ public class StaffLensesScreen extends Screen {
     }
 
     private void tickLensRefreshing(MinecraftClient client, ClientPlayerEntity player, World world) {
-        if (world.getTime() % LENSES_REFRESH_RATE != 0 && lensesData == null) return;
+        if (world.getTime() % LENSES_REFRESH_RATE != 0 && lensWidgets == null) return;
         refreshData(client, player);
     }
 
     private void refreshData(MinecraftClient client, ClientPlayerEntity player) {
-        lensesData = getLensesData(client);
+        lensWidgets = createLensWidgets(client);
 
         ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
+        ItemStack mainLens;
         if (staffStack == null) {
-            mainLens = null;
+            mainLensWidget = null;
             lensMode = null;
             return;
         }
@@ -363,20 +268,22 @@ public class StaffLensesScreen extends Screen {
             return;
         }
 
+        mainLensWidget = new LensWidget(mainLens, null);
         val lens = EtherologyComponents.LENS.maybeGet(mainLens).orElse(null);
         if (lens == null) return;
 
         lensMode = lens.getLensMode();
     }
 
-    private List<Pair<ItemStack, Float>> getLensesData(MinecraftClient client) {
+    private List<LensWidget> createLensWidgets(MinecraftClient client) {
         List<ItemStack> stacks = StaffItem.getPlayerLenses(client);
         if (stacks.isEmpty()) return new ObjectArrayList<>();
+        if (lensWidgets != null && stacks.size() == lensWidgets.size()) return lensWidgets;
 
         int size = stacks.size();
 
         return IntStream.range(0, size)
-                .mapToObj(i -> Pair.of(stacks.get(i), getItemAngle(i, size)))
+                .mapToObj(i -> new LensWidget(stacks.get(i), getItemAngle(i, size)))
                 .collect(Collectors.toCollection(ObjectArrayList::new));
     }
 
@@ -435,7 +342,7 @@ public class StaffLensesScreen extends Screen {
 
     public void sendSelectionPacket() {
         if (selected.equals(LensSelectionType.NONE)) return;
-        if (!selected.isEmptySelectedItem() && (lensesData == null || lensesData.isEmpty())) return;
+        if (!selected.isEmptySelectedItem() && (lensWidgets == null || lensWidgets.isEmpty())) return;
 
         ItemStack stack = selectedStack == null ? ItemStack.EMPTY : selectedStack;
         val packet = new StaffMenuSelectionC2S(selected, stack);
