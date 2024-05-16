@@ -2,6 +2,7 @@ package ru.feytox.etherology.gui.staff;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.ints.Int2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
@@ -42,6 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+// TODO: 14.05.2024 consider to replace lenses with widgets
 public class StaffLensesScreen extends Screen {
 
     private static final Identifier TEXTURE = new EIdentifier("textures/gui/lens_selection_bg.png");
@@ -54,10 +56,13 @@ public class StaffLensesScreen extends Screen {
     private static final float BUTTON_WIDTH = 29.0f;
     private static final float BUTTON_HEIGHT = 47.0f;
     private static final float ITEM_RADIUS = 74.0f;
+    private static final float LENS_OPEN_DELAY = 3.0f;
 
     private final Map<String, Boolean> wasToggleKeyDown = new Object2BooleanOpenHashMap<>();
     private final Screen parent;
     private final VertexConsumerProvider.Immediate immediate;
+    private final Map<Integer, Float> openingLenses = new Int2FloatArrayMap();
+    private final Map<Integer, Float> closingLenses = new Int2FloatArrayMap();
 
     @Nullable
     private ItemStack selectedStack = null;
@@ -87,8 +92,7 @@ public class StaffLensesScreen extends Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
         if (client == null || client.world == null) return;
-        ticks += delta;
-        progressTicks += delta;
+        renderTick(delta);
 
         float percent = Math.min(progressTicks / MENU_OPEN_DELAY, 1.0f);
         float progress = getProgress(percent);
@@ -100,6 +104,43 @@ public class StaffLensesScreen extends Screen {
         renderCircle(matrices, centerX, centerY, progress, circleScale);
         renderLenses(centerX, centerY, progress, circleScale);
         renderButtons(matrices, centerX, centerY, progress, circleScale);
+    }
+
+    private void renderTick(float delta) {
+        ticks += delta;
+        progressTicks += delta;
+
+        tickLensesProgress(openingLenses, delta);
+        tickLensesProgress(closingLenses, delta);
+        closingLenses.entrySet().removeIf(entry -> entry.getValue() >= LENS_OPEN_DELAY);
+    }
+
+    private void tickLensesProgress(Map<Integer, Float> lenses, float delta) {
+        for (int index : lenses.keySet()) {
+            float lensTicks = Math.min(lenses.get(index) + delta, LENS_OPEN_DELAY);
+            lenses.put(index, lensTicks);
+        }
+    }
+
+    private void openLens(int index) {
+        float lensTicks = 0.0f;
+        if (closingLenses.containsKey(index)) {
+            lensTicks = LENS_OPEN_DELAY - lensTicks;
+            closingLenses.remove(index);
+        }
+        openingLenses.put(index, lensTicks);
+    }
+
+    private void closeLenses() {
+        openingLenses.forEach((index, lensTicks) -> closingLenses.put(index, LENS_OPEN_DELAY-lensTicks));
+        openingLenses.clear();
+    }
+
+    private float getLensScale(int index) {
+        Float lensTicks = openingLenses.getOrDefault(index, null);
+        if (lensTicks == null) lensTicks = LENS_OPEN_DELAY - closingLenses.getOrDefault(index, LENS_OPEN_DELAY);
+        float progress = lensTicks / LENS_OPEN_DELAY;
+        return (1 - MathHelper.cos(MathHelper.PI * progress)) / 6;
     }
 
     private float getProgress(float percent) {
@@ -141,21 +182,32 @@ public class StaffLensesScreen extends Screen {
         if (lensesData == null || lensesData.isEmpty()) return;
 
         Pair<ItemStack, Float> selectedLens = null;
-        for (val data : lensesData) {
+        int lensIndex = -1;
+        for (int i = 0, lensesDataSize = lensesData.size(); i < lensesDataSize; i++) {
+            if (lensesData == null) return;
+            val data = lensesData.get(i);
             float angle = data.second();
 
             float dx = ITEM_RADIUS * progress * circleScale * MathHelper.cos(angle) - 8.0f * progress;
             float dy = ITEM_RADIUS * progress * circleScale * MathHelper.sin(angle) - 8.0f * progress;
-            if (isInBox(mouseX, mouseY, centerX+dx, centerY+dy, 16.0f*progress, 16.0f*progress)) {
+            if (isInBox(mouseX, mouseY, centerX + dx, centerY + dy, 16.0f * progress, 16.0f * progress)) {
                 selectedLens = data;
+                lensIndex = i;
                 break;
             }
         }
 
-        if (selectedLens == null) return;
+        if (selectedLens == null) {
+            closeLenses();
+            return;
+        }
 
         selected = LensSelectionType.ITEM;
         selectedStack = selectedLens.first();
+        if (!openingLenses.containsKey(lensIndex)) {
+            closeLenses();
+            openLens(lensIndex);
+        }
 
         matrices.push();
         float angle = selectedLens.second();
@@ -201,13 +253,15 @@ public class StaffLensesScreen extends Screen {
 
         if (lensesData == null || lensesData.isEmpty()) return;
 
-        lensesData.forEach(data -> {
+        for (int i = 0, lensesDataSize = lensesData.size(); i < lensesDataSize; i++) {
+            val data = lensesData.get(i);
             ItemStack stack = data.first();
             float itemAngle = data.second();
             float dx = ITEM_RADIUS * baseScale * circleScale * MathHelper.cos(itemAngle);
             float dy = ITEM_RADIUS * baseScale * circleScale * MathHelper.sin(itemAngle);
-            renderLens(stack, centerX+dx, centerY+dy, baseScale);
-        });
+            float selectionScale = 1.0f + getLensScale(i);
+            renderLens(stack, centerX + dx, centerY + dy, baseScale*selectionScale);
+        }
     }
 
     private static float getItemAngle(int index, int size) {
@@ -359,14 +413,14 @@ public class StaffLensesScreen extends Screen {
     public void tryClose() {
         if (isClosing) return;
         isClosing = true;
-        progressTicks = 0.0f;
+        progressTicks = Math.max(MENU_OPEN_DELAY - progressTicks, 0.0f);
         sendSelectionPacket();
     }
 
     public void tryOpen() {
         if (!isClosing) return;
         isClosing = false;
-        progressTicks = MENU_OPEN_DELAY - progressTicks;
+        progressTicks = Math.max(MENU_OPEN_DELAY - progressTicks, 0.0f);
     }
 
     @Override
