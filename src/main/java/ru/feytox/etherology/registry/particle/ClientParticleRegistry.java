@@ -37,6 +37,7 @@ public class ClientParticleRegistry {
         register(LIGHTNING_BOLT, LightningBoltParticle::new);
         register(SCALABLE_SWEEP, ScalableSweepParticle::new);
         register(REDSTONE_FLASH, RedstoneFlashParticle::new);
+        register(REDSTONE_STREAM, RedstoneStreamParticle::new);
     }
 
     private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {

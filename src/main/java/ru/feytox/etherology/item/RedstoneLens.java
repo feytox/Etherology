@@ -36,13 +36,14 @@ public class RedstoneLens extends LensItem {
         if (!hold) entity.setCurrentHand(handGetter.get());
 
         playerData.redstoneStreamTicks = 16;
-        if (hitResult.getType().equals(HitResult.Type.BLOCK)) {
+        boolean isMiss = !hitResult.getType().equals(HitResult.Type.BLOCK);
+        if (!isMiss) {
             BlockPos hitPos = blockHitResult.getBlockPos();
             RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 3, 10);
         }
 
         Vec3d startPos = entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF));
-        val packet = new RedstoneLensStreamS2C(startPos, blockHitResult.getPos());
+        val packet = new RedstoneLensStreamS2C(startPos, blockHitResult.getPos(), isMiss);
         if (entity instanceof ServerPlayerEntity player) {
             packet.sendForTrackingAndSelf(player);
             return true;
