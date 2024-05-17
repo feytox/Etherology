@@ -15,6 +15,7 @@ import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.misc.PlayerSessionData;
 
 import java.util.function.Supplier;
 
@@ -23,16 +24,22 @@ public class RedstoneLens extends LensItem {
     @Override
     public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
-        
+
+        val playerData = PlayerSessionData.get(entity);
+        if (playerData == null) return false;
+
+        playerData.redstoneStreamTicks -= 1;
+        if (playerData.redstoneStreamTicks > 0) return false;
+
         HitResult hitResult = entity.raycast(32.0f, 1.0f, false);
-        if (!hitResult.getType().equals(HitResult.Type.BLOCK)) return false;
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
 
-        BlockPos hitPos = blockHitResult.getBlockPos();
-        RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 5, 4);
-        // TODO: 31.12.2023 optimize or not
-        if (world.getTime() % 3 != 0) return true;
+        playerData.redstoneStreamTicks = 16;
+        if (hitResult.getType().equals(HitResult.Type.BLOCK)) {
+            BlockPos hitPos = blockHitResult.getBlockPos();
+            RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 3, 10);
+        }
 
         Vec3d startPos = entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF));
         val packet = new RedstoneLensStreamS2C(startPos, blockHitResult.getPos());
@@ -43,6 +50,13 @@ public class RedstoneLens extends LensItem {
 
         packet.sendForTracking(serverWorld, entity.getBlockPos(), 0);
         return true;
+    }
+
+    @Override
+    public void onStreamStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {
+        val data = PlayerSessionData.get(entity);
+        if (data == null) return;
+        data.redstoneStreamTicks = 0;
     }
 
     @Override

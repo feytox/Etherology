@@ -12,18 +12,24 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.misc.PlayerSessionData;
+import ru.feytox.etherology.util.misc.PlayerSessionDataProvider;
 import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 import java.util.concurrent.CompletableFuture;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin {
+public class PlayerEntityMixin implements PlayerSessionDataProvider {
+
+    @Unique
+    private final PlayerSessionData etherology$playerSessionData = new PlayerSessionData();
 
     @Inject(method = "tick", at = @At("RETURN"))
     private void onPlayerTick(CallbackInfo ci) {
@@ -58,5 +64,10 @@ public class PlayerEntityMixin {
         if (!BroadSwordItem.isUsing(player)) return true;
         BroadSwordItem.replaceSweepParticle(instance, x, y, z);
         return false;
+    }
+
+    @Override
+    public PlayerSessionData etherology$getData() {
+        return etherology$playerSessionData;
     }
 }

@@ -1,15 +1,17 @@
 package ru.feytox.etherology.network.interaction;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 import ru.feytox.etherology.network.util.S2CPacketInfo;
+import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.effects.args.SimpleArgs;
+import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.deprecated.EVec3d;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -31,8 +33,8 @@ public class RedstoneLensStreamS2C extends AbstractS2CPacket {
             ClientWorld world = client.world;
             if (world == null) return;
 
-            EVec3d.lineOf(startPos, endPos, 0.5d).forEach(pos ->
-                    world.addParticle(new DustParticleEffect(DustParticleEffect.RED, 0.5f), pos.x, pos.y, pos.z, 0.0d, 0.0d, 0.0d));
+            val effect = new SimpleParticleEffect(EtherParticleTypes.REDSTONE_FLASH);
+            EVec3d.lineOf(startPos, endPos, 0.5d).forEach(pos -> effect.spawnParticles(world, 1, 0, pos));
         });
     }
 
