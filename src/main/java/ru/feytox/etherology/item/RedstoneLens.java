@@ -10,7 +10,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import ru.feytox.etherology.entity.redstoneBlob.RedstoneBlob;
+import ru.feytox.etherology.entity.redstoneBlob.RedstoneChargeEntity;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
@@ -83,7 +83,7 @@ public class RedstoneLens extends LensItem {
         if (holdTicks == 0) return;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
-        RedstoneBlob blob = new RedstoneBlob(world, entity.getX(), entity.getEyeY(), entity.getZ(), entityRotation, 5, holdTicks);
+        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, entity.getX(), entity.getEyeY(), entity.getZ(), entityRotation, 5, holdTicks);
         world.spawnEntity(blob);
     }
 }

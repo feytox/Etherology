@@ -1,0 +1,27 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.redstone_charge.idle": {
+			"loop": true,
+			"animation_length": 0.2,
+			"bones": {
+				"body": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.1": {
+							"vector": [0.5, 0.5, 0.5],
+							"easing": "easeInOutQuad"
+						},
+						"0.2": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutQuad"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
