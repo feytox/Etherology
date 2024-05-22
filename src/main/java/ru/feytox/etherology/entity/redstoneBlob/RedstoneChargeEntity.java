@@ -9,12 +9,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
+import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -80,6 +82,13 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
 
         setVelocity(velocity.add(flyDirection).multiply(speedModifier));
         setPosition(newX, newY, newZ);
+        tickParticles();
+    }
+
+    private void tickParticles() {
+        if (!world.isClient) return;
+
+        FeyParticleEffect.spawnParticles(new DustParticleEffect(DustParticleEffect.RED, 1.0f), world, 2, 0.5, getPos().add(0, 0.25, 0));
     }
 
     @Override
