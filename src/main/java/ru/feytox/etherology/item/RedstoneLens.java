@@ -83,7 +83,8 @@ public class RedstoneLens extends LensItem {
         if (holdTicks == 0) return;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
-        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, entity.getX(), entity.getEyeY(), entity.getZ(), entityRotation, 5, holdTicks);
+        Vec3d chargePos = entity.getBoundingBox().getCenter();
+        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks);
         world.spawnEntity(blob);
     }
 }

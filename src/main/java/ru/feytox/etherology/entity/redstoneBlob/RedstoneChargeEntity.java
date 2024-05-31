@@ -88,7 +88,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
     private void tickParticles() {
         if (!world.isClient) return;
 
-        FeyParticleEffect.spawnParticles(new DustParticleEffect(DustParticleEffect.RED, 1.0f), world, 2, 0.5, getPos().add(0, 0.25, 0));
+        FeyParticleEffect.spawnParticles(new DustParticleEffect(DustParticleEffect.RED, 1.0f), world, 2, 0.35, getPos().add(0, 0.25, 0));
     }
 
     @Override

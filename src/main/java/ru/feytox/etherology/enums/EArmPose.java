@@ -37,6 +37,10 @@ public enum EArmPose {
         return UseAction.valueOf(name());
     }
 
+    public static boolean isValid(String name) {
+        return EnumUtils.isValidEnumIgnoreCase(EArmPose.class, name);
+    }
+
     public static Optional<EArmPose> getIfValid(String name) {
         return Optional.ofNullable(EnumUtils.getEnum(EArmPose.class, name));
     }
@@ -50,8 +54,12 @@ public enum EArmPose {
         return true;
     }
 
-    // TODO: 27.04.2024 consider move posers to their item classes
+    // TODO: 31.05.2024 Add additional code when required
+    public static UseAction injectUseActions(UseAction useAction) {
+        return isValid(useAction.name()) ? UseAction.NONE : useAction;
+    }
 
+    // TODO: 27.04.2024 consider move posers to their item classes
     private static void oculusPoser(BipedEntityModel<?> model, LivingEntity entity, boolean isRightArm) {
         val arm = isRightArm ? model.rightArm : model.leftArm;
         val value = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
