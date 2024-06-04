@@ -14,8 +14,9 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.lens.LensPattern;
-import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
-import ru.feytox.etherology.recipes.jewelry.JewelryRecipeSerializer;
+import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
+import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
+import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
@@ -33,13 +34,10 @@ public class JewelryTableInventory implements ImplementedInventory {
     private Identifier currentRecipe;
 
     public void tryCraft(ServerWorld world) {
-        JewelryRecipe recipe = getRecipe(world);
+        AbstractJewelryRecipe recipe = getRecipe(world);
         if (recipe == null) return;
 
-        ItemStack newLens = new ItemStack(recipe.getOutputItem());
-        newLens.setNbt(getStack(0).getNbt());
-        val lens = EtherologyComponents.LENS.get(newLens);
-        lens.setPattern(LensPattern.empty());
+        ItemStack newLens = recipe.craft(this);
 
         setStack(0, newLens);
         markDirty();
@@ -58,7 +56,9 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public void updateRecipe(ServerWorld world) {
-        JewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, JewelryRecipeSerializer.INSTANCE);
+        AbstractJewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, LensRecipeSerializer.INSTANCE);
+        if (recipe == null) recipe = RecipesRegistry.getFirstMatch(world, this, ModifierRecipeSerializer.INSTANCE);
+
         if (recipe == null) currentRecipe = null;
         else currentRecipe = recipe.getId();
     }
@@ -68,8 +68,8 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     @Nullable
-    public JewelryRecipe getRecipe(ServerWorld world) {
-        if (currentRecipe != null && RecipesRegistry.get(world, currentRecipe) instanceof JewelryRecipe recipe) {
+    public AbstractJewelryRecipe getRecipe(ServerWorld world) {
+        if (currentRecipe != null && RecipesRegistry.get(world, currentRecipe) instanceof AbstractJewelryRecipe recipe) {
             return recipe;
         }
         return null;

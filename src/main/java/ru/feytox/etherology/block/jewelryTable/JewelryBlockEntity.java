@@ -25,7 +25,7 @@ import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
-import ru.feytox.etherology.recipes.jewelry.JewelryRecipe;
+import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
@@ -59,7 +59,7 @@ public class JewelryBlockEntity extends TickableBlockEntity
         if (!inventory.hasRecipe() || world.getTime() % 5 != 0) return;
 
         inventory.updateRecipe(world);
-        JewelryRecipe recipe = inventory.getRecipe(world);
+        AbstractJewelryRecipe recipe = inventory.getRecipe(world);
         if (recipe == null) return;
         if (storedEther < recipe.getEther()) return;
 

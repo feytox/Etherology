@@ -16,28 +16,22 @@ import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class JewelryRecipeSerializer extends FeyRecipeSerializer<JewelryRecipe> {
+public class LensRecipeSerializer extends FeyRecipeSerializer<LensRecipe> {
 
-    public static final JewelryRecipeSerializer INSTANCE = new JewelryRecipeSerializer();
+    public static final LensRecipeSerializer INSTANCE = new LensRecipeSerializer();
 
-    public JewelryRecipeSerializer() {
-        super("jewelry_recipe");
+    public LensRecipeSerializer() {
+        super("lens_recipe");
     }
 
     @Override
-    public JewelryRecipe read(Identifier id, JsonObject json) {
+    public LensRecipe read(Identifier id, JsonObject json) {
         JsonArray patternJson = JsonHelper.getArray(json, "pattern");
         char[] flatPattern = patternJson.asList().stream()
                 .map(JsonElement::getAsString)
                 .collect(Collectors.joining()).toCharArray();
 
-        IntArraySet cracks = IntStream.range(1, flatPattern.length)
-                .filter(i -> flatPattern[i] == 'X')
-                .boxed().collect(Collectors.toCollection(IntArraySet::new));
-        IntArraySet softCells = IntStream.range(1, flatPattern.length)
-                .filter(i -> flatPattern[i] == 'Y')
-                .boxed().collect(Collectors.toCollection(IntArraySet::new));
-        LensPattern pattern = new LensPattern(cracks, softCells);
+        LensPattern pattern = readPattern(flatPattern);
 
         String outputId = JsonHelper.getString(json, "outputItem");
         Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(outputId))
@@ -45,21 +39,31 @@ public class JewelryRecipeSerializer extends FeyRecipeSerializer<JewelryRecipe> 
 
         int ether = JsonHelper.getInt(json, "ether");
 
-        return new JewelryRecipe(pattern, outputItem, ether, id);
+        return new LensRecipe(pattern, outputItem, ether, id);
+    }
+
+    public static LensPattern readPattern(char[] flatPattern) {
+        IntArraySet cracks = IntStream.range(1, flatPattern.length)
+                .filter(i -> flatPattern[i] == 'X')
+                .boxed().collect(Collectors.toCollection(IntArraySet::new));
+        IntArraySet softCells = IntStream.range(1, flatPattern.length)
+                .filter(i -> flatPattern[i] == 'Y')
+                .boxed().collect(Collectors.toCollection(IntArraySet::new));
+        return new LensPattern(cracks, softCells);
     }
 
     @Override
-    public JewelryRecipe read(Identifier id, PacketByteBuf buf) {
+    public LensRecipe read(Identifier id, PacketByteBuf buf) {
         LensPattern pattern = LensPattern.readBuf(buf);
         String outputId = buf.readString();
         int ether = buf.readInt();
         Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(outputId))
                 .orElseThrow(() -> new JsonSyntaxException("No such item " + outputId));
-        return new JewelryRecipe(pattern, outputItem, ether, id);
+        return new LensRecipe(pattern, outputItem, ether, id);
     }
 
     @Override
-    public void write(PacketByteBuf buf, JewelryRecipe recipe) {
+    public void write(PacketByteBuf buf, LensRecipe recipe) {
         recipe.getPattern().writeBuf(buf);
         buf.writeString(Registries.ITEM.getId(recipe.getOutputItem()).toString());
         buf.writeInt(recipe.getEther());

@@ -29,6 +29,10 @@ public class LensModifiersData {
         else modifiers.put(modifier.modifierId(), level);
     }
 
+    public void incrementLevel(LensModifier modifier) {
+        setLevel(modifier, getLevel(modifier)+1);
+    }
+
     public void removeModifier(LensModifier modifier) {
         if (!modifiers.containsKey(modifier.modifierId())) return;
         modifiers.remove(modifier.modifierId());

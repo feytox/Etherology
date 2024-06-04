@@ -7,6 +7,7 @@ import net.minecraft.util.math.random.Random;
 import org.slf4j.Logger;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.enchantment.EtherEnchantments;
+import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
@@ -48,6 +49,7 @@ public class Etherology implements ModInitializer {
         LootConditions.registerAll();
         DispenserBehaviors.registerAll();
         EventsRegistry.registerGameEvents();
+        LensModifier.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));
