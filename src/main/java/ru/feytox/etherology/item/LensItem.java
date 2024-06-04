@@ -3,27 +3,31 @@ package ru.feytox.etherology.item;
 import lombok.Getter;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.lens.EtherLens;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPattern;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
  * @see ru.feytox.etherology.magic.lens.LensComponent
  */
 @Getter
-public abstract class LensItem extends Item implements EtherLens {
+public abstract class LensItem extends Item {
 
     @Nullable
     private final StaffLenses lensType;
@@ -33,15 +37,31 @@ public abstract class LensItem extends Item implements EtherLens {
         this.lensType = lensType;
     }
 
+    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
+
+    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
+
+    public void onStreamStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
+
+    public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+        val lensOptional = EtherologyComponents.LENS.maybeGet(stack);
+        if (lensOptional.isEmpty()) return;
+
+        lensOptional.get().getModifiers().getModifiers().forEach((id, level) -> {
+            MutableText text = Text.translatable(id.toTranslationKey()).formatted(Formatting.GRAY);
+            text.append(" ").append(Text.translatable("enchantment.level." + level));
+            tooltip.add(text);
+        });
+    }
+
     @Override
     public boolean isDamageable() {
         return true;
     }
-
-    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
-    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
-    public void onStreamStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
 
     /**
      * Places a lens on a staff. Before this you need to take old lens from staff

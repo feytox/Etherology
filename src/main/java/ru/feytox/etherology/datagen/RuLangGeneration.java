@@ -3,8 +3,9 @@ package ru.feytox.etherology.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.datagen.util.BlockRuTranslationBuilder;
+import ru.feytox.etherology.datagen.util.RuTranslationBuilder;
 import ru.feytox.etherology.datagen.util.RuTranslationPart;
+import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
@@ -29,7 +30,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder translationBuilder) {
-        BlockRuTranslationBuilder builder = new BlockRuTranslationBuilder(translationBuilder);
+        RuTranslationBuilder builder = new RuTranslationBuilder(translationBuilder);
 
         builder.add(DecoBlocks.ETHEREAL_STONE, "Эфирный камень");
         new RuTranslationPart(builder, "эфирного камня")
@@ -205,6 +206,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(REVELATION_VIEW, "Окуляр");
 
         builder.add(TUNING_FORK, "Камертон");
+
+        builder.add(LensModifier.PRESSURE, "Напор");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

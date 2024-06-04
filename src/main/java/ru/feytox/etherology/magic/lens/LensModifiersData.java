@@ -1,16 +1,14 @@
 package ru.feytox.etherology.magic.lens;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
+import lombok.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Getter
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class LensModifiersData {

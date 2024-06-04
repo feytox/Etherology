@@ -3,11 +3,13 @@ package ru.feytox.etherology.datagen.util;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import ru.feytox.etherology.magic.lens.LensModifier;
 
-public class BlockRuTranslationBuilder {
+public class RuTranslationBuilder {
+
     private final FabricLanguageProvider.TranslationBuilder builder;
 
-    public BlockRuTranslationBuilder(FabricLanguageProvider.TranslationBuilder builder) {
+    public RuTranslationBuilder(FabricLanguageProvider.TranslationBuilder builder) {
         this.builder = builder;
     }
 
@@ -17,6 +19,10 @@ public class BlockRuTranslationBuilder {
 
     public void add(Item item, String name) {
         builder.add(item, name);
+    }
+
+    public void add(LensModifier modifier, String name) {
+        builder.add(modifier.modifierId(), name);
     }
 
     /**

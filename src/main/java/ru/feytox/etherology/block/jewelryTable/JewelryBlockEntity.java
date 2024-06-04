@@ -35,10 +35,12 @@ import static ru.feytox.etherology.registry.block.EBlocks.JEWELRY_TABLE_BLOCK_EN
 public class JewelryBlockEntity extends TickableBlockEntity
         implements EtherStorage, ImplementedInventory, UniqueProvider, NamedScreenHandlerFactory, SidedInventory {
 
+    private static final int TICK_RATE = 10;
+    private static final int IDLE_TICK_RATE = 7;
+
     private final JewelryTableInventory inventory;
     private float storedEther = 0;
-    @Getter
-    @Setter
+    @Getter @Setter
     private Float cachedUniqueOffset = null;
 
     public JewelryBlockEntity(BlockPos pos, BlockState state) {
@@ -48,10 +50,10 @@ public class JewelryBlockEntity extends TickableBlockEntity
 
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
-        int tickRate = 10;
+        int tickRate = TICK_RATE;
         if (inventory.isEmpty() || !inventory.hasRecipe()) {
             inventory.resetRecipe();
-            tickRate = 7;
+            tickRate = IDLE_TICK_RATE;
         }
         if (world.getTime() % tickRate == 0) decrement(1);
         if (!inventory.hasRecipe() || world.getTime() % 5 != 0) return;

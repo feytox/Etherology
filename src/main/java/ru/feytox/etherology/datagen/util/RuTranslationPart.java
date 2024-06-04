@@ -3,12 +3,12 @@ package ru.feytox.etherology.datagen.util;
 import net.minecraft.block.Block;
 
 public class RuTranslationPart {
-    private final BlockRuTranslationBuilder builder;
+    private final RuTranslationBuilder builder;
     private final String suffix;
 
     // TODO: 26.02.2024 new instance -> of()
 
-    public RuTranslationPart(BlockRuTranslationBuilder builder, String suffix) {
+    public RuTranslationPart(RuTranslationBuilder builder, String suffix) {
         this.builder = builder;
         this.suffix = suffix;
     }
