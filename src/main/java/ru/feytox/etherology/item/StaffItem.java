@@ -19,9 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.lens.LensMode;
-import ru.feytox.etherology.magic.staff.StaffLenses;
-import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
 import java.util.Iterator;
@@ -67,16 +64,11 @@ public class StaffItem extends Item {
      * @return True if pass or False if fail
      */
     private boolean useLensEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
-        val staff = EtherologyComponents.STAFF.get(staffStack);
-        val partInfo = staff.getPartInfo(StaffPart.LENS);
-        if (partInfo == null) return false;
+        val lensStack = LensItem.getLensStack(staffStack);
+        if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return false;
 
-        val lensPattern = partInfo.getFirstPattern();
-        if (!(lensPattern instanceof StaffLenses lensType)) return false;
-        if (!(lensType.getLensItem() instanceof LensItem lensItem)) return false;
-
-        val lensData = EtherologyComponents.LENS.get(staffStack);
-        if (lensData.isEmpty()) return false;
+        val lensData = LensItem.getStaffLens(staffStack);
+        if (lensData == null || lensData.isEmpty()) return false;
         val lensMode = lensData.getLensMode();
 
         if (lensMode.equals(LensMode.CHARGE)) return lensItem.onChargeUse(world, user, lensData, hold, handGetter);
@@ -84,22 +76,18 @@ public class StaffItem extends Item {
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        super.onStoppedUsing(stack, world, user, remainingUseTicks);
-        val staff = EtherologyComponents.STAFF.get(stack);
-        val partInfo = staff.getPartInfo(StaffPart.LENS);
-        if (partInfo == null) return;
+    public void onStoppedUsing(ItemStack staffStack, World world, LivingEntity user, int remainingUseTicks) {
+        super.onStoppedUsing(staffStack, world, user, remainingUseTicks);
 
-        val lensPattern = partInfo.getFirstPattern();
-        if (!(lensPattern instanceof StaffLenses lensType)) return;
-        if (!(lensType.getLensItem() instanceof LensItem lensItem)) return;
+        val lensStack = LensItem.getLensStack(staffStack);
+        if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return;
 
-        val lensData = EtherologyComponents.LENS.get(stack);
-        if (lensData.isEmpty()) return;
+        val lensData = LensItem.getStaffLens(staffStack);
+        if (lensData == null || lensData.isEmpty()) return;
         val lensMode = lensData.getLensMode();
 
-        int holdTicks = getMaxUseTime(stack) - remainingUseTicks;
-        Supplier<Hand> handGetter = () -> getHandFromStack(user, stack);
+        int holdTicks = getMaxUseTime(staffStack) - remainingUseTicks;
+        Supplier<Hand> handGetter = () -> getHandFromStack(user, staffStack);
         if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData, holdTicks, handGetter);
         else lensItem.onStreamStop(world, user, lensData, holdTicks, handGetter);
     }
@@ -132,7 +120,7 @@ public class StaffItem extends Item {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
             if (!(stack.getItem() instanceof LensItem lensItem)) continue;
-            if (!lensItem.isAdjusted()) continue;
+            if (lensItem.isUnadjusted()) continue;
             result.add(stack);
         }
 

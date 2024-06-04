@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.ints.IntArraySet;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
@@ -53,10 +54,7 @@ public class LensPattern implements Cloneable {
     }
 
     public NbtCompound writeNbt() {
-        return writeNbt(new NbtCompound());
-    }
-
-    public NbtCompound writeNbt(NbtCompound nbt) {
+        val nbt = new NbtCompound();
         writeCells(nbt, "cracks", cracks);
         writeCells(nbt, "soft_cells", softCells);
         return nbt;

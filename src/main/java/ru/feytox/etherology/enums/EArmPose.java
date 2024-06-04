@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.EnumUtils;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.Optional;
 
@@ -76,8 +76,8 @@ public enum EArmPose {
             return;
         }
 
-        val lensData = EtherologyComponents.LENS.get(staffStack);
-        if (lensData.isEmpty()) return;
+        val lensData = LensItem.getStaffLens(staffStack);
+        if (lensData == null || lensData.isEmpty()) return;
         val lensMode = lensData.getLensMode();
 
         switch (lensMode) {

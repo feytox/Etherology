@@ -1,6 +1,5 @@
 package ru.feytox.etherology.magic.lens;
 
-import dev.onyxstudios.cca.api.v3.component.CopyableComponent;
 import dev.onyxstudios.cca.api.v3.item.CcaNbtType;
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import lombok.val;
@@ -14,7 +13,7 @@ import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
-public class LensComponent extends ItemComponent implements CopyableComponent<LensComponent> {
+public class LensComponent extends ItemComponent {
 
     @Nullable
     private Long cachedEndTick;
@@ -34,6 +33,9 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
     @Nullable
     private LensPattern cachedPattern;
 
+    @Nullable
+    private LensModifiersData cachedModifiers;
+
     public LensComponent(ItemStack stack) {
         super(stack);
     }
@@ -51,6 +53,7 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         return cachedEndTick;
     }
 
+    @Deprecated // huh?
     public int getCharge() {
         if (cachedCharge != null) return cachedCharge;
         if (!hasTag("charge", CcaNbtType.INT)) putInt("charge", 0);
@@ -58,6 +61,7 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         return cachedCharge;
     }
 
+    @Deprecated
     public void setCharge(int amount) {
         putInt("charge", amount);
         resetCache();
@@ -81,9 +85,22 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         return getGameId() == Etherology.GAME_ID;
     }
 
+    @Deprecated
     public void refreshGameId() {
         if (isCurrentGameId()) return;
         putInt("game_id", Etherology.GAME_ID);
+        resetCache();
+    }
+
+    public LensModifiersData getModifiers() {
+        if (cachedModifiers != null) return cachedModifiers;
+        if (!hasTag("modifiers", CcaNbtType.COMPOUND)) putCompound("modifiers", LensModifiersData.empty().writeNbt());
+        cachedModifiers = LensModifiersData.readNbt(getCompound("modifiers"));
+        return cachedModifiers;
+    }
+
+    public void setModifiers(LensModifiersData modifiers) {
+        putCompound("modifiers", modifiers.writeNbt());
         resetCache();
     }
 
@@ -126,13 +143,14 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
     }
 
     private void resetCache() {
-        // TODO: 29.11.2023 рассмотреть раздельный ресет кэша, если необходимо
+        // TODO: 29.11.2023 consider to split cache resetting
         cachedMode = null;
         cachedEndTick = null;
         cachedEmpty = null;
         cachedGameId = null;
         cachedCharge = null;
         cachedPattern = null;
+        cachedModifiers = null;
     }
 
     public boolean isEmpty() {
@@ -147,13 +165,5 @@ public class LensComponent extends ItemComponent implements CopyableComponent<Le
         val staff = EtherologyComponents.STAFF.get(stack);
         val lensInfo = staff.getPartInfo(StaffPart.LENS);
         return lensInfo == null;
-    }
-
-    @Override
-    public void copyFrom(LensComponent other) {
-        setEndTick(other.getEndTick());
-        setLensMode(other.getLensMode());
-        setCharge(other.getCharge());
-        refreshGameId();
     }
 }

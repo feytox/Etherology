@@ -2,24 +2,19 @@ package ru.feytox.etherology.magic.staff;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
-import ru.feytox.etherology.registry.item.EItems;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Getter
 @RequiredArgsConstructor
 public enum StaffLenses implements StaffPattern {
-    REDSTONE(EItems.REDSTONE_LENS);
+    REDSTONE;
 
     public static final Supplier<List<? extends StaffPattern>> LENSES = StaffPattern.memoize(values());
-
-    @Getter
-    private final Item lensItem;
 
     @Override
     public String getName() {
@@ -28,9 +23,7 @@ public enum StaffLenses implements StaffPattern {
 
     @Nullable
     public static StaffLenses getLens(ItemStack lensStack) {
-        Item lensItem = lensStack.getItem();
-        if (!(lensItem instanceof LensItem)) return null;
-
-        return Arrays.stream(values()).filter(lensType -> lensType.getLensItem().equals(lensItem)).toList().get(0);
+        if (!(lensStack.getItem() instanceof LensItem lensItem)) return null;
+        return lensItem.getLensType();
     }
 }

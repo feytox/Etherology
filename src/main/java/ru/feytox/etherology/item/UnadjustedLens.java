@@ -9,6 +9,10 @@ import java.util.function.Supplier;
 
 public class UnadjustedLens extends LensItem {
 
+    public UnadjustedLens() {
+        super(null);
+    }
+
     @Override
     public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
         return false;
@@ -20,7 +24,7 @@ public class UnadjustedLens extends LensItem {
     }
 
     @Override
-    public boolean isAdjusted() {
-        return false;
+    public boolean isUnadjusted() {
+        return true;
     }
 }

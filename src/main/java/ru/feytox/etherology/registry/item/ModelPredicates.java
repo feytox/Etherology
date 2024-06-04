@@ -6,9 +6,9 @@ import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.lens.LensMode;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.Arrays;
 
@@ -29,15 +29,15 @@ public class ModelPredicates {
 
         register("staff_stream", ((stack, world, entity, seed) -> {
             if (entity == null || !entity.getActiveItem().equals(stack)) return 0;
-            val lensData = EtherologyComponents.LENS.get(stack);
-            if (lensData.isEmpty()) return 0;
+            val lensData = LensItem.getStaffLens(stack);
+            if (lensData == null || lensData.isEmpty()) return 0;
             return lensData.getLensMode().equals(LensMode.STREAM) ? 1 : 0;
         }));
 
         register("staff_charge", ((stack, world, entity, seed) -> {
             if (entity == null || !entity.getActiveItem().equals(stack)) return 0;
-            val lensData = EtherologyComponents.LENS.get(stack);
-            if (lensData.isEmpty()) return 0;
+            val lensData = LensItem.getStaffLens(stack);
+            if (lensData == null || lensData.isEmpty()) return 0;
             return lensData.getLensMode().equals(LensMode.CHARGE) ? 1 : 0;
         }));
     }

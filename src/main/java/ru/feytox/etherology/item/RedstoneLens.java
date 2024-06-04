@@ -12,7 +12,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneChargeEntity;
 import ru.feytox.etherology.magic.lens.LensComponent;
+import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
+import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.util.misc.PlayerSessionData;
@@ -20,6 +22,12 @@ import ru.feytox.etherology.util.misc.PlayerSessionData;
 import java.util.function.Supplier;
 
 public class RedstoneLens extends LensItem {
+
+    private static final int STREAM_COOLDOWN = 16;
+
+    public RedstoneLens() {
+        super(StaffLenses.REDSTONE);
+    }
 
     @Override
     public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
@@ -35,7 +43,8 @@ public class RedstoneLens extends LensItem {
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
 
-        playerData.redstoneStreamTicks = 16;
+        int pressureLevel = lensData.getModifiers().getLevel(LensModifier.PRESSURE);
+        playerData.redstoneStreamTicks = Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.PRESSURE_MODIFIER*pressureLevel));
         boolean isMiss = !hitResult.getType().equals(HitResult.Type.BLOCK);
         if (!isMiss) {
             BlockPos hitPos = blockHitResult.getBlockPos();
@@ -68,9 +77,7 @@ public class RedstoneLens extends LensItem {
 
         entity.setCurrentHand(handGetter.get());
         return true;
-
     }
-
 
     @Override
     public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {
@@ -84,7 +91,10 @@ public class RedstoneLens extends LensItem {
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
         Vec3d chargePos = entity.getBoundingBox().getCenter();
-        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks);
+        int pressureLevel = lensData.getModifiers().getLevel(LensModifier.PRESSURE);
+        float speed = 1.0f + LensModifier.PRESSURE_MODIFIER * pressureLevel;
+
+        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks, speed);
         world.spawnEntity(blob);
     }
 }

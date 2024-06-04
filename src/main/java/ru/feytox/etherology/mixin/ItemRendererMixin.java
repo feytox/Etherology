@@ -19,11 +19,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.model.EtherologyModels;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
@@ -43,8 +43,8 @@ public class ItemRendererMixin {
         ModelIdentifier modelId;
 
         if (entity != null && stack.getItem() instanceof StaffItem && stack.equals(entity.getActiveItem())) {
-            val lensData = EtherologyComponents.LENS.get(stack);
-            if (lensData.isEmpty()) return original;
+            val lensData = LensItem.getStaffLens(stack);
+            if (lensData == null || lensData.isEmpty()) return original;
             modelId = lensData.getLensMode().equals(LensMode.STREAM) ? EtherologyModelProvider.STAFF_STREAM : EtherologyModelProvider.STAFF_CHARGE;
         }
         else modelId = EtherologyModels.getReplacedModel(stack.getItem(), true);

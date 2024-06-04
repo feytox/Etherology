@@ -32,16 +32,18 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
 
     private int power;
     private int delay;
+    private float speed;
     private Vec3d flyDirection;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public RedstoneChargeEntity(World world, double x, double y, double z, Vec3d flyDirection, int power, int delay) {
-        this(EntityRegistry.REDSTONE_CHARGE, world, flyDirection);
+    public RedstoneChargeEntity(World world, double x, double y, double z, Vec3d flyDirection, int power, int delay, float speed) {
+        this(EntityRegistry.REDSTONE_CHARGE, world, flyDirection.multiply(speed));
         refreshPositionAndAngles(x, y, z, getYaw(), getPitch());
         refreshPosition();
 
         this.power = power;
         this.delay = delay;
+        this.speed = speed;
     }
 
     public RedstoneChargeEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
@@ -123,6 +125,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("power", power);
         nbt.putInt("delay", delay);
+        nbt.putFloat("speed", speed);
         nbt.putDouble("flyX", flyDirection.x);
         nbt.putDouble("flyY", flyDirection.y);
         nbt.putDouble("flyZ", flyDirection.z);
@@ -133,6 +136,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
         super.readCustomDataFromNbt(nbt);
         power = nbt.getInt("power");
         delay = nbt.getInt("delay");
+        speed = nbt.getFloat("speed");
         flyDirection = new Vec3d(nbt.getDouble("flyX"), nbt.getDouble("flyY"), nbt.getDouble("flyZ"));
     }
 

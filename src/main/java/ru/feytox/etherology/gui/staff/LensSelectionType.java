@@ -9,7 +9,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensMode;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 @Getter
 @RequiredArgsConstructor
@@ -26,15 +25,15 @@ public enum LensSelectionType {
 
     private static SelectionHandler arrowHandler(LensMode lensMode) {
         return (player, staffStack, lensStack) -> {
-            val lens = EtherologyComponents.LENS.get(staffStack);
-            lens.setLensMode(lensMode);
+            val lens = LensItem.getStaffLens(staffStack);
+            if (lens != null) lens.setLensMode(lensMode);
         };
     }
 
     private static SelectionHandler itemHandler() {
         return (player, staffStack, lensStack) -> {
             if (lensStack == null || lensStack.isEmpty()) throw new NullPointerException("Null or empty lens stack provided for item selection handler");
-            ItemStack prevLens = LensItem.takeLensFromStaff(staffStack, true);
+            ItemStack prevLens = LensItem.takeLensFromStaff(staffStack);
             if (prevLens != null) player.giveItemStack(prevLens);
 
             LensItem.placeLensOnStaff(staffStack, lensStack);
