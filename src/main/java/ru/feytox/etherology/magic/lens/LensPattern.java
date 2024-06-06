@@ -27,6 +27,10 @@ public class LensPattern implements Cloneable {
         return new LensPattern(new IntArraySet(), new IntArraySet());
     }
 
+    public boolean isCracked() {
+        return !cracks.isEmpty() || !softCells.isEmpty();
+    }
+
     public int getTextureOffset(int index) {
         if (isHard(index)) return 1;
         if (isSoft(index)) return 2;

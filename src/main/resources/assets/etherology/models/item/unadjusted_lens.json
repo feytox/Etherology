@@ -1,0 +1,11 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "etherology:item/unadjusted_lens"
+  },
+
+  "overrides": [
+    { "predicate": {"lens_cracked": 0.0000}, "model": "etherology:item/unadjusted_lens" },
+    { "predicate": {"lens_cracked": 1.0000}, "model": "etherology:item/unadjusted_cracked_lens" }
+  ]
+}
