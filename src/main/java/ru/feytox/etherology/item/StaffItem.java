@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
-import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
 import java.util.Iterator;
@@ -40,8 +39,8 @@ public class StaffItem extends Item {
         super.use(world, user, hand);
         ItemStack staffStack = user.getStackInHand(hand);
 
-        if (useLensEffect(world, user, staffStack, false, () -> hand)) return TypedActionResult.pass(staffStack);
-        return TypedActionResult.fail(staffStack);
+        useLensEffect(world, user, staffStack, false, () -> hand);
+        return TypedActionResult.pass(staffStack);
     }
 
     @Override
@@ -60,19 +59,22 @@ public class StaffItem extends Item {
         return 72000;
     }
 
-    /**
-     * @return True if pass or False if fail
-     */
-    private boolean useLensEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
+    private void useLensEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
         val lensStack = LensItem.getLensStack(staffStack);
-        if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return false;
+        if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return;
 
         val lensData = LensItem.getStaffLens(staffStack);
-        if (lensData == null || lensData.isEmpty()) return false;
+        if (lensData == null || lensData.isEmpty()) return;
         val lensMode = lensData.getLensMode();
 
-        if (lensMode.equals(LensMode.CHARGE)) return lensItem.onChargeUse(world, user, lensData, hold, handGetter);
-        return lensItem.onStreamUse(world, user, lensData, hold, handGetter);
+        boolean isDamaged = switch (lensMode) {
+            case CHARGE -> lensItem.onChargeUse(world, user, lensData, lensStack, hold, handGetter);
+            case STREAM -> lensItem.onStreamUse(world, user, lensData, lensStack, hold, handGetter);
+        };
+
+        if (!isDamaged) return;
+        if (lensStack.isEmpty()) LensItem.takeLensFromStaff(staffStack);
+        else LensItem.placeLensOnStaff(staffStack, lensStack);
     }
 
     @Override
@@ -88,8 +90,15 @@ public class StaffItem extends Item {
 
         int holdTicks = getMaxUseTime(staffStack) - remainingUseTicks;
         Supplier<Hand> handGetter = () -> getHandFromStack(user, staffStack);
-        if (lensMode.equals(LensMode.CHARGE)) lensItem.onChargeStop(world, user, lensData, holdTicks, handGetter);
-        else lensItem.onStreamStop(world, user, lensData, holdTicks, handGetter);
+
+        boolean isDamaged = switch (lensMode) {
+            case CHARGE -> lensItem.onChargeStop(world, user, lensData, lensStack, holdTicks, handGetter);
+            case STREAM -> lensItem.onStreamStop(world, user, lensData, lensStack, holdTicks, handGetter);
+        };
+
+        if (!isDamaged) return;
+        if (lensStack.isEmpty()) LensItem.takeLensFromStaff(staffStack);
+        else LensItem.placeLensOnStaff(staffStack, lensStack);
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {
@@ -142,6 +151,11 @@ public class StaffItem extends Item {
         if (!stack.equals(selectedStack)) return;
 
         tickLensesMenu(client);
+    }
+
+    @Override
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return false;
     }
 
     @Nullable

@@ -1,5 +1,6 @@
 package ru.feytox.etherology.item;
 
+import com.google.common.base.Suppliers;
 import lombok.Getter;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -12,9 +13,11 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.lens.LensComponent;
+import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPattern;
@@ -29,6 +32,9 @@ import java.util.function.Supplier;
 @Getter
 public abstract class LensItem extends Item {
 
+    private static final float DAMAGE_CHANCE = 1.0f;
+    private static final Supplier<Random> RANDOM_PROVIDER = Suppliers.memoize(Random::create);
+
     @Nullable
     private final StaffLenses lensType;
 
@@ -37,13 +43,30 @@ public abstract class LensItem extends Item {
         this.lensType = lensType;
     }
 
-    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
 
-    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter);
+    /**
+     * @return true if lens damaged, otherwise - false
+     */
+    public abstract boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter);
 
-    public void onStreamStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
+    /**
+     * @return true if lens damaged, otherwise - false
+     */
+    public abstract boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter);
 
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {}
+    /**
+     * @return true if lens damaged, otherwise - false
+     */
+    public boolean onStreamStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
+        return false;
+    }
+
+    /**
+     * @return true if lens damaged, otherwise - false
+     */
+    public boolean onChargeStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
+        return false;
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -61,6 +84,33 @@ public abstract class LensItem extends Item {
     @Override
     public boolean isDamageable() {
         return true;
+    }
+
+    /**
+     * @return true if damaged, otherwise - false
+     */
+    public static boolean damageLens(ItemStack lensStack, int damage) {
+        if (!(lensStack.getItem() instanceof LensItem)) return false;
+        Random random = RANDOM_PROVIDER.get();
+        float damageChance = getDamageChance(lensStack);
+
+        boolean isDamaged = false;
+        boolean isBroken = false;
+        for (int i = 0; i < damage; i++) {
+            if (damageChance < 1.0f && random.nextFloat() > damageChance) continue;
+            isDamaged = true;
+            isBroken = isBroken || lensStack.damage(1, random, null);
+        }
+
+        if (isBroken) lensStack.decrement(1);
+        return isDamaged;
+    }
+
+    private static float getDamageChance(ItemStack lensStack) {
+        val lensData = EtherologyComponents.LENS.get(lensStack);
+        int filterLvl = lensData.getModifiers().getLevel(LensModifier.FILTERING);
+        if (filterLvl == 0) return DAMAGE_CHANCE;
+        return (float) (DAMAGE_CHANCE * Math.pow(LensModifier.FILTERING_MODIFIER, filterLvl));
     }
 
     /**

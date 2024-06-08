@@ -11,8 +11,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
@@ -160,13 +160,14 @@ public class JewelryTableInventory implements ImplementedInventory {
         return true;
     }
 
+    /**
+     * @return true if lens broken, otherwise - false
+     */
     public boolean damageLens(int amount) {
-        ItemStack lens = getStack(0);
-        if (!lens.damage(amount, Random.create(), null)) return false;
-
-        lens.decrement(1);
+        ItemStack lensStack = getStack(0);
+        if (!LensItem.damageLens(lensStack, amount)) return false;
         markDirty();
-        return true;
+        return lensStack.isEmpty();
     }
 
     public int getTextureOffset(int index) {

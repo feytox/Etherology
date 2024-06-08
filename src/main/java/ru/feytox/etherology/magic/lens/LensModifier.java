@@ -16,9 +16,12 @@ public record LensModifier(Identifier modifierId) {
 
     // modifiers
     public static final LensModifier PRESSURE = register("pressure");
+    public static final LensModifier FILTERING = register("filtering");
+    public static final LensModifier CONCENTRATION = register("concentration");
 
-    // constants
+    // modifiers constants
     public static final float PRESSURE_MODIFIER = 0.1f;
+    public static final float FILTERING_MODIFIER = 0.85f;
 
     @Nullable
     public static LensModifier get(Identifier id) {

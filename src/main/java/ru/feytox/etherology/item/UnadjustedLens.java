@@ -1,6 +1,7 @@
 package ru.feytox.etherology.item;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.lens.LensComponent;
@@ -14,12 +15,12 @@ public class UnadjustedLens extends LensItem {
     }
 
     @Override
-    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         return false;
     }
 
     @Override
-    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         return false;
     }
 

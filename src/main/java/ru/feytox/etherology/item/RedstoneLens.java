@@ -2,6 +2,7 @@ package ru.feytox.etherology.item;
 
 import lombok.val;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
@@ -30,7 +31,7 @@ public class RedstoneLens extends LensItem {
     }
 
     @Override
-    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
 
         val playerData = PlayerSessionData.get(entity);
@@ -51,43 +52,45 @@ public class RedstoneLens extends LensItem {
             RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 3, 10);
         }
 
+        boolean isDamaged = LensItem.damageLens(lensStack, 1);
         Vec3d startPos = entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF));
         val packet = new RedstoneLensStreamS2C(startPos, blockHitResult.getPos(), isMiss);
         if (entity instanceof ServerPlayerEntity player) {
             packet.sendForTrackingAndSelf(player);
-            return true;
+            return isDamaged;
         }
 
         packet.sendForTracking(serverWorld, entity.getBlockPos(), 0);
-        return true;
+        return isDamaged;
     }
 
     @Override
-    public void onStreamStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {
+    public boolean onStreamStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         val data = PlayerSessionData.get(entity);
-        if (data == null) return;
+        if (data == null) return false;
         data.redstoneStreamTicks = 0;
+        return false;
     }
 
     @Override
-    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
         if (!lensData.checkCooldown(serverWorld)) return false;
-        if (hold) return true;
+        if (hold) return false;
 
         entity.setCurrentHand(handGetter.get());
-        return true;
+        return false;
     }
 
     @Override
-    public void onChargeStop(World world, LivingEntity entity, LensComponent lensData, int holdTicks, Supplier<Hand> handGetter) {
+    public boolean onChargeStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) {
             entity.swingHand(handGetter.get());
-            return;
+            return false;
         }
 
         lensData.incrementCooldown(serverWorld, 60);
-        if (holdTicks == 0) return;
+        if (holdTicks == 0) return false;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
         Vec3d chargePos = entity.getBoundingBox().getCenter();
@@ -96,5 +99,6 @@ public class RedstoneLens extends LensItem {
 
         RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks, speed);
         world.spawnEntity(blob);
+        return LensItem.damageLens(lensStack, 1);
     }
 }
