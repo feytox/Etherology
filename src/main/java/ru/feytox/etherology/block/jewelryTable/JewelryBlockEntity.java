@@ -32,6 +32,7 @@ import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
+import ru.feytox.etherology.util.delayedTask.DelayedTask;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
 
@@ -81,7 +82,7 @@ public class JewelryBlockEntity extends TickableBlockEntity
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
         if (inventory.isEmpty()) return;
-        if (world.getTime() % 4 != 0) return;
+        if (world.getTime() % 4 != 0 || storedEther == 0) return;
 
         val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
         effect.spawnParticles(world, 2, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
@@ -90,12 +91,16 @@ public class JewelryBlockEntity extends TickableBlockEntity
     @Override
     public float increment(float value) {
         float result = EtherStorage.super.increment(value);
-        tryDamageLens(value);
+        if (world instanceof ServerWorld serverWorld) {
+            // It seems like this code is simpler than using a dedicated variable to tick and then execute the code
+            // but idk :3
+            DelayedTask.createTask(serverWorld, 20, () -> tryDamageLens(serverWorld, value));
+        }
         return result;
     }
 
-    private void tryDamageLens(float ether) {
-        if (ether <= 0 || !(world instanceof ServerWorld serverWorld)) return;
+    private void tryDamageLens(ServerWorld world, float ether) {
+        if (ether <= 0) return;
         ItemStack lensStack = inventory.getStack(0);
         if (!(lensStack.getItem() instanceof LensItem lensItem)) return;
 
@@ -106,13 +111,14 @@ public class JewelryBlockEntity extends TickableBlockEntity
         LensPattern pattern = lensData.getPattern();
         if (!pattern.isCracked()) return;
 
-        AbstractJewelryRecipe recipe = inventory.getRecipe(serverWorld);
+        AbstractJewelryRecipe recipe = inventory.getRecipe(world);
         if (recipe != null) return;
 
-        applyCorruption(serverWorld);
+        applyCorruption(world);
         lensData.setPattern(LensPattern.empty());
         if (!LensItem.damageLens(lensStack, 5)) return;
         JewelryTableInventory.onLensDamage(this, lensStack, lensItem);
+        trySyncData();
     }
 
     private void applyCorruption(ServerWorld world) {
@@ -147,6 +153,7 @@ public class JewelryBlockEntity extends TickableBlockEntity
     @Override
     public void setStoredEther(float value) {
         storedEther = value;
+        trySyncData();
     }
 
     @Override
