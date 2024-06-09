@@ -18,7 +18,6 @@ import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.util.misc.PlayerSessionData;
 
 import java.util.function.Supplier;
 
@@ -34,18 +33,16 @@ public class RedstoneLens extends LensItem {
     public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
 
-        val playerData = PlayerSessionData.get(entity);
-        if (playerData == null) return false;
-
-        playerData.redstoneStreamTicks -= 1;
-        if (playerData.redstoneStreamTicks > 0) return false;
+        if (!lensData.checkCooldown(serverWorld)) return false;
 
         HitResult hitResult = entity.raycast(32.0f, 1.0f, false);
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
 
         int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
-        playerData.redstoneStreamTicks = Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
+        int cooldown = Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
+        lensData.incrementCooldown(serverWorld, cooldown);
+
         boolean isMiss = !hitResult.getType().equals(HitResult.Type.BLOCK);
         if (!isMiss) {
             BlockPos hitPos = blockHitResult.getBlockPos();
@@ -62,14 +59,6 @@ public class RedstoneLens extends LensItem {
 
         packet.sendForTracking(serverWorld, entity.getBlockPos(), 0);
         return isDamaged;
-    }
-
-    @Override
-    public boolean onStreamStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
-        val data = PlayerSessionData.get(entity);
-        if (data == null) return false;
-        data.redstoneStreamTicks = 0;
-        return false;
     }
 
     @Override

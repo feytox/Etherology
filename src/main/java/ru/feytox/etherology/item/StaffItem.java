@@ -11,9 +11,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
@@ -73,8 +75,7 @@ public class StaffItem extends Item {
         };
 
         if (!isDamaged) return;
-        if (lensStack.isEmpty()) LensItem.takeLensFromStaff(staffStack);
-        else LensItem.placeLensOnStaff(staffStack, lensStack);
+        onLensDamage(world, user, staffStack, lensItem, lensStack);
     }
 
     @Override
@@ -97,8 +98,21 @@ public class StaffItem extends Item {
         };
 
         if (!isDamaged) return;
-        if (lensStack.isEmpty()) LensItem.takeLensFromStaff(staffStack);
-        else LensItem.placeLensOnStaff(staffStack, lensStack);
+        onLensDamage(world, user, staffStack, lensItem, lensStack);
+    }
+
+    private static void onLensDamage(World world, LivingEntity user, ItemStack staffStack, LensItem lensItem, ItemStack lensStack) {
+        if (!lensStack.isEmpty()) {
+            LensItem.placeLensOnStaff(staffStack, lensStack);
+            return;
+        }
+
+        LensItem.takeLensFromStaff(staffStack);
+        if (!(world instanceof ServerWorld serverWorld)) return;
+
+        Vec3d pos = new Vec3d(user.getX(), user.getEyeY(), user.getZ());
+        LensItem.playLensBrakeSound(serverWorld, pos);
+        LensItem.spawnLensBrakeParticles(serverWorld, lensItem, pos, user.getPitch(), user.getYaw());
     }
 
     private static void tickLensesMenu(@NonNull MinecraftClient client) {

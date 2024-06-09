@@ -6,11 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensPattern;
@@ -165,9 +168,20 @@ public class JewelryTableInventory implements ImplementedInventory {
      */
     public boolean damageLens(int amount) {
         ItemStack lensStack = getStack(0);
+        Item lensItem = lensStack.getItem();
         if (!LensItem.damageLens(lensStack, amount)) return false;
+
         markDirty();
-        return lensStack.isEmpty();
+        if (!lensStack.isEmpty()) return false;
+        if (parent == null) return true;
+
+        World world = parent.getWorld();
+        if (!(world instanceof ServerWorld serverWorld)) return true;
+
+        Vec3d lensPos = parent.getPos().toCenterPos().add(0, 1.0, 0);
+        LensItem.playLensBrakeSound(serverWorld, lensPos);
+        LensItem.spawnLensBrakeParticles(serverWorld, lensItem, lensPos, 0, 0);
+        return true;
     }
 
     public int getTextureOffset(int index) {
