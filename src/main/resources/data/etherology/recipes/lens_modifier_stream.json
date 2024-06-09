@@ -10,6 +10,6 @@
     "0#X####0",
     "00####00"
   ],
-  "outputModifier": "etherology:pressure",
+  "outputModifier": "etherology:stream",
   "ether": 12
 }

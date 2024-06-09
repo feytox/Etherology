@@ -15,13 +15,15 @@ public record LensModifier(Identifier modifierId) {
     private static final Map<Identifier, LensModifier> MODIFIERS = new Object2ObjectOpenHashMap<>();
 
     // modifiers
-    public static final LensModifier PRESSURE = register("pressure");
+    public static final LensModifier STREAM = register("stream");
+    public static final LensModifier CHARGE = register("charge");
     public static final LensModifier FILTERING = register("filtering");
     public static final LensModifier CONCENTRATION = register("concentration");
 
     // modifiers constants
-    public static final float PRESSURE_MODIFIER = 0.1f;
-    public static final float FILTERING_MODIFIER = 0.85f;
+    public static final float STREAM_MODIFIER = 0.1f;
+    public static final float CHARGE_MODIFIER = 0.1f;
+    public static final float FILTERING_PER_LEVEL = 0.4f;
 
     @Nullable
     public static LensModifier get(Identifier id) {

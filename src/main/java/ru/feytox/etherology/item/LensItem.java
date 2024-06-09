@@ -32,7 +32,6 @@ import java.util.function.Supplier;
 @Getter
 public abstract class LensItem extends Item {
 
-    private static final float DAMAGE_CHANCE = 1.0f;
     private static final Supplier<Random> RANDOM_PROVIDER = Suppliers.memoize(Random::create);
 
     @Nullable
@@ -109,8 +108,8 @@ public abstract class LensItem extends Item {
     private static float getDamageChance(ItemStack lensStack) {
         val lensData = EtherologyComponents.LENS.get(lensStack);
         int filterLvl = lensData.getModifiers().getLevel(LensModifier.FILTERING);
-        if (filterLvl == 0) return DAMAGE_CHANCE;
-        return (float) (DAMAGE_CHANCE * Math.pow(LensModifier.FILTERING_MODIFIER, filterLvl));
+        if (filterLvl <= 0) return 1.0f;
+        return 1.0f - 0.5f * LensModifier.FILTERING_PER_LEVEL * filterLvl;
     }
 
     /**

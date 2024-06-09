@@ -44,8 +44,8 @@ public class RedstoneLens extends LensItem {
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
 
-        int pressureLevel = lensData.getModifiers().getLevel(LensModifier.PRESSURE);
-        playerData.redstoneStreamTicks = Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.PRESSURE_MODIFIER*pressureLevel));
+        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        playerData.redstoneStreamTicks = Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
         boolean isMiss = !hitResult.getType().equals(HitResult.Type.BLOCK);
         if (!isMiss) {
             BlockPos hitPos = blockHitResult.getBlockPos();
@@ -94,8 +94,8 @@ public class RedstoneLens extends LensItem {
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
         Vec3d chargePos = entity.getBoundingBox().getCenter();
-        int pressureLevel = lensData.getModifiers().getLevel(LensModifier.PRESSURE);
-        float speed = 1.0f + LensModifier.PRESSURE_MODIFIER * pressureLevel;
+        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.CHARGE);
+        float speed = 1.0f + LensModifier.CHARGE_MODIFIER * modifierLevel;
 
         RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks, speed);
         world.spawnEntity(blob);

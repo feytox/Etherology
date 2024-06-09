@@ -207,7 +207,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(TUNING_FORK, "Камертон");
 
-        builder.add(LensModifier.PRESSURE, "Напор");
+        builder.add(LensModifier.STREAM, "Поток");
+        builder.add(LensModifier.CHARGE, "Заряд");
         builder.add(LensModifier.FILTERING, "Фильтрация");
         builder.add(LensModifier.CONCENTRATION, "Концентрация");
 
