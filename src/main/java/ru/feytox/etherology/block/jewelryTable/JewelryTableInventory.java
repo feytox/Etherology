@@ -171,13 +171,17 @@ public class JewelryTableInventory implements ImplementedInventory {
         if (!LensItem.damageLens(lensStack, amount)) return false;
 
         markDirty();
-        if (!lensStack.isEmpty()) return false;
-        if (parent == null) return true;
+        return onLensDamage(parent, lensStack, lensItem);
+    }
 
-        World world = parent.getWorld();
+    public static boolean onLensDamage(@Nullable JewelryBlockEntity table, ItemStack lensStack, Item lensItem) {
+        if (!lensStack.isEmpty()) return false;
+        if (table == null) return true;
+
+        World world = table.getWorld();
         if (!(world instanceof ServerWorld serverWorld)) return true;
 
-        Vec3d lensPos = parent.getPos().toCenterPos().add(-0.5, 0.5, -0.5);
+        Vec3d lensPos = table.getPos().toCenterPos().add(-0.5, 0.5, -0.5);
         LensItem.playLensBrakeSound(serverWorld, lensPos);
         LensItem.spawnLensBrakeParticles(serverWorld, lensItem, lensPos, -90, 0);
         return true;

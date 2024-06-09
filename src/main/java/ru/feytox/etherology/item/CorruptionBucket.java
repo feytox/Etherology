@@ -24,7 +24,7 @@ public class CorruptionBucket extends Item {
     @Nullable
     public static ItemStack createBucketStack(AspectContainer aspects) {
         ItemStack stack = EItems.CORRUPTION_BUCKET.getDefaultStack();
-        Corruption corruption = Corruption.of(aspects);
+        Corruption corruption = Corruption.ofAspects(aspects);
         if (corruption == null) return null;
 
         NbtCompound corruptionCompound = new NbtCompound();

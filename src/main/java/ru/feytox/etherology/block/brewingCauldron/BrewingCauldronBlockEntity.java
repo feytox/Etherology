@@ -152,7 +152,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         int deltaCount = oldCount - aspects.sum().orElse(0);
         if (deltaCount > 0) {
-            Corruption corruption = Corruption.of(deltaCount);
+            Corruption corruption = Corruption.ofAspects(deltaCount);
             corruption.placeInChunk(world, pos);
         }
 

@@ -19,14 +19,14 @@ public class Corruption implements NbtReadable<Corruption> {
     private final float corruptionValue;
 
     @Nullable
-    public static Corruption of(AspectContainer aspects) {
+    public static Corruption ofAspects(AspectContainer aspects) {
         Integer aspectsCount = aspects.sum().orElse(null);
         if (aspectsCount == null || aspectsCount == 0) return null;
 
-        return of(aspectsCount);
+        return ofAspects(aspectsCount);
     }
 
-    public static Corruption of(float aspectsCount) {
+    public static Corruption ofAspects(float aspectsCount) {
         return new Corruption(aspectsCount * 0.1f);
     }
 
