@@ -60,7 +60,7 @@ public class JewelryTableScreenHandler extends ScreenHandler {
         boolean broken = tableInv.damageLens(isSoft ? 1 : 2);
         if (!isSoft && !broken) tableInv.updateCells(id);
 
-        if (player.getWorld() instanceof ServerWorld serverWorld) {
+        if (!broken && player.getWorld() instanceof ServerWorld serverWorld) {
             tableInv.updateRecipe(serverWorld);
         }
 

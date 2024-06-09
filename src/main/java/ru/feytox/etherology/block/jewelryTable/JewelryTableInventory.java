@@ -135,7 +135,6 @@ public class JewelryTableInventory implements ImplementedInventory {
         if (isHard) damage = 10;
         damageLens(damage);
 
-        // TODO: 23.01.2024 durability decrement
         fill(pattern, x0, y0, x, y);
         return false;
     }
@@ -178,9 +177,9 @@ public class JewelryTableInventory implements ImplementedInventory {
         World world = parent.getWorld();
         if (!(world instanceof ServerWorld serverWorld)) return true;
 
-        Vec3d lensPos = parent.getPos().toCenterPos().add(0, 1.0, 0);
+        Vec3d lensPos = parent.getPos().toCenterPos().add(-0.5, 0.5, -0.5);
         LensItem.playLensBrakeSound(serverWorld, lensPos);
-        LensItem.spawnLensBrakeParticles(serverWorld, lensItem, lensPos, 0, 0);
+        LensItem.spawnLensBrakeParticles(serverWorld, lensItem, lensPos, -90, 0);
         return true;
     }
 

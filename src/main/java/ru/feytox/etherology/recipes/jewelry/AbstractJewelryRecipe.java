@@ -22,8 +22,8 @@ public abstract class AbstractJewelryRecipe implements FeyRecipe<JewelryTableInv
     @Override
     public boolean matches(JewelryTableInventory inventory, World world) {
         ItemStack lensStack = inventory.getStack(0);
-        val lens = EtherologyComponents.LENS.get(lensStack);
-        return lens.getPattern().equals(pattern);
+        val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
+        return lensOptional.map(lensComponent -> lensComponent.getPattern().equals(pattern)).orElse(false);
     }
 
     @Override
