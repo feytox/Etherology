@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 public class RedstoneLens extends LensItem {
 
     private static final int STREAM_COOLDOWN = 16;
+    private static final int CHARGE_COOLDOWN = 60;
 
     public RedstoneLens() {
         super(StaffLenses.REDSTONE);
@@ -78,7 +79,9 @@ public class RedstoneLens extends LensItem {
             return false;
         }
 
-        lensData.incrementCooldown(serverWorld, 60);
+        int streamLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        int cooldown = Math.round(CHARGE_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * streamLevel));
+        lensData.incrementCooldown(serverWorld, cooldown);
         if (holdTicks == 0) return false;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
