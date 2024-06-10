@@ -39,6 +39,8 @@ import java.util.function.Supplier;
 public abstract class LensItem extends Item {
 
     private static final Supplier<Random> RANDOM_PROVIDER = Suppliers.memoize(Random::create);
+    public static final int CHARGE_LIMIT = 100;
+    public static final int STREAM_COOLDOWN = 16;
 
     @Nullable
     private final StaffLenses lensType;
@@ -71,6 +73,16 @@ public abstract class LensItem extends Item {
      */
     public boolean onChargeStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         return false;
+    }
+
+    public int getStreamCooldown(LensComponent lensData) {
+        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        return Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
+    }
+
+    public int getChargeTime(LensComponent lensData, int holdTicks) {
+        int streamLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        return Math.round(Math.min(CHARGE_LIMIT, holdTicks * (1 + (LensModifier.STREAM_CHARGE_MODIFIER * streamLevel))));
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.network.ClientPlayerEntity;
+import ru.feytox.etherology.gui.staff.StaffIndicator;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
@@ -34,6 +35,8 @@ public class EtherologyClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();
+
+            StaffIndicator.tickHudData(client);
 
             // TODO: 12.04.2024 simplify
             ClientPlayerEntity player = client.player;

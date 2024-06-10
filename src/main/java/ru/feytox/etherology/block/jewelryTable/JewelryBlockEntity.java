@@ -48,6 +48,8 @@ public class JewelryBlockEntity extends TickableBlockEntity
     private float storedEther = 0;
     @Getter @Setter
     private Float cachedUniqueOffset = null;
+    @Nullable
+    private DelayedTask currentTask = null;
 
     public JewelryBlockEntity(BlockPos pos, BlockState state) {
         super(JEWELRY_TABLE_BLOCK_ENTITY, pos, state);
@@ -73,6 +75,10 @@ public class JewelryBlockEntity extends TickableBlockEntity
         inventory.tryCraft(world);
         decrement(recipe.getEther());
         inventory.resetRecipe();
+        if (currentTask != null) {
+            currentTask.cancel();
+            currentTask = null;
+        }
 
         Vec3d particlePos = blockPos.toCenterPos().add(0, 0.75d, 0);
         val effect = new SparkParticleEffect(EtherParticleTypes.SPARK, new Vec3d(0, 2.0d, 0), SparkSubtype.JEWELRY);
@@ -94,7 +100,7 @@ public class JewelryBlockEntity extends TickableBlockEntity
         if (world instanceof ServerWorld serverWorld) {
             // It seems like this code is simpler than using a dedicated variable to tick and then execute the code
             // but idk :3
-            DelayedTask.createTask(serverWorld, 60, () -> tryDamageLens(serverWorld, value));
+            currentTask = DelayedTask.createTask(serverWorld, 60, () -> tryDamageLens(serverWorld, value));
         }
         return result;
     }

@@ -11,6 +11,7 @@ public class DelayedTask {
     private final int maxAge;
     @NonNull
     private final Runnable taskBody;
+    private boolean canceled = false;
 
     /**
      * Determines if the age of the object has exceeded the maximum age allowed
@@ -18,11 +19,15 @@ public class DelayedTask {
      * @return true if the age is greater than or equal to the maximum age, false otherwise
      */
     public boolean tick() {
-        return age++ >= maxAge;
+        return canceled || age++ >= maxAge;
     }
 
     public void execute() {
-        taskBody.run();
+        if (!canceled) taskBody.run();
+    }
+
+    public void cancel() {
+        canceled = true;
     }
 
     /**
@@ -31,11 +36,13 @@ public class DelayedTask {
      * @param  world      the world in which the task is to be executed
      * @param  ticks      the number of ticks to delay the task execution (1 tick = 50ms)
      * @param  taskBody   the code to be executed as the task
+     * @return created task
      */
-    public static void createTask(World world, int ticks, @NonNull Runnable taskBody) {
+    public static DelayedTask createTask(World world, int ticks, @NonNull Runnable taskBody) {
         DelayedTask task = new DelayedTask(ticks, taskBody);
         AbstractTaskManager taskManager = world.isClient() ? ClientTaskManager.INSTANCE : ServerTaskManager.INSTANCE;
         taskManager.addTask(task);
+        return task;
     }
 
     /**

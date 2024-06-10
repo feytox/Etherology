@@ -4,7 +4,7 @@ import dev.onyxstudios.cca.api.v3.item.CcaNbtType;
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import lombok.val;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 import org.apache.commons.lang3.EnumUtils;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
@@ -40,8 +40,12 @@ public class LensComponent extends ItemComponent {
         super(stack);
     }
 
-    public boolean checkCooldown(ServerWorld world) {
-        if (getEndTick() != -1) return getEndTick() <= world.getTime();
+    public long getCooldown(World world) {
+        return getEndTick() - world.getTime();
+    }
+
+    public boolean checkCooldown(World world) {
+        if (getEndTick() != -1) return getCooldown(world) <= 0;
         setEndTick(world.getTime());
         return true;
     }
@@ -118,7 +122,7 @@ public class LensComponent extends ItemComponent {
         resetCache();
     }
 
-    public void incrementCooldown(ServerWorld world, long cooldown) {
+    public void incrementCooldown(World world, long cooldown) {
         if (checkCooldown(world)) putLong("end_tick", world.getTime() + cooldown);
         else putLong("end_tick", getEndTick() + cooldown);
         resetCache();

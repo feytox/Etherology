@@ -93,7 +93,10 @@ public class StaffItem extends Item {
         Supplier<Hand> handGetter = () -> getHandFromStack(user, staffStack);
 
         boolean isDamaged = switch (lensMode) {
-            case CHARGE -> lensItem.onChargeStop(world, user, lensData, lensStack, holdTicks, handGetter);
+            case CHARGE -> {
+                int chargeTime = lensItem.getChargeTime(lensData, holdTicks);
+                yield lensItem.onChargeStop(world, user, lensData, lensStack, chargeTime, handGetter);
+            }
             case STREAM -> lensItem.onStreamStop(world, user, lensData, lensStack, holdTicks, handGetter);
         };
 

@@ -23,9 +23,6 @@ import java.util.function.Supplier;
 
 public class RedstoneLens extends LensItem {
 
-    private static final int STREAM_COOLDOWN = 16;
-    private static final int CHARGE_COOLDOWN = 60;
-
     public RedstoneLens() {
         super(StaffLenses.REDSTONE);
     }
@@ -40,8 +37,7 @@ public class RedstoneLens extends LensItem {
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
 
-        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
-        int cooldown = Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
+        int cooldown = getStreamCooldown(lensData);
         lensData.incrementCooldown(serverWorld, cooldown);
 
         boolean isMiss = !hitResult.getType().equals(HitResult.Type.BLOCK);
@@ -64,8 +60,7 @@ public class RedstoneLens extends LensItem {
 
     @Override
     public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
-        if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
-        if (!lensData.checkCooldown(serverWorld)) return false;
+        if (world.isClient) return false;
         if (hold) return false;
 
         entity.setCurrentHand(handGetter.get());
@@ -74,14 +69,11 @@ public class RedstoneLens extends LensItem {
 
     @Override
     public boolean onChargeStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
-        if (world.isClient || !(world instanceof ServerWorld serverWorld)) {
+        if (world.isClient) {
             entity.swingHand(handGetter.get());
             return false;
         }
 
-        int streamLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
-        int cooldown = Math.round(CHARGE_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * streamLevel));
-        lensData.incrementCooldown(serverWorld, cooldown);
         if (holdTicks == 0) return false;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
