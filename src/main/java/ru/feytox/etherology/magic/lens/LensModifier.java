@@ -22,8 +22,8 @@ public record LensModifier(Identifier modifierId) {
 
     // modifiers constants
     public static final float STREAM_MODIFIER = 0.1f;
-    public static final float STREAM_CHARGE_MODIFIER = 0.15f; // yeah
-    public static final float CHARGE_MODIFIER = 0.1f;
+    public static final float CHARGE_COOLDOWN_MODIFIER = 0.15f;
+    public static final float CHARGE_SPEED_MODIFIER = 0.1f;
     public static final float FILTERING_PER_LEVEL = 0.4f;
 
     @Nullable

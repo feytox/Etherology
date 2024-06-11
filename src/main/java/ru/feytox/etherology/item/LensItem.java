@@ -81,8 +81,8 @@ public abstract class LensItem extends Item {
     }
 
     public int getChargeTime(LensComponent lensData, int holdTicks) {
-        int streamLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
-        return Math.round(Math.min(CHARGE_LIMIT, holdTicks * (1 + (LensModifier.STREAM_CHARGE_MODIFIER * streamLevel))));
+        int streamLevel = lensData.getModifiers().getLevel(LensModifier.CHARGE);
+        return Math.round(Math.min(CHARGE_LIMIT, holdTicks * (1 + (LensModifier.CHARGE_COOLDOWN_MODIFIER * streamLevel))));
     }
 
     @Override

@@ -78,8 +78,8 @@ public class RedstoneLens extends LensItem {
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
         Vec3d chargePos = entity.getBoundingBox().getCenter();
-        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.CHARGE);
-        float speed = 1.0f + LensModifier.CHARGE_MODIFIER * modifierLevel;
+        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        float speed = 1.0f + LensModifier.CHARGE_SPEED_MODIFIER * modifierLevel;
 
         RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks, speed);
         world.spawnEntity(blob);
