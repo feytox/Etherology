@@ -97,12 +97,16 @@ public class JewelryBlockEntity extends TickableBlockEntity
     @Override
     public float increment(float value) {
         float result = EtherStorage.super.increment(value);
-        if (world instanceof ServerWorld serverWorld) {
-            // It seems like this code is simpler than using a dedicated variable to tick and then execute the code
-            // but idk :3
-            // TODO: 11.06.2024 completely rewrite using non-persistent tickers
-            currentTask = DelayedTask.createTask(serverWorld, 60, () -> tryDamageLens(serverWorld, value));
-        }
+        if (!(world instanceof ServerWorld serverWorld)) return result;
+
+        ItemStack lensStack = inventory.getStack(0);
+        val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
+        if (lensOptional.isEmpty()) return result;
+        if (!lensOptional.get().getPattern().isCracked()) return result;
+
+        // It seems like this code is simpler than using a dedicated variable to tick and then execute the code
+        // but idk :3
+        currentTask = DelayedTask.createTask(serverWorld, 60, () -> tryDamageLens(serverWorld, value));
         return result;
     }
 

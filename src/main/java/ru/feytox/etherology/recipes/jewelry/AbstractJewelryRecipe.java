@@ -21,8 +21,10 @@ public abstract class AbstractJewelryRecipe implements FeyRecipe<JewelryTableInv
 
     @Override
     public boolean matches(JewelryTableInventory inventory, World world) {
-        // TODO: 11.06.2024 you know
-        ItemStack lensStack = inventory.getStack(0);
+        return recipeMatches(inventory.getStack(0));
+    }
+
+    protected boolean recipeMatches(ItemStack lensStack) {
         val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
         return lensOptional.map(lensComponent -> lensComponent.getPattern().equals(pattern)).orElse(false);
     }

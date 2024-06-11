@@ -5,6 +5,7 @@ import lombok.val;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
+import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
@@ -18,6 +19,13 @@ public class ModifierRecipe extends AbstractJewelryRecipe {
     public ModifierRecipe(LensPattern pattern, LensModifier modifier, int ether, Identifier id) {
         super(pattern, ether, id);
         this.modifier = modifier;
+    }
+
+    @Override
+    protected boolean recipeMatches(ItemStack lensStack) {
+        if (!(lensStack.getItem() instanceof LensItem lensItem)) return false;
+        if (lensItem.isUnadjusted()) return false;
+        return super.recipeMatches(lensStack);
     }
 
     @Override
