@@ -9,6 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneChargeEntity;
@@ -22,6 +23,8 @@ import ru.feytox.etherology.registry.item.ToolItems;
 import java.util.function.Supplier;
 
 public class RedstoneLens extends LensItem {
+
+    private static final int REDSTONE_POWER = 3;
 
     public RedstoneLens() {
         super(StaffLenses.REDSTONE);
@@ -43,7 +46,8 @@ public class RedstoneLens extends LensItem {
         boolean isMiss = !hitResult.getType().equals(HitResult.Type.BLOCK);
         if (!isMiss) {
             BlockPos hitPos = blockHitResult.getBlockPos();
-            RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, 3, 10);
+            int power = getPower(lensData);
+            RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, power, 10);
         }
 
         boolean isDamaged = LensItem.damageLens(lensStack, 1);
@@ -80,9 +84,16 @@ public class RedstoneLens extends LensItem {
         Vec3d chargePos = entity.getBoundingBox().getCenter();
         int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
         float speed = 1.0f + LensModifier.CHARGE_SPEED_MODIFIER * modifierLevel;
+        int power = getPower(lensData);
 
-        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, 5, holdTicks, speed);
+        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, power, holdTicks, speed);
         world.spawnEntity(blob);
         return LensItem.damageLens(lensStack, 1);
+    }
+
+    private int getPower(LensComponent lensData) {
+        int level = lensData.getModifiers().getLevel(LensModifier.REINFORCEMENT);
+        int power = MathHelper.ceil(REDSTONE_POWER * (1 + LensModifier.REINFORCEMENT_MODIFIER * level));
+        return Math.min(power, 15);
     }
 }

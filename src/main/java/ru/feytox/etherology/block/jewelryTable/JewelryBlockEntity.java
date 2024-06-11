@@ -100,6 +100,7 @@ public class JewelryBlockEntity extends TickableBlockEntity
         if (world instanceof ServerWorld serverWorld) {
             // It seems like this code is simpler than using a dedicated variable to tick and then execute the code
             // but idk :3
+            // TODO: 11.06.2024 completely rewrite using non-persistent tickers
             currentTask = DelayedTask.createTask(serverWorld, 60, () -> tryDamageLens(serverWorld, value));
         }
         return result;
