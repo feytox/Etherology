@@ -18,13 +18,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
-import ru.feytox.etherology.util.deprecated.IdkLib;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.Optional;
@@ -60,7 +60,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof FurSlabBlockEntity furBlockEntity) {
-            Optional<Vec2f> match = IdkLib.getHitPos(hit, state.get(HorizontalFacingBlock.FACING));
+            Optional<Vec2f> match = getHitPos(hit, state.get(HorizontalFacingBlock.FACING));
             if (match.isEmpty()) return ActionResult.PASS;
 
             Vec2f hitPos = match.get();
@@ -185,5 +185,30 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     @Override
     public String getBlockId() {
         return blockId;
+    }
+
+    /**
+     * code from Vanilla Chiseled Bookshelf
+     * @see ChiseledBookshelfBlock
+     */
+    public static Optional<Vec2f> getHitPos(BlockHitResult hit, Direction facing) {
+        Direction direction = hit.getSide();
+        if (facing != direction) {
+            return Optional.empty();
+        } else {
+            BlockPos blockPos = hit.getBlockPos().offset(direction);
+            Vec3d vec3d = hit.getPos().subtract(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            double d = vec3d.getX();
+            double e = vec3d.getY();
+            double f = vec3d.getZ();
+
+            return switch (direction) {
+                case NORTH -> Optional.of(new Vec2f((float) (1.0 - d), (float) e));
+                case SOUTH -> Optional.of(new Vec2f((float) d, (float) e));
+                case WEST -> Optional.of(new Vec2f((float) f, (float) e));
+                case EAST -> Optional.of(new Vec2f((float) (1.0 - f), (float) e));
+                case DOWN, UP -> Optional.empty();
+            };
+        }
     }
 }

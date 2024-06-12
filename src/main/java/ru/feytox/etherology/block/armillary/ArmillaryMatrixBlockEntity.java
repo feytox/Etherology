@@ -39,11 +39,11 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
-import ru.feytox.etherology.components.IFloatComponent;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
+import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.particle.effects.*;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
@@ -69,7 +69,6 @@ import java.util.stream.Stream;
 
 import static ru.feytox.etherology.block.armillary.ArmillaryState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
-import static ru.feytox.etherology.registry.misc.EtherologyComponents.ETHER_POINTS;
 
 public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
 
@@ -515,10 +514,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  value   the amount of ether to consume
      */
     private void consumeEther(LivingEntity entity, float value) {
-        if (entity instanceof PlayerEntity player) {
-            IFloatComponent playerEther = ETHER_POINTS.get(player);
-            if (playerEther.getValue() < value) return;
-            playerEther.decrement(value);
+        if (entity.isPlayer()) {
+            if (!EtherComponent.decrement(entity, value)) return;
         }
         else entity.damage(DamageSource.MAGIC, value);
         storedEther += value;

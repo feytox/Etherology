@@ -42,13 +42,11 @@
   },
   "custom": {
     "cardinal-components": [
-      "etherology:ether_max",
-      "etherology:ether_regen",
-      "etherology:ether_points",
       "etherology:corruption",
       "etherology:essence_zone",
       "etherology:lens",
-      "etherology:staff"
+      "etherology:staff",
+      "etherology:ether"
     ]
   },
   "accessWidener" : "etherology.accesswidener"

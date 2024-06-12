@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
+import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
 import java.util.Iterator;
@@ -67,8 +68,9 @@ public class StaffItem extends Item {
 
         val lensData = LensItem.getStaffLens(staffStack);
         if (lensData == null || lensData.isEmpty()) return;
-        val lensMode = lensData.getLensMode();
+        if (!EtherComponent.isEnough(user, lensItem.getEtherCost(lensData))) return;
 
+        val lensMode = lensData.getLensMode();
         boolean isDamaged = switch (lensMode) {
             case CHARGE -> lensItem.onChargeUse(world, user, lensData, lensStack, hold, handGetter);
             case STREAM -> lensItem.onStreamUse(world, user, lensData, lensStack, hold, handGetter);

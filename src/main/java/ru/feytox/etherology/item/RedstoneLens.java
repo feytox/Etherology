@@ -29,7 +29,7 @@ public class RedstoneLens extends LensItem {
     private static final int CHARGE_LIFETIME = 100;
 
     public RedstoneLens() {
-        super(StaffLenses.REDSTONE);
+        super(StaffLenses.REDSTONE, 1.0f, 1.0f);
     }
 
     @Override
@@ -43,6 +43,7 @@ public class RedstoneLens extends LensItem {
         HitResult hitResult = entity.raycast(maxDistance, 1.0f, false);
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
+        if (LensItem.decrementEther(entity, lensStack, lensData)) return false;
 
         int cooldown = getStreamCooldown(lensData);
         lensData.incrementCooldown(serverWorld, cooldown);
@@ -83,6 +84,7 @@ public class RedstoneLens extends LensItem {
         }
 
         if (holdTicks == 0) return false;
+        if (LensItem.decrementEther(entity, lensStack, lensData)) return false;
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
         Vec3d chargePos = entity.getBoundingBox().getCenter();

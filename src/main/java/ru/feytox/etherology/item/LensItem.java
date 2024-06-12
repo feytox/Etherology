@@ -22,6 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.staff.StaffLenses;
@@ -33,23 +34,26 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * @see ru.feytox.etherology.magic.lens.LensComponent
+ * @see LensComponent
+ * @see StaffItem
  */
-@Getter
 public abstract class LensItem extends Item {
 
     private static final Supplier<Random> RANDOM_PROVIDER = Suppliers.memoize(Random::create);
     public static final int CHARGE_LIMIT = 100;
     public static final int STREAM_COOLDOWN = 16;
 
-    @Nullable
+    @Nullable @Getter
     private final StaffLenses lensType;
+    private final float streamCost;
+    private final float chargeCost;
 
-    protected LensItem(@Nullable StaffLenses lensType) {
+    protected LensItem(@Nullable StaffLenses lensType, float streamCost, float chargeCost) {
         super(new FabricItemSettings().maxCount(1).maxDamage(100));
         this.lensType = lensType;
+        this.streamCost = streamCost;
+        this.chargeCost = chargeCost;
     }
-
 
     /**
      * @return true if lens damaged, otherwise - false
@@ -73,6 +77,27 @@ public abstract class LensItem extends Item {
      */
     public boolean onChargeStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         return false;
+    }
+
+    /**
+     * @return false if ether decremented, otherwise - true
+     */
+    public static boolean decrementEther(LivingEntity entity, ItemStack lensStack, LensComponent lensData) {
+        if (!(lensStack.getItem() instanceof LensItem lensItem)) return true;
+        return !EtherComponent.decrement(entity, lensItem.getEtherCost(lensData));
+    }
+
+    public float getEtherCost(LensComponent lensData) {
+        float cost = switch (lensData.getLensMode()) {
+            case STREAM -> streamCost;
+            case CHARGE -> chargeCost;
+        };
+        return getEtherCost(lensData, cost);
+    }
+
+    private float getEtherCost(LensComponent lensData, float baseCost) {
+        int level = lensData.getLevel(LensModifier.SAVING);
+        return Math.max(0.0f, baseCost * (1 - LensModifier.SAVING_MODIFIER * level));
     }
 
     public int getStreamCooldown(LensComponent lensData) {

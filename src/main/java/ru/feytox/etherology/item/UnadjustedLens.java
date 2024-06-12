@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 public class UnadjustedLens extends LensItem {
 
     public UnadjustedLens() {
-        super(null);
+        super(null, 0.0f, 0.0f);
     }
 
     @Override

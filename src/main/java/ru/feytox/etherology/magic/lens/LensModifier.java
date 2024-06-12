@@ -21,6 +21,7 @@ public record LensModifier(Identifier modifierId) {
     public static final LensModifier CONCENTRATION = register("concentration");
     public static final LensModifier REINFORCEMENT = register("reinforcement");
     public static final LensModifier AREA = register("area");
+    public static final LensModifier SAVING = register("saving");
 
     // TODO: 11.06.2024 rename or move
     // modifiers constants
@@ -31,6 +32,7 @@ public record LensModifier(Identifier modifierId) {
     public static final float REINFORCEMENT_MODIFIER = 0.65f;
     public static final float AREA_STREAM_MODIFIER = 0.1f;
     public static final int AREA_CHARGE_MODIFIER = 20;
+    public static final float SAVING_MODIFIER = 0.1f;
 
     @Nullable
     public static LensModifier get(Identifier id) {

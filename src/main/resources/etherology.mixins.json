@@ -37,7 +37,6 @@
     "RedstoneWireBlockMixin",
     "RenderTickCounterAccessor",
     "ScreenAccessor",
-    "ServerPlayerEntityMixin",
     "ServerPlayerInteractionManagerAccessor",
     "StickyKeyBindingAccessor",
     "TrunkPlacerTypeAccessor",
