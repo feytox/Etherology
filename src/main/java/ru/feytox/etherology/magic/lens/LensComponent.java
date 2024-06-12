@@ -78,6 +78,10 @@ public class LensComponent extends ItemComponent {
         return cachedMode;
     }
 
+    public int getLevel(LensModifier lensModifier) {
+        return getModifiers().getLevel(lensModifier);
+    }
+
     public int getGameId() {
         if (cachedGameId != null) return cachedGameId;
         if (!hasTag("game_id", CcaNbtType.INT)) putInt("game_id", Etherology.GAME_ID);

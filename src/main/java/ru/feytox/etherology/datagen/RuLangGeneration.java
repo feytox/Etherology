@@ -212,6 +212,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(LensModifier.FILTERING, "Фильтрация");
         builder.add(LensModifier.CONCENTRATION, "Концентрация");
         builder.add(LensModifier.REINFORCEMENT, "Усиление");
+        builder.add(LensModifier.AREA, "Область");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

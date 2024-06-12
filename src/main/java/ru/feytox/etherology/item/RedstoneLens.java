@@ -25,6 +25,8 @@ import java.util.function.Supplier;
 public class RedstoneLens extends LensItem {
 
     private static final int REDSTONE_POWER = 3;
+    private static final float STREAM_DISTANCE = 40.0f;
+    private static final int CHARGE_LIFETIME = 100;
 
     public RedstoneLens() {
         super(StaffLenses.REDSTONE);
@@ -36,7 +38,9 @@ public class RedstoneLens extends LensItem {
 
         if (!lensData.checkCooldown(serverWorld)) return false;
 
-        HitResult hitResult = entity.raycast(32.0f, 1.0f, false);
+        int distanceModifier = lensData.getLevel(LensModifier.AREA);
+        float maxDistance = STREAM_DISTANCE * (1 + LensModifier.AREA_STREAM_MODIFIER * distanceModifier);
+        HitResult hitResult = entity.raycast(maxDistance, 1.0f, false);
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
 
@@ -82,17 +86,19 @@ public class RedstoneLens extends LensItem {
 
         Vec3d entityRotation = entity.getRotationVec(0.1f);
         Vec3d chargePos = entity.getBoundingBox().getCenter();
-        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        int modifierLevel = lensData.getLevel(LensModifier.STREAM);
         float speed = 1.0f + LensModifier.CHARGE_SPEED_MODIFIER * modifierLevel;
         int power = getPower(lensData);
 
-        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, power, holdTicks, speed);
+        int ageModLevel = lensData.getLevel(LensModifier.AREA);
+        int maxAge = CHARGE_LIFETIME + ageModLevel * LensModifier.AREA_CHARGE_MODIFIER;
+        RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, power, holdTicks, speed, maxAge);
         world.spawnEntity(blob);
         return LensItem.damageLens(lensStack, 1);
     }
 
     private int getPower(LensComponent lensData) {
-        int level = lensData.getModifiers().getLevel(LensModifier.REINFORCEMENT);
+        int level = lensData.getLevel(LensModifier.REINFORCEMENT);
         int power = MathHelper.ceil(REDSTONE_POWER * (1 + LensModifier.REINFORCEMENT_MODIFIER * level));
         return Math.min(power, 15);
     }

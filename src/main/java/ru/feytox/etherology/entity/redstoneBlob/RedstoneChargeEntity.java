@@ -33,10 +33,11 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
     private int power;
     private int delay;
     private float speed;
+    private int maxAge;
     private Vec3d flyDirection;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public RedstoneChargeEntity(World world, double x, double y, double z, Vec3d flyDirection, int power, int delay, float speed) {
+    public RedstoneChargeEntity(World world, double x, double y, double z, Vec3d flyDirection, int power, int delay, float speed, int maxAge) {
         this(EntityRegistry.REDSTONE_CHARGE, world, flyDirection.multiply(speed));
         refreshPositionAndAngles(x, y, z, getYaw(), getPitch());
         refreshPosition();
@@ -44,6 +45,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
         this.power = power;
         this.delay = delay;
         this.speed = speed;
+        this.maxAge = maxAge;
     }
 
     public RedstoneChargeEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
@@ -64,6 +66,11 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
     @Override
     public void tick() {
         if (!world.isClient && !world.isChunkLoaded(getBlockPos())) {
+            discard();
+            return;
+        }
+
+        if (!world.isClient && age++ >= maxAge) {
             discard();
             return;
         }
@@ -129,6 +136,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
         nbt.putDouble("flyX", flyDirection.x);
         nbt.putDouble("flyY", flyDirection.y);
         nbt.putDouble("flyZ", flyDirection.z);
+        nbt.putInt("maxAge", maxAge);
     }
 
     @Override
@@ -137,6 +145,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
         power = nbt.getInt("power");
         delay = nbt.getInt("delay");
         speed = nbt.getFloat("speed");
+        maxAge = nbt.getInt("maxAge");
         flyDirection = new Vec3d(nbt.getDouble("flyX"), nbt.getDouble("flyY"), nbt.getDouble("flyZ"));
     }
 
@@ -150,6 +159,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
         return cache;
     }
 
+    // TODO: 11.06.2024 replace this with more efficient way to create and receive packet
     @Override
     public Packet<ClientPlayPacketListener> createSpawnPacket() {
         return new EntitySpawnS2CPacket(getId(), getUuid(), getX(), getY(), getZ(), getPitch(), getYaw(), getType(), getId(), flyDirection, 0.0);

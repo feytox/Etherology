@@ -76,12 +76,12 @@ public abstract class LensItem extends Item {
     }
 
     public int getStreamCooldown(LensComponent lensData) {
-        int modifierLevel = lensData.getModifiers().getLevel(LensModifier.STREAM);
+        int modifierLevel = lensData.getLevel(LensModifier.STREAM);
         return Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
     }
 
     public int getChargeTime(LensComponent lensData, int holdTicks) {
-        int streamLevel = lensData.getModifiers().getLevel(LensModifier.CHARGE);
+        int streamLevel = lensData.getLevel(LensModifier.CHARGE);
         return Math.round(Math.min(CHARGE_LIMIT, holdTicks * (1 + (LensModifier.CHARGE_COOLDOWN_MODIFIER * streamLevel))));
     }
 
@@ -146,7 +146,7 @@ public abstract class LensItem extends Item {
 
     private static float getDamageChance(ItemStack lensStack) {
         val lensData = EtherologyComponents.LENS.get(lensStack);
-        int filterLvl = lensData.getModifiers().getLevel(LensModifier.FILTERING);
+        int filterLvl = lensData.getLevel(LensModifier.FILTERING);
         if (filterLvl <= 0) return 1.0f;
         return 1.0f - 0.5f * LensModifier.FILTERING_PER_LEVEL * filterLvl;
     }
