@@ -82,6 +82,29 @@ public class LensComponent extends ItemComponent {
         return getModifiers().getLevel(lensModifier);
     }
 
+    /**
+     * @param lensModifier The lens modifier, used to calculate the value.
+     * @param start The value at level 0.
+     * @param end The value at the highest level.
+     * @param modifier The modifier from 0 to 1, representing how fast the value grows with level. A smaller number means faster growth.
+     * @return The calculated value rounded to the nearest integer.
+     */
+    public int calcRoundValue(LensModifier lensModifier, int start, int end, float modifier) {
+        return Math.round(calcValue(lensModifier, start, end, modifier));
+    }
+
+    /**
+     * @param lensModifier The lens modifier, used to calculate the value.
+     * @param start The value at level 0.
+     * @param end The value at the highest level.
+     * @param modifier The modifier from 0 to 1, representing how fast the value grows with level. A smaller number means faster growth.
+     * @return The calculated value.
+     */
+    public float calcValue(LensModifier lensModifier, float start, float end, float modifier) {
+        int level = getLevel(lensModifier);
+        return (float) (end - (end - start) * Math.pow(modifier, level));
+    }
+
     public int getGameId() {
         if (cachedGameId != null) return cachedGameId;
         if (!hasTag("game_id", CcaNbtType.INT)) putInt("game_id", Etherology.GAME_ID);

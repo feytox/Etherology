@@ -41,7 +41,6 @@ public abstract class LensItem extends Item {
 
     private static final Supplier<Random> RANDOM_PROVIDER = Suppliers.memoize(Random::create);
     public static final int CHARGE_LIMIT = 100;
-    public static final int STREAM_COOLDOWN = 16;
 
     @Nullable @Getter
     private final StaffLenses lensType;
@@ -96,18 +95,15 @@ public abstract class LensItem extends Item {
     }
 
     private float getEtherCost(LensComponent lensData, float baseCost) {
-        int level = lensData.getLevel(LensModifier.SAVING);
-        return Math.max(0.0f, baseCost * (1 - LensModifier.SAVING_MODIFIER * level));
+        return baseCost * lensData.calcValue(LensModifier.SAVING, 1, 0.1f, 0.75f);
     }
 
     public int getStreamCooldown(LensComponent lensData) {
-        int modifierLevel = lensData.getLevel(LensModifier.STREAM);
-        return Math.round(STREAM_COOLDOWN * (1.0f - LensModifier.STREAM_MODIFIER * modifierLevel));
+        return lensData.calcRoundValue(LensModifier.STREAM, 16, 1, 0.67f);
     }
 
     public int getChargeTime(LensComponent lensData, int holdTicks) {
-        int streamLevel = lensData.getLevel(LensModifier.CHARGE);
-        return Math.round(Math.min(CHARGE_LIMIT, holdTicks * (1 + (LensModifier.CHARGE_COOLDOWN_MODIFIER * streamLevel))));
+        return Math.min(CHARGE_LIMIT, Math.round(holdTicks * lensData.calcValue(LensModifier.CHARGE, 1, 4, 0.8f)));
     }
 
     @Override
@@ -171,9 +167,7 @@ public abstract class LensItem extends Item {
 
     private static float getDamageChance(ItemStack lensStack) {
         val lensData = EtherologyComponents.LENS.get(lensStack);
-        int filterLvl = lensData.getLevel(LensModifier.FILTERING);
-        if (filterLvl <= 0) return 1.0f;
-        return 1.0f - 0.5f * LensModifier.FILTERING_PER_LEVEL * filterLvl;
+        return lensData.calcValue(LensModifier.FILTERING, 1, 0.1f, 0.7f);
     }
 
     /**

@@ -23,17 +23,6 @@ public record LensModifier(Identifier modifierId) {
     public static final LensModifier AREA = register("area");
     public static final LensModifier SAVING = register("saving");
 
-    // TODO: 11.06.2024 rename or move
-    // modifiers constants
-    public static final float STREAM_MODIFIER = 0.1f;
-    public static final float CHARGE_COOLDOWN_MODIFIER = 0.15f;
-    public static final float CHARGE_SPEED_MODIFIER = 0.1f;
-    public static final float FILTERING_PER_LEVEL = 0.4f;
-    public static final float REINFORCEMENT_MODIFIER = 0.65f;
-    public static final float AREA_STREAM_MODIFIER = 0.1f;
-    public static final int AREA_CHARGE_MODIFIER = 20;
-    public static final float SAVING_MODIFIER = 0.1f;
-
     @Nullable
     public static LensModifier get(Identifier id) {
         return MODIFIERS.getOrDefault(id, null);
