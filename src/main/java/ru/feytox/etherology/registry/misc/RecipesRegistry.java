@@ -15,6 +15,7 @@ import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.recipes.jewelry.BrokenRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
@@ -33,6 +34,7 @@ public class RecipesRegistry {
         register(CauldronRecipeSerializer.INSTANCE);
         register(EmpowerRecipeSerializer.INSTANCE);
         register(ArmillaryRecipeSerializer.INSTANCE);
+        register(BrokenRecipeSerializer.INSTANCE);
     }
 
     private static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {

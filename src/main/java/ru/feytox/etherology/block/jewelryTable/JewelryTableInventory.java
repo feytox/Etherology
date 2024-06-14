@@ -2,6 +2,7 @@ package ru.feytox.etherology.block.jewelryTable;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
+import ru.feytox.etherology.recipes.jewelry.BrokenRecipe;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
@@ -31,7 +33,7 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     public static final List<Integer> EMPTY_CELLS;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
-    @Nullable
+    @Nullable @Getter
     private final JewelryBlockEntity parent;
     @Nullable
     private Identifier currentRecipe;
@@ -61,9 +63,19 @@ public class JewelryTableInventory implements ImplementedInventory {
     public void updateRecipe(ServerWorld world) {
         AbstractJewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, LensRecipeSerializer.INSTANCE);
         if (recipe == null) recipe = RecipesRegistry.getFirstMatch(world, this, ModifierRecipeSerializer.INSTANCE);
+        if (recipe == null) recipe = getBrokenRecipe();
 
         if (recipe == null) currentRecipe = null;
         else currentRecipe = recipe.getId();
+    }
+
+    @Nullable
+    private AbstractJewelryRecipe getBrokenRecipe() {
+        ItemStack lensStack = getStack(0);
+        val optionalData = EtherologyComponents.LENS.maybeGet(lensStack);
+        return optionalData
+                .filter(lensComponent -> lensComponent.getPattern().isCracked())
+                .map(lensComponent -> BrokenRecipe.INSTANCE).orElse(null);
     }
 
     public boolean hasRecipe() {
@@ -72,9 +84,11 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     @Nullable
     public AbstractJewelryRecipe getRecipe(ServerWorld world) {
-        if (currentRecipe != null && RecipesRegistry.get(world, currentRecipe) instanceof AbstractJewelryRecipe recipe) {
-            return recipe;
+        if (currentRecipe != null) {
+            if (RecipesRegistry.get(world, currentRecipe) instanceof AbstractJewelryRecipe recipe) return recipe;
+            if (currentRecipe.equals(BrokenRecipe.INSTANCE.getId())) return BrokenRecipe.INSTANCE;
         }
+
         return null;
     }
 

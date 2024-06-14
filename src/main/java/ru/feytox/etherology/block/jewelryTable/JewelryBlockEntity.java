@@ -20,17 +20,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
 import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
@@ -94,56 +91,19 @@ public class JewelryBlockEntity extends TickableBlockEntity
         effect.spawnParticles(world, 2, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
     }
 
-    @Override
-    public float increment(float value) {
-        float result = EtherStorage.super.increment(value);
-        if (!(world instanceof ServerWorld serverWorld)) return result;
-
-        ItemStack lensStack = inventory.getStack(0);
-        val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
-        if (lensOptional.isEmpty()) return result;
-        if (!lensOptional.get().getPattern().isCracked()) return result;
-
-        // It seems like this code is simpler than using a dedicated variable to tick and then execute the code
-        // but idk :3
-        currentTask = DelayedTask.createTask(serverWorld, 60, () -> tryDamageLens(serverWorld, value));
-        return result;
-    }
-
-    private void tryDamageLens(ServerWorld world, float ether) {
-        if (ether <= 0) return;
-        ItemStack lensStack = inventory.getStack(0);
-        if (!(lensStack.getItem() instanceof LensItem lensItem)) return;
-
-        val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
-        if (lensOptional.isEmpty()) return;
-
-        val lensData = lensOptional.get();
-        LensPattern pattern = lensData.getPattern();
-        if (!pattern.isCracked()) return;
-
-        AbstractJewelryRecipe recipe = inventory.getRecipe(world);
-        if (recipe != null) return;
-
-        applyCorruption(world);
-        lensData.setPattern(LensPattern.empty());
-        if (!LensItem.damageLens(lensStack, 5)) return;
-        JewelryTableInventory.onLensDamage(this, lensStack, lensItem);
-        trySyncData();
-    }
-
-    private void applyCorruption(ServerWorld world) {
+    public void applyCorruption() {
+        if (!(world instanceof ServerWorld serverWorld)) return;
         Corruption corruption = new Corruption(1.0f);
-        corruption.placeInChunk(world, pos);
+        corruption.placeInChunk(serverWorld, pos);
 
         Vec3d start = pos.toCenterPos().add(0, 0.75f, 0);
         val effect = new SimpleParticleEffect(EtherParticleTypes.HAZE);
-        effect.spawnParticles(world, 5, 0.2, start);
+        effect.spawnParticles(serverWorld, 5, 0.2, start);
     }
 
     @Override
     public boolean isCrossEvaporate(Direction fromSide) {
-        return inventory.isEmpty();
+        return fromSide.equals(Direction.DOWN) && inventory.isEmpty();
     }
 
     @Override
