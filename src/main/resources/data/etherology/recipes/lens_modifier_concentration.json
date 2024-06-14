@@ -1,14 +1,14 @@
 {
   "type": "etherology:modifier_recipe",
   "pattern": [
-    "00XXX#00",
-    "0######0",
-    "########",
-    "########",
-    "########",
-    "########",
-    "0######0",
-    "00####00"
+    "00XXXX00",
+    "0##XX##0",
+    "X##XX##X",
+    "###XX###",
+    "XXXXXXXX",
+    "###XX###",
+    "0##XX##0",
+    "00XXXX00"
   ],
   "outputModifier": "etherology:concentration",
   "ether": 12

@@ -3,13 +3,13 @@
   "pattern": [
     "00####00",
     "0######0",
-    "###XXX##",
-    "########",
-    "########",
-    "##XXX###",
+    "#XX#X###",
+    "#X##X###",
+    "###X##X#",
+    "###X#XX#",
     "0######0",
     "00####00"
   ],
-  "outputModifier": "etherology:filtering",
+  "outputModifier": "etherology:saving",
   "ether": 12
 }
