@@ -19,7 +19,6 @@ import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.misc.*;
 import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
-import ru.feytox.etherology.world.gen.EWorldGeneration;
 
 public class Etherology implements ModInitializer {
 
@@ -39,7 +38,7 @@ public class Etherology implements ModInitializer {
         EtherEnchantments.registerAll();
         RecipesRegistry.registerAll();
         ScreenHandlersRegistry.registerServerSide();
-        EWorldGeneration.generateWorldGen();
+        WorldGenRegistry.registerWorldGen();
         EtherologyRegistry.buildRegistry();
         StaffPatterns.registerAll();
         EItemGroups.registerAll();
