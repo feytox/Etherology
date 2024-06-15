@@ -8,15 +8,25 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.val;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
+import java.util.UUID;
+
+// TODO: 15.06.2024 consider to split into multiple files
 @RequiredArgsConstructor
 public class EtherComponent implements ComponentV3, CopyableComponent<EtherComponent>, ServerTickingComponent, AutoSyncedComponent {
 
@@ -24,11 +34,16 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     private static final float EXHAUSTION_2 = 3.0f;
     private static final float EXHAUSTION_3 = 2.0f;
     private static final float EXHAUSTION_4 = 0.1f;
-    private static final int EXHAUSTION_1_TICKS = 25*20;
-    private static final int EXHAUSTION_2_TICKS = 15*20;
-    private static final int EXHAUSTION_3_TICKS = 10*20;
-    private static final int EXHAUSTION_4_TICKS = 2*20;
-    private static final int TICK_RATE = 40;
+    private static final float EX_1_CHANCE = 1.0f / (40*20);
+    private static final float EX_2_CHANCE = 1.0f / (30*20);
+    private static final float EX_3_CHANCE = 1.0f / (20*20);
+    private static final float EX_4_CHANCE = 1.0f / (2*20);
+    private static final int REGEN_TICKS = 40;
+    private static final int EX_TICKS = 20;
+
+    private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("162b5a0d-deca-47e0-b829-929af7985629");
+    private static final Identifier OUTLINE = new EIdentifier("textures/misc/corruption_outline.png");
+
 
     private final LivingEntity entity;
     @Getter @Setter
@@ -38,6 +53,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     @Getter @Setter
     private float pointsRegen = 0.001f;
     private boolean hasCurse = false;
+    private float healthModifier = 1.0f;
 
     public static boolean isEnough(LivingEntity entity, float etherCost) {
         val optionalData = EtherologyComponents.ETHER.maybeGet(entity);
@@ -68,26 +84,29 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     private void tickRegeneration(World world) {
-        if (world.getTime() % TICK_RATE != 0) return;
+        if (world.getTime() % REGEN_TICKS != 0) return;
         if (points >= maxPoints) return;
-        points = Math.min(maxPoints, points + pointsRegen * TICK_RATE);
+        points = Math.min(maxPoints, points + pointsRegen * REGEN_TICKS);
         EtherologyComponents.ETHER.sync(entity);
     }
 
     private void tickExhaustion(World world) {
-        if (hasCurse) tickCurse(world);
+        if (world.getTime() % EX_TICKS != 0) return;
+        if (hasCurse || healthModifier < 1.0f) tickCurse(world);
+        tickMaxHealth();
+
         if (points > EXHAUSTION_1) return;
-        if (world.getTime() % EXHAUSTION_1_TICKS == 0) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 150));
+        if (checkRand(world, EX_1_CHANCE)) {
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 150, 1));
         }
 
         if (points > EXHAUSTION_2) return;
-        if (world.getTime() % EXHAUSTION_2_TICKS == 0) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 150));
+        if (checkRand(world, EX_2_CHANCE)) {
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 150, 1));
         }
 
         if (points > EXHAUSTION_3) return;
-        if (world.getTime() % EXHAUSTION_3_TICKS == 0) {
+        if (checkRand(world, EX_3_CHANCE)) {
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100));
         }
 
@@ -97,18 +116,54 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     private void tickCurse(World world) {
-        if (points >= EXHAUSTION_3) {
+        if (hasCurse && points >= EXHAUSTION_3) {
             hasCurse = false;
             sync();
-            return;
         }
 
-        if (world.getTime() % EXHAUSTION_4_TICKS != 0) return;
-        float health = entity.getHealth();
-        if (health <= 2.0f) return;
+        if (!checkRand(world, EX_4_CHANCE * (hasCurse ? 1 : 2))) return;
 
-        float damage = health > 3.0f ? health / 1.5f : 1.0f;
-        entity.damage(DamageSource.MAGIC, damage);
+        if (hasCurse) healthModifier = Math.max(0.1f, healthModifier - 0.05f);
+        else healthModifier = Math.min(1.0f, healthModifier + 0.1f);
+        sync();
+
+        if (!hasCurse) return;
+        float absorption = entity.getAbsorptionAmount();
+        float deltaHealth = entity.getHealth() - entity.getMaxHealth() + absorption;
+        if (deltaHealth > 0) entity.damage(DamageSource.MAGIC, deltaHealth);
+        if (absorption > 0) entity.setAbsorptionAmount(0.0f);
+    }
+
+    private void tickMaxHealth() {
+        val attrInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        if (attrInstance == null) return;
+
+        attrInstance.removeModifier(HEALTH_MODIFIER_ID);
+        if (healthModifier >= 1.0f) return;
+
+        double baseModifier = attrInstance.getValue() / 20.0f;
+        attrInstance.addTemporaryModifier(new EntityAttributeModifier(HEALTH_MODIFIER_ID, "Max Health Exhaustion modifier", healthModifier * baseModifier - 1.0f, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+    }
+
+    private boolean checkRand(World world, float chance) {
+        return world.getRandom().nextFloat() <= chance * EX_TICKS;
+    }
+
+    public static void renderOverlay(InGameHud hud) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        PlayerEntity player = client.player;
+
+        Float opacity = getOverlayOpacity(player);
+        if (opacity == null) return;
+        ((InGameHudAccessor) hud).callRenderOverlay(OUTLINE, opacity);
+    }
+
+    private static Float getOverlayOpacity(PlayerEntity player) {
+        return EtherologyComponents.ETHER.maybeGet(player)
+                .map(EtherComponent::getPoints)
+                .filter(points -> points <= EXHAUSTION_3)
+                .map(points -> 0.5f * (2 - points / EXHAUSTION_3))
+                .orElse(null);
     }
 
     public static boolean hasCurse(PlayerEntity player) {
@@ -126,6 +181,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         maxPoints = tag.getFloat("max_points");
         pointsRegen = tag.getFloat("points_regen");
         hasCurse = tag.getBoolean("has_curse");
+        healthModifier = tag.getFloat("health_modifier");
     }
 
     @Override
@@ -134,6 +190,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         tag.putFloat("max_points", maxPoints);
         tag.putFloat("points_regen", pointsRegen);
         tag.putBoolean("has_curse", hasCurse);
+        tag.putFloat("health_modifier", healthModifier);
     }
 
     @Override

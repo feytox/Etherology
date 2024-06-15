@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.item.revelationView.RevelationViewRenderer;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -36,6 +35,6 @@ public class InGameHudMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I"))
     private void injectRevelationRendering(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        RevelationViewRenderer.renderOverlay(((InGameHud)(Object) this), tickDelta);
+        EtherComponent.renderOverlay(((InGameHud)(Object) this));
     }
 }

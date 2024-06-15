@@ -3,18 +3,15 @@ package ru.feytox.etherology.item.revelationView;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.experimental.UtilityClass;
-import lombok.val;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
@@ -24,10 +21,6 @@ import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
-import ru.feytox.etherology.magic.corruption.CorruptionComponent;
-import ru.feytox.etherology.mixin.InGameHudAccessor;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
-import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
@@ -38,12 +31,6 @@ public class RevelationViewRenderer {
     // constants
     private static final int ROW_SIZE = 5;
     private static final int DATA_TICK_RATE = 5;
-    private static final float MIN_CORRUPTION_OVERLAY = 32.0f;
-    private static final Identifier CORRUPTION_TEXTURE = new EIdentifier("textures/misc/corruption_outline.png");
-
-    // overlay cache
-    private static float targetOpacity = 0.0f;
-    private static float currentOpacity = 0.0f;
 
     // aspects cache
     private static @Nullable BlockPos lastTargetPos = null;
@@ -54,14 +41,7 @@ public class RevelationViewRenderer {
 
     public static void tickData(World world, PlayerEntity player) {
         if (world.getTime() % DATA_TICK_RATE != 0) return;
-        if (!RevelationViewItem.isEquipped(player)) {
-            targetOpacity = 0.0f;
-            return;
-        }
-
-        val corruptionLevel = getCorruptionLevel(world, player);
-        if (corruptionLevel == null || corruptionLevel == 0.0f) targetOpacity = 0.0f;
-        else targetOpacity = (corruptionLevel - MIN_CORRUPTION_OVERLAY) / (CorruptionComponent.MAX_CHUNK_CORRUPTION - MIN_CORRUPTION_OVERLAY);
+        if (!RevelationViewItem.isEquipped(player)) return;
 
         MinecraftClient client = MinecraftClient.getInstance();
         HitResult hitResult = client.crosshairTarget;
@@ -192,24 +172,5 @@ public class RevelationViewRenderer {
                 yield offset;
             }
         };
-    }
-
-    public static void renderOverlay(InGameHud hud, float tickDelta) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        PlayerEntity player = client.player;
-        if (player == null || !RevelationViewItem.isEquipped(player)) targetOpacity = 0.0f;
-
-        currentOpacity = MathHelper.lerp(0.1f*tickDelta, currentOpacity, targetOpacity);
-        if (currentOpacity <= 0.00001f) return;
-        ((InGameHudAccessor) hud).callRenderOverlay(CORRUPTION_TEXTURE, currentOpacity);
-    }
-
-    @Nullable
-    private static Float getCorruptionLevel(World world, PlayerEntity player) {
-        if (player == null || world == null || !RevelationViewItem.isEquipped(player)) return null;
-
-        val component = world.getChunk(player.getBlockPos()).getComponent(EtherologyComponents.CORRUPTION);
-        val corruption = component.getCorruption();
-        return corruption == null ? null : corruption.getCorruptionValue();
     }
 }
