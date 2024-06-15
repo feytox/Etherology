@@ -21,7 +21,8 @@ public class InGameHudMixin {
     @Inject(method = "drawHeart", at = @At("HEAD"), cancellable = true)
     private void onDrawHeart(MatrixStack matrices, InGameHud.HeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (type == InGameHud.HeartType.CONTAINER || player == null) return;
+        if (type.equals(InGameHud.HeartType.CONTAINER) || player == null) return;
+        if (type.equals(InGameHud.HeartType.ABSORBING)) return;
         if (!EtherComponent.hasCurse(player)) return;
 
         int u = halfHeart ? 9 : 0;

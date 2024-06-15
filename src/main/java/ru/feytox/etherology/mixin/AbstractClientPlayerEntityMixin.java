@@ -62,4 +62,6 @@ public class AbstractClientPlayerEntityMixin implements EtherologyPlayer {
     public void etherology$setHammerState(HammerState state) {
         etherology$HammerState = state;
     }
+
+
 }

@@ -13,7 +13,6 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,6 +41,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     private static final int EX_TICKS = 20;
 
     private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("162b5a0d-deca-47e0-b829-929af7985629");
+    private static final UUID SPEED_MODIFIER_ID = UUID.fromString("3364a987-2858-485d-948c-2bcf93c0ad1d");
     private static final Identifier OUTLINE = new EIdentifier("textures/misc/corruption_outline.png");
 
 
@@ -94,6 +94,8 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         if (world.getTime() % EX_TICKS != 0) return;
         if (hasCurse || healthModifier < 1.0f) tickCurse(world);
         tickMaxHealth();
+        tickSpeed();
+        if (hasCurse) tickCurseHealth();
 
         if (points > EXHAUSTION_1) return;
         if (checkRand(world, EX_1_CHANCE)) {
@@ -126,12 +128,10 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         if (hasCurse) healthModifier = Math.max(0.1f, healthModifier - 0.05f);
         else healthModifier = Math.min(1.0f, healthModifier + 0.1f);
         sync();
+    }
 
-        if (!hasCurse) return;
-        float absorption = entity.getAbsorptionAmount();
-        float deltaHealth = entity.getHealth() - entity.getMaxHealth() + absorption;
-        if (deltaHealth > 0) entity.damage(DamageSource.MAGIC, deltaHealth);
-        if (absorption > 0) entity.setAbsorptionAmount(0.0f);
+    private void tickCurseHealth() {
+        entity.setHealth(Math.min(entity.getHealth(), entity.getMaxHealth()));
     }
 
     private void tickMaxHealth() {
@@ -141,8 +141,20 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         attrInstance.removeModifier(HEALTH_MODIFIER_ID);
         if (healthModifier >= 1.0f) return;
 
-        double baseModifier = attrInstance.getValue() / 20.0f;
+        double baseModifier = 20.0f / attrInstance.getValue();
         attrInstance.addTemporaryModifier(new EntityAttributeModifier(HEALTH_MODIFIER_ID, "Max Health Exhaustion modifier", healthModifier * baseModifier - 1.0f, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+    }
+
+    private void tickSpeed() {
+        val attrInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        if (attrInstance == null) return;
+
+        double modifier = 1 - points / EXHAUSTION_3;
+        attrInstance.removeModifier(SPEED_MODIFIER_ID);
+        if (modifier >= 1.0f || modifier <= 0.0f) return;
+
+        modifier *= -0.025;
+        attrInstance.addTemporaryModifier(new EntityAttributeModifier(SPEED_MODIFIER_ID, "Speed Exhaustion modifier", modifier, EntityAttributeModifier.Operation.ADDITION));
     }
 
     private boolean checkRand(World world, float chance) {
@@ -162,7 +174,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         return EtherologyComponents.ETHER.maybeGet(player)
                 .map(EtherComponent::getPoints)
                 .filter(points -> points <= EXHAUSTION_3)
-                .map(points -> 0.5f * (2 - points / EXHAUSTION_3))
+                .map(points -> 1 - points / EXHAUSTION_3)
                 .orElse(null);
     }
 
