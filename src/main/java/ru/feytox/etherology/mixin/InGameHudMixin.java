@@ -23,7 +23,7 @@ public class InGameHudMixin {
     private void onDrawHeart(MatrixStack matrices, InGameHud.HeartType type, int x, int y, int v, boolean blinking, boolean halfHeart, CallbackInfo ci) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (type == InGameHud.HeartType.CONTAINER || player == null) return;
-        if (!EtherComponent.isExhaustion(player)) return;
+        if (!EtherComponent.hasCurse(player)) return;
 
         int u = halfHeart ? 9 : 0;
         u += blinking ? 18 : 0;
