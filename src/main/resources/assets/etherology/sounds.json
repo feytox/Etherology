@@ -83,5 +83,11 @@
         "name": "etherology:tuning_fork_resonance"
       }
     ]
+  },
+  "broadsword": {
+    "subtitle": "subtitles.etherology.broadsword",
+    "sounds": [
+      "etherology:broadsword"
+    ]
   }
 }

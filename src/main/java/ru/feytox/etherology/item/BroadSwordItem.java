@@ -7,10 +7,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
+import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.DoubleModel;
 
@@ -37,5 +39,10 @@ public class BroadSwordItem extends TwoHandheldSword implements DoubleModel {
     public static void replaceSweepParticle(ServerWorld world, double x, double y, double z) {
         val effect = new ScalableParticleEffect(EtherParticleTypes.SCALABLE_SWEEP, 2.0f);
         effect.spawnParticles(world, 1, 0, new Vec3d(x, y, z));
+    }
+
+    public static SoundEvent replaceAttackSound(PlayerEntity player, SoundEvent sound) {
+        if (!BroadSwordItem.isUsing(player)) return sound;
+        return EtherSounds.BROADSWORD;
     }
 }

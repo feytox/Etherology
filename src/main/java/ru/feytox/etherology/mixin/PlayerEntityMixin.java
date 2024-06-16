@@ -10,7 +10,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -64,6 +67,13 @@ public class PlayerEntityMixin implements PlayerSessionDataProvider {
         if (!BroadSwordItem.isUsing(player)) return true;
         BroadSwordItem.replaceSweepParticle(instance, x, y, z);
         return false;
+    }
+
+    @WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
+    private void replaceBroadSwordSound(World instance, PlayerEntity except, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original) {
+        PlayerEntity player = ((PlayerEntity) (Object) this);
+        SoundEvent newSound = BroadSwordItem.replaceAttackSound(player, sound);
+        original.call(instance, except, x, y, z, newSound, category, volume, pitch);
     }
 
     @Override
