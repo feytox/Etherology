@@ -33,17 +33,17 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     private static final float EXHAUSTION_2 = 3.0f;
     private static final float EXHAUSTION_3 = 2.0f;
     private static final float EXHAUSTION_4 = 0.1f;
-    private static final float EX_1_CHANCE = 1.0f / (40*20);
-    private static final float EX_2_CHANCE = 1.0f / (30*20);
-    private static final float EX_3_CHANCE = 1.0f / (20*20);
-    private static final float EX_4_CHANCE = 1.0f / (2*20);
+    private static final float EX_1_CHANCE = 1.0f / (100*20);
+    private static final float EX_2_CHANCE = 1.0f / (80*20);
+    private static final float EX_3_CHANCE = 1.0f / (60*20);
+    private static final int CURSE_TICKS = 100;
+    private static final int UNCURSE_TICKS = 50;
     private static final int REGEN_TICKS = 40;
     private static final int EX_TICKS = 20;
 
     private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("162b5a0d-deca-47e0-b829-929af7985629");
     private static final UUID SPEED_MODIFIER_ID = UUID.fromString("3364a987-2858-485d-948c-2bcf93c0ad1d");
     private static final Identifier OUTLINE = new EIdentifier("textures/misc/corruption_outline.png");
-
 
     private final LivingEntity entity;
     @Getter @Setter
@@ -91,25 +91,25 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     private void tickExhaustion(World world) {
-        if (world.getTime() % EX_TICKS != 0) return;
         if (hasCurse || healthModifier < 1.0f) tickCurse(world);
+        if (world.getTime() % EX_TICKS != 0) return;
         tickMaxHealth();
         tickSpeed();
         if (hasCurse) tickCurseHealth();
 
         if (points > EXHAUSTION_1) return;
         if (checkRand(world, EX_1_CHANCE)) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 150, 1));
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 300));
         }
 
         if (points > EXHAUSTION_2) return;
         if (checkRand(world, EX_2_CHANCE)) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 150, 1));
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 250, 1));
         }
 
         if (points > EXHAUSTION_3) return;
         if (checkRand(world, EX_3_CHANCE)) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100));
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200));
         }
 
         if (points > EXHAUSTION_4 || hasCurse) return;
@@ -118,12 +118,11 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     private void tickCurse(World world) {
+        if (world.getTime() % (hasCurse ? CURSE_TICKS : UNCURSE_TICKS) != 0) return;
         if (hasCurse && points >= EXHAUSTION_3) {
             hasCurse = false;
             sync();
         }
-
-        if (!checkRand(world, EX_4_CHANCE * (hasCurse ? 1 : 2))) return;
 
         if (hasCurse) healthModifier = Math.max(0.1f, healthModifier - 0.05f);
         else healthModifier = Math.min(1.0f, healthModifier + 0.1f);
