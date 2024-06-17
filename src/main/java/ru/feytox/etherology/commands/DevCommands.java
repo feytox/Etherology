@@ -63,6 +63,7 @@ public class DevCommands {
 
         float value = Float.parseFloat(context.getInput().split(" ")[2]);
         dataConsumer.accept(optionalData.get(), value);
+        EtherologyComponents.ETHER.sync(player);
         return 1;
     }
 
