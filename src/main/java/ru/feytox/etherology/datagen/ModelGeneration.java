@@ -5,9 +5,9 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.item.glints.AbstractGlintItem;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.registry.block.DecoBlocks;
@@ -54,7 +54,9 @@ public class ModelGeneration extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator generator) {
         // glint
-        registerGlint(EItems.GLINT, generator);
+        registerMultipleModels(EItems.GLINT, generator, 1, 17);
+        // warp counter
+        registerMultipleModels(WARP_COUNTER, generator, 1, 15);
         // simple items
         registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, EBONY_INGOT, EBONY_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, REDSTONE_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER, ETHEREAL_CHANNEL, ETHEREAL_FORK, REVELATION_VIEW, EBONY);
         // handheld (swords, pickaxe etc.)
@@ -81,9 +83,9 @@ public class ModelGeneration extends FabricModelProvider {
         Arrays.stream(blocks).forEach(generator::registerSimpleCubeAll);
     }
 
-    private static void registerGlint(AbstractGlintItem glint, ItemModelGenerator itemModelGenerator) {
-        for (int i = 1; i < 17; i++) {
-            itemModelGenerator.register(glint, "_"+i, Models.GENERATED);
+    private static void registerMultipleModels(Item item, ItemModelGenerator itemModelGenerator, int startInclusive, int endExclusive) {
+        for (int i = startInclusive; i < endExclusive; i++) {
+            itemModelGenerator.register(item, "_"+i, Models.GENERATED);
         }
     }
 

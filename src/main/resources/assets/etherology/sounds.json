@@ -89,5 +89,14 @@
     "sounds": [
       "etherology:broadsword"
     ]
+  },
+  "warp_counter": {
+    "subtitle": "subtitles.etherology.warp_counter",
+    "sounds": [
+      {
+        "attenuation_distance": 4,
+        "name": "etherology:warp_counter"
+      }
+    ]
   }
 }

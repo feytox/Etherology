@@ -1,0 +1,24 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "etherology:item/warp_counter_0"
+  },
+
+  "overrides": [
+    { "predicate": {"warp_counter": 0.000000}, "model": "etherology:item/warp_counter" },
+    { "predicate": {"warp_counter": 0.066666}, "model": "etherology:item/warp_counter_1" },
+    { "predicate": {"warp_counter": 0.133333}, "model": "etherology:item/warp_counter_2" },
+    { "predicate": {"warp_counter": 0.200000}, "model": "etherology:item/warp_counter_3" },
+    { "predicate": {"warp_counter": 0.266666}, "model": "etherology:item/warp_counter_4" },
+    { "predicate": {"warp_counter": 0.333333}, "model": "etherology:item/warp_counter_5" },
+    { "predicate": {"warp_counter": 0.400000}, "model": "etherology:item/warp_counter_6" },
+    { "predicate": {"warp_counter": 0.466666}, "model": "etherology:item/warp_counter_7" },
+    { "predicate": {"warp_counter": 0.533333}, "model": "etherology:item/warp_counter_8" },
+    { "predicate": {"warp_counter": 0.600000}, "model": "etherology:item/warp_counter_9" },
+    { "predicate": {"warp_counter": 0.666666}, "model": "etherology:item/warp_counter_10" },
+    { "predicate": {"warp_counter": 0.733333}, "model": "etherology:item/warp_counter_11" },
+    { "predicate": {"warp_counter": 0.800000}, "model": "etherology:item/warp_counter_12" },
+    { "predicate": {"warp_counter": 0.866666}, "model": "etherology:item/warp_counter_13" },
+    { "predicate": {"warp_counter": 0.933333}, "model": "etherology:item/warp_counter_14" }
+  ]
+}

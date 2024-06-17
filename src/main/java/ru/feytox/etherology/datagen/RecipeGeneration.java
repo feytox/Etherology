@@ -28,8 +28,7 @@ import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.EItems.*;
-import static ru.feytox.etherology.registry.item.ToolItems.STREAM_KEY;
-import static ru.feytox.etherology.registry.item.ToolItems.TUNING_MACE;
+import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 public class RecipeGeneration extends FabricRecipeProvider {
     public RecipeGeneration(FabricDataOutput output) {
@@ -145,6 +144,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("S")
                 .pattern("#")
                 .pattern("S").criterion("has_ethereal_stone", conditionsFromItem(ETHEREAL_STONE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(TOOLS, WARP_COUNTER).input('R', Items.REDSTONE).input('#', EBONY_INGOT)
+                .pattern(" # ")
+                .pattern("#R#")
+                .pattern(" # ").criterion("has_ebony_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter);
 
         // "hard" recipes
         ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', SEDIMENTARY_BLOCK).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)

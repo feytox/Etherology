@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.world.World;
+import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
@@ -20,7 +22,8 @@ public class DevCommands {
 
     public static void register() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) ->
-                dispatcher.register(literal("feytox")
+                dispatcher.register(literal("etherology")
+                        .requires(source -> source.hasPermissionLevel(2))
                         .then(literal("points")
                                 .executes(context -> getValue(context, EtherComponent::getPoints))
                                 .then(argument("new value", FloatArgumentType.floatArg())
@@ -33,6 +36,10 @@ public class DevCommands {
                                 .executes(context -> getValue(context, EtherComponent::getPointsRegen))
                                 .then(argument("new value", FloatArgumentType.floatArg())
                                         .executes(context -> setValue(context, EtherComponent::setPointsRegen))))
+                        .then(literal("corruption")
+                                .executes(DevCommands::getCorruption)
+                                .then(argument("new value", FloatArgumentType.floatArg())
+                                        .executes(DevCommands::setCorruption)))
                 )));
     }
 
@@ -56,6 +63,37 @@ public class DevCommands {
 
         float value = Float.parseFloat(context.getInput().split(" ")[2]);
         dataConsumer.accept(optionalData.get(), value);
+        return 1;
+    }
+
+    private static int getCorruption(CommandContext<ServerCommandSource> context) {
+        PlayerEntity player = context.getSource().getPlayer();
+        if (player == null) return 0;
+        World world = player.getWorld();
+        if (world == null) return 0;
+
+        val dataOptional = EtherologyComponents.CORRUPTION.maybeGet(world.getChunk(player.getBlockPos()));
+        if (dataOptional.isEmpty()) return 0;
+
+        Corruption corruption = dataOptional.get().getCorruption();
+        float value = corruption != null ? corruption.getCorruptionValue() : 0.0f;
+
+        player.sendMessage(Text.of(String.valueOf(value)));
+        return 1;
+    }
+
+    private static int setCorruption(CommandContext<ServerCommandSource> context) {
+        PlayerEntity player = context.getSource().getPlayer();
+        if (player == null) return 0;
+        World world = player.getWorld();
+        if (world == null) return 0;
+
+        val dataOptional = EtherologyComponents.CORRUPTION.maybeGet(world.getChunk(player.getBlockPos()));
+        if (dataOptional.isEmpty()) return 0;
+
+        val data = dataOptional.get();
+        float value = Float.parseFloat(context.getInput().split(" ")[2]);
+        data.setCorruption(new Corruption(value));
         return 1;
     }
 }

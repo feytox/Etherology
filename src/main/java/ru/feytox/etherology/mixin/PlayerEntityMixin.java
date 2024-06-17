@@ -15,24 +15,18 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.util.misc.PlayerSessionData;
-import ru.feytox.etherology.util.misc.PlayerSessionDataProvider;
 import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 import java.util.concurrent.CompletableFuture;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements PlayerSessionDataProvider {
-
-    @Unique
-    private final PlayerSessionData etherology$playerSessionData = new PlayerSessionData();
+public class PlayerEntityMixin {
 
     @Inject(method = "tick", at = @At("RETURN"))
     private void onPlayerTick(CallbackInfo ci) {
@@ -74,10 +68,5 @@ public class PlayerEntityMixin implements PlayerSessionDataProvider {
         PlayerEntity player = ((PlayerEntity) (Object) this);
         SoundEvent newSound = BroadSwordItem.replaceAttackSound(player, sound);
         original.call(instance, except, x, y, z, newSound, category, volume, pitch);
-    }
-
-    @Override
-    public PlayerSessionData etherology$getData() {
-        return etherology$playerSessionData;
     }
 }

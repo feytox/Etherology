@@ -69,7 +69,7 @@ public class EItemGroups {
         // tools
         etherItems.with(ETHRIL_PICKAXE, EBONY_PICKAXE, ETHRIL_AXE, EBONY_AXE, ETHRIL_SWORD, EBONY_SWORD, ETHRIL_SHOVEL, EBONY_SHOVEL, ETHRIL_HOE, EBONY_HOE);
         etherItems.with(BATTLE_PICKAXES);
-        etherItems.with(TUNING_MACE, BROADSWORD, IRON_SHIELD, STREAM_KEY);
+        etherItems.with(TUNING_MACE, BROADSWORD, IRON_SHIELD, STREAM_KEY, WARP_COUNTER);
         // patterns
         etherItems.with(PATTERN_TABLETS);
         // staff and lenses

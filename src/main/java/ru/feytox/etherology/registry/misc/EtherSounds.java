@@ -22,6 +22,7 @@ public class EtherSounds {
     public static final SoundEvent TUNING_FORK_TUNING = register("tuning_fork_tuning");
     public static final SoundEvent TUNING_FORK_RESONANCE = register("tuning_fork_resonance");
     public static final SoundEvent BROADSWORD = register("broadsword");
+    public static final SoundEvent WARP_COUNTER = register("warp_counter");
 
     public static void registerAll() {}
 
