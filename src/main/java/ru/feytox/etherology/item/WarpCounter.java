@@ -18,6 +18,7 @@ import ru.feytox.etherology.magic.corruption.CorruptionComponent;
 import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.ItemStackData;
+import ru.feytox.etherology.util.misc.PseudoLivingEntity;
 
 public class WarpCounter extends Item {
 
@@ -61,7 +62,7 @@ public class WarpCounter extends Item {
 
     private static void tickSound(World world, Entity holder, ItemStack stack, Float warpLevel) {
         if (warpLevel == null || warpLevel == 0) return;
-        if (holder instanceof LivingEntity entity) {
+        if (holder instanceof LivingEntity entity && !(holder instanceof PseudoLivingEntity)) {
             if (!entity.getStackInHand(Hand.MAIN_HAND).equals(stack) && !entity.getStackInHand(Hand.OFF_HAND).equals(stack)) return;
         }
 

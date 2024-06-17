@@ -11,11 +11,15 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.joml.Math;
+import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.misc.PseudoLivingEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
 
 @RequiredArgsConstructor
@@ -39,13 +43,15 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
     public static <T extends BlockEntity & UniqueProvider> void renderPedestalItem(T entity, MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, int light, ItemRenderer itemRenderer, Vec3d offset) {
         float uniqueOffset = entity.getUniqueOffset(entity.getPos());
 
-        renderVanillaGroundItem(matrices, world, itemStack, vertexConsumers, tickDelta, light, itemRenderer, offset, uniqueOffset);
+        renderVanillaGroundItem(matrices, world, itemStack, vertexConsumers, tickDelta, light, itemRenderer, offset, uniqueOffset, entity.getPos());
     }
 
-    public static void renderVanillaGroundItem(MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, int light, ItemRenderer itemRenderer, Vec3d offset, float uniqueOffset) {
+    public static void renderVanillaGroundItem(MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, int light, ItemRenderer itemRenderer, Vec3d offset, float uniqueOffset, BlockPos blockPos) {
         matrices.push();
         matrices.translate(offset.x, offset.y, offset.z);
-        BakedModel bakedModel = itemRenderer.getModel(itemStack, world, null, 5678);
+        // TODO: 17.06.2024 consider to replace with something BETTER
+        LivingEntity pseudoEntity = itemStack.isOf(ToolItems.WARP_COUNTER) ? new PseudoLivingEntity(world, blockPos) : null;
+        BakedModel bakedModel = itemRenderer.getModel(itemStack, world, pseudoEntity, 5678);
         boolean hasDepth = bakedModel.hasDepth();
         long time = world.getTime();
         float yOffset = Math.sin((time + tickDelta) / 10.0F + uniqueOffset) * 0.1F + 0.1F;
