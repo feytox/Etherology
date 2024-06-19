@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static ru.feytox.etherology.world.gen.TreesRegistry.PEACH_TRUNK_PLACER;
+import static ru.feytox.etherology.registry.world.TreesRegistry.PEACH_TRUNK_PLACER;
 
 public class PeachTrunkPlacer extends TrunkPlacer {
 

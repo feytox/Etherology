@@ -18,6 +18,7 @@ import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.misc.*;
+import ru.feytox.etherology.registry.world.WorldGenRegistry;
 import ru.feytox.etherology.util.delayedTask.ServerTaskManager;
 
 public class Etherology implements ModInitializer {

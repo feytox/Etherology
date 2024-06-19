@@ -40,6 +40,7 @@
     "ScreenAccessor",
     "ServerPlayerInteractionManagerAccessor",
     "StickyKeyBindingAccessor",
+    "TreeDecoratorTypeAccessor",
     "TrunkPlacerTypeAccessor",
     "UnbreakingEnchantmentMixin",
     "VibrationListenerAccessor",

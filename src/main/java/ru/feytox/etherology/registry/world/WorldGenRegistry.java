@@ -1,4 +1,4 @@
-package ru.feytox.etherology.registry.misc;
+package ru.feytox.etherology.registry.world;
 
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -8,7 +8,6 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import ru.feytox.etherology.util.misc.EIdentifier;
-import ru.feytox.etherology.world.gen.TreesRegistry;
 
 @UtilityClass
 public class WorldGenRegistry {

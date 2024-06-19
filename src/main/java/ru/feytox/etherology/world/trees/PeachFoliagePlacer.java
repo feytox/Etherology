@@ -12,7 +12,7 @@ import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.foliage.FoliagePlacer;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.world.gen.TreesRegistry;
+import ru.feytox.etherology.registry.world.TreesRegistry;
 
 import java.util.function.BiConsumer;
 

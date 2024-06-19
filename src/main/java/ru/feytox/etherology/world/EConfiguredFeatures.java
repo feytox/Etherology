@@ -6,15 +6,15 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
+import ru.feytox.etherology.registry.world.TreesRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
-import ru.feytox.etherology.world.gen.TreesRegistry;
 
 public class EConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?,?>> PEACH_TREE = registerKey("peach_tree");
 
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
-        register(context, PEACH_TREE, Feature.TREE, TreesRegistry.peach().build());
+        register(context, PEACH_TREE, Feature.TREE, TreesRegistry.PEACH_CONFIG);
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {
