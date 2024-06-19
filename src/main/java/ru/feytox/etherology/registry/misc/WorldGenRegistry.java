@@ -8,7 +8,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import ru.feytox.etherology.util.misc.EIdentifier;
-import ru.feytox.etherology.world.gen.EtherTreesGeneration;
+import ru.feytox.etherology.world.gen.TreesRegistry;
 
 @UtilityClass
 public class WorldGenRegistry {
@@ -16,7 +16,7 @@ public class WorldGenRegistry {
     public static final RegistryKey<PlacedFeature> ATTRAHITE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new EIdentifier("attrahite"));
 
     public static void registerWorldGen() {
-        EtherTreesGeneration.registerTrees();
+        TreesRegistry.registerTrees();
         registerOres();
     }
 
