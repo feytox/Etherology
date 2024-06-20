@@ -61,6 +61,11 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapelessRecipeJsonBuilder.create(MISC, EBONY_INGOT, 9).input(EBONY_BLOCK).criterion("has_ebony_block", conditionsFromItem(EBONY_BLOCK.asItem())).offerTo(exporter, new EIdentifier("ebony_ingot_from_block"));
         ShapedRecipeJsonBuilder.create(MISC, EBONY_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', EBONY_INGOT).criterion("has_ebony_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter);
 
+        // forest lantern
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(FOREST_LANTERN_CRUMB), FOOD, FOREST_LANTERN_COOKED_CRUMB, 0.35F, 200).criterion("has_forest_lantern_crumb", conditionsFromItem(FOREST_LANTERN_CRUMB)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmoking(Ingredient.ofItems(FOREST_LANTERN_CRUMB), FOOD, FOREST_LANTERN_COOKED_CRUMB, 0.35F, 100).criterion("has_forest_lantern_crumb", conditionsFromItem(FOREST_LANTERN_CRUMB)).offerTo(exporter, getItemPath(FOREST_LANTERN_COOKED_CRUMB) + "_from_smoking");
+        CookingRecipeJsonBuilder.createCampfireCooking(Ingredient.ofItems(FOREST_LANTERN_CRUMB), FOOD, FOREST_LANTERN_COOKED_CRUMB, 0.35F, 600).criterion("has_forest_lantern_crumb", conditionsFromItem(FOREST_LANTERN_CRUMB)).offerTo(exporter, getItemPath(FOREST_LANTERN_COOKED_CRUMB) + "_from_campfire");
+
         // special recipes
         ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET).offerTo(exporter, "staff_carpeting");
         ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET_CUT).offerTo(exporter, "staff_carpet_cutting");

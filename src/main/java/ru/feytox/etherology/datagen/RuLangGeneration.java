@@ -218,6 +218,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(WARP_COUNTER, "Варп счётчик");
 
         builder.add(FOREST_LANTERN, "Лесной фонарь");
+        builder.add(FOREST_LANTERN_CRUMB, "Грибной мякиш");
+        builder.add(FOREST_LANTERN_COOKED_CRUMB, "Печёный грибной мякиш");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

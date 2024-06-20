@@ -19,6 +19,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 import java.util.Arrays;
 import java.util.List;
 
+import static ru.feytox.etherology.registry.block.DecoBlocks.FOREST_LANTERN;
 import static ru.feytox.etherology.registry.block.EBlockFamilies.FAMILIES;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK;
@@ -58,7 +59,7 @@ public class ModelGeneration extends FabricModelProvider {
         // warp counter
         registerMultipleModels(WARP_COUNTER, generator, 1, 15);
         // simple items
-        registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, EBONY_INGOT, EBONY_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, REDSTONE_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER, ETHEREAL_CHANNEL, ETHEREAL_FORK, REVELATION_VIEW, EBONY);
+        registerItems(generator, Models.GENERATED, AZEL_INGOT, AZEL_NUGGET, EBONY_INGOT, EBONY_NUGGET, ETHRIL_INGOT, ETHRIL_NUGGET, BEAM_FRUIT, BEAMER_SEEDS, OCULUS, CORRUPTION_BUCKET, REDSTONE_LENS, THUJA_OIL, THUJA_SEEDS, ETHEROSCOPE, RAW_AZEL, ATTRAHITE_BRICK, ENRICHED_ATTRAHITE, BINDER, ETHEREAL_CHANNEL, ETHEREAL_FORK, REVELATION_VIEW, EBONY, FOREST_LANTERN, FOREST_LANTERN_CRUMB, FOREST_LANTERN_COOKED_CRUMB);
         // handheld (swords, pickaxe etc.)
         registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD, STREAM_KEY, BROADSWORD);
         registerItems(generator, Models.HANDHELD, BATTLE_PICKAXES);

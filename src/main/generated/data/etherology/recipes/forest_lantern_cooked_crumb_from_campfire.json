@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "etherology:forest_lantern_crumb"
+  },
+  "result": "etherology:forest_lantern_cooked_crumb"
+}
