@@ -15,6 +15,7 @@ import net.minecraft.util.SignType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import ru.feytox.etherology.block.beamer.BeamerBlock;
+import ru.feytox.etherology.block.forestLantern.ForestLanternBlock;
 import ru.feytox.etherology.block.peach.PeachSaplingBlock;
 import ru.feytox.etherology.block.peach.WeepingPeachLogBlock;
 import ru.feytox.etherology.block.signs.EtherSignBlock;
@@ -133,6 +134,7 @@ public class DecoBlocks {
     public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
     public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
     public static final ThujaPlantBlock THUJA_PLANT = (ThujaPlantBlock) new ThujaPlantBlock().registerBlock();
+    public static final ForestLanternBlock FOREST_LANTERN = (ForestLanternBlock) new ForestLanternBlock().registerAll();
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();

@@ -7,8 +7,9 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import ru.feytox.etherology.world.EConfiguredFeatures;
 
 public class PeachSaplingGenerator extends SaplingGenerator {
+
     @Override
     protected RegistryKey<ConfiguredFeature<?, ?>> getTreeFeature(Random random, boolean bees) {
-        return EConfiguredFeatures.PEACH_TREE;
+        return EConfiguredFeatures.PEACH_SAPLING_TREE;
     }
 }

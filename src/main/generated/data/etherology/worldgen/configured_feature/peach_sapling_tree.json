@@ -4,9 +4,6 @@
     "decorators": [
       {
         "type": "etherology:peach_weeping_decorator"
-      },
-      {
-        "type": "etherology:peach_lantern_decorator"
       }
     ],
     "dirt_provider": {

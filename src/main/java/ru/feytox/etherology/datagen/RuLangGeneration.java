@@ -217,6 +217,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(WARP_COUNTER, "Варп счётчик");
 
+        builder.add(FOREST_LANTERN, "Лесной фонарь");
+
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
             translationBuilder.add(existingFilePath);

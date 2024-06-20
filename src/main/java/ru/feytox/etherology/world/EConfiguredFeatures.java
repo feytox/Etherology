@@ -11,10 +11,11 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?,?>> PEACH_TREE = registerKey("peach_tree");
-
+    public static final RegistryKey<ConfiguredFeature<?,?>> PEACH_SAPLING_TREE = registerKey("peach_sapling_tree");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
         register(context, PEACH_TREE, Feature.TREE, TreesRegistry.PEACH_CONFIG);
+        register(context, PEACH_SAPLING_TREE, Feature.TREE, TreesRegistry.PEACH_SAPLING_CONFIG);
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

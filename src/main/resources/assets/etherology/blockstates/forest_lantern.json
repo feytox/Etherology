@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "etherology:block/forest_lantern",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "etherology:block/forest_lantern"
+    },
+    "facing=south": {
+      "model": "etherology:block/forest_lantern",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "etherology:block/forest_lantern",
+      "y": 270
+    }
+  }
+}
