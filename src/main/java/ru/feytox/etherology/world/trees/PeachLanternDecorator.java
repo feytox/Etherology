@@ -29,14 +29,15 @@ public class PeachLanternDecorator extends TreeDecorator {
     @Override
     public void generate(Generator generator) {
         Random random = generator.getRandom();
-        int count = random.nextBetween(0, 3);
+        int count = random.nextBetween(0, 2);
         if (count == 0) return;
 
-
+        int bottomY = generator.getLogPositions().get(0).getY();
         // TODO: 19.06.2024 consider to optimize
         LongOpenHashSet leavesAndLogs = Stream.concat(generator.getLeavesPositions().stream(), generator.getLogPositions().stream())
                 .map(BlockPos::asLong).collect(Collectors.toCollection(LongOpenHashSet::new));
         List<LanternPos> poses = generator.getLogPositions().stream()
+                .filter(pos -> pos.getY()-bottomY < 6)
                 .mapMulti((pos, consumer) -> {
                     consumer.accept(new LanternPos(pos.north(), Direction.NORTH));
                     consumer.accept(new LanternPos(pos.south(), Direction.SOUTH));
