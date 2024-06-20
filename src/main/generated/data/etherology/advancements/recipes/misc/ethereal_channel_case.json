@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "etherology:ethereal_channel_case"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_thuja_oil": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "etherology:thuja_oil"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_thuja_oil",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "etherology:ethereal_channel_case"
+    ]
+  }
+}

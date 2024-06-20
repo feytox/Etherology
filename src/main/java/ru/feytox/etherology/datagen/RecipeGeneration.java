@@ -114,29 +114,29 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern(" I ").criterion("has_resonating_wand", conditionsFromItem(RESONATING_WAND)).offerTo(exporter);
 
         // furniture
-        ShapelessRecipeJsonBuilder.create(DECORATIONS, SHELF_SLAB).input(Items.ITEM_FRAME).input(FURNITURE_SLAB).criterion("has_furniture_slab", conditionsFromItem(FURNITURE_SLAB)).offerTo(exporter);
-        ShapelessRecipeJsonBuilder.create(DECORATIONS, CLOSET_SLAB).input(Items.CHEST).input(FURNITURE_SLAB).criterion("has_furniture_slab", conditionsFromItem(FURNITURE_SLAB)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, FURNITURE_SLAB, 2).input('#', ItemTags.PLANKS).input('I', Items.STICK)
+        ShapelessRecipeJsonBuilder.create(MISC, SHELF_SLAB).input(Items.ITEM_FRAME).input(FURNITURE_SLAB).criterion("has_furniture_slab", conditionsFromItem(FURNITURE_SLAB)).offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(MISC, CLOSET_SLAB).input(Items.CHEST).input(FURNITURE_SLAB).criterion("has_furniture_slab", conditionsFromItem(FURNITURE_SLAB)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(MISC, FURNITURE_SLAB, 2).input('#', ItemTags.PLANKS).input('I', Items.STICK)
                 .pattern("#I#")
                 .pattern("#I#").criterion("has_planks", conditionsFromTag(ItemTags.PLANKS)).offerTo(exporter);
 
         // "simple" recipe
-        ShapedRecipeJsonBuilder.create(DECORATIONS, EBlocks.SPILL_BARREL).input('S', ItemTags.WOODEN_SLABS).input('#', ItemTags.PLANKS)
+        ShapedRecipeJsonBuilder.create(MISC, EBlocks.SPILL_BARREL).input('S', ItemTags.WOODEN_SLABS).input('#', ItemTags.PLANKS)
                 .pattern("S#S")
                 .pattern("# #")
                 .pattern("S#S").criterion("has_planks", conditionsFromTag(ItemTags.PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ESSENCE_DETECTOR_BLOCK).input('G', GLASS).input('A', Items.AMETHYST_SHARD).input('P', ItemTags.WOODEN_SLABS)
+        ShapedRecipeJsonBuilder.create(REDSTONE, ESSENCE_DETECTOR_BLOCK).input('G', GLASS).input('A', Items.AMETHYST_SHARD).input('P', ItemTags.WOODEN_SLABS)
                 .pattern("GGG")
                 .pattern("AAA")
                 .pattern("PPP").criterion("has_amethyst_shard", conditionsFromItem(Items.AMETHYST_SHARD)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, BREWING_CAULDRON).input('#', Items.IRON_INGOT).input('I', Items.STICK).input('C', AZEL_NUGGET)
+        ShapedRecipeJsonBuilder.create(MISC, BREWING_CAULDRON).input('#', Items.IRON_INGOT).input('I', Items.STICK).input('C', AZEL_NUGGET)
                 .pattern("#I#")
                 .pattern("#C#")
                 .pattern(" # ").criterion("has_azel_ingot", conditionsFromItem(AZEL_INGOT)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, CRATE).input('C', Items.IRON_NUGGET).input('S', ItemTags.WOODEN_SLABS).input('#', ItemTags.PLANKS)
+        ShapedRecipeJsonBuilder.create(MISC, CRATE).input('C', Items.IRON_NUGGET).input('S', ItemTags.WOODEN_SLABS).input('#', ItemTags.PLANKS)
                 .pattern("CSC")
                 .pattern("#S#").criterion("has_planks", conditionsFromTag(ItemTags.PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, INVENTOR_TABLE).input('#', Items.IRON_INGOT).input('S', ItemTags.WOODEN_SLABS)
+        ShapedRecipeJsonBuilder.create(MISC, INVENTOR_TABLE).input('#', Items.IRON_INGOT).input('S', ItemTags.WOODEN_SLABS)
                 .pattern("##")
                 .pattern("SS")
                 .pattern("SS").criterion("has_wooden_slab", conditionsFromTag(ItemTags.WOODEN_SLABS)).offerTo(exporter);
@@ -148,40 +148,44 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern(" # ")
                 .pattern("#R#")
                 .pattern(" # ").criterion("has_ebony_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_CHANNEL_CASE, 4).input('I', Items.IRON_INGOT).input('W', ItemTags.PLANKS).input('T', THUJA_OIL)
+                .pattern("IWI")
+                .pattern("WTW")
+                .pattern("IWI").criterion("has_thuja_oil", conditionsFromItem(THUJA_OIL)).offerTo(exporter);
 
         // "hard" recipes
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', SEDIMENTARY_BLOCK).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', SEDIMENTARY_BLOCK).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)
                 .pattern("CIC")
                 .pattern("ISI")
                 .pattern("#E#").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_CHANNEL, 2).input('O', THUJA_OIL).input('T', EBONY_INGOT).input('E', ETHEROSCOPE).input('C', Items.IRON_NUGGET)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_CHANNEL, 2).input('O', THUJA_OIL).input('T', EBONY_INGOT).input('E', ETHEROSCOPE).input('C', Items.IRON_NUGGET)
                 .pattern(" O ")
                 .pattern("TET")
                 .pattern(" C ").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_FORK).input('C', ETHEREAL_CHANNEL).input('I', Items.IRON_INGOT).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_FORK).input('C', ETHEREAL_CHANNEL).input('I', Items.IRON_INGOT).input('E', ETHEROSCOPE)
                 .pattern(" C ")
                 .pattern("IEI")
                 .pattern(" C ").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_FURNACE).input('I', Items.IRON_INGOT).input('A', AZEL_INGOT).input('B', Items.BLAZE_POWDER).input('C', AZEL_NUGGET).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_FURNACE).input('I', Items.IRON_INGOT).input('A', AZEL_INGOT).input('B', Items.BLAZE_POWDER).input('C', AZEL_NUGGET).input('E', ETHEROSCOPE)
                 .pattern("IAI")
                 .pattern("IBI")
                 .pattern("CEC").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_SOCKET).input('#', IRON_BARS).input('S', STONE).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SOCKET).input('#', IRON_BARS).input('S', STONE).input('E', ETHEROSCOPE)
                 .pattern(" # ")
                 .pattern("SES").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, SEDIMENTARY_BLOCK).input('S', STONE).input('A', AZEL_INGOT).input('R', Items.REDSTONE)
+        ShapedRecipeJsonBuilder.create(MISC, SEDIMENTARY_BLOCK).input('S', STONE).input('A', AZEL_INGOT).input('R', Items.REDSTONE)
                 .pattern("SSS")
                 .pattern("SAS")
                 .pattern("SRS").criterion("has_azel_ingot", conditionsFromItem(AZEL_INGOT)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, ETHEREAL_STORAGE).input('T', EBONY_INGOT).input('N', Items.IRON_NUGGET).input('G', GLINT).input('C', ItemTags.STONE_CRAFTING_MATERIALS).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_STORAGE).input('T', EBONY_INGOT).input('N', Items.IRON_NUGGET).input('G', GLINT).input('C', ItemTags.STONE_CRAFTING_MATERIALS).input('E', ETHEROSCOPE)
                 .pattern("TTT")
                 .pattern("NGN")
                 .pattern("CEC").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, JEWELRY_TABLE).input('C', ItemTags.STONE_CRAFTING_MATERIALS).input('I', Items.IRON_INGOT).input('D', DROPPER).input('E', ETHEREAL_CHANNEL)
+        ShapedRecipeJsonBuilder.create(MISC, JEWELRY_TABLE).input('C', ItemTags.STONE_CRAFTING_MATERIALS).input('I', Items.IRON_INGOT).input('D', DROPPER).input('E', ETHEREAL_CHANNEL)
                 .pattern("CIC")
                 .pattern("CDC")
                 .pattern("CEC").criterion("has_ethereal_channel", conditionsFromItem(ETHEREAL_CHANNEL)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, LEVITATOR).input('#', ItemTags.LOGS).input('N', Items.IRON_NUGGET).input('F', Items.RABBIT_HIDE).input('L', REDSTONE_LENS).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, LEVITATOR).input('#', ItemTags.LOGS).input('N', Items.IRON_NUGGET).input('F', Items.RABBIT_HIDE).input('L', REDSTONE_LENS).input('E', ETHEROSCOPE)
                 .pattern("#N#")
                 .pattern("FLF")
                 .pattern("#E#").criterion("has_etheroscope", conditionsFromItem(ETHEROSCOPE)).offerTo(exporter);
