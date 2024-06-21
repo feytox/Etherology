@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_forest_lantern_crumb": {
+    "has_forest_lantern": {
       "conditions": {
         "items": [
           {
             "items": [
-              "etherology:forest_lantern_crumb"
+              "etherology:forest_lantern"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "etherology:forest_lantern_cooked_crumb"
+        "recipe": "etherology:forest_lantern_crumb"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_forest_lantern_crumb",
+      "has_forest_lantern",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "etherology:forest_lantern_cooked_crumb"
+      "etherology:forest_lantern_crumb"
     ]
   }
 }

@@ -4,7 +4,7 @@
   "cookingtime": 100,
   "experience": 0.35,
   "ingredient": {
-    "item": "etherology:forest_lantern_crumb"
+    "item": "etherology:forest_lantern"
   },
-  "result": "etherology:forest_lantern_cooked_crumb"
+  "result": "etherology:forest_lantern_crumb"
 }

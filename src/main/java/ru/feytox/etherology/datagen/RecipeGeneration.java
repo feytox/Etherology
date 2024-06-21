@@ -62,9 +62,9 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(MISC, EBONY_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', EBONY_INGOT).criterion("has_ebony_ingot", conditionsFromItem(EBONY_INGOT)).offerTo(exporter);
 
         // forest lantern
-        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(FOREST_LANTERN_CRUMB), FOOD, FOREST_LANTERN_COOKED_CRUMB, 0.35F, 200).criterion("has_forest_lantern_crumb", conditionsFromItem(FOREST_LANTERN_CRUMB)).offerTo(exporter);
-        CookingRecipeJsonBuilder.createSmoking(Ingredient.ofItems(FOREST_LANTERN_CRUMB), FOOD, FOREST_LANTERN_COOKED_CRUMB, 0.35F, 100).criterion("has_forest_lantern_crumb", conditionsFromItem(FOREST_LANTERN_CRUMB)).offerTo(exporter, getItemPath(FOREST_LANTERN_COOKED_CRUMB) + "_from_smoking");
-        CookingRecipeJsonBuilder.createCampfireCooking(Ingredient.ofItems(FOREST_LANTERN_CRUMB), FOOD, FOREST_LANTERN_COOKED_CRUMB, 0.35F, 600).criterion("has_forest_lantern_crumb", conditionsFromItem(FOREST_LANTERN_CRUMB)).offerTo(exporter, getItemPath(FOREST_LANTERN_COOKED_CRUMB) + "_from_campfire");
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(FOREST_LANTERN), FOOD, FOREST_LANTERN_CRUMB, 0.35f, 200).criterion("has_forest_lantern", conditionsFromItem(FOREST_LANTERN)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmoking(Ingredient.ofItems(FOREST_LANTERN), FOOD, FOREST_LANTERN_CRUMB, 0.35f, 100).criterion("has_forest_lantern", conditionsFromItem(FOREST_LANTERN)).offerTo(exporter, getItemPath(FOREST_LANTERN_CRUMB) + "_from_smoking");
+        CookingRecipeJsonBuilder.createCampfireCooking(Ingredient.ofItems(FOREST_LANTERN), FOOD, FOREST_LANTERN_CRUMB, 0.35f, 600).criterion("has_forest_lantern", conditionsFromItem(FOREST_LANTERN)).offerTo(exporter, getItemPath(FOREST_LANTERN_CRUMB) + "_from_campfire");
 
         // special recipes
         ComplexRecipeJsonBuilder.create(RecipesRegistry.STAFF_CARPET).offerTo(exporter, "staff_carpeting");
@@ -157,6 +157,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("IWI")
                 .pattern("WTW")
                 .pattern("IWI").criterion("has_thuja_oil", conditionsFromItem(THUJA_OIL)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(MISC, Items.LEATHER).input('S', Items.STRING).input('F', FOREST_LANTERN)
+                .pattern("SFS")
+                .pattern(" F ")
+                .pattern("SFS").criterion("has_forest_lantern", conditionsFromItem(FOREST_LANTERN)).offerTo(exporter);
 
         // "hard" recipes
         ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', SEDIMENTARY_BLOCK).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)

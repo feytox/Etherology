@@ -38,7 +38,6 @@ public class EItems {
     public static final ThujaOilItem THUJA_OIL = (ThujaOilItem) registerItem("thuja_oil", new ThujaOilItem());
 
     public static final Item FOREST_LANTERN_CRUMB = registerItem("forest_lantern_crumb", new Item(new Item.Settings().food(EFoodComponents.CRUMB)));
-    public static final Item FOREST_LANTERN_COOKED_CRUMB = registerItem("forest_lantern_cooked_crumb", new Item(new Item.Settings().food(EFoodComponents.COOKED_CRUMB)));
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);

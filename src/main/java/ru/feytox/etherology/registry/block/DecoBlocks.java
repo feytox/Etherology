@@ -134,7 +134,7 @@ public class DecoBlocks {
     public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
     public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
     public static final ThujaPlantBlock THUJA_PLANT = (ThujaPlantBlock) new ThujaPlantBlock().registerBlock();
-    public static final ForestLanternBlock FOREST_LANTERN = (ForestLanternBlock) new ForestLanternBlock().registerAll(false);
+    public static final ForestLanternBlock FOREST_LANTERN = (ForestLanternBlock) new ForestLanternBlock().registerAll();
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();

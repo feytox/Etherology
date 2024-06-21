@@ -39,6 +39,7 @@
     "RenderTickCounterAccessor",
     "ScreenAccessor",
     "ServerPlayerInteractionManagerAccessor",
+    "ShearsItemMixin",
     "StickyKeyBindingAccessor",
     "TreeDecoratorTypeAccessor",
     "TrunkPlacerTypeAccessor",

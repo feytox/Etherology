@@ -148,7 +148,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHRIL_SHOVEL, "Эфриловая лопата");
         builder.add(ETHRIL_SWORD, "Эфриловый меч");
 
-        builder.add(EBONY_AXE, "Эбонитовый меч");
+        builder.add(EBONY_AXE, "Эбонитовый топор");
         builder.add(EBONY_HOE, "Эбонитовая мотыга");
         builder.add(EBONY_PICKAXE, "Эбонитовая кирка");
         builder.add(EBONY_SHOVEL, "Эбонитовая лопата");
@@ -219,7 +219,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(FOREST_LANTERN, "Лесной фонарь");
         builder.add(FOREST_LANTERN_CRUMB, "Грибной мякиш");
-        builder.add(FOREST_LANTERN_COOKED_CRUMB, "Печёный грибной мякиш");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

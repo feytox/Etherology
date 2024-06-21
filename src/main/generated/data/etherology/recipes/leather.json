@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "etherology:forest_lantern"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "SFS",
+    " F ",
+    "SFS"
+  ],
+  "result": {
+    "item": "minecraft:leather"
+  }
+}

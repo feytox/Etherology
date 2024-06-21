@@ -10,9 +10,7 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.predicate.StatePredicate;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
@@ -26,7 +24,6 @@ import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_CASE;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.ENRICHED_ATTRAHITE;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.THUJA_SEEDS;
-import static ru.feytox.etherology.registry.item.EItems.FOREST_LANTERN_CRUMB;
 
 public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
 
@@ -57,8 +54,6 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(THUJA_PLANT, THUJA_SEEDS);
 
         addPottedPlantDrops(POTTED_BEAMER);
-
-        addDrop(FOREST_LANTERN, dropsWithSilkTouchOrShears(FOREST_LANTERN, applyExplosionDecay(FOREST_LANTERN, ItemEntry.builder(FOREST_LANTERN_CRUMB).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1, 2))))));
 
         BLOCKS_TO_DROP = null;
     }
