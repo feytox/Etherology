@@ -65,7 +65,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
         addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
         addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
-        addBlocks(BlockTags.REPLACEABLE_PLANTS, DecoBlocks.THUJA, DecoBlocks.THUJA_PLANT);
+        addBlocks(BlockTags.REPLACEABLE_PLANTS, DecoBlocks.THUJA, DecoBlocks.THUJA_PLANT, DecoBlocks.LIGHTELET);
 
         addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK);
         addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
@@ -80,10 +80,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.NEEDS_IRON_TOOL, needsIronPick);
 
         addAllBlocks(BlockTags.AXE_MINEABLE, PEACH);
-        addBlocks(BlockTags.AXE_MINEABLE, ESSENCE_DETECTOR_BLOCK, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB, EMPOWERMENT_TABLE, SPILL_BARREL, CRATE, LEVITATOR, INVENTOR_TABLE, ETHEREAL_CHANNEL_CASE);
-
-        addBlocks(BlockTags.HOE_MINEABLE, PEACH_LEAVES);
-        addBlocks(BlockTags.HOE_MINEABLE, DecoBlocks.FOREST_LANTERN);
+        addBlocks(BlockTags.AXE_MINEABLE, ESSENCE_DETECTOR_BLOCK, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB, EMPOWERMENT_TABLE, SPILL_BARREL, CRATE, LEVITATOR, INVENTOR_TABLE, ETHEREAL_CHANNEL_CASE, DecoBlocks.LIGHTELET);
+        addBlocks(BlockTags.HOE_MINEABLE, PEACH_LEAVES, DecoBlocks.FOREST_LANTERN);
 
         // TODO: 18.02.2024 add to common tags
     }

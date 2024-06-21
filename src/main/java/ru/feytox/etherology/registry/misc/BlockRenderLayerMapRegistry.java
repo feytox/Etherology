@@ -30,6 +30,7 @@ public class BlockRenderLayerMapRegistry {
         registerCutout(THUJA_PLANT);
         registerCutout(TUNING_FORK);
         registerCutout(FOREST_LANTERN);
+        registerCutout(LIGHTELET);
     }
 
     private static void registerCutout(Block block) {

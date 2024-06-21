@@ -135,6 +135,7 @@ public class DecoBlocks {
     public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
     public static final ThujaPlantBlock THUJA_PLANT = (ThujaPlantBlock) new ThujaPlantBlock().registerBlock();
     public static final ForestLanternBlock FOREST_LANTERN = (ForestLanternBlock) new ForestLanternBlock().registerAll();
+    public static final Block LIGHTELET = register("lightelet", new FernBlock(AbstractBlock.Settings.copy(Blocks.GRASS).emissiveLighting((a, b, c) -> true))).withItem(false);
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();
@@ -192,7 +193,7 @@ public class DecoBlocks {
         return register(id, new StairsBlock(originalBlock.getDefaultState(), copy(originalBlock)));
     }
 
-    private static Boolean never(BlockState state, BlockView world, BlockPos pos, EntityType<?> type) {
+    private static boolean never(BlockState state, BlockView world, BlockPos pos, EntityType<?> type) {
         return false;
     }
 
@@ -220,6 +221,7 @@ public class DecoBlocks {
         fireBlock.registerFlammableBlock(PEACH_FENCE, 5, 20);
         fireBlock.registerFlammableBlock(PEACH_FENCE_GATE, 5, 20);
         fireBlock.registerFlammableBlock(PEACH_LEAVES, 60, 30);
+        fireBlock.registerFlammableBlock(LIGHTELET, 60, 100);
     }
 
     // logs registry

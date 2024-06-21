@@ -50,6 +50,7 @@ public class ModelGeneration extends FabricModelProvider {
         registerSimpleBlock(generator, DevBlocks.UNLIMITED_ETHER_STORAGE_BLOCK);
         // plants
         registerOnlyPottedPlant(generator, DecoBlocks.BEAMER, DecoBlocks.POTTED_BEAMER, BlockStateModelGenerator.TintType.NOT_TINTED);
+        generator.registerTintableCross(DecoBlocks.LIGHTELET, BlockStateModelGenerator.TintType.TINTED);
     }
 
     @Override

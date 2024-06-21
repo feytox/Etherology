@@ -82,7 +82,7 @@ public class EItemGroups {
         // materials
         etherItems.with(ETHEROSCOPE, BINDER, EBONY, RESONATING_WAND);
         // plants
-        etherItems.with(FOREST_LANTERN, FOREST_LANTERN_CRUMB, BEAMER_SEEDS, THUJA_SEEDS, BEAM_FRUIT);
+        etherItems.with(FOREST_LANTERN, FOREST_LANTERN_CRUMB, LIGHTELET, BEAMER_SEEDS, THUJA_SEEDS, BEAM_FRUIT);
 
         ItemGroupEvents.modifyEntriesEvent(ETHEROLOGY_ITEMS).register(content -> etherItems.build().forEach(content::add));
     }

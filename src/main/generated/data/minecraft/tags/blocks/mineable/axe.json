@@ -1,16 +1,16 @@
 {
   "replace": false,
   "values": [
-    "etherology:peach_slab",
-    "etherology:peach_fence",
-    "etherology:peach_door",
-    "etherology:peach_pressure_plate",
     "etherology:peach_fence_gate",
-    "etherology:peach_trapdoor",
-    "etherology:peach_sign",
-    "etherology:peach_wall_sign",
-    "etherology:peach_stairs",
     "etherology:peach_button",
+    "etherology:peach_slab",
+    "etherology:peach_wall_sign",
+    "etherology:peach_sign",
+    "etherology:peach_fence",
+    "etherology:peach_pressure_plate",
+    "etherology:peach_trapdoor",
+    "etherology:peach_stairs",
+    "etherology:peach_door",
     "etherology:peach_planks",
     "etherology:essence_detector",
     "etherology:furniture_slab",
@@ -21,6 +21,7 @@
     "etherology:crate",
     "etherology:levitator",
     "etherology:inventor_table",
-    "etherology:ethereal_channel_case"
+    "etherology:ethereal_channel_case",
+    "etherology:lightelet"
   ]
 }
