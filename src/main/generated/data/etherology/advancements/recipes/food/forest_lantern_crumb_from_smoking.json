@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:forest_lantern_crumb_from_smoking"
+        "recipe": "etherology:forest_lantern_crumb_from_smoking"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:forest_lantern_crumb_from_smoking"
+      "etherology:forest_lantern_crumb_from_smoking"
     ]
   }
 }
