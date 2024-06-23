@@ -30,6 +30,7 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
+    maven { url = 'https://maven.minecraftforge.net/' }
     mavenCentral()
 }
 
@@ -63,6 +64,7 @@ dependencies {
     }
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
     include modImplementation("dev.emi:trinkets:${project.trinkets_version}")
+    include modImplementation("com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}")
 }
 
 processResources {
