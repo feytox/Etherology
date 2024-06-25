@@ -21,19 +21,19 @@ public class GoldenForestRegion extends Region {
         super(new EIdentifier("golden_forest_region"), RegionType.OVERWORLD, 3);
     }
 
+    // TODO: 25.06.2024 remove this comment
+    // /execute positioned ~2500 ~ ~2500 run locate biome etherology:golden_forest
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<MultiNoiseUtil.NoiseHypercube, RegistryKey<Biome>>> mapper) {
-        // /execute positioned 1234 ~ ~ run locate biome etherology:golden_forest
-
         val builder = new VanillaParameterOverlayBuilder();
 
         new ParameterPointListBuilder()
-                .temperature(Temperature.NEUTRAL) // +
-                .humidity(Humidity.NEUTRAL) // +
-                .continentalness(Continentalness.MID_INLAND, Continentalness.FAR_INLAND) // +-
-                .erosion(Erosion.span(Erosion.EROSION_5, Erosion.EROSION_6)) // +-
-                .depth(Depth.SURFACE, Depth.FLOOR) // +
-                .weirdness(Weirdness.span(Weirdness.PEAK_NORMAL, Weirdness.HIGH_SLICE_NORMAL_DESCENDING)) // ???
+                .temperature(Temperature.NEUTRAL)
+                .humidity(Humidity.NEUTRAL)
+                .continentalness(Continentalness.MID_INLAND, Continentalness.FAR_INLAND)
+                .erosion(Erosion.span(Erosion.EROSION_5, Erosion.EROSION_6))
+                .depth(Depth.SURFACE, Depth.FLOOR)
+                .weirdness(Weirdness.LOW_SLICE_NORMAL_DESCENDING)
                 .build().forEach(point -> builder.add(point, EtherBiomes.GOLDEN_FOREST));
 
         builder.build().forEach(mapper);
