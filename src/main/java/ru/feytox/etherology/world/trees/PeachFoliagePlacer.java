@@ -56,7 +56,7 @@ public class PeachFoliagePlacer extends FoliagePlacer {
         if (trunkOffset == null) return;
 
         placeLeaves(world, replacer, random, config, startPos.down(), trunkOffset, 1, LOW_CHANCE, 0);
-        placeLeaves(world, replacer, random, config, startPos, trunkOffset, 1, 1, HIGH_CHANCE);
+        placeLeaves(world, replacer, random, config, startPos, trunkOffset, 0, 1, HIGH_CHANCE);
         placeLeaves(world, replacer, random, config, startPos.up(), trunkOffset, 1, HIGH_CHANCE, LOW_CHANCE);
     }
 

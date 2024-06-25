@@ -41,6 +41,7 @@
     "ServerPlayerInteractionManagerAccessor",
     "ShearsItemMixin",
     "StickyKeyBindingAccessor",
+    "TreeConfiguredFeaturesAccessor",
     "TreeDecoratorTypeAccessor",
     "TrunkPlacerTypeAccessor",
     "UnbreakingEnchantmentMixin",

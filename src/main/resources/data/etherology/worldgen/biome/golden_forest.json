@@ -3,12 +3,12 @@
   "downfall": 0.8,
   "precipitation": "rain",
   "effects": {
-    "sky_color": 7907327,
-    "fog_color": 12638463,
-    "water_color": 4159204,
-    "water_fog_color": 329011,
-    "grass_color": 16776960,
-    "foliage_color": 16776960,
+    "sky_color": 9026303,
+    "fog_color": 13037311,
+    "water_color": 3840969,
+    "water_fog_color": 1129027,
+    "grass_color": 6015103,
+    "foliage_color": 4122414,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000,
@@ -76,6 +76,12 @@
     ],
     [
       "minecraft:freeze_top_layer"
+    ],
+    [
+      "etherology:peach_trees"
+    ],
+    [
+      "etherology:birch_branch_trees"
     ]
   ]
 }
