@@ -5,7 +5,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
@@ -27,7 +29,7 @@ public class PeachTrunkPlacer extends TrunkPlacer {
             fillTrunkPlacerFields(instance).apply(instance, PeachTrunkPlacer::new));
 
     // TODO: 18.06.2024 replace arrays with something better
-    private static final Vec3i[] OFFSETS = {new Vec3i(-1, 0, 0), new Vec3i(1, 0, 0), new Vec3i(0, 0, -1), new Vec3i(0, 0, 1)};
+    private static final Direction[] OFFSETS = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     private static final Vec3i[] OFFSETS_CORNERS = {new Vec3i(-1, 0, 0), new Vec3i(1, 0, 0), new Vec3i(0, 0, -1), new Vec3i(0, 0, 1), new Vec3i(-1, 0, -1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(1, 0, 1)};
 
     public PeachTrunkPlacer(int baseHeight, int firstRandomHeight, int secondRandomHeight) {
@@ -43,7 +45,7 @@ public class PeachTrunkPlacer extends TrunkPlacer {
     public List<FoliagePlacer.TreeNode> generate(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, int height, BlockPos startPos, TreeFeatureConfig config) {
         setToDirt(world, replacer, random, startPos.down(), config);
 
-        List<Vec3i> offsets = new ObjectArrayList<>(OFFSETS);
+        List<Direction> offsets = new ObjectArrayList<>(OFFSETS);
         Collections.shuffle(offsets);
         int mainLimit = MathHelper.ceil(height * (0.4f + 0.2f * random.nextFloat()));
         int branchCount = 0;
@@ -70,12 +72,12 @@ public class PeachTrunkPlacer extends TrunkPlacer {
         return leaves.build();
     }
 
-    private boolean tryPlaceBranch(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, BlockPos startPos, TreeFeatureConfig config, int branchCount, int dy, int nextBranch, ImmutableList.Builder<FoliagePlacer.TreeNode> leaves, List<Vec3i> offsets) {
+    private boolean tryPlaceBranch(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, BlockPos startPos, TreeFeatureConfig config, int branchCount, int dy, int nextBranch, ImmutableList.Builder<FoliagePlacer.TreeNode> leaves, List<Direction> offsets) {
         if (dy < nextBranch) return true;
 
-        Vec3i branchOffset = offsets.get(branchCount % 4);
-        BlockPos branchPos = startPos.add(branchOffset).up(dy);
-        getAndSetState(world, replacer, random, branchPos, config);
+        Direction direction = offsets.get(branchCount % 4);
+        BlockPos branchPos = startPos.add(direction.getVector()).up(dy);
+        getAndSetState(world, replacer, random, branchPos, config, state -> state.withIfExists(PillarBlock.AXIS, direction.getAxis()));
         leaves.add(new FoliagePlacer.TreeNode(branchPos, 0, false));
         return false;
     }

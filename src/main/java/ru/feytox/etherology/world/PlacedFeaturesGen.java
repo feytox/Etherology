@@ -9,6 +9,7 @@ import net.minecraft.util.collection.DataPool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.IntProvider;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.intprovider.WeightedListIntProvider;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
@@ -27,6 +28,9 @@ public class PlacedFeaturesGen {
 
     public static final RegistryKey<PlacedFeature> PEACH_TREES = registerKey("peach_trees");
     public static final RegistryKey<PlacedFeature> BIRCH_BRANCH_TREES = registerKey("birch_branch_trees");
+    public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_FLOWERS = registerKey("golden_forest_flowers");
+    public static final RegistryKey<PlacedFeature> PATCH_LIGHTELET = registerKey("patch_lightelet");
+    public static final RegistryKey<PlacedFeature> DISK_COARSE_DIRT = registerKey("disk_coarse_dirt");
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -53,7 +57,27 @@ public class PlacedFeaturesGen {
                 BiomePlacementModifier.of(),
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(Blocks.BIRCH_SAPLING.getDefaultState(), BlockPos.ORIGIN))
         );
-
+        register(context, GOLDEN_FOREST_FLOWERS, lookup.getOrThrow(ConfiguredFeaturesGen.GOLDEN_FOREST_FLOWERS),
+                RarityFilterPlacementModifier.of(4),
+                SquarePlacementModifier.of(),
+                HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING),
+                CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                BiomePlacementModifier.of()
+        );
+        register(context, PATCH_LIGHTELET, lookup.getOrThrow(ConfiguredFeaturesGen.PATCH_LIGHTELET),
+                RarityFilterPlacementModifier.of(2),
+                SquarePlacementModifier.of(),
+                HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
+                CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                BiomePlacementModifier.of()
+        );
+        register(context, DISK_COARSE_DIRT, lookup.getOrThrow(ConfiguredFeaturesGen.DISK_COARSE_DIRT),
+                RarityFilterPlacementModifier.of(3),
+                SquarePlacementModifier.of(),
+                HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
+                CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                BiomePlacementModifier.of()
+        );
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

@@ -4,6 +4,10 @@
     "decorators": [
       {
         "type": "etherology:birch_branches_decorator"
+      },
+      {
+        "type": "minecraft:beehive",
+        "probability": 0.05
       }
     ],
     "dirt_provider": {

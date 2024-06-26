@@ -14,6 +14,12 @@
       "tick_delay": 6000,
       "block_search_extent": 8,
       "offset": 2
+    },
+    "music": {
+      "sound": "minecraft:music.overworld.jungle_and_forest",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
     }
   },
   "spawners": {},
@@ -26,7 +32,6 @@
     ]
   },
   "features": [
-    [],
     [
       "minecraft:lake_lava_underground",
       "minecraft:lake_lava_surface"
@@ -38,8 +43,6 @@
       "minecraft:monster_room",
       "minecraft:monster_room_deep"
     ],
-    [],
-    [],
     [
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
@@ -70,18 +73,29 @@
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
     ],
-    [],
     [
       "minecraft:glow_lichen"
     ],
     [
-      "minecraft:freeze_top_layer"
+      "minecraft:spring_water",
+      "minecraft:spring_lava"
     ],
     [
-      "etherology:peach_trees"
+      "etherology:disk_coarse_dirt"
     ],
     [
+      "etherology:peach_trees",
       "etherology:birch_branch_trees"
+    ],
+    [
+      "etherology:golden_forest_flowers",
+      "etherology:patch_lightelet",
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_sugar_cane",
+      "minecraft:patch_pumpkin"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ]
 }
