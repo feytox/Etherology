@@ -21,8 +21,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
 
-import static ru.feytox.etherology.world.ConfiguredFeaturesGen.BIRCH_BRANCH_TREE;
-import static ru.feytox.etherology.world.ConfiguredFeaturesGen.PEACH_TREE;
+import static ru.feytox.etherology.world.ConfiguredFeaturesGen.*;
 
 public class PlacedFeaturesGen {
 
@@ -31,6 +30,7 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_FLOWERS = registerKey("golden_forest_flowers");
     public static final RegistryKey<PlacedFeature> PATCH_LIGHTELET = registerKey("patch_lightelet");
     public static final RegistryKey<PlacedFeature> DISK_COARSE_DIRT = registerKey("disk_coarse_dirt");
+    public static final RegistryKey<PlacedFeature> ETHER_ROCKS = registerKey("ether_rocks");
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -74,6 +74,12 @@ public class PlacedFeaturesGen {
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
                 CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                BiomePlacementModifier.of()
+        );
+        register(context, ETHER_ROCKS, lookup.getOrThrow(ETHER_ROCK),
+                SquarePlacementModifier.of(),
+                HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING),
+                CountPlacementModifier.of(UniformIntProvider.create(1, 2)),
                 BiomePlacementModifier.of()
         );
     }

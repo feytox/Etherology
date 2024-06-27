@@ -7,7 +7,7 @@
     "fog_color": 13037311,
     "water_color": 3840969,
     "water_fog_color": 1129027,
-    "grass_color": 6015103,
+    "grass_color": 5236584,
     "foliage_color": 4122414,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -81,7 +81,8 @@
       "minecraft:spring_lava"
     ],
     [
-      "etherology:disk_coarse_dirt"
+      "etherology:disk_coarse_dirt",
+      "etherology:ether_rocks"
     ],
     [
       "etherology:peach_trees",
