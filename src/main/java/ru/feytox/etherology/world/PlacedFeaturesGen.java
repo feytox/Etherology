@@ -58,21 +58,19 @@ public class PlacedFeaturesGen {
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(Blocks.BIRCH_SAPLING.getDefaultState(), BlockPos.ORIGIN))
         );
         register(context, GOLDEN_FOREST_FLOWERS, lookup.getOrThrow(ConfiguredFeaturesGen.GOLDEN_FOREST_FLOWERS),
-                RarityFilterPlacementModifier.of(4),
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING),
                 CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
                 BiomePlacementModifier.of()
         );
         register(context, PATCH_LIGHTELET, lookup.getOrThrow(ConfiguredFeaturesGen.PATCH_LIGHTELET),
-                RarityFilterPlacementModifier.of(2),
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
-                CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                CountPlacementModifier.of(1),
                 BiomePlacementModifier.of()
         );
         register(context, DISK_COARSE_DIRT, lookup.getOrThrow(ConfiguredFeaturesGen.DISK_COARSE_DIRT),
-                RarityFilterPlacementModifier.of(3),
+                RarityFilterPlacementModifier.of(1),
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
                 CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
