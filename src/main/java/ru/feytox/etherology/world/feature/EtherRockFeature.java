@@ -65,7 +65,7 @@ public class EtherRockFeature extends Feature<DefaultFeatureConfig> {
         topBlocks.forEach((point, y) -> {
             BlockPos pos = new BlockPos(point.x, y, point.z);
             placeBlock(world, random, pos, MOSS_CHANCE, Blocks.MOSS_BLOCK);
-            placeBlock(world, random, pos.up(), CARPET_CHANCE, Blocks.MOSS_CARPET);
+            if (world.isAir(pos.up())) placeBlock(world, random, pos.up(), CARPET_CHANCE, Blocks.MOSS_CARPET);
         });
 
         return true;
