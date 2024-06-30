@@ -9,15 +9,14 @@ import terrablender.api.TerraBlenderApi;
 
 public class EtherBiomes implements TerraBlenderApi {
 
-    public static final RegistryKey<Biome> GOLDEN_FOREST = register("golden_forest");
-
+    public static final RegistryKey<Biome> GOLDEN_FOREST = of("golden_forest");
 
     @Override
     public void onTerraBlenderInitialized() {
         Regions.register(new GoldenForestRegion());
     }
 
-    private static RegistryKey<Biome> register(String name) {
+    private static RegistryKey<Biome> of(String name) {
         return RegistryKey.of(RegistryKeys.BIOME, new EIdentifier(name));
     }
 }

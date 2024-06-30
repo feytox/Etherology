@@ -1,5 +1,6 @@
 package ru.feytox.etherology.world;
 
+import lombok.experimental.UtilityClass;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
@@ -23,16 +24,17 @@ import java.util.Arrays;
 
 import static ru.feytox.etherology.world.ConfiguredFeaturesGen.*;
 
+@UtilityClass
 public class PlacedFeaturesGen {
 
-    public static final RegistryKey<PlacedFeature> PEACH_TREES = registerKey("peach_trees");
-    public static final RegistryKey<PlacedFeature> BIRCH_BRANCH_TREES = registerKey("birch_branch_trees");
-    public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_FLOWERS = registerKey("golden_forest_flowers");
-    public static final RegistryKey<PlacedFeature> PATCH_LIGHTELET = registerKey("patch_lightelet");
-    public static final RegistryKey<PlacedFeature> DISK_COARSE_DIRT = registerKey("disk_coarse_dirt");
-    public static final RegistryKey<PlacedFeature> ETHER_ROCKS = registerKey("ether_rocks");
+    public static final RegistryKey<PlacedFeature> PEACH_TREES = of("peach_trees");
+    public static final RegistryKey<PlacedFeature> BIRCH_BRANCH_TREES = of("birch_branch_trees");
+    public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_FLOWERS = of("golden_forest_flowers");
+    public static final RegistryKey<PlacedFeature> PATCH_LIGHTELET = of("patch_lightelet");
+    public static final RegistryKey<PlacedFeature> DISK_COARSE_DIRT = of("disk_coarse_dirt");
+    public static final RegistryKey<PlacedFeature> ETHER_ROCKS = of("ether_rocks");
 
-    public static void bootstrap(Registerable<PlacedFeature> context) {
+    public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
         register(context, PEACH_TREES, lookup.getOrThrow(PEACH_TREE),
@@ -84,7 +86,7 @@ public class PlacedFeaturesGen {
         );
     }
 
-    public static RegistryKey<PlacedFeature> registerKey(String name) {
+    public static RegistryKey<PlacedFeature> of(String name) {
         return RegistryKey.of(RegistryKeys.PLACED_FEATURE, new EIdentifier(name));
     }
 

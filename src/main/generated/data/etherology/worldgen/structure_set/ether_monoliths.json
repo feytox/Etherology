@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 69696969,
+    "separation": 8,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "etherology:ether_monolith",
+      "weight": 1
+    }
+  ]
+}
