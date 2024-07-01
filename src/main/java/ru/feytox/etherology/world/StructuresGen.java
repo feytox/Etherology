@@ -69,15 +69,20 @@ public class StructuresGen {
         ));
     }
 
+    // TODO: 01.07.2024 find a way to offset a structure without scripts or hardcoding the structure
     public static void registerTemplates(Registerable<StructurePool> context) {
         val poolLookup = context.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
         val processorLookup = context.getRegistryLookup(RegistryKeys.PROCESSOR_LIST);
         context.register(ETHER_MONOLITH_POOL, new StructurePool(
                 poolLookup.getOrThrow(StructurePools.EMPTY),
-                ImmutableList.of(Pair.of(StructurePoolElement.ofProcessedSingle(
-                        "etherology:ether_monolith/ether_monolith_pillar",
-                        processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1)),
-                StructurePool.Projection.RIGID));
+                ImmutableList.of(
+                        Pair.of(StructurePoolElement.ofProcessedSingle("etherology:ether_monolith/ether_pillar_0_offset",
+                                processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1),
+                        Pair.of(StructurePoolElement.ofProcessedSingle("etherology:ether_monolith/ether_pillar_1_offset",
+                                processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1),
+                        Pair.of(StructurePoolElement.ofProcessedSingle("etherology:ether_monolith/ether_pillar_2_offset",
+                                processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1)
+                ), StructurePool.Projection.RIGID));
     }
 
     public static void registerProcessors(Registerable<StructureProcessorList> context) {

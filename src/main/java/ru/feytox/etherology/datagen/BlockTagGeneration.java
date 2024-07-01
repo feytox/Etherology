@@ -33,8 +33,6 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        addBlocks(BlockTags.BASE_STONE_OVERWORLD, DecoBlocks.ETHEREAL_STONE);
-        addBlocks(BlockTags.STONE_ORE_REPLACEABLES, DecoBlocks.ETHEREAL_STONE);
         addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.ETHEREAL_STONE_BRICKS, DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS, DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS, DecoBlocks.MOSSY_ETHEREAL_STONE_BRICKS);
 
         // добавление всего, что указано в вариантах

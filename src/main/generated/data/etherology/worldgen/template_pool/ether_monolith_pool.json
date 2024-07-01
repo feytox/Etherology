@@ -3,7 +3,25 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "etherology:ether_monolith/ether_monolith_pillar",
+        "location": "etherology:ether_monolith/ether_pillar_0_offset",
+        "processors": "etherology:cobbled_ether_monolith",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "etherology:ether_monolith/ether_pillar_1_offset",
+        "processors": "etherology:cobbled_ether_monolith",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "etherology:ether_monolith/ether_pillar_2_offset",
         "processors": "etherology:cobbled_ether_monolith",
         "projection": "rigid"
       },
