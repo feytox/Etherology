@@ -19,6 +19,7 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.*;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.world.feature.StructurePlacementModifier;
 
 import java.util.Arrays;
 
@@ -33,6 +34,7 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> PATCH_LIGHTELET = of("patch_lightelet");
     public static final RegistryKey<PlacedFeature> DISK_COARSE_DIRT = of("disk_coarse_dirt");
     public static final RegistryKey<PlacedFeature> ETHER_ROCKS = of("ether_rocks");
+    public static final RegistryKey<PlacedFeature> PATCH_BEAMER = of("patch_beamer");
 
     public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -46,7 +48,8 @@ public class PlacedFeaturesGen {
                 SurfaceWaterDepthFilterPlacementModifier.of(0),
                 HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR),
                 BiomePlacementModifier.of(),
-                BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(DecoBlocks.PEACH_SAPLING.getDefaultState(), BlockPos.ORIGIN))
+                BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(DecoBlocks.PEACH_SAPLING.getDefaultState(), BlockPos.ORIGIN)),
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 0, true)
         );
         register(context, BIRCH_BRANCH_TREES, lookup.getOrThrow(BIRCH_BRANCH_TREE),
                 CountPlacementModifier.of(new WeightedListIntProvider(DataPool.<IntProvider>builder()
@@ -57,7 +60,8 @@ public class PlacedFeaturesGen {
                 SurfaceWaterDepthFilterPlacementModifier.of(0),
                 HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR),
                 BiomePlacementModifier.of(),
-                BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(Blocks.BIRCH_SAPLING.getDefaultState(), BlockPos.ORIGIN))
+                BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(Blocks.BIRCH_SAPLING.getDefaultState(), BlockPos.ORIGIN)),
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 0, true)
         );
         register(context, GOLDEN_FOREST_FLOWERS, lookup.getOrThrow(ConfiguredFeaturesGen.GOLDEN_FOREST_FLOWERS),
                 SquarePlacementModifier.of(),
@@ -82,6 +86,13 @@ public class PlacedFeaturesGen {
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING),
                 CountPlacementModifier.of(UniformIntProvider.create(1, 2)),
+                BiomePlacementModifier.of()
+        );
+        register(context, PATCH_BEAMER, lookup.getOrThrow(ConfiguredFeaturesGen.PATCH_BEAMER),
+                SquarePlacementModifier.of(),
+                HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
+                CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 1, false),
                 BiomePlacementModifier.of()
         );
     }

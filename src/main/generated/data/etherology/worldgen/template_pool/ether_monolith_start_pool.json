@@ -1,0 +1,17 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "etherology:rotated_pool_element",
+        "location": "etherology:ether_monolith/start",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid",
+        "rotation": "none"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

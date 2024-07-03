@@ -1,0 +1,31 @@
+{
+  "feature": "etherology:patch_beamer",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:uniform",
+        "value": {
+          "max_inclusive": 1,
+          "min_inclusive": 0
+        }
+      }
+    },
+    {
+      "type": "etherology:structure_placement_modifier",
+      "chunk_radius": 1,
+      "exclude": false,
+      "structure": "etherology:ether_monolith"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

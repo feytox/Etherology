@@ -45,6 +45,7 @@ public class BiomesGen {
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.BIRCH_BRANCH_TREES);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.GOLDEN_FOREST_FLOWERS);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PATCH_LIGHTELET);
+        generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PATCH_BEAMER);
 
         context.register(EtherBiomes.GOLDEN_FOREST, new Biome.Builder()
                 .temperature(0.45f)

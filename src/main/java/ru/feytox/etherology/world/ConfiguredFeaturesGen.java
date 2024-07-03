@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.stateprovider.PredicatedStateProvider;
 import net.minecraft.world.gen.treedecorator.BeehiveTreeDecorator;
+import ru.feytox.etherology.block.beamer.BeamerBlock;
 import ru.feytox.etherology.mixin.TreeConfiguredFeaturesAccessor;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.world.WorldGenRegistry;
@@ -36,6 +37,7 @@ public class ConfiguredFeaturesGen {
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_LIGHTELET = of("patch_lightelet");
     public static final RegistryKey<ConfiguredFeature<?,?>> DISK_COARSE_DIRT = of("disk_coarse_dirt");
     public static final RegistryKey<ConfiguredFeature<?,?>> ETHER_ROCK = of("ether_rock");
+    public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_BEAMER = of("patch_beamer");
 
     public static void registerFeatures(Registerable<ConfiguredFeature<?, ?>> context) {
         register(context, PEACH_TREE, Feature.TREE,
@@ -56,6 +58,8 @@ public class ConfiguredFeaturesGen {
         register(context, DISK_COARSE_DIRT, Feature.DISK,
                 new DiskFeatureConfig(PredicatedStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.COARSE_DIRT), UniformIntProvider.create(3, 5), 1));
         register(context, ETHER_ROCK, WorldGenRegistry.ETHER_ROCK);
+        register(context, PATCH_BEAMER, Feature.RANDOM_PATCH,
+                ConfiguredFeatures.createRandomPatchFeatureConfig(Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(DecoBlocks.BEAMER.getDefaultState().withIfExists(BeamerBlock.AGE, BeamerBlock.MAX_AGE))), List.of(), 48));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {

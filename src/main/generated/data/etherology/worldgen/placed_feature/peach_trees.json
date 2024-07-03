@@ -42,6 +42,12 @@
           }
         }
       }
+    },
+    {
+      "type": "etherology:structure_placement_modifier",
+      "chunk_radius": 0,
+      "exclude": true,
+      "structure": "etherology:ether_monolith"
     }
   ]
 }

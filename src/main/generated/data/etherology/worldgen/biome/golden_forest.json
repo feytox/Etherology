@@ -89,7 +89,8 @@
       "etherology:peach_trees",
       "etherology:birch_branch_trees",
       "etherology:golden_forest_flowers",
-      "etherology:patch_lightelet"
+      "etherology:patch_lightelet",
+      "etherology:patch_beamer"
     ],
     [
       "minecraft:freeze_top_layer"

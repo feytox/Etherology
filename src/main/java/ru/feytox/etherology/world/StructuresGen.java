@@ -19,6 +19,7 @@ import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.structure.processor.StructureProcessorRule;
 import net.minecraft.structure.rule.AlwaysTrueRuleTest;
 import net.minecraft.structure.rule.RandomBlockMatchRuleTest;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureSpawns;
 import net.minecraft.world.biome.Biome;
@@ -32,8 +33,10 @@ import net.minecraft.world.gen.structure.Structure;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.world.biome.EtherBiomes;
+import ru.feytox.etherology.world.structure.RotatedPoolElement;
 
 import java.util.Map;
+import java.util.Optional;
 
 @UtilityClass
 public class StructuresGen {
@@ -42,7 +45,8 @@ public class StructuresGen {
     // /execute positioned ~2500 ~ ~2500 run locate structure etherology:ether_monolith
 
     private static final RegistryKey<StructureSet> ETHER_MONOLITHS = of("ether_monoliths", RegistryKeys.STRUCTURE_SET);
-    private static final RegistryKey<Structure> ETHER_MONOLITH = of("ether_monolith", RegistryKeys.STRUCTURE);
+    public static final RegistryKey<Structure> ETHER_MONOLITH = of("ether_monolith", RegistryKeys.STRUCTURE);
+    private static final RegistryKey<StructurePool> ETHER_MONOLITH_START_POOL = of("ether_monolith_start_pool", RegistryKeys.TEMPLATE_POOL);
     private static final RegistryKey<StructurePool> ETHER_MONOLITH_POOL = of("ether_monolith_pool", RegistryKeys.TEMPLATE_POOL);
     private static final RegistryKey<StructureProcessorList> COBBLED_ETHER_MONOLITH = of("cobbled_ether_monolith", RegistryKeys.PROCESSOR_LIST);
 
@@ -61,27 +65,33 @@ public class StructuresGen {
                 createConfig(RegistryEntryList.of(
                         biomeLookup.getOrThrow(EtherBiomes.GOLDEN_FOREST)),
                         Map.of(), GenerationStep.Feature.LOCAL_MODIFICATIONS, StructureTerrainAdaptation.BEARD_THIN),
-                poolLookup.getOrThrow(ETHER_MONOLITH_POOL),
-                1,
+                poolLookup.getOrThrow(ETHER_MONOLITH_START_POOL),
+                Optional.of(new EIdentifier("start")),
+                2,
                 ConstantHeightProvider.ZERO,
                 false,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES
+                Optional.of(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES),
+                80
         ));
     }
 
-    // TODO: 01.07.2024 find a way to offset a structure without scripts or hardcoding the structure
     public static void registerTemplates(Registerable<StructurePool> context) {
         val poolLookup = context.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
         val processorLookup = context.getRegistryLookup(RegistryKeys.PROCESSOR_LIST);
         context.register(ETHER_MONOLITH_POOL, new StructurePool(
                 poolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
-                        Pair.of(StructurePoolElement.ofProcessedSingle("etherology:ether_monolith/ether_pillar_0_offset",
+                        Pair.of(StructurePoolElement.ofProcessedSingle(EIdentifier.strId("ether_monolith/pillar_0"),
                                 processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1),
-                        Pair.of(StructurePoolElement.ofProcessedSingle("etherology:ether_monolith/ether_pillar_1_offset",
+                        Pair.of(StructurePoolElement.ofProcessedSingle(EIdentifier.strId("ether_monolith/pillar_1"),
                                 processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1),
-                        Pair.of(StructurePoolElement.ofProcessedSingle("etherology:ether_monolith/ether_pillar_2_offset",
+                        Pair.of(StructurePoolElement.ofProcessedSingle(EIdentifier.strId("ether_monolith/pillar_2"),
                                 processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1)
+                ), StructurePool.Projection.RIGID));
+        context.register(ETHER_MONOLITH_START_POOL, new StructurePool(
+                poolLookup.getOrThrow(StructurePools.EMPTY),
+                ImmutableList.of(
+                        Pair.of(RotatedPoolElement.of(new EIdentifier("ether_monolith/start"), BlockRotation.NONE), 1)
                 ), StructurePool.Projection.RIGID));
     }
 
