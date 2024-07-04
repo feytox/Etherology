@@ -131,7 +131,6 @@ public class DecoBlocks {
 
     // plants
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
-    public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
     public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
     public static final ThujaPlantBlock THUJA_PLANT = (ThujaPlantBlock) new ThujaPlantBlock().registerBlock();
     public static final ForestLanternBlock FOREST_LANTERN = (ForestLanternBlock) new ForestLanternBlock().registerAll();
@@ -139,6 +138,11 @@ public class DecoBlocks {
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();
+
+    // potted blocks
+    public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
+    public static final Block POTTED_THUJA = register("potted_thuja", new FlowerPotBlock(THUJA, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
+    public static final Block POTTED_PEACH_SAPLING = register("potted_peach_sapling", new FlowerPotBlock(PEACH_SAPLING, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
 
     // metals
     public static final Block AZEL_BLOCK = registerSimple("azel_block", copy(Blocks.IRON_BLOCK).mapColor(MapColor.LAPIS_BLUE)).withItem();

@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static ru.feytox.etherology.registry.block.DecoBlocks.PEACH_LEAVES;
-import static ru.feytox.etherology.registry.block.DecoBlocks.POTTED_BEAMER;
 import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 
@@ -55,7 +53,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.WOODEN_TRAPDOORS, DecoBlocks.PEACH_TRAPDOOR);
         addBlocks(BlockTags.SIGNS, DecoBlocks.PEACH_SIGN);
         addBlocks(BlockTags.WALL_SIGNS, DecoBlocks.PEACH_WALL_SIGN);
-        addBlocks(BlockTags.LEAVES, PEACH_LEAVES);
+        addBlocks(BlockTags.LEAVES, DecoBlocks.PEACH_LEAVES);
         addTags(BlockTags.LOGS, PEACH_LOGS);
         addTags(BlockTags.LOGS_THAT_BURN, PEACH_LOGS);
         addBlocks(BlockTags.LOGS, DecoBlocks.WEEPING_PEACH_LOG);
@@ -67,7 +65,9 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
         addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK);
         addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
-        addBlocks(BlockTags.FLOWER_POTS, POTTED_BEAMER);
+        addBlocks(BlockTags.FLOWER_POTS, DecoBlocks.POTTED_BEAMER);
+        addBlocks(BlockTags.FLOWER_POTS, DecoBlocks.POTTED_THUJA);
+        addBlocks(BlockTags.FLOWER_POTS, DecoBlocks.POTTED_PEACH_SAPLING);
 
         Block[] needsStonePick = {BREWING_CAULDRON, ETHEREAL_STORAGE, ETHEREAL_CHANNEL, ETHEREAL_FORK, ETHEREAL_SOCKET, ETHEREAL_FURNACE, ETHEREAL_SPINNER, SAMOVAR_BLOCK, DecoBlocks.ATTRAHITE, TUNING_FORK};
         Block[] needsIronPick = {DecoBlocks.AZEL_BLOCK, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};
@@ -79,7 +79,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
         addAllBlocks(BlockTags.AXE_MINEABLE, PEACH);
         addBlocks(BlockTags.AXE_MINEABLE, ESSENCE_DETECTOR_BLOCK, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB, EMPOWERMENT_TABLE, SPILL_BARREL, CRATE, LEVITATOR, INVENTOR_TABLE, ETHEREAL_CHANNEL_CASE, DecoBlocks.LIGHTELET);
-        addBlocks(BlockTags.HOE_MINEABLE, PEACH_LEAVES, DecoBlocks.FOREST_LANTERN);
+        addBlocks(BlockTags.HOE_MINEABLE, DecoBlocks.PEACH_LEAVES, DecoBlocks.FOREST_LANTERN);
 
         // TODO: 18.02.2024 add to common tags
     }
