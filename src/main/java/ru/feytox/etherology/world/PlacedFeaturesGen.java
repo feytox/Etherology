@@ -49,7 +49,7 @@ public class PlacedFeaturesGen {
                 HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR),
                 BiomePlacementModifier.of(),
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(DecoBlocks.PEACH_SAPLING.getDefaultState(), BlockPos.ORIGIN)),
-                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 0, true)
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 8, true)
         );
         register(context, BIRCH_BRANCH_TREES, lookup.getOrThrow(BIRCH_BRANCH_TREE),
                 CountPlacementModifier.of(new WeightedListIntProvider(DataPool.<IntProvider>builder()
@@ -61,7 +61,7 @@ public class PlacedFeaturesGen {
                 HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR),
                 BiomePlacementModifier.of(),
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(Blocks.BIRCH_SAPLING.getDefaultState(), BlockPos.ORIGIN)),
-                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 0, true)
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 8, true)
         );
         register(context, GOLDEN_FOREST_FLOWERS, lookup.getOrThrow(ConfiguredFeaturesGen.GOLDEN_FOREST_FLOWERS),
                 SquarePlacementModifier.of(),
@@ -92,7 +92,7 @@ public class PlacedFeaturesGen {
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
                 CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
-                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 1, false),
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 16, false),
                 BiomePlacementModifier.of()
         );
     }

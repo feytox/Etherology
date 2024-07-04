@@ -16,16 +16,19 @@ import net.minecraft.world.gen.placementmodifier.PlacementModifierType;
 import net.minecraft.world.gen.structure.Structure;
 import ru.feytox.etherology.registry.world.WorldGenRegistry;
 
+import java.util.Objects;
+import java.util.stream.StreamSupport;
+
 @RequiredArgsConstructor(staticName = "of")
 public class StructurePlacementModifier extends AbstractConditionalPlacementModifier {
 
     private final RegistryKey<Structure> structureKey;
-    private final int chunkRadius;
+    private final int radius;
     private final boolean exclude;
 
     public static final Codec<StructurePlacementModifier> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(Identifier.CODEC.fieldOf("structure").forGetter(modifier -> modifier.structureKey.getValue()),
-                            Codecs.NONNEGATIVE_INT.fieldOf("chunk_radius").forGetter(modifier -> modifier.chunkRadius),
+                            Codecs.NONNEGATIVE_INT.fieldOf("radius").forGetter(modifier -> modifier.radius),
                             Codec.BOOL.fieldOf("exclude").forGetter(modifier -> modifier.exclude))
                     .apply(instance, (id, radius, exclude) -> of(RegistryKey.of(RegistryKeys.STRUCTURE, id), radius, exclude))
             );
@@ -33,10 +36,12 @@ public class StructurePlacementModifier extends AbstractConditionalPlacementModi
     @Override
     protected boolean shouldPlace(FeaturePlacementContext context, Random random, BlockPos pos) {
         Structure structure = context.getWorld().getRegistryManager().get(RegistryKeys.STRUCTURE).get(structureKey);
-        if (chunkRadius == 0) return exclude ^ context.getWorld().getChunk(pos).getStructureStart(structure) != null;
-
-        boolean result = ChunkPos.stream(new ChunkPos(pos), chunkRadius)
-                .anyMatch(chunkPos -> context.getWorld().getChunk(chunkPos.x, chunkPos.z).getStructureStart(structure) != null);
+        boolean result = StreamSupport.stream(BlockPos.iterate(pos.add(-radius, 0, -radius), pos.add(radius, 0, radius)).spliterator(), false)
+                .map(ChunkPos::new)
+                .distinct()
+                .map(chunkPos -> context.getWorld().getChunk(chunkPos.x, chunkPos.z))
+                .map(chunk -> chunk.getStructureStart(structure))
+                .anyMatch(Objects::nonNull);
         return result != exclude;
     }
 

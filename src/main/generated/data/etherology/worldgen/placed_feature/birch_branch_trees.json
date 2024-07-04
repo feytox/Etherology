@@ -45,8 +45,8 @@
     },
     {
       "type": "etherology:structure_placement_modifier",
-      "chunk_radius": 0,
       "exclude": true,
+      "radius": 8,
       "structure": "etherology:ether_monolith"
     }
   ]
