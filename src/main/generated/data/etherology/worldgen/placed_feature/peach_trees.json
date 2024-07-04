@@ -29,9 +29,6 @@
       "heightmap": "OCEAN_FLOOR"
     },
     {
-      "type": "minecraft:biome"
-    },
-    {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
         "type": "minecraft:would_survive",
@@ -48,6 +45,9 @@
       "exclude": true,
       "radius": 8,
       "structure": "etherology:ether_monolith"
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

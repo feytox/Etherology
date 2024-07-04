@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
@@ -102,6 +103,11 @@ public class ThujaPlantBlock extends AbstractPlantBlock implements RegistrableBl
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         state = super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
         return getThujaStateForNeighborUpdate(state, world, pos, neighborPos);
+    }
+
+    @Override
+    protected boolean canAttachTo(BlockState state) {
+        return state.isIn(BlockTags.DIRT) || state.isOf(getStem());
     }
 
     @Override

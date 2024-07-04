@@ -2,6 +2,7 @@ package ru.feytox.etherology.block.thuja;
 
 import net.minecraft.block.*;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -68,6 +69,11 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
             world.setBlockState(blockPos, state.with(AGE, 0));
             blockPos = blockPos.offset(this.growthDirection);
         }
+    }
+
+    @Override
+    protected boolean canAttachTo(BlockState state) {
+        return state.isIn(BlockTags.DIRT) || state.isOf(getPlant());
     }
 
     @Override

@@ -38,6 +38,7 @@ public class ConfiguredFeaturesGen {
     public static final RegistryKey<ConfiguredFeature<?,?>> DISK_COARSE_DIRT = of("disk_coarse_dirt");
     public static final RegistryKey<ConfiguredFeature<?,?>> ETHER_ROCK = of("ether_rock");
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_BEAMER = of("patch_beamer");
+    public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_THUJA = of("patch_thuja");
 
     public static void registerFeatures(Registerable<ConfiguredFeature<?, ?>> context) {
         register(context, PEACH_TREE, Feature.TREE,
@@ -60,6 +61,9 @@ public class ConfiguredFeaturesGen {
         register(context, ETHER_ROCK, WorldGenRegistry.ETHER_ROCK);
         register(context, PATCH_BEAMER, Feature.RANDOM_PATCH,
                 ConfiguredFeatures.createRandomPatchFeatureConfig(Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(DecoBlocks.BEAMER.getDefaultState().withIfExists(BeamerBlock.AGE, BeamerBlock.MAX_AGE))), List.of(), 48));
+        register(context, PATCH_THUJA, Feature.RANDOM_PATCH, ConfiguredFeatures.createRandomPatchFeatureConfig(
+                WorldGenRegistry.THUJA, new DefaultFeatureConfig(), List.of(), 32
+        ));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {

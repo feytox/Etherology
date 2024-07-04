@@ -35,6 +35,7 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> DISK_COARSE_DIRT = of("disk_coarse_dirt");
     public static final RegistryKey<PlacedFeature> ETHER_ROCKS = of("ether_rocks");
     public static final RegistryKey<PlacedFeature> PATCH_BEAMER = of("patch_beamer");
+    public static final RegistryKey<PlacedFeature> PATCH_THUJA = of("patch_thuja");
 
     public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -47,9 +48,9 @@ public class PlacedFeaturesGen {
                 SquarePlacementModifier.of(),
                 SurfaceWaterDepthFilterPlacementModifier.of(0),
                 HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR),
-                BiomePlacementModifier.of(),
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(DecoBlocks.PEACH_SAPLING.getDefaultState(), BlockPos.ORIGIN)),
-                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 8, true)
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 8, true),
+                BiomePlacementModifier.of()
         );
         register(context, BIRCH_BRANCH_TREES, lookup.getOrThrow(BIRCH_BRANCH_TREE),
                 CountPlacementModifier.of(new WeightedListIntProvider(DataPool.<IntProvider>builder()
@@ -59,9 +60,9 @@ public class PlacedFeaturesGen {
                 SquarePlacementModifier.of(),
                 SurfaceWaterDepthFilterPlacementModifier.of(0),
                 HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR),
-                BiomePlacementModifier.of(),
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(Blocks.BIRCH_SAPLING.getDefaultState(), BlockPos.ORIGIN)),
-                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 8, true)
+                StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 8, true),
+                BiomePlacementModifier.of()
         );
         register(context, GOLDEN_FOREST_FLOWERS, lookup.getOrThrow(ConfiguredFeaturesGen.GOLDEN_FOREST_FLOWERS),
                 SquarePlacementModifier.of(),
@@ -93,6 +94,14 @@ public class PlacedFeaturesGen {
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
                 CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
                 StructurePlacementModifier.of(StructuresGen.ETHER_MONOLITH, 16, false),
+                BiomePlacementModifier.of()
+        );
+        register(context, PATCH_THUJA, lookup.getOrThrow(ConfiguredFeaturesGen.PATCH_THUJA),
+                RarityFilterPlacementModifier.of(4),
+                SquarePlacementModifier.of(),
+                HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
+                BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(DecoBlocks.THUJA_PLANT.getDefaultState(), BlockPos.ORIGIN)),
+                CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
                 BiomePlacementModifier.of()
         );
     }
