@@ -107,7 +107,7 @@ public class ThujaPlantBlock extends AbstractPlantBlock implements RegistrableBl
 
     @Override
     protected boolean canAttachTo(BlockState state) {
-        return state.isIn(BlockTags.DIRT) || state.isOf(getStem());
+        return state.isIn(BlockTags.DIRT) || state.getBlock() instanceof ThujaShapeController;
     }
 
     @Override

@@ -24,6 +24,7 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
 
     public static final EnumProperty<ThujaShape> SHAPE = EnumProperty.of("shape", ThujaShape.class);
     public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.fullCube();
+    private static final int MAX_LENGTH = 5;
 
     public ThujaBlock() {
         super(AbstractBlock.Settings.of(Material.PLANT, MapColor.EMERALD_GREEN).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Direction.UP, OUTLINE_SHAPE, false, 0.1);
@@ -57,6 +58,9 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
 
     @Override
     public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+        int blocksCount = 1 + countBelow(world, pos) + countAbove(world, pos);
+        if (blocksCount >= MAX_LENGTH) return;
+
         int age = state.get(AGE) + getGrowthAmount(random);
         age = Math.min(age, MAX_AGE);
         world.setBlockState(pos, state.with(AGE, age), Block.NOTIFY_LISTENERS);
@@ -71,9 +75,25 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
         }
     }
 
+    private int countBelow(ServerWorld world, BlockPos pos) {
+        int result = 0;
+        while(result < 4 && world.getBlockState(pos.down(result+1)).getBlock() instanceof ThujaShapeController) {
+            result++;
+        }
+        return result;
+    }
+
+    private int countAbove(ServerWorld world, BlockPos pos) {
+        int result = 0;
+        while(result < 4 && world.getBlockState(pos.up(result+1)).getBlock() instanceof ThujaShapeController) {
+            result++;
+        }
+        return result;
+    }
+
     @Override
     protected boolean canAttachTo(BlockState state) {
-        return state.isIn(BlockTags.DIRT) || state.isOf(getPlant());
+        return state.isIn(BlockTags.DIRT) || state.getBlock() instanceof ThujaShapeController;
     }
 
     @Override
