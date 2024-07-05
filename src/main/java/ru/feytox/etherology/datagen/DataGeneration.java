@@ -37,7 +37,6 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE_SET, StructuresGen::registerStructureSets);
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE, StructuresGen::registerStructures);
         registryBuilder.addRegistry(RegistryKeys.TEMPLATE_POOL, StructuresGen::registerTemplates);
-        registryBuilder.addRegistry(RegistryKeys.PROCESSOR_LIST, StructuresGen::registerProcessors);
         registryBuilder.addRegistry(RegistryKeys.BIOME, BiomesGen::registerBiomes);
     }
 }

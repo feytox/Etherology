@@ -41,12 +41,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
                 .button(ETHEREAL_STONE_BUTTON)
                 .plate(ETHEREAL_STONE_PRESSURE_PLATE);
 
-        builder.add(COBBLED_ETHEREAL_STONE, "Эфирный булыжник");
-        new RuTranslationPart(builder, "эфирного булыжника")
-                .stairs(COBBLED_ETHEREAL_STONE_STAIRS)
-                .slab(COBBLED_ETHEREAL_STONE_SLAB)
-                .wall(COBBLED_ETHEREAL_STONE_WALL);
-
         builder.add(ETHEREAL_STONE_BRICKS, "Эфирные каменные кирпичи");
         new RuTranslationPart(builder, "эфирного каменного кирпича")
                 .stairs(ETHEREAL_STONE_BRICK_STAIRS)
@@ -54,27 +48,16 @@ public class RuLangGeneration extends FabricLanguageProvider {
                 .wall(ETHEREAL_STONE_BRICK_WALL);
 
         builder.add(CHISELED_ETHEREAL_STONE_BRICKS, "Резные эфирные каменные кирпичи");
-        new RuTranslationPart(builder, "резного эфирного каменного кирпича")
-                .stairs(CHISELED_ETHEREAL_STONE_BRICK_STAIRS);
 
         builder.add(CRACKED_ETHEREAL_STONE_BRICKS, "Потрескавшиеся эфирные каменные кирпичи");
         new RuTranslationPart(builder, "потрескавшегося эфирного каменного кирпича")
                 .slab(CRACKED_ETHEREAL_STONE_BRICK_SLAB)
                 .stairs(CRACKED_ETHEREAL_STONE_BRICK_STAIRS);
 
-        builder.add(MOSSY_COBBLED_ETHEREAL_STONE, "Замшелый эфирный булыжник");
-        new RuTranslationPart(builder, "замшелого эфирного булыжника")
-                .slab(MOSSY_COBBLED_ETHEREAL_STONE_SLAB)
-                .stairs(MOSSY_COBBLED_ETHEREAL_STONE_STAIRS);
-
-        builder.add(MOSSY_ETHEREAL_STONE_BRICKS, "Замшелые эфирные каменные кирпичи");
-        new RuTranslationPart(builder, "замшелого эфирного каменного кирпича")
-                .slab(MOSSY_ETHEREAL_STONE_BRICK_SLAB)
-                .stairs(MOSSY_ETHEREAL_STONE_BRICK_STAIRS);
-
         builder.add(POLISHED_ETHEREAL_STONE, "Полированный эфирный камень");
         new RuTranslationPart(builder, "полированного эфирного камня")
                 .stairs(POLISHED_ETHEREAL_STONE_STAIRS)
+                .wall(POLISHED_ETHEREAL_STONE_WALL)
                 .slab(POLISHED_ETHEREAL_STONE_SLAB);
 
         // azel

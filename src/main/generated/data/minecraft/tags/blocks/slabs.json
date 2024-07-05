@@ -2,11 +2,8 @@
   "replace": false,
   "values": [
     "etherology:ethereal_stone_slab",
-    "etherology:cobbled_ethereal_stone_slab",
     "etherology:ethereal_stone_brick_slab",
     "etherology:cracked_ethereal_stone_brick_slab",
-    "etherology:mossy_cobbled_ethereal_stone_slab",
-    "etherology:mossy_ethereal_stone_brick_slab",
     "etherology:polished_ethereal_stone_slab",
     "etherology:attrahite_brick_slab"
   ]

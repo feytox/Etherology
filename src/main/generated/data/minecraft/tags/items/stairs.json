@@ -2,12 +2,8 @@
   "replace": false,
   "values": [
     "etherology:ethereal_stone_stairs",
-    "etherology:cobbled_ethereal_stone_stairs",
     "etherology:ethereal_stone_brick_stairs",
-    "etherology:chiseled_ethereal_stone_brick_stairs",
     "etherology:cracked_ethereal_stone_brick_stairs",
-    "etherology:mossy_cobbled_ethereal_stone_stairs",
-    "etherology:mossy_ethereal_stone_brick_stairs",
     "etherology:polished_ethereal_stone_stairs",
     "etherology:attrahite_brick_stairs"
   ]

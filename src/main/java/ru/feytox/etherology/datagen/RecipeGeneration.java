@@ -81,17 +81,13 @@ public class RecipeGeneration extends FabricRecipeProvider {
         offerBarkBlockRecipe(exporter, STRIPPED_PEACH_WOOD, STRIPPED_PEACH_LOG);
 
         // ethereal stones
-        offerStonecuttingRecipe(exporter, EBlockFamilies.ETHEREAL_STONE, EBlockFamilies.COBBLED_ETHEREAL_STONE, EBlockFamilies.CRACKED_ETHEREAL_STONE_BRICKS, EBlockFamilies.CHISELED_ETHEREAL_STONE_BRICKS, EBlockFamilies.ETHEREAL_STONE_BRICKS, EBlockFamilies.MOSSY_COBBLED_ETHEREAL_STONE, EBlockFamilies.MOSSY_ETHEREAL_STONE_BRICKS, EBlockFamilies.POLISHED_ETHEREAL_STONE);
+        offerStonecuttingRecipe(exporter, EBlockFamilies.ETHEREAL_STONE, EBlockFamilies.CRACKED_ETHEREAL_STONE_BRICKS, EBlockFamilies.CHISELED_ETHEREAL_STONE_BRICKS, EBlockFamilies.ETHEREAL_STONE_BRICKS, EBlockFamilies.POLISHED_ETHEREAL_STONE);
 
         // stone -> ethereal stone
         ShapedRecipeJsonBuilder.create(REDSTONE, COMPARATOR).input('#', REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', ETHEREAL_STONE).pattern(" # ").pattern("#X#").pattern("III").criterion(has(Items.QUARTZ), from(Items.QUARTZ)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(REDSTONE, REPEATER).input('#', REDSTONE_TORCH).input('X', Items.REDSTONE).input('I', ETHEREAL_STONE).pattern("#X#").pattern("III").criterion(has(REDSTONE_TORCH), from(REDSTONE_TORCH)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, ETHEREAL_STONE_BRICKS, 4).input('#', ETHEREAL_STONE).pattern("##").pattern("##").criterion(has(ETHEREAL_STONE), from(ETHEREAL_STONE)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(DECORATIONS, STONECUTTER).input('I', Items.IRON_INGOT).input('#', ETHEREAL_STONE).pattern(" I ").pattern("###").criterion(has(ETHEREAL_STONE), from(ETHEREAL_STONE)).offerTo(exporter);
-        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(COBBLED_ETHEREAL_STONE), BUILDING_BLOCKS, ETHEREAL_STONE, 0.1F, 200).criterion(has(COBBLED_ETHEREAL_STONE), from(COBBLED_ETHEREAL_STONE)).offerTo(exporter);
-        
-        // cobblestone -> cobbled ethereal stone
-        ShapedRecipeJsonBuilder.create(REDSTONE, DISPENSER).input('R', Items.REDSTONE).input('#', COBBLED_ETHEREAL_STONE).input('X', Items.BOW).pattern("###").pattern("#X#").pattern("#R#").criterion(has(Items.BOW), from(Items.BOW)).offerTo(exporter);
 
         ShapelessRecipeJsonBuilder.create(MISC, THUJA_OIL, 2).input(THUJA_SEEDS).criterion(has(THUJA_SEEDS), from(THUJA_SEEDS)).offerTo(exporter);
         ShapelessRecipeJsonBuilder.create(MISC, BEAMER_SEEDS, 3).input(BEAM_FRUIT).criterion(has(BEAM_FRUIT), from(BEAM_FRUIT)).offerTo(exporter);

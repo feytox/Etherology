@@ -11,7 +11,6 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -46,8 +45,6 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
 
         addItems(ItemTags.BEACON_PAYMENT_ITEMS, DecoBlockItems.EBONY_INGOT, DecoBlockItems.ETHRIL_INGOT);
         copy(BlockTagGeneration.PEACH_LOGS, PEACH_LOGS);
-        addItems(ItemTags.STONE_CRAFTING_MATERIALS, DecoBlocks.COBBLED_ETHEREAL_STONE);
-        addItems(ItemTags.STONE_TOOL_MATERIALS, DecoBlocks.COBBLED_ETHEREAL_STONE);
 
         // TODO: 18.02.2024 add to common tags
     }

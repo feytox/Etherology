@@ -4,7 +4,9 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "etherology:ether_monolith/pillar_0",
-        "processors": "etherology:cobbled_ether_monolith",
+        "processors": {
+          "processors": []
+        },
         "projection": "rigid"
       },
       "weight": 1
@@ -13,7 +15,9 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "etherology:ether_monolith/pillar_1",
-        "processors": "etherology:cobbled_ether_monolith",
+        "processors": {
+          "processors": []
+        },
         "projection": "rigid"
       },
       "weight": 1
@@ -22,7 +26,9 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "etherology:ether_monolith/pillar_2",
-        "processors": "etherology:cobbled_ether_monolith",
+        "processors": {
+          "processors": []
+        },
         "projection": "rigid"
       },
       "weight": 1

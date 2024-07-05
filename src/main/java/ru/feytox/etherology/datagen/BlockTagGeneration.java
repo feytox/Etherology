@@ -31,10 +31,10 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.ETHEREAL_STONE_BRICKS, DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS, DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS, DecoBlocks.MOSSY_ETHEREAL_STONE_BRICKS);
+        addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.ETHEREAL_STONE_BRICKS, DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS, DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS);
 
         // добавление всего, что указано в вариантах
-        BlockFamily[] stoneFamilies = {ETHEREAL_STONE, COBBLED_ETHEREAL_STONE, ETHEREAL_STONE_BRICKS, CHISELED_ETHEREAL_STONE_BRICKS, CRACKED_ETHEREAL_STONE_BRICKS, MOSSY_COBBLED_ETHEREAL_STONE, MOSSY_ETHEREAL_STONE_BRICKS, POLISHED_ETHEREAL_STONE, ATTRAHITE_BRICKS};
+        BlockFamily[] stoneFamilies = {ETHEREAL_STONE, ETHEREAL_STONE_BRICKS, CHISELED_ETHEREAL_STONE_BRICKS, CRACKED_ETHEREAL_STONE_BRICKS, POLISHED_ETHEREAL_STONE, ATTRAHITE_BRICKS};
         addAllBlocks(BlockTags.PICKAXE_MINEABLE, stoneFamilies);
         addVariant(BlockTags.SLABS, BlockFamily.Variant.SLAB, stoneFamilies);
         addVariant(BlockTags.STAIRS, BlockFamily.Variant.STAIRS, stoneFamilies);

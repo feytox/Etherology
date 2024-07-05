@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "etherology:mossy_ethereal_stone_bricks"
-  },
-  "result": "etherology:mossy_ethereal_stone_brick_stairs"
-}

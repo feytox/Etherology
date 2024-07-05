@@ -14,11 +14,6 @@ import net.minecraft.structure.StructureSet;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.structure.pool.StructurePools;
-import net.minecraft.structure.processor.RuleStructureProcessor;
-import net.minecraft.structure.processor.StructureProcessorList;
-import net.minecraft.structure.processor.StructureProcessorRule;
-import net.minecraft.structure.rule.AlwaysTrueRuleTest;
-import net.minecraft.structure.rule.RandomBlockMatchRuleTest;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureSpawns;
@@ -30,7 +25,6 @@ import net.minecraft.world.gen.chunk.placement.SpreadType;
 import net.minecraft.world.gen.heightprovider.ConstantHeightProvider;
 import net.minecraft.world.gen.structure.JigsawStructure;
 import net.minecraft.world.gen.structure.Structure;
-import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.world.biome.EtherBiomes;
 import ru.feytox.etherology.world.structure.RotatedPoolElement;
@@ -48,7 +42,6 @@ public class StructuresGen {
     public static final RegistryKey<Structure> ETHER_MONOLITH = of("ether_monolith", RegistryKeys.STRUCTURE);
     private static final RegistryKey<StructurePool> ETHER_MONOLITH_START_POOL = of("ether_monolith_start_pool", RegistryKeys.TEMPLATE_POOL);
     private static final RegistryKey<StructurePool> ETHER_MONOLITH_POOL = of("ether_monolith_pool", RegistryKeys.TEMPLATE_POOL);
-    private static final RegistryKey<StructureProcessorList> COBBLED_ETHER_MONOLITH = of("cobbled_ether_monolith", RegistryKeys.PROCESSOR_LIST);
 
     public static void registerStructureSets(Registerable<StructureSet> context) {
         val structureLookup = context.getRegistryLookup(RegistryKeys.STRUCTURE);
@@ -77,31 +70,18 @@ public class StructuresGen {
 
     public static void registerTemplates(Registerable<StructurePool> context) {
         val poolLookup = context.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
-        val processorLookup = context.getRegistryLookup(RegistryKeys.PROCESSOR_LIST);
         context.register(ETHER_MONOLITH_POOL, new StructurePool(
                 poolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
-                        Pair.of(StructurePoolElement.ofProcessedSingle(EIdentifier.strId("ether_monolith/pillar_0"),
-                                processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1),
-                        Pair.of(StructurePoolElement.ofProcessedSingle(EIdentifier.strId("ether_monolith/pillar_1"),
-                                processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1),
-                        Pair.of(StructurePoolElement.ofProcessedSingle(EIdentifier.strId("ether_monolith/pillar_2"),
-                                processorLookup.getOrThrow(COBBLED_ETHER_MONOLITH)), 1)
+                        Pair.of(StructurePoolElement.ofSingle(EIdentifier.strId("ether_monolith/pillar_0")), 1),
+                        Pair.of(StructurePoolElement.ofSingle(EIdentifier.strId("ether_monolith/pillar_1")), 1),
+                        Pair.of(StructurePoolElement.ofSingle(EIdentifier.strId("ether_monolith/pillar_2")), 1)
                 ), StructurePool.Projection.RIGID));
         context.register(ETHER_MONOLITH_START_POOL, new StructurePool(
                 poolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
                         Pair.of(RotatedPoolElement.of(new EIdentifier("ether_monolith/start"), BlockRotation.NONE), 1)
                 ), StructurePool.Projection.RIGID));
-    }
-
-    public static void registerProcessors(Registerable<StructureProcessorList> context) {
-        context.register(COBBLED_ETHER_MONOLITH, new StructureProcessorList(ImmutableList.of(
-                new RuleStructureProcessor(ImmutableList.of(
-                        new StructureProcessorRule(
-                                new RandomBlockMatchRuleTest(DecoBlocks.ETHEREAL_STONE, 0.25f),
-                                AlwaysTrueRuleTest.INSTANCE,
-                                DecoBlocks.COBBLED_ETHEREAL_STONE.getDefaultState()))))));
     }
 
     private static <T> RegistryKey<T> of(String name, RegistryKey<? extends Registry<T>> registry) {

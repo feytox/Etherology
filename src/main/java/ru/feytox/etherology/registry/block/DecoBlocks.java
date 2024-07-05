@@ -56,18 +56,12 @@ public class DecoBlocks {
     public static final Block PEACH_LEAVES = register("peach_leaves", Blocks.createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem(false);
 
     // ethereal stone
-    public static final Block ETHEREAL_STONE = registerSimple("ethereal_stone", copy(Blocks.STONE)).withItem(false);
+    public static final Block ETHEREAL_STONE = registerSimple("ethereal_stone", copy(Blocks.STONE)).withItem();
     public static final Block ETHEREAL_STONE_STAIRS = registerStairs("ethereal_stone_stairs", ETHEREAL_STONE).withItem();
     public static final Block ETHEREAL_STONE_SLAB = registerSlab("ethereal_stone_slab", ETHEREAL_STONE).withItem();
     public static final Block ETHEREAL_STONE_BUTTON = register("ethereal_stone_button", Blocks.createStoneButtonBlock()).withItem();
     public static final Block ETHEREAL_STONE_PRESSURE_PLATE = registerStonePressurePlate("ethereal_stone_pressure_plate", ETHEREAL_STONE).withItem();
     public static final Block ETHEREAL_STONE_WALL = registerWall("ethereal_stone_wall", ETHEREAL_STONE).withItem();
-
-    // cobbled ethereal stone
-    public static final Block COBBLED_ETHEREAL_STONE = registerSimple("cobbled_ethereal_stone", copy(Blocks.COBBLESTONE)).withItem();
-    public static final Block COBBLED_ETHEREAL_STONE_SLAB = registerSlab("cobbled_ethereal_stone_slab", COBBLED_ETHEREAL_STONE).withItem();
-    public static final Block COBBLED_ETHEREAL_STONE_STAIRS = registerStairs("cobbled_ethereal_stone_stairs", COBBLED_ETHEREAL_STONE).withItem();
-    public static final Block COBBLED_ETHEREAL_STONE_WALL = registerWall("cobbled_ethereal_stone_wall", COBBLED_ETHEREAL_STONE).withItem();
 
     // ethereal stone bricks
     public static final Block ETHEREAL_STONE_BRICKS = registerSimple("ethereal_stone_bricks", copy(Blocks.STONE_BRICKS)).withItem();
@@ -77,27 +71,17 @@ public class DecoBlocks {
 
     // chiseled ethereal stone
     public static final Block CHISELED_ETHEREAL_STONE_BRICKS = registerSimple("chiseled_ethereal_stone_bricks", copy(Blocks.CHISELED_STONE_BRICKS)).withItem();
-    public static final Block CHISELED_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("chiseled_ethereal_stone_brick_stairs", CHISELED_ETHEREAL_STONE_BRICKS).withItem();
 
     // cracked ethereal stone
     public static final Block CRACKED_ETHEREAL_STONE_BRICKS = registerSimple("cracked_ethereal_stone_bricks", copy(Blocks.CRACKED_STONE_BRICKS)).withItem();
     public static final Block CRACKED_ETHEREAL_STONE_BRICK_SLAB = registerSlab("cracked_ethereal_stone_brick_slab", CRACKED_ETHEREAL_STONE_BRICKS).withItem();
     public static final Block CRACKED_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("cracked_ethereal_stone_brick_stairs", CRACKED_ETHEREAL_STONE_BRICKS).withItem();
 
-    // mossy bricks ethereal stone
-    public static final Block MOSSY_ETHEREAL_STONE_BRICKS = registerSimple("mossy_ethereal_stone_bricks", copy(Blocks.MOSSY_STONE_BRICKS)).withItem();
-    public static final Block MOSSY_ETHEREAL_STONE_BRICK_SLAB = registerSlab("mossy_ethereal_stone_brick_slab", MOSSY_ETHEREAL_STONE_BRICKS).withItem();
-    public static final Block MOSSY_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("mossy_ethereal_stone_brick_stairs", MOSSY_ETHEREAL_STONE_BRICKS).withItem();
-
-    // mossy cobbled ethereal stone
-    public static final Block MOSSY_COBBLED_ETHEREAL_STONE = registerSimple("mossy_cobbled_ethereal_stone", copy(Blocks.MOSSY_COBBLESTONE)).withItem();
-    public static final Block MOSSY_COBBLED_ETHEREAL_STONE_SLAB = registerSlab("mossy_cobbled_ethereal_stone_slab", MOSSY_COBBLED_ETHEREAL_STONE).withItem();
-    public static final Block MOSSY_COBBLED_ETHEREAL_STONE_STAIRS = registerStairs("mossy_cobbled_ethereal_stone_stairs", MOSSY_COBBLED_ETHEREAL_STONE).withItem();
-
     // polished ethereal stone
     public static final Block POLISHED_ETHEREAL_STONE = registerSimple("polished_ethereal_stone", copy(Blocks.SMOOTH_STONE)).withItem();
     public static final Block POLISHED_ETHEREAL_STONE_SLAB = registerSlab("polished_ethereal_stone_slab", POLISHED_ETHEREAL_STONE).withItem();
     public static final Block POLISHED_ETHEREAL_STONE_STAIRS = registerStairs("polished_ethereal_stone_stairs", POLISHED_ETHEREAL_STONE).withItem();
+    public static final Block POLISHED_ETHEREAL_STONE_WALL = registerWall("polished_ethereal_wall", POLISHED_ETHEREAL_STONE).withItem();
 
     // plants
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
