@@ -2,6 +2,7 @@ package ru.feytox.etherology.datagen.util;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -35,6 +36,14 @@ public class RuTranslationBuilder {
         builder.add(potion.finishTranslationKey("item.minecraft.potion.effect."), "Зелье " + name);
         builder.add(potion.finishTranslationKey("item.minecraft.splash_potion.effect."), "Взрывное зелье " + name);
         builder.add(potion.finishTranslationKey("item.minecraft.lingering_potion.effect."), "Туманное зелье " + name);
+    }
+
+    public void add(String key, String name) {
+        builder.add(key, name);
+    }
+
+    public void add(Enchantment enchantment, String name) {
+        builder.add(enchantment, name);
     }
 
     /**
