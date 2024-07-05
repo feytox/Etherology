@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 2,
-  "ingredient": {
-    "item": "etherology:cracked_ethereal_stone_bricks"
-  },
-  "result": "etherology:cracked_ethereal_stone_brick_slab"
-}

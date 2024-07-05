@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "etherology:block/polished_slitherite",
+    "side": "etherology:block/polished_slitherite",
+    "top": "etherology:block/polished_slitherite"
+  }
+}

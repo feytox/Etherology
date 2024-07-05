@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "etherology:ethereal_stone_bricks",
-    "etherology:chiseled_ethereal_stone_bricks",
-    "etherology:cracked_ethereal_stone_bricks"
+    "etherology:slitherite_bricks",
+    "etherology:chiseled_slitherite_bricks",
+    "etherology:cracked_slitherite_bricks"
   ]
 }

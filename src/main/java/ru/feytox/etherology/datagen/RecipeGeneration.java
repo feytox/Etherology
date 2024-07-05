@@ -81,13 +81,13 @@ public class RecipeGeneration extends FabricRecipeProvider {
         offerBarkBlockRecipe(exporter, STRIPPED_PEACH_WOOD, STRIPPED_PEACH_LOG);
 
         // ethereal stones
-        offerStonecuttingRecipe(exporter, EBlockFamilies.ETHEREAL_STONE, EBlockFamilies.CRACKED_ETHEREAL_STONE_BRICKS, EBlockFamilies.CHISELED_ETHEREAL_STONE_BRICKS, EBlockFamilies.ETHEREAL_STONE_BRICKS, EBlockFamilies.POLISHED_ETHEREAL_STONE);
+        offerStonecuttingRecipe(exporter, EBlockFamilies.SLITHERITE, EBlockFamilies.CRACKED_SLITHERITE_BRICKS, EBlockFamilies.CHISELED_SLITHERITE_BRICKS, EBlockFamilies.SLITHERITE_BRICKS, EBlockFamilies.POLISHED_SLITHERITE);
 
         // stone -> ethereal stone
-        ShapedRecipeJsonBuilder.create(REDSTONE, COMPARATOR).input('#', REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', ETHEREAL_STONE).pattern(" # ").pattern("#X#").pattern("III").criterion(has(Items.QUARTZ), from(Items.QUARTZ)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(REDSTONE, REPEATER).input('#', REDSTONE_TORCH).input('X', Items.REDSTONE).input('I', ETHEREAL_STONE).pattern("#X#").pattern("III").criterion(has(REDSTONE_TORCH), from(REDSTONE_TORCH)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, ETHEREAL_STONE_BRICKS, 4).input('#', ETHEREAL_STONE).pattern("##").pattern("##").criterion(has(ETHEREAL_STONE), from(ETHEREAL_STONE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, STONECUTTER).input('I', Items.IRON_INGOT).input('#', ETHEREAL_STONE).pattern(" I ").pattern("###").criterion(has(ETHEREAL_STONE), from(ETHEREAL_STONE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(REDSTONE, COMPARATOR).input('#', REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', SLITHERITE).pattern(" # ").pattern("#X#").pattern("III").criterion(has(Items.QUARTZ), from(Items.QUARTZ)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(REDSTONE, REPEATER).input('#', REDSTONE_TORCH).input('X', Items.REDSTONE).input('I', SLITHERITE).pattern("#X#").pattern("III").criterion(has(REDSTONE_TORCH), from(REDSTONE_TORCH)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, SLITHERITE_BRICKS, 4).input('#', SLITHERITE).pattern("##").pattern("##").criterion(has(SLITHERITE), from(SLITHERITE)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(DECORATIONS, STONECUTTER).input('I', Items.IRON_INGOT).input('#', SLITHERITE).pattern(" I ").pattern("###").criterion(has(SLITHERITE), from(SLITHERITE)).offerTo(exporter);
 
         ShapelessRecipeJsonBuilder.create(MISC, THUJA_OIL, 2).input(THUJA_SEEDS).criterion(has(THUJA_SEEDS), from(THUJA_SEEDS)).offerTo(exporter);
         ShapelessRecipeJsonBuilder.create(MISC, BEAMER_SEEDS, 3).input(BEAM_FRUIT).criterion(has(BEAM_FRUIT), from(BEAM_FRUIT)).offerTo(exporter);
@@ -135,10 +135,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("##")
                 .pattern("SS")
                 .pattern("SS").criterion("has_wooden_slab", conditionsFromTag(ItemTags.WOODEN_SLABS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(DECORATIONS, PEDESTAL_BLOCK, 2).input('S', POLISHED_ETHEREAL_STONE_SLAB).input('#', POLISHED_ETHEREAL_STONE)
+        ShapedRecipeJsonBuilder.create(DECORATIONS, PEDESTAL_BLOCK, 2).input('S', POLISHED_SLITHERITE_SLAB).input('#', POLISHED_SLITHERITE)
                 .pattern("S")
                 .pattern("#")
-                .pattern("S").criterion(has(ETHEREAL_STONE), from(ETHEREAL_STONE)).offerTo(exporter);
+                .pattern("S").criterion(has(SLITHERITE), from(SLITHERITE)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(TOOLS, WARP_COUNTER).input('R', Items.REDSTONE).input('#', EBONY_INGOT)
                 .pattern(" # ")
                 .pattern("#R#")

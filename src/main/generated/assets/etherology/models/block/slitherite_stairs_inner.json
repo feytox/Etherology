@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "etherology:block/slitherite",
+    "side": "etherology:block/slitherite",
+    "top": "etherology:block/slitherite"
+  }
+}

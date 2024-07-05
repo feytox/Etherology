@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "#": {
-      "item": "etherology:polished_ethereal_stone"
+      "item": "etherology:polished_slitherite"
     },
     "S": {
-      "item": "etherology:polished_ethereal_stone_slab"
+      "item": "etherology:polished_slitherite_slab"
     }
   },
   "pattern": [

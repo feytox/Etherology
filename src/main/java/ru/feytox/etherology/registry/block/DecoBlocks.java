@@ -55,33 +55,33 @@ public class DecoBlocks {
             .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never), SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN)).withItem();
     public static final Block PEACH_LEAVES = register("peach_leaves", Blocks.createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem(false);
 
-    // ethereal stone
-    public static final Block ETHEREAL_STONE = registerSimple("ethereal_stone", copy(Blocks.STONE)).withItem();
-    public static final Block ETHEREAL_STONE_STAIRS = registerStairs("ethereal_stone_stairs", ETHEREAL_STONE).withItem();
-    public static final Block ETHEREAL_STONE_SLAB = registerSlab("ethereal_stone_slab", ETHEREAL_STONE).withItem();
-    public static final Block ETHEREAL_STONE_BUTTON = register("ethereal_stone_button", Blocks.createStoneButtonBlock()).withItem();
-    public static final Block ETHEREAL_STONE_PRESSURE_PLATE = registerStonePressurePlate("ethereal_stone_pressure_plate", ETHEREAL_STONE).withItem();
-    public static final Block ETHEREAL_STONE_WALL = registerWall("ethereal_stone_wall", ETHEREAL_STONE).withItem();
+    // slitherite
+    public static final Block SLITHERITE = registerSimple("slitherite", copy(Blocks.STONE)).withItem();
+    public static final Block SLITHERITE_STAIRS = registerStairs("slitherite_stairs", SLITHERITE).withItem();
+    public static final Block SLITHERITE_SLAB = registerSlab("slitherite_slab", SLITHERITE).withItem();
+    public static final Block SLITHERITE_BUTTON = register("slitherite_button", Blocks.createStoneButtonBlock()).withItem();
+    public static final Block SLITHERITE_PRESSURE_PLATE = registerStonePressurePlate("slitherite_pressure_plate", SLITHERITE).withItem();
+    public static final Block SLITHERITE_WALL = registerWall("slitherite_wall", SLITHERITE).withItem();
 
-    // ethereal stone bricks
-    public static final Block ETHEREAL_STONE_BRICKS = registerSimple("ethereal_stone_bricks", copy(Blocks.STONE_BRICKS)).withItem();
-    public static final Block ETHEREAL_STONE_BRICK_SLAB = registerSlab("ethereal_stone_brick_slab", ETHEREAL_STONE_BRICKS).withItem();
-    public static final Block ETHEREAL_STONE_BRICK_STAIRS = registerStairs("ethereal_stone_brick_stairs", ETHEREAL_STONE_BRICKS).withItem();
-    public static final Block ETHEREAL_STONE_BRICK_WALL = registerWall("ethereal_stone_brick_wall", ETHEREAL_STONE_BRICKS).withItem();
+    // slitherite bricks
+    public static final Block SLITHERITE_BRICKS = registerSimple("slitherite_bricks", copy(Blocks.STONE_BRICKS)).withItem();
+    public static final Block SLITHERITE_BRICK_SLAB = registerSlab("slitherite_brick_slab", SLITHERITE_BRICKS).withItem();
+    public static final Block SLITHERITE_BRICK_STAIRS = registerStairs("slitherite_brick_stairs", SLITHERITE_BRICKS).withItem();
+    public static final Block SLITHERITE_BRICK_WALL = registerWall("slitherite_brick_wall", SLITHERITE_BRICKS).withItem();
 
-    // chiseled ethereal stone
-    public static final Block CHISELED_ETHEREAL_STONE_BRICKS = registerSimple("chiseled_ethereal_stone_bricks", copy(Blocks.CHISELED_STONE_BRICKS)).withItem();
+    // chiseled slitherite
+    public static final Block CHISELED_SLITHERITE_BRICKS = registerSimple("chiseled_slitherite_bricks", copy(Blocks.CHISELED_STONE_BRICKS)).withItem();
 
-    // cracked ethereal stone
-    public static final Block CRACKED_ETHEREAL_STONE_BRICKS = registerSimple("cracked_ethereal_stone_bricks", copy(Blocks.CRACKED_STONE_BRICKS)).withItem();
-    public static final Block CRACKED_ETHEREAL_STONE_BRICK_SLAB = registerSlab("cracked_ethereal_stone_brick_slab", CRACKED_ETHEREAL_STONE_BRICKS).withItem();
-    public static final Block CRACKED_ETHEREAL_STONE_BRICK_STAIRS = registerStairs("cracked_ethereal_stone_brick_stairs", CRACKED_ETHEREAL_STONE_BRICKS).withItem();
+    // cracked slitherite
+    public static final Block CRACKED_SLITHERITE_BRICKS = registerSimple("cracked_slitherite_bricks", copy(Blocks.CRACKED_STONE_BRICKS)).withItem();
+    public static final Block CRACKED_SLITHERITE_BRICK_SLAB = registerSlab("cracked_slitherite_brick_slab", CRACKED_SLITHERITE_BRICKS).withItem();
+    public static final Block CRACKED_SLITHERITE_BRICK_STAIRS = registerStairs("cracked_slitherite_brick_stairs", CRACKED_SLITHERITE_BRICKS).withItem();
 
-    // polished ethereal stone
-    public static final Block POLISHED_ETHEREAL_STONE = registerSimple("polished_ethereal_stone", copy(Blocks.SMOOTH_STONE)).withItem();
-    public static final Block POLISHED_ETHEREAL_STONE_SLAB = registerSlab("polished_ethereal_stone_slab", POLISHED_ETHEREAL_STONE).withItem();
-    public static final Block POLISHED_ETHEREAL_STONE_STAIRS = registerStairs("polished_ethereal_stone_stairs", POLISHED_ETHEREAL_STONE).withItem();
-    public static final Block POLISHED_ETHEREAL_STONE_WALL = registerWall("polished_ethereal_wall", POLISHED_ETHEREAL_STONE).withItem();
+    // polished slitherite
+    public static final Block POLISHED_SLITHERITE = registerSimple("polished_slitherite", copy(Blocks.SMOOTH_STONE)).withItem();
+    public static final Block POLISHED_SLITHERITE_SLAB = registerSlab("polished_slitherite_slab", POLISHED_SLITHERITE).withItem();
+    public static final Block POLISHED_SLITHERITE_STAIRS = registerStairs("polished_slitherite_stairs", POLISHED_SLITHERITE).withItem();
+    public static final Block POLISHED_SLITHERITE_WALL = registerWall("polished_slitherite_wall", POLISHED_SLITHERITE).withItem();
 
     // plants
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();

@@ -33,32 +33,32 @@ public class RuLangGeneration extends FabricLanguageProvider {
     public void generateTranslations(TranslationBuilder translationBuilder) {
         RuTranslationBuilder builder = new RuTranslationBuilder(translationBuilder);
 
-        builder.add(DecoBlocks.ETHEREAL_STONE, "Эфирный камень");
-        new RuTranslationPart(builder, "эфирного камня")
-                .stairs(ETHEREAL_STONE_STAIRS)
-                .slab(ETHEREAL_STONE_SLAB)
-                .wall(ETHEREAL_STONE_WALL)
-                .button(ETHEREAL_STONE_BUTTON)
-                .plate(ETHEREAL_STONE_PRESSURE_PLATE);
+        builder.add(DecoBlocks.SLITHERITE, "Слизерит");
+        new RuTranslationPart(builder, "слизерита")
+                .stairs(SLITHERITE_STAIRS)
+                .slab(SLITHERITE_SLAB)
+                .wall(SLITHERITE_WALL)
+                .button(SLITHERITE_BUTTON)
+                .plate(SLITHERITE_PRESSURE_PLATE);
 
-        builder.add(ETHEREAL_STONE_BRICKS, "Эфирные каменные кирпичи");
-        new RuTranslationPart(builder, "эфирного каменного кирпича")
-                .stairs(ETHEREAL_STONE_BRICK_STAIRS)
-                .slab(ETHEREAL_STONE_BRICK_SLAB)
-                .wall(ETHEREAL_STONE_BRICK_WALL);
+        builder.add(SLITHERITE_BRICKS, "Слизеритовые кирпичи");
+        new RuTranslationPart(builder, "слизеритового кирпича")
+                .stairs(SLITHERITE_BRICK_STAIRS)
+                .slab(SLITHERITE_BRICK_SLAB)
+                .wall(SLITHERITE_BRICK_WALL);
 
-        builder.add(CHISELED_ETHEREAL_STONE_BRICKS, "Резные эфирные каменные кирпичи");
+        builder.add(CHISELED_SLITHERITE_BRICKS, "Резные слизеритовые кирпичи");
 
-        builder.add(CRACKED_ETHEREAL_STONE_BRICKS, "Потрескавшиеся эфирные каменные кирпичи");
-        new RuTranslationPart(builder, "потрескавшегося эфирного каменного кирпича")
-                .slab(CRACKED_ETHEREAL_STONE_BRICK_SLAB)
-                .stairs(CRACKED_ETHEREAL_STONE_BRICK_STAIRS);
+        builder.add(CRACKED_SLITHERITE_BRICKS, "Потрескавшиеся слизеритовые кирпичи");
+        new RuTranslationPart(builder, "потрескавшегося слизеритового кирпича")
+                .slab(CRACKED_SLITHERITE_BRICK_SLAB)
+                .stairs(CRACKED_SLITHERITE_BRICK_STAIRS);
 
-        builder.add(POLISHED_ETHEREAL_STONE, "Полированный эфирный камень");
-        new RuTranslationPart(builder, "полированного эфирного камня")
-                .stairs(POLISHED_ETHEREAL_STONE_STAIRS)
-                .wall(POLISHED_ETHEREAL_STONE_WALL)
-                .slab(POLISHED_ETHEREAL_STONE_SLAB);
+        builder.add(POLISHED_SLITHERITE, "Полированный слизерит");
+        new RuTranslationPart(builder, "полированного слизерита")
+                .stairs(POLISHED_SLITHERITE_STAIRS)
+                .wall(POLISHED_SLITHERITE_WALL)
+                .slab(POLISHED_SLITHERITE_SLAB);
 
         // azel
         builder.add(AZEL_BLOCK, "Азельный блок");

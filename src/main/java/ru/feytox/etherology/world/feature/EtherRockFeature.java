@@ -55,7 +55,7 @@ public class EtherRockFeature extends Feature<DefaultFeatureConfig> {
 
             for (BlockPos pos : BlockPos.iterate(centerPos.add(-dx, -dy, -dz), centerPos.add(dx, dy, dz))) {
                 if (pos.getSquaredDistance(centerPos) > (double) (f * f)) continue;
-                world.setBlockState(pos, DecoBlocks.ETHEREAL_STONE.getDefaultState(), Block.NO_REDRAW);
+                world.setBlockState(pos, DecoBlocks.SLITHERITE.getDefaultState(), Block.NO_REDRAW);
                 topBlocks.merge(new Point(pos.getX(), pos.getZ()), pos.getY(), Integer::max);
             }
 

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "etherology:polished_ethereal_stone"
-  },
-  "result": "etherology:polished_ethereal_wall"
-}

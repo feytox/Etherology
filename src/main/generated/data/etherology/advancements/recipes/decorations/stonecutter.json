@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ethereal_stone": {
+    "has_slitherite": {
       "conditions": {
         "items": [
           {
             "items": [
-              "etherology:ethereal_stone"
+              "etherology:slitherite"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_ethereal_stone",
+      "has_slitherite",
       "has_the_recipe"
     ]
   ],

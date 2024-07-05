@@ -31,10 +31,10 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.ETHEREAL_STONE_BRICKS, DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS, DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS);
+        addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.SLITHERITE_BRICKS, DecoBlocks.CHISELED_SLITHERITE_BRICKS, DecoBlocks.CRACKED_SLITHERITE_BRICKS);
 
-        // добавление всего, что указано в вариантах
-        BlockFamily[] stoneFamilies = {ETHEREAL_STONE, ETHEREAL_STONE_BRICKS, CHISELED_ETHEREAL_STONE_BRICKS, CRACKED_ETHEREAL_STONE_BRICKS, POLISHED_ETHEREAL_STONE, ATTRAHITE_BRICKS};
+        // add all, that defined in variants
+        BlockFamily[] stoneFamilies = {SLITHERITE, SLITHERITE_BRICKS, CHISELED_SLITHERITE_BRICKS, CRACKED_SLITHERITE_BRICKS, POLISHED_SLITHERITE, ATTRAHITE_BRICKS};
         addAllBlocks(BlockTags.PICKAXE_MINEABLE, stoneFamilies);
         addVariant(BlockTags.SLABS, BlockFamily.Variant.SLAB, stoneFamilies);
         addVariant(BlockTags.STAIRS, BlockFamily.Variant.STAIRS, stoneFamilies);

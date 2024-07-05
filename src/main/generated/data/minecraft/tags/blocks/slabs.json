@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "etherology:ethereal_stone_slab",
-    "etherology:ethereal_stone_brick_slab",
-    "etherology:cracked_ethereal_stone_brick_slab",
-    "etherology:polished_ethereal_stone_slab",
+    "etherology:slitherite_slab",
+    "etherology:slitherite_brick_slab",
+    "etherology:cracked_slitherite_brick_slab",
+    "etherology:polished_slitherite_slab",
     "etherology:attrahite_brick_slab"
   ]
 }

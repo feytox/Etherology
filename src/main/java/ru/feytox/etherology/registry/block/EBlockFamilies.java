@@ -18,11 +18,11 @@ public class EBlockFamilies {
     
     public static final BlockFamily PEACH;
 
-    public static final BlockFamily ETHEREAL_STONE;
-    public static final BlockFamily CRACKED_ETHEREAL_STONE_BRICKS;
-    public static final BlockFamily CHISELED_ETHEREAL_STONE_BRICKS;
-    public static final BlockFamily ETHEREAL_STONE_BRICKS;
-    public static final BlockFamily POLISHED_ETHEREAL_STONE;
+    public static final BlockFamily SLITHERITE;
+    public static final BlockFamily CRACKED_SLITHERITE_BRICKS;
+    public static final BlockFamily CHISELED_SLITHERITE_BRICKS;
+    public static final BlockFamily SLITHERITE_BRICKS;
+    public static final BlockFamily POLISHED_SLITHERITE;
 
     public static final BlockFamily ATTRAHITE_BRICKS;
 
@@ -49,11 +49,11 @@ public class EBlockFamilies {
     static {
         PEACH = register(PEACH_PLANKS).button(PEACH_BUTTON).door(PEACH_DOOR).fence(PEACH_FENCE).fenceGate(PEACH_FENCE_GATE).pressurePlate(PEACH_PRESSURE_PLATE).sign(PEACH_SIGN, PEACH_WALL_SIGN).slab(PEACH_SLAB).stairs(PEACH_STAIRS).trapdoor(PEACH_TRAPDOOR).group("wooden").unlockCriterionName("has_planks").build();
 
-        ETHEREAL_STONE = register(DecoBlocks.ETHEREAL_STONE, BlockFamily.Variant.POLISHED).stairs(ETHEREAL_STONE_STAIRS).slab(ETHEREAL_STONE_SLAB).button(ETHEREAL_STONE_BUTTON).pressurePlate(ETHEREAL_STONE_PRESSURE_PLATE).wall(ETHEREAL_STONE_WALL).polished(DecoBlocks.POLISHED_ETHEREAL_STONE).build();
-        ETHEREAL_STONE_BRICKS = register(DecoBlocks.ETHEREAL_STONE_BRICKS, BlockFamily.Variant.CHISELED, BlockFamily.Variant.CRACKED).slab(ETHEREAL_STONE_BRICK_SLAB).stairs(ETHEREAL_STONE_BRICK_STAIRS).wall(ETHEREAL_STONE_BRICK_WALL).chiseled(DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS).cracked(DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS).build();
-        CHISELED_ETHEREAL_STONE_BRICKS = register(DecoBlocks.CHISELED_ETHEREAL_STONE_BRICKS).build();
-        CRACKED_ETHEREAL_STONE_BRICKS = register(DecoBlocks.CRACKED_ETHEREAL_STONE_BRICKS).slab(CRACKED_ETHEREAL_STONE_BRICK_SLAB).stairs(CRACKED_ETHEREAL_STONE_BRICK_STAIRS).build();
-        POLISHED_ETHEREAL_STONE = register(DecoBlocks.POLISHED_ETHEREAL_STONE).slab(POLISHED_ETHEREAL_STONE_SLAB).stairs(POLISHED_ETHEREAL_STONE_STAIRS).wall(POLISHED_ETHEREAL_STONE_WALL).build();
+        SLITHERITE = register(DecoBlocks.SLITHERITE, BlockFamily.Variant.POLISHED).stairs(SLITHERITE_STAIRS).slab(SLITHERITE_SLAB).button(SLITHERITE_BUTTON).pressurePlate(SLITHERITE_PRESSURE_PLATE).wall(SLITHERITE_WALL).polished(DecoBlocks.POLISHED_SLITHERITE).build();
+        SLITHERITE_BRICKS = register(DecoBlocks.SLITHERITE_BRICKS, BlockFamily.Variant.CHISELED, BlockFamily.Variant.CRACKED).slab(SLITHERITE_BRICK_SLAB).stairs(SLITHERITE_BRICK_STAIRS).wall(SLITHERITE_BRICK_WALL).chiseled(DecoBlocks.CHISELED_SLITHERITE_BRICKS).cracked(DecoBlocks.CRACKED_SLITHERITE_BRICKS).build();
+        CHISELED_SLITHERITE_BRICKS = register(DecoBlocks.CHISELED_SLITHERITE_BRICKS).build();
+        CRACKED_SLITHERITE_BRICKS = register(DecoBlocks.CRACKED_SLITHERITE_BRICKS).slab(CRACKED_SLITHERITE_BRICK_SLAB).stairs(CRACKED_SLITHERITE_BRICK_STAIRS).build();
+        POLISHED_SLITHERITE = register(DecoBlocks.POLISHED_SLITHERITE).slab(POLISHED_SLITHERITE_SLAB).stairs(POLISHED_SLITHERITE_STAIRS).wall(POLISHED_SLITHERITE_WALL).build();
 
         ATTRAHITE_BRICKS = register(DecoBlocks.ATTRAHITE_BRICKS).slab(ATTRAHITE_BRICK_SLAB).stairs(ATTRAHITE_BRICK_STAIRS).build();
     }
