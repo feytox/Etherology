@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "etherology:red_clay_tiles"
-  },
-  "result": "etherology:red_clay_tiles_wall"
-}

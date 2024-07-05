@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "etherology:block/green_clay_tiles",
-    "side": "etherology:block/green_clay_tiles",
-    "top": "etherology:block/green_clay_tiles"
-  }
-}

@@ -93,14 +93,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
         // cobblestone -> cobbled ethereal stone
         ShapedRecipeJsonBuilder.create(REDSTONE, DISPENSER).input('R', Items.REDSTONE).input('#', COBBLED_ETHEREAL_STONE).input('X', Items.BOW).pattern("###").pattern("#X#").pattern("#R#").criterion(has(Items.BOW), from(Items.BOW)).offerTo(exporter);
 
-        // clay tile
-        offerStonecuttingRecipe(exporter, EBlockFamilies.CLAY_TILE, EBlockFamilies.BLUE_CLAY_TILE, EBlockFamilies.GREEN_CLAY_TILE, EBlockFamilies.RED_CLAY_TILE, EBlockFamilies.YELLOW_CLAY_TILE);
-        offer2x2Recipe(exporter, BUILDING_BLOCKS, CLAY_TILES, TERRACOTTA, 4);
-        offer2x2Recipe(exporter, BUILDING_BLOCKS, BLUE_CLAY_TILES, BLUE_TERRACOTTA, 4);
-        offer2x2Recipe(exporter, BUILDING_BLOCKS, GREEN_CLAY_TILES, GREEN_TERRACOTTA, 4);
-        offer2x2Recipe(exporter, BUILDING_BLOCKS, RED_CLAY_TILES, RED_TERRACOTTA, 4);
-        offer2x2Recipe(exporter, BUILDING_BLOCKS, YELLOW_CLAY_TILES, YELLOW_TERRACOTTA, 4);
-
         ShapelessRecipeJsonBuilder.create(MISC, THUJA_OIL, 2).input(THUJA_SEEDS).criterion(has(THUJA_SEEDS), from(THUJA_SEEDS)).offerTo(exporter);
         ShapelessRecipeJsonBuilder.create(MISC, BEAMER_SEEDS, 3).input(BEAM_FRUIT).criterion(has(BEAM_FRUIT), from(BEAM_FRUIT)).offerTo(exporter);
 
@@ -245,10 +237,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
             if (exclude) return;
             offerStonecuttingRecipe(exporter, category, block, family.getBaseBlock(), count);
         }));
-    }
-
-    private void offer2x2Recipe(Consumer<RecipeJsonProvider> exporter, RecipeCategory category, ItemConvertible output, ItemConvertible input, int count) {
-        ShapedRecipeJsonBuilder.create(category, output, count).input('#', input).pattern("##").pattern("##").criterion(hasItem(input), from(input)).offerTo(exporter);
     }
 
     private String has(ItemConvertible itemConvertible) {

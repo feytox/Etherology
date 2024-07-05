@@ -77,36 +77,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
                 .stairs(POLISHED_ETHEREAL_STONE_STAIRS)
                 .slab(POLISHED_ETHEREAL_STONE_SLAB);
 
-        builder.add(CLAY_TILES, "Керамическая плитка");
-        new RuTranslationPart(builder, "керамической плитки")
-                .stairs(CLAY_TILES_STAIRS)
-                .slab(CLAY_TILES_SLAB)
-                .wall(CLAY_TILES_WALL);
-
-        builder.add(BLUE_CLAY_TILES, "Синяя керамическая плитка");
-        new RuTranslationPart(builder, "синей керамической плитки")
-                .stairs(BLUE_CLAY_TILES_STAIRS)
-                .slab(BLUE_CLAY_TILES_SLAB)
-                .wall(BLUE_CLAY_TILES_WALL);
-
-        builder.add(GREEN_CLAY_TILES, "Зелёная керамическая плитка");
-        new RuTranslationPart(builder, "зелёной керамической плитки")
-                .stairs(GREEN_CLAY_TILES_STAIRS)
-                .slab(GREEN_CLAY_TILES_SLAB)
-                .wall(GREEN_CLAY_TILES_WALL);
-
-        builder.add(RED_CLAY_TILES, "Красная керамическая плитка");
-        new RuTranslationPart(builder, "красной керамической плитки")
-                .stairs(RED_CLAY_TILES_STAIRS)
-                .slab(RED_CLAY_TILES_SLAB)
-                .wall(RED_CLAY_TILES_WALL);
-
-        builder.add(YELLOW_CLAY_TILES, "Жёлтая керамическая плитка");
-        new RuTranslationPart(builder, "жёлтой керамической плитки")
-                .stairs(YELLOW_CLAY_TILES_STAIRS)
-                .slab(YELLOW_CLAY_TILES_SLAB)
-                .wall(YELLOW_CLAY_TILES_WALL);
-
         // azel
         builder.add(AZEL_BLOCK, "Азельный блок");
         builder.add(AZEL_INGOT, "Азельный слиток");

@@ -99,36 +99,6 @@ public class DecoBlocks {
     public static final Block POLISHED_ETHEREAL_STONE_SLAB = registerSlab("polished_ethereal_stone_slab", POLISHED_ETHEREAL_STONE).withItem();
     public static final Block POLISHED_ETHEREAL_STONE_STAIRS = registerStairs("polished_ethereal_stone_stairs", POLISHED_ETHEREAL_STONE).withItem();
 
-    // clay tiles
-    public static final Block CLAY_TILES = registerSimple("clay_tiles", copy(Blocks.BROWN_TERRACOTTA)).withItem();
-    public static final Block CLAY_TILES_SLAB = registerSlab("clay_tiles_slab", CLAY_TILES).withItem();
-    public static final Block CLAY_TILES_STAIRS = registerStairs("clay_tiles_stairs", CLAY_TILES).withItem();
-    public static final Block CLAY_TILES_WALL = registerWall("clay_tiles_wall", CLAY_TILES).withItem();
-
-    // blue clay tiles
-    public static final Block BLUE_CLAY_TILES = registerSimple("blue_clay_tiles", copy(Blocks.BLUE_TERRACOTTA)).withItem();
-    public static final Block BLUE_CLAY_TILES_SLAB = registerSlab("blue_clay_tiles_slab", BLUE_CLAY_TILES).withItem();
-    public static final Block BLUE_CLAY_TILES_STAIRS = registerStairs("blue_clay_tiles_stairs", BLUE_CLAY_TILES).withItem();
-    public static final Block BLUE_CLAY_TILES_WALL = registerWall("blue_clay_tiles_wall", BLUE_CLAY_TILES).withItem();
-
-    // green clay tiles
-    public static final Block GREEN_CLAY_TILES = registerSimple("green_clay_tiles", copy(Blocks.GREEN_TERRACOTTA)).withItem();
-    public static final Block GREEN_CLAY_TILES_SLAB = registerSlab("green_clay_tiles_slab", GREEN_CLAY_TILES).withItem();
-    public static final Block GREEN_CLAY_TILES_STAIRS = registerStairs("green_clay_tiles_stairs", GREEN_CLAY_TILES).withItem();
-    public static final Block GREEN_CLAY_TILES_WALL = registerWall("green_clay_tiles_wall", GREEN_CLAY_TILES).withItem();
-
-    // red clay tiles
-    public static final Block RED_CLAY_TILES = registerSimple("red_clay_tiles", copy(Blocks.RED_TERRACOTTA)).withItem();
-    public static final Block RED_CLAY_TILES_SLAB = registerSlab("red_clay_tiles_slab", RED_CLAY_TILES).withItem();
-    public static final Block RED_CLAY_TILES_STAIRS = registerStairs("red_clay_tiles_stairs", RED_CLAY_TILES).withItem();
-    public static final Block RED_CLAY_TILES_WALL = registerWall("red_clay_tiles_wall", RED_CLAY_TILES).withItem();
-
-    // yellow clay tiles
-    public static final Block YELLOW_CLAY_TILES = registerSimple("yellow_clay_tiles", copy(Blocks.YELLOW_TERRACOTTA)).withItem();
-    public static final Block YELLOW_CLAY_TILES_SLAB = registerSlab("yellow_clay_tiles_slab", YELLOW_CLAY_TILES).withItem();
-    public static final Block YELLOW_CLAY_TILES_STAIRS = registerStairs("yellow_clay_tiles_stairs", YELLOW_CLAY_TILES).withItem();
-    public static final Block YELLOW_CLAY_TILES_WALL = registerWall("yellow_clay_tiles_wall", YELLOW_CLAY_TILES).withItem();
-
     // plants
     public static final BeamerBlock BEAMER = (BeamerBlock) new BeamerBlock().registerBlock();
     public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
