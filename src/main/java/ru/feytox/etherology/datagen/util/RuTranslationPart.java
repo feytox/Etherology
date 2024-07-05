@@ -1,17 +1,13 @@
 package ru.feytox.etherology.datagen.util;
 
+import lombok.RequiredArgsConstructor;
 import net.minecraft.block.Block;
 
+@RequiredArgsConstructor(staticName = "of")
 public class RuTranslationPart {
+
     private final RuTranslationBuilder builder;
     private final String suffix;
-
-    // TODO: 26.02.2024 new instance -> of()
-
-    public RuTranslationPart(RuTranslationBuilder builder, String suffix) {
-        this.builder = builder;
-        this.suffix = suffix;
-    }
 
     public RuTranslationPart stairs(Block block) {
         builder.addStairs(block, suffix);

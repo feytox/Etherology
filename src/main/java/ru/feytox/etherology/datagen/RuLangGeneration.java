@@ -37,7 +37,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         RuTranslationBuilder builder = new RuTranslationBuilder(translationBuilder);
 
         builder.add(DecoBlocks.SLITHERITE, "Слизерит");
-        new RuTranslationPart(builder, "слизерита")
+        RuTranslationPart.of(builder, "Слизеритовая")
                 .stairs(SLITHERITE_STAIRS)
                 .slab(SLITHERITE_SLAB)
                 .wall(SLITHERITE_WALL)
@@ -45,7 +45,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
                 .plate(SLITHERITE_PRESSURE_PLATE);
 
         builder.add(SLITHERITE_BRICKS, "Слизеритовые кирпичи");
-        new RuTranslationPart(builder, "слизеритового кирпича")
+        RuTranslationPart.of(builder, "слизеритового кирпича")
                 .stairs(SLITHERITE_BRICK_STAIRS)
                 .slab(SLITHERITE_BRICK_SLAB)
                 .wall(SLITHERITE_BRICK_WALL);
@@ -53,12 +53,12 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(CHISELED_SLITHERITE_BRICKS, "Резные слизеритовые кирпичи");
 
         builder.add(CRACKED_SLITHERITE_BRICKS, "Потрескавшиеся слизеритовые кирпичи");
-        new RuTranslationPart(builder, "потрескавшегося слизеритового кирпича")
+        RuTranslationPart.of(builder, "потрескавшегося слизеритового кирпича")
                 .slab(CRACKED_SLITHERITE_BRICK_SLAB)
                 .stairs(CRACKED_SLITHERITE_BRICK_STAIRS);
 
         builder.add(POLISHED_SLITHERITE, "Полированный слизерит");
-        new RuTranslationPart(builder, "полированного слизерита")
+        RuTranslationPart.of(builder, "полированного слизерита")
                 .stairs(POLISHED_SLITHERITE_STAIRS)
                 .wall(POLISHED_SLITHERITE_WALL)
                 .slab(POLISHED_SLITHERITE_SLAB);
@@ -71,7 +71,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         // attrahite
         builder.add(ATTRAHITE, "Аттрахит");
         builder.add(ATTRAHITE_BRICKS, "Аттрахитовые кирпичи");
-        new RuTranslationPart(builder, "аттрахитовых кирпичей")
+        RuTranslationPart.of(builder, "аттрахитовых кирпичей")
                 .slab(ATTRAHITE_BRICK_SLAB)
                 .stairs(ATTRAHITE_BRICK_STAIRS);
         builder.add(ATTRAHITE_BRICK, "Аттрахитовый кирпич");
@@ -149,7 +149,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(UNADJUSTED_LENS, "Ненастроенная линза");
         builder.add(REDSTONE_LENS, "Линза красного камня");
 
-        builder.add(EBlocks.ESSENCE_DETECTOR_BLOCK, "Детектор эссенции");
+        builder.add(EBlocks.ESSENCE_DETECTOR_BLOCK, "Датчик незримого света");
 
         builder.add(ETHEROSCOPE, "Эфироскоп");
         builder.add(THUJA_OIL, "Хвойное масло");
@@ -196,13 +196,13 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(CORRUPTION_BUCKET, "Ведро с мутной водой");
         builder.add(CLOSET_SLAB, "Шкаф");
         builder.add(SHELF_SLAB, "Полка");
-        builder.add(FURNITURE_SLAB, "Мебельный блок");
+        builder.add(FURNITURE_SLAB, "Мебель");
         builder.add(PEDESTAL_BLOCK, "Пьедестал");
         builder.add(ETHEREAL_CHANNEL, "Эфирный канал");
         builder.add(ETHEREAL_FORK, "Эфирная развилка");
         builder.add(ETHEREAL_STORAGE, "Эфирное хранилище");
-        builder.add(ETHEREAL_SOCKET, "Эфирный сокет");
-        builder.add(ETHEREAL_FURNACE, "Эфирная печь");
+        builder.add(ETHEREAL_SOCKET, "Разъём питания");
+        builder.add(ETHEREAL_FURNACE, "Эфирный горн");
         builder.add(ETHEREAL_SPINNER, "Волчок");
         builder.add(ETHEREAL_METRONOME, "Метроном");
         builder.add(EMPOWERMENT_TABLE, "Стол Великоестествия");
@@ -212,6 +212,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PEACH_LOG, "Персиковое дерево");
         builder.add(STRIPPED_PEACH_LOG, "Обтёсанное персиковое дерево");
         builder.add(PEACH_WOOD, "Персиковая древесина");
+        builder.add(STRIPPED_PEACH_WOOD, "Обтёсанная персиковая древесина");
         builder.add(PEACH_PLANKS, "Персиковые доски");
         builder.add(PEACH_STAIRS, "Персиковые ступеньки");
         builder.add(PEACH_SLAB, "Персиковый полублок");
