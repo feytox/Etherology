@@ -1,5 +1,6 @@
 package ru.feytox.etherology.registry.item;
 
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -48,5 +49,10 @@ public class EItems {
         DecoBlockItems.registerAll();
         ToolItems.registerAll();
         ArmorItems.registerAll();
+        registerFuel();
+    }
+
+    private static void registerFuel() {
+        FuelRegistry.INSTANCE.add(THUJA_OIL, 200);
     }
 }
