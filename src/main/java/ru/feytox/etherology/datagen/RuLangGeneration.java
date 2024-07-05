@@ -9,6 +9,7 @@ import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.misc.EffectsRegistry;
 
 import java.nio.file.Path;
 
@@ -220,6 +221,10 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(FOREST_LANTERN, "Лесной фонарь");
         builder.add(FOREST_LANTERN_CRUMB, "Грибной мякиш");
         builder.add(LIGHTELET, "Колосвет");
+
+        builder.add(EffectsRegistry.DEVASTATION, "Опустошение");
+        builder.add(EffectsRegistry.VITAL_ENERGY, "Духовное восстановление");
+        builder.add(EffectsRegistry.VITAL_ENERGY_POTION, "духовного восстановления");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

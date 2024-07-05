@@ -61,6 +61,21 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     /**
+     * @return true if ether incremented, otherwise - false
+     */
+    public static boolean increment(LivingEntity entity, float value) {
+        val optionalData = EtherologyComponents.ETHER.maybeGet(entity);
+        if (optionalData.isEmpty()) return false;
+
+        val data = optionalData.get();
+        if (data.points >= data.maxPoints) return false;
+
+        data.points = Math.min(data.maxPoints, data.points + value);
+        data.sync();
+        return true;
+    }
+
+    /**
      * @return true if ether decremented, otherwise - false
      */
     public static boolean decrement(LivingEntity entity, float value) {

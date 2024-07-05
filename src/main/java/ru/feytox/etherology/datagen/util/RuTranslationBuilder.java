@@ -2,7 +2,9 @@ package ru.feytox.etherology.datagen.util;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
 import ru.feytox.etherology.magic.lens.LensModifier;
 
 public class RuTranslationBuilder {
@@ -23,6 +25,16 @@ public class RuTranslationBuilder {
 
     public void add(LensModifier modifier, String name) {
         builder.add(modifier.modifierId(), name);
+    }
+
+    public void add(StatusEffect effect, String name) {
+        builder.add(effect, name);
+    }
+
+    public void add(Potion potion, String name) {
+        builder.add(potion.finishTranslationKey("item.minecraft.potion.effect."), "Зелье " + name);
+        builder.add(potion.finishTranslationKey("item.minecraft.splash_potion.effect."), "Взрывное зелье " + name);
+        builder.add(potion.finishTranslationKey("item.minecraft.lingering_potion.effect."), "Туманное зелье " + name);
     }
 
     /**
