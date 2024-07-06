@@ -19,7 +19,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.magic.ether.EtherCounter;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
@@ -229,7 +229,7 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
         List<EtherGlint> glints = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             ItemStack glintStack = getItems().get(i);
-            if (!(glintStack.getItem() instanceof AbstractGlintItem)) continue;
+            if (!(glintStack.getItem() instanceof GlintItem)) continue;
             glints.add(new EtherGlint(glintStack));
         }
 

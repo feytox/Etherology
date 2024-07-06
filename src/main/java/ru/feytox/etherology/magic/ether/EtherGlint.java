@@ -1,16 +1,19 @@
 package ru.feytox.etherology.magic.ether;
 
+import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.item.glints.GlintItem;
 
 public class EtherGlint {
-    private final ItemStack stack;
+
+    @Getter
     private final float maxEther;
+    private final ItemStack stack;
 
     public EtherGlint(ItemStack glintStack) {
         this.stack = glintStack;
-        if (glintStack.getItem() instanceof AbstractGlintItem glintItem) {
+        if (glintStack.getItem() instanceof GlintItem glintItem) {
             this.maxEther = glintItem.getMaxEther();
         } else {
             this.maxEther = 0;
@@ -25,18 +28,14 @@ public class EtherGlint {
      * @return излишек, который не поместился в глинт
      */
     public float increment(float value) {
-        return AbstractGlintItem.increment(stack, maxEther, value);
+        return GlintItem.increment(stack, maxEther, value);
     }
 
     /**
      * @return количество забранного эфира
      */
     public float decrement(float value) {
-        return AbstractGlintItem.decrement(stack, maxEther, value);
-    }
-
-    public float getMaxEther() {
-        return maxEther;
+        return GlintItem.decrement(stack, maxEther, value);
     }
 
     public float getStoredEther() {

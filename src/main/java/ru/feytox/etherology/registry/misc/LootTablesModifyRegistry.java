@@ -3,6 +3,7 @@ package ru.feytox.etherology.registry.misc;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableSource;
+import net.minecraft.item.Item;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -12,7 +13,6 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.item.PatternTabletItem;
 import ru.feytox.etherology.registry.item.EItems;
 
 import static net.minecraft.loot.LootTables.*;
@@ -33,7 +33,7 @@ public class LootTablesModifyRegistry {
         injectTabletPattern(id.equals(JUNGLE_TEMPLE_CHEST), EItems.ASTRONOMY_PATTERN_TABLET, tableBuilder);
     }
 
-    private static boolean injectTabletPattern(boolean idTest, PatternTabletItem patternTablet, LootTable.Builder tableBuilder) {
+    private static boolean injectTabletPattern(boolean idTest, Item patternTablet, LootTable.Builder tableBuilder) {
         if (!idTest) return false;
 
         LootPool.Builder pool = LootPool.builder()

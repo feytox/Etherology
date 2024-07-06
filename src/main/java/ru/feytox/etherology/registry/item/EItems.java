@@ -12,36 +12,40 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EItems {
 
-    public static final Teldecore TELDECORE = (Teldecore) new Teldecore().register();
+    public static final Item TELDECORE = registerItem("teldecore", new Teldecore());
 
-    public static final PrimoShard.KetaPrimoShard PRIMOSHARD_KETA = (PrimoShard.KetaPrimoShard) new PrimoShard.KetaPrimoShard().register();
-    public static final PrimoShard.RellaPrimoShard PRIMOSHARD_RELLA = (PrimoShard.RellaPrimoShard) new PrimoShard.RellaPrimoShard().register();
-    public static final PrimoShard.ClosPrimoShard PRIMOSHARD_CLOS = (PrimoShard.ClosPrimoShard) new PrimoShard.ClosPrimoShard().register();
-    public static final PrimoShard.ViaPrimoShard PRIMOSHARD_VIA = (PrimoShard.ViaPrimoShard) new PrimoShard.ViaPrimoShard().register();
-    public static final GlintItem GLINT = (GlintItem) new GlintItem().register();
-    public static final EtherShard ETHER_SHARD = (EtherShard) new EtherShard().register();
-    public static final SpillBarrelItem SPILL_BARREL = (SpillBarrelItem) registerItem("spill_barrel", new SpillBarrelItem());
-    public static final CorruptionBucket CORRUPTION_BUCKET = (CorruptionBucket) registerItem("corruption_bucket", new CorruptionBucket());
+    public static final Item PRIMOSHARD_KETA = registerItem("primoshard_keta", new PrimoShard("Keta"));
+    public static final Item PRIMOSHARD_RELLA = registerItem("primoshard_rella", new PrimoShard("Rella"));
+    public static final Item PRIMOSHARD_CLOS = registerItem("primoshard_clos", new PrimoShard("Clos"));
+    public static final Item PRIMOSHARD_VIA = registerItem("primoshard_via", new PrimoShard("Via"));
+    public static final Item GLINT = registerItem("glint_shard", new GlintItem(128));
+    public static final Item ETHER_SHARD = registerSimple("ether_shard");
+    public static final Item SPILL_BARREL = registerItem("spill_barrel", new SpillBarrelItem());
+    public static final Item CORRUPTION_BUCKET = registerItem("corruption_bucket", new CorruptionBucket());
 
-    public static final PatternTabletItem ARISTOCRAT_PATTERN_TABLET = (PatternTabletItem) registerItem("aristocrat_pattern_tablet", new PatternTabletItem(StaffStyles.ARISTOCRAT));
-    public static final PatternTabletItem ASTRONOMY_PATTERN_TABLET = (PatternTabletItem) registerItem("astronomy_pattern_tablet", new PatternTabletItem(StaffStyles.ASTRONOMY));
-    public static final PatternTabletItem HEAVENLY_PATTERN_TABLET = (PatternTabletItem) registerItem("heavenly_pattern_tablet", new PatternTabletItem(StaffStyles.HEAVENLY));
-    public static final PatternTabletItem OCULAR_PATTERN_TABLET = (PatternTabletItem) registerItem("ocular_pattern_tablet", new PatternTabletItem(StaffStyles.OCULAR));
-    public static final PatternTabletItem RITUAL_PATTERN_TABLET = (PatternTabletItem) registerItem("ritual_pattern_tablet", new PatternTabletItem(StaffStyles.RITUAL));
-    public static final PatternTabletItem ROYAL_PATTERN_TABLET = (PatternTabletItem) registerItem("royal_pattern_tablet", new PatternTabletItem(StaffStyles.ROYAL));
-    public static final PatternTabletItem TRADITIONAL_PATTERN_TABLET = (PatternTabletItem) registerItem("traditional_pattern_tablet", new PatternTabletItem(StaffStyles.TRADITIONAL));
-    public static final PatternTabletItem[] PATTERN_TABLETS = {ARISTOCRAT_PATTERN_TABLET, ASTRONOMY_PATTERN_TABLET, HEAVENLY_PATTERN_TABLET, OCULAR_PATTERN_TABLET, RITUAL_PATTERN_TABLET, ROYAL_PATTERN_TABLET, TRADITIONAL_PATTERN_TABLET};
+    public static final Item ARISTOCRAT_PATTERN_TABLET = registerItem("aristocrat_pattern_tablet", new PatternTabletItem(StaffStyles.ARISTOCRAT));
+    public static final Item ASTRONOMY_PATTERN_TABLET = registerItem("astronomy_pattern_tablet", new PatternTabletItem(StaffStyles.ASTRONOMY));
+    public static final Item HEAVENLY_PATTERN_TABLET = registerItem("heavenly_pattern_tablet", new PatternTabletItem(StaffStyles.HEAVENLY));
+    public static final Item OCULAR_PATTERN_TABLET = registerItem("ocular_pattern_tablet", new PatternTabletItem(StaffStyles.OCULAR));
+    public static final Item RITUAL_PATTERN_TABLET = registerItem("ritual_pattern_tablet", new PatternTabletItem(StaffStyles.RITUAL));
+    public static final Item ROYAL_PATTERN_TABLET = registerItem("royal_pattern_tablet", new PatternTabletItem(StaffStyles.ROYAL));
+    public static final Item TRADITIONAL_PATTERN_TABLET = registerItem("traditional_pattern_tablet", new PatternTabletItem(StaffStyles.TRADITIONAL));
+    public static final Item[] PATTERN_TABLETS = {ARISTOCRAT_PATTERN_TABLET, ASTRONOMY_PATTERN_TABLET, HEAVENLY_PATTERN_TABLET, OCULAR_PATTERN_TABLET, RITUAL_PATTERN_TABLET, ROYAL_PATTERN_TABLET, TRADITIONAL_PATTERN_TABLET};
 
-    public static final UnadjustedLens UNADJUSTED_LENS = (UnadjustedLens) registerItem("unadjusted_lens", new UnadjustedLens());
-    public static final RedstoneLens REDSTONE_LENS = (RedstoneLens) registerItem("redstone_lens", new RedstoneLens());
+    public static final Item UNADJUSTED_LENS = registerItem("unadjusted_lens", new UnadjustedLens());
+    public static final Item REDSTONE_LENS = registerItem("redstone_lens", new RedstoneLens());
 
-    public static final EtheroscopeItem ETHEROSCOPE = (EtheroscopeItem) registerItem("etheroscope", new EtheroscopeItem());
-    public static final ThujaOilItem THUJA_OIL = (ThujaOilItem) registerItem("thuja_oil", new ThujaOilItem());
+    public static final Item ETHEROSCOPE = registerSimple("etheroscope");
+    public static final Item THUJA_OIL = registerSimple("thuja_oil");
 
     public static final Item FOREST_LANTERN_CRUMB = registerItem("forest_lantern_crumb", new Item(new Item.Settings().food(EFoodComponents.CRUMB)));
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);
+    }
+
+    private static Item registerSimple(String itemId) {
+        return registerItem(itemId, new Item(new Item.Settings()));
     }
 
     public static void registerItems() {

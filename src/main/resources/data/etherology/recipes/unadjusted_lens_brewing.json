@@ -1,7 +1,7 @@
 {
   "type": "etherology:brewing_cauldron_recipe",
   "inputItem": {
-    "item": "etherology:ethereal_stone"
+    "item": "etherology:slitherite"
   },
   "inputAspects": {"frado": 5, "vibra": 3, "hendall": 5},
   "outputItem": "etherology:unadjusted_lens"

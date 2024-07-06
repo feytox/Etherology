@@ -1,11 +1,11 @@
 package ru.feytox.etherology.item;
 
 
-import ru.feytox.etherology.util.deprecated.SimpleItem;
+import net.minecraft.item.Item;
 
-public class Teldecore extends SimpleItem {
+public class Teldecore extends Item {
 
     public Teldecore() {
-        super("teldecore");
+        super(new Settings());
     }
 }

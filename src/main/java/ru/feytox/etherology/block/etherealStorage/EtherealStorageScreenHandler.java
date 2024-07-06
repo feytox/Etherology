@@ -7,7 +7,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.registry.misc.ScreenHandlersRegistry;
 import ru.feytox.etherology.util.misc.ClosedSlot;
 import ru.feytox.etherology.util.misc.TypedSlot;
@@ -29,7 +29,7 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
         int l;
         //Glints inventory
         for (m = 0; m < 3; ++m) {
-            this.addSlot(new TypedSlot<>(AbstractGlintItem.class, inventory, m, 79 + m * 19, 20));
+            this.addSlot(new TypedSlot<>(GlintItem.class, inventory, m, 79 + m * 19, 20));
         }
         //Ether inventory
         this.addSlot(new ClosedSlot(this.inventory, 3, 35, 20));
@@ -53,7 +53,7 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
         Slot slot = this.slots.get(invSlot);
         if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
-            if (!(originalStack.getItem() instanceof AbstractGlintItem)) return newStack;
+            if (!(originalStack.getItem() instanceof GlintItem)) return newStack;
 
             newStack = originalStack.copy();
             if (invSlot < this.inventory.size()) {

@@ -23,7 +23,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.glints.AbstractGlintItem;
+import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
@@ -135,7 +135,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
         ItemStack glintStack = getStack(0);
         ItemStack useStack = player.getMainHandStack();
 
-        if (glintStack.isEmpty() && useStack.getItem() instanceof AbstractGlintItem) {
+        if (glintStack.isEmpty() && useStack.getItem() instanceof GlintItem) {
             // вставка глинта
             ItemStack takingStack = useStack.copy();
             useStack = glintStack;
@@ -149,7 +149,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
             syncData(world);
             return ActionResult.CONSUME;
 
-        } else if (glintStack.getItem() instanceof AbstractGlintItem && useStack.isEmpty()) {
+        } else if (glintStack.getItem() instanceof GlintItem && useStack.isEmpty()) {
             // забирание глинта
             ItemStack takingStack = glintStack.copy();
             glintStack.setCount(0);
@@ -170,7 +170,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
         if (inventory.isEmpty()) return 0;
 
         ItemStack glintStack = getStack(0);
-        if (!(glintStack.getItem() instanceof AbstractGlintItem glint)) return 0;
+        if (!(glintStack.getItem() instanceof GlintItem glint)) return 0;
 
         return glint.getMaxEther();
     }
@@ -180,7 +180,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
         if (inventory.isEmpty()) return 0;
 
         ItemStack glintStack = getStack(0);
-        if (!(glintStack.getItem() instanceof AbstractGlintItem)) return 0;
+        if (!(glintStack.getItem() instanceof GlintItem)) return 0;
 
         return new EtherGlint(glintStack).getStoredEther();
     }
@@ -195,7 +195,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
         if (inventory.isEmpty()) return value;
 
         ItemStack glintStack = getStack(0);
-        if (!(glintStack.getItem() instanceof AbstractGlintItem)) return value;
+        if (!(glintStack.getItem() instanceof GlintItem)) return value;
 
         float exceed = new EtherGlint(glintStack).increment(value);
         isUpdated = true;
@@ -207,7 +207,7 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
         if (inventory.isEmpty()) return 0;
 
         ItemStack glintStack = getStack(0);
-        if (!(glintStack.getItem() instanceof AbstractGlintItem)) return 0;
+        if (!(glintStack.getItem() instanceof GlintItem)) return 0;
 
         float decremented = new EtherGlint(glintStack).decrement(value);
         isUpdated = true;
