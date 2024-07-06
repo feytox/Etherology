@@ -3,7 +3,6 @@ package ru.feytox.etherology.mixin;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,22 +17,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.PlayerAnimationController;
 import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
-import java.util.concurrent.CompletableFuture;
-
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
-
-    @Inject(method = "tick", at = @At("RETURN"))
-    private void onPlayerTick(CallbackInfo ci) {
-        PlayerEntity it = ((PlayerEntity) (Object) this);
-        if (!(it instanceof AbstractClientPlayerEntity clientPlayer)) return;
-        CompletableFuture.runAsync(() -> PlayerAnimationController.tickAnimations(clientPlayer));
-    }
 
     @Inject(method = "takeShieldHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;disablesShield()Z"), cancellable = true)
     private void onTakeIronShieldHit(LivingEntity attacker, CallbackInfo ci) {

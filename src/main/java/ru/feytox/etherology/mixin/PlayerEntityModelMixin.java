@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.animation.PartsInfo;
+import ru.feytox.etherology.util.misc.PartsInfo;
 
 @Mixin(value = PlayerEntityModel.class, priority = 2001)
 public class PlayerEntityModelMixin<T extends LivingEntity> extends BipedEntityModel<T> {

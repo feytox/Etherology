@@ -53,7 +53,6 @@
     "WorldRendererAccessor"
   ],
   "client": [
-    "AbstractClientPlayerEntityMixin",
     "AtlasSourceManagerMixin",
     "BakedModelManagerMixin",
     "BipedEntityModelMixin",
