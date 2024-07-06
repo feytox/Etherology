@@ -59,7 +59,7 @@ public class StructuresGen {
                         biomeLookup.getOrThrow(EtherBiomes.GOLDEN_FOREST)),
                         Map.of(), GenerationStep.Feature.LOCAL_MODIFICATIONS, StructureTerrainAdaptation.BEARD_THIN),
                 poolLookup.getOrThrow(ETHER_MONOLITH_START_POOL),
-                Optional.of(new EIdentifier("start")),
+                Optional.of(EIdentifier.of("start")),
                 2,
                 ConstantHeightProvider.ZERO,
                 false,
@@ -80,12 +80,12 @@ public class StructuresGen {
         context.register(ETHER_MONOLITH_START_POOL, new StructurePool(
                 poolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
-                        Pair.of(RotatedPoolElement.of(new EIdentifier("ether_monolith/start"), BlockRotation.NONE), 1)
+                        Pair.of(RotatedPoolElement.of(EIdentifier.of("ether_monolith/start"), BlockRotation.NONE), 1)
                 ), StructurePool.Projection.RIGID));
     }
 
     private static <T> RegistryKey<T> of(String name, RegistryKey<? extends Registry<T>> registry) {
-        return RegistryKey.of(registry, new EIdentifier(name));
+        return RegistryKey.of(registry, EIdentifier.of(name));
     }
 
     private static Structure.Config createConfig(RegistryEntryList<Biome> biomes, Map<SpawnGroup, StructureSpawns> spawns, GenerationStep.Feature featureStep, StructureTerrainAdaptation terrainAdaptation) {

@@ -16,6 +16,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -31,6 +32,7 @@ import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+
     private static final BooleanProperty WITH_FRAME = BooleanProperty.of("with_frame");
     private static final VoxelShape NORTH_LOG;
     private static final VoxelShape SOUTH_LOG;
@@ -45,29 +47,29 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
 
 
     public SpillBarrelBlock() {
-        super(FabricBlockSettings.copy(Blocks.BARREL).nonOpaque());
+        super(Settings.copy(Blocks.BARREL).nonOpaque());
         this.setDefaultState(this.getDefaultState()
                 .with(WITH_FRAME, false)
                 .with(HorizontalFacingBlock.FACING, Direction.NORTH));
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (hand != Hand.MAIN_HAND) return ActionResult.PASS;
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (hand != Hand.MAIN_HAND) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         BlockEntity be = world.getBlockEntity(pos);
-        if (!(be instanceof SpillBarrelBlockEntity spillBarrel)) return ActionResult.PASS;
+        if (!(be instanceof SpillBarrelBlockEntity spillBarrel)) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
         ItemStack handStack = player.getStackInHand(hand);
         if (handStack.isEmpty()) {
             spillBarrel.showPotionsInfo(player);
-            return ActionResult.PASS;
+            return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (spillBarrel.tryFillBarrel(handStack.copy())) {
             player.setStackInHand(hand, ItemUsage.exchangeStack(handStack, player, Items.GLASS_BOTTLE.getDefaultStack()));
             world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
             world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
-            return ActionResult.CONSUME;
+            return ItemActionResult.CONSUME;
         }
 
         if (!spillBarrel.isEmpty() && !handStack.isOf(Items.POTION)) {
@@ -76,12 +78,12 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
                 player.setStackInHand(hand, ItemUsage.exchangeStack(handStack, player, outputStack));
                 world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
                 world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
-                return ActionResult.CONSUME;
+                return ItemActionResult.CONSUME;
             }
         }
 
         spillBarrel.showPotionsInfo(player);
-        return ActionResult.PASS;
+        return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -95,6 +97,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
 
     }
 
+    // stopship: good luck
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -123,7 +126,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState underState = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
-        BlockState state = this.getDefaultState().with(HorizontalFacingBlock.FACING, ctx.getPlayerFacing().getOpposite());
+        BlockState state = this.getDefaultState().with(HorizontalFacingBlock.FACING, ctx.getHorizontalPlayerFacing().getOpposite());
         if (underState.isAir() || underState.isOf(EBlocks.SPILL_BARREL)) {
             state = state.with(WITH_FRAME, true);
         }

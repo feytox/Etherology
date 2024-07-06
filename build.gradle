@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
     id "io.freefair.lombok" version "8.0.1"
 }
@@ -9,15 +9,16 @@ group = project.maven_group
 
 repositories {
     maven { url 'https://maven.wispforest.io' }
-    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
-        name = 'Ladysnake Mods'
-        url = 'https://maven.ladysnake.org/releases'
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content {
-            includeGroup 'io.github.ladysnake'
-            includeGroup 'org.ladysnake'
-            includeGroupByRegex 'dev\\.onyxstudios.*'
+            includeGroup("software.bernie.geckolib")
         }
+    }
+    maven {
+        name = "Ladysnake Mods"
+        url = 'https://maven.ladysnake.org/releases'
     }
     maven {
         name "KosmX's maven"
@@ -43,15 +44,13 @@ dependencies {
     // TODO: include -> mod requirements for all libs
     modImplementation("io.wispforest:owo-lib:${project.owo_version}")
     include "io.wispforest:owo-sentinel:${project.owo_version}"
-    include modImplementation("software.bernie.geckolib:geckolib-fabric-${project.gecko_version}")
-    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}")
-    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
-    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-chunk:${project.cca_version}")
-    include modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}")
-    include modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
+    include modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${gecko_version}")
+    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
+    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
+    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${project.cca_version}")
+    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-item:${project.cca_version}")
 
-    // TODO: change to original repo after update
-    include modImplementation("com.github.feytox:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}")
+    include modImplementation("com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}")
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
@@ -69,63 +68,37 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
-    filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
 }
 
-def targetJavaVersion = 17
 tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
-    it.options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        it.options.release = targetJavaVersion
-    }
+    it.options.release = 21
 }
 
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-    archivesBaseName = project.archives_base_name
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.base.archivesName.get()}"}
     }
 }
 
-configurations.all {
-    resolutionStrategy {
-        force("net.fabricmc:fabric-loader:$loader_version")
-    }
-}
-
-// configure the maven publication
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        create("mavenJava", MavenPublication) {
+            artifactId = project.archives_base_name
             from components.java
         }
     }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
     }
 }
 

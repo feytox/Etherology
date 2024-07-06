@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.etherealSocket;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,6 +28,8 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
 public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
+
+    private static final MapCodec<EtherealSocketBlock> CODEC = MapCodec.unit(EtherealSocketBlock::new);
     protected static final BooleanProperty WITH_GLINT = BooleanProperty.of("with_glint");
     private static final VoxelShape DOWN_SHAPE;
     private static final VoxelShape UP_SHAPE;
@@ -36,14 +39,14 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     private static final VoxelShape WEST_SHAPE;
 
     public EtherealSocketBlock() {
-        super(FabricBlockSettings.of(Material.METAL).strength(1.5F).nonOpaque());
+        super(Settings.create().mapColor(MapColor.IRON_GRAY).strength(1.5F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.DOWN)
                 .with(WITH_GLINT, false));
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) return ActionResult.SUCCESS;
 
         if (world.getBlockEntity(pos) instanceof EtherealSocketBlockEntity socket) {
@@ -141,5 +144,10 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
                 createCuboidShape(6.5, 4.5, 4.5, 12, 11.5, 11.5),
                 BooleanBiFunction.OR
         );
+    }
+
+    @Override
+    protected MapCodec<? extends FacingBlock> getCodec() {
+        return CODEC;
     }
 }

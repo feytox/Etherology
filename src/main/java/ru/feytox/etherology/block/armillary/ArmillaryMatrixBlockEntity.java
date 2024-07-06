@@ -13,6 +13,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
@@ -24,6 +25,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -58,9 +60,9 @@ import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoAnimation;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
@@ -198,10 +200,9 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  world   the server world
      * @param  state   the block state
      * @param  player  the player entity
-     * @param  hand    the hand used
      */
     public void onHandUse(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
-        ItemStack handStack = player.getStackInHand(hand);
+        ItemStack handStack = player.getMainHandStack();
         ItemStack matrixStack = getStack(0);
         val matrixState = getMatrixState(state);
         switch (matrixState) {
@@ -243,7 +244,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (!handStack.isEmpty()) {
             if (!matrixStack.isEmpty()) {
                 // item take to stack
-                if (!ItemStack.canCombine(matrixStack, handStack) || handStack.getCount() >= handStack.getMaxCount()) return;
+                if (!ItemStack.areItemsAndComponentsEqual(matrixStack, handStack) || handStack.getCount() >= handStack.getMaxCount()) return;
                 setStack(0, ItemStack.EMPTY);
                 handStack.increment(1);
                 player.setStackInHand(hand, handStack);
@@ -491,7 +492,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @return        an Optional containing the closest mob, or empty if no entity is found
      */
     private Optional<LivingEntity> findClosestMob(World world) {
-        Box entitiesBox = new Box(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS));
+        Box entitiesBox = Box.enclosing(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS));
         val mobs = world.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), entitiesBox, entity -> !entity.isPlayer());
         return mobs.isEmpty() ? Optional.empty() : Optional.of(mobs.get(0));
     }
@@ -517,7 +518,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (entity.isPlayer()) {
             if (!EtherComponent.decrement(entity, value)) return;
         }
-        else entity.damage(DamageSource.MAGIC, value);
+        else entity.damage(entity.getDamageSources().magic(), value);
         storedEther += value;
     }
 
@@ -544,7 +545,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     public BlockPos getCenterBlockPos() {
-        return pos.add(0, 2.25, 0);
+        return pos.up(2);
     }
 
     @Override
@@ -563,9 +564,9 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putInt("current_tick", currentTick);
-        Inventories.writeNbt(nbt, items);
+        Inventories.writeNbt(nbt, items, registryLookup);
         writeActiveAnimations(nbt);
         writeDecryptedItems(nbt);
         allCurrentAspects.writeNbt(nbt);
@@ -573,16 +574,16 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (recipeId == null) nbt.putString("recipe_id", "");
         else nbt.putString("recipe_id", recipeId.toString());
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         currentTick = nbt.getInt("current_tick");
         items.clear();
-        Inventories.readNbt(nbt, items);
+        Inventories.readNbt(nbt, items, registryLookup);
         activeAnimations = readActiveAnimations(nbt);
         decryptedItems = readDecryptedItems(nbt);
         allCurrentAspects = allCurrentAspects.readNbt(nbt);
@@ -640,10 +641,10 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         return animation.forceGenerateController(this)
                 .setSoundKeyframeHandler(state -> {
                     PlayerEntity player = MinecraftClient.getInstance().player;
-                    if (player == null || player.world == null) return;
+                    if (player == null || player.getWorld() == null) return;
 
                     Vec3d pos = getCenterPos();
-                    player.world.playSound(pos.x, pos.y, pos.z, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.75f, 1.0f, true);
+                    player.getWorld().playSound(pos.x, pos.y, pos.z, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.75f, 1.0f, true);
                 });
     }
 

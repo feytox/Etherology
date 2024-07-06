@@ -1,5 +1,6 @@
 package ru.feytox.etherology.util.misc;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
@@ -14,7 +15,7 @@ public interface RegistrableBlock {
     String getBlockId();
 
     default Item getItem() {
-        return Registries.ITEM.get(new EIdentifier(getBlockId()));
+        return Registries.ITEM.get(EIdentifier.of(getBlockId()));
     }
 
     default Block registerAll() {
@@ -34,12 +35,12 @@ public interface RegistrableBlock {
 
     default Block registerBlock() {
         String blockId = getBlockId();
-        return Registry.register(Registries.BLOCK, new EIdentifier(blockId), (Block) this);
+        return Registry.register(Registries.BLOCK, EIdentifier.of(blockId), (Block) this);
     }
 
     default void registerItem() {
         String blockId = getBlockId();
         BlockItem blockItem = new BlockItem((Block) this, new FabricItemSettings());
-        Registry.register(Registries.ITEM, new EIdentifier(blockId), blockItem);
+        Registry.register(Registries.ITEM, EIdentifier.of(blockId), blockItem);
     }
 }

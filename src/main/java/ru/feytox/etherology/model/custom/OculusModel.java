@@ -27,6 +27,6 @@ public class OculusModel extends MultiItemModel {
 
     @Override
     public ModelTransformation getTransformation() {
-        return ModelComponents.loadTransformFromJson(new EIdentifier("models/item/oculus_base"));
+        return ModelComponents.loadTransformFromJson(EIdentifier.of("models/item/oculus_base"));
     }
 }

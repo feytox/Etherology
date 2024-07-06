@@ -55,7 +55,7 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addPottedPlantDrops(POTTED_THUJA);
         addPottedPlantDrops(POTTED_PEACH_SAPLING);
 
-        addDrop(LIGHTELET, this::grassDrops);
+        addDrop(LIGHTELET, this::shortPlantDrops);
 
         BLOCKS_TO_DROP = null;
     }

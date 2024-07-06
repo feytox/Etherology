@@ -1,12 +1,10 @@
 package ru.feytox.etherology.block.jug;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
@@ -18,17 +16,17 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+public class JugBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     private static final VoxelShape OUTLINE_SHAPE;
     private static final VoxelShape TOP_SHAPE;
     private final String blockId;
     private final JugType jugType;
 
-    public AbstractJugBlock(String blockId, JugType jugType) {
-        this(blockId, jugType, FabricBlockSettings.copy(Blocks.TERRACOTTA));
+    public JugBlock(String blockId, JugType jugType) {
+        this(blockId, jugType, Settings.copy(Blocks.TERRACOTTA));
     }
 
-    public AbstractJugBlock(String blockId, JugType jugType, AbstractBlock.Settings settings) {
+    public JugBlock(String blockId, JugType jugType, AbstractBlock.Settings settings) {
         super(settings.nonOpaque());
         this.blockId = blockId;
         this.jugType = jugType;
@@ -47,7 +45,7 @@ public class AbstractJugBlock extends Block implements RegistrableBlock, BlockEn
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient && !jugType.equals(JugType.RAW)) {
             NamedScreenHandlerFactory factory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
             if (factory != null) {

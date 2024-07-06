@@ -70,7 +70,7 @@ public class DevCommands {
     private static int getCorruption(CommandContext<ServerCommandSource> context) {
         PlayerEntity player = context.getSource().getPlayer();
         if (player == null) return 0;
-        World world = player.getWorld();
+        World world = player.method_48926();
         if (world == null) return 0;
 
         val dataOptional = EtherologyComponents.CORRUPTION.maybeGet(world.getChunk(player.getBlockPos()));
@@ -86,7 +86,7 @@ public class DevCommands {
     private static int setCorruption(CommandContext<ServerCommandSource> context) {
         PlayerEntity player = context.getSource().getPlayer();
         if (player == null) return 0;
-        World world = player.getWorld();
+        World world = player.method_48926();
         if (world == null) return 0;
 
         val dataOptional = EtherologyComponents.CORRUPTION.maybeGet(world.getChunk(player.getBlockPos()));

@@ -1,6 +1,8 @@
 package ru.feytox.etherology.block.etherealFork;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -15,6 +17,7 @@ import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.ACTIVAT
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
 public class EtherealForkBlockEntity extends TickableBlockEntity implements EtherFork {
+
     private float storedEther = 0;
     private List<Direction> cachedOutputSides = new ArrayList<>();
 
@@ -76,5 +79,19 @@ public class EtherealForkBlockEntity extends TickableBlockEntity implements Ethe
     @Override
     public boolean isActivated() {
         return getCachedState().get(ACTIVATED);
+    }
+
+    @Override
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        nbt.putFloat("stored_ether", storedEther);
+
+        super.writeNbt(nbt, registryLookup);
+    }
+
+    @Override
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
+
+        storedEther = nbt.getFloat("stored_ether");
     }
 }

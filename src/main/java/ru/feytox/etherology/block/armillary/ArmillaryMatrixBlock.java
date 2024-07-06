@@ -1,19 +1,18 @@
 package ru.feytox.etherology.block.armillary;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -33,14 +32,15 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     private static final VoxelShape OUTLINE_SHAPE;
 
     public ArmillaryMatrixBlock() {
-        super(FabricBlockSettings.copy(EBlocks.PEDESTAL_BLOCK).nonOpaque());
+        super(Settings.copy(EBlocks.PEDESTAL_BLOCK).nonOpaque());
         setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.IDLE));
     }
 
+    // TODO: #upd
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient || !(world.getBlockEntity(pos) instanceof ArmillaryMatrixBlockEntity matrix)) return ActionResult.CONSUME;
-        matrix.onHandUse((ServerWorld) world, state, player, hand);
+        matrix.onHandUse((ServerWorld) world, state, player, player.getActiveHand());
         matrix.syncData((ServerWorld) world);
         return ActionResult.CONSUME;
     }

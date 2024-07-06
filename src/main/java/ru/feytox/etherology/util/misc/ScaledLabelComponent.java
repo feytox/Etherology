@@ -4,6 +4,7 @@ import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.util.pond.OwoTextRendererExtension;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
 @SuppressWarnings("UnstableApiUsage")

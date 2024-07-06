@@ -20,6 +20,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 
 public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocketBlockEntity> {
+
     private static final float SCALE = 0.0625f;
     private static final String GLINT_SIDE_PATH = "textures/block/socket_glint_side.png";
     private static final String GLINT_TOP_PATH = "textures/block/socket_glint_top.png";
@@ -122,7 +123,7 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
     public static void renderTexture(MatrixStack matrices, VertexConsumerProvider vertexConsumers, String texturePath, int light, int overlay, int width, int height, float percent) {
         int textNum = MathHelper.floor(percent * 16);
         texturePath = texturePath.replace(".png", "_" + textNum + ".png");
-        Identifier texture = new EIdentifier(texturePath);
+        Identifier texture = EIdentifier.of(texturePath);
 
         float u2 = width / 16f;
         float v2 = height / 16f;

@@ -57,7 +57,7 @@ public class StaffPartInfo {
         String suffix = part.isStyled() ? "style" : part.getName();
         if (!firstPattern.isEmpty()) suffix += "_" + firstPattern.getName();
         if (!secondPattern.isEmpty()) suffix += "_" + secondPattern.getName();
-        return new EIdentifier(prefix + "staff_" + suffix);
+        return EIdentifier.of(prefix + "staff_" + suffix);
     }
 
     static {

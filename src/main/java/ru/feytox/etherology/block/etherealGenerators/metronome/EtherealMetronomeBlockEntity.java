@@ -3,7 +3,7 @@ package ru.feytox.etherology.block.etherealGenerators.metronome;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGeneratorBlockEntity;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animation.RawAnimation;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_METRONOME_BLOCK_ENTITY;
 

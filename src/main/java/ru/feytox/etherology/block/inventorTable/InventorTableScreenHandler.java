@@ -64,8 +64,8 @@ public class InventorTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
         context.run((world, pos) -> {
             tableInv.setStack(3, ItemStack.EMPTY);
             dropInventory(player, tableInv);
@@ -127,7 +127,7 @@ public class InventorTableScreenHandler extends ScreenHandler {
         }
 
         if (originalStack.isEmpty()) {
-            slot.setStack(ItemStack.EMPTY);
+            slot.setStackNoCallbacks(ItemStack.EMPTY);
         } else {
             slot.markDirty();
         }

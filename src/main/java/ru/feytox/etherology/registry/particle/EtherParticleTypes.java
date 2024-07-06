@@ -36,7 +36,7 @@ public class EtherParticleTypes {
 
     private static <T extends ParticleEffect> FeyParticleType<T> register(String name, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);
-        return Registry.register(Registries.PARTICLE_TYPE, new EIdentifier(name), particleType);
+        return Registry.register(Registries.PARTICLE_TYPE, EIdentifier.of(name), particleType);
     }
 
     @Deprecated

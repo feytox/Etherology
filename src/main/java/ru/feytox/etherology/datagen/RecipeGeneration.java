@@ -244,6 +244,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
     }
     
     private Identifier getFromPath(ItemConvertible itemConvertible, String suffix) {
-        return new EIdentifier(getItemPath(itemConvertible) + "_from_" + suffix);
+        return EIdentifier.of(getItemPath(itemConvertible) + "_from_" + suffix);
     }
 }

@@ -14,7 +14,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 @RequiredArgsConstructor
 public class SwitchBlockAnimS2C extends AbstractS2CPacket {
-    public static final Identifier SWITCH_BLOCK_ANIM_PACKET_ID = new EIdentifier("switch_block_anim");
+    public static final Identifier SWITCH_BLOCK_ANIM_PACKET_ID = EIdentifier.of("switch_block_anim");
     private final BlockPos blockPos;
     private final String stopAnim;
     private final String startAnim;

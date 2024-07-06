@@ -121,7 +121,7 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
             return newState;
         }
 
-        Direction facing = ctx.getPlayerFacing().getOpposite();
+        Direction facing = ctx.getHorizontalPlayerFacing().getOpposite();
         BlockState bottomState = getDefaultState().with(BOTTOM_TYPE, this.furType)
                 .with(TOP_TYPE, EMPTY).with(HorizontalFacingBlock.FACING, facing);
         BlockState topState = getDefaultState().with(BOTTOM_TYPE, EMPTY)

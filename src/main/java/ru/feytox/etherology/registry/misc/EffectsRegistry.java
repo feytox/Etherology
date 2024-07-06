@@ -34,14 +34,14 @@ public class EffectsRegistry {
     }
 
     private static StatusEffect register(String id, StatusEffect effect) {
-        return Registry.register(Registries.STATUS_EFFECT, new EIdentifier(id), effect);
+        return Registry.register(Registries.STATUS_EFFECT, EIdentifier.of(id), effect);
     }
 
     private static Potion registerPotion(String id, StatusEffectInstance effectInstance) {
-        return Registry.register(Registries.POTION, new EIdentifier(id), new Potion(effectInstance));
+        return Registry.register(Registries.POTION, EIdentifier.of(id), new Potion(effectInstance));
     }
 
     private static Potion registerPotion(String id, String baseName, StatusEffectInstance effectInstance) {
-        return Registry.register(Registries.POTION, new EIdentifier(id), new Potion(baseName, effectInstance));
+        return Registry.register(Registries.POTION, EIdentifier.of(id), new Potion(baseName, effectInstance));
     }
 }

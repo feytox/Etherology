@@ -21,13 +21,13 @@ public class LensRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getResult() {
         return outputItem.getDefaultStack();
     }
 
     @Override
     public ItemStack craft(JewelryTableInventory inventory) {
-        ItemStack newLens = getOutput();
+        ItemStack newLens = getResult();
         newLens.setNbt(inventory.getStack(0).getNbt());
         val lens = EtherologyComponents.LENS.get(newLens);
         lens.setPattern(LensPattern.empty());

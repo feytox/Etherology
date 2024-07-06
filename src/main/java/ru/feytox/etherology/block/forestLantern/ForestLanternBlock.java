@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.forestLantern;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 public class ForestLanternBlock extends HorizontalFacingBlock implements RegistrableBlock {
 
+    private static final MapCodec<ForestLanternBlock> CODEC = MapCodec.unit(ForestLanternBlock::new);
     private static final Map<Direction, VoxelShape> SHAPES;
 
     public ForestLanternBlock() {
@@ -71,8 +73,13 @@ public class ForestLanternBlock extends HorizontalFacingBlock implements Registr
     }
 
     @Override
-    public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {

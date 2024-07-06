@@ -67,6 +67,6 @@ public class ConfiguredFeaturesGen {
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {
-        return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, new EIdentifier(name));
+        return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, EIdentifier.of(name));
     }
 }

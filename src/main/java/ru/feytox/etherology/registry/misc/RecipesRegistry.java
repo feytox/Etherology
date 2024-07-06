@@ -38,7 +38,7 @@ public class RecipesRegistry {
     }
 
     private static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerSerializer(String id, S serializer) {
-        return Registry.register(Registries.RECIPE_SERIALIZER, new EIdentifier(id), serializer);
+        return Registry.register(Registries.RECIPE_SERIALIZER, EIdentifier.of(id), serializer);
     }
 
     private static <T extends Recipe<?>> void register(FeyRecipeSerializer<T> serializer) {

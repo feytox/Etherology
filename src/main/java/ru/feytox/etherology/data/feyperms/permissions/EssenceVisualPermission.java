@@ -9,7 +9,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EssenceVisualPermission extends Permission {
     public EssenceVisualPermission() {
-        super(new EIdentifier("essence_visual"), true);
+        super(EIdentifier.of("essence_visual"), true);
     }
 
     @Override

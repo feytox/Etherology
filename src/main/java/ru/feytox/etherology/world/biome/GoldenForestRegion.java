@@ -7,6 +7,13 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import ru.feytox.etherology.util.misc.EIdentifier;
+import terrablender.api.ParameterUtils.Continentalness;
+import terrablender.api.ParameterUtils.Depth;
+import terrablender.api.ParameterUtils.Erosion;
+import terrablender.api.ParameterUtils.Humidity;
+import terrablender.api.ParameterUtils.ParameterPointListBuilder;
+import terrablender.api.ParameterUtils.Temperature;
+import terrablender.api.ParameterUtils.Weirdness;
 import terrablender.api.Region;
 import terrablender.api.RegionType;
 import terrablender.api.VanillaParameterOverlayBuilder;
@@ -18,7 +25,7 @@ import static terrablender.api.ParameterUtils.*;
 public class GoldenForestRegion extends Region {
 
     public GoldenForestRegion() {
-        super(new EIdentifier("golden_forest_region"), RegionType.OVERWORLD, 3);
+        super(EIdentifier.of("golden_forest_region"), RegionType.OVERWORLD, 3);
     }
 
     // TODO: 25.06.2024 remove this comment

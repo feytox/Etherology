@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.empowerTable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,11 +12,11 @@ import org.joml.Matrix4f;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler> {
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/empowerment_table.png");
-    private static final Identifier GLOW_RELA = new EIdentifier("textures/gui/glow_rela.png");
-    private static final Identifier GLOW_VIA = new EIdentifier("textures/gui/glow_via.png");
-    private static final Identifier GLOW_CLOS = new EIdentifier("textures/gui/glow_clos.png");
-    private static final Identifier GLOW_KETA = new EIdentifier("textures/gui/glow_keta.png");
+    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/empowerment_table.png");
+    private static final Identifier GLOW_RELA = EIdentifier.of("textures/gui/glow_rela.png");
+    private static final Identifier GLOW_VIA = EIdentifier.of("textures/gui/glow_via.png");
+    private static final Identifier GLOW_CLOS = EIdentifier.of("textures/gui/glow_clos.png");
+    private static final Identifier GLOW_KETA = EIdentifier.of("textures/gui/glow_keta.png");
     private static final float AGE_GLOW = 60;
     private float glowAge = 0;
 
@@ -25,21 +26,18 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        matrices.push();
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+        context.push();
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-        matrices.pop();
+        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        context.pop();
 
         if (handler.shouldGlow()) {
-            drawGlow(matrices, handler.getRela(), GLOW_RELA, x+23, y+17);
-            drawGlow(matrices, handler.getVia(), GLOW_VIA, x+69, y+17);
-            drawGlow(matrices, handler.getClos(), GLOW_CLOS, x+23, y+63);
-            drawGlow(matrices, handler.getKeta(), GLOW_KETA, x+69, y+63);
+            drawGlow(context, handler.getRela(), GLOW_RELA, x+23, y+17);
+            drawGlow(context, handler.getVia(), GLOW_VIA, x+69, y+17);
+            drawGlow(context, handler.getClos(), GLOW_CLOS, x+23, y+63);
+            drawGlow(context, handler.getKeta(), GLOW_KETA, x+69, y+63);
             glowAge += delta;
             if (glowAge >= AGE_GLOW) glowAge = 0;
 
@@ -48,20 +46,20 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
         }
     }
 
-    public void drawGlow(MatrixStack matrices, int value, Identifier texture, int x, int y) {
+    public void drawGlow(DrawContext context, int value, Identifier texture, int x, int y) {
         if (value == 0) return;
 
         float alpha = glowAge / (AGE_GLOW / 2f);
         alpha = alpha > 1 ? Math.abs(alpha - 2) : alpha;
 
-        matrices.push();
+        context.push();
         RenderSystem.setShaderTexture(0, texture);
-        drawTexturedQuad(matrices, x, y, alpha);
-        matrices.pop();
+        drawTexturedQuad(context, x, y, alpha);
+        context.pop();
     }
 
-    private static void drawTexturedQuad(MatrixStack matrices, int x0, int y0, float alpha) {
-        Matrix4f matrix = matrices.peek().getPositionMatrix();
+    private static void drawTexturedQuad(DrawContext context, int x0, int y0, float alpha) {
+        Matrix4f matrix = context.getMatrices().peek().getPositionMatrix();
         int x1 = x0 + 16;
         int y1 = y0 + 16;
         float u0 = 0;
@@ -82,10 +80,10 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackground(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override
@@ -97,8 +95,8 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
     }
 
     @Override
-    protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-        this.textRenderer.draw(matrices, this.title, (float)this.titleX, (float)this.titleY, 0xFFE5E5E5);
-        this.textRenderer.draw(matrices, this.playerInventoryTitle, (float)this.playerInventoryTitleX, (float)this.playerInventoryTitleY, 0xFFE5E5E5);
+    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+        context.drawText(textRenderer, title, titleX, titleY, 0xFFE5E5E5, false);
+        context.drawText(textRenderer, playerInventoryTitle, playerInventoryTitleX, playerInventoryTitleY, 0xFFE5E5E5, false);
     }
 }

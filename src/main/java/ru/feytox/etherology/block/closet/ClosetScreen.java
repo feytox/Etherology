@@ -10,14 +10,14 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/closet.png");
+    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/closet.png");
 
     public ClosetScreen(ClosetScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -27,10 +27,10 @@ public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackground(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override

@@ -3,6 +3,7 @@ package ru.feytox.etherology.world;
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -107,7 +108,7 @@ public class PlacedFeaturesGen {
     }
 
     public static RegistryKey<PlacedFeature> of(String name) {
-        return RegistryKey.of(RegistryKeys.PLACED_FEATURE, new EIdentifier(name));
+        return RegistryKey.of(RegistryKeys.PLACED_FEATURE, EIdentifier.of(name));
     }
 
     private static void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key, RegistryEntry<ConfiguredFeature<?, ?>> configuration, PlacementModifier... modifiers) {

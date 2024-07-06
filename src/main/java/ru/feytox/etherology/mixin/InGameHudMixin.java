@@ -2,7 +2,7 @@ package ru.feytox.etherology.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
@@ -28,8 +28,8 @@ public class InGameHudMixin {
         int u = halfHeart ? 9 : 0;
         u += blinking ? 18 : 0;
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, new EIdentifier("textures/hud/ether_hearts.png"));
-        DrawableHelper.drawTexture(matrices, x, y, u, v, 9, 9, 256, 256);
+        RenderSystem.setShaderTexture(0, EIdentifier.of("textures/hud/ether_hearts.png"));
+        DrawContext.drawTexture(matrices, x, y, u, v, 9, 9, 256, 256);
         RenderSystem.setShaderTexture(0, new Identifier("minecraft", "textures/gui/icons.png"));
         ci.cancel();
     }

@@ -11,6 +11,8 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -31,8 +33,8 @@ import java.util.List;
 import static ru.feytox.etherology.block.etherealFurnace.EtherealFurnace.LIT;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FURNACE_BLOCK_ENTITY;
 
-public class EtherealFurnaceBlockEntity extends TickableBlockEntity
-        implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {
+public class EtherealFurnaceBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {
+
     public static final int MAX_FUEL = 8;
     public static final int DEFAULT_COOK_TIME = 20*15;
     private float storedEther;
@@ -216,23 +218,23 @@ public class EtherealFurnaceBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, inventory);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, inventory, registryLookup);
         nbt.putFloat("stored_ether", storedEther);
         nbt.putInt("fuel", fuel);
         nbt.putInt("cook_time", cookTime);
         nbt.putInt("total_cook_time", totalCookTime);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         storedEther = nbt.getFloat("stored_ether");
         inventory.clear();
-        Inventories.readNbt(nbt, inventory);
+        Inventories.readNbt(nbt, inventory, registryLookup);
         fuel = nbt.getInt("fuel");
         cookTime = nbt.getInt("cook_time");
         totalCookTime = nbt.getInt("total_cook_time");

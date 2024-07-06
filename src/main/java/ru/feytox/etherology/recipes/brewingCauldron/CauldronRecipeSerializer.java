@@ -53,6 +53,6 @@ public class CauldronRecipeSerializer extends FeyRecipeSerializer<CauldronRecipe
         recipe.getInputItem().write(buf);
         buf.writeInt(recipe.getInputAmount());
         recipe.getInputAspects().writeBuf(buf);
-        buf.writeItemStack(recipe.getOutput());
+        buf.writeItemStack(recipe.getResult());
     }
 }

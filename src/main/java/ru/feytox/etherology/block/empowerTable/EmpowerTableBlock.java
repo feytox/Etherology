@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.empowerTable;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,8 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class EmpowerTableBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
+
+    private static final MapCodec<EmpowerTableBlock> CODEC = MapCodec.unit(EmpowerTableBlock::new);
+
     public EmpowerTableBlock() {
-        super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
+        super(Settings.copy(Blocks.CRAFTING_TABLE));
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
@@ -28,7 +32,7 @@ public class EmpowerTableBlock extends FacingBlock implements RegistrableBlock, 
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             NamedScreenHandlerFactory factory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
             if (factory != null) {
@@ -42,7 +46,7 @@ public class EmpowerTableBlock extends FacingBlock implements RegistrableBlock, 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override
@@ -53,5 +57,10 @@ public class EmpowerTableBlock extends FacingBlock implements RegistrableBlock, 
     @Override
     public String getBlockId() {
         return "empowerment_table";
+    }
+
+    @Override
+    protected MapCodec<? extends FacingBlock> getCodec() {
+        return CODEC;
     }
 }

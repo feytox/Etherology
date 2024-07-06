@@ -51,7 +51,7 @@ public class ToolItems {
     public static final Item WARP_COUNTER = register("warp_counter", new WarpCounter());
 
     public static Item register(String id, Item item) {
-        return Registry.register(Registries.ITEM, new EIdentifier(id), item);
+        return Registry.register(Registries.ITEM, EIdentifier.of(id), item);
     }
 
     public static void registerAll() {}

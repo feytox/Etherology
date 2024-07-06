@@ -16,6 +16,7 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,31 +27,25 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 
 public class SedimentaryStone extends Block implements RegistrableBlock, BlockEntityProvider {
+
     public static final EnumProperty<EssenceZoneType> ESSENCE_STATE = EnumProperty.of("essence_state", EssenceZoneType.class);
     public static final IntProperty ESSENCE_LEVEL = IntProperty.of("essence_level", 0, 4);
 
     public SedimentaryStone() {
-        super(FabricBlockSettings.copy(Blocks.STONE));
+        super(Settings.copy(Blocks.STONE));
         setDefaultState(getDefaultState().with(ESSENCE_STATE, EssenceZoneType.EMPTY).with(ESSENCE_LEVEL, 0));
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        boolean iterResult = false;
-        for (ItemStack itemStack : player.getHandItems()) {
-            if (itemStack.getItem() instanceof AxeItem) {
-                iterResult = true;
-                break;
-            }
-        }
-        if (!iterResult) return super.onUse(state, world, pos, player, hand, hit);
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (!(stack.getItem() instanceof AxeItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         boolean result = false;
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof SedimentaryStoneBlockEntity sedimentaryBlock) {
             result = sedimentaryBlock.onUseAxe(state, world);
         }
-        return result ? ActionResult.SUCCESS : super.onUse(state, world, pos, player, hand, hit);
+        return result ? ItemActionResult.SUCCESS : ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Nullable

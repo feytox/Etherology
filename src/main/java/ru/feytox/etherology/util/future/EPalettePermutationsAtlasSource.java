@@ -64,22 +64,22 @@ public class EPalettePermutationsAtlasSource implements AtlasSource {
     public EPalettePermutationsAtlasSource() {
         // TODO: 04.09.2023 load from json
         this.textures = ObjectArrayList.of(
-                new EIdentifier("trims/textures/staff_style_aristocrat"),
-                new EIdentifier("trims/textures/staff_style_astronomy"),
-                new EIdentifier("trims/textures/staff_style_heavenly"),
-                new EIdentifier("trims/textures/staff_style_ocular"),
-                new EIdentifier("trims/textures/staff_style_ritual"),
-                new EIdentifier("trims/textures/staff_style_royal"),
-                new EIdentifier("trims/textures/staff_style_traditional")
+                EIdentifier.of("trims/textures/staff_style_aristocrat"),
+                EIdentifier.of("trims/textures/staff_style_astronomy"),
+                EIdentifier.of("trims/textures/staff_style_heavenly"),
+                EIdentifier.of("trims/textures/staff_style_ocular"),
+                EIdentifier.of("trims/textures/staff_style_ritual"),
+                EIdentifier.of("trims/textures/staff_style_royal"),
+                EIdentifier.of("trims/textures/staff_style_traditional")
         );
-        this.permutations = Map.of("iron", new EIdentifier("trims/palettes/iron"),
-                "gold", new EIdentifier("trims/palettes/gold"),
-                "netherite", new EIdentifier("trims/palettes/netherite"),
-                "copper", new EIdentifier("trims/palettes/copper"),
-                "azel", new EIdentifier("trims/palettes/azel"),
-                "ebony", new EIdentifier("trims/palettes/ebony"),
-                "ethril", new EIdentifier("trims/palettes/ethril"));
-        this.paletteKey = new EIdentifier("trims/palettes/trim_palette");
+        this.permutations = Map.of("iron", EIdentifier.of("trims/palettes/iron"),
+                "gold", EIdentifier.of("trims/palettes/gold"),
+                "netherite", EIdentifier.of("trims/palettes/netherite"),
+                "copper", EIdentifier.of("trims/palettes/copper"),
+                "azel", EIdentifier.of("trims/palettes/azel"),
+                "ebony", EIdentifier.of("trims/palettes/ebony"),
+                "ethril", EIdentifier.of("trims/palettes/ethril"));
+        this.paletteKey = EIdentifier.of("trims/palettes/trim_palette");
     }
 
     public void load(ResourceManager resourceManager, AtlasSource.SpriteRegions regions) {

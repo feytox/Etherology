@@ -43,7 +43,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
 
     private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("162b5a0d-deca-47e0-b829-929af7985629");
     private static final UUID SPEED_MODIFIER_ID = UUID.fromString("3364a987-2858-485d-948c-2bcf93c0ad1d");
-    private static final Identifier OUTLINE = new EIdentifier("textures/misc/corruption_outline.png");
+    private static final Identifier OUTLINE = EIdentifier.of("textures/misc/corruption_outline.png");
 
     private final LivingEntity entity;
     @Getter @Setter
@@ -156,7 +156,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         if (healthModifier >= 1.0f) return;
 
         double baseModifier = 20.0f / attrInstance.getValue();
-        attrInstance.addTemporaryModifier(new EntityAttributeModifier(HEALTH_MODIFIER_ID, "Max Health Exhaustion modifier", healthModifier * baseModifier - 1.0f, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+        attrInstance.addTemporaryModifier(new EntityAttributeModifier(HEALTH_MODIFIER_ID, "Max Health Exhaustion modifier", healthModifier * baseModifier - 1.0f, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     }
 
     private void tickSpeed() {
@@ -168,7 +168,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         if (modifier >= 1.0f || modifier <= 0.0f) return;
 
         modifier *= -0.025;
-        attrInstance.addTemporaryModifier(new EntityAttributeModifier(SPEED_MODIFIER_ID, "Speed Exhaustion modifier", modifier, EntityAttributeModifier.Operation.ADDITION));
+        attrInstance.addTemporaryModifier(new EntityAttributeModifier(SPEED_MODIFIER_ID, "Speed Exhaustion modifier", modifier, EntityAttributeModifier.Operation.ADD_VALUE));
     }
 
     private boolean checkRand(World world, float chance) {

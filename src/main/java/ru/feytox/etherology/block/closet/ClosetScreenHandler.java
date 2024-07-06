@@ -66,7 +66,7 @@ public class ClosetScreenHandler extends ScreenHandler {
         }
 
         if (originalStack.isEmpty()) {
-            slot.setStack(ItemStack.EMPTY);
+            slot.setStackNoCallbacks(ItemStack.EMPTY);
         } else {
             slot.markDirty();
         }
@@ -75,8 +75,8 @@ public class ClosetScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
         this.inventory.onClose(player);
     }
 }

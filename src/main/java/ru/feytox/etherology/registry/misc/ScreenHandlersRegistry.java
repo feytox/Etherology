@@ -53,6 +53,6 @@ public class ScreenHandlersRegistry {
     }
 
     private static void registerHandler(String id, ScreenHandlerType<?> screenHandlerType) {
-        Registry.register(Registries.SCREEN_HANDLER, new EIdentifier(id), screenHandlerType);
+        Registry.register(Registries.SCREEN_HANDLER, EIdentifier.of(id), screenHandlerType);
     }
 }

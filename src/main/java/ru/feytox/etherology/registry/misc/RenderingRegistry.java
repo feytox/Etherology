@@ -22,7 +22,7 @@ public class RenderingRegistry {
     }
 
     private static void registerHUD() {
-        Hud.add(new EIdentifier("oculus_hud"), OculusItem::initHud);
+        Hud.add(EIdentifier.of("oculus_hud"), OculusItem::initHud);
         HudRenderCallback.EVENT.register(StaffIndicator::renderHud);
     }
 }

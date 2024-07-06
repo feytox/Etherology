@@ -17,6 +17,6 @@ public class EtherBiomes implements TerraBlenderApi {
     }
 
     private static RegistryKey<Biome> of(String name) {
-        return RegistryKey.of(RegistryKeys.BIOME, new EIdentifier(name));
+        return RegistryKey.of(RegistryKeys.BIOME, EIdentifier.of(name));
     }
 }

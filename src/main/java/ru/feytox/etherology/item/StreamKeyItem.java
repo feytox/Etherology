@@ -49,7 +49,7 @@ public class StreamKeyItem extends ToolItem {
         ItemStack stack = context.getStack();
 
         Direction pipeFacing = state.get(EtherealChannel.FACING);
-        Direction playerFacing = context.getPlayerFacing();
+        Direction playerFacing = context.getHorizontalPlayerFacing();
         if (isVertical) {
             pipeFacing = pipeFacing.getOffsetY() == 0 ? Direction.UP : pipeFacing.getOpposite();
         }

@@ -27,7 +27,7 @@ import ru.feytox.etherology.world.structure.RotatedPoolElement;
 @UtilityClass
 public class WorldGenRegistry {
 
-    public static final RegistryKey<PlacedFeature> ATTRAHITE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, new EIdentifier("attrahite"));
+    public static final RegistryKey<PlacedFeature> ATTRAHITE_PLACED_KEY = RegistryKey.of(RegistryKeys.PLACED_FEATURE, EIdentifier.of("attrahite"));
 
     public static final Feature<DefaultFeatureConfig> ETHER_ROCK = registerFeature("ether_rock", new EtherRockFeature(DefaultFeatureConfig.CODEC));
     public static final Feature<DefaultFeatureConfig> THUJA = registerFeature("thuja", new ThujaFeature(DefaultFeatureConfig.CODEC));

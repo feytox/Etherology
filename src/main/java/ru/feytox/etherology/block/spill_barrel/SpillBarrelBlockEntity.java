@@ -3,6 +3,7 @@ package ru.feytox.etherology.block.spill_barrel;
 import io.wispforest.owo.util.ImplementedInventory;
 import lombok.Setter;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -11,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -45,8 +45,8 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
             return true;
         }
 
-        Potion barrelPotion = PotionUtil.getPotion(items.get(0));
-        Potion stackPotion = PotionUtil.getPotion(handStack);
+        Potion barrelPotion = PotionContentsComponent.getPotion(items.get(0));
+        Potion stackPotion = PotionContentsComponent.getPotion(handStack);
         if (stackPotion.equals(barrelPotion) && items.get(15).isEmpty()) {
             for (int i = 0; i < 16; i++) {
                 if (items.get(i).isEmpty()) {
@@ -67,10 +67,10 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     public ItemStack tryEmptyBarrel(ItemStack handStack) {
         if (!handStack.isOf(Items.GLASS_BOTTLE) || isEmpty()) return handStack;
 
-        Potion barrelPotion = PotionUtil.getPotion(items.get(0));
+        Potion barrelPotion = PotionContentsComponent.getPotion(items.get(0));
         for (int i = 15; i >= 0; i--) {
             if (!items.get(i).isEmpty()) {
-                ItemStack outputStack = PotionUtil.setPotion(Items.POTION.getDefaultStack(), barrelPotion);
+                ItemStack outputStack = PotionContentsComponent.setPotion(Items.POTION.getDefaultStack(), barrelPotion);
                 if (hasCustomName()) outputStack.setCustomName(getCustomName());
                 items.set(i, ItemStack.EMPTY);
                 markDirty();
@@ -93,7 +93,7 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     }
 
     public static MutableText getPotionInfo(ItemStack potionStack, int potionCount, boolean withCustomName, Text customName) {
-        Potion barrelPotion = PotionUtil.getPotion(potionStack);
+        Potion barrelPotion = PotionContentsComponent.getPotion(potionStack);
         StatusEffectInstance statusEffectInstance = barrelPotion.getEffects().get(0);
         Text effectText = Text.translatable(statusEffectInstance.getTranslationKey());
         Text levelText = Text.translatable("potion.potency." + statusEffectInstance.getAmplifier());
@@ -121,15 +121,15 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         Inventories.writeNbt(nbt, items);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         items.clear();
         Inventories.readNbt(nbt, items);

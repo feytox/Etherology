@@ -49,7 +49,7 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     private static final VoxelShape DOWN_WEST_EAST_SHAPE;
 
     public TuningFork() {
-        super(FabricBlockSettings.of(Material.METAL).strength(1.5F).nonOpaque());
+        super(FabricBlockSettings.create(Material.METAL).strength(1.5F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(VERTICAL_FACING, Direction.UP)
                 .with(HORIZONTAL_FACING, Direction.NORTH)
@@ -136,7 +136,7 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
         int power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
         boolean powered = power > 0;
         return getDefaultState().with(VERTICAL_FACING, ctx.getSide())
-                .with(HORIZONTAL_FACING, ctx.getPlayerFacing().getOpposite())
+                .with(HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite())
                 .with(POWERED, powered).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 

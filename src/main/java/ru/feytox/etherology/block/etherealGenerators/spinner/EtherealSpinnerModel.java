@@ -10,16 +10,16 @@ public class EtherealSpinnerModel extends GeoModel<EtherealSpinnerBlockEntity> {
     @Override
     public Identifier getModelResource(EtherealSpinnerBlockEntity animatable) {
         Direction direction = animatable.getCachedState().get(FacingBlock.FACING);
-        return new EIdentifier("geo/spinner_" + direction.toString() + ".geo.json");
+        return EIdentifier.of("geo/spinner_" + direction.toString() + ".geo.json");
     }
 
     @Override
     public Identifier getTextureResource(EtherealSpinnerBlockEntity animatable) {
-        return new EIdentifier("textures/machines/ethereal_spinner.png");
+        return EIdentifier.of("textures/machines/ethereal_spinner.png");
     }
 
     @Override
     public Identifier getAnimationResource(EtherealSpinnerBlockEntity animatable) {
-        return new EIdentifier("animations/spinner.animation.json");
+        return EIdentifier.of("animations/spinner.animation.json");
     }
 }

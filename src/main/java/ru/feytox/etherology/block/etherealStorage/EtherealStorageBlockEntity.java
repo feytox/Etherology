@@ -9,6 +9,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -27,9 +28,9 @@ import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -39,8 +40,8 @@ import java.util.List;
 import static ru.feytox.etherology.block.etherealStorage.EtherealStorageBlock.FACING;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_STORAGE_BLOCK_ENTITY;
 
-public class EtherealStorageBlockEntity extends TickableBlockEntity
-        implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {
+public class EtherealStorageBlockEntity extends TickableBlockEntity implements EtherStorage, EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory, EtherCounter, SidedInventory {
+
     private static final RawAnimation OPEN_ANIM;
     private static final RawAnimation CLOSE_ANIM;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -171,20 +172,20 @@ public class EtherealStorageBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, inventory);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, inventory, registryLookup);
         nbt.putFloat("storage_ether", storageEther);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        storageEther = nbt.getFloat("storage_ether");
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
+        storageEther = nbt.getFloat("storage_ether");
         inventory.clear();
-        Inventories.readNbt(nbt, inventory);
+        Inventories.readNbt(nbt, inventory, registryLookup);
     }
 
     @Override

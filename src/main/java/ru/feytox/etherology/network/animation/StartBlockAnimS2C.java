@@ -13,7 +13,7 @@ import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class StartBlockAnimS2C extends AbstractS2CPacket {
-    public static final Identifier START_BLOCK_ANIM_PACKET_ID = new EIdentifier("start_block_anim");
+    public static final Identifier START_BLOCK_ANIM_PACKET_ID = EIdentifier.of("start_block_anim");
     private final BlockPos blockPos;
     private final String animName;
 

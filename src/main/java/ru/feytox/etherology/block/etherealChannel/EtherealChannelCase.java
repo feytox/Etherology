@@ -8,7 +8,7 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 public class EtherealChannelCase extends Block implements RegistrableBlock {
 
     public EtherealChannelCase() {
-        super(AbstractBlock.Settings.copy(DecoBlocks.PEACH_PLANKS));
+        super(Settings.copy(DecoBlocks.PEACH_PLANKS));
     }
 
     @Override

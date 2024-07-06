@@ -4,7 +4,7 @@ import com.google.common.base.Suppliers;
 import lombok.Getter;
 import lombok.val;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -107,7 +107,7 @@ public abstract class LensItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipType context) {
         super.appendTooltip(stack, world, tooltip, context);
         val lensOptional = EtherologyComponents.LENS.maybeGet(stack);
         if (lensOptional.isEmpty()) return;

@@ -29,7 +29,7 @@ public record LensModifier(Identifier modifierId) {
     }
 
     private static LensModifier register(String name) {
-        val modifier = new LensModifier(new EIdentifier(name));
+        val modifier = new LensModifier(EIdentifier.of(name));
         MODIFIERS.put(modifier.modifierId, modifier);
         return modifier;
     }

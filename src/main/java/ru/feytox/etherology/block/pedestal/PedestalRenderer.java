@@ -9,6 +9,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -55,14 +56,14 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
         boolean hasDepth = bakedModel.hasDepth();
         long time = world.getTime();
         float yOffset = Math.sin((time + tickDelta) / 10.0F + uniqueOffset) * 0.1F + 0.1F;
-        float deltaYOffset = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.y();
+        float deltaYOffset = bakedModel.getTransformation().getTransformation(ModelTransformationMode.GROUND).scale.y();
         matrices.translate(0.0F, yOffset + 0.25F * deltaYOffset, 0.0F);
         float yRotation = (time + tickDelta) / 20.0F + uniqueOffset;
         matrices.multiply(RotationAxis.POSITIVE_Y.rotation(yRotation));
         float zScale = bakedModel.getTransformation().ground.scale.z();
 
         matrices.push();
-        itemRenderer.renderItem(itemStack, ModelTransformation.Mode.GROUND, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, bakedModel);
+        itemRenderer.renderItem(itemStack, ModelTransformationMode.GROUND, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, bakedModel);
         matrices.pop();
         if (!hasDepth) matrices.translate(0.0F, 0.0F, 0.09375F * zScale);
 

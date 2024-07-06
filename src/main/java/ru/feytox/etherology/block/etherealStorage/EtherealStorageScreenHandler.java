@@ -65,7 +65,7 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
             }
 
             if (originalStack.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.setStackNoCallbacks(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
@@ -75,9 +75,9 @@ public class EtherealStorageScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
+    public void onClosed(PlayerEntity player) {
         inventory.onClose(player);
-        super.close(player);
+        super.onClosed(player);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class PermissionManager {
     }
 
     public List<Permission> get(String... names) {
-        List<Identifier> ids = Lists.transform(Arrays.stream(names).toList(), EIdentifier::new);
+        List<Identifier> ids = Lists.transform(Arrays.stream(names).toList(), EIdentifier::of);
         return get(ids);
     }
 

@@ -29,7 +29,7 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
 
     @Override
     public boolean matches(CauldronRecipeInventory inventory, World world) {
-        DefaultedList<ItemStack> stacks = inventory.stacks;
+        DefaultedList<ItemStack> stacks = inventory.heldStacks;
         if (stacks.size() != 1 || !inputItem.test(stacks.get(0)) || stacks.get(0).getCount() < inputAmount) return false;
 
         ImmutableMap<Aspect, Integer> cauldronAspects = inventory.getCauldronAspects().getAspects();
@@ -52,7 +52,7 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getResult() {
         return outputStack.copy();
     }
 

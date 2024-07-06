@@ -5,8 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
@@ -93,8 +93,8 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
         NbtCompound bottomCompound = nbt.getCompound("bottom");
         NbtCompound bottomDataCompound = bottomCompound.getCompound("data");
         NbtCompound topCompound = nbt.getCompound("top");
@@ -114,7 +114,7 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound bottomCompound = new NbtCompound();
         NbtCompound bottomDataCompound = new NbtCompound();
         NbtCompound topCompound = new NbtCompound();
@@ -130,7 +130,7 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
         topCompound.put("data", topDataCompound);
         nbt.put("top", topCompound);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override

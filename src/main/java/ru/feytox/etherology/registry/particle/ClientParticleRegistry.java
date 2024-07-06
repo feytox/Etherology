@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry.PendingParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;

@@ -17,6 +17,6 @@ public class LootConditions {
     public static void registerAll() {}
 
     private static LootConditionType register(String id, JsonSerializer<? extends LootCondition> serializer) {
-        return Registry.register(Registries.LOOT_CONDITION_TYPE, new EIdentifier(id), new LootConditionType(serializer));
+        return Registry.register(Registries.LOOT_CONDITION_TYPE, EIdentifier.of(id), new LootConditionType(serializer));
     }
 }

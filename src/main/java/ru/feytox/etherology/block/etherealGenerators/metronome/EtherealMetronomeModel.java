@@ -10,16 +10,16 @@ public class EtherealMetronomeModel extends GeoModel<EtherealMetronomeBlockEntit
     @Override
     public Identifier getModelResource(EtherealMetronomeBlockEntity animatable) {
         Direction direction = animatable.getCachedState().get(FacingBlock.FACING);
-        return new EIdentifier("geo/metronome_" + direction.toString() + ".geo.json");
+        return EIdentifier.of("geo/metronome_" + direction.toString() + ".geo.json");
     }
 
     @Override
     public Identifier getTextureResource(EtherealMetronomeBlockEntity animatable) {
-        return new EIdentifier("textures/machines/ethereal_metronome.png");
+        return EIdentifier.of("textures/machines/ethereal_metronome.png");
     }
 
     @Override
     public Identifier getAnimationResource(EtherealMetronomeBlockEntity animatable) {
-        return new EIdentifier("animations/metronome.animation.json");
+        return EIdentifier.of("animations/metronome.animation.json");
     }
 }

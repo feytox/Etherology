@@ -3,6 +3,8 @@ package ru.feytox.etherology.registry.block;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeBuilder;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityType;
@@ -11,7 +13,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.SignType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import ru.feytox.etherology.block.beamer.BeamerBlock;
@@ -20,7 +21,6 @@ import ru.feytox.etherology.block.peach.PeachSaplingBlock;
 import ru.feytox.etherology.block.peach.WeepingPeachLogBlock;
 import ru.feytox.etherology.block.signs.EtherSignBlock;
 import ru.feytox.etherology.block.signs.EtherSignBlockEntity;
-import ru.feytox.etherology.block.signs.EtherSignType;
 import ru.feytox.etherology.block.signs.EtherWallSignBlock;
 import ru.feytox.etherology.block.thuja.ThujaBlock;
 import ru.feytox.etherology.block.thuja.ThujaPlantBlock;
@@ -32,7 +32,8 @@ import java.util.Map;
 @UtilityClass
 public class DecoBlocks {
     // various types registries
-    public static final SignType PEACH_SIGN_TYPE = SignType.register(new EtherSignType("peach"));
+    private static final BlockSetType PEACH_TYPE = new BlockSetTypeBuilder().register(EIdentifier.of("peach"));
+    public static final WoodType PEACH_SIGN_TYPE = new WoodTypeBuilder().register(EIdentifier.of("peach"), PEACH_TYPE);
     public static final BlockEntityType<EtherSignBlockEntity> ETHEROLOGY_SIGN;
 
     // peach wood
@@ -49,10 +50,10 @@ public class DecoBlocks {
     public static final Block PEACH_FENCE = register("peach_fence", new FenceBlock(copy(PEACH_PLANKS))).withItem();
     public static final Block PEACH_FENCE_GATE = register("peach_fence_gate", new FenceGateBlock(copy(PEACH_PLANKS), SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundEvents.BLOCK_FENCE_GATE_OPEN)).withItem();
     public static final Block PEACH_PRESSURE_PLATE = registerWoodenPressurePlate("peach_pressure_plate", PEACH_PLANKS).withItem();
-    public static final Block PEACH_SIGN = register("peach_sign", new EtherSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withoutItem();
-    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(copy(PEACH_PLANKS).noCollision().strength(1.0f), PEACH_SIGN_TYPE)).withItem(false);
-    public static final Block PEACH_TRAPDOOR = register("peach_trapdoor", new TrapdoorBlock(copy(PEACH_PLANKS)
-            .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never), SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN)).withItem();
+    public static final Block PEACH_SIGN = register("peach_sign", new SignBlock(PEACH_SIGN_TYPE, copy(PEACH_PLANKS).noCollision().strength(1.0f))).withoutItem();
+    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new WallSignBlock(PEACH_SIGN_TYPE, copy(PEACH_PLANKS).noCollision().strength(1.0f))).withItem(false);
+    public static final Block PEACH_TRAPDOOR = register("peach_trapdoor", new TrapdoorBlock(PEACH_TYPE, copy(PEACH_PLANKS)
+            .strength(3.0f).nonOpaque().allowsSpawning(DecoBlocks::never))).withItem();
     public static final Block PEACH_LEAVES = register("peach_leaves", Blocks.createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem(false);
 
     // slitherite
@@ -88,15 +89,15 @@ public class DecoBlocks {
     public static final ThujaBlock THUJA = (ThujaBlock) new ThujaBlock().registerBlock();
     public static final ThujaPlantBlock THUJA_PLANT = (ThujaPlantBlock) new ThujaPlantBlock().registerBlock();
     public static final ForestLanternBlock FOREST_LANTERN = (ForestLanternBlock) new ForestLanternBlock().registerAll();
-    public static final Block LIGHTELET = register("lightelet", new FernBlock(AbstractBlock.Settings.copy(Blocks.GRASS).emissiveLighting((a, b, c) -> true))).withItem(false);
+    public static final Block LIGHTELET = register("lightelet", new ShortPlantBlock(AbstractBlock.Settings.copy(Blocks.SHORT_GRASS).emissiveLighting((a, b, c) -> true))).withItem(false);
 
     // saplings
     public static final PeachSaplingBlock PEACH_SAPLING = (PeachSaplingBlock) new PeachSaplingBlock().registerAll();
 
     // potted blocks
-    public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
-    public static final Block POTTED_THUJA = register("potted_thuja", new FlowerPotBlock(THUJA, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
-    public static final Block POTTED_PEACH_SAPLING = register("potted_peach_sapling", new FlowerPotBlock(PEACH_SAPLING, AbstractBlock.Settings.of(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
+    public static final Block POTTED_BEAMER = register("potted_beamer", new FlowerPotBlock(BEAMER, AbstractBlock.Settings.create(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
+    public static final Block POTTED_THUJA = register("potted_thuja", new FlowerPotBlock(THUJA, AbstractBlock.Settings.create(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
+    public static final Block POTTED_PEACH_SAPLING = register("potted_peach_sapling", new FlowerPotBlock(PEACH_SAPLING, AbstractBlock.Settings.create(Material.DECORATION).breakInstantly().nonOpaque())).withoutItem();
 
     // metals
     public static final Block AZEL_BLOCK = registerSimple("azel_block", copy(Blocks.IRON_BLOCK).mapColor(MapColor.LAPIS_BLUE)).withItem();
@@ -111,7 +112,7 @@ public class DecoBlocks {
 
 
     private static EBlock register(String id, Block block) {
-        Block registredBlock = Registry.register(Registries.BLOCK, new EIdentifier(id), block);
+        Block registredBlock = Registry.register(Registries.BLOCK, EIdentifier.of(id), block);
         return new EBlock(registredBlock);
     }
 
@@ -192,7 +193,7 @@ public class DecoBlocks {
     static {
         ETHEROLOGY_SIGN = Registry.register(
                 Registries.BLOCK_ENTITY_TYPE,
-                new EIdentifier("sign"),
+                EIdentifier.of("sign"),
                 FabricBlockEntityTypeBuilder.create(EtherSignBlockEntity::new, PEACH_SIGN, PEACH_WALL_SIGN).build()
         );
     }

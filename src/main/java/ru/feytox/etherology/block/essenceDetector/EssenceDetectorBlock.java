@@ -19,11 +19,12 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 import static ru.feytox.etherology.registry.block.EBlocks.ESSENCE_DETECTOR_BLOCK_ENTITY;
 
 public class EssenceDetectorBlock extends Block implements BlockEntityProvider, RegistrableBlock {
+
     public static final IntProperty POWER = Properties.POWER;
     private static final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
 
     public EssenceDetectorBlock() {
-        super(FabricBlockSettings.copy(Blocks.DAYLIGHT_DETECTOR));
+        super(Settings.copy(Blocks.DAYLIGHT_DETECTOR));
         setDefaultState(getDefaultState().with(POWER, 0));
     }
 

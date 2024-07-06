@@ -8,16 +8,16 @@ public class RedstoneChargeModel extends GeoModel<RedstoneChargeEntity> {
 
     @Override
     public Identifier getModelResource(RedstoneChargeEntity animatable) {
-        return new EIdentifier("geo/redstone_charge.geo.json");
+        return EIdentifier.of("geo/redstone_charge.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(RedstoneChargeEntity animatable) {
-        return new EIdentifier("textures/entity/redstone_charge.png");
+        return EIdentifier.of("textures/entity/redstone_charge.png");
     }
 
     @Override
     public Identifier getAnimationResource(RedstoneChargeEntity animatable) {
-        return new EIdentifier("animations/redstone_charge.animation.json");
+        return EIdentifier.of("animations/redstone_charge.animation.json");
     }
 }

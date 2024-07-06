@@ -41,7 +41,7 @@ public class EItems {
     public static final Item FOREST_LANTERN_CRUMB = registerItem("forest_lantern_crumb", new Item(new Item.Settings().food(EFoodComponents.CRUMB)));
 
     private static Item registerItem(String itemId, Item item) {
-        return Registry.register(Registries.ITEM, new EIdentifier(itemId), item);
+        return Registry.register(Registries.ITEM, EIdentifier.of(itemId), item);
     }
 
     private static Item registerSimple(String itemId) {

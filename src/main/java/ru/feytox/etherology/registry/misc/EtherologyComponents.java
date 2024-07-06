@@ -1,13 +1,13 @@
 package ru.feytox.etherology.registry.misc;
 
-import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentInitializer;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
-import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
-import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
+import org.ladysnake.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
+import org.ladysnake.cca.api.v3.chunk.ChunkComponentInitializer;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
+import org.ladysnake.cca.api.v3.component.ComponentRegistryV3;
+import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
+import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
+import org.ladysnake.cca.api.v3.item.ItemComponentFactoryRegistry;
+import org.ladysnake.cca.api.v3.item.ItemComponentInitializer;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import ru.feytox.etherology.item.LensItem;
@@ -22,19 +22,19 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 public class EtherologyComponents implements EntityComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer {
 
     public static final ComponentKey<CorruptionComponent> CORRUPTION =
-            ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("corruption"), CorruptionComponent.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("corruption"), CorruptionComponent.class);
 
     public static final ComponentKey<ZoneComponent> ESSENCE_ZONE =
-            ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("essence_zone"), ZoneComponent.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("essence_zone"), ZoneComponent.class);
 
     public static final ComponentKey<LensComponent> LENS =
-            ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("lens"), LensComponent.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("lens"), LensComponent.class);
 
     public static final ComponentKey<StaffComponent> STAFF =
-            ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("staff"), StaffComponent.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("staff"), StaffComponent.class);
 
     public static final ComponentKey<EtherComponent> ETHER =
-            ComponentRegistryV3.INSTANCE.getOrCreate(new EIdentifier("ether"), EtherComponent.class);
+            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("ether"), EtherComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {

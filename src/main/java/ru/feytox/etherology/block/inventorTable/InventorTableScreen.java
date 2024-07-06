@@ -2,7 +2,7 @@ package ru.feytox.etherology.block.inventorTable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.GameRenderer;
@@ -12,6 +12,7 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -22,6 +23,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
+import org.joml.Matrix4fStack;
 import org.joml.Quaternionf;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -29,7 +31,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 import java.util.List;
 
 public class InventorTableScreen extends HandledScreen<InventorTableScreenHandler> {
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/inventor_table.png");
+    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/inventor_table.png");
     private final PlayerInventory playerInventory;
     private boolean aLotOfParts;
     private boolean scrollbarClicked;
@@ -43,13 +45,10 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         ItemStack staffStack = handler.getSelectedPart() == null ? null : handler.getSlot(3).getStack();
         if (staffStack != null) drawItem(x + 112, y + 78, delta, staffStack);
@@ -57,12 +56,12 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         List<StaffPart> staffParts = handler.getStaffParts();
         aLotOfParts = staffParts.size() > 12;
 
-        renderItemIcon(1, matrices, "textures/gui/inventor_table/empty_slot_tablet.png", x + 28, y + 13);
-        renderItemIcon(2, matrices, "textures/gui/inventor_table/empty_slot_ingot.png", x + 48, y + 13);
+        renderItemIcon(1, context, "textures/gui/inventor_table/empty_slot_tablet.png", x + 28, y + 13);
+        renderItemIcon(2, context, "textures/gui/inventor_table/empty_slot_ingot.png", x + 48, y + 13);
 
         RenderSystem.setShaderTexture(0, TEXTURE);
         int k = (int) (27.0F * this.scrollPosition);
-        this.drawTexture(matrices, x + 67, y + 33 + k, 232 + (aLotOfParts ? 0 : 12), 0, 12, 15);
+        context.drawTexture(TEXTURE, x + 67, y + 33 + k, 232 + (aLotOfParts ? 0 : 12), 0, 12, 15);
 
         if (staffParts.isEmpty()) return;
 
@@ -75,7 +74,6 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
                 int partX = x + 8 + n * 14;
                 int partY = y + 33 + m * 14;
 
-                RenderSystem.setShaderTexture(0, TEXTURE);
                 boolean highlighted = mouseX >= partX && mouseY >= partY && mouseX < partX + 14 && mouseY < partY + 14;
 
                 int textureY = backgroundHeight;
@@ -85,25 +83,24 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
                     textureY = backgroundHeight + 28;
                 }
 
-                this.drawTexture(matrices, partX, partY, 0, textureY, 14, 14);
+                context.drawTexture(TEXTURE, partX, partY, 0, textureY, 14, 14);
 
-                matrices.push();
+                context.push();
                 // part icon
                 RenderSystem.enableBlend();
-                RenderSystem.setShaderTexture(0, new EIdentifier("textures/gui/inventor_table/it_staff_" + part.getName() + ".png"));
-                DrawableHelper.drawTexture(matrices, partX-1, partY-1, 0, 0, 16, 16, 16, 16);
-                matrices.pop();
+                RenderSystem.setShaderTexture(0, EIdentifier.of("textures/gui/inventor_table/it_staff_" + part.getName() + ".png"));
+                context.drawTexture(TEXTURE, partX-1, partY-1, 0, 0, 16, 16, 16, 16);
+                context.pop();
             }
         }
     }
 
-    private void renderItemIcon(int index, MatrixStack matrices, String iconPath, int x, int y) {
+    private void renderItemIcon(int index, DrawContext context, String iconPath, int x, int y) {
         if (handler.getSlot(index).getStack().isEmpty()) {
-            matrices.push();
-            RenderSystem.setShaderTexture(0, new EIdentifier(iconPath));
+            context.push();
             RenderSystem.enableBlend();
-            DrawableHelper.drawTexture(matrices, x, y, 0, 0, 16, 16, 16, 16);
-            matrices.pop();
+            context.drawTexture(EIdentifier.of(iconPath), x, y, 0, 0, 16, 16, 16, 16);
+            context.pop();
         }
     }
 
@@ -151,11 +148,11 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         int i = this.getRows() - 4;
         if (!aLotOfParts || i <= 0) return true;
 
-        float f = (float)amount / (float)i;
+        float f = (float)verticalAmount / i;
         scrollPosition = MathHelper.clamp(scrollPosition - f, 0.0F, 1.0F);
         visibleTopRow = Math.max((int) (scrollPosition * i + 0.5F), 0);
 
@@ -167,10 +164,10 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackground(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override
@@ -183,8 +180,8 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
 
     private void drawItem(int x, int y, float tickDelta, ItemStack stack) {
         // TODO: 06.10.2023 fix animation lag
-        MatrixStack matrixStack = RenderSystem.getModelViewStack();
-        matrixStack.push();
+        Matrix4fStack matrixStack = RenderSystem.getModelViewStack();
+        matrixStack.pushMatrix();
         matrixStack.translate(x, y, 1050.0F);
         matrixStack.scale(1.0F, 1.0F, -1.0F);
         RenderSystem.applyModelViewMatrix();
@@ -212,7 +209,7 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         renderItem(renderStack, world, stack, immediate, tickDelta, itemRenderer);
         immediate.draw();
         entityRenderDispatcher.setRenderShadows(true);
-        matrixStack.pop();
+        matrixStack.popMatrix();
         RenderSystem.applyModelViewMatrix();
         DiffuseLighting.enableGuiDepthLighting();
     }
@@ -227,7 +224,7 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-45));
         float zScale = bakedModel.getTransformation().fixed.scale.z();
 
-        itemRenderer.renderItem(itemStack, ModelTransformation.Mode.FIXED, false, matrices, vertexConsumers, 15728880, OverlayTexture.DEFAULT_UV, bakedModel);
+        itemRenderer.renderItem(itemStack, ModelTransformationMode.FIXED, false, matrices, vertexConsumers, 15728880, OverlayTexture.DEFAULT_UV, bakedModel);
         if (!hasDepth) matrices.translate(0.0F, 0.0F, 0.09375F * zScale);
         matrices.pop();
     }

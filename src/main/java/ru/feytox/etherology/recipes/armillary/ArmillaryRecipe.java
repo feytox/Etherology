@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.armillary.ArmillaryMatrixBlockEntity;
@@ -35,7 +36,7 @@ public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
     }
 
     @Override
-    public ItemStack craft(ArmillaryMatrixBlockEntity inventory) {
+    public ItemStack craft(ArmillaryMatrixBlockEntity inventory, RegistryWrapper.WrapperLookup lookup) {
         return ItemStack.EMPTY;
     }
 
@@ -45,6 +46,10 @@ public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
     }
 
     @Override
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
+        return getOutput();
+    }
+
     public ItemStack getOutput() {
         return outputStack.copy();
     }

@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.crate;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
@@ -26,10 +28,10 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
 
     private static final VoxelShape NORTH_SHAPE;
     private static final VoxelShape WEST_SHAPE;
-
+    private static final MapCodec<CrateBlock> CODEC = MapCodec.unit(CrateBlock::new);
 
     public CrateBlock() {
-        super(FabricBlockSettings.copy(Blocks.CHEST).nonOpaque());
+        super(Settings.copy(Blocks.CHEST).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH));
     }
@@ -40,7 +42,7 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     }
 
     @Override
-    public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
         return true;
     }
 
@@ -64,7 +66,7 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) return ActionResult.SUCCESS;
 
         NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
@@ -73,7 +75,7 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     }
 
     @Override
-    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
         return EBlocks.CRATE.getItem().getDefaultStack();
     }
 
@@ -95,7 +97,7 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+        return getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Nullable
@@ -112,5 +114,10 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     static {
         NORTH_SHAPE = createCuboidShape(1, 0, 3, 15, 10, 13);
         WEST_SHAPE = createCuboidShape(3, 0, 1, 13, 10, 15);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
     }
 }

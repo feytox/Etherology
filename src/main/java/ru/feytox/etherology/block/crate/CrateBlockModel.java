@@ -7,16 +7,16 @@ import software.bernie.geckolib.model.GeoModel;
 public class CrateBlockModel extends GeoModel<CrateBlockEntity> {
     @Override
     public Identifier getModelResource(CrateBlockEntity animatable) {
-        return new EIdentifier("geo/crate.geo.json");
+        return EIdentifier.of("geo/crate.geo.json");
     }
 
     @Override
     public Identifier getTextureResource(CrateBlockEntity animatable) {
-        return new EIdentifier("textures/block/crate.png");
+        return EIdentifier.of("textures/block/crate.png");
     }
 
     @Override
     public Identifier getAnimationResource(CrateBlockEntity animatable) {
-        return new EIdentifier("animations/crate.animation.json");
+        return EIdentifier.of("animations/crate.animation.json");
     }
 }

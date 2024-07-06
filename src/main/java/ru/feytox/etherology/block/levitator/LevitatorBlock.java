@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.levitator;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,17 +19,20 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
+import java.util.Map;
+
 import static net.minecraft.state.property.Properties.POWER;
 import static net.minecraft.state.property.Properties.POWERED;
 import static ru.feytox.etherology.registry.block.EBlocks.LEVITATOR_BLOCK_ENTITY;
 
-@SuppressWarnings("deprecation")
 public class LevitatorBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
+
+    private static final MapCodec<LevitatorBlock> CODEC = MapCodec.unit(LevitatorBlock::new);
     protected static final BooleanProperty PUSHING = BooleanProperty.of("pushing");
     protected static final BooleanProperty WITH_FUEL = BooleanProperty.of("with_fuel");
 
     public LevitatorBlock() {
-        super(FabricBlockSettings.copy(Blocks.CRAFTING_TABLE));
+        super(Settings.copy(Blocks.CRAFTING_TABLE));
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.DOWN)
                 .with(PUSHING, true)
@@ -38,7 +42,7 @@ public class LevitatorBlock extends FacingBlock implements RegistrableBlock, Blo
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) return ActionResult.SUCCESS;
         boolean pushing = state.get(PUSHING);
         world.setBlockState(pos, state.with(PUSHING, !pushing));
@@ -85,5 +89,10 @@ public class LevitatorBlock extends FacingBlock implements RegistrableBlock, Blo
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new LevitatorBlockEntity(pos, state);
+    }
+
+    @Override
+    protected MapCodec<? extends FacingBlock> getCodec() {
+        return CODEC;
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -35,8 +36,7 @@ import ru.feytox.etherology.util.misc.UniqueProvider;
 
 import static ru.feytox.etherology.registry.block.EBlocks.JEWELRY_TABLE_BLOCK_ENTITY;
 
-public class JewelryBlockEntity extends TickableBlockEntity
-        implements EtherStorage, ImplementedInventory, UniqueProvider, NamedScreenHandlerFactory, SidedInventory {
+public class JewelryBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, UniqueProvider, NamedScreenHandlerFactory, SidedInventory {
 
     private static final int TICK_RATE = 10;
     private static final int IDLE_TICK_RATE = 7;
@@ -156,18 +156,18 @@ public class JewelryBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
 
-        inventory.writeNbt(nbt);
+        inventory.writeNbt(nbt, registryLookup);
         nbt.putFloat("ether", storedEther);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
-        inventory.readNbt(nbt);
+        inventory.readNbt(nbt, registryLookup);
         storedEther = nbt.getFloat("ether");
     }
 

@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.brewingCauldron;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
 
-import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
+import static net.minecraft.client.render.model.json.ModelTransformationMode.FIXED;
 
 public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBlockEntity> {
     private final BlockEntityRendererFactory.Context ctx;
@@ -31,7 +32,7 @@ public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBl
 
     @Override
     public void defaultRender(MatrixStack matrices, BrewingCauldronBlockEntity cauldron, VertexConsumerProvider vertexConsumers, @Nullable RenderLayer renderType, @Nullable VertexConsumer buffer, float yaw, float tickDelta, int light) {
-        int overlay = getPackedOverlay(animatable, 0);
+        int overlay = getPackedOverlay(animatable, 0, tickDelta);
         renderItems(matrices, cauldron, vertexConsumers, tickDelta, light, overlay);
 
         super.defaultRender(matrices, cauldron, vertexConsumers, renderType, buffer, yaw, tickDelta, light);
@@ -70,7 +71,7 @@ public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBl
         matrices.translate(centerPoint.x + dx, centerPoint.y, centerPoint.z + dz);
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
         matrices.scale(0.15f, 0.15f, 0.15f);
-        itemRenderer.renderItem(itemStack, FIXED, light, overlay, matrices, vertexConsumers, 621);
+        itemRenderer.renderItem(itemStack, FIXED, light, overlay, matrices, vertexConsumers, MinecraftClient.getInstance().world, 621);
         matrices.pop();
     }
 }

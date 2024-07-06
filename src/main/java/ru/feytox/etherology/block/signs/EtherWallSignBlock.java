@@ -2,13 +2,15 @@ package ru.feytox.etherology.block.signs;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.WallSignBlock;
+import net.minecraft.block.WoodType;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.SignType;
 import net.minecraft.util.math.BlockPos;
 
+@Deprecated
 public class EtherWallSignBlock extends WallSignBlock {
-    public EtherWallSignBlock(Settings settings, SignType signType) {
-        super(settings, signType);
+
+    public EtherWallSignBlock(Settings settings, WoodType signType) {
+        super(signType, settings);
     }
 
     @Override

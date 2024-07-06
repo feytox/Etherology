@@ -13,6 +13,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -54,19 +55,16 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient || !state.get(STALLED)) return super.onUse(state, world, pos, player, hand, hit);
-
-        ItemStack handStack = player.getStackInHand(Hand.MAIN_HAND);
-        if (!handStack.isOf(EItems.THUJA_OIL)) return ActionResult.FAIL;
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (world.isClient || !state.get(STALLED)) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        if (!stack.isOf(EItems.THUJA_OIL)) return ItemActionResult.FAIL;
 
         if (world.getBlockEntity(pos) instanceof AbstractEtherealGeneratorBlockEntity generator) {
-            handStack.decrement(1);
+            stack.decrement(1);
             generator.unstall((ServerWorld) world, state);
-            return ActionResult.SUCCESS;
         }
 
-        return ActionResult.SUCCESS;
+        return ItemActionResult.SUCCESS;
     }
 
     @Override

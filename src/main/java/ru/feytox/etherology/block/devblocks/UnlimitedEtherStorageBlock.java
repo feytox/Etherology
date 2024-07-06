@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -17,7 +17,7 @@ import static ru.feytox.etherology.registry.block.DevBlocks.UNLIMITED_ETHER_STOR
 
 public class UnlimitedEtherStorageBlock extends Block implements RegistrableBlock, BlockEntityProvider {
     public UnlimitedEtherStorageBlock() {
-        super(FabricBlockSettings.of(Material.METAL));
+        super(Settings.copy(Blocks.BEDROCK));
     }
 
     @Nullable

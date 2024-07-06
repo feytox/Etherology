@@ -26,7 +26,7 @@ public class ProjectileEntityMixin {
     private void cancelByEtherShield(HitResult hitResult, CallbackInfo ci) {
         if (!(hitResult instanceof EntityHitResult entityHitResult)) return;
         ProjectileEntity projectile = ((ProjectileEntity) (Object) this);
-        World world = projectile.getWorld();
+        World world = projectile.method_48926();
         if (world == null || world.isClient) return;
         Entity entity = entityHitResult.getEntity();
         if (!(entity instanceof LivingEntity target)) return;

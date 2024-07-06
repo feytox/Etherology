@@ -11,6 +11,7 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -69,7 +70,7 @@ public class PedestalBlockEntity extends TickableBlockEntity
             }
 
             // взятие похожего предмета с пьедестала
-            if (ItemStack.canCombine(handStack, pedestalStack) && handStack.getCount() < handStack.getMaxCount()) {
+            if (ItemStack.areItemsAndComponentsEqual(handStack, pedestalStack) && handStack.getCount() < handStack.getMaxCount()) {
                 setStack(0, ItemStack.EMPTY);
                 handStack.increment(1);
                 player.setStackInHand(hand, handStack);
@@ -101,7 +102,7 @@ public class PedestalBlockEntity extends TickableBlockEntity
         if (!(blockItem.getBlock() instanceof DyedCarpetBlock carpet)) return false;
 
         // взятие ковра в стак с коврами
-        if (ItemStack.canCombine(handStack, carpetStack) && handStack.getCount() < handStack.getMaxCount()) {
+        if (ItemStack.areItemsAndComponentsEqual(handStack, carpetStack) && handStack.getCount() < handStack.getMaxCount()) {
             setStack(1, ItemStack.EMPTY);
             handStack.increment(1);
             player.setStackInHand(hand, handStack);
@@ -153,18 +154,18 @@ public class PedestalBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, items);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, items, registryLookup);
         nbt.putBoolean("removed", removed);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
         items.clear();
-        Inventories.readNbt(nbt, items);
+        Inventories.readNbt(nbt, items, registryLookup);
         removed = nbt.getBoolean("removed");
     }
 
@@ -174,9 +175,9 @@ public class PedestalBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    public @Nullable AspectContainer getRevelationAspects() {
-        if (items.get(0).isEmpty()) return null;
-        return AspectsLoader.getAspects(items.get(0), false).orElse(null);
+    public AspectContainer getRevelationAspects() {
+        if (items.getFirst().isEmpty()) return null;
+        return AspectsLoader.getAspects(items.getFirst(), false).orElse(null);
     }
 
     @Override

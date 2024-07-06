@@ -15,17 +15,17 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Wearable;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import ru.feytox.etherology.model.custom.RevelationViewModel;
 import ru.feytox.etherology.registry.item.ArmorItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-public class RevelationViewItem extends TrinketItem implements Wearable, TrinketRenderer {
+public class RevelationViewItem extends TrinketItem implements Equipment, TrinketRenderer {
 
-    private static final Identifier TEXTURE = new EIdentifier("textures/entity/trinket/revelation_view.png");
+    private static final Identifier TEXTURE = EIdentifier.of("textures/entity/trinket/revelation_view.png");
     private BipedEntityModel<LivingEntity> model;
 
     public RevelationViewItem() {
@@ -34,7 +34,7 @@ public class RevelationViewItem extends TrinketItem implements Wearable, Trinket
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        World world = entity.getWorld();
+        World world = entity.method_48926();
         if (world == null || !world.isClient) return;
         if (!(entity instanceof PlayerEntity player)) return;
         RevelationViewRenderer.tickData(world, player);

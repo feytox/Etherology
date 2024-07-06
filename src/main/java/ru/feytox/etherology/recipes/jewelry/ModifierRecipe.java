@@ -40,7 +40,7 @@ public class ModifierRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getResult() {
         return ItemStack.EMPTY;
     }
 

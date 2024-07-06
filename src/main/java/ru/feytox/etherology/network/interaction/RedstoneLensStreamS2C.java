@@ -18,7 +18,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 @RequiredArgsConstructor
 public class RedstoneLensStreamS2C extends AbstractS2CPacket {
 
-    public static final EIdentifier ID = new EIdentifier("redstone_lens_stream_s2c");
+    public static final EIdentifier ID = EIdentifier.of("redstone_lens_stream_s2c");
 
     private final Vec3d startPos;
     private final Vec3d endPos;

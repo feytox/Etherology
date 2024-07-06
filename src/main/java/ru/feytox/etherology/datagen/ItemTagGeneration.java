@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
 
-    public static final TagKey<Item> PEACH_LOGS = TagKey.of(RegistryKeys.ITEM, new EIdentifier("peach_logs"));
+    public static final TagKey<Item> PEACH_LOGS = TagKey.of(RegistryKeys.ITEM, EIdentifier.of("peach_logs"));
 
     public ItemTagGeneration(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture, @Nullable BlockTagProvider blockTagProvider) {
         super(output, completableFuture, blockTagProvider);

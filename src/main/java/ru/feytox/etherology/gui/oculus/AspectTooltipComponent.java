@@ -16,10 +16,10 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Map;
 
-import static net.minecraft.client.gui.DrawableHelper.drawTexture;
+import static net.minecraft.client.gui.DrawContext.drawTexture;
 
 public class AspectTooltipComponent implements TooltipComponent {
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/aspects.png");
+    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/aspects.png");
     private static final int LINE_MAX = 5;
     private final AspectContainer aspects;
 

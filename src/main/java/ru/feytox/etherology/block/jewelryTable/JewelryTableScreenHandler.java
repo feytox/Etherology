@@ -86,7 +86,7 @@ public class JewelryTableScreenHandler extends ScreenHandler {
             return ItemStack.EMPTY;
         }
 
-        if (originalStack.isEmpty()) slot.setStack(ItemStack.EMPTY);
+        if (originalStack.isEmpty()) slot.setStackNoCallbacks(ItemStack.EMPTY);
         else slot.markDirty();
 
         return newStack;
@@ -98,8 +98,8 @@ public class JewelryTableScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public void close(PlayerEntity player) {
+    public void onClosed(PlayerEntity player) {
         tableInv.onClose(player);
-        super.close(player);
+        super.onClosed(player);
     }
 }

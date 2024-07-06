@@ -15,7 +15,7 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
     public static final BrokenRecipe INSTANCE = new BrokenRecipe();
 
     public BrokenRecipe() {
-        super(LensPattern.empty(), 6, new EIdentifier("broken_lens_jewelry"));
+        super(LensPattern.empty(), 6, EIdentifier.of("broken_lens_jewelry"));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getResult() {
         return ItemStack.EMPTY;
     }
 

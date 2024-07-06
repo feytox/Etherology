@@ -39,8 +39,8 @@ import java.util.stream.IntStream;
 
 public class StaffLensesScreen extends Screen {
 
-    private static final Identifier TEXTURE = new EIdentifier("textures/gui/lens_selection_bg.png");
-    private static final Identifier BUTTON_TEXTURE = new EIdentifier("textures/gui/staff_mode_selection.png");
+    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/lens_selection_bg.png");
+    private static final Identifier BUTTON_TEXTURE = EIdentifier.of("textures/gui/staff_mode_selection.png");
     private static Boolean invMoveLoaded = null;
     private static final int LENSES_REFRESH_RATE = 10;
     private static final float MENU_OPEN_DELAY = 7.5f;
@@ -80,8 +80,8 @@ public class StaffLensesScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
         if (client == null || client.world == null) return;
         renderTick(delta);
 

@@ -17,6 +17,7 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -57,7 +58,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     public static final VoxelShape UP_SHAPE;
 
     public EtherealChannel() {
-        super(FabricBlockSettings.of(Material.METAL).strength(1.0f).nonOpaque());
+        super(Settings.create().mapColor(MapColor.BROWN).strength(1.0f).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(FACING, Direction.NORTH)
@@ -77,16 +78,15 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (state.get(IN_CASE)) return super.onUse(state, world, pos, player, hand, hit);
-        ItemStack handStack = player.getStackInHand(hand);
-        if (!handStack.isOf(EBlocks.ETHEREAL_CHANNEL_CASE.getItem())) return super.onUse(state, world, pos, player, hand, hit);
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (state.get(IN_CASE)) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        if (!stack.isOf(EBlocks.ETHEREAL_CHANNEL_CASE.getItem())) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 
-        if (!player.isCreative()) handStack.decrement(1);
+        if (!player.isCreative()) stack.decrement(1);
         world.setBlockState(pos, state.with(IN_CASE, true));
         world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
-        return ActionResult.SUCCESS;
+        return ItemActionResult.SUCCESS;
     }
 
     @Override

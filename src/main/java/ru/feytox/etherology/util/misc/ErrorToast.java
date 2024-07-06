@@ -1,5 +1,6 @@
 package ru.feytox.etherology.util.misc;
 
+import ;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ui.util.Drawer;
 import net.minecraft.client.MinecraftClient;

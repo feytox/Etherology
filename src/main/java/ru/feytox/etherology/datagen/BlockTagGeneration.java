@@ -23,7 +23,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.*;
 
 public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
-    public static final TagKey<Block> PEACH_LOGS = TagKey.of(RegistryKeys.BLOCK, new EIdentifier("peach_logs"));
+    public static final TagKey<Block> PEACH_LOGS = TagKey.of(RegistryKeys.BLOCK, EIdentifier.of("peach_logs"));
 
     public BlockTagGeneration(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);

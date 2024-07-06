@@ -23,6 +23,6 @@ public class EventsRegistry {
     }
 
     private static GameEvent registerGameEvent(String id, int range) {
-        return Registry.register(Registries.GAME_EVENT, new EIdentifier(id), new GameEvent(id, range));
+        return Registry.register(Registries.GAME_EVENT, EIdentifier.of(id), new GameEvent(id, range));
     }
 }

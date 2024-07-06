@@ -12,6 +12,7 @@ import ru.feytox.etherology.mixin.ModelAccessor;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 @UtilityClass
 public class ModelUtil {

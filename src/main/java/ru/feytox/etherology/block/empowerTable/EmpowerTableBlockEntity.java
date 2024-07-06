@@ -8,9 +8,10 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -27,6 +28,7 @@ import ru.feytox.etherology.util.misc.UpdatableInventory;
 import static ru.feytox.etherology.registry.block.EBlocks.EMPOWERMENT_TABLE_BLOCK_ENTITY;
 
 public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInventory, SidedInventory, NamedScreenHandlerFactory {
+
     // 0-4 - items, 5 - rela, 6 - via, 7 - clos, 8 - keta, 9 - result
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(10, ItemStack.EMPTY);
     private boolean hasResult = false;
@@ -98,8 +100,8 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
 
     public void craftAll(ItemStack resultStack) {
         craft(true);
-        while (canCraft() && resultStack.getCount() + currentRecipe.getOutput().getCount() < resultStack.getMaxCount()) {
-            if (craft(false)) resultStack.increment(currentRecipe.getOutput().getCount());
+        while (canCraft() && resultStack.getCount() + currentRecipe.getResult().getCount() < resultStack.getMaxCount()) {
+            if (craft(false)) resultStack.increment(currentRecipe.getResult().getCount());
         }
         updateResult();
     }
@@ -127,7 +129,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
 
     public void updateResult() {
         ItemStack outputStack = ItemStack.EMPTY;
-        if (canCraft()) outputStack = currentRecipe.getOutput();
+        if (canCraft()) outputStack = currentRecipe.getResult();
         cacheShards(currentRecipe);
         setStack(9, outputStack);
         markDirty();
@@ -163,8 +165,8 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        return createNbt(registryLookup);
     }
 
     @Nullable
@@ -174,23 +176,23 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, inventory);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, inventory, registryLookup);
         nbt.putBoolean("has_result", hasResult);
         nbt.putInt("cached_rela", cachedRela);
         nbt.putInt("cached_via", cachedVia);
         nbt.putInt("cached_clos", cachedClos);
         nbt.putInt("cached_keta", cachedKeta);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         inventory.clear();
-        Inventories.readNbt(nbt, inventory);
+        Inventories.readNbt(nbt, inventory, registryLookup);
         hasResult = nbt.getBoolean("has_result");
         cachedRela = nbt.getInt("cached_rela");
         cachedVia = nbt.getInt("cached_via");

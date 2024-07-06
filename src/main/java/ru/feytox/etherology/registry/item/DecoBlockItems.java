@@ -38,7 +38,7 @@ public class DecoBlockItems {
     public static final Item RESONATING_WAND = registerSimpleItem("resonating_wand");
 
     private static Item registerSimpleItem(String id) {
-        return Registry.register(Registries.ITEM, new EIdentifier(id), new Item(new FabricItemSettings()));
+        return Registry.register(Registries.ITEM, EIdentifier.of(id), new Item(new FabricItemSettings()));
     }
 
     private static Item registerBlockItem(BlockItem blockItem) {
@@ -48,7 +48,7 @@ public class DecoBlockItems {
 
     public static Item registerAliasedBlockItem(String id, Block block) {
         AliasedBlockItem aliasedBlockItem = new AliasedBlockItem(block, new FabricItemSettings());
-        Registry.register(Registries.ITEM, new EIdentifier(id), aliasedBlockItem);
+        Registry.register(Registries.ITEM, EIdentifier.of(id), aliasedBlockItem);
         return aliasedBlockItem;
     }
 

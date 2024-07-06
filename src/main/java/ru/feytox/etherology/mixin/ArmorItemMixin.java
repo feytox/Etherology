@@ -28,6 +28,6 @@ public class ArmorItemMixin {
     private void injectEbonySpeedBoost(ArmorMaterial material, EquipmentSlot slot, Item.Settings settings, CallbackInfo ci, @Local ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder) {
         if (!material.equals(EtherArmorMaterials.EBONY)) return;
         UUID uUID = MODIFIERS[slot.getEntitySlotId()];
-        builder.put(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(uUID, "Armor movement speed", 0.075d, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+        builder.put(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(uUID, "Armor movement speed", 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     }
 }

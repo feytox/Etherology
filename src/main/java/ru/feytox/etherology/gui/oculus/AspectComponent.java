@@ -13,7 +13,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class AspectComponent extends FlowLayout {
 
-    public static final EIdentifier TEXTURE = new EIdentifier("textures/gui/aspects.png");
+    public static final EIdentifier TEXTURE = EIdentifier.of("textures/gui/aspects.png");
 
     public AspectComponent(Aspect aspect, int value) {
         super(Sizing.content(), Sizing.content(), Algorithm.VERTICAL);

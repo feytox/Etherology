@@ -38,14 +38,14 @@ public class EtherEnchantments {
     }
 
     private void register(String id, Supplier<? extends Enchantment> enchantSupplier) {
-        Registry.register(Registries.ENCHANTMENT, new EIdentifier(id), enchantSupplier.get());
+        Registry.register(Registries.ENCHANTMENT, EIdentifier.of(id), enchantSupplier.get());
     }
 
     private static void registerBannedEnchantments() {
         banEnchant(BattlePickaxe.class, FORTUNE, SILK_TOUCH);
         banEnchant(BroadSwordItem.class, LOOTING);
         banEnchant(GlintItem.class, UNBREAKING, MENDING, VANISHING_CURSE);
-        banEnchant(TuningMaceItem.class, SHARPNESS, FIRE_ASPECT, LOOTING, SWEEPING);
+        banEnchant(TuningMaceItem.class, SHARPNESS, FIRE_ASPECT, LOOTING, SWEEPING_EDGE);
         banEnchant(LensItem.class, UNBREAKING, MENDING, VANISHING_CURSE);
     }
 

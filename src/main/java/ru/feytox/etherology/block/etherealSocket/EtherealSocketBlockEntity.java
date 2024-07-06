@@ -11,6 +11,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -37,8 +38,8 @@ import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
-public class EtherealSocketBlockEntity extends TickableBlockEntity
-        implements EtherStorage, ImplementedInventory, SidedInventory {
+public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, SidedInventory {
+
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private Boolean wasWithGlint = null;
     // TODO: 09.08.2023 deprecate
@@ -255,18 +256,18 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity
     public void setStoredEther(float value) {}
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, inventory);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, inventory, registryLookup);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         inventory.clear();
-        Inventories.readNbt(nbt, inventory);
+        Inventories.readNbt(nbt, inventory, registryLookup);
     }
 
     @Override

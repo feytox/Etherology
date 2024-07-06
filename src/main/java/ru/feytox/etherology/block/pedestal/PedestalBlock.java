@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.pedestal;
 
+import com.mojang.serialization.MapCodec;
 import lombok.val;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -31,6 +32,7 @@ import java.util.Optional;
 
 public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityProvider, RegistrableBlock {
 
+    private static final MapCodec<PedestalBlock> CODEC = MapCodec.unit(PedestalBlock::new);
     public static final EnumProperty<PedestalShape> SHAPE = EnumProperty.of("shape", PedestalShape.class);
     public static final BooleanProperty DECORATION = BooleanProperty.of("decoration");
     public static final EnumProperty<DyeColor> CLOTH_COLOR = EnumProperty.of("cloth_color", DyeColor.class);
@@ -40,7 +42,7 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
     private static final VoxelShape FULL_SHAPE;
 
     public PedestalBlock() {
-        super(FabricBlockSettings.copy(Blocks.STONE).nonOpaque());
+        super(Settings.copy(Blocks.STONE).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.NORTH)
                 .with(SHAPE, PedestalShape.FULL)
@@ -77,15 +79,14 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             PedestalBlockEntity pedestalBlockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
             if (pedestalBlockEntity != null) {
-                pedestalBlockEntity.interact((ServerWorld) world, state, player, hand);
+                pedestalBlockEntity.interact((ServerWorld) world, state, player, player.getActiveHand());
                 pedestalBlockEntity.syncData((ServerWorld) world);
             }
         }
-
 
         return ActionResult.CONSUME;
     }
@@ -141,5 +142,10 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
     @Override
     public String getBlockId() {
         return "pedestal";
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -25,17 +26,17 @@ import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
-public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlockEntity
-        implements EtherStorage, EGeoBlockEntity {
+public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlockEntity implements EtherStorage, EGeoBlockEntity {
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float storedEther;
     private int nextGenTime = 40*20;
@@ -212,17 +213,17 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putFloat("stored_ether", storedEther);
         nbt.putInt("next_gen_time", nextGenTime);
         nbt.putBoolean("is_mess", isMess);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         storedEther = nbt.getFloat("stored_ether");
         nextGenTime = nbt.getInt("next_gen_time");

@@ -5,6 +5,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -27,6 +28,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK;
 import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTITY;
 
 public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements EssenceConsumer {
+
     private static final float MAX_POINTS = 32.0f;
     private float points = 0;
     private boolean validated = false;
@@ -49,7 +51,7 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         syncData(serverWorld);
         updateBlockState(serverWorld, state, EssenceZoneType.EMPTY);
 
-        Optional<Item> match = Registries.ITEM.getOrEmpty(new EIdentifier("primoshard_" + zoneType.name().toLowerCase()));
+        Optional<Item> match = Registries.ITEM.getOrEmpty(EIdentifier.of("primoshard_" + zoneType.name().toLowerCase()));
         match.ifPresent(item ->
                 ItemScatterer.spawn(serverWorld, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
 
@@ -105,15 +107,15 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putFloat("points", points);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         points = nbt.getFloat("points");
     }

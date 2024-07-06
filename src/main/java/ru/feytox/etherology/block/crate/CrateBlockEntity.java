@@ -8,9 +8,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -23,14 +24,15 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static ru.feytox.etherology.registry.block.EBlocks.CRATE_BLOCK_ENTITY;
 
 public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, ImplementedInventory, NamedScreenHandlerFactory {
+
     private static final RawAnimation OPEN_ANIM;
     private static final RawAnimation CLOSE_ANIM;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
@@ -75,18 +77,16 @@ public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, Im
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, items);
-
-        super.writeNbt(nbt);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, items, registryLookup);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
         items.clear();
-        Inventories.readNbt(nbt, items);
+        Inventories.readNbt(nbt, items, registryLookup);
     }
 
     @Nullable
@@ -113,8 +113,8 @@ public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, Im
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        return createNbt(registryLookup);
     }
 
     static {

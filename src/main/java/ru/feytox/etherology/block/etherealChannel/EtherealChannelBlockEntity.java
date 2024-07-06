@@ -5,6 +5,7 @@ import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
@@ -118,17 +119,17 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putFloat("stored_ether", storedEther);
         nbt.putBoolean("evaporating", isEvaporating);
         nbt.putBoolean("cross_evaporating", isCrossEvaporating);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         storedEther = nbt.getFloat("stored_ether");
         isEvaporating = nbt.getBoolean("evaporating");

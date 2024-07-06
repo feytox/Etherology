@@ -15,7 +15,7 @@ public abstract class FeyRecipeSerializer<T extends Recipe<?>> implements Recipe
     private final RecipeType<T> recipeType = createType();
 
     public FeyRecipeSerializer(String id) {
-        this.id = new EIdentifier(id);
+        this.id = EIdentifier.of(id);
     }
 
     private RecipeType<T> createType() {

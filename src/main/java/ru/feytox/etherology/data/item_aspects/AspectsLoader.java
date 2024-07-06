@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.val;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -51,13 +51,13 @@ public class AspectsLoader implements IdentifiableResourceReloadListener {
         if (potionStack.getItem() instanceof SplashPotionItem) type = AspectContainerType.SPLASH_POTION;
         if (potionStack.getItem() instanceof LingeringPotionItem) type = AspectContainerType.LINGERING_POTION;
 
-        Potion potion = PotionUtil.getPotion(potionStack);
+        Potion potion = PotionContentsComponent.getPotion(potionStack);
         val potionId = AspectContainerId.of(Registries.POTION.getId(potion), type);
         return Optional.ofNullable(cache.get(potionId));
     }
 
     public static Optional<AspectContainer> getTippedAspects(ItemStack tippedStack) {
-        Potion potion = PotionUtil.getPotion(tippedStack);
+        Potion potion = PotionContentsComponent.getPotion(tippedStack);
         val tippedId = AspectContainerId.of(Registries.POTION.getId(potion), AspectContainerType.TIPPED_ARROW);
         return Optional.ofNullable(cache.get(tippedId));
     }
@@ -69,7 +69,7 @@ public class AspectsLoader implements IdentifiableResourceReloadListener {
 
     @Override
     public Identifier getFabricId() {
-        return new EIdentifier("etherology_aspects");
+        return EIdentifier.of("etherology_aspects");
     }
 
     @Override

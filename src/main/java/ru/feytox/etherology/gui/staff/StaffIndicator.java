@@ -19,7 +19,7 @@ import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
-import static net.minecraft.client.gui.DrawableHelper.GUI_ICONS_TEXTURE;
+import static net.minecraft.client.gui.DrawContext.GUI_ICONS_TEXTURE;
 
 @Environment(EnvType.CLIENT)
 public class StaffIndicator {

@@ -24,15 +24,17 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
 public class EtherealForkBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+
     private static final VoxelShape CENTER_SHAPE;
 
     public EtherealForkBlock() {
-        super(FabricBlockSettings.of(Material.METAL).strength(1.0F).nonOpaque());
+        super(Settings.create().mapColor(MapColor.BROWN).strength(1.0F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(NORTH, PipeSide.EMPTY)

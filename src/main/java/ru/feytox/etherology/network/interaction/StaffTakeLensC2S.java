@@ -13,7 +13,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class StaffTakeLensC2S extends AbstractC2SPacket {
 
-    public static final Identifier ID = new EIdentifier("staff_take_lens_c2s");
+    public static final Identifier ID = EIdentifier.of("staff_take_lens_c2s");
 
     public static void receive(C2SPacketInfo packetInfo) {
         ServerPlayerEntity player = packetInfo.player();

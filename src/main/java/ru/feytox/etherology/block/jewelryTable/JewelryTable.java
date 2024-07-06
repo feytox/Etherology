@@ -41,7 +41,7 @@ public class JewelryTable extends Block implements RegistrableBlock, BlockEntity
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
             if (screenHandlerFactory != null) player.openHandledScreen(screenHandlerFactory);

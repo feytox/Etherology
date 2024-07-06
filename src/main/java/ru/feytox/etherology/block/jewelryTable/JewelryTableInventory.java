@@ -10,6 +10,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -42,7 +43,7 @@ public class JewelryTableInventory implements ImplementedInventory {
         AbstractJewelryRecipe recipe = getRecipe(world);
         if (recipe == null) return;
 
-        ItemStack newLens = recipe.craft(this);
+        ItemStack newLens = recipe.craft(this, world.getRegistryManager());
 
         setStack(0, newLens);
         markDirty();
@@ -218,15 +219,15 @@ public class JewelryTableInventory implements ImplementedInventory {
         if (parent != null) parent.trySyncData();
     }
 
-    public void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, items);
+    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, items, registryLookup);
         String recipeStr = currentRecipe == null ? "" : currentRecipe.toString();
         nbt.putString("recipe", recipeStr);
     }
 
-    public void readNbt(NbtCompound nbt) {
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         items.clear();
-        Inventories.readNbt(nbt, items);
+        Inventories.readNbt(nbt, items, registryLookup);
         String recipeStr = nbt.getString("recipe");
         currentRecipe = recipeStr.isEmpty() ? null : Identifier.tryParse(recipeStr);
     }

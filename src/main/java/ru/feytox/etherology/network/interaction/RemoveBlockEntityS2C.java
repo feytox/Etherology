@@ -12,7 +12,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 @RequiredArgsConstructor
 public class RemoveBlockEntityS2C extends AbstractS2CPacket {
 
-    public static final Identifier ID = new EIdentifier("remove_block_entity_s2c");
+    public static final Identifier ID = EIdentifier.of("remove_block_entity_s2c");
 
     private final BlockPos blockPos;
 

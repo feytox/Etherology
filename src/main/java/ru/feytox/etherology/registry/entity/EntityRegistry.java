@@ -31,6 +31,6 @@ public class EntityRegistry {
     private static <T extends Entity> EntityType<T> registerType(String id, SpawnGroup spawnGroup, EntityType.EntityFactory<T> factory, Consumer<FabricEntityTypeBuilder<T>> extraOptions) {
         val builder = FabricEntityTypeBuilder.create(spawnGroup, factory);
         extraOptions.accept(builder);
-        return Registry.register(Registries.ENTITY_TYPE, new EIdentifier(id), builder.build());
+        return Registry.register(Registries.ENTITY_TYPE, EIdentifier.of(id), builder.build());
     }
 }

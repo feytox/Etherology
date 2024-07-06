@@ -22,7 +22,7 @@ import static ru.feytox.etherology.registry.item.ToolItems.*;
 @UtilityClass
 public class EItemGroups {
 
-    private static final ItemGroup ETHEROLOGY_ITEMS = FabricItemGroup.builder(new EIdentifier("etherology_items"))
+    private static final ItemGroup ETHEROLOGY_ITEMS = FabricItemGroup.builder(EIdentifier.of("etherology_items"))
             .icon(() -> new ItemStack(TELDECORE))
             .displayName(Text.of("Etherology"))
             .build();

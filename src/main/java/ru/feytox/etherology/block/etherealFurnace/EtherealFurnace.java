@@ -30,16 +30,17 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FURNACE_BLOCK_ENTITY;
 
 public class EtherealFurnace extends Block implements BlockEntityProvider, RegistrableBlock {
+
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
     public static final BooleanProperty LIT = Properties.LIT;
 
     public EtherealFurnace() {
-        super(FabricBlockSettings.copy(Blocks.STONE));
+        super(Settings.copy(Blocks.STONE));
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(LIT, false));
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             NamedScreenHandlerFactory factory = (NamedScreenHandlerFactory) world.getBlockEntity(pos);
             if (factory != null) {
@@ -70,7 +71,7 @@ public class EtherealFurnace extends Block implements BlockEntityProvider, Regis
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override

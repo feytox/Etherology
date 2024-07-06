@@ -13,8 +13,9 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -41,9 +42,9 @@ import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
@@ -53,6 +54,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.BREWING_CAULDRON_BLOCK
 import static ru.feytox.etherology.registry.particle.EtherParticleTypes.STEAM;
 
 public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeoBlockEntity, RevelationAspectProvider {
+
     private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
 
     @Getter
@@ -113,7 +115,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
         Random random = world.getRandom();
         for (int i = 0; i < random.nextBetween(1, 4); i++) {
-            DefaultParticleType effect = random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.BUBBLE_POP;
+            SimpleParticleType effect = random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.BUBBLE_POP;
             Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
             start = start.add(FeyParticleEffect.getRandomPos(random, 0.25, 0.05, 0.25));
             world.addParticle(effect, start.x, start.y, start.z, 0, 0.001, 0);
@@ -283,13 +285,13 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     private ItemStack craft(ServerWorld world, ItemStack itemStack, CauldronRecipe recipe, BlockState state) {
         CauldronRecipeInventory inventory;
-        Item outputItem = recipe.getOutput().getItem();
+        Item outputItem = recipe.getResult().getItem();
         int count = 0;
 
         do {
             itemStack.decrement(recipe.getInputAmount());
             aspects = aspects.subtract(recipe.getInputAspects());
-            count += recipe.getOutput().getCount();
+            count += recipe.getResult().getCount();
 
             int oldLevel = state.get(BrewingCauldronBlock.LEVEL);
             state = state.with(BrewingCauldronBlock.LEVEL, oldLevel-1);
@@ -302,24 +304,24 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putInt("temperature", temperature);
         nbt.putBoolean("wasWithAspects", wasWithAspects);
         aspects.writeNbt(nbt);
-        Inventories.writeNbt(nbt, items);
+        Inventories.writeNbt(nbt, items, registryLookup);
 
-        super.writeNbt(nbt);
+        super.writeNbt(nbt, registryLookup);
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
 
         temperature = nbt.getInt("temperature");
         wasWithAspects = nbt.getBoolean("wasWithAspects");
         aspects = aspects.readNbt(nbt);
         items.clear();
-        Inventories.readNbt(nbt, items);
+        Inventories.readNbt(nbt, items, registryLookup);
     }
 
     @Override

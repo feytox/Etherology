@@ -71,7 +71,7 @@ public class EmpowerRecipeSerializer extends FeyRecipeSerializer<EmpowerRecipe> 
         buf.writeInt(recipe.getViaCount());
         buf.writeInt(recipe.getClosCount());
         buf.writeInt(recipe.getKetaCount());
-        buf.writeItemStack(recipe.getOutput());
+        buf.writeItemStack(recipe.getResult());
     }
 
     /**

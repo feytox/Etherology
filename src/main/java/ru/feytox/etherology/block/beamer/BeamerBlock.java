@@ -1,7 +1,10 @@
 package ru.feytox.etherology.block.beamer;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.component.type.SuspiciousStewEffectsComponent;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemPlacementContext;
@@ -26,14 +29,18 @@ import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
+import java.util.List;
+
 public class BeamerBlock extends PlantBlock implements Fertilizable, RegistrableBlock, SuspiciousStewIngredient {
+
+    public static final MapCodec<BeamerBlock> CODEC = MapCodec.unit(BeamerBlock::new);
     public static final int MAX_AGE = 3;
     public static final IntProperty AGE = Properties.AGE_3;
     public static final BooleanProperty IS_FARMLAND = BooleanProperty.of("is_farmland");
     private static final VoxelShape[] AGE_TO_SHAPE;
 
     public BeamerBlock() {
-        super(FabricBlockSettings.of(Material.PLANT).nonOpaque().ticksRandomly().sounds(BlockSoundGroup.GRASS).noCollision().offsetType(AbstractBlock.OffsetType.XZ).breakInstantly());
+        super(Settings.create().mapColor(MapColor.DARK_GREEN).nonOpaque().ticksRandomly().sounds(BlockSoundGroup.GRASS).noCollision().offset(AbstractBlock.OffsetType.XZ).breakInstantly());
         this.setDefaultState(getDefaultState()
                 .with(AGE, 0)
                 .with(IS_FARMLAND, false)
@@ -47,6 +54,11 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
             return downState.isIn(BlockTags.DIRT) || downState.isOf(Blocks.FARMLAND);
         }
         return downState.isOf(Blocks.FARMLAND);
+    }
+
+    @Override
+    protected MapCodec<? extends PlantBlock> getCodec() {
+        return CODEC;
     }
 
     @Override
@@ -97,7 +109,7 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
     }
 
     @Override
-    public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
         return !isMature(state);
     }
 
@@ -132,12 +144,7 @@ public class BeamerBlock extends PlantBlock implements Fertilizable, Registrable
     }
 
     @Override
-    public StatusEffect getEffectInStew() {
-        return StatusEffects.ABSORPTION;
-    }
-
-    @Override
-    public int getEffectInStewDuration() {
-        return 100;
+    public SuspiciousStewEffectsComponent getStewEffects() {
+        return new SuspiciousStewEffectsComponent(List.of(new SuspiciousStewEffectsComponent.StewEffect(StatusEffects.ABSORPTION, 100)));
     }
 }

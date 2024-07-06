@@ -64,7 +64,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack getResult() {
         return outputStack.copy();
     }
 

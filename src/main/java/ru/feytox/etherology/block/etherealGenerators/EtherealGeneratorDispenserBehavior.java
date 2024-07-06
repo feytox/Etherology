@@ -12,11 +12,12 @@ import net.minecraft.util.math.Direction;
 import static ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
 public class EtherealGeneratorDispenserBehavior extends ItemDispenserBehavior {
+
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-        Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
-        BlockPos checkPos = pointer.getPos().add(direction.getVector());
-        ServerWorld world = pointer.getWorld();
+        Direction direction = pointer.state().get(DispenserBlock.FACING);
+        BlockPos checkPos = pointer.pos().add(direction.getVector());
+        ServerWorld world = pointer.world();
 
         if (!(world.getBlockEntity(checkPos) instanceof AbstractEtherealGeneratorBlockEntity generator)) return super.dispenseSilently(pointer, stack);
 

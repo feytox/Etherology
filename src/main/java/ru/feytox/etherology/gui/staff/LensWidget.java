@@ -3,7 +3,7 @@ package ru.feytox.etherology.gui.staff;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -16,7 +16,7 @@ import static ru.feytox.etherology.gui.staff.StaffLensesScreen.ITEM_RADIUS;
 import static ru.feytox.etherology.gui.staff.StaffLensesScreen.LENS_OPEN_DELAY;
 
 @RequiredArgsConstructor
-public class LensWidget extends DrawableHelper {
+public class LensWidget extends DrawContext {
 
     private final ItemStack stack;
     private final Float angle;

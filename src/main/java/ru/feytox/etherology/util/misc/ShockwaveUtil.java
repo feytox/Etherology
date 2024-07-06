@@ -36,7 +36,7 @@ public class ShockwaveUtil {
         if (cooldown < 0.9) return false;
         if (!TwoHandheldSword.isUsing(attacker, TuningMaceItem.class)) return false;
 
-        World world = attacker.getWorld();
+        World world = attacker.method_48926();
         spawnResonationParticle(world, target);
         playAttackSound(world, attacker, target);
 

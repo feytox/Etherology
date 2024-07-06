@@ -19,7 +19,7 @@ public class EtherologyModels {
     public static final TextureKey STYLE = TextureKey.of("style");
 
     private static Model item(String parent, TextureKey... requiredTextureKeys) {
-        return new Model(Optional.of(new EIdentifier("item/" + parent)), Optional.empty(), requiredTextureKeys);
+        return new Model(Optional.of(EIdentifier.of("item/" + parent)), Optional.empty(), requiredTextureKeys);
     }
 
     @Nullable
@@ -30,7 +30,7 @@ public class EtherologyModels {
     }
 
     public static ModelIdentifier createItemModelId(String modelPath) {
-        return new ModelIdentifier(new EIdentifier(modelPath), "inventory");
+        return new ModelIdentifier(EIdentifier.of(modelPath), "inventory");
     }
 
     public static Model getStaffPartModel(StaffPartInfo partInfo) {

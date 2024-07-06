@@ -27,7 +27,7 @@ public class EtherSounds {
     public static void registerAll() {}
 
     private static SoundEvent register(String id) {
-        Identifier identifier = new EIdentifier(id);
+        Identifier identifier = EIdentifier.of(id);
         return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }
 }

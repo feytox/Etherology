@@ -1,6 +1,6 @@
 package ru.feytox.etherology.item;
 
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -20,7 +20,7 @@ public class PrimoShard extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipType context) {
         super.appendTooltip(stack, world, tooltip, context);
         Text lore = Text.translatable("lore.etherology.primoshard", shardId).formatted(Formatting.DARK_PURPLE);
         tooltip.add(1, lore);

@@ -13,7 +13,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 @Deprecated
 public class StopBlockAnimS2C extends AbstractS2CPacket {
-    public static final Identifier STOP_BLOCK_ANIM_PACKET_ID = new EIdentifier("stop_block_anim_packet");
+    public static final Identifier STOP_BLOCK_ANIM_PACKET_ID = EIdentifier.of("stop_block_anim_packet");
     private final BlockPos blockPos;
     private final String animName;
 
