@@ -16,7 +16,6 @@ public class SimpleItem extends Item {
         this.itemId = itemId;
     }
 
-    // TODO: Custom ItemGroup
     public SimpleItem(String itemId) {
         this(itemId, new FabricItemSettings());
     }

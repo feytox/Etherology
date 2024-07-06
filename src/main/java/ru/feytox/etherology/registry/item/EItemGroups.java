@@ -70,7 +70,7 @@ public class EItemGroups {
         // magic
         // TODO: 12.04.2024 fix corruption bucket
         etherItems.with(
-                OCULUS, REVELATION_VIEW, TELDECORE, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
+                OCULUS, REVELATION_VIEW, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
                 PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
         // materials
         etherItems.with(ETHEROSCOPE, BINDER, EBONY, RESONATING_WAND);

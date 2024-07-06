@@ -45,7 +45,6 @@ public class EItems {
     }
 
     public static void registerItems() {
-        // TODO: 29.10.2023 проверить необходимость
         DecoBlockItems.registerAll();
         ToolItems.registerAll();
         ArmorItems.registerAll();
