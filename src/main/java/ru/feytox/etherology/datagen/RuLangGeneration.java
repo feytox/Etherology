@@ -2,9 +2,11 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.registry.RegistryWrapper;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.datagen.util.RuTranslationBuilder;
 import ru.feytox.etherology.datagen.util.RuTranslationPart;
+import ru.feytox.etherology.enchantment.EtherEnchantments;
 import ru.feytox.etherology.enchantment.PealEnchantment;
 import ru.feytox.etherology.enchantment.ReflectionEnchantment;
 import ru.feytox.etherology.magic.lens.LensModifier;
@@ -14,6 +16,7 @@ import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.misc.EffectsRegistry;
 
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.SPILL_BARREL;
@@ -24,16 +27,18 @@ import static ru.feytox.etherology.registry.item.EItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 public class RuLangGeneration extends FabricLanguageProvider {
+
     private final String langCode;
 
-    public RuLangGeneration(FabricDataOutput dataOutput) {
-        // TODO: 12/04/2023 rename on release or smth
-        super(dataOutput, "en_us");
+    protected RuLangGeneration(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        // TODO: 07.07.2024 replace with "ru_ru"
+        super(dataOutput, "en_us", registryLookup);
         langCode = "en_us";
     }
 
+
     @Override
-    public void generateTranslations(TranslationBuilder translationBuilder) {
+    public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         RuTranslationBuilder builder = new RuTranslationBuilder(translationBuilder);
 
         builder.add(DecoBlocks.SLITHERITE, "Слизерит");
@@ -178,8 +183,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(FOREST_LANTERN_CRUMB, "Грибной мякиш");
         builder.add(LIGHTELET, "Колосвет");
 
-        builder.add(EffectsRegistry.DEVASTATION, "Опустошение");
-        builder.add(EffectsRegistry.VITAL_ENERGY, "Духовное восстановление");
+        builder.add(EffectsRegistry.DEVASTATION.value(), "Опустошение");
+        builder.add(EffectsRegistry.VITAL_ENERGY.value(), "Духовное восстановление");
         builder.add(EffectsRegistry.VITAL_ENERGY_POTION, "духовного восстановления");
 
         builder.add(TELDECORE, "Телдекор");
@@ -225,8 +230,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PEACH_TRAPDOOR, "Персиковый люк");
         builder.add(BREWING_CAULDRON, "Варочный тигель");
         builder.add(SEDIMENTARY_BLOCK, "Осадочный камень");
-        builder.add(PealEnchantment.INSTANCE.get(), "Раскат");
-        builder.add(ReflectionEnchantment.INSTANCE.get(), "Отражение");
+        builder.add(EtherEnchantments.PEAL, "Раскат");
+        builder.add(EtherEnchantments.REFLECTION, "Отражение");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();

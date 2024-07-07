@@ -11,7 +11,7 @@ public class PatternTabletItem extends Item {
     private final StaffStyles staffStyle;
 
     public PatternTabletItem(StaffStyles staffStyle) {
-        super(new FabricItemSettings());
+        super(new Settings());
         this.staffStyle = staffStyle;
     }
 }

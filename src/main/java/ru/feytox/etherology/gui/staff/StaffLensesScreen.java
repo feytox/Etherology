@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
@@ -92,9 +93,9 @@ public class StaffLensesScreen extends Screen {
         float centerY = height / 2.0f;
 
         if (percent == 1.0f) updateMouse(centerX, centerY, mouseX, mouseY, progress, circleScale);
-        renderCircle(matrices, centerX, centerY, progress, circleScale);
-        renderLenses(matrices, centerX, centerY, progress, circleScale);
-        renderButtons(matrices, centerX, centerY, progress, circleScale);
+        renderCircle(context, centerX, centerY, progress, circleScale);
+        renderLenses(context, centerX, centerY, progress, circleScale);
+        renderButtons(context, centerX, centerY, progress, circleScale);
     }
 
     private void renderTick(float delta) {
@@ -158,7 +159,7 @@ public class StaffLensesScreen extends Screen {
         return mouseX >= x0 && mouseX <= x0+width && mouseY >= y0 && mouseY <= y0+height;
     }
 
-    private void renderCircle(MatrixStack matrices, float centerX, float centerY, float progress, float circleScale) {
+    private void renderCircle(DrawContext context, float centerX, float centerY, float progress, float circleScale) {
         float scale = circleScale * progress;
         float circleWidth = 512.0f;
         float circleHeight = 512.0f;
@@ -167,69 +168,73 @@ public class StaffLensesScreen extends Screen {
 
         float angle = 2.35619449019f + ticks / 2400 * MathHelper.TAU; // 3pi/4
 
-        matrices.push();
+        context.push();
 
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1f, 1f, 1f, progress);
 
-        matrices.translate(centerX, centerY, 0);
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle));
-        matrices.translate(x, y, 0);
-        matrices.scale(scale, scale, scale);
-        RenderUtils.renderTexture(matrices, 0, 0, 0, 0, circleWidth, circleHeight, 512, 512);
+        context.translate(centerX, centerY, 0);
+        context.multiply(RotationAxis.POSITIVE_Z.rotation(angle));
+        context.translate(x, y, 0);
+        context.scale(scale, scale, scale);
+        RenderUtils.renderTexture(context, 0, 0, 0, 0, circleWidth, circleHeight, 512, 512);
 
-        matrices.pop();
+        context.pop();
     }
 
-    private void renderLenses(MatrixStack matrices, float centerX, float centerY, float progress, float circleScale) {
+    private void renderLenses(DrawContext context, float centerX, float centerY, float progress, float circleScale) {
         if (mainLensWidget != null) {
-            mainLensWidget.render(this, immediate, matrices, itemRenderer, centerX, centerY, progress, circleScale);
+            mainLensWidget.render(this, immediate, context, centerX, centerY, progress, circleScale);
         }
 
         if (lensWidgets == null || lensWidgets.isEmpty()) return;
 
-        lensWidgets.forEach(widget -> widget.render(this, immediate, matrices, itemRenderer, centerX, centerY, progress, circleScale));
+        lensWidgets.forEach(widget -> widget.render(this, immediate, context, centerX, centerY, progress, circleScale));
     }
 
     private static float getItemAngle(int index, int size) {
         return MathHelper.PI * (-0.5f + 2f * index / size);
     }
 
-    private void renderButtons(MatrixStack matrices, float centerX, float centerY, float progress, float circleScale) {
+    private void renderButtons(DrawContext context, float centerX, float centerY, float progress, float circleScale) {
         if (lensMode == null) return;
 
         boolean leftActive = lensMode.equals(LensMode.STREAM) || selected.equals(LensSelectionType.UP_ARROW);
         boolean rightActive = lensMode.equals(LensMode.CHARGE) || selected.equals(LensSelectionType.DOWN_ARROW);
 
-        renderButton(matrices, true, false, centerX, centerY, progress, circleScale);
-        renderButton(matrices, false, false, centerX, centerY, progress, circleScale);
+        renderButton(context, true, false, centerX, centerY, progress, circleScale);
+        renderButton(context, false, false, centerX, centerY, progress, circleScale);
 
-        if (leftActive) renderButton(matrices, true, true, centerX, centerY, progress, circleScale);
-        if (rightActive) renderButton(matrices, false, true, centerX, centerY, progress, circleScale);
+        if (leftActive) renderButton(context, true, true, centerX, centerY, progress, circleScale);
+        if (rightActive) renderButton(context, false, true, centerX, centerY, progress, circleScale);
     }
 
-    private void renderButton(MatrixStack matrices, boolean isLeft, boolean isActive, float centerX, float centerY, float progress, float circleScale) {
+    private void renderButton(DrawContext context, boolean isLeft, boolean isActive, float centerX, float centerY, float progress, float circleScale) {
         centerX += (isLeft ? -1 : 1) * BUTTON_OFFSET * circleScale * progress;
         int u = isLeft ? 11 : 60;
         int v = isActive ? 52 : 2;
 
-        matrices.push();
+        context.push();
 
         RenderSystem.setShaderTexture(0, BUTTON_TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1f, 1f, 1f, progress);
 
-        matrices.translate(centerX, centerY, 0);
-        matrices.scale(progress, progress, progress);
-        matrices.scale(BUTTON_SCALE, BUTTON_SCALE, BUTTON_SCALE);
-        matrices.translate(-BUTTON_WIDTH / 2, -BUTTON_HEIGHT / 2, 0);
+        context.translate(centerX, centerY, 0);
+        context.scale(progress, progress, progress);
+        context.scale(BUTTON_SCALE, BUTTON_SCALE, BUTTON_SCALE);
+        context.translate(-BUTTON_WIDTH / 2, -BUTTON_HEIGHT / 2, 0);
 
-        RenderUtils.renderTexture(matrices, 0, 0, u, v, 29, 47, 29, 47, 128, 128);
+        RenderUtils.renderTexture(context, 0, 0, u, v, 29, 47, 29, 47, 128, 128);
 
-        matrices.pop();
+        context.pop();
+    }
+
+    public void renderTooltip(DrawContext context, ItemStack stack) {
+        context.drawItemTooltip(textRenderer, stack, 0, 0);
     }
 
     @Override

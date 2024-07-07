@@ -18,7 +18,7 @@ import ru.feytox.etherology.registry.item.EItems;
 public class CorruptionBucket extends Item {
     
     public CorruptionBucket() {
-        super(new FabricItemSettings().maxCount(1));
+        super(new Settings().maxCount(1));
     }
 
     @Nullable

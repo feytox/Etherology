@@ -2,6 +2,7 @@ package ru.feytox.etherology.entity.redstoneBlob;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -58,13 +59,15 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
     }
 
     @Override
-    protected void initDataTracker() {}
+    protected void initDataTracker(DataTracker.Builder builder) {
+    }
 
     /**
      * @see ExplosiveProjectileEntity#tick()
      */
     @Override
     public void tick() {
+        World world = getWorld();
         if (!world.isClient && !world.isChunkLoaded(getBlockPos())) {
             discard();
             return;
@@ -95,6 +98,7 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
     }
 
     private void tickParticles() {
+        World world = getWorld();
         if (!world.isClient) return;
 
         FeyParticleEffect.spawnParticles(new DustParticleEffect(DustParticleEffect.RED, 1.0f), world, 2, 0.35, getPos().add(0, 0.25, 0));
@@ -113,11 +117,11 @@ public class RedstoneChargeEntity extends ProjectileEntity implements GeoEntity 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
-        if (!(world instanceof ServerWorld serverWorld)) return;
+        if (!(getWorld() instanceof ServerWorld world)) return;
 
         if (power <= 0 || delay <= 0) return;
 
-        RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, blockHitResult.getBlockPos(), power, delay);
+        RedstoneLensEffects.getServerState(world).addUsage(world, blockHitResult.getBlockPos(), power, delay);
         discard();
     }
 

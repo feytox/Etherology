@@ -12,12 +12,14 @@ import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.predicate.StatePredicate;
+import net.minecraft.registry.RegistryWrapper;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.util.misc.RandomChanceWithFortuneCondition;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL;
@@ -29,8 +31,8 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
 
     private static Map<Block, ItemConvertible> BLOCKS_TO_DROP = null;
 
-    protected BlockLootTableGeneration(FabricDataOutput dataOutput) {
-        super(dataOutput);
+    protected BlockLootTableGeneration(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(dataOutput, registryLookup);
     }
 
     @Override

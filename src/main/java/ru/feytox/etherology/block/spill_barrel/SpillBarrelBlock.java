@@ -1,8 +1,8 @@
 package ru.feytox.etherology.block.spill_barrel;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -97,16 +97,16 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
 
     }
 
-    // stopship: good luck
+
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof SpillBarrelBlockEntity spillBarrel) {
             if (!world.isClient && (!player.isCreative() || (player.isCreative() && !spillBarrel.isEmpty()))) {
                 ItemStack barrelStack = EBlocks.SPILL_BARREL.getItem().getDefaultStack();
-                spillBarrel.setStackNbt(barrelStack);
+                barrelStack.applyComponentsFrom(spillBarrel.createComponentMap());
                 if (spillBarrel.hasCustomName()) {
-                    barrelStack.setCustomName(spillBarrel.getCustomName());
+                    barrelStack.set(DataComponentTypes.CUSTOM_NAME, spillBarrel.getCustomName());
                 }
                 ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, barrelStack);
                 itemEntity.setToDefaultPickupDelay();
@@ -114,7 +114,7 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
             }
         }
 
-        super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
     }
 
     @Override
@@ -146,8 +146,9 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (itemStack.hasCustomName() && blockEntity instanceof SpillBarrelBlockEntity spillBarrel) {
-            spillBarrel.setCustomName(itemStack.getName());
+        Text customName = itemStack.get(DataComponentTypes.CUSTOM_NAME);
+        if (customName != null && blockEntity instanceof SpillBarrelBlockEntity spillBarrel) {
+            spillBarrel.setCustomName(customName);
         }
     }
 

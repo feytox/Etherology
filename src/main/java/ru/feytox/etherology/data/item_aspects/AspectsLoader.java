@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.val;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
@@ -51,14 +52,24 @@ public class AspectsLoader implements IdentifiableResourceReloadListener {
         if (potionStack.getItem() instanceof SplashPotionItem) type = AspectContainerType.SPLASH_POTION;
         if (potionStack.getItem() instanceof LingeringPotionItem) type = AspectContainerType.LINGERING_POTION;
 
-        Potion potion = PotionContentsComponent.getPotion(potionStack);
-        val potionId = AspectContainerId.of(Registries.POTION.getId(potion), type);
+        val potion = potionStack.getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT).potion().orElse(null);
+        if (potion == null) return Optional.empty();
+
+        Identifier id = Registries.POTION.getId(potion.value());
+        if (id == null) return Optional.empty();
+
+        val potionId = AspectContainerId.of(id, type);
         return Optional.ofNullable(cache.get(potionId));
     }
 
     public static Optional<AspectContainer> getTippedAspects(ItemStack tippedStack) {
-        Potion potion = PotionContentsComponent.getPotion(tippedStack);
-        val tippedId = AspectContainerId.of(Registries.POTION.getId(potion), AspectContainerType.TIPPED_ARROW);
+        val potion = tippedStack.getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT).potion().orElse(null);
+        if (potion == null) return Optional.empty();
+
+        Identifier id = Registries.POTION.getId(potion.value());
+        if (id == null) return Optional.empty();
+
+        val tippedId = AspectContainerId.of(id, AspectContainerType.TIPPED_ARROW);
         return Optional.ofNullable(cache.get(tippedId));
     }
 

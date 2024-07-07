@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 public class StaffItem extends Item {
 
     public StaffItem() {
-        super(new FabricItemSettings().maxCount(1));
+        super(new Settings().maxCount(1));
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
-public enum FurnitureType implements StringIdentifiable, NbtReadable<FurnitureType> {
+public enum FurnitureType implements StringIdentifiable {
     EMPTY(null, true),
     FURNITURE(null, false),
     CLOSET(ClosetData::new, false),
@@ -43,18 +43,12 @@ public enum FurnitureType implements StringIdentifiable, NbtReadable<FurnitureTy
         return index >= values.size() ? EMPTY : values.get(index);
     }
 
-    @Override
     public void writeNbt(NbtCompound nbt) {
         nbt.putInt("furniture_type", this.ordinal());
     }
 
     public static FurnitureType readFromNbt(NbtCompound nbt) {
         return getByIndex(nbt.getInt("furniture_type"));
-    }
-
-    @Override
-    public FurnitureType readNbt(NbtCompound nbt) {
-        return readFromNbt(nbt);
     }
 
     @FunctionalInterface

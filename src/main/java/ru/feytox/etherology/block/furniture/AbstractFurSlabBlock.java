@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +33,7 @@ import static ru.feytox.etherology.enums.FurnitureType.EMPTY;
 import static ru.feytox.etherology.registry.block.EBlocks.FURNITURE_BLOCK_ENTITY;
 
 public abstract class AbstractFurSlabBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+
     public static final BooleanProperty BOTTOM_ACTIVE = BooleanProperty.of("bottom_active");
     public static final BooleanProperty TOP_ACTIVE = BooleanProperty.of("top_active");
     public static final EnumProperty<FurnitureType> TOP_TYPE = EnumProperty.of("top_type", FurnitureType.class);
@@ -55,13 +56,12 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
                 .with(HorizontalFacingBlock.FACING, Direction.NORTH));
     }
 
-
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof FurSlabBlockEntity furBlockEntity) {
             Optional<Vec2f> match = getHitPos(hit, state.get(HorizontalFacingBlock.FACING));
-            if (match.isEmpty()) return ActionResult.PASS;
+            if (match.isEmpty()) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
             Vec2f hitPos = match.get();
             if (hitPos.y >= 0.5f) {
@@ -69,10 +69,10 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
             } else {
                 furBlockEntity.bottomUse(world, state, player, hitPos, hand);
             }
-            return ActionResult.SUCCESS;
+            return ItemActionResult.SUCCESS;
         }
 
-        return ActionResult.PASS;
+        return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -81,8 +81,8 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.onBreak(world, pos, state.with(BOTTOM_TYPE, EMPTY), player);
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        return super.onBreak(world, pos, state.with(BOTTOM_TYPE, EMPTY), player);
     }
 
     @Override

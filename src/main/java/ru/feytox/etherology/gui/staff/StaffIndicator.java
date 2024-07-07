@@ -6,12 +6,16 @@ import lombok.val;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
@@ -19,10 +23,11 @@ import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
-import static net.minecraft.client.gui.DrawContext.GUI_ICONS_TEXTURE;
-
 @Environment(EnvType.CLIENT)
 public class StaffIndicator {
+
+    private static final Identifier CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_TEXTURE = new Identifier("hud/crosshair_attack_indicator_background");
+    private static final Identifier CROSSHAIR_ATTACK_INDICATOR_PROGRESS_TEXTURE = new Identifier("hud/crosshair_attack_indicator_progress");
 
     @Nullable
     private static Float prevHudData = null;
@@ -30,7 +35,7 @@ public class StaffIndicator {
     @Nullable
     private static Float hudData = null;
 
-    public static void renderHud(MatrixStack matrices, float tickDelta) {
+    public static void renderHud(DrawContext context, float tickDelta) {
         MinecraftClient client = MinecraftClient.getInstance();
         PlayerEntity player = client.player;
         if (player == null) return;
@@ -46,19 +51,15 @@ public class StaffIndicator {
         int y = accessor.getScaledHeight() / 2 - 7 + 16;
         int width = (int) (17.0f * progress);
 
-        matrices.push();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, GUI_ICONS_TEXTURE);
+        context.push();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
 
-        client.inGameHud.drawTexture(matrices, x, y, 36, 94, 16, 4);
-        client.inGameHud.drawTexture(matrices, x, y, 52, 94, width, 4);
+        context.drawGuiTexture(CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_TEXTURE, x, y, 16, 4);
+        context.drawGuiTexture(CROSSHAIR_ATTACK_INDICATOR_PROGRESS_TEXTURE, 16, 4, 0, 0, x, y, width, 4);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.defaultBlendFunc();
-        matrices.pop();
+        context.pop();
     }
 
     public static void tickHudData(MinecraftClient client) {

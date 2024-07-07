@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.tuningFork;
 
+import com.mojang.serialization.MapCodec;
 import lombok.val;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
@@ -33,6 +34,7 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
+    private static final MapCodec<TuningFork> CODEC = MapCodec.unit(TuningFork::new);
     public static final EnumProperty<Direction> VERTICAL_FACING = DirectionProperty.of("vertical_facing");
     private static final EnumProperty<Direction> HORIZONTAL_FACING = DirectionProperty.of("horizontal_facing");
     public static final BooleanProperty POWERED = Properties.POWERED;
@@ -49,7 +51,7 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     private static final VoxelShape DOWN_WEST_EAST_SHAPE;
 
     public TuningFork() {
-        super(FabricBlockSettings.create(Material.METAL).strength(1.5F).nonOpaque());
+        super(Settings.create().mapColor(MapColor.IRON_GRAY).strength(1.5F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(VERTICAL_FACING, Direction.UP)
                 .with(HORIZONTAL_FACING, Direction.NORTH)
@@ -61,10 +63,10 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     }
 
     /**
-     * @see NoteBlock#onUse(BlockState, World, BlockPos, PlayerEntity, Hand, BlockHitResult)
+     * @see NoteBlock#onUse(BlockState, World, BlockPos, PlayerEntity, BlockHitResult)
      */
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) return ActionResult.SUCCESS;
 
         state = state.cycle(NOTE);
@@ -248,5 +250,10 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new TuningForkBlockEntity(pos, state);
+    }
+
+    @Override
+    protected MapCodec<? extends FacingBlock> getCodec() {
+        return CODEC;
     }
 }

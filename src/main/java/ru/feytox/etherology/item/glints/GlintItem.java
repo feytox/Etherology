@@ -1,7 +1,6 @@
 package ru.feytox.etherology.item.glints;
 
 import lombok.Getter;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.client.item.TooltipType;
 import net.minecraft.item.Item;
@@ -25,7 +24,7 @@ public class GlintItem extends Item {
     private final float maxEther;
 
     public GlintItem(float maxEther) {
-        super(new FabricItemSettings().maxDamage(MathHelper.floor(maxEther)).customDamage(((stack, amount, entity, breakCallback) -> 0)));
+        super(new Settings().maxDamage(MathHelper.floor(maxEther)).customDamage((stack, amount, entity, slot, breakCallback) -> 0));
         this.maxEther = maxEther;
     }
 

@@ -6,6 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.VibrationParticleEffect;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -112,8 +114,8 @@ public class TuningForkBlockEntity extends TickableBlockEntity implements GameEv
     }
 
     @Override
-    public boolean listen(ServerWorld world, GameEvent event, GameEvent.Emitter emitter, Vec3d emitterPos) {
-        if (!event.equals(EventsRegistry.RESONANCE)) return false;
+    public boolean listen(ServerWorld world, RegistryEntry<GameEvent> event, GameEvent.Emitter emitter, Vec3d emitterPos) {
+        if (!event.matchesKey(EventsRegistry.RESONANCE.registryKey())) return false;
         BlockState sourceState = emitter.affectedState();
         if (sourceState == null) return false;
 

@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -103,13 +104,13 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
         bottomType = FurnitureType.readFromNbt(bottomCompound);
         bottomData = bottomType.createDataInstance(true);
         if (bottomData != null && !bottomType.isEmpty() && !bottomDataCompound.isEmpty()) {
-            bottomData.readNbt(bottomDataCompound);
+            bottomData.readNbt(bottomDataCompound, registryLookup);
         } else bottomData = null;
 
         topType = FurnitureType.readFromNbt(topCompound);
         topData = topType.createDataInstance(false);
         if (topData != null && !topType.isEmpty() && !topDataCompound.isEmpty()) {
-            topData.readNbt(topDataCompound);
+            topData.readNbt(topDataCompound, registryLookup);
         } else topData = null;
     }
 
@@ -121,12 +122,12 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
         NbtCompound topDataCompound = new NbtCompound();
 
         bottomType.writeNbt(bottomCompound);
-        if (bottomData != null) bottomData.writeNbt(bottomDataCompound);
+        if (bottomData != null) bottomData.writeNbt(bottomDataCompound, registryLookup);
         bottomCompound.put("data", bottomDataCompound);
         nbt.put("bottom", bottomCompound);
 
         topType.writeNbt(topCompound);
-        if (topData != null) topData.writeNbt(topDataCompound);
+        if (topData != null) topData.writeNbt(topDataCompound, registryLookup);
         topCompound.put("data", topDataCompound);
         nbt.put("top", topCompound);
 

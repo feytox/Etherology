@@ -40,7 +40,7 @@ public interface RegistrableBlock {
 
     default void registerItem() {
         String blockId = getBlockId();
-        BlockItem blockItem = new BlockItem((Block) this, new FabricItemSettings());
+        BlockItem blockItem = new BlockItem((Block) this, new Settings());
         Registry.register(Registries.ITEM, EIdentifier.of(blockId), blockItem);
     }
 }

@@ -1,6 +1,5 @@
 package ru.feytox.etherology.enchantment;
 
-import com.google.common.base.Suppliers;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.val;
 import net.minecraft.enchantment.Enchantment;
@@ -8,47 +7,29 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import ru.feytox.etherology.enchantment.target.TuningMaceEnchantmentTarget;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
 import ru.feytox.etherology.registry.misc.EtherSounds;
+import ru.feytox.etherology.registry.misc.TagsRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class PealEnchantment extends Enchantment {
-    public static final Supplier<PealEnchantment> INSTANCE = Suppliers.memoize(PealEnchantment::new);
 
-    private PealEnchantment() {
-        super(Rarity.RARE, TuningMaceEnchantmentTarget.INSTANCE.get(), new EquipmentSlot[]{EquipmentSlot.MAINHAND});
-    }
-
-    @Override
-    public int getMinPower(int level) {
-        return 1 + (level - 1) * 11;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return getMinPower(level) + 20;
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 3;
+    public PealEnchantment() {
+        super(Enchantment.properties(TagsRegistry.TUNING_MACES, 10, 3, Enchantment.leveledCost(1, 11), Enchantment.leveledCost(21, 11), 3, EquipmentSlot.MAINHAND));
     }
 
     public static void trySchedulePeal(World world, PlayerEntity attacker, Entity target, Vec3d shockPos) {
-        int pealLevel = EnchantmentHelper.getEquipmentLevel(INSTANCE.get(), attacker);
+        int pealLevel = EnchantmentHelper.getEquipmentLevel(EtherEnchantments.PEAL, attacker);
         if (world.isClient || pealLevel <= 0) return;
 
         DelayedTask.createTaskWithMs(world, 600, () -> {
@@ -70,7 +51,7 @@ public class PealEnchantment extends Enchantment {
 
         pealEntities.forEach(target -> {
             spawnLightningParticle(world, target);
-            target.damage(DamageSource.player(attacker), pealLevel);
+            target.damage(target.getDamageSources().playerAttack(attacker), pealLevel);
         });
         return true;
     }

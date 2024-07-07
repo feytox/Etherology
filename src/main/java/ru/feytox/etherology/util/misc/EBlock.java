@@ -26,7 +26,7 @@ public class EBlock {
     }
 
     public Block withItem(boolean generateDrop, @Nullable ItemConvertible drop) {
-        BlockItem blockItem = new BlockItem(block, new FabricItemSettings());
+        BlockItem blockItem = new BlockItem(block, new Settings());
         blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
         Registry.register(Registries.ITEM, Registries.BLOCK.getId(blockItem.getBlock()), blockItem);
 

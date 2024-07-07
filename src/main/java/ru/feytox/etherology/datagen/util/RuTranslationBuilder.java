@@ -6,7 +6,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
+import net.minecraft.registry.entry.RegistryEntry;
 import ru.feytox.etherology.magic.lens.LensModifier;
+
+import java.util.Optional;
 
 public class RuTranslationBuilder {
 
@@ -32,10 +35,10 @@ public class RuTranslationBuilder {
         builder.add(effect, name);
     }
 
-    public void add(Potion potion, String name) {
-        builder.add(potion.finishTranslationKey("item.minecraft.potion.effect."), "Зелье " + name);
-        builder.add(potion.finishTranslationKey("item.minecraft.splash_potion.effect."), "Взрывное зелье " + name);
-        builder.add(potion.finishTranslationKey("item.minecraft.lingering_potion.effect."), "Туманное зелье " + name);
+    public void add(RegistryEntry<Potion> potion, String name) {
+        builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.potion.effect."), "Зелье " + name);
+        builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.splash_potion.effect."), "Взрывное зелье " + name);
+        builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.lingering_potion.effect."), "Туманное зелье " + name);
     }
 
     public void add(String key, String name) {

@@ -44,10 +44,11 @@
     "ShearsItemMixin",
     "StickyKeyBindingAccessor",
     "StructurePoolElementTypeAccessor",
+    "TagEntryAccessor",
+    "TagGroupLoaderMixin",
     "TreeConfiguredFeaturesAccessor",
     "TreeDecoratorTypeAccessor",
     "TrunkPlacerTypeAccessor",
-    "UnbreakingEnchantmentMixin",
     "VibrationListenerAccessor",
     "WorldMixin",
     "WorldRendererAccessor"

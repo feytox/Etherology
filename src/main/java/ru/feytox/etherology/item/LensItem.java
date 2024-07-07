@@ -48,7 +48,7 @@ public abstract class LensItem extends Item {
     private final float chargeCost;
 
     protected LensItem(@Nullable StaffLenses lensType, float streamCost, float chargeCost) {
-        super(new FabricItemSettings().maxCount(1).maxDamage(100));
+        super(new Settings().maxCount(1).maxDamage(100));
         this.lensType = lensType;
         this.streamCost = streamCost;
         this.chargeCost = chargeCost;

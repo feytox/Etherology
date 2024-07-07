@@ -1,5 +1,6 @@
 package ru.feytox.etherology.effect;
 
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -22,8 +23,9 @@ public class EtherEffect extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
         if (baseChange >= 0) EtherComponent.increment(entity, baseChange * (1 << amplifier));
         else EtherComponent.decrement(entity, -baseChange * (1 << amplifier));
+        return true;
     }
 }

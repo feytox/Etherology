@@ -2,6 +2,7 @@ package ru.feytox.etherology.gui.oculus;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -15,8 +16,6 @@ import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Map;
-
-import static net.minecraft.client.gui.DrawContext.drawTexture;
 
 public class AspectTooltipComponent implements TooltipComponent {
     private static final Identifier TEXTURE = EIdentifier.of("textures/gui/aspects.png");
@@ -40,9 +39,9 @@ public class AspectTooltipComponent implements TooltipComponent {
     }
 
     @Override
-    public void drawItems(TextRenderer textRenderer, int x, int y, MatrixStack matrices, ItemRenderer itemRenderer, int z) {
-        matrices.push();
-        matrices.scale(0.5f, 0.5f, 1);
+    public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
+        context.push();
+        context.scale(0.5f, 0.5f, 1);
 
         int i = 0;
         for (Map.Entry<Aspect, Integer> entry : aspects.getAspects().entrySet()) {
@@ -52,28 +51,24 @@ public class AspectTooltipComponent implements TooltipComponent {
             int xIndex = i % LINE_MAX;
             int yIndex = i / LINE_MAX;
 
-            renderIcon(x, y, z, matrices, aspect, xIndex, yIndex);
-            renderCount(textRenderer, itemRenderer, x + xIndex * 17, y + yIndex * 17, value);
+            renderIcon(x, y, context, aspect, xIndex, yIndex);
+            renderCount(textRenderer, context, x + xIndex * 17, y + yIndex * 17, value);
             i++;
         }
-        matrices.pop();
+        context.pop();
     }
 
-    private void renderIcon(int x, int y, int z, MatrixStack matrices, Aspect aspect, int xIndex, int yIndex) {
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    private void renderIcon(int x, int y, DrawContext context, Aspect aspect, int xIndex, int yIndex) {
         RenderSystem.enableBlend();
-
-        drawTexture(matrices, x * 2 + xIndex * 34, y * 2 + yIndex * 34, z, aspect.getTextureMinX(), aspect.getTextureMinY(), 32, 32, EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
+        context.drawTexture(TEXTURE, x * 2 + xIndex * 34, y * 2 + yIndex * 34, aspect.getTextureMinX(), aspect.getTextureMinY(), 32, 32, EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
     }
 
-    private static void renderCount(TextRenderer textRenderer, ItemRenderer itemRenderer, int x, int y, int count) {
+    private static void renderCount(TextRenderer textRenderer, DrawContext context, int x, int y, int count) {
         MatrixStack matrices = new MatrixStack();
         String value = String.valueOf(count);
-        matrices.translate(0.0F, 0.0F, itemRenderer.zOffset + 200.0F);
+        matrices.translate(0.0F, 0.0F, 200.0F);
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-        textRenderer.draw(value, x + 17 - textRenderer.getWidth(value), y + 9, 16777215, true, matrices.peek().getPositionMatrix(), immediate, false, 0, 15728880);
+        context.drawText(textRenderer, value, x + 19 - 2 - textRenderer.getWidth(value), y + 6 + 3, 16777215, true);
         immediate.draw();
     }
 }

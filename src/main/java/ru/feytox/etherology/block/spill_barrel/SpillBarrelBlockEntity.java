@@ -2,7 +2,9 @@ package ru.feytox.etherology.block.spill_barrel;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import lombok.Setter;
+import lombok.val;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -45,15 +48,17 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
             return true;
         }
 
-        Potion barrelPotion = PotionContentsComponent.getPotion(items.get(0));
-        Potion stackPotion = PotionContentsComponent.getPotion(handStack);
-        if (stackPotion.equals(barrelPotion) && items.get(15).isEmpty()) {
-            for (int i = 0; i < 16; i++) {
-                if (items.get(i).isEmpty()) {
-                    items.set(i, handStack);
-                    markDirty();
-                    return true;
-                }
+
+        val barrelPotion = items.getFirst().getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT).potion().orElse(null);
+        val stackContent = handStack.get(DataComponentTypes.POTION_CONTENTS);
+        if (stackContent == null || barrelPotion == null) return false;
+        if (!stackContent.matches(barrelPotion) || !items.get(15).isEmpty()) return false;
+
+        for (int i = 0; i < 16; i++) {
+            if (items.get(i).isEmpty()) {
+                items.set(i, handStack);
+                markDirty();
+                return true;
             }
         }
 
@@ -67,11 +72,14 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     public ItemStack tryEmptyBarrel(ItemStack handStack) {
         if (!handStack.isOf(Items.GLASS_BOTTLE) || isEmpty()) return handStack;
 
-        Potion barrelPotion = PotionContentsComponent.getPotion(items.get(0));
+        val barrelContent = items.getFirst().get(DataComponentTypes.POTION_CONTENTS);
+        if (barrelContent == null) return handStack;
+
         for (int i = 15; i >= 0; i--) {
             if (!items.get(i).isEmpty()) {
-                ItemStack outputStack = PotionContentsComponent.setPotion(Items.POTION.getDefaultStack(), barrelPotion);
-                if (hasCustomName()) outputStack.setCustomName(getCustomName());
+                ItemStack outputStack = Items.POTION.getDefaultStack();
+                outputStack.set(DataComponentTypes.POTION_CONTENTS, barrelContent);
+                if (hasCustomName()) outputStack.set(DataComponentTypes.CUSTOM_NAME, getCustomName());
                 items.set(i, ItemStack.EMPTY);
                 markDirty();
                 return outputStack;
@@ -86,15 +94,19 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     public void showPotionsInfo(PlayerEntity player) {
         Text resultText = Text.translatable("lore.etherology.spill_barrel.empty").formatted(Formatting.GRAY);
         if (!isEmpty()) {
-            resultText = getPotionInfo(items.get(0), getPotionCount(), hasCustomName(), getCustomName()).formatted(Formatting.GRAY);
+            MutableText potionInfo = getPotionInfo(items.getFirst(), getPotionCount(), hasCustomName(), getCustomName());
+            if (potionInfo != null) resultText = potionInfo.formatted(Formatting.GRAY);
         }
 
         player.sendMessage(resultText, true);
     }
 
+    @Nullable
     public static MutableText getPotionInfo(ItemStack potionStack, int potionCount, boolean withCustomName, Text customName) {
-        Potion barrelPotion = PotionContentsComponent.getPotion(potionStack);
-        StatusEffectInstance statusEffectInstance = barrelPotion.getEffects().get(0);
+        val barrelContent = potionStack.get(DataComponentTypes.POTION_CONTENTS);
+        if (barrelContent == null) return null;
+
+        StatusEffectInstance statusEffectInstance = barrelContent.getEffects().iterator().next();
         Text effectText = Text.translatable(statusEffectInstance.getTranslationKey());
         Text levelText = Text.translatable("potion.potency." + statusEffectInstance.getAmplifier());
         if (!levelText.getString().isEmpty()) {
@@ -122,7 +134,7 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        Inventories.writeNbt(nbt, items);
+        Inventories.writeNbt(nbt, items, registryLookup);
 
         super.writeNbt(nbt, registryLookup);
     }
@@ -132,7 +144,7 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
         super.readNbt(nbt, registryLookup);
 
         items.clear();
-        Inventories.readNbt(nbt, items);
+        Inventories.readNbt(nbt, items, registryLookup);
     }
 
     @Override

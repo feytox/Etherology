@@ -51,6 +51,7 @@ public class Etherology implements ModInitializer {
         EventsRegistry.registerGameEvents();
         LensModifier.registerAll();
         EffectsRegistry.registerAll();
+        TagsRegistry.registerAll();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerTaskManager.INSTANCE.tickTasks());
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SpillBarrelItem extends BlockItem {
     public SpillBarrelItem() {
-        super(EBlocks.SPILL_BARREL, new FabricItemSettings());
+        super(EBlocks.SPILL_BARREL, new Settings());
     }
 
     @Override

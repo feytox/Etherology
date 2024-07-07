@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -30,15 +31,15 @@ public class EtherEnchantments {
     private static boolean battlePickWeaponMatched = true;
     private static final Map<Class<? extends Item>, List<Enchantment>> bannedEnchantments = new Object2ObjectOpenHashMap<>();
 
+    public static final Enchantment PEAL = register("peal", new PealEnchantment());
+    public static final Enchantment REFLECTION = register("reflection", new ReflectionEnchantment());
+
     public static void registerAll() {
         registerBannedEnchantments();
-
-        register("reflection", ReflectionEnchantment.INSTANCE);
-        register("peal", PealEnchantment.INSTANCE);
     }
 
-    private void register(String id, Supplier<? extends Enchantment> enchantSupplier) {
-        Registry.register(Registries.ENCHANTMENT, EIdentifier.of(id), enchantSupplier.get());
+    private Enchantment register(String id, Enchantment enchantment) {
+        return Registry.register(Registries.ENCHANTMENT, EIdentifier.of(id), enchantment);
     }
 
     private static void registerBannedEnchantments() {

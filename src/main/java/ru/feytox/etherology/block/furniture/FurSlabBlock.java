@@ -9,8 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
 
 public class FurSlabBlock extends AbstractFurSlabBlock {
+
     public FurSlabBlock() {
-        super("furniture_slab", FabricBlockSettings.copy(Blocks.CHEST), FurnitureType.FURNITURE);
+        super("furniture_slab", Settings.copy(Blocks.CHEST), FurnitureType.FURNITURE);
     }
 
     @Nullable

@@ -1,34 +1,41 @@
 package ru.feytox.etherology.gui.staff;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
+import io.wispforest.owo.ui.core.OwoUIDrawContext;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Colors;
 import net.minecraft.util.math.MathHelper;
-import org.joml.Matrix4f;
+import org.joml.Matrix4fStack;
 
 import static ru.feytox.etherology.gui.staff.StaffLensesScreen.ITEM_RADIUS;
 import static ru.feytox.etherology.gui.staff.StaffLensesScreen.LENS_OPEN_DELAY;
 
-@RequiredArgsConstructor
-public class LensWidget extends DrawContext {
+public class LensWidget {
 
     private final ItemStack stack;
     private final Float angle;
+    private final ItemRenderer itemRenderer;
 
     private boolean selected = false;
     private boolean isClosing = false;
     private float lensTicks = 0.0f;
 
+    public LensWidget(ItemStack stack, Float angle) {
+        this.stack = stack;
+        this.angle = angle;
+        itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+    }
+
     /**
-     * @see io.wispforest.owo.ui.component.ItemComponent#draw(MatrixStack, int, int, float, float)
+     * @see io.wispforest.owo.ui.component.ItemComponent#draw(OwoUIDrawContext, int, int, float, float)
      */
-    public void render(StaffLensesScreen parent, VertexConsumerProvider.Immediate immediate, MatrixStack matrices, ItemRenderer itemRenderer, float centerX, float centerY, float progress, float circleScale) {
+    public void render(StaffLensesScreen parent, VertexConsumerProvider.Immediate immediate, DrawContext context, float centerX, float centerY, float progress, float circleScale) {
         if (stack == null || stack.isEmpty()) return;
 
         float dx = centerX;
@@ -39,70 +46,51 @@ public class LensWidget extends DrawContext {
         }
 
         float selectionScale = getLensScale();
-        draw(immediate, itemRenderer, progress*selectionScale, dx, dy);
-        renderItemBar(matrices, progress, dx, dy);
+        draw(immediate, progress*selectionScale, dx, dy);
+        renderItemBar(context, progress, dx, dy);
 
         if (!selected) return;
-        matrices.push();
-        matrices.translate(dx - 8.0f * progress, dy - 8.0f * progress, 0);
-        parent.renderTooltip(matrices, parent.getTooltipFromItem(stack), 0, 0);
-        matrices.pop();
+        context.push();
+        context.translate(dx - 8.0f * progress, dy - 8.0f * progress, 0);
+        parent.renderTooltip(context, stack);
+        context.pop();
     }
 
-    private void draw(VertexConsumerProvider.Immediate immediate, ItemRenderer itemRenderer, float progress, float dx, float dy) {
+    private void draw(VertexConsumerProvider.Immediate immediate, float progress, float dx, float dy) {
         boolean notSideLit = itemRenderer.getModel(stack, null, null, 0).isSideLit();
         if (notSideLit) DiffuseLighting.disableGuiDepthLighting();
 
         DiffuseLighting.disableGuiDepthLighting();
-        MatrixStack modelView = RenderSystem.getModelViewStack();
-        modelView.push();
+        Matrix4fStack modelView = RenderSystem.getModelViewStack();
+        modelView.pushMatrix();
 
         modelView.translate(dx, dy, 100);
         modelView.scale(progress, progress, progress);
         modelView.scale(16, -16, 16);
 
         RenderSystem.applyModelViewMatrix();
-        itemRenderer.renderItem(stack, ModelTransformation.Mode.GUI, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, new MatrixStack(), immediate, 0);
+        itemRenderer.renderItem(stack, ModelTransformationMode.GUI, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, new MatrixStack(), immediate, MinecraftClient.getInstance().world, 0);
         immediate.draw();
 
-        modelView.pop();
+        modelView.popMatrix();
         RenderSystem.applyModelViewMatrix();
         if (notSideLit) DiffuseLighting.enableGuiDepthLighting();
     }
 
-    private void renderItemBar(MatrixStack matrices, float progress, float dx, float dy) {
+    private void renderItemBar(DrawContext context, float progress, float dx, float dy) {
         if (!stack.isItemBarVisible()) return;
-        matrices.push();
-        matrices.translate(dx, dy, 100);
-        matrices.scale(progress, progress, progress);
-        matrices.translate(-8, -8, 0);
+        context.push();
+        context.translate(dx, dy, 100);
+        context.scale(progress, progress, progress);
+        context.translate(-8, -8, 0);
 
-        RenderSystem.disableDepthTest();
-        RenderSystem.disableTexture();
-        RenderSystem.disableBlend();
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
         int barStep = stack.getItemBarStep();
         int barColor = stack.getItemBarColor();
 
-        val matrix = matrices.peek().getPositionMatrix();
-        renderGuiQuad(bufferBuilder, matrix, 13, 2, 0, 0, 0);
-        renderGuiQuad(bufferBuilder, matrix, barStep, 1, barColor >> 16 & 255, barColor >> 8 & 255, barColor & 255);
-        RenderSystem.enableBlend();
-        RenderSystem.enableTexture();
-        RenderSystem.enableDepthTest();
+        context.fill(RenderLayer.getGuiOverlay(), 0, 0, 13, 2, Colors.BLACK);
+        context.fill(RenderLayer.getGuiOverlay(), barStep, 0, 13, 1, barColor | Colors.BLACK);
 
-        matrices.pop();
-    }
-
-    private void renderGuiQuad(BufferBuilder buffer, Matrix4f matrix, int width, int height, int red, int green, int blue) {
-        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        buffer.vertex(matrix, 2, 13, 0).color(red, green, blue, 255).next();
-        buffer.vertex(matrix, 2, 13 + height, 0).color(red, green, blue, 255).next();
-        buffer.vertex(matrix, 2 + width, 13 + height, 0).color(red, green, blue, 255).next();
-        buffer.vertex(matrix, 2 + width, 13, 0).color(red, green, blue, 255).next();
-        BufferRenderer.drawWithGlobalProgram(buffer.end());
+        context.pop();
     }
 
     public ItemStack updateMouse(int mouseX, int mouseY, float centerX, float centerY, float progress, float circleScale) {

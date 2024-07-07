@@ -19,7 +19,7 @@ import ru.feytox.etherology.util.misc.DoubleModel;
 public class BroadSwordItem extends TwoHandheldSword implements DoubleModel {
 
     public BroadSwordItem() {
-        super(ToolMaterials.IRON, 5, -3.1f, new FabricItemSettings().maxDamage(476));
+        super(ToolMaterials.IRON, 5, -3.1f, new Settings().maxDamage(476));
     }
 
     public static boolean isUsing(PlayerEntity player) {

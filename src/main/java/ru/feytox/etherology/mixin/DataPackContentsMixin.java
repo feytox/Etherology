@@ -17,7 +17,6 @@ public class DataPackContentsMixin {
     @ModifyExpressionValue(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/DataPackContents;getContents()Ljava/util/List;"))
     private static List<ResourceReloader> injectContents(List<ResourceReloader> original) {
         original = new ArrayList<>(original);
-        original.add(FeyPermissionLoader.INSTANCE);
         original.add(EtherSourceLoader.INSTANCE);
         return original;
     }

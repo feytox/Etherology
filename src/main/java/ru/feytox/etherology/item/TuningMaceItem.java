@@ -9,7 +9,7 @@ import ru.feytox.etherology.enums.EArmPose;
 public class TuningMaceItem extends TwoHandheldSword {
 
     public TuningMaceItem() {
-        super(ToolMaterials.IRON, 6, -3.2f, new FabricItemSettings().maxDamage(476));
+        super(ToolMaterials.IRON, 6, -3.2f, new Settings().maxDamage(476));
     }
 
     @Override

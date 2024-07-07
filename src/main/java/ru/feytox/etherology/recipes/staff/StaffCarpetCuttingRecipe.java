@@ -22,8 +22,8 @@ import static ru.feytox.etherology.registry.misc.RecipesRegistry.STAFF_CARPET_CU
 
 public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
 
-    public StaffCarpetCuttingRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public StaffCarpetCuttingRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override

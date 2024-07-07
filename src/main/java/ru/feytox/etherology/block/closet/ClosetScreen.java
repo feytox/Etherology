@@ -12,6 +12,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 public class ClosetScreen extends HandledScreen<ClosetScreenHandler> {
     private static final Identifier TEXTURE = EIdentifier.of("textures/gui/closet.png");
 
+    // stopship: good luck
     public ClosetScreen(ClosetScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }

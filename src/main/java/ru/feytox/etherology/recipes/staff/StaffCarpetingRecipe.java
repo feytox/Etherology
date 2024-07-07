@@ -22,8 +22,9 @@ import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import java.util.function.Predicate;
 
 public class StaffCarpetingRecipe extends SpecialCraftingRecipe {
-    public StaffCarpetingRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+
+    public StaffCarpetingRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override

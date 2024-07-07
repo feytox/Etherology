@@ -9,6 +9,8 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -30,6 +32,7 @@ import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_ACTI
 import static ru.feytox.etherology.registry.block.EBlocks.CLOSET_SLAB;
 
 public class ClosetData extends FurnitureData implements ImplementedInventory, NamedScreenHandlerFactory {
+
     private World cachedWorld = null;
     private BlockState cachedState = null;
     private BlockPos cachedPos = null;
@@ -79,15 +82,14 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, N
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, this.inventory);
+    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbt, this.inventory, registryLookup);
     }
 
     @Override
-    public FurnitureData readNbt(NbtCompound nbt) {
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         inventory.clear();
-        Inventories.readNbt(nbt, this.inventory);
-        return this;
+        Inventories.readNbt(nbt, this.inventory, registryLookup);
     }
 
     @Override

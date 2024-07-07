@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.thuja;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.registry.tag.BlockTags;
@@ -22,12 +23,13 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
 
     // TODO: 02.03.2024 Consider combining code from ThujaBlock and ThujaPlantBlock to avoid copy-pasting
 
+    private static final MapCodec<ThujaBlock> CODEC = MapCodec.unit(ThujaBlock::new);
     public static final EnumProperty<ThujaShape> SHAPE = EnumProperty.of("shape", ThujaShape.class);
     public static final VoxelShape OUTLINE_SHAPE = VoxelShapes.fullCube();
     private static final int MAX_LENGTH = 5;
 
     public ThujaBlock() {
-        super(AbstractBlock.Settings.of(Material.PLANT, MapColor.EMERALD_GREEN).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Direction.UP, OUTLINE_SHAPE, false, 0.1);
+        super(Settings.create().mapColor(MapColor.EMERALD_GREEN).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS), Direction.UP, OUTLINE_SHAPE, false, 0.1);
         setDefaultState(getDefaultState()
                 .with(SHAPE, ThujaShape.BUSH)
         );
@@ -44,6 +46,11 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState state = super.getPlacementState(ctx);
         return state == null ? null : getThujaPlacementState(state, ctx);
+    }
+
+    @Override
+    protected MapCodec<? extends AbstractPlantStemBlock> getCodec() {
+        return CODEC;
     }
 
     @Override

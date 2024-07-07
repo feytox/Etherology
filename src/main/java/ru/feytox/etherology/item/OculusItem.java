@@ -54,7 +54,7 @@ public class OculusItem extends Item implements DoubleModel {
     private static final int ESSENCE_PARTICLE_CHUNK_DISTANCE = 1;
 
     public OculusItem() {
-        super(new FabricItemSettings().maxCount(1));
+        super(new Settings().maxCount(1));
     }
 
     @Override
