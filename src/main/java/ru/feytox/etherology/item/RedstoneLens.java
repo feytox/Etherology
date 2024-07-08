@@ -13,11 +13,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.entity.redstoneBlob.RedstoneChargeEntity;
 import ru.feytox.etherology.magic.lens.LensComponent;
+import ru.feytox.etherology.magic.lens.LensComponentNew;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 import ru.feytox.etherology.magic.staff.StaffLenses;
 import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.function.Supplier;
 
@@ -28,9 +30,11 @@ public class RedstoneLens extends LensItem {
     }
 
     @Override
-    public boolean onStreamUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onStreamUse(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient || !(world instanceof ServerWorld serverWorld)) return false;
 
+        // stopship: continue fix getStaffLens and LENS
+        // good luck
         if (!lensData.checkCooldown(serverWorld)) return false;
 
         float maxDistance = lensData.calcValue(LensModifier.AREA, 40, 80, 0.8f);
@@ -62,7 +66,7 @@ public class RedstoneLens extends LensItem {
     }
 
     @Override
-    public boolean onChargeUse(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
+    public boolean onChargeUse(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter) {
         if (world.isClient) return false;
         if (hold) return false;
 
@@ -71,7 +75,7 @@ public class RedstoneLens extends LensItem {
     }
 
     @Override
-    public boolean onChargeStop(World world, LivingEntity entity, LensComponent lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
+    public boolean onChargeStop(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         if (world.isClient) {
             entity.swingHand(handGetter.get());
             return false;

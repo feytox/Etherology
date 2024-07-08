@@ -17,7 +17,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
-import ru.feytox.etherology.util.misc.NbtReadable;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -25,7 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
-public class AspectContainer implements NbtReadable<AspectContainer> {
+public class AspectContainer {
 
     @NonNull
     private final ImmutableMap<Aspect, Integer> aspects;
@@ -151,7 +150,6 @@ public class AspectContainer implements NbtReadable<AspectContainer> {
         };
     }
 
-    @Override
     public void writeNbt(NbtCompound nbt) {
         NbtCompound container = new NbtCompound();
         aspects.forEach(((aspect, value) -> container.putInt(aspect.name(), value)));
@@ -159,7 +157,6 @@ public class AspectContainer implements NbtReadable<AspectContainer> {
         nbt.put("aspects", container);
     }
 
-    @Override
     @CheckReturnValue
     public AspectContainer readNbt(NbtCompound nbt) {
         Map<Aspect, Integer> result = new Object2ObjectOpenHashMap<>();

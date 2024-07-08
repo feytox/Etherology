@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -79,7 +80,7 @@ public class RevelationViewRenderer {
 
         progress = MathHelper.lerp(0.1f*context.tickDelta(), progress, 1.0f);
         MatrixStack matrices = context.matrixStack();
-        if (aspects == null || aspects.isEmpty() || targetPos == null || offsetVec == null) return;
+        if (aspects == null || aspects.isEmpty() || targetPos == null || offsetVec == null || matrices == null) return;
 
         matrices.push();
 
@@ -129,7 +130,7 @@ public class RevelationViewRenderer {
         matrices.translate(-col * 0.25f + startOffset - 0.18f, row * 0.275f - 0.18f, -0.0001);
         matrices.scale(-0.008F, -0.008F, 0.025F);
         VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-        client.textRenderer.draw(count.toString(), 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), immediate, true, 0, 15728880);
+        client.textRenderer.draw(count.toString(), 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.SEE_THROUGH, 0, 15728880);
         immediate.draw();
         matrices.pop();
     }

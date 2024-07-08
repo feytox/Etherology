@@ -3,15 +3,16 @@ package ru.feytox.etherology.item.glints;
 import lombok.Getter;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.client.item.TooltipType;
+import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import org.apache.commons.lang3.math.Fraction;
+import ru.feytox.etherology.mixin.BundleContentsComponentAccessor;
+import ru.feytox.etherology.registry.misc.EComponentTypes;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,27 +24,15 @@ public class GlintItem extends Item {
 
     private final float maxEther;
 
+    // TODO: #upd check damage and tooltip
     public GlintItem(float maxEther) {
         super(new Settings().maxDamage(MathHelper.floor(maxEther)).customDamage((stack, amount, entity, slot, breakCallback) -> 0));
         this.maxEther = maxEther;
     }
 
     @Override
-    public ItemStack getDefaultStack() {
-        ItemStack stack = super.getDefaultStack();
-        NbtCompound nbt = stack.getOrCreateNbt();
-        nbt.putFloat("stored_ether", 0);
-        stack.setNbt(nbt);
-
-        return stack;
-    }
-
-    @Override
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null) return Optional.empty();
-
-        float storedEther = nbt.getFloat("stored_ether");
+        float storedEther = getStoredEther(stack);
         int etherValue = MathHelper.floor(storedEther);
 
         int slots = MathHelper.floor(maxEther / 64);
@@ -56,57 +45,48 @@ public class GlintItem extends Item {
             defaultedList.add(etherStack);
         }
 
-        return Optional.of(new GlintTooltipData(defaultedList, MathHelper.floor(storedEther), MathHelper.floor(maxEther)));
+        BundleContentsComponent component = BundleContentsComponentAccessor.createBundleContentsComponent(defaultedList, Fraction.getFraction(MathHelper.floor(storedEther), MathHelper.floor(maxEther)));
+        return Optional.of(new GlintTooltipData(component, MathHelper.floor(maxEther)));
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipType context) {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null) return;
-
-        float storedEther = nbt.getFloat("stored_ether");
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        float storedEther = getStoredEther(stack);
         int etherValue = MathHelper.floor(storedEther);
 
         tooltip.add(Text.translatable("item.etherology.glint.fullness", etherValue, MathHelper.floor(getMaxEther())).formatted(Formatting.GRAY));
-    }
-
-    @Override
-    public boolean isDamageable() {
-        return true;
     }
 
     /**
      * @return излишек, который не поместился в глинт
      */
     public static float increment(ItemStack stack, float maxEther, float value) {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null) return 0;
+        float storedEther = getStoredEther(stack);
+        float newEther = Math.min(storedEther + value, maxEther);
 
-        float storedEther = nbt.getFloat("stored_ether");
-        float newEther = storedEther + value;
-        newEther = Math.min(newEther, maxEther);
-        nbt.putFloat("stored_ether", newEther);
+        setStoredEther(stack, newEther);
+        stack.setDamage(MathHelper.floor(maxEther - newEther));
 
-        stack.setNbt(nbt);
-        stack.setDamage(MathHelper.floor(maxEther - storedEther));
+        return value + storedEther - newEther;
+    }
 
-        return value - newEther + storedEther;
+    public static Float getStoredEther(ItemStack stack) {
+        return stack.getOrDefault(EComponentTypes.STORED_ETHER, 0.0f);
+    }
+
+    private static void setStoredEther(ItemStack stack, float value) {
+        stack.set(EComponentTypes.STORED_ETHER, value);
     }
 
     /**
      * @return количество забранного эфира
      */
     public static float decrement(ItemStack stack, float maxEther, float value) {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null) return 0;
+        float storedEther = getStoredEther(stack);
+        float newEther = Math.max(storedEther - value, 0);
 
-        float storedEther = nbt.getFloat("stored_ether");
-        float newEther = storedEther - value;
-        newEther = Math.max(newEther, 0);
-        nbt.putFloat("stored_ether", newEther);
-
-        stack.setNbt(nbt);
-        stack.setDamage(MathHelper.floor(maxEther - storedEther));
+        setStoredEther(stack, newEther);
+        stack.setDamage(MathHelper.floor(maxEther - newEther));
 
         return storedEther - newEther;
     }

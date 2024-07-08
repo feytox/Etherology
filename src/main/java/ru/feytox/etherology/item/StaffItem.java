@@ -3,7 +3,6 @@ package ru.feytox.etherology.item;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.NonNull;
 import lombok.val;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -23,9 +22,9 @@ import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.StreamSupport;
 
 /**
  * @see ru.feytox.etherology.magic.staff.StaffComponent
@@ -159,10 +158,10 @@ public class StaffItem extends Item {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (!world.isClient) return;
-        if (!entity.isPlayer()) return;
+        if (!(entity instanceof PlayerEntity player)) return;
         MinecraftClient client = MinecraftClient.getInstance();
 
-        ItemStack selectedStack = getStaffStackFromHand(entity);
+        ItemStack selectedStack = getStaffStackFromHand(player);
         if (stack == null) {
             if (client.currentScreen instanceof StaffLensesScreen screen) screen.tryClose();
             return;
@@ -173,23 +172,15 @@ public class StaffItem extends Item {
     }
 
     @Override
-    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
-        return false;
+    public boolean allowComponentsUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+        return super.allowComponentsUpdateAnimation(player, hand, oldStack, newStack);
     }
 
     @Nullable
-    public static ItemStack getStaffStackFromHand(Entity entity) {
-        Iterator<ItemStack> stacks = entity.getHandItems().iterator();
-
-        ItemStack result = null;
-        while (stacks.hasNext()) {
-            ItemStack handStack = stacks.next();
-            if (!(handStack.getItem() instanceof StaffItem)) continue;
-            if (result != null) return null;
-            result = handStack;
-        }
-
-        return result;
+    public static ItemStack getStaffStackFromHand(LivingEntity entity) {
+        return StreamSupport.stream(entity.getHandItems().spliterator(), false)
+                .filter(stack -> stack.getItem() instanceof StaffItem)
+                .findAny().orElse(null);
     }
 
     @Nullable

@@ -60,11 +60,10 @@ public class StreamKeyItem extends ToolItem {
         state = EBlocks.ETHEREAL_CHANNEL.getChannelState(world, state.with(EtherealChannel.FACING, pipeFacing), pos);
         world.setBlockState(pos, state, EtherealChannel.NOTIFY_ALL);
 
+
         Hand hand = context.getHand();
-        if (isPlayer) stack.damage(1, player, playerx -> playerx.sendToolBreakStatus(hand));
-        else if (stack.damage(1, world.random, null)) {
-            stack.decrement(1);
-        }
+        if (isPlayer) stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
+        else stack.damage(1, world.random, null, () -> stack.decrement(1));
 
         return ActionResult.SUCCESS;
     }

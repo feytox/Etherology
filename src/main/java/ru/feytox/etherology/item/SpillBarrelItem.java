@@ -1,17 +1,13 @@
 package ru.feytox.etherology.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.item.TooltipType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.registry.block.EBlocks;
 
@@ -23,23 +19,19 @@ public class SpillBarrelItem extends BlockItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipType context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        NbtList items = stack.getOrCreateSubNbt("BlockEntityTag").getList("Items", NbtElement.COMPOUND_TYPE);
-        NbtCompound itemCompound = items.getCompound(0);
-        ItemStack potionStack = ItemStack.fromNbt(itemCompound);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        super.appendTooltip(stack, context, tooltip, type);
 
-        MutableText resultText = Text.translatable("lore.etherology.spill_barrel.empty").formatted(Formatting.GRAY);
-        if (!potionStack.isEmpty()) {
-            int potionCount = 0;
-            for (int i = 0; i < 16; i++) {
-                NbtCompound compound = items.getCompound(i);
-                if (!ItemStack.fromNbt(compound).isEmpty()) potionCount++;
-            }
+        ContainerComponent barrelData = stack.get(DataComponentTypes.CONTAINER);
+        ItemStack potionStack = barrelData != null ? barrelData.copyFirstStack() : null;
+        long potionCount = barrelData != null ? barrelData.streamNonEmpty().count() : 0;
+        MutableText potionInfo = potionStack == null ? null : SpillBarrelBlockEntity.getPotionInfo(potionStack, potionCount, false, Text.empty());
 
-            resultText = SpillBarrelBlockEntity.getPotionInfo(potionStack, potionCount, false, Text.empty()).formatted(Formatting.GRAY);
+        if (potionCount == 0 || potionInfo == null) {
+            tooltip.add(1, Text.translatable("lore.etherology.spill_barrel.empty").formatted(Formatting.GRAY));
+            return;
         }
 
-        tooltip.add(1, resultText);
+        tooltip.add(1, potionInfo.formatted(Formatting.GRAY));
     }
 }

@@ -7,11 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -20,8 +16,8 @@ import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
+import ru.feytox.etherology.magic.lens.LensComponentNew;
 import ru.feytox.etherology.mixin.InGameHudAccessor;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 @Environment(EnvType.CLIENT)
 public class StaffIndicator {
@@ -79,11 +75,10 @@ public class StaffIndicator {
         ItemStack lensStack = LensItem.getLensStack(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return null;
 
-        val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
-        if (lensOptional.isEmpty()) return null;
+        val lensData = LensComponentNew.get(lensStack).orElse(null);
+        if (lensData == null) return null;
 
-        val lensData = lensOptional.get();
-        return switch (lensData.getLensMode()) {
+        return switch (lensData.mode()) {
             case CHARGE -> {
                 int chargeTime = lensItem.getChargeTime(lensData, player.getItemUseTime());
                 float result = (float) chargeTime / LensItem.CHARGE_LIMIT;

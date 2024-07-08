@@ -77,10 +77,9 @@ public enum EArmPose {
         }
 
         val lensData = LensItem.getStaffLens(staffStack);
-        if (lensData == null || lensData.isEmpty()) return;
-        val lensMode = lensData.getLensMode();
+        if (lensData == null) return;
 
-        switch (lensMode) {
+        switch (lensData.mode()) {
             case STREAM -> {
                 float angle = model.head.pitch - PI * (1 / 2.4f) - (entity.isInSneakingPose() ? 0.2617994F : 0.0F);
                 arm.pitch = MathHelper.clamp(angle, -2.2F, -0.75f);

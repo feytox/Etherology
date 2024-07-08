@@ -1,7 +1,6 @@
 package ru.feytox.etherology.registry.item;
 
 import lombok.experimental.UtilityClass;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -36,11 +35,11 @@ public class ToolItems {
     public static final Item ETHRIL_BATTLE_PICKAXE = register("ethril_battle_pickaxe", new BattlePickaxe(ETHRIL, 1, -2.6f));
     public static final Item EBONY_BATTLE_PICKAXE = register("ebony_battle_pickaxe", new BattlePickaxe(EBONY, 1, -2.6f));
     public static final Item DIAMOND_BATTLE_PICKAXE = register("diamond_battle_pickaxe", new BattlePickaxe(DIAMOND, 2, -2.6f));
-    public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f, new Settings().fireproof()));
+    public static final Item NETHERITE_BATTLE_PICKAXE = register("netherite_battle_pickaxe", new BattlePickaxe(NETHERITE, 2, -2.6f, new Item.Settings().fireproof()));
     public static final Item[] BATTLE_PICKAXES = {WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, EBONY_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE};
 
     // combat tools
-    public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new Settings().maxDamage(452), 140, 14, Items.IRON_INGOT));
+    public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new Item.Settings().maxDamage(452), 140, 14, Items.IRON_INGOT));
     public static final Item TUNING_MACE = register("tuning_mace", new TuningMaceItem());
     public static final Item BROADSWORD = register("broadsword", new BroadSwordItem());
 

@@ -1,20 +1,22 @@
 package ru.feytox.etherology.magic.corruption;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 @RequiredArgsConstructor
 public class CorruptionComponent implements ServerTickingComponent, AutoSyncedComponent {
+
     private static final int INFECTION_TICK_RATE = 60*20;
     private static final int EVAPORATION_TICK_RATE = 20;
     private static final float EVAPORATION_SPEED = 1/3f;
@@ -47,13 +49,13 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
     }
 
     @Override
-    public void readFromNbt(@NotNull NbtCompound nbt) {
+    public void readFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound corruptionNbt = nbt.getCompound("Corruption");
         corruption = Corruption.readFromNbt(corruptionNbt);
     }
 
     @Override
-    public void writeToNbt(@NotNull NbtCompound nbt) {
+    public void writeToNbt(@NotNull NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound corruptionNbt = new NbtCompound();
         if (corruption != null && !corruption.isEmpty()) corruption.writeNbt(corruptionNbt);
         nbt.put("Corruption", corruptionNbt);

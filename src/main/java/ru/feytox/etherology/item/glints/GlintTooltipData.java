@@ -1,18 +1,8 @@
 package ru.feytox.etherology.item.glints;
 
-import net.minecraft.client.item.BundleTooltipData;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.client.item.TooltipData;
+import net.minecraft.component.type.BundleContentsComponent;
 
-public class GlintTooltipData extends BundleTooltipData {
-    private final int maxEther;
+public record GlintTooltipData(BundleContentsComponent component, int maxEther) implements TooltipData {
 
-    public GlintTooltipData(DefaultedList<ItemStack> inventory, int bundleOccupancy, int maxEther) {
-        super(inventory, bundleOccupancy);
-        this.maxEther = maxEther;
-    }
-
-    protected int getMaxEther() {
-        return maxEther;
-    }
 }

@@ -1,7 +1,5 @@
 package ru.feytox.etherology.magic.lens;
 
-import dev.onyxstudios.cca.api.v3.item.CcaNbtType;
-import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import lombok.val;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -184,6 +182,7 @@ public class LensComponent extends ItemComponent {
         cachedModifiers = null;
     }
 
+    @Deprecated
     public boolean isEmpty() {
         if (cachedEmpty != null) return cachedEmpty;
         cachedEmpty = checkEmpty();

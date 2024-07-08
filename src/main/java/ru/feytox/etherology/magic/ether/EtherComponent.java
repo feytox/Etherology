@@ -1,9 +1,5 @@
 package ru.feytox.etherology.magic.ether;
 
-import dev.onyxstudios.cca.api.v3.component.ComponentV3;
-import dev.onyxstudios.cca.api.v3.component.CopyableComponent;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,8 +13,13 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.ladysnake.cca.api.v3.component.ComponentV3;
+import org.ladysnake.cca.api.v3.component.CopyableComponent;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -92,10 +93,11 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
 
     @Override
     public void serverTick() {
-        if (entity.world == null) return;
+        World world = entity.getWorld();
+        if (world == null) return;
 
-        tickRegeneration(entity.world);
-        tickExhaustion(entity.world);
+        tickRegeneration(world);
+        tickExhaustion(world);
     }
 
     private void tickRegeneration(World world) {
@@ -202,7 +204,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     @Override
-    public void readFromNbt(NbtCompound tag) {
+    public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         points = tag.getFloat("points");
         maxPoints = tag.getFloat("max_points");
         pointsRegen = tag.getFloat("points_regen");
@@ -211,7 +213,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     @Override
-    public void writeToNbt(NbtCompound tag) {
+    public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         tag.putFloat("points", points);
         tag.putFloat("max_points", maxPoints);
         tag.putFloat("points_regen", pointsRegen);
@@ -220,9 +222,9 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     }
 
     @Override
-    public void copyFrom(EtherComponent other) {
+    public void copyFrom(EtherComponent other, RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound tag = new NbtCompound();
-        other.writeToNbt(tag);
-        this.readFromNbt(tag);
+        other.writeToNbt(tag, registryLookup);
+        this.readFromNbt(tag, registryLookup);
     }
 }

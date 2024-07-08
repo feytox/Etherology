@@ -1,12 +1,11 @@
 package ru.feytox.etherology.magic.zones;
 
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -14,6 +13,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.List;
@@ -139,13 +140,13 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
     }
 
     @Override
-    public void readFromNbt(@NotNull NbtCompound nbt) {
+    public void readFromNbt(@NotNull NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         zoneType = EssenceZoneType.valueOf(nbt.getString("zone_type"));
         essenceZone = EssenceZone.readFromNbt(nbt.getCompound("zone"));
     }
 
     @Override
-    public void writeToNbt(@NotNull NbtCompound nbt) {
+    public void writeToNbt(@NotNull NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putString("zone_type", zoneType.name());
         NbtCompound zoneNbt = new NbtCompound();
         if (essenceZone != null) essenceZone.writeNbt(zoneNbt);

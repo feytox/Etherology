@@ -18,12 +18,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
+import ru.feytox.etherology.magic.lens.LensComponentNew;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.BrokenRecipe;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
 import java.util.List;
@@ -72,11 +72,9 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     @Nullable
     private AbstractJewelryRecipe getBrokenRecipe() {
-        ItemStack lensStack = getStack(0);
-        val optionalData = EtherologyComponents.LENS.maybeGet(lensStack);
-        return optionalData
-                .filter(lensComponent -> lensComponent.getPattern().isCracked())
-                .map(lensComponent -> BrokenRecipe.INSTANCE).orElse(null);
+        return LensComponentNew.get(getStack(0))
+                .filter(component -> component.pattern().isCracked())
+                .map(component -> BrokenRecipe.INSTANCE).orElse(null);
     }
 
     public boolean hasRecipe() {
@@ -101,8 +99,10 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     public void updateCells(int crackPos) {
         ItemStack lens = getStack(0);
-        val lensData = EtherologyComponents.LENS.get(lens);
-        LensPattern pattern = lensData.getPattern();
+        val lensData = LensComponentNew.getWrapper(lens).orElse(null);
+        if (lensData == null) return;
+
+        LensPattern.Mutable pattern = lensData.getComponent().pattern().asMutable();
         int x0 = crackPos & 0b111;
         int y0 = (crackPos >> 3) & 0b111;
 
@@ -135,10 +135,10 @@ public class JewelryTableInventory implements ImplementedInventory {
             break;
         }
 
-        lensData.setPattern(pattern);
+        lensData.set(pattern, LensComponentNew::withPattern).save();
     }
 
-    private boolean scanCell(int x, int y, int x0, int y0, LensPattern pattern) {
+    private boolean scanCell(int x, int y, int x0, int y0, LensPattern.Mutable pattern) {
         int cell = (y << 3) | x;
         if (EMPTY_CELLS.contains(cell)) return false;
 
@@ -154,7 +154,7 @@ public class JewelryTableInventory implements ImplementedInventory {
         return false;
     }
 
-    private void fill(LensPattern pattern, int x0, int y0, int x1, int y1) {
+    private void fill(LensPattern.Mutable pattern, int x0, int y0, int x1, int y1) {
         for (int x = Math.min(x0, x1); x <= Math.max(x0, x1); x++) {
             for (int y = Math.min(y0, y1); y <= Math.max(y0, y1); y++) {
                 int cell = (y << 3) | x;
@@ -167,13 +167,15 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public boolean markCell(boolean isSoft, int index) {
-        val lensData = EtherologyComponents.LENS.get(getStack(0));
-        LensPattern pattern = lensData.getPattern();
+        val lensData = LensComponentNew.getWrapper(getStack(0)).orElse(null);
+        if (lensData == null) return false;
+
+        LensPattern.Mutable pattern = lensData.getComponent().pattern().asMutable();
 
         boolean result = isSoft ? pattern.markSoft(index) : pattern.markHard(index);
         if (!result) return false;
 
-        lensData.setPattern(pattern);
+        lensData.set(pattern, LensComponentNew::withPattern).save();
         return true;
     }
 
@@ -203,9 +205,10 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public int getTextureOffset(int index) {
-        val lensData = EtherologyComponents.LENS.get(items.get(0));
-        LensPattern pattern = lensData.getPattern();
-        return pattern.getTextureOffset(index);
+        return LensComponentNew.get(getStack(0))
+                .map(LensComponentNew::pattern)
+                .map(pattern -> pattern.getTextureOffset(index))
+                .orElse(0);
     }
 
     @Override

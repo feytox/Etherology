@@ -9,6 +9,7 @@
     "AxeItemMixin",
     "BlockFamilyMixin",
     "BlockTexturePoolMixin",
+    "BundleContentsComponentAccessor",
     "ClientPlayerInteractionManagerAccessor",
     "DataPackContentsMixin",
     "DispenserBlockMixin",

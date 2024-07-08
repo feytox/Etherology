@@ -74,7 +74,7 @@ public enum EssenceZoneType implements StringIdentifiable {
     private static Integer viaTest(World world, BlockPos centerPos, Random random) {
         BlockPos surfacePos = getSurfacePos(world, centerPos);
         RegistryEntry<Biome> biome = world.getBiome(surfacePos);
-        if (biome.value().isHot(surfacePos) && biome.isIn(BiomeTags.IS_OVERWORLD) && random.nextFloat() <= RARE_CHANCE) return surfacePos.getY();
+        if (biome.value().getTemperature() > 1.0f && biome.isIn(BiomeTags.IS_OVERWORLD) && random.nextFloat() <= RARE_CHANCE) return surfacePos.getY();
         if (biome.isIn(BiomeTags.IS_NETHER) && random.nextFloat() <= RARE_CHANCE) return surfacePos.getY();
 
         BlockPos zonePos = getRandomAirPos(world, centerPos, -64, 0, random);

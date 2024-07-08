@@ -15,7 +15,6 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Equipment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -23,18 +22,19 @@ import ru.feytox.etherology.model.custom.RevelationViewModel;
 import ru.feytox.etherology.registry.item.ArmorItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-public class RevelationViewItem extends TrinketItem implements Equipment, TrinketRenderer {
+public class RevelationViewItem extends TrinketItem implements TrinketRenderer {
 
     private static final Identifier TEXTURE = EIdentifier.of("textures/entity/trinket/revelation_view.png");
     private BipedEntityModel<LivingEntity> model;
 
+    // TODO: #upd check as equipment
     public RevelationViewItem() {
         super(new Settings().maxCount(1));
     }
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        World world = entity.method_48926();
+        World world = entity.getWorld();
         if (world == null || !world.isClient) return;
         if (!(entity instanceof PlayerEntity player)) return;
         RevelationViewRenderer.tickData(world, player);

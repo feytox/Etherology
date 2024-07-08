@@ -14,8 +14,8 @@ public class RenderUtils {
         renderTexture(context, x0, y0, u, v, width, height, textureWidth, textureHeight, textureWidth, textureHeight);
     }
 
-    public static void renderTexture(DrawContext context, float x0, float y0, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
-        val matrix = context.getMatrixStack().peek().getPositionMatrix();
+    public static void renderTexture(MatrixStack matrices, float x0, float y0, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+        val matrix = matrices.peek().getPositionMatrix();
         float x1 = x0 + width;
         float y1 = y0 + height;
         float u0 = (float) u / textureWidth;
@@ -33,8 +33,8 @@ public class RenderUtils {
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
-    public static void renderTexture(DrawContext context, float x0, float y0, float z, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
-        val matrix = context.getMatrixStack().peek().getPositionMatrix();
+    public static void renderTexture(MatrixStack matrices, float x0, float y0, float z, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+        val matrix = matrices.peek().getPositionMatrix();
         float x1 = x0 - width;
         float y1 = y0 - height;
         float u0 = (float) u / textureWidth;
@@ -50,5 +50,13 @@ public class RenderUtils {
         bufferBuilder.vertex(matrix, x1, y0, z).texture(u1, v0).next();
         bufferBuilder.vertex(matrix, x0, y0, z).texture(u0, v0).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+    }
+
+    public static void renderTexture(DrawContext context, float x0, float y0, float z, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+        renderTexture(context.getMatrixStack(), x0, y0, z, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight);
+    }
+
+    public static void renderTexture(DrawContext context, float x0, float y0, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+        renderTexture(context.getMatrixStack(), x0, y0, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight);
     }
 }

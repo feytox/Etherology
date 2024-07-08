@@ -1,5 +1,7 @@
 package ru.feytox.etherology.magic.lens;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -11,17 +13,23 @@ import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class LensPattern implements Cloneable {
+public class LensPattern {
+
+    public static final Codec<LensPattern> CODEC = RecordCodecBuilder.create(instance -> instance
+            .group(CodecUtil.INT_SET_CODEC.fieldOf("cracks").forGetter(pattern -> pattern.cracks),
+                    CodecUtil.INT_SET_CODEC.fieldOf("soft_cells").forGetter(pattern -> pattern.softCells)
+            ).apply(instance, LensPattern::new));
 
     @NonNull
-    private final IntArraySet cracks;
+    protected final IntArraySet cracks;
     @NonNull
-    private final IntArraySet softCells;
+    protected final IntArraySet softCells;
 
     public static LensPattern empty() {
         return new LensPattern(new IntArraySet(), new IntArraySet());
@@ -43,18 +51,6 @@ public class LensPattern implements Cloneable {
 
     public boolean isHard(int index) {
         return cracks.contains(index);
-    }
-
-    public boolean markSoft(int index) {
-        return !isHard(index) && softCells.add(index);
-    }
-
-    public void unSoft(int index) {
-        softCells.remove(index);
-    }
-
-    public boolean markHard(int index) {
-        return !isSoft(index) && cracks.add(index);
     }
 
     public NbtCompound writeNbt() {
@@ -114,9 +110,27 @@ public class LensPattern implements Cloneable {
         return intSet;
     }
 
-    @Override
-    @SuppressWarnings("MethodDoesntCallSuperMethod") // TODO: 27.01.2024 huh?
-    public LensPattern clone() {
-        return new LensPattern(cracks.clone(), softCells.clone());
+    public Mutable asMutable() {
+        return new Mutable(cracks.clone(), softCells.clone());
+    }
+
+    // TODO: 08.07.2024 consider to add toImmutable again
+    public static class Mutable extends LensPattern {
+
+        public Mutable(@NonNull IntArraySet cracks, @NonNull IntArraySet softCells) {
+            super(cracks, softCells);
+        }
+
+        public boolean markSoft(int index) {
+            return !isHard(index) && softCells.add(index);
+        }
+
+        public void unSoft(int index) {
+            softCells.remove(index);
+        }
+
+        public boolean markHard(int index) {
+            return !isSoft(index) && cracks.add(index);
+        }
     }
 }

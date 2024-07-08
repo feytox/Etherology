@@ -13,7 +13,6 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -102,7 +101,7 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
     }
 
     @Nullable
-    public static MutableText getPotionInfo(ItemStack potionStack, int potionCount, boolean withCustomName, Text customName) {
+    public static MutableText getPotionInfo(ItemStack potionStack, long potionCount, boolean withCustomName, Text customName) {
         val barrelContent = potionStack.get(DataComponentTypes.POTION_CONTENTS);
         if (barrelContent == null) return null;
 

@@ -15,7 +15,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.StickyKeyBinding;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -25,11 +24,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
+import ru.feytox.etherology.magic.lens.LensComponentNew;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.mixin.KeyBindingAccessor;
 import ru.feytox.etherology.mixin.StickyKeyBindingAccessor;
 import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
@@ -274,10 +273,10 @@ public class StaffLensesScreen extends Screen {
         }
 
         mainLensWidget = new LensWidget(mainLens, null);
-        val lens = EtherologyComponents.LENS.maybeGet(mainLens).orElse(null);
-        if (lens == null) return;
+        val lensData = LensComponentNew.get(mainLens).orElse(null);
+        if (lensData == null) return;
 
-        lensMode = lens.getLensMode();
+        lensMode = lensData.mode();
     }
 
     private List<LensWidget> createLensWidgets(MinecraftClient client) {

@@ -9,7 +9,6 @@ import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -190,9 +189,9 @@ public class OculusItem extends Item implements DoubleModel {
     private static HitResult getTrueCrosshairTarget(MinecraftClient client) {
         HitResult firstTarget = client.crosshairTarget;
         Entity camera = client.getCameraEntity();
-        if (camera == null || client.interactionManager == null) return firstTarget;
+        if (camera == null || client.player == null) return firstTarget;
 
-        double reachDistance = client.interactionManager.getReachDistance();
+        double reachDistance = client.player.getEntityInteractionRange();
         Vec3d cameraPos = camera.getCameraPosVec(1.0F);
         Vec3d cameraRotation = camera.getRotationVec(1.0F);
         Vec3d vec = cameraPos.add(cameraRotation.x * reachDistance, cameraRotation.y * reachDistance, cameraRotation.z * reachDistance);

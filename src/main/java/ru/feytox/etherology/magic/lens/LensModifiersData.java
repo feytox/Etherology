@@ -1,5 +1,6 @@
 package ru.feytox.etherology.magic.lens;
 
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.*;
 import net.minecraft.nbt.NbtCompound;
@@ -12,6 +13,8 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class LensModifiersData {
+
+    public static final Codec<LensModifiersData> CODEC = Codec.unboundedMap(Identifier.CODEC, Codec.INT).xmap(LensModifiersData::new, LensModifiersData::getModifiers);
 
     @NonNull
     private final Map<Identifier, Integer> modifiers;

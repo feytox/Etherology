@@ -7,11 +7,13 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
@@ -20,9 +22,8 @@ import net.minecraft.world.World;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 
-import static net.minecraft.client.render.model.json.ModelTransformation.Mode.FIXED;
-
 public class ShelfData extends FurnitureData implements ImplementedInventory {
+
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
     public ShelfData(boolean isBottom) {
@@ -94,14 +95,14 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
         matrices.translate(leftItemVec.x, leftItemVec.y, leftItemVec.z);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(degrees));
         matrices.scale(0.25f, 0.25f, 0.25f);
-        itemRenderer.renderItem(leftStack, FIXED, light, overlay, matrices, vertexConsumers, 621);
+        itemRenderer.renderItem(leftStack, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, world, 621);
         matrices.pop();
 
         matrices.push();
         matrices.translate(rightItemVec.x, rightItemVec.y, rightItemVec.z);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(degrees));
         matrices.scale(0.25f, 0.25f, 0.25f);
-        itemRenderer.renderItem(rightStack, FIXED, light, overlay, matrices, vertexConsumers, 621);
+        itemRenderer.renderItem(rightStack, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, world, 621);
         matrices.pop();
     }
 
@@ -111,14 +112,13 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, this.inventory);
+    public void writeNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registryLookup) {
+        Inventories.writeNbt(nbtCompound, inventory, registryLookup);
     }
 
     @Override
-    public FurnitureData readNbt(NbtCompound nbt) {
+    public void readNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registryLookup) {
         inventory.clear();
-        Inventories.readNbt(nbt, this.inventory);
-        return this;
+        Inventories.readNbt(nbtCompound, inventory, registryLookup);
     }
 }

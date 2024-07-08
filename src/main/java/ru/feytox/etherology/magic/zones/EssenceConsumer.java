@@ -16,6 +16,7 @@ import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import java.util.Optional;
 
 public interface EssenceConsumer {
+
     float getConsumingValue();
     void increment(float value);
 

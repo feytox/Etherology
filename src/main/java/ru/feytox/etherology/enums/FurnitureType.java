@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.closet.ClosetData;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.block.shelf.ShelfData;
-import ru.feytox.etherology.util.misc.NbtReadable;
 
 import java.util.Arrays;
 import java.util.List;

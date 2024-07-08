@@ -44,7 +44,7 @@ public class WarpCounter extends Item {
         Entity holder = entity != null ? entity : stack.getHolder();
         if (holder == null) return 0.0f;
 
-        World world = clientWorld != null ? clientWorld : holder.world;
+        World world = clientWorld != null ? clientWorld : holder.getWorld();
         if (world == null) return 0.0f;
 
         Float warpLevel = data.getTargetWarpLevel();

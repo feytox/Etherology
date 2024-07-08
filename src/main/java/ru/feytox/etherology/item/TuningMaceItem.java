@@ -1,6 +1,5 @@
 package ru.feytox.etherology.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.util.UseAction;

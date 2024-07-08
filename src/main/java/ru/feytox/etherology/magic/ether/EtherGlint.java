@@ -2,7 +2,6 @@ package ru.feytox.etherology.magic.ether;
 
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import ru.feytox.etherology.item.glints.GlintItem;
 
 public class EtherGlint {
@@ -39,8 +38,6 @@ public class EtherGlint {
     }
 
     public float getStoredEther() {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null) return 0;
-        return nbt.getFloat("stored_ether");
+        return GlintItem.getStoredEther(stack);
     }
 }

@@ -2,11 +2,11 @@ package ru.feytox.etherology.magic.staff;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import lombok.val;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
+import org.ladysnake.cca.api.v3.item.ItemComponent;
 import ru.feytox.etherology.Etherology;
 
 import java.util.Map;
