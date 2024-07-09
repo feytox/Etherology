@@ -1,21 +1,19 @@
 package ru.feytox.etherology.recipes.staff;
 
-import lombok.val;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import static ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe.getIndexesOfPair;
 import static ru.feytox.etherology.registry.misc.RecipesRegistry.STAFF_CARPET_CUT;
@@ -31,9 +29,9 @@ public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
         Pair<Integer, Integer> result = getIndexesOfStaffAndShears(inventory);
         if (result == null) return false;
         ItemStack staffStack = inventory.getStack(result.getLeft());
-        val staff = EtherologyComponents.STAFF.get(staffStack);
-        val parts = staff.getParts();
-        return parts.containsKey(StaffPart.HANDLE);
+
+        return StaffComponent.get(staffStack).map(StaffComponent::parts)
+                .map(parts -> parts.containsKey(StaffPart.HANDLE)).orElse(false);
     }
 
     @Override
@@ -46,8 +44,8 @@ public class StaffCarpetCuttingRecipe extends SpecialCraftingRecipe {
         ItemStack staffStack = inventory.getStack(pair.getLeft());
         ItemStack resultStack = staffStack.copy();
 
-        val staff = EtherologyComponents.STAFF.get(resultStack);
-        staff.removePartInfo(StaffPart.HANDLE);
+        StaffComponent.getWrapper(resultStack).ifPresent(data ->
+                data.set(StaffPart.HANDLE, StaffComponent::removePartInfo).save());
         return resultStack;
     }
 

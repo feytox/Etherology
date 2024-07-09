@@ -32,7 +32,7 @@ public class Etherology implements ModInitializer {
         EItems.registerItems();
         EBlocks.registerAll();
         ResourceReloaders.registerServerData();
-        EtherologyNetwork.registerPackets();
+        EtherologyNetwork.registerCommonSide();
         EBlockFamilies.registerFamilies();
         DevCommands.register();
         EtherSounds.registerAll();

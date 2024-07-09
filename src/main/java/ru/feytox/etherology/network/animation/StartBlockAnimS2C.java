@@ -1,63 +1,46 @@
 package ru.feytox.etherology.network.animation;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
-import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
-import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-public class StartBlockAnimS2C extends AbstractS2CPacket {
-    public static final Identifier START_BLOCK_ANIM_PACKET_ID = EIdentifier.of("start_block_anim");
-    private final BlockPos blockPos;
-    private final String animName;
+public record StartBlockAnimS2C(BlockPos pos, String animName) implements AbstractS2CPacket {
 
-    public <T extends BlockEntity & EGeoBlockEntity> StartBlockAnimS2C(T blockEntity, String animName) {
-        this.blockPos = blockEntity.getPos();
-        this.animName = animName;
-    }
+    public static final Id<StartBlockAnimS2C> ID = new Id<>(EIdentifier.of("start_block_anim"));
+    public static final PacketCodec<RegistryByteBuf, StartBlockAnimS2C> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, StartBlockAnimS2C::pos, PacketCodecs.STRING, StartBlockAnimS2C::animName, StartBlockAnimS2C::new);
 
     public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
-        StartBlockAnimS2C packet = new StartBlockAnimS2C(blockEntity, animName);
-        EtherologyNetwork.sendForTracking(packet, blockEntity);
+        new StartBlockAnimS2C(blockEntity.getPos(), animName).sendForTracking(blockEntity);
     }
 
     public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName, PlayerEntity except) {
-        StartBlockAnimS2C packet = new StartBlockAnimS2C(blockEntity, animName);
-        EtherologyNetwork.sendForTracking(packet, blockEntity, except.getId());
+        new StartBlockAnimS2C(blockEntity.getPos(), animName).sendForTracking(blockEntity, except.getId());
     }
 
-    public static void receive(S2CPacketInfo packetInfo) {
-        MinecraftClient client = packetInfo.client();
-        PacketByteBuf buf = packetInfo.buf();
-        BlockPos blockPos = buf.readBlockPos();
-        String animName = buf.readString();
+    public static void receive(StartBlockAnimS2C packet, ClientPlayNetworking.Context context) {
+        MinecraftClient client = context.client();
 
         client.execute(() -> {
             if (client.world == null) return;
-            BlockEntity be = client.world.getBlockEntity(blockPos);
+            BlockEntity be = client.world.getBlockEntity(packet.pos);
 
             if (be instanceof EGeoBlockEntity eGeoBlock) {
-                eGeoBlock.triggerAnim(animName);
+                eGeoBlock.triggerAnim(packet.animName);
             }
         });
     }
 
-
     @Override
-    public PacketByteBuf encode(PacketByteBuf buf) {
-        buf.writeBlockPos(blockPos);
-        buf.writeString(animName);
-        return buf;
-    }
-
-    @Override
-    public Identifier getPacketID() {
-        return START_BLOCK_ANIM_PACKET_ID;
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 }

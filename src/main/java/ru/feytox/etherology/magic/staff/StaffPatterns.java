@@ -1,5 +1,6 @@
 package ru.feytox.etherology.magic.staff;
 
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.UtilityClass;
 import ru.feytox.etherology.Etherology;
@@ -11,6 +12,7 @@ import java.util.function.Supplier;
 @UtilityClass
 public class StaffPatterns {
 
+    public static final Codec<StaffPattern> CODEC = Codec.STRING.xmap(StaffPatterns::get, StaffPattern::getName).stable();
     private static final Map<String, StaffPattern> PATTERNS = new Object2ObjectOpenHashMap<>();
 
     public static void registerAll() {

@@ -8,12 +8,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import ru.feytox.etherology.gui.staff.StaffIndicator;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
+import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.ModelPredicates;
 import ru.feytox.etherology.registry.misc.*;
 import ru.feytox.etherology.registry.particle.ClientParticleRegistry;
 import ru.feytox.etherology.util.delayedTask.ClientTaskManager;
-import software.bernie.geckolib.network.GeckoLibNetwork;
 
 @Environment(EnvType.CLIENT)
 public class EtherologyClient implements ClientModInitializer {
@@ -32,6 +32,7 @@ public class EtherologyClient implements ClientModInitializer {
         KeybindsRegistry.registerAll();
         EntityRegistry.registerClientSide();
         EventsRegistry.registerClientSide();
+        EtherologyNetwork.registerClientSide();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             ClientTaskManager.INSTANCE.tickTasks();

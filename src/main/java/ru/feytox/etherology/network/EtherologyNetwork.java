@@ -1,49 +1,57 @@
 package ru.feytox.etherology.network;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import ru.feytox.etherology.network.animation.AnimationPacketManager;
-import ru.feytox.etherology.network.interaction.InteractionPacketManager;
-import ru.feytox.etherology.network.util.*;
+import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
+import ru.feytox.etherology.network.util.AbstractC2SPacket;
+import ru.feytox.etherology.network.util.AbstractS2CPacket;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EtherologyNetwork {
-    // TODO: 25/04/2023 перенести сюда все остальные пакеты
 
-    public static void registerPackets() {
-        registerPackets(AnimationPacketManager.INSTANCE, InteractionPacketManager.INSTANCE);
+    public static void registerCommonSide() {
+        // animation
+        registerS2C(StartBlockAnimS2C.ID, StartBlockAnimS2C.CODEC);
     }
 
-    private static void registerPackets(AbstractPacketManager... packetManagers) {
-        var s2cBuilder = new ImmutableMap.Builder<Identifier, AbstractS2CPacket.S2CHandler>();
-        var c2sBuilder = new ImmutableMap.Builder<Identifier, AbstractC2SPacket.C2SHandler>();
-        for (AbstractPacketManager packetManager : packetManagers) {
-            packetManager.registerS2C(s2cBuilder);
-            packetManager.registerC2S(c2sBuilder);
-        }
-        ImmutableMap<Identifier, AbstractS2CPacket.S2CHandler> s2cPackets = s2cBuilder.build();
-        ImmutableMap<Identifier, AbstractC2SPacket.C2SHandler> c2sPackets = c2sBuilder.build();
+    public static void registerClientSide() {
+        // animation
+        registerHandlerS2C(StartBlockAnimS2C.ID, StartBlockAnimS2C::receive);
+        // stopship: continue rewriting networking
+        // good luck
+    }
 
-        s2cPackets.forEach((id, handler) ->
-                ClientPlayNetworking.registerGlobalReceiver(id, (client, handler1, buf, responseSender) ->
-                        handler.receive(new S2CPacketInfo(client, handler1, buf, responseSender))));
-        c2sPackets.forEach((id, handler) ->
-                ServerPlayNetworking.registerGlobalReceiver(id, ((server, player, handler1, buf, responseSender) ->
-                        handler.receive(new C2SPacketInfo(server, player, handler1, buf, responseSender)))));
+    private static <T extends CustomPayload> void registerC2S(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec, ServerPlayNetworking.PlayPayloadHandler<T> handler) {
+        PayloadTypeRegistry.playC2S().register(id, codec);
+        ServerPlayNetworking.registerGlobalReceiver(id, handler);
+    }
+
+    private static <T extends CustomPayload> void registerS2C(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec) {
+        PayloadTypeRegistry.playS2C().register(id, codec);
+    }
+
+    private static <T extends CustomPayload> void registerHandlerS2C(CustomPayload.Id<T> id, ClientPlayNetworking.PlayPayloadHandler<T> handler) {
+        ClientPlayNetworking.registerGlobalReceiver(id, handler);
+    }
+
+    public static CustomPayload.Id<? extends CustomPayload> id(String id) {
+        return new CustomPayload.Id<>(EIdentifier.of(id));
     }
 
     // TODO: 30.12.2023 replace to this.send...
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
             PacketByteBuf buf = packet.encode(PacketByteBufs.create());
@@ -51,7 +59,7 @@ public class EtherologyNetwork {
         }
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity, int exceptId) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
             if (player.getId() == exceptId) continue;
@@ -60,7 +68,7 @@ public class EtherologyNetwork {
         }
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void sendForTracking(ServerWorld world, BlockPos pos, int exceptId, AbstractS2CPacket packet) {
         for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
             if (player.getId() == exceptId) continue;
@@ -69,7 +77,7 @@ public class EtherologyNetwork {
         }
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void sendToServer(AbstractC2SPacket packet) {
         PacketByteBuf buf = packet.encode(PacketByteBufs.create());
         ClientPlayNetworking.send(packet.getPacketID(), buf);

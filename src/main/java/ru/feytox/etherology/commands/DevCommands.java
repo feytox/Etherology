@@ -77,7 +77,7 @@ public class DevCommands {
         if (dataOptional.isEmpty()) return 0;
 
         Corruption corruption = dataOptional.get().getCorruption();
-        float value = corruption != null ? corruption.getCorruptionValue() : 0.0f;
+        float value = corruption != null ? corruption.corruptionValue() : 0.0f;
 
         player.sendMessage(Text.of(String.valueOf(value)));
         return 1;

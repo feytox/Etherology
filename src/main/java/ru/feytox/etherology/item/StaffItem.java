@@ -20,6 +20,9 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.ether.EtherComponent;
+import ru.feytox.etherology.magic.lens.LensComponent;
+import ru.feytox.etherology.magic.staff.StaffComponent;
+import ru.feytox.etherology.registry.misc.EComponentTypes;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
 import java.util.List;
@@ -27,13 +30,13 @@ import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
 /**
- * @see ru.feytox.etherology.magic.staff.StaffComponent
- * @see ru.feytox.etherology.magic.lens.LensComponent
+ * @see StaffComponent
+ * @see LensComponent
  */
 public class StaffItem extends Item {
 
     public StaffItem() {
-        super(new Settings().maxCount(1));
+        super(new Settings().maxCount(1).component(EComponentTypes.STAFF, StaffComponent.DEFAULT));
     }
 
     @Override
@@ -65,12 +68,11 @@ public class StaffItem extends Item {
         val lensStack = LensItem.getLensStack(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return;
 
-        val lensData = LensItem.getStaffLens(staffStack);
-        if (lensData == null || lensData.isEmpty()) return;
-        if (!EtherComponent.isEnough(user, lensItem.getEtherCost(lensData))) return;
+        val lensData = LensItem.getStaffLensWrapper(staffStack);
+        if (lensData == null) return;
+        if (!EtherComponent.isEnough(user, lensItem.getEtherCost(lensData.getComponent()))) return;
 
-        val lensMode = lensData.getLensMode();
-        boolean isDamaged = switch (lensMode) {
+        boolean isDamaged = switch (lensData.getComponent().mode()) {
             case CHARGE -> lensItem.onChargeUse(world, user, lensData, lensStack, hold, handGetter);
             case STREAM -> lensItem.onStreamUse(world, user, lensData, lensStack, hold, handGetter);
         };
@@ -86,16 +88,15 @@ public class StaffItem extends Item {
         val lensStack = LensItem.getLensStack(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return;
 
-        val lensData = LensItem.getStaffLens(staffStack);
-        if (lensData == null || lensData.isEmpty()) return;
-        val lensMode = lensData.getLensMode();
+        val lensData = LensItem.getStaffLensWrapper(staffStack);
+        if (lensData == null) return;
 
         int holdTicks = getMaxUseTime(staffStack) - remainingUseTicks;
         Supplier<Hand> handGetter = () -> getHandFromStack(user, staffStack);
 
-        boolean isDamaged = switch (lensMode) {
+        boolean isDamaged = switch (lensData.getComponent().mode()) {
             case CHARGE -> {
-                int chargeTime = lensItem.getChargeTime(lensData, holdTicks);
+                int chargeTime = lensItem.getChargeTime(lensData.getComponent(), holdTicks);
                 yield lensItem.onChargeStop(world, user, lensData, lensStack, chargeTime, handGetter);
             }
             case STREAM -> lensItem.onStreamStop(world, user, lensData, lensStack, holdTicks, handGetter);
@@ -173,7 +174,7 @@ public class StaffItem extends Item {
 
     @Override
     public boolean allowComponentsUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
-        return super.allowComponentsUpdateAnimation(player, hand, oldStack, newStack);
+        return false;
     }
 
     @Nullable

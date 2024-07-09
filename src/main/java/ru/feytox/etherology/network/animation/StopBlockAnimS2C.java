@@ -1,57 +1,42 @@
 package ru.feytox.etherology.network.animation;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
-import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
-import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 @Deprecated
-public class StopBlockAnimS2C extends AbstractS2CPacket {
-    public static final Identifier STOP_BLOCK_ANIM_PACKET_ID = EIdentifier.of("stop_block_anim_packet");
-    private final BlockPos blockPos;
-    private final String animName;
+public record StopBlockAnimS2C(BlockPos pos, String animName) implements AbstractS2CPacket {
 
-    public <T extends BlockEntity & EGeoBlockEntity> StopBlockAnimS2C(T blockEntity, String animName) {
-        this.blockPos = blockEntity.getPos();
-        this.animName = animName;
-    }
+    public static final Id<StopBlockAnimS2C> ID = new Id<>(EIdentifier.of("stop_block_anim"));
+    public static final PacketCodec<RegistryByteBuf, StopBlockAnimS2C> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, StopBlockAnimS2C::pos, PacketCodecs.STRING, StopBlockAnimS2C::animName, StopBlockAnimS2C::new);
 
     public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName) {
-        StopBlockAnimS2C packet = new StopBlockAnimS2C(blockEntity, animName);
-        EtherologyNetwork.sendForTracking(packet, blockEntity);
+        new StopBlockAnimS2C(blockEntity.getPos(), animName).sendForTracking(blockEntity);
     }
 
-    public static void receive(S2CPacketInfo packetInfo) {
-        MinecraftClient client = packetInfo.client();
-        PacketByteBuf buf = packetInfo.buf();
-        BlockPos blockPos = buf.readBlockPos();
-        String animName = buf.readString();
+    public static void receive(StopBlockAnimS2C packet, ClientPlayNetworking.Context context) {
+        MinecraftClient client = context.client();
 
         client.execute(() -> {
             if (client.world == null) return;
-            BlockEntity be = client.world.getBlockEntity(blockPos);
+            BlockEntity be = client.world.getBlockEntity(packet.pos);
 
             if (be instanceof EGeoBlockEntity geoBlock) {
-                geoBlock.stopClientAnim(animName);
+                geoBlock.stopClientAnim(packet.animName);
             }
         });
     }
 
     @Override
-    public PacketByteBuf encode(PacketByteBuf buf) {
-        buf.writeBlockPos(blockPos);
-        buf.writeString(animName);
-        return buf;
-    }
-
-    @Override
-    public Identifier getPacketID() {
-        return STOP_BLOCK_ANIM_PACKET_ID;
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 }

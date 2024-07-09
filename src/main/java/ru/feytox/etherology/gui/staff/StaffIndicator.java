@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
-import ru.feytox.etherology.magic.lens.LensComponentNew;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.mixin.InGameHudAccessor;
 
 @Environment(EnvType.CLIENT)
@@ -75,7 +75,7 @@ public class StaffIndicator {
         ItemStack lensStack = LensItem.getLensStack(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return null;
 
-        val lensData = LensComponentNew.get(lensStack).orElse(null);
+        val lensData = LensComponent.get(lensStack).orElse(null);
         if (lensData == null) return null;
 
         return switch (lensData.mode()) {

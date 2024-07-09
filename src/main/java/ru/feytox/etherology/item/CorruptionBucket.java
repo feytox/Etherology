@@ -1,9 +1,7 @@
 package ru.feytox.etherology.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -14,11 +12,12 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.registry.item.EItems;
+import ru.feytox.etherology.registry.misc.EComponentTypes;
 
 public class CorruptionBucket extends Item {
     
     public CorruptionBucket() {
-        super(new Settings().maxCount(1));
+        super(new Settings().maxCount(1).component(EComponentTypes.CORRUPTION, new Corruption(0)));
     }
 
     @Nullable
@@ -27,17 +26,15 @@ public class CorruptionBucket extends Item {
         Corruption corruption = Corruption.ofAspects(aspects);
         if (corruption == null) return null;
 
-        NbtCompound corruptionCompound = new NbtCompound();
-        corruption.writeNbt(corruptionCompound);
-        stack.setSubNbt("Corruption", corruptionCompound);
+        stack.set(EComponentTypes.CORRUPTION, corruption);
         return stack;
     }
 
     @Nullable
     public static Corruption getCorruptionFromBucket(ItemStack bucketStack) {
         if (!bucketStack.isOf(EItems.CORRUPTION_BUCKET)) return null;
-        NbtCompound nbt = bucketStack.getSubNbt("Corruption");
-        return nbt == null ? null : Corruption.readFromNbt(nbt);
+        Corruption corruption = bucketStack.get(EComponentTypes.CORRUPTION);
+        return corruption == null || corruption.isEmpty() ? null : corruption;
     }
 
     @Override

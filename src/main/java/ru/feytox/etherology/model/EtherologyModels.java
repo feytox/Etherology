@@ -34,8 +34,8 @@ public class EtherologyModels {
     }
 
     public static Model getStaffPartModel(StaffPartInfo partInfo) {
-        StaffPart part = partInfo.getPart();
+        StaffPart part = partInfo.part();
         if (!part.isStyled()) return item("staff_" + part.getName(), TextureKey.PARTICLE, STYLE);
-        return item("staff_" + part.getName() + "_" + partInfo.getFirstPattern().getName(), TextureKey.PARTICLE, STYLE);
+        return item("staff_" + part.getName() + "_" + partInfo.firstPattern().getName(), TextureKey.PARTICLE, STYLE);
     }
 }

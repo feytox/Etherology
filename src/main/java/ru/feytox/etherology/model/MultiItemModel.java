@@ -2,7 +2,6 @@ package ru.feytox.etherology.model;
 
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderContext.BakedModelConsumer;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
@@ -36,9 +35,8 @@ public abstract class MultiItemModel implements BakedModel, FabricBakedModel {
     @Override
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
-        var modelConsumer = context.bakedModelConsumer();
 
-        getModels().forEach(modelId -> modelConsumer.accept(modelManager.getModel(modelId)));
+        getModels().forEach(modelId -> modelManager.getModel(modelId).emitItemQuads(stack, randomSupplier, context));
     }
 
     @Override

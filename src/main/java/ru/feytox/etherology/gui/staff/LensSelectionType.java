@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
-import ru.feytox.etherology.magic.lens.LensComponentNew;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensMode;
 
 @Getter
@@ -27,7 +27,7 @@ public enum LensSelectionType {
     private static SelectionHandler arrowHandler(LensMode lensMode) {
         return (player, staffStack, lensStack) -> {
             val lens = LensItem.getStaffLensWrapper(staffStack);
-            if (lens != null) lens.set(lensMode, LensComponentNew::withMode).save();
+            if (lens != null) lens.set(lensMode, LensComponent::withMode).save();
         };
     }
 

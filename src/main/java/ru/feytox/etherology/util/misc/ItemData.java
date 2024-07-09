@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.component.DataComponentType;
 import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.function.TriFunction;
+import org.slf4j.helpers.CheckReturnValue;
 
 import java.util.function.BiFunction;
 
@@ -19,12 +21,20 @@ public class ItemData<C> {
         return new ItemData<>(stack, componentType, stack.get(componentType));
     }
 
+    @CheckReturnValue
     public <T> ItemData<C> set(T value, BiFunction<C, T, C> withFunc) {
         component = withFunc.apply(component, value);
         return this;
     }
 
-    public void save() {
+    @CheckReturnValue
+    public <T, M> ItemData<C> set(T value1, M value2, TriFunction<C, T, M, C> func) {
+        component = func.apply(component, value1, value2);
+        return this;
+    }
+
+    public ItemData<C> save() {
         stack.set(componentType, component);
+        return this;
     }
 }

@@ -10,8 +10,6 @@ import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 import ru.feytox.etherology.magic.corruption.CorruptionComponent;
 import ru.feytox.etherology.magic.ether.EtherComponent;
-import ru.feytox.etherology.magic.lens.LensComponent;
-import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -22,12 +20,6 @@ public class EtherologyComponents implements EntityComponentInitializer, ChunkCo
 
     public static final ComponentKey<ZoneComponent> ESSENCE_ZONE =
             ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("essence_zone"), ZoneComponent.class);
-
-    public static final ComponentKey<LensComponent> LENS =
-            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("lens"), LensComponent.class);
-
-    public static final ComponentKey<StaffComponent> STAFF =
-            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("staff"), StaffComponent.class);
 
     public static final ComponentKey<EtherComponent> ETHER =
             ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("ether"), EtherComponent.class);

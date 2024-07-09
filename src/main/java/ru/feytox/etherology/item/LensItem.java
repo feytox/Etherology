@@ -7,7 +7,6 @@ import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -23,12 +22,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.lens.LensComponent;
-import ru.feytox.etherology.magic.lens.LensComponentNew;
 import ru.feytox.etherology.magic.lens.LensModifier;
-import ru.feytox.etherology.magic.staff.StaffLenses;
-import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.magic.staff.StaffPattern;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.magic.staff.*;
+import ru.feytox.etherology.registry.misc.EComponentTypes;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.List;
@@ -50,7 +46,7 @@ public abstract class LensItem extends Item {
 
     // TODO: #upd check damage
     protected LensItem(@Nullable StaffLenses lensType, float streamCost, float chargeCost) {
-        super(new Settings().maxCount(1).maxDamage(100));
+        super(new Settings().maxCount(1).maxDamage(100).component(EComponentTypes.LENS, LensComponent.EMPTY));
         this.lensType = lensType;
         this.streamCost = streamCost;
         this.chargeCost = chargeCost;
@@ -59,36 +55,36 @@ public abstract class LensItem extends Item {
     /**
      * @return true if lens damaged, otherwise - false
      */
-    public abstract boolean onStreamUse(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter);
+    public abstract boolean onStreamUse(World world, LivingEntity entity, ItemData<LensComponent> lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter);
 
     /**
      * @return true if lens damaged, otherwise - false
      */
-    public abstract boolean onChargeUse(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter);
+    public abstract boolean onChargeUse(World world, LivingEntity entity, ItemData<LensComponent> lensData, ItemStack lensStack, boolean hold, Supplier<Hand> handGetter);
 
     /**
      * @return true if lens damaged, otherwise - false
      */
-    public boolean onStreamStop(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
+    public boolean onStreamStop(World world, LivingEntity entity, ItemData<LensComponent> lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         return false;
     }
 
     /**
      * @return true if lens damaged, otherwise - false
      */
-    public boolean onChargeStop(World world, LivingEntity entity, ItemData<LensComponentNew> lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
+    public boolean onChargeStop(World world, LivingEntity entity, ItemData<LensComponent> lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
         return false;
     }
 
     /**
      * @return false if ether decremented, otherwise - true
      */
-    public static boolean decrementEther(LivingEntity entity, ItemStack lensStack, LensComponentNew lensData) {
+    public static boolean decrementEther(LivingEntity entity, ItemStack lensStack, LensComponent lensData) {
         if (!(lensStack.getItem() instanceof LensItem lensItem)) return true;
         return !EtherComponent.decrement(entity, lensItem.getEtherCost(lensData));
     }
 
-    public float getEtherCost(LensComponentNew lensData) {
+    public float getEtherCost(LensComponent lensData) {
         float cost = switch (lensData.mode()) {
             case STREAM -> streamCost;
             case CHARGE -> chargeCost;
@@ -96,22 +92,22 @@ public abstract class LensItem extends Item {
         return getEtherCost(lensData, cost);
     }
 
-    private float getEtherCost(LensComponentNew lensData, float baseCost) {
+    private float getEtherCost(LensComponent lensData, float baseCost) {
         return baseCost * lensData.calcValue(LensModifier.SAVING, 1, 0.1f, 0.75f);
     }
 
-    public int getStreamCooldown(LensComponentNew lensData) {
+    public int getStreamCooldown(LensComponent lensData) {
         return lensData.calcRoundValue(LensModifier.STREAM, 16, 1, 0.67f);
     }
 
-    public int getChargeTime(LensComponentNew lensData, int holdTicks) {
+    public int getChargeTime(LensComponent lensData, int holdTicks) {
         return Math.min(CHARGE_LIMIT, Math.round(holdTicks * lensData.calcValue(LensModifier.CHARGE, 1, 4, 0.8f)));
     }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         super.appendTooltip(stack, context, tooltip, type);
-        val lensData = LensComponentNew.get(stack).orElse(null);
+        val lensData = LensComponent.get(stack).orElse(null);
         if (lensData == null) return;
 
         lensData.modifiers().getModifiers().forEach((id, level) -> {
@@ -162,7 +158,7 @@ public abstract class LensItem extends Item {
     }
 
     private static float getDamageChance(ItemStack lensStack) {
-        return LensComponentNew.get(lensStack)
+        return LensComponent.get(lensStack)
                 .map(component -> component.calcValue(LensModifier.FILTERING, 1, 0.1f, 0.7f))
                 .orElse(0.0f);
     }
@@ -178,16 +174,13 @@ public abstract class LensItem extends Item {
         if (!(lensStack.getItem() instanceof LensItem lensItem)) return;
         if (lensItem.isUnadjusted()) return;
 
-        val staff = EtherologyComponents.STAFF.get(staffStack);
-
         StaffLenses lensType = StaffLenses.getLens(lensStack);
         if (lensType == null) return;
 
-        NbtCompound lensNbt = new NbtCompound();
-        lensStack.writeNbt(lensNbt);
-        staffStack.setSubNbt("lens_data", lensNbt);
+        staffStack.set(EComponentTypes.STAFF_LENS, lensStack.copy());
+        StaffComponent.getWrapper(staffStack)
+                .ifPresent(staff -> staff.set(new StaffPartInfo(StaffPart.LENS, lensType, StaffPattern.EMPTY), StaffComponent::setPartInfo).save());
 
-        staff.setPartInfo(StaffPart.LENS, lensType, StaffPattern.EMPTY);
         lensStack.decrement(1);
     }
 
@@ -204,31 +197,29 @@ public abstract class LensItem extends Item {
         ItemStack lensStack = getLensStack(staffStack);
         if (lensStack == null) return null;
 
-        val staff = EtherologyComponents.STAFF.get(staffStack);
-        staff.removePartInfo(StaffPart.LENS);
-        staffStack.removeSubNbt("lens_data");
+        StaffComponent.getWrapper(staffStack)
+                .ifPresent(staff -> staff.set(StaffPart.LENS, StaffComponent::removePartInfo).save());
+        staffStack.remove(EComponentTypes.STAFF_LENS);
 
         return lensStack;
     }
 
     @Nullable
-    public static LensComponentNew getStaffLens(ItemStack staffStack) {
+    public static LensComponent getStaffLens(ItemStack staffStack) {
         ItemStack lensStack = getLensStack(staffStack);
-        return lensStack == null ? null : LensComponentNew.get(lensStack).orElse(null);
+        return lensStack == null ? null : LensComponent.get(lensStack).orElse(null);
     }
 
     @Nullable
-    public static ItemData<LensComponentNew> getStaffLensWrapper(ItemStack staffStack) {
+    public static ItemData<LensComponent> getStaffLensWrapper(ItemStack staffStack) {
         ItemStack lensStack = getLensStack(staffStack);
-        return lensStack == null ? null : LensComponentNew.getWrapper(lensStack).orElse(null);
+        return lensStack == null ? null : LensComponent.getWrapper(lensStack).orElse(null);
     }
 
     @Nullable
     public static ItemStack getLensStack(ItemStack staffStack) {
-        NbtCompound lensNbt = staffStack.getSubNbt("lens_data");
-        if (lensNbt == null) return null;
-        ItemStack lensStack = ItemStack.fromNbt(lensNbt);
-        return lensStack.isEmpty() ? null : lensStack;
+        ItemStack lensStack = staffStack.get(EComponentTypes.STAFF_LENS);
+        return lensStack == null || lensStack.isEmpty() ? null : lensStack;
     }
 
     public boolean isUnadjusted() {

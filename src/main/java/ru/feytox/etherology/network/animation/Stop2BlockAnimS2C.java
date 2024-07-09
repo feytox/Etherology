@@ -1,52 +1,41 @@
 package ru.feytox.etherology.network.animation;
 
-import lombok.RequiredArgsConstructor;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
-import ru.feytox.etherology.network.util.S2CPacketInfo;
 import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-@RequiredArgsConstructor
-public class Stop2BlockAnimS2C extends AbstractS2CPacket {
-    public static final Identifier STOP_2BLOCK_ANIM_PACKET_ID = EIdentifier.of("stop_2block_anim_packet");
-    private final BlockPos blockPos;
-    private final String animName;
+public record Stop2BlockAnimS2C(BlockPos pos, String animName) implements AbstractS2CPacket {
+
+    public static final Id<Stop2BlockAnimS2C> ID = new Id<>(EIdentifier.of("stop_2block_anim"));
+    public static final PacketCodec<RegistryByteBuf, Stop2BlockAnimS2C> CODEC = PacketCodec.tuple(BlockPos.PACKET_CODEC, Stop2BlockAnimS2C::pos, PacketCodecs.STRING, Stop2BlockAnimS2C::animName, Stop2BlockAnimS2C::new);
 
     public static <T extends BlockEntity & EGeo2BlockEntity> void sendForTracking(T blockEntity, String animName) {
-        Stop2BlockAnimS2C packet = new Stop2BlockAnimS2C(blockEntity.getPos(), animName);
-        packet.sendForTracking(blockEntity);
+        new Stop2BlockAnimS2C(blockEntity.getPos(), animName).sendForTracking(blockEntity);
     }
 
-    public static void receive(S2CPacketInfo packetInfo) {
-        MinecraftClient client = packetInfo.client();
-        PacketByteBuf buf = packetInfo.buf();
-        BlockPos blockPos = buf.readBlockPos();
-        String animName = buf.readString();
+    public static void receive(Stop2BlockAnimS2C packet, ClientPlayNetworking.Context context) {
+        MinecraftClient client = context.client();
 
         client.execute(() -> {
             if (client.world == null) return;
-            BlockEntity be = client.world.getBlockEntity(blockPos);
+            BlockEntity be = client.world.getBlockEntity(packet.pos);
 
             if (be instanceof EGeo2BlockEntity animatable) {
-                animatable.stopClientAnim(animName);
+                animatable.stopClientAnim(packet.animName);
             }
         });
     }
 
     @Override
-    public PacketByteBuf encode(PacketByteBuf buf) {
-        buf.writeBlockPos(blockPos);
-        buf.writeString(animName);
-        return buf;
-    }
-
-    @Override
-    public Identifier getPacketID() {
-        return STOP_2BLOCK_ANIM_PACKET_ID;
+    public Id<? extends CustomPayload> getId() {
+        return ID;
     }
 }

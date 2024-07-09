@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
-import ru.feytox.etherology.magic.lens.LensComponentNew;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.mixin.KeyBindingAccessor;
 import ru.feytox.etherology.mixin.StickyKeyBindingAccessor;
@@ -273,7 +273,7 @@ public class StaffLensesScreen extends Screen {
         }
 
         mainLensWidget = new LensWidget(mainLens, null);
-        val lensData = LensComponentNew.get(mainLens).orElse(null);
+        val lensData = LensComponent.get(mainLens).orElse(null);
         if (lensData == null) return;
 
         lensMode = lensData.mode();

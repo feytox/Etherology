@@ -12,7 +12,6 @@ import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensMode;
 import ru.feytox.etherology.magic.lens.LensPattern;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.Arrays;
 
@@ -38,22 +37,19 @@ public class ModelPredicates {
         register("staff_stream", (stack, world, entity, seed) -> {
             if (entity == null || !entity.getActiveItem().equals(stack)) return 0;
             val lensData = LensItem.getStaffLens(stack);
-            if (lensData == null || lensData.isEmpty()) return 0;
-            return lensData.getLensMode().equals(LensMode.STREAM) ? 1 : 0;
+            if (lensData == null) return 0;
+            return lensData.mode().equals(LensMode.STREAM) ? 1 : 0;
         }, STAFF);
 
         register("staff_charge", (stack, world, entity, seed) -> {
             if (entity == null || !entity.getActiveItem().equals(stack)) return 0;
             val lensData = LensItem.getStaffLens(stack);
-            if (lensData == null || lensData.isEmpty()) return 0;
-            return lensData.getLensMode().equals(LensMode.CHARGE) ? 1 : 0;
+            if (lensData == null) return 0;
+            return lensData.mode().equals(LensMode.CHARGE) ? 1 : 0;
         }, STAFF);
 
-        register("lens_cracked", (stack, world, entity, seed) -> {
-            val optionalData = EtherologyComponents.LENS.maybeGet(stack);
-            return optionalData.map(LensComponent::getPattern).filter(LensPattern::isCracked)
-                    .map(lensComponent -> 1).orElse(0);
-        }, UNADJUSTED_LENS);
+        register("lens_cracked", (stack, world, entity, seed) -> LensComponent.get(stack).map(LensComponent::pattern)
+                .filter(LensPattern::isCracked).map(pattern -> 1).orElse(0), UNADJUSTED_LENS);
 
         register("warp_counter", (stack, world, entity, seed) -> WarpCounter.getWarpLevel(stack, world, entity), WARP_COUNTER);
     }

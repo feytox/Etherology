@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import lombok.val;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -15,11 +14,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import org.apache.commons.lang3.EnumUtils;
-import ru.feytox.etherology.magic.staff.StaffMaterial;
-import ru.feytox.etherology.magic.staff.StaffPart;
-import ru.feytox.etherology.magic.staff.StaffPattern;
+import ru.feytox.etherology.magic.staff.*;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +38,8 @@ public class EmpowerRecipeSerializer extends FeyRecipeSerializer<EmpowerRecipe> 
         ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
         if (json.has("staff_core")) {
             StaffMaterial material = EnumUtils.getEnumIgnoreCase(StaffMaterial.class, JsonHelper.getString(json, "staff_core"));
-            val staff = EtherologyComponents.STAFF.get(output);
-            staff.setPartInfo(StaffPart.CORE, material, StaffPattern.EMPTY);
+            StaffComponent.getWrapper(output).ifPresent(data ->
+                    data.set(new StaffPartInfo(StaffPart.CORE, material, StaffPattern.EMPTY), StaffComponent::setPartInfo).save());
         }
         int rellaCount = JsonHelper.getInt(json, "rellaCount", 0);
         int viaCount = JsonHelper.getInt(json, "viaCount", 0);

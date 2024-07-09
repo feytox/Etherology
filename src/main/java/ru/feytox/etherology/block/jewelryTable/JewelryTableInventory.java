@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
-import ru.feytox.etherology.magic.lens.LensComponentNew;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
 import ru.feytox.etherology.recipes.jewelry.BrokenRecipe;
@@ -72,7 +72,7 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     @Nullable
     private AbstractJewelryRecipe getBrokenRecipe() {
-        return LensComponentNew.get(getStack(0))
+        return LensComponent.get(getStack(0))
                 .filter(component -> component.pattern().isCracked())
                 .map(component -> BrokenRecipe.INSTANCE).orElse(null);
     }
@@ -99,7 +99,7 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     public void updateCells(int crackPos) {
         ItemStack lens = getStack(0);
-        val lensData = LensComponentNew.getWrapper(lens).orElse(null);
+        val lensData = LensComponent.getWrapper(lens).orElse(null);
         if (lensData == null) return;
 
         LensPattern.Mutable pattern = lensData.getComponent().pattern().asMutable();
@@ -135,7 +135,7 @@ public class JewelryTableInventory implements ImplementedInventory {
             break;
         }
 
-        lensData.set(pattern, LensComponentNew::withPattern).save();
+        lensData.set(pattern, LensComponent::withPattern).save();
     }
 
     private boolean scanCell(int x, int y, int x0, int y0, LensPattern.Mutable pattern) {
@@ -167,7 +167,7 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public boolean markCell(boolean isSoft, int index) {
-        val lensData = LensComponentNew.getWrapper(getStack(0)).orElse(null);
+        val lensData = LensComponent.getWrapper(getStack(0)).orElse(null);
         if (lensData == null) return false;
 
         LensPattern.Mutable pattern = lensData.getComponent().pattern().asMutable();
@@ -175,7 +175,7 @@ public class JewelryTableInventory implements ImplementedInventory {
         boolean result = isSoft ? pattern.markSoft(index) : pattern.markHard(index);
         if (!result) return false;
 
-        lensData.set(pattern, LensComponentNew::withPattern).save();
+        lensData.set(pattern, LensComponent::withPattern).save();
         return true;
     }
 
@@ -205,8 +205,8 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public int getTextureOffset(int index) {
-        return LensComponentNew.get(getStack(0))
-                .map(LensComponentNew::pattern)
+        return LensComponent.get(getStack(0))
+                .map(LensComponent::pattern)
                 .map(pattern -> pattern.getTextureOffset(index))
                 .orElse(0);
     }

@@ -17,7 +17,7 @@ public class LensModifiersData {
     public static final Codec<LensModifiersData> CODEC = Codec.unboundedMap(Identifier.CODEC, Codec.INT).xmap(LensModifiersData::new, LensModifiersData::getModifiers);
 
     @NonNull
-    private final Map<Identifier, Integer> modifiers;
+    protected final Map<Identifier, Integer> modifiers;
 
     public static LensModifiersData empty() {
         return new LensModifiersData(new Object2IntOpenHashMap<>());
@@ -25,20 +25,6 @@ public class LensModifiersData {
 
     public int getLevel(LensModifier modifier) {
         return modifiers.getOrDefault(modifier.modifierId(), 0);
-    }
-
-    public void setLevel(LensModifier modifier, int level) {
-        if (level == 0) removeModifier(modifier);
-        else modifiers.put(modifier.modifierId(), level);
-    }
-
-    public void incrementLevel(LensModifier modifier) {
-        setLevel(modifier, getLevel(modifier)+1);
-    }
-
-    public void removeModifier(LensModifier modifier) {
-        if (!modifiers.containsKey(modifier.modifierId())) return;
-        modifiers.remove(modifier.modifierId());
     }
 
     public NbtCompound writeNbt() {
@@ -52,5 +38,26 @@ public class LensModifiersData {
         val modifiers = nbt.getKeys().stream()
                 .collect(Collectors.toMap(Identifier::new, nbt::getInt, Integer::max, Object2IntOpenHashMap::new));
         return new LensModifiersData(modifiers);
+    }
+
+    public Mutable asMutable() {
+        return new Mutable(new Object2IntOpenHashMap<>(modifiers));
+    }
+
+    public static class Mutable extends LensModifiersData {
+
+        public Mutable(@NonNull Map<Identifier, Integer> modifiers) {
+            super(modifiers);
+        }
+
+        public void setLevel(LensModifier modifier, int level) {
+            if (level == 0) removeModifier(modifier);
+            else modifiers.put(modifier.modifierId(), level);
+        }
+
+        public void removeModifier(LensModifier modifier) {
+            if (!modifiers.containsKey(modifier.modifierId())) return;
+            modifiers.remove(modifier.modifierId());
+        }
     }
 }

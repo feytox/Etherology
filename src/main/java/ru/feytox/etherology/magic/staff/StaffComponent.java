@@ -1,94 +1,45 @@
 package ru.feytox.etherology.magic.staff;
 
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import lombok.val;
+import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import lombok.With;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import org.jetbrains.annotations.Nullable;
-import org.ladysnake.cca.api.v3.item.ItemComponent;
-import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-public class StaffComponent extends ItemComponent {
+@With
+public record StaffComponent(Map<StaffPart, StaffPartInfo> parts) {
 
-    private static final Supplier<ImmutableMap<StaffPart, StaffPartInfo>> DEFAULT_PARTS;
+    public static final Codec<StaffComponent> CODEC;
+    public static final StaffComponent DEFAULT;
 
-    @Nullable
-    private Map<StaffPart, StaffPartInfo> cached;
-
-    public StaffComponent(ItemStack stack) {
-        super(stack);
+    public StaffComponent setPartInfo(StaffPartInfo partInfo) {
+        Map<StaffPart, StaffPartInfo> newParts = new Object2ObjectOpenHashMap<>(parts);
+        newParts.put(partInfo.part(), partInfo);
+        return withParts(newParts);
     }
 
-    public void setPartInfo(StaffPart part, StaffPattern firstPattern, StaffPattern secondPattern) {
-        val parts = getParts();
-        StaffPartInfo partInfo = new StaffPartInfo(part, firstPattern, secondPattern);
-        parts.put(part, partInfo);
-        putParts(parts);
+    public StaffComponent removePartInfo(StaffPart part) {
+        Map<StaffPart, StaffPartInfo> newParts = new Object2ObjectOpenHashMap<>(parts);
+        newParts.remove(part);
+        return withParts(newParts);
     }
 
-    @Nullable
-    public StaffPartInfo getPartInfo(StaffPart part) {
-        val parts = getParts();
-        return parts.getOrDefault(part, null);
+    public static Optional<ItemData<StaffComponent>> getWrapper(ItemStack stack) {
+        return get(stack).map(component -> new ItemData<>(stack, EComponentTypes.STAFF, component));
     }
 
-    public void removePartInfo(StaffPart part) {
-        val parts = getParts();
-        parts.remove(part);
-        putParts(parts);
-    }
-
-    public Map<StaffPart, StaffPartInfo> getParts() {
-        if (cached != null) return cached;
-        if (!hasTag("parts")) putParts(DEFAULT_PARTS.get());
-
-        NbtCompound partsNbt = getCompound("parts");
-        cached = partsNbt.getKeys().stream()
-                .map(partsNbt::getCompound)
-                .map(nbt -> {
-                    try {
-                        return nbt.get(StaffPartInfo.NBT_KEY);
-                    } catch (Exception e) {
-                        Etherology.ELOGGER.error("Found non-PartInfo element while loading EtherStaff NBT");
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(StaffPartInfo::getPart, part -> part));
-        return cached;
-    }
-
-    private void putParts(Map<StaffPart, StaffPartInfo> parts) {
-        NbtCompound partsNbt = new NbtCompound();
-
-        parts.forEach((part, partInfo) -> {
-            NbtCompound nbt = new NbtCompound();
-            nbt.put(StaffPartInfo.NBT_KEY, partInfo);
-            partsNbt.put(partInfo.getPart().getName(), nbt);
-        });
-
-        putCompound("parts", partsNbt);
-        resetCache();
-    }
-
-    @Override
-    public void onTagInvalidated() {
-        super.onTagInvalidated();
-        resetCache();
-    }
-
-    public void resetCache() {
-        cached = null;
+    public static Optional<StaffComponent> get(ItemStack stack) {
+        return Optional.ofNullable(stack.get(EComponentTypes.STAFF));
     }
 
     static {
-        DEFAULT_PARTS = Suppliers.memoize(() -> ImmutableMap.of(
+        CODEC = Codec.unboundedMap(StaffPart.CODEC, StaffPartInfo.CODEC).xmap(StaffComponent::new, StaffComponent::parts).stable();
+        DEFAULT = new StaffComponent(ImmutableMap.of(
                 StaffPart.CORE, new StaffPartInfo(StaffPart.CORE, StaffMaterial.OAK, StaffPattern.EMPTY),
                 StaffPart.HEAD, new StaffPartInfo(StaffPart.HEAD, StaffStyles.TRADITIONAL, StaffMetals.IRON),
                 StaffPart.DECOR, new StaffPartInfo(StaffPart.DECOR, StaffStyles.TRADITIONAL, StaffMetals.IRON),

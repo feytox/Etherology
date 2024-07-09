@@ -17,7 +17,7 @@ import java.io.Reader;
 
 
 /**
- * from <a href="https://github.com/TechReborn/TechReborn/blob/c31a40072503169acb4ad7b083c16a4ae183661b/src/client/java/techreborn/client/render/ModelHelper.java">source</a>
+ * from <a href="https://github.com/TechReborn/TechReborn/blob/1.21/src/client/java/techreborn/client/render/ModelHelper.java">source</a>
  */
 public class ModelComponents {
     // TODO: 02.01.2024 deprecate unused???

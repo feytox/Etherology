@@ -1,8 +1,6 @@
 package ru.feytox.etherology.model;
 
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.model.ModelProviderContext;
-import net.fabricmc.fabric.api.client.model.ModelVariantProvider;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.Baker;
 import net.minecraft.client.render.model.ModelBakeSettings;
@@ -24,7 +22,7 @@ import java.util.function.Supplier;
 import static ru.feytox.etherology.model.custom.OculusModel.OCULUS_BASE;
 import static ru.feytox.etherology.model.custom.OculusModel.OCULUS_LENS;
 
-public class EtherologyModelProvider implements ModelVariantProvider {
+public class EtherologyModelProvider {
 
     private static final ModelIdentifier OCULUS_IN_HAND = EtherologyModels.createItemModelId("oculus_in_hand");
     public static final ModelIdentifier STAFF = EtherologyModels.createItemModelId(ToolItems.STAFF.toString());
@@ -33,24 +31,19 @@ public class EtherologyModelProvider implements ModelVariantProvider {
     public static final ModelIdentifier STAFF_CORE = EtherologyModels.createItemModelId("staff_core_oak");
 
     public static void register() {
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, identifierConsumer) -> {
-            identifierConsumer.accept(OCULUS_BASE);
-            identifierConsumer.accept(OCULUS_LENS);
-            StaffModel.loadPartModels(identifierConsumer);
-            identifierConsumer.accept(STAFF_CORE);
+        ModelLoadingPlugin.register(context -> {
+            context.addModels(OCULUS_BASE, OCULUS_LENS, STAFF_CORE);
+            StaffModel.loadPartModels(context);
+
+            context.resolveModel().register(resolver -> {
+                Identifier modelId = resolver.id();
+                if (modelId.equals(OCULUS_IN_HAND)) return new UnbakedMultiItemModel(OculusModel::new);
+                if (modelId.equals(STAFF)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM));
+                if (modelId.equals(STAFF_CHARGE)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_CHARGE));
+                if (modelId.equals(STAFF_STREAM)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_STREAM));
+                return null;
+            });
         });
-
-        ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> new EtherologyModelProvider());
-    }
-
-    @Override
-    public @Nullable UnbakedModel loadModelVariant(ModelIdentifier modelId, ModelProviderContext context) {
-        if (modelId.equals(OCULUS_IN_HAND)) return new UnbakedMultiItemModel(OculusModel::new);
-        if (modelId.equals(STAFF)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM));
-        if (modelId.equals(STAFF_CHARGE)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_CHARGE));
-        if (modelId.equals(STAFF_STREAM)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_STREAM));
-        return null;
-
     }
 
     private record UnbakedMultiItemModel(Supplier<MultiItemModel> modelSupplier) implements UnbakedModel {

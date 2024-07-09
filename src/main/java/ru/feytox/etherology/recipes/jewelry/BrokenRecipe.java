@@ -1,13 +1,13 @@
 package ru.feytox.etherology.recipes.jewelry;
 
-import lombok.val;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryWrapper;
 import ru.feytox.etherology.block.jewelryTable.JewelryBlockEntity;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
 import ru.feytox.etherology.item.LensItem;
+import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
-import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class BrokenRecipe extends AbstractJewelryRecipe {
@@ -19,25 +19,27 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
+    public ItemStack craft(JewelryTableInventory inventory, RegistryWrapper.WrapperLookup lookup) {
+        return craft(inventory);
+    }
+
     public ItemStack craft(JewelryTableInventory inventory) {
         ItemStack lensStack = inventory.getStack(0);
         if (!(lensStack.getItem() instanceof LensItem lensItem)) return lensStack;
 
-        val lensOptional = EtherologyComponents.LENS.maybeGet(lensStack);
-        if (lensOptional.isEmpty()) return lensStack;
-
-        val lensData = lensOptional.get();
-        LensPattern pattern = lensData.getPattern();
-        if (!pattern.isCracked()) return lensStack;
-
         JewelryBlockEntity parent = inventory.getParent();
         if (parent == null) return lensStack;
 
-        parent.applyCorruption();
-        lensData.setPattern(LensPattern.empty());
-        if (!LensItem.damageLens(lensStack, 5)) return lensStack;
-        JewelryTableInventory.onLensDamage(parent, lensStack, lensItem);
-        parent.trySyncData();
+        // stopship: continue
+        LensComponent.getWrapper(lensStack).filter(data -> data.getComponent().pattern().isCracked())
+                .ifPresent(data -> {
+                    data.set(LensPattern.empty(), LensComponent::withPattern).save();
+                    parent.applyCorruption();
+                    if (!LensItem.damageLens(lensStack, 5)) return;
+                    JewelryTableInventory.onLensDamage(parent, lensStack, lensItem);
+                    parent.trySyncData();
+                });
+
         return lensStack;
     }
 
@@ -47,7 +49,7 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack getResult() {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return ItemStack.EMPTY;
     }
 

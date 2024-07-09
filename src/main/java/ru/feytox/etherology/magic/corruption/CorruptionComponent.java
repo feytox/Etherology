@@ -73,7 +73,7 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
         if (ticks % INFECTION_TICK_RATE != 0) return true;
         if (corruption == null) return true;
 
-        float corruptionLevel = corruption.getCorruptionValue();
+        float corruptionLevel = corruption.corruptionValue();
         if (corruptionLevel <= INFECTION_LIMIT) return true;
         if (!(chunk instanceof WorldChunk worldChunk)) return true;
 
@@ -97,7 +97,7 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
         if (ticks % EVAPORATION_TICK_RATE != 0) return true;
         if (corruption == null) return true;
 
-        float value = corruption.getCorruptionValue();
+        float value = corruption.corruptionValue();
         if (ticks % (1200 * EVAPORATION_TICK_RATE * EVAPORATION_SPEED * (value + EVAPORATION_DELTA)) != 0) return true;
 
         increment(-1);

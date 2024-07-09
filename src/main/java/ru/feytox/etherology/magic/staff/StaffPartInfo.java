@@ -1,14 +1,11 @@
 package ru.feytox.etherology.magic.staff;
 
-import io.wispforest.owo.nbt.NbtKey;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.EnumUtils;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -17,24 +14,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-public class StaffPartInfo {
+public record StaffPartInfo(@NonNull StaffPart part, @NonNull StaffPattern firstPattern,
+                            @NonNull StaffPattern secondPattern) {
 
-    public static final NbtKey.Type<StaffPartInfo> NBT_TYPE;
-    public static final NbtKey<StaffPartInfo> NBT_KEY;
-    public static final NbtKey.ListKey<StaffPartInfo> LIST_KEY;
-
-    @NonNull
-    @Getter
-    private final StaffPart part;
-
-    @NonNull
-    @Getter
-    private final StaffPattern firstPattern;
-
-    @NonNull
-    @Getter
-    private final StaffPattern secondPattern;
+    public static final Codec<StaffPartInfo> CODEC;
 
     public static List<StaffPartInfo> generateAll() {
         return Arrays.stream(StaffPart.values())
@@ -61,17 +44,10 @@ public class StaffPartInfo {
     }
 
     static {
-        NBT_TYPE = NbtKey.Type.of(NbtElement.COMPOUND_TYPE, (nbt, s) -> {
-            StaffPart part = EnumUtils.getEnumIgnoreCase(StaffPart.class, nbt.getString("part"));
-            StaffPattern firstPattern = StaffPatterns.get(nbt.getString("first_pattern"));
-            StaffPattern secondPattern = StaffPatterns.get(nbt.getString("second_pattern"));
-            return new StaffPartInfo(part, firstPattern, secondPattern);
-        }, ((root, s, partsInfo) -> {
-            root.putString("part", partsInfo.getPart().getName());
-            root.putString("first_pattern", partsInfo.getFirstPattern().getName());
-            root.putString("second_pattern", partsInfo.getSecondPattern().getName());
-        }));
-        LIST_KEY = new NbtKey.ListKey<>("parts", NBT_TYPE);
-        NBT_KEY = new NbtKey<>("", NBT_TYPE);
+        CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                StaffPart.CODEC.fieldOf("part").forGetter(StaffPartInfo::part),
+                StaffPatterns.CODEC.fieldOf("pattern1").forGetter(StaffPartInfo::firstPattern),
+                StaffPatterns.CODEC.fieldOf("pattern2").forGetter(StaffPartInfo::secondPattern)
+        ).apply(instance, StaffPartInfo::new));
     }
 }
