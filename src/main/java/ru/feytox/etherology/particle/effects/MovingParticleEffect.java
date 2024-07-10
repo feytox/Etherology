@@ -1,61 +1,35 @@
 package ru.feytox.etherology.particle.effects;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.PacketByteBuf;
+import com.mojang.serialization.MapCodec;
+import lombok.Getter;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.particle.effects.args.ParticleArg;
-import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 public class MovingParticleEffect extends FeyParticleEffect<MovingParticleEffect> {
 
-    private final ParticleArg<Vec3d> moveVecArg = SimpleArgs.VEC3D.get();
+    @Getter
+    private final Vec3d moveVec;
 
     public MovingParticleEffect(ParticleType<MovingParticleEffect> type, Vec3d moveVec) {
         super(type);
-        moveVecArg.setValue(moveVec);
+        this.moveVec = moveVec;
     }
 
     public MovingParticleEffect(ParticleType<MovingParticleEffect> type) {
-        super(type);
+        this(type, null);
     }
 
     @Override
-    public MovingParticleEffect read(ParticleType<MovingParticleEffect> type, StringReader reader) throws CommandSyntaxException {
-        reader.expect(' ');
-        Vec3d moveVec = moveVecArg.read(reader);
-        return new MovingParticleEffect(type, moveVec);
+    public MapCodec<MovingParticleEffect> createCodec() {
+        return Vec3d.CODEC.xmap(factory(MovingParticleEffect::new), MovingParticleEffect::getMoveVec).fieldOf("moveVec");
     }
 
     @Override
-    public MovingParticleEffect read(ParticleType<MovingParticleEffect> type, PacketByteBuf buf) {
-        Vec3d moveVec = moveVecArg.read(buf);
-        return new MovingParticleEffect(type, moveVec);
-    }
-
-    @Override
-    public String write() {
-        return moveVecArg.write();
-    }
-
-    @Override
-    public Codec<MovingParticleEffect> createCodec() {
-        return RecordCodecBuilder.create((instance) -> instance.group(
-                moveVecArg.getCodec("moveVec")
-                        .forGetter(MovingParticleEffect::getMoveVec)
-        ).apply(instance, (moveVec) -> new MovingParticleEffect(type, moveVec)));
-    }
-
-    @Override
-    public void write(PacketByteBuf buf) {
-        moveVecArg.write(buf);
-    }
-
-    public Vec3d getMoveVec() {
-        return moveVecArg.getValue();
+    public PacketCodec<RegistryByteBuf, MovingParticleEffect> createPacketCodec() {
+        return PacketCodec.tuple(CodecUtil.VEC3D_PACKET, MovingParticleEffect::getMoveVec, factory(MovingParticleEffect::new));
     }
 }

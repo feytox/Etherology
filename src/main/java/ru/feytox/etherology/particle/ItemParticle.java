@@ -5,8 +5,6 @@ import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.particle.effects.ItemParticleEffect;
 import ru.feytox.etherology.particle.utility.MovingParticle;
@@ -21,8 +19,7 @@ public class ItemParticle extends MovingParticle<ItemParticleEffect> {
         super(clientWorld, x, y, z, parameters, spriteProvider);
 
         endPos = parameters.getMoveVec();
-        Identifier itemId = new Identifier(parameters.getItemId());
-        ItemStack stack = Registries.ITEM.get(itemId).getDefaultStack();
+        ItemStack stack = parameters.getItem().getDefaultStack();
 
         setSprite(MinecraftClient.getInstance().getItemRenderer().getModel(stack, world, null, 0)
                 .getParticleSprite());

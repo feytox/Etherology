@@ -1,85 +1,60 @@
 package ru.feytox.etherology.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
+import ru.feytox.etherology.network.animation.Stop2BlockAnimS2C;
+import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
+import ru.feytox.etherology.network.animation.SwitchBlockAnimS2C;
+import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
+import ru.feytox.etherology.network.interaction.RemoveBlockEntityS2C;
+import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
+import ru.feytox.etherology.network.interaction.StaffTakeLensC2S;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
-import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EtherologyNetwork {
 
     public static void registerCommonSide() {
         // animation
         registerS2C(StartBlockAnimS2C.ID, StartBlockAnimS2C.CODEC);
+        registerS2C(Stop2BlockAnimS2C.ID, Stop2BlockAnimS2C.CODEC);
+        registerS2C(StopBlockAnimS2C.ID, StopBlockAnimS2C.CODEC);
+        registerS2C(SwitchBlockAnimS2C.ID, SwitchBlockAnimS2C.CODEC);
+
+        // interaction
+        registerS2C(RedstoneLensStreamS2C.ID, RedstoneLensStreamS2C.CODEC);
+        registerS2C(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C.CODEC);
+        registerC2S(StaffMenuSelectionC2S.ID, StaffMenuSelectionC2S.CODEC, StaffMenuSelectionC2S::receive);
+        registerC2S(StaffTakeLensC2S.ID, StaffTakeLensC2S.CODEC, StaffTakeLensC2S::receive);
     }
 
     public static void registerClientSide() {
         // animation
         registerHandlerS2C(StartBlockAnimS2C.ID, StartBlockAnimS2C::receive);
-        // stopship: continue rewriting networking
-        // good luck
+        registerHandlerS2C(Stop2BlockAnimS2C.ID, Stop2BlockAnimS2C::receive);
+        registerHandlerS2C(StopBlockAnimS2C.ID, StopBlockAnimS2C::receive);
+        registerHandlerS2C(SwitchBlockAnimS2C.ID, SwitchBlockAnimS2C::receive);
+
+        // interaction
+        registerHandlerS2C(RedstoneLensStreamS2C.ID, RedstoneLensStreamS2C::receive);
+        registerHandlerS2C(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C::receive);
     }
 
-    private static <T extends CustomPayload> void registerC2S(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec, ServerPlayNetworking.PlayPayloadHandler<T> handler) {
+    private static <T extends AbstractC2SPacket> void registerC2S(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec, ServerPlayNetworking.PlayPayloadHandler<T> handler) {
         PayloadTypeRegistry.playC2S().register(id, codec);
         ServerPlayNetworking.registerGlobalReceiver(id, handler);
     }
 
-    private static <T extends CustomPayload> void registerS2C(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec) {
+    private static <T extends AbstractS2CPacket> void registerS2C(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec) {
         PayloadTypeRegistry.playS2C().register(id, codec);
     }
 
-    private static <T extends CustomPayload> void registerHandlerS2C(CustomPayload.Id<T> id, ClientPlayNetworking.PlayPayloadHandler<T> handler) {
+    private static <T extends AbstractS2CPacket> void registerHandlerS2C(CustomPayload.Id<T> id, ClientPlayNetworking.PlayPayloadHandler<T> handler) {
         ClientPlayNetworking.registerGlobalReceiver(id, handler);
-    }
-
-    public static CustomPayload.Id<? extends CustomPayload> id(String id) {
-        return new CustomPayload.Id<>(EIdentifier.of(id));
-    }
-
-    // TODO: 30.12.2023 replace to this.send...
-
-    @Deprecated(forRemoval = true)
-    public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity) {
-        for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
-            PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-            ServerPlayNetworking.send(player, packet.getPacketID(), buf);
-        }
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void sendForTracking(AbstractS2CPacket packet, BlockEntity blockEntity, int exceptId) {
-        for (ServerPlayerEntity player : PlayerLookup.tracking(blockEntity)) {
-            if (player.getId() == exceptId) continue;
-            PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-            ServerPlayNetworking.send(player, packet.getPacketID(), buf);
-        }
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void sendForTracking(ServerWorld world, BlockPos pos, int exceptId, AbstractS2CPacket packet) {
-        for (ServerPlayerEntity player : PlayerLookup.tracking(world, pos)) {
-            if (player.getId() == exceptId) continue;
-            PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-            ServerPlayNetworking.send(player, packet.getPacketID(), buf);
-        }
-    }
-
-    @Deprecated(forRemoval = true)
-    public static void sendToServer(AbstractC2SPacket packet) {
-        PacketByteBuf buf = packet.encode(PacketByteBufs.create());
-        ClientPlayNetworking.send(packet.getPacketID(), buf);
     }
 }

@@ -1,15 +1,18 @@
 package ru.feytox.etherology.gui.staff;
 
+import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensMode;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 @Getter
 @RequiredArgsConstructor
@@ -18,6 +21,8 @@ public enum LensSelectionType {
     UP_ARROW(true, arrowHandler(LensMode.STREAM)),
     DOWN_ARROW(true, arrowHandler(LensMode.CHARGE)),
     ITEM(false, itemHandler());
+
+    public static final PacketCodec<ByteBuf, LensSelectionType> PACKET_CODEC = CodecUtil.ofEnum(values());
 
     private final boolean emptySelectedItem;
 

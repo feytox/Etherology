@@ -8,10 +8,4 @@ public interface AbstractC2SPacket extends CustomPayload {
     default void sendToServer() {
         ClientPlayNetworking.send(this);
     }
-
-    @Deprecated(forRemoval = true)
-    @FunctionalInterface
-    public interface C2SHandler {
-        void receive(C2SPacketInfo packetInfo);
-    }
 }

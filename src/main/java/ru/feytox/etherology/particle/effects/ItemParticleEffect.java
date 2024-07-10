@@ -1,76 +1,44 @@
 package ru.feytox.etherology.particle.effects;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import lombok.Getter;
+import net.minecraft.item.Item;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.particle.effects.args.ParticleArg;
-import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
+@Getter
 public class ItemParticleEffect extends FeyParticleEffect<ItemParticleEffect> {
 
-    private final ParticleArg<String> itemIdArg = SimpleArgs.STRING.get();
-    private final ParticleArg<Vec3d> moveVecArg = SimpleArgs.VEC3D.get();
+    private final Item item;
+    private final Vec3d moveVec;
 
-    public ItemParticleEffect(ParticleType<ItemParticleEffect> type, ItemStack stack, Vec3d moveVec) {
-        this(type, Registries.ITEM.getId(stack.getItem()).toString(), moveVec);
-    }
-
-    public ItemParticleEffect(ParticleType<ItemParticleEffect> type, String itemId, Vec3d moveVec) {
-        this(type);
-        itemIdArg.setValue(itemId);
-        moveVecArg.setValue(moveVec);
+    public ItemParticleEffect(ParticleType<ItemParticleEffect> type, Item item, Vec3d moveVec) {
+        super(type);
+        this.item = item;
+        this.moveVec = moveVec;
     }
 
     public ItemParticleEffect(ParticleType<ItemParticleEffect> type) {
-        super(type);
+        this(type, null, null);
     }
 
     @Override
-    public ItemParticleEffect read(ParticleType<ItemParticleEffect> type, StringReader reader) throws CommandSyntaxException {
-        reader.expect(' ');
-        String itemId = itemIdArg.read(reader);
-        reader.expect(' ');
-        return new ItemParticleEffect(type, itemId, moveVecArg.read(reader));
+    public MapCodec<ItemParticleEffect> createCodec() {
+        return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Registries.ITEM.getCodec().fieldOf("item").forGetter(ItemParticleEffect::getItem),
+                Vec3d.CODEC.fieldOf("moveVec").forGetter(ItemParticleEffect::getMoveVec)
+                ).apply(instance, biFactory(ItemParticleEffect::new)));
     }
 
     @Override
-    public ItemParticleEffect read(ParticleType<ItemParticleEffect> type, PacketByteBuf buf) {
-        String itemId = itemIdArg.read(buf);
-        Vec3d moveVec = moveVecArg.read(buf);
-        return new ItemParticleEffect(type, itemId, moveVec);
-    }
-
-    @Override
-    public String write() {
-        return itemIdArg.write() + " " + moveVecArg.write();
-    }
-
-    @Override
-    public Codec<ItemParticleEffect> createCodec() {
-        return RecordCodecBuilder.create((instance) -> instance.group(
-                itemIdArg.getCodec("item_id").forGetter(ItemParticleEffect::getItemId),
-                moveVecArg.getCodec("move_vec").forGetter(ItemParticleEffect::getMoveVec)
-        ).apply(instance, (itemId, moveVec) -> new ItemParticleEffect(type, itemId, moveVec)));
-    }
-
-    @Override
-    public void write(PacketByteBuf buf) {
-        itemIdArg.write(buf);
-        moveVecArg.write(buf);
-    }
-
-    public String getItemId() {
-        return itemIdArg.getValue();
-    }
-
-    public Vec3d getMoveVec() {
-        return moveVecArg.getValue();
+    public PacketCodec<RegistryByteBuf, ItemParticleEffect> createPacketCodec() {
+        return PacketCodec.tuple(CodecUtil.ITEM_PACKET, ItemParticleEffect::getItem,
+                CodecUtil.VEC3D_PACKET, ItemParticleEffect::getMoveVec, biFactory(ItemParticleEffect::new));
     }
 }

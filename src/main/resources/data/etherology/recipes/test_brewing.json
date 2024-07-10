@@ -4,5 +4,7 @@
     "item": "etherology:peach_planks"
   },
   "inputAspects": {"defenta": 4, "netha": 4},
-  "outputItem": "etherology:ethril_ingot"
+  "result": {
+    "id": "etherology:ethril_ingot"
+  }
 }

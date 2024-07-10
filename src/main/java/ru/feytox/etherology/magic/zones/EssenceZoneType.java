@@ -1,8 +1,11 @@
 package ru.feytox.etherology.magic.zones;
 
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.util.StringIdentifiable;
@@ -12,6 +15,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.util.misc.CodecUtil;
 import ru.feytox.etherology.util.misc.RGBColor;
 
 import java.util.Collections;
@@ -27,6 +31,8 @@ public enum EssenceZoneType implements StringIdentifiable {
     VIA(EssenceZoneType::viaTest, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
     CLOS(EssenceZoneType::closTest, new RGBColor(106, 182, 81), new RGBColor(208, 158, 89));
 
+    public static final Codec<EssenceZoneType> CODEC = StringIdentifiable.createBasicCodec(EssenceZoneType::values);
+    public static final PacketCodec<ByteBuf, EssenceZoneType> PACKET_CODEC = CodecUtil.ofEnum(values());
     private static final float RARE_CHANCE = 0.5f;
     private static final float VERY_RARE_CHANCE = 0.25f;
 

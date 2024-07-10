@@ -4,5 +4,7 @@
     "item": "etherology:ebony"
   },
   "inputAspects": {"talo": 3, "flima": 2},
-  "outputItem": "etherology:ebony_ingot"
+  "result": {
+    "id": "etherology:ebony_ingot"
+  }
 }

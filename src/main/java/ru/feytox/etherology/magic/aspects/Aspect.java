@@ -1,11 +1,19 @@
 package ru.feytox.etherology.magic.aspects;
 
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.util.StringIdentifiable;
+import ru.feytox.etherology.util.misc.CodecUtil;
+
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-public enum Aspect implements EtherologyAspect {
+public enum Aspect implements EtherologyAspect, StringIdentifiable {
     RELLA(0, 0, 0),
     ETHA(0, 1, 4),
     DIZORD(0, 2, 8),
@@ -47,6 +55,10 @@ public enum Aspect implements EtherologyAspect {
     LUMOS(4, 6, 38),
     NOX(4, 7, 39);
 
+    public static final Codec<Aspect> CODEC = StringIdentifiable.createBasicCodec(Aspect::values);
+    public static final PacketCodec<ByteBuf, Aspect> PACKET_CODEC = CodecUtil.ofEnum(values());
+    public static final PacketCodec<ByteBuf, List<Aspect>> LIST_PACKET_CODEC = PACKET_CODEC.collect(PacketCodecs.toList());
+
     private final int textureRow;
     private final int textureColumn;
     private final int runeId;
@@ -54,5 +66,10 @@ public enum Aspect implements EtherologyAspect {
     @Override
     public String getAspectName() {
         return this.name().toLowerCase();
+    }
+
+    @Override
+    public String asString() {
+        return name();
     }
 }

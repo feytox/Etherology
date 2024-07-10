@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 public class LensPattern {
 
     public static final Codec<LensPattern> CODEC = RecordCodecBuilder.create(instance -> instance
-            .group(CodecUtil.INT_SET_CODEC.fieldOf("cracks").forGetter(pattern -> pattern.cracks),
-                    CodecUtil.INT_SET_CODEC.fieldOf("soft_cells").forGetter(pattern -> pattern.softCells)
+            .group(CodecUtil.INT_SET.fieldOf("cracks").forGetter(pattern -> pattern.cracks),
+                    CodecUtil.INT_SET.fieldOf("soft_cells").forGetter(pattern -> pattern.softCells)
             ).apply(instance, LensPattern::new));
 
     @NonNull

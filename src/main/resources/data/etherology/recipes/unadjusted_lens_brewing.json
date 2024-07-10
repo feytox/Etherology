@@ -4,5 +4,7 @@
     "item": "etherology:slitherite"
   },
   "inputAspects": {"frado": 5, "vibra": 3, "hendall": 5},
-  "outputItem": "etherology:unadjusted_lens"
+  "result": {
+    "id": "etherology:unadjusted_lens"
+  }
 }

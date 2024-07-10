@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.aspects.Aspect;
@@ -17,6 +17,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
+
     @Getter
     private final Ingredient inputItem;
     @Getter
@@ -24,8 +25,6 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
     @Getter
     private final AspectContainer inputAspects;
     private final ItemStack outputStack;
-    @Getter
-    private final Identifier id;
 
     @Override
     public boolean matches(CauldronRecipeInventory inventory, World world) {
@@ -42,7 +41,7 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
     }
 
     @Override
-    public ItemStack craft(CauldronRecipeInventory inventory) {
+    public ItemStack craft(CauldronRecipeInventory inventory, RegistryWrapper.WrapperLookup lookup) {
         return ItemStack.EMPTY;
     }
 
@@ -52,7 +51,11 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
     }
 
     @Override
-    public ItemStack getResult() {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
+        return getOutput();
+    }
+
+    public ItemStack getOutput() {
         return outputStack.copy();
     }
 

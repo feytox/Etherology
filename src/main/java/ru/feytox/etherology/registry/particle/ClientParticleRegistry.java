@@ -6,10 +6,12 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry.PendingParticleFactory;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import ru.feytox.etherology.particle.*;
-import ru.feytox.etherology.particle.utility.FactoryProvider;
 
 import static ru.feytox.etherology.registry.particle.EtherParticleTypes.*;
 
@@ -41,8 +43,19 @@ public class ClientParticleRegistry {
         register(REDSTONE_STREAM, RedstoneStreamParticle::new);
     }
 
-    private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, FactoryProvider.ParticleConstructor<T, P> particleConstructor) {
-        var factory = FactoryProvider.createFactory(particleConstructor);
+    private static <T extends ParticleEffect, P extends Particle> void register(ParticleType<T> particleType, ParticleConstructor<T, P> particleConstructor) {
+        var factory = createFactory(particleConstructor);
         ParticleFactoryRegistry.getInstance().register(particleType, factory);
+    }
+
+    public static <T extends ParticleEffect, P extends Particle> PendingParticleFactory<T> createFactory(ParticleConstructor<T, P> particleConstructor) {
+        return (spriteProvider) ->
+                (ParticleFactory<T>) (parameters, world, x, y, z, velocityX, velocityY, velocityZ) ->
+                        particleConstructor.create(world, x, y, z, parameters, spriteProvider);
+    }
+
+    @FunctionalInterface
+    public interface ParticleConstructor<T extends ParticleEffect, P extends Particle> {
+        P create(ClientWorld clientWorld, double x, double y, double z, T parameters, SpriteProvider spriteProvider);
     }
 }

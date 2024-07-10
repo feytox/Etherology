@@ -1,28 +1,22 @@
 package ru.feytox.etherology.particle.effects.misc;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import lombok.Getter;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 
+@Getter
 public class FeyParticleType<T extends ParticleEffect> extends ParticleType<T> {
 
-    private final Codec<T> codec;
-    private final ParticleEffect.Factory<T> dummyFactory;
+    private final MapCodec<T> codec;
+    private final PacketCodec<RegistryByteBuf, T> packetCodec;
 
     public FeyParticleType(boolean alwaysShow, FeyParticleEffect.DummyConstructor<T> dummyConstructor) {
-        super(alwaysShow, null);
+        super(alwaysShow);
         FeyParticleEffect<T> dummy = dummyConstructor.createDummy(this);
         codec = dummy.createCodec();
-        dummyFactory = dummy.createFactory();
-    }
-
-    @Override
-    public Codec<T> getCodec() {
-        return codec;
-    }
-
-    @Override
-    public ParticleEffect.Factory<T> getParametersFactory() {
-        return dummyFactory;
+        packetCodec = dummy.createPacketCodec();
     }
 }

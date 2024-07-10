@@ -100,8 +100,8 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
 
     public void craftAll(ItemStack resultStack) {
         craft(true);
-        while (canCraft() && resultStack.getCount() + currentRecipe.getResult().getCount() < resultStack.getMaxCount()) {
-            if (craft(false)) resultStack.increment(currentRecipe.getResult().getCount());
+        while (canCraft() && resultStack.getCount() + currentRecipe.getOutput().getCount() < resultStack.getMaxCount()) {
+            if (craft(false)) resultStack.increment(currentRecipe.getOutput().getCount());
         }
         updateResult();
     }
@@ -129,7 +129,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
 
     public void updateResult() {
         ItemStack outputStack = ItemStack.EMPTY;
-        if (canCraft()) outputStack = currentRecipe.getResult();
+        if (canCraft()) outputStack = currentRecipe.getOutput();
         cacheShards(currentRecipe);
         setStack(9, outputStack);
         markDirty();

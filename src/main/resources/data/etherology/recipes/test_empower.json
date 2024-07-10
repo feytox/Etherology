@@ -18,7 +18,7 @@
   ],
   "result": {
     "count": 2,
-    "item": "minecraft:water_bucket"
+    "id": "minecraft:water_bucket"
   },
   "viaCount": 1,
   "ketaCount": 2

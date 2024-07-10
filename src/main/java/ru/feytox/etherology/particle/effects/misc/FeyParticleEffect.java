@@ -1,54 +1,38 @@
 package ru.feytox.etherology.particle.effects.misc;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
-import net.minecraft.network.PacketByteBuf;
+import com.mojang.serialization.MapCodec;
+import lombok.Getter;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.function.TriFunction;
 
-@SuppressWarnings("deprecation")
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 public abstract class FeyParticleEffect<T extends ParticleEffect> implements ParticleEffect {
+
+    @Getter
     protected final ParticleType<T> type;
 
     public FeyParticleEffect(ParticleType<T> type) {
         this.type = type;
     }
 
-    public abstract T read(ParticleType<T> type, StringReader reader) throws CommandSyntaxException;
-    public abstract T read(ParticleType<T> type, PacketByteBuf buf);
-    public abstract String write();
-    public abstract Codec<T> createCodec();
+    public abstract MapCodec<T> createCodec();
+    public abstract PacketCodec<RegistryByteBuf, T> createPacketCodec();
 
-    @Override
-    public String asString() {
-        Identifier id = Registries.PARTICLE_TYPE.getId(this.getType());
-        return id + " " + write();
+    public <V> Function<V, T> factory(BiFunction<ParticleType<T>, V, T> biFactory) {
+        return value -> biFactory.apply(type, value);
     }
 
-    @Override
-    public ParticleType<?> getType() {
-        return type;
-    }
-
-    public Factory<T> createFactory() {
-        return new Factory<>() {
-            @Override
-            public T read(ParticleType<T> type, StringReader reader) throws CommandSyntaxException {
-                return FeyParticleEffect.this.read(type, reader);
-            }
-
-            @Override
-            public T read(ParticleType<T> type, PacketByteBuf buf) {
-                return FeyParticleEffect.this.read(type, buf);
-            }
-        };
+    public <V, M> BiFunction<V, M, T> biFactory(TriFunction<ParticleType<T>, V, M, T> triFactory) {
+        return (value1, value2) -> triFactory.apply(type, value1, value2);
     }
 
     public void spawnParticles(World world, int count, double delta, Vec3d centerPos) {

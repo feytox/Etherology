@@ -4,5 +4,7 @@
     "item": "minecraft:iron_ingot"
   },
   "inputAspects": {"etha": 5},
-  "outputItem": "etherology:ebony_ingot"
+  "result": {
+    "id": "etherology:ebony_ingot"
+  }
 }

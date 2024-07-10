@@ -1,60 +1,36 @@
 package ru.feytox.etherology.particle.effects;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.PacketByteBuf;
+import com.mojang.serialization.MapCodec;
+import lombok.Getter;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.particle.ParticleType;
-import ru.feytox.etherology.particle.effects.args.ParticleArg;
-import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 
 public class ScalableParticleEffect extends FeyParticleEffect<ScalableParticleEffect> {
 
-    private final ParticleArg<Float> scaleArg = SimpleArgs.FLOAT.get();
+    @Getter
+    private final Float scale;
 
-    public ScalableParticleEffect(ParticleType<ScalableParticleEffect> type, float scale) {
-        this(type);
-        scaleArg.setValue(scale);
+    public ScalableParticleEffect(ParticleType<ScalableParticleEffect> type, Float scale) {
+        super(type);
+        this.scale = scale;
     }
 
     public ScalableParticleEffect(ParticleType<ScalableParticleEffect> type) {
-        super(type);
+        this(type, null);
     }
 
     @Override
-    public ScalableParticleEffect read(ParticleType<ScalableParticleEffect> type, StringReader reader) throws CommandSyntaxException {
-        reader.expect(' ');
-        float scale = scaleArg.read(reader);
-        return new ScalableParticleEffect(type, scale);
+    public MapCodec<ScalableParticleEffect> createCodec() {
+        return Codec.FLOAT.xmap(factory(ScalableParticleEffect::new), ScalableParticleEffect::getScale).fieldOf("scale");
     }
 
     @Override
-    public ScalableParticleEffect read(ParticleType<ScalableParticleEffect> type, PacketByteBuf buf) {
-        float scale = scaleArg.read(buf);
-        return new ScalableParticleEffect(type, scale);
+    public PacketCodec<RegistryByteBuf, ScalableParticleEffect> createPacketCodec() {
+        return PacketCodec.tuple(PacketCodecs.FLOAT, ScalableParticleEffect::getScale, factory(ScalableParticleEffect::new));
     }
 
-    @Override
-    public String write() {
-        return scaleArg.write();
-    }
-
-    @Override
-    public Codec<ScalableParticleEffect> createCodec() {
-        return RecordCodecBuilder.create((instance) -> instance.group(
-                scaleArg.getCodec("scale")
-                        .forGetter(ScalableParticleEffect::getScale)
-        ).apply(instance, (scale) -> new ScalableParticleEffect(type, scale)));
-    }
-
-    @Override
-    public void write(PacketByteBuf buf) {
-        scaleArg.write(buf);
-    }
-
-    public Float getScale() {
-        return scaleArg.getValue();
-    }
 }

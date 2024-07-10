@@ -1,71 +1,43 @@
 package ru.feytox.etherology.particle.effects;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.PacketByteBuf;
+import lombok.Getter;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.particle.effects.args.EnumArg;
-import ru.feytox.etherology.particle.effects.args.ParticleArg;
-import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
+@Getter
 public class ZoneParticleEffect extends FeyParticleEffect<ZoneParticleEffect> {
 
-    private final ParticleArg<EssenceZoneType> zoneTypeArg = EnumArg.of(EssenceZoneType.class);
-    private final ParticleArg<Vec3d> endPosArg = SimpleArgs.VEC3D.get();
+    private final EssenceZoneType zoneType;
+    private final Vec3d endPos;
 
     public ZoneParticleEffect(ParticleType<ZoneParticleEffect> type, EssenceZoneType zoneType, Vec3d endPos) {
         super(type);
-        zoneTypeArg.setValue(zoneType);
-        endPosArg.setValue(endPos);
+        this.zoneType = zoneType;
+        this.endPos = endPos;
     }
 
     public ZoneParticleEffect(ParticleType<ZoneParticleEffect> type) {
-        super(type);
+        this(type, null, null);
     }
 
     @Override
-    public ZoneParticleEffect read(ParticleType<ZoneParticleEffect> type, StringReader reader) throws CommandSyntaxException {
-        reader.expect(' ');
-        EssenceZoneType zoneType = zoneTypeArg.read(reader);
-        reader.expect(' ');
-        Vec3d endPos = endPosArg.read(reader);
-        return new ZoneParticleEffect(type, zoneType, endPos);
+    public MapCodec<ZoneParticleEffect> createCodec() {
+        return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                EssenceZoneType.CODEC.fieldOf("zoneType").forGetter(ZoneParticleEffect::getZoneType),
+                Vec3d.CODEC.fieldOf("endPos").forGetter(ZoneParticleEffect::getEndPos)
+        ).apply(instance, biFactory(ZoneParticleEffect::new)));
     }
 
     @Override
-    public ZoneParticleEffect read(ParticleType<ZoneParticleEffect> type, PacketByteBuf buf) {
-        return new ZoneParticleEffect(type, zoneTypeArg.read(buf), endPosArg.read(buf));
-    }
-
-    @Override
-    public String write() {
-        return zoneTypeArg.write() + " " + endPosArg.write();
-    }
-
-    @Override
-    public Codec<ZoneParticleEffect> createCodec() {
-        return RecordCodecBuilder.create(instance -> instance.group(
-                zoneTypeArg.getCodec("zone_type").forGetter(ZoneParticleEffect::getZoneType),
-                endPosArg.getCodec("end_pos").forGetter(ZoneParticleEffect::getEndPos)
-        ).apply(instance, (zoneType, endPos) -> new ZoneParticleEffect(type, zoneType, endPos)));
-    }
-
-    @Override
-    public void write(PacketByteBuf buf) {
-        zoneTypeArg.write(buf);
-        endPosArg.write(buf);
-    }
-
-    public EssenceZoneType getZoneType() {
-        return zoneTypeArg.getValue();
-    }
-
-    public Vec3d getEndPos() {
-        return endPosArg.getValue();
+    public PacketCodec<RegistryByteBuf, ZoneParticleEffect> createPacketCodec() {
+        return PacketCodec.tuple(EssenceZoneType.PACKET_CODEC, ZoneParticleEffect::getZoneType,
+                CodecUtil.VEC3D_PACKET, ZoneParticleEffect::getEndPos, biFactory(ZoneParticleEffect::new));
     }
 }

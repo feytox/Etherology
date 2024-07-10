@@ -6,7 +6,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
@@ -15,6 +18,8 @@ import lombok.NonNull;
 import lombok.val;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
 
@@ -25,6 +30,9 @@ import java.util.stream.Collectors;
 
 @Getter
 public class AspectContainer {
+
+    public static final Codec<AspectContainer> CODEC;
+    public static final PacketCodec<ByteBuf, AspectContainer> PACKET_CODEC;
 
     @NonNull
     private final ImmutableMap<Aspect, Integer> aspects;
@@ -98,8 +106,8 @@ public class AspectContainer {
         return new AspectContainer(mutableAspects, newParents);
     }
 
-    public Map<Aspect, Integer> getMutableAspects() {
-        return new Object2ObjectOpenHashMap<>(this.aspects);
+    public Object2IntOpenHashMap<Aspect> getMutableAspects() {
+        return new Object2IntOpenHashMap<>(this.aspects);
     }
 
     @Nullable
@@ -203,5 +211,10 @@ public class AspectContainer {
         Map<Aspect, Integer> aspectMap = buf.readMap(buff -> buff.readEnumConstant(Aspect.class), PacketByteBuf::readInt);
         // this.parents should not be written to buf
         return new AspectContainer(aspectMap, null);
+    }
+
+    static {
+        CODEC = Codec.unboundedMap(Aspect.CODEC, Codec.INT).xmap(AspectContainer::new, AspectContainer::getAspects).stable();
+        PACKET_CODEC = PacketCodecs.map(Object2IntOpenHashMap::new, Aspect.PACKET_CODEC, PacketCodecs.VAR_INT).xmap(AspectContainer::new, AspectContainer::getMutableAspects);
     }
 }

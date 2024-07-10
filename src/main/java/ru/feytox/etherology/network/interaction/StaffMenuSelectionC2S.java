@@ -1,47 +1,39 @@
 package ru.feytox.etherology.network.interaction;
 
-import lombok.RequiredArgsConstructor;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.gui.staff.LensSelectionType;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
-import ru.feytox.etherology.network.util.C2SPacketInfo;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-@RequiredArgsConstructor
-public class StaffMenuSelectionC2S extends AbstractC2SPacket {
+public record StaffMenuSelectionC2S(LensSelectionType selected, ItemStack lensStack) implements AbstractC2SPacket {
 
-    public static final Identifier ID = EIdentifier.of("staff_menu_c2s");
+    public static final Id<StaffMenuSelectionC2S> ID = new Id<>(EIdentifier.of("staff_menu_c2s"));
+    public static final PacketCodec<RegistryByteBuf, StaffMenuSelectionC2S> CODEC = PacketCodec.tuple(LensSelectionType.PACKET_CODEC, StaffMenuSelectionC2S::selected, ItemStack.PACKET_CODEC, StaffMenuSelectionC2S::lensStack, StaffMenuSelectionC2S::new);
 
-    private final LensSelectionType selected;
-    private final ItemStack lensStack;
+    public static void receive(StaffMenuSelectionC2S packet, ServerPlayNetworking.Context context) {
+        if (packet.selected.equals(LensSelectionType.NONE)) return;
+        ServerPlayerEntity player = context.player();
 
-    public static void receive(C2SPacketInfo packetInfo) {
-        LensSelectionType selected = packetInfo.buf().readEnumConstant(LensSelectionType.class);
-        if (selected.equals(LensSelectionType.NONE)) return;
-
-        ItemStack selectedStack = packetInfo.buf().readItemStack();
-        ServerPlayerEntity player = packetInfo.player();
-        MinecraftServer server = packetInfo.server();
-
-        server.execute(() -> {
+        context.server().execute(() -> {
             ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
             if (staffStack == null) return;
 
-            ItemStack stack = selectedStack;
-            if (!selected.isEmptySelectedItem()) {
+            ItemStack stack = packet.lensStack;
+            if (!packet.selected.isEmptySelectedItem()) {
                 ItemStack foundStack = findOriginal(player.getInventory(), stack);
                 if (foundStack == null) return;
                 stack = foundStack;
             }
 
-            selected.getHandler().handle(player, staffStack, stack);
+            packet.selected.getHandler().handle(player, staffStack, stack);
         });
     }
 
@@ -56,14 +48,7 @@ public class StaffMenuSelectionC2S extends AbstractC2SPacket {
     }
 
     @Override
-    public PacketByteBuf encode(PacketByteBuf buf) {
-        buf.writeEnumConstant(selected);
-        buf.writeItemStack(lensStack);
-        return buf;
-    }
-
-    @Override
-    public Identifier getPacketID() {
+    public Id<? extends CustomPayload> getId() {
         return ID;
     }
 }

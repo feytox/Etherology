@@ -45,10 +45,4 @@ public interface AbstractS2CPacket extends CustomPayload {
         }
         ServerPlayNetworking.send(relatedPlayer, this);
     }
-
-    @Deprecated(forRemoval = true)
-    @FunctionalInterface
-    public interface S2CHandler {
-        void receive(S2CPacketInfo packetInfo);
-    }
 }

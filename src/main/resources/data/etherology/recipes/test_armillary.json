@@ -5,5 +5,7 @@
     "item": "minecraft:iron_ingot"
   },
   "ether_points": 3.0,
-  "outputItem": "etherology:peach_planks"
+  "result": {
+    "id": "etherology:peach_planks"
+  }
 }

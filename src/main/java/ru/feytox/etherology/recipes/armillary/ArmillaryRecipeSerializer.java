@@ -1,67 +1,44 @@
 package ru.feytox.etherology.recipes.armillary;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.item.Item;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.EnumUtils;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ArmillaryRecipeSerializer extends FeyRecipeSerializer<ArmillaryRecipe> {
 
     public static final ArmillaryRecipeSerializer INSTANCE = new ArmillaryRecipeSerializer();
+
+    private static final MapCodec<ArmillaryRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Ingredient.DISALLOW_EMPTY_CODEC.fieldOf("center_input").forGetter(ArmillaryRecipe::getCenterInput),
+            Aspect.CODEC.listOf().fieldOf("aspects").forGetter(ArmillaryRecipe::getAspects),
+            Codec.FLOAT.fieldOf("ether_points").forGetter(ArmillaryRecipe::getEtherPoints),
+            ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(ArmillaryRecipe::getOutput)
+    ).apply(instance, ArmillaryRecipe::new));
+
+    private static final PacketCodec<RegistryByteBuf, ArmillaryRecipe> PACKET_CODEC = PacketCodec.tuple(
+            Ingredient.PACKET_CODEC, ArmillaryRecipe::getCenterInput,
+            Aspect.LIST_PACKET_CODEC, ArmillaryRecipe::getAspects,
+            PacketCodecs.FLOAT, ArmillaryRecipe::getEtherPoints,
+            ItemStack.PACKET_CODEC, ArmillaryRecipe::getOutput, ArmillaryRecipe::new);
 
     public ArmillaryRecipeSerializer() {
         super("armillary_recipe");
     }
 
     @Override
-    public ArmillaryRecipe read(Identifier id, JsonObject json) {
-        ArmillaryRecipeJsonFormat recipeJson = new Gson().fromJson(json, ArmillaryRecipeJsonFormat.class);
-
-        if (recipeJson.aspects == null || recipeJson.center_input == null || recipeJson.outputItem == null) {
-            throw new JsonSyntaxException("A required attribute is missing!");
-        }
-        if (recipeJson.outputAmount == 0) recipeJson.outputAmount = 1;
-
-        List<Aspect> aspects = recipeJson.aspects.asList().stream()
-                .map(JsonElement::getAsString)
-                .map(name -> EnumUtils.getEnumIgnoreCase(Aspect.class, name))
-                .collect(Collectors.toCollection(ObjectArrayList::new));
-
-        Ingredient centerInput = Ingredient.fromJson(recipeJson.center_input);
-        Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(recipeJson.outputItem))
-                .orElseThrow(() -> new JsonSyntaxException("No such item " + recipeJson.outputItem));
-        ItemStack output = new ItemStack(outputItem, recipeJson.outputAmount);
-
-        return new ArmillaryRecipe(centerInput, aspects, recipeJson.ether_points, output, id);
+    public MapCodec<ArmillaryRecipe> codec() {
+        return CODEC;
     }
 
     @Override
-    public ArmillaryRecipe read(Identifier id, PacketByteBuf buf) {
-        List<Aspect> aspects = buf.readCollection(ObjectArrayList::new, packetBuf -> packetBuf.readEnumConstant(Aspect.class));
-        Ingredient centerInput = Ingredient.fromPacket(buf);
-        float etherPoints = buf.readFloat();
-        ItemStack outputStack = buf.readItemStack();
-        return new ArmillaryRecipe(centerInput, aspects, etherPoints, outputStack, id);
-    }
-
-    @Override
-    public void write(PacketByteBuf buf, ArmillaryRecipe recipe) {
-        buf.writeCollection(recipe.getAspects(), PacketByteBuf::writeEnumConstant);
-        recipe.getCenterInput().write(buf);
-        buf.writeFloat(recipe.getEtherPoints());
-        buf.writeItemStack(recipe.getOutput());
+    public PacketCodec<RegistryByteBuf, ArmillaryRecipe> packetCodec() {
+        return PACKET_CODEC;
     }
 }

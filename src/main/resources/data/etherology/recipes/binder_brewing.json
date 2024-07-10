@@ -4,5 +4,7 @@
     "item": "etherology:raw_azel"
   },
   "inputAspects": {"memo": 6, "soce": 4, "felka": 4},
-  "outputItem": "etherology:binder"
+  "result": {
+    "id": "etherology:binder"
+  }
 }

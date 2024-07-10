@@ -12,8 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
@@ -296,6 +294,9 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         val recipe = RecipesRegistry.getFirstMatch(world, this, ArmillaryRecipeSerializer.INSTANCE);
         if (recipe == null) return false;
 
+
+        // stopship: continue rewriting recipe serializers + fix this
+        // good luck
         recipeId = recipe.getId();
         recipeCache = recipe;
         return true;
@@ -461,7 +462,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         Vec3d centerPos = getCenterPos();
         Random random = world.getRandom();
 
-        ItemParticleEffect itemEffect = new ItemParticleEffect(EtherParticleTypes.ITEM, target.getStack(0), centerPos);
+        ItemParticleEffect itemEffect = new ItemParticleEffect(EtherParticleTypes.ITEM, target.getStack(0).getItem(), centerPos);
         itemEffect.spawnParticles(world, 5, 0.2, pedestalPos);
 
         LightParticleEffect sparkLightEffect = new LightParticleEffect(EtherParticleTypes.LIGHT, LightSubtype.SPARK, centerPos);

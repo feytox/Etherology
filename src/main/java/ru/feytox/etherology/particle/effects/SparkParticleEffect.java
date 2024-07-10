@@ -1,75 +1,45 @@
 package ru.feytox.etherology.particle.effects;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.PacketByteBuf;
+import lombok.Getter;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.Vec3d;
-import ru.feytox.etherology.particle.effects.args.EnumArg;
-import ru.feytox.etherology.particle.effects.args.ParticleArg;
-import ru.feytox.etherology.particle.effects.args.SimpleArgs;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
+@Getter
 public class SparkParticleEffect extends FeyParticleEffect<SparkParticleEffect> {
 
-    private final ParticleArg<Vec3d> moveVecArg = SimpleArgs.VEC3D.get();
-    private final ParticleArg<SparkSubtype> sparkTypeArg = EnumArg.of(SparkSubtype.class);
+    private final Vec3d moveVec;
+    private final SparkSubtype sparkType;
 
     public SparkParticleEffect(ParticleType<SparkParticleEffect> type, Vec3d moveVec, SparkSubtype sparkType) {
         super(type);
-        moveVecArg.setValue(moveVec);
-        sparkTypeArg.setValue(sparkType);
+        this.moveVec = moveVec;
+        this.sparkType = sparkType;
     }
 
     public SparkParticleEffect(ParticleType<SparkParticleEffect> type) {
-        super(type);
+        this(type, null, null);
     }
 
     @Override
-    public SparkParticleEffect read(ParticleType<SparkParticleEffect> type, StringReader reader) throws CommandSyntaxException {
-        reader.expect(' ');
-        SparkSubtype sparkType = sparkTypeArg.read(reader);
-        reader.expect(' ');
-        Vec3d moveVec = moveVecArg.read(reader);
-        return new SparkParticleEffect(type, moveVec, sparkType);
+    public MapCodec<SparkParticleEffect> createCodec() {
+        return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Vec3d.CODEC.fieldOf("moveVec").forGetter(SparkParticleEffect::getMoveVec),
+                SparkSubtype.CODEC.fieldOf("sparkType").forGetter(SparkParticleEffect::getSparkType)
+        ).apply(instance, biFactory(SparkParticleEffect::new)));
     }
 
     @Override
-    public SparkParticleEffect read(ParticleType<SparkParticleEffect> type, PacketByteBuf buf) {
-        SparkSubtype sparkType = sparkTypeArg.read(buf);
-        Vec3d moveVec = moveVecArg.read(buf);
-        return new SparkParticleEffect(type, moveVec, sparkType);
+    public PacketCodec<RegistryByteBuf, SparkParticleEffect> createPacketCodec() {
+        return PacketCodec.tuple(CodecUtil.VEC3D_PACKET, SparkParticleEffect::getMoveVec,
+                SparkSubtype.PACKET_CODEC, SparkParticleEffect::getSparkType, biFactory(SparkParticleEffect::new));
     }
 
-    @Override
-    public String write() {
-        return sparkTypeArg.write() + " " + moveVecArg.write();
-    }
 
-    @Override
-    public Codec<SparkParticleEffect> createCodec() {
-        return RecordCodecBuilder.create((instance) -> instance.group(
-                moveVecArg.getCodec("moveVec")
-                        .forGetter(SparkParticleEffect::getMoveVec),
-                sparkTypeArg.getCodec("sparkType")
-                        .forGetter(SparkParticleEffect::getSparkType))
-                .apply(instance, (moveVec, sparkType) -> new SparkParticleEffect(type, moveVec, sparkType)));
-    }
-
-    @Override
-    public void write(PacketByteBuf buf) {
-        sparkTypeArg.write(buf);
-        moveVecArg.write(buf);
-    }
-
-    public Vec3d getMoveVec() {
-        return moveVecArg.getValue();
-    }
-
-    public SparkSubtype getSparkType() {
-        return sparkTypeArg.getValue();
-    }
 }

@@ -38,9 +38,4 @@ public class EtherParticleTypes {
         FeyParticleType<T> particleType = new FeyParticleType<>(false, dummyConstructor);
         return Registry.register(Registries.PARTICLE_TYPE, EIdentifier.of(name), particleType);
     }
-
-    @Deprecated
-    private static <T extends Enum<T>> FeyParticleType<TypedParticleEffect<T>> registerTyped(String name, Class<T> enumClass) {
-        return register(name, type -> new TypedParticleEffect<>(type, enumClass));
-    }
 }
