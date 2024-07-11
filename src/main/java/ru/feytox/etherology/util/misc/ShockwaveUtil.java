@@ -5,7 +5,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -36,7 +35,7 @@ public class ShockwaveUtil {
         if (cooldown < 0.9) return false;
         if (!TwoHandheldSword.isUsing(attacker, TuningMaceItem.class)) return false;
 
-        World world = attacker.method_48926();
+        World world = attacker.getWorld();
         spawnResonationParticle(world, target);
         playAttackSound(world, attacker, target);
 
@@ -65,7 +64,7 @@ public class ShockwaveUtil {
             Vec3d attackVec = shockPos.subtract(attackTarget.getPos());
             double vecLen = attackVec.length();
             double attackK = Math.max(1 - vecLen / 3, 0);
-            damage += EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), attackTarget.getGroup());
+            damage += EnchantmentHelper.getAttackDamage(attacker.getMainHandStack(), attackTarget.getType());
 
             Vec3d oldVelocity = attackTarget.getVelocity();
             if (attackedOnce) {
@@ -120,7 +119,7 @@ public class ShockwaveUtil {
     }
 
     private static void tryAttack(PlayerEntity attacker, LivingEntity target, double damage, float knockback, Vec3d attackVec, double vecLen, double attackK, Vec3d oldVelocity) {
-        boolean wasDamaged = target.damage(DamageSource.player(attacker), (float) damage);
+        boolean wasDamaged = target.damage(attacker.getDamageSources().playerAttack(attacker), (float) damage);
         if (!wasDamaged) return;
 
         if (knockback > 0) {

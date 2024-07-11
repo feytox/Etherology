@@ -1,6 +1,5 @@
 package ru.feytox.etherology.block.jewelryTable;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -8,7 +7,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
@@ -27,7 +25,7 @@ public class JewelryTable extends Block implements RegistrableBlock, BlockEntity
     private static final VoxelShape OUTLINE_SHAPE;
 
     public JewelryTable() {
-        super(FabricBlockSettings.copy(Blocks.STONE));
+        super(Settings.copy(Blocks.STONE));
     }
 
     @Override

@@ -7,6 +7,9 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -22,12 +25,14 @@ import static ru.feytox.etherology.registry.item.ToolItems.*;
 @UtilityClass
 public class EItemGroups {
 
-    private static final ItemGroup ETHEROLOGY_ITEMS = FabricItemGroup.builder(EIdentifier.of("etherology_items"))
+    private static final RegistryKey<ItemGroup> ETHEROLOGY_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), EIdentifier.of("etherology_items"));
+    private static final ItemGroup ETHEROLOGY_GROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(TELDECORE))
             .displayName(Text.of("Etherology"))
             .build();
 
     public static void registerAll() {
+        Registry.register(Registries.ITEM_GROUP, ETHEROLOGY_GROUP_KEY, ETHEROLOGY_GROUP);
         registerMainGroup();
     }
 
@@ -73,11 +78,11 @@ public class EItemGroups {
                 OCULUS, REVELATION_VIEW, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
                 PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
         // materials
-        etherItems.with(ETHEROSCOPE, BINDER, EBONY, RESONATING_WAND);
+        etherItems.with(ETHEROSCOPE, BINDER, DecoBlockItems.EBONY, RESONATING_WAND);
         // plants
         etherItems.with(FOREST_LANTERN, FOREST_LANTERN_CRUMB, LIGHTELET, BEAMER_SEEDS, THUJA_SEEDS, BEAM_FRUIT);
 
-        ItemGroupEvents.modifyEntriesEvent(ETHEROLOGY_ITEMS).register(content -> etherItems.build().forEach(content::add));
+        ItemGroupEvents.modifyEntriesEvent(ETHEROLOGY_GROUP_KEY).register(content -> etherItems.build().forEach(content::add));
     }
 
     private class Builder {

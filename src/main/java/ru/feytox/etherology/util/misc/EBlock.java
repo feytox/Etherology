@@ -1,6 +1,5 @@
 package ru.feytox.etherology.util.misc;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -26,7 +25,7 @@ public class EBlock {
     }
 
     public Block withItem(boolean generateDrop, @Nullable ItemConvertible drop) {
-        BlockItem blockItem = new BlockItem(block, new Settings());
+        BlockItem blockItem = new BlockItem(block, new Item.Settings());
         blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
         Registry.register(Registries.ITEM, Registries.BLOCK.getId(blockItem.getBlock()), blockItem);
 

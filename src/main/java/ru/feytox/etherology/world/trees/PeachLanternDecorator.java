@@ -1,6 +1,6 @@
 package ru.feytox.etherology.world.trees;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class PeachLanternDecorator extends TreeDecorator {
 
     public static final PeachLanternDecorator INSTANCE = new PeachLanternDecorator();
-    public static final Codec<PeachLanternDecorator> CODEC = Codec.unit(() -> INSTANCE);
+    public static final MapCodec<PeachLanternDecorator> CODEC = MapCodec.unit(() -> INSTANCE);
 
     @Override
     protected TreeDecoratorType<?> getType() {

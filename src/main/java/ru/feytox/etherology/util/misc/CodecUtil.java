@@ -20,6 +20,7 @@ public class CodecUtil {
     public static final Codec<IntArraySet> INT_SET = Codec.list(Codec.INT).xmap(IntArraySet::new, IntArrayList::new).stable();
     public static final PacketCodec<ByteBuf, Vec3d> VEC3D_PACKET = PacketCodec.tuple(PacketCodecs.DOUBLE, Vec3d::getX, PacketCodecs.DOUBLE, Vec3d::getY, PacketCodecs.DOUBLE, Vec3d::getZ, Vec3d::new);
     public static final PacketCodec<ByteBuf, Item> ITEM_PACKET = PacketCodecs.codec(Registries.ITEM.getCodec());
+    public static final PacketCodec<ByteBuf, IntArraySet> INT_SET_PACKET = PacketCodecs.VAR_INT.collect(PacketCodecs.toCollection(IntArraySet::new));
 
     public static <T extends Enum<T>> PacketCodec<ByteBuf, T> ofEnum(T[] values) {
         return PacketCodecs.indexed(ValueLists.createIdToValueFunction((ToIntFunction<T>) Enum::ordinal, values, ValueLists.OutOfBoundsHandling.ZERO), Enum::ordinal);

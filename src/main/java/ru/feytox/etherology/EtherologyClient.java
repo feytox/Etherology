@@ -20,7 +20,6 @@ public class EtherologyClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        GeckoLibNetwork.registerClientReceiverPackets();
         ClientParticleRegistry.registerAll();
         ModelPredicates.registerAll();
         RenderingRegistry.registerAll();

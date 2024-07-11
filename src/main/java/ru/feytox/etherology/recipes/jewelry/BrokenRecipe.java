@@ -1,6 +1,7 @@
 package ru.feytox.etherology.recipes.jewelry;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryWrapper;
 import ru.feytox.etherology.block.jewelryTable.JewelryBlockEntity;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
@@ -10,12 +11,14 @@ import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
+import java.util.Optional;
+
 public class BrokenRecipe extends AbstractJewelryRecipe {
 
-    public static final BrokenRecipe INSTANCE = new BrokenRecipe();
+    public static final RecipeEntry<BrokenRecipe> INSTANCE = new RecipeEntry<>(EIdentifier.of("broken_lens_jewelry"), new BrokenRecipe());
 
-    public BrokenRecipe() {
-        super(LensPattern.empty(), 6, EIdentifier.of("broken_lens_jewelry"));
+    private BrokenRecipe() {
+        super(new Pattern(LensPattern.empty(), Optional.empty()), 6);
     }
 
     @Override
@@ -30,7 +33,6 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
         JewelryBlockEntity parent = inventory.getParent();
         if (parent == null) return lensStack;
 
-        // stopship: continue
         LensComponent.getWrapper(lensStack).filter(data -> data.getComponent().pattern().isCracked())
                 .ifPresent(data -> {
                     data.set(LensPattern.empty(), LensComponent::withPattern).save();

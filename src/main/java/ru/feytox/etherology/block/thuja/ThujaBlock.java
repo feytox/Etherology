@@ -1,7 +1,10 @@
 package ru.feytox.etherology.block.thuja;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractPlantStemBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.MapColor;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
@@ -15,6 +18,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
@@ -121,5 +125,10 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
     @Override
     public String getBlockId() {
         return "thuja";
+    }
+
+    @Override // because super method is protected
+    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+        return super.canPlaceAt(state, world, pos);
     }
 }

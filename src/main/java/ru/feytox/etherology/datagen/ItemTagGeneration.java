@@ -2,7 +2,6 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -17,7 +16,6 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.registry.tag.ItemTags.*;
-import static net.minecraft.registry.tag.ItemTags.FENCES;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
@@ -57,6 +55,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         addItems(PICKAXES, BATTLE_PICKAXES);
         addItems(SHOVELS, ETHRIL_SHOVEL, EBONY_SHOVEL);
         addItems(SWORDS, ETHRIL_SWORD, EBONY_SWORD, BROADSWORD, TUNING_MACE);
+        addItems(SWORDS, BATTLE_PICKAXES);
         addItems(HEAD_ARMOR, ETHRIL_HELMET, EBONY_HELMET);
         addItems(CHEST_ARMOR, ETHRIL_CHESTPLATE, EBONY_CHESTPLATE);
         addItems(LEG_ARMOR, ETHRIL_LEGGINGS, EBONY_LEGGINGS);

@@ -10,14 +10,13 @@ import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.network.interaction.StaffTakeLensC2S;
-import ru.feytox.etherology.util.misc.FeyKeybind;
 
 import java.util.function.Consumer;
 
 @UtilityClass
 public class KeybindsRegistry {
 
-    public static final FeyKeybind STAFF_INTERACTION = register("staff_interaction", GLFW.GLFW_KEY_R);
+    public static final KeyBinding STAFF_INTERACTION = register("staff_interaction", GLFW.GLFW_KEY_R);
 
     public static void registerAll() {
         registerHandler(client -> {
@@ -28,8 +27,8 @@ public class KeybindsRegistry {
         });
     }
 
-    private static FeyKeybind register(String keyName, int defaultKey) {
-        FeyKeybind keybind = new FeyKeybind(
+    private static KeyBinding register(String keyName, int defaultKey) {
+        KeyBinding keybind = new KeyBinding(
                 "key." + Etherology.MOD_ID + "." + keyName,
                 InputUtil.Type.KEYSYM,
                 defaultKey,

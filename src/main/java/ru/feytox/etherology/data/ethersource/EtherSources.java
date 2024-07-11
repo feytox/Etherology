@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 
 public class EtherSources {
+
     public static float getEtherFuel(Item item) {
         return EtherSourceLoader.INSTANCE.getEtherItems().getOrDefault(Registries.ITEM.getId(item), 0.0f);
     }

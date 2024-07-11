@@ -1,13 +1,14 @@
 package ru.feytox.etherology.util.misc;
 
 import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Sizing;
-import io.wispforest.owo.util.pond.OwoTextRendererExtension;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
-@SuppressWarnings("UnstableApiUsage")
 public class ScaledLabelComponent extends LabelComponent {
     private final float scale;
 
@@ -27,48 +28,58 @@ public class ScaledLabelComponent extends LabelComponent {
     }
 
     /**
-     * @see LabelComponent#draw(MatrixStack, int, int, float, float)
+     * @see LabelComponent#draw(OwoUIDrawContext, int, int, float, float)
      */
     @Override
-    public void draw(MatrixStack matrices, int mouseX, int mouseY, float partialTicks, float delta) {
-        try {
-            int x = this.x;
-            int y = this.y;
+    public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
+        var matrices = context.getMatrices();
 
-            if (this.horizontalSizing.get().isContent()) {
-                x += this.horizontalSizing.get().value;
-            }
-            if (this.verticalSizing.get().isContent()) {
-                y += this.verticalSizing.get().value;
-            }
+        matrices.push();
+        matrices.translate(0, 1 / MinecraftClient.getInstance().getWindow().getScaleFactor(), 0);
 
-            switch (this.verticalTextAlignment) {
-                case CENTER -> y += (this.height - ((this.wrappedText.size() * (this.textRenderer.fontHeight + 2)) - 2)) / 2;
-                case BOTTOM -> y += this.height - ((this.wrappedText.size() * (this.textRenderer.fontHeight + 2)) - 2);
-            }
+        int x = this.x;
+        int y = this.y;
 
-            ((OwoTextRendererExtension) this.textRenderer).owo$beginCache();
+        if (this.horizontalSizing.get().isContent()) {
+            x += this.horizontalSizing.get().value;
+        }
+        if (this.verticalSizing.get().isContent()) {
+            y += this.verticalSizing.get().value;
+        }
 
+        switch (this.verticalTextAlignment) {
+            case CENTER -> y += (this.height - (this.textHeight())) / 2;
+            case BOTTOM -> y += this.height - (this.textHeight());
+        }
+
+        final int lambdaX = x;
+        final int lambdaY = y;
+
+        context.draw(() -> {
             for (int i = 0; i < this.wrappedText.size(); i++) {
                 var renderText = this.wrappedText.get(i);
-                int renderX = x;
+                int renderX = lambdaX;
 
                 switch (this.horizontalTextAlignment) {
                     case CENTER -> renderX += (this.width - this.textRenderer.getWidth(renderText)) / 2;
                     case RIGHT -> renderX += this.width - this.textRenderer.getWidth(renderText);
                 }
 
+                int renderY = lambdaY + i * (this.lineHeight() + this.lineSpacing());
+                renderY += this.lineHeight() - this.textRenderer.fontHeight;
+
                 matrices.push();
                 matrices.scale(scale, scale, 1);
-                if (this.shadow) {
-                    this.textRenderer.drawWithShadow(matrices, renderText, renderX / scale, (y + i * 11) / scale, this.color.get().argb());
-                } else {
-                    this.textRenderer.draw(matrices, renderText, renderX / scale, (y + i * 11) / scale, this.color.get().argb());
-                }
+                drawText(context, renderText, renderX / scale, renderY/ scale);
                 matrices.pop();
             }
-        } finally {
-            ((OwoTextRendererExtension) this.textRenderer).owo$submitCache();
-        }
+        });
+
+        matrices.pop();
+    }
+
+    private void drawText(DrawContext context, OrderedText orderedText, float x, float y) {
+        textRenderer.draw(orderedText, x, y, color.get().argb(), shadow, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+        context.draw();
     }
 }

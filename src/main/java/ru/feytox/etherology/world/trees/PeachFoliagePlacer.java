@@ -1,8 +1,7 @@
 package ru.feytox.etherology.world.trees;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.IntProvider;
@@ -14,11 +13,9 @@ import net.minecraft.world.gen.foliage.FoliagePlacerType;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.world.TreesRegistry;
 
-import java.util.function.BiConsumer;
-
 public class PeachFoliagePlacer extends FoliagePlacer {
 
-    public static final Codec<PeachFoliagePlacer> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<PeachFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
             fillFoliagePlacerFields(instance).apply(instance, PeachFoliagePlacer::new));
     private static final float HIGH_CHANCE = 0.97f;
     private static final float LOW_CHANCE = 0.08f;
@@ -35,12 +32,12 @@ public class PeachFoliagePlacer extends FoliagePlacer {
     // TODO: 18.06.2024 consider to simplify
     // giantTrunk in this case: true = tree top, false = branch
     @Override
-    protected void generate(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config, int trunkHeight, TreeNode treeNode, int foliageHeight, int radius, int offset) {
-        if (treeNode.isGiantTrunk()) generateTop(world, replacer, random, config, treeNode);
-        else generateBranch(world, replacer, random, config, treeNode);
+    protected void generate(TestableWorld world, BlockPlacer placer, Random random, TreeFeatureConfig config, int trunkHeight, TreeNode treeNode, int foliageHeight, int radius, int offset) {
+        if (treeNode.isGiantTrunk()) generateTop(world, placer, random, config, treeNode);
+        else generateBranch(world, placer, random, config, treeNode);
     }
 
-    private void generateTop(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config, TreeNode treeNode) {
+    private void generateTop(TestableWorld world, BlockPlacer replacer, Random random, TreeFeatureConfig config, TreeNode treeNode) {
         BlockPos startPos = treeNode.getCenter();
         placeLeaves(world, replacer, random, config, startPos, null, 1, HIGH_CHANCE, 0);
         placeLeaves(world, replacer, random, config, startPos.up(1), null, 1, 1, HIGH_CHANCE);
@@ -50,7 +47,7 @@ public class PeachFoliagePlacer extends FoliagePlacer {
         randomPlace(world, replacer, random, config, startPos.up(5), HIGH_CHANCE);
     }
 
-    private void generateBranch(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config, TreeNode treeNode) {
+    private void generateBranch(TestableWorld world, BlockPlacer replacer, Random random, TreeFeatureConfig config, TreeNode treeNode) {
         BlockPos startPos = treeNode.getCenter();
         Offset trunkOffset = findTrunk(world, startPos);
         if (trunkOffset == null) return;
@@ -75,7 +72,7 @@ public class PeachFoliagePlacer extends FoliagePlacer {
         return world.testBlockState(pos, state -> state.isIn(BlockTags.LOGS));
     }
 
-    private void placeLeaves(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config, BlockPos center, @Nullable Offset trunkOffset, float centerChance, float mainChance, float cornerChance) {
+    private void placeLeaves(TestableWorld world, BlockPlacer replacer, Random random, TreeFeatureConfig config, BlockPos center, @Nullable Offset trunkOffset, float centerChance, float mainChance, float cornerChance) {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
                 if (trunkOffset != null && isTrunk(trunkOffset, dx, dz)) continue;
@@ -86,7 +83,7 @@ public class PeachFoliagePlacer extends FoliagePlacer {
         }
     }
 
-    private void randomPlace(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config, BlockPos blockPos, float chance) {
+    private void randomPlace(TestableWorld world, BlockPlacer replacer, Random random, TreeFeatureConfig config, BlockPos blockPos, float chance) {
         if (chance == 0 || (chance != 1 && random.nextFloat() > chance)) return;
         placeFoliageBlock(world, replacer, random, config, blockPos);
     }

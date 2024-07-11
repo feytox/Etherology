@@ -1,6 +1,5 @@
 package ru.feytox.etherology.registry.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -12,8 +11,8 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 // TODO: 29.02.2024 move to EItems
 public class DecoBlockItems {
     // peach wood
-    public static final Item PEACH_DOOR = registerBlockItem(new TallBlockItem(DecoBlocks.PEACH_DOOR, new Settings()));
-    public static final Item PEACH_SIGN = registerBlockItem(new SignItem(new Settings().maxCount(16), DecoBlocks.PEACH_SIGN, DecoBlocks.PEACH_WALL_SIGN));
+    public static final Item PEACH_DOOR = registerBlockItem(new TallBlockItem(DecoBlocks.PEACH_DOOR, new Item.Settings()));
+    public static final Item PEACH_SIGN = registerBlockItem(new SignItem(new Item.Settings().maxCount(16), DecoBlocks.PEACH_SIGN, DecoBlocks.PEACH_WALL_SIGN));
 
     // plants
     public static final Item BEAMER_SEEDS = registerAliasedBlockItem("beamer_seeds", DecoBlocks.BEAMER);
@@ -38,7 +37,7 @@ public class DecoBlockItems {
     public static final Item RESONATING_WAND = registerSimpleItem("resonating_wand");
 
     private static Item registerSimpleItem(String id) {
-        return Registry.register(Registries.ITEM, EIdentifier.of(id), new Item(new Settings()));
+        return Registry.register(Registries.ITEM, EIdentifier.of(id), new Item(new Item.Settings()));
     }
 
     private static Item registerBlockItem(BlockItem blockItem) {
@@ -47,7 +46,7 @@ public class DecoBlockItems {
     }
 
     public static Item registerAliasedBlockItem(String id, Block block) {
-        AliasedBlockItem aliasedBlockItem = new AliasedBlockItem(block, new Settings());
+        AliasedBlockItem aliasedBlockItem = new AliasedBlockItem(block, new Item.Settings());
         Registry.register(Registries.ITEM, EIdentifier.of(id), aliasedBlockItem);
         return aliasedBlockItem;
     }

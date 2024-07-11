@@ -13,6 +13,7 @@ public class FabricShieldLibMixin {
     @SuppressWarnings("SameReturnValue")
     @ModifyExpressionValue(method = "onInitialize", at = @At(value = "INVOKE", target = "Lnet/fabricmc/loader/api/FabricLoader;isDevelopmentEnvironment()Z"))
     private boolean disableDevEnv(boolean original) {
+        // TODO: #upd
         if (!original) return false;
         ELOGGER.warn("Developer mode has been disabled for Fabric Shield Lib to avoid crash. The warning and restriction will be removed after the fix either by FSL or by Etherology.");
         return false;

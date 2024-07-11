@@ -261,10 +261,10 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     private boolean tryCraft(ServerWorld world, ItemStack inputStack, BlockState state) {
         CauldronRecipeInventory inventory = new CauldronRecipeInventory(aspects, inputStack);
-        CauldronRecipe recipe = RecipesRegistry.getFirstMatch(world, inventory, CauldronRecipeSerializer.INSTANCE);
-        if (recipe == null) return false;
+        val recipeEntry = RecipesRegistry.getFirstMatch(world, inventory, CauldronRecipeSerializer.INSTANCE);
+        if (recipeEntry == null) return false;
 
-        ItemStack resultStack = craft(world, inputStack, recipe, state);
+        ItemStack resultStack = craft(world, inputStack, recipeEntry.value(), state);
         CauldronItemEntity.spawn(world, pos.up().toCenterPos(), resultStack);
         syncData(world);
         spawnCraftParticle(world);
@@ -285,13 +285,13 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
     private ItemStack craft(ServerWorld world, ItemStack itemStack, CauldronRecipe recipe, BlockState state) {
         CauldronRecipeInventory inventory;
-        Item outputItem = recipe.getResult().getItem();
+        Item outputItem = recipe.getOutput().getItem();
         int count = 0;
 
         do {
             itemStack.decrement(recipe.getInputAmount());
             aspects = aspects.subtract(recipe.getInputAspects());
-            count += recipe.getResult().getCount();
+            count += recipe.getOutput().getCount();
 
             int oldLevel = state.get(BrewingCauldronBlock.LEVEL);
             state = state.with(BrewingCauldronBlock.LEVEL, oldLevel-1);

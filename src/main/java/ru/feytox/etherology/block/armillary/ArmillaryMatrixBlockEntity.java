@@ -291,14 +291,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     public boolean testForRecipe(ServerWorld world) {
-        val recipe = RecipesRegistry.getFirstMatch(world, this, ArmillaryRecipeSerializer.INSTANCE);
-        if (recipe == null) return false;
+        val recipeEntry = RecipesRegistry.getFirstMatch(world, this, ArmillaryRecipeSerializer.INSTANCE);
+        if (recipeEntry == null) return false;
 
-
-        // stopship: continue rewriting recipe serializers + fix this
-        // good luck
-        recipeId = recipe.getId();
-        recipeCache = recipe;
+        recipeId = recipeEntry.id();
+        recipeCache = recipeEntry.value();
         return true;
     }
 
@@ -310,10 +307,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (recipeCache != null) return recipeCache;
         if (recipeId == null) return null;
 
-        val recipe = RecipesRegistry.get(world, recipeId);
-        if (!(recipe instanceof ArmillaryRecipe armillaryRecipe)) return null;
-        recipeCache = armillaryRecipe;
-        return armillaryRecipe;
+        if (RecipesRegistry.get(world, recipeId).value() instanceof ArmillaryRecipe armillaryRecipe) {
+            recipeCache = armillaryRecipe;
+            return armillaryRecipe;
+        }
+        return null;
     }
 
     private static EGeoAnimation getRandomRuneAnimation(World world) {

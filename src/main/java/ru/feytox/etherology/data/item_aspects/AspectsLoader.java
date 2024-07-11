@@ -8,7 +8,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
-import net.minecraft.potion.Potion;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -26,6 +25,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public class AspectsLoader implements IdentifiableResourceReloadListener {
+
+    // TODO: 11.07.2024 consider to use codecs... before it's too late :skull:
+
     private static ImmutableMap<AspectContainerId, AspectContainer> cache = ImmutableMap.of();
     private static boolean isInitialized = false;
 

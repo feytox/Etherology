@@ -146,7 +146,7 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
     @Nullable
     public EmpowerRecipe getRecipe() {
         if (world == null) return null;
-        return RecipesRegistry.getFirstMatch(world, this, EmpowerRecipeSerializer.INSTANCE);
+        return RecipesRegistry.getFirstMatch(world, this, EmpowerRecipeSerializer.INSTANCE).value();
     }
 
     @Override

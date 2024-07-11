@@ -7,20 +7,12 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import ru.feytox.etherology.util.misc.EIdentifier;
-import terrablender.api.ParameterUtils.Continentalness;
-import terrablender.api.ParameterUtils.Depth;
-import terrablender.api.ParameterUtils.Erosion;
-import terrablender.api.ParameterUtils.Humidity;
-import terrablender.api.ParameterUtils.ParameterPointListBuilder;
-import terrablender.api.ParameterUtils.Temperature;
-import terrablender.api.ParameterUtils.Weirdness;
+import terrablender.api.ParameterUtils.*;
 import terrablender.api.Region;
 import terrablender.api.RegionType;
 import terrablender.api.VanillaParameterOverlayBuilder;
 
 import java.util.function.Consumer;
-
-import static terrablender.api.ParameterUtils.*;
 
 public class GoldenForestRegion extends Region {
 
@@ -28,8 +20,6 @@ public class GoldenForestRegion extends Region {
         super(EIdentifier.of("golden_forest_region"), RegionType.OVERWORLD, 3);
     }
 
-    // TODO: 25.06.2024 remove this comment
-    // /execute positioned ~2500 ~ ~2500 run locate biome etherology:golden_forest
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<MultiNoiseUtil.NoiseHypercube, RegistryKey<Biome>>> mapper) {
         val builder = new VanillaParameterOverlayBuilder();

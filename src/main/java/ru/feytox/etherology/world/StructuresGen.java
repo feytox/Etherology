@@ -30,7 +30,6 @@ import ru.feytox.etherology.world.biome.EtherBiomes;
 import ru.feytox.etherology.world.structure.RotatedPoolElement;
 
 import java.util.Map;
-import java.util.Optional;
 
 @UtilityClass
 public class StructuresGen {
@@ -59,12 +58,10 @@ public class StructuresGen {
                         biomeLookup.getOrThrow(EtherBiomes.GOLDEN_FOREST)),
                         Map.of(), GenerationStep.Feature.LOCAL_MODIFICATIONS, StructureTerrainAdaptation.BEARD_THIN),
                 poolLookup.getOrThrow(ETHER_MONOLITH_START_POOL),
-                Optional.of(EIdentifier.of("start")),
                 2,
                 ConstantHeightProvider.ZERO,
                 false,
-                Optional.of(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES),
-                80
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES
         ));
     }
 

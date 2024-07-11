@@ -22,9 +22,6 @@
     "main": [
       "ru.feytox.etherology.Etherology"
     ],
-    "preLaunch": [
-      "ru.feytox.etherology.util.misc.EtherologyPreLaunch"
-    ],
     "cardinal-components": [
       "ru.feytox.etherology.registry.misc.EtherologyComponents"
     ],

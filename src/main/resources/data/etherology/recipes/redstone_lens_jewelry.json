@@ -10,8 +10,6 @@
     "0######0",
     "00####00"
   ],
-  "result": {
-    "id": "etherology:redstone_lens"
-  },
+  "result": "etherology:redstone_lens",
   "ether": 12
 }

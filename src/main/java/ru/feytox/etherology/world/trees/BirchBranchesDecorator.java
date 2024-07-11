@@ -1,6 +1,6 @@
 package ru.feytox.etherology.world.trees;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
@@ -16,7 +16,7 @@ import java.util.List;
 public class BirchBranchesDecorator extends TreeDecorator {
 
     public static final BirchBranchesDecorator INSTANCE = new BirchBranchesDecorator();
-    public static final Codec<BirchBranchesDecorator> CODEC = Codec.unit(() -> INSTANCE);
+    public static final MapCodec<BirchBranchesDecorator> CODEC = MapCodec.unit(() -> INSTANCE);
 
     private static final Direction[] OFFSETS = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 

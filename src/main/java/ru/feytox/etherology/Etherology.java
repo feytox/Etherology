@@ -13,7 +13,6 @@ import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
-import ru.feytox.etherology.registry.custom.EtherologyRegistry;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
@@ -40,7 +39,6 @@ public class Etherology implements ModInitializer {
         RecipesRegistry.registerAll();
         ScreenHandlersRegistry.registerServerSide();
         WorldGenRegistry.registerWorldGen();
-        EtherologyRegistry.buildRegistry();
         StaffPatterns.registerAll();
         EItemGroups.registerAll();
         LootTablesModifyRegistry.registerAll();

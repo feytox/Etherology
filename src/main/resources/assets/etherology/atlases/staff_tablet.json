@@ -1,0 +1,26 @@
+{
+    "sources": [
+        {
+            "type": "paletted_permutations",
+            "textures": [
+                "etherology:trims/textures/staff_style_aristocrat",
+                "etherology:trims/textures/staff_style_astronomy",
+                "etherology:trims/textures/staff_style_heavenly",
+                "etherology:trims/textures/staff_style_ocular",
+                "etherology:trims/textures/staff_style_ritual",
+                "etherology:trims/textures/staff_style_royal",
+                "etherology:trims/textures/staff_style_traditional"
+            ],
+            "palette_key": "etherology:trims/color_palettes/trim_palette",
+            "permutations": {
+                "iron": "etherology:trims/color_palettes/iron",
+                "gold": "etherology:trims/color_palettes/gold",
+                "netherite": "etherology:trims/color_palettes/netherite",
+                "copper": "etherology:trims/color_palettes/copper",
+                "azel": "etherology:trims/color_palettes/azel",
+                "ebony": "etherology:trims/color_palettes/ebony",
+                "ethril": "etherology:trims/color_palettes/ethril"
+            }
+        }
+    ]
+}

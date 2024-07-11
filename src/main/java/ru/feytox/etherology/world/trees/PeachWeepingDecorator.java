@@ -1,6 +1,6 @@
 package ru.feytox.etherology.world.trees;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.val;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +13,7 @@ import ru.feytox.etherology.registry.world.TreesRegistry;
 public class PeachWeepingDecorator extends TreeDecorator {
 
     public static final PeachWeepingDecorator INSTANCE = new PeachWeepingDecorator();
-    public static final Codec<PeachWeepingDecorator> CODEC = Codec.unit(() -> INSTANCE);
+    public static final MapCodec<PeachWeepingDecorator> CODEC = MapCodec.unit(() -> INSTANCE);
 
     @Override
     protected TreeDecoratorType<?> getType() {

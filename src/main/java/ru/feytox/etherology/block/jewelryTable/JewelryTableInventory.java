@@ -10,6 +10,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -62,16 +63,16 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public void updateRecipe(ServerWorld world) {
-        AbstractJewelryRecipe recipe = RecipesRegistry.getFirstMatch(world, this, LensRecipeSerializer.INSTANCE);
+        RecipeEntry<? extends AbstractJewelryRecipe> recipe = RecipesRegistry.getFirstMatch(world, this, LensRecipeSerializer.INSTANCE);
         if (recipe == null) recipe = RecipesRegistry.getFirstMatch(world, this, ModifierRecipeSerializer.INSTANCE);
         if (recipe == null) recipe = getBrokenRecipe();
 
         if (recipe == null) currentRecipe = null;
-        else currentRecipe = recipe.getId();
+        else currentRecipe = recipe.id();
     }
 
     @Nullable
-    private AbstractJewelryRecipe getBrokenRecipe() {
+    private RecipeEntry<BrokenRecipe> getBrokenRecipe() {
         return LensComponent.get(getStack(0))
                 .filter(component -> component.pattern().isCracked())
                 .map(component -> BrokenRecipe.INSTANCE).orElse(null);
@@ -84,8 +85,8 @@ public class JewelryTableInventory implements ImplementedInventory {
     @Nullable
     public AbstractJewelryRecipe getRecipe(ServerWorld world) {
         if (currentRecipe != null) {
-            if (RecipesRegistry.get(world, currentRecipe) instanceof AbstractJewelryRecipe recipe) return recipe;
-            if (currentRecipe.equals(BrokenRecipe.INSTANCE.getId())) return BrokenRecipe.INSTANCE;
+            if (RecipesRegistry.get(world, currentRecipe).value() instanceof AbstractJewelryRecipe recipe) return recipe;
+            if (currentRecipe.equals(BrokenRecipe.INSTANCE.id())) return BrokenRecipe.INSTANCE.value();
         }
 
         return null;

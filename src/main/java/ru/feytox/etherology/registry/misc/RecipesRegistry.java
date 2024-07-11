@@ -4,13 +4,13 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
@@ -46,13 +46,11 @@ public class RecipesRegistry {
         Registry.register(Registries.RECIPE_TYPE, serializer.getId(), serializer.getRecipeType());
     }
 
-    @Nullable
-    public static <T extends Recipe<M>, M extends Inventory> T getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
+    public static <T extends Recipe<M>, M extends Inventory> RecipeEntry<T> getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
         return world.getRecipeManager().getFirstMatch(serializer.getRecipeType(), inventory, world).orElse(null);
     }
 
-    @Nullable
-    public static Recipe<?> get(World world, @NonNull Identifier id) {
+    public static RecipeEntry<?> get(World world, @NonNull Identifier id) {
         return world.getRecipeManager().get(id).orElse(null);
     }
 }

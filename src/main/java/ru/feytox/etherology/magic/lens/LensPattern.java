@@ -2,6 +2,7 @@ package ru.feytox.etherology.magic.lens;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.CodecUtil;
 
@@ -25,6 +27,9 @@ public class LensPattern {
             .group(CodecUtil.INT_SET.fieldOf("cracks").forGetter(pattern -> pattern.cracks),
                     CodecUtil.INT_SET.fieldOf("soft_cells").forGetter(pattern -> pattern.softCells)
             ).apply(instance, LensPattern::new));
+    public static final PacketCodec<ByteBuf, LensPattern> PACKET_CODEC = PacketCodec.tuple(
+            CodecUtil.INT_SET_PACKET, pattern -> pattern.cracks,
+            CodecUtil.INT_SET_PACKET, pattern -> pattern.softCells, LensPattern::new);
 
     @NonNull
     protected final IntArraySet cracks;

@@ -12,6 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import org.apache.commons.io.IOUtils;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.data.ethersource.EtherSourceLoader;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.data.item_aspects.AspectsRegistry;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
@@ -26,6 +27,7 @@ public class ResourceReloaders {
 
     public static void registerServerData() {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new AspectsLoader());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(EtherSourceLoader.INSTANCE);
     }
 
     public static JsonObject loadFile(Identifier location, Resource resource) {

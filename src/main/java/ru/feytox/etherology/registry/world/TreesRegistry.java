@@ -1,6 +1,6 @@
 package ru.feytox.etherology.registry.world;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import lombok.experimental.UtilityClass;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
@@ -36,15 +36,15 @@ public class TreesRegistry {
 
     public static void registerTrees() {}
 
-    private static <T extends TreeDecorator> TreeDecoratorType<T> registerDeco(String name, Codec<T> codec) {
+    private static <T extends TreeDecorator> TreeDecoratorType<T> registerDeco(String name, MapCodec<T> codec) {
         return TreeDecoratorTypeAccessor.callRegister(Etherology.MOD_ID + ":" + name + "_decorator", codec);
     }
 
-    private static <T extends FoliagePlacer> FoliagePlacerType<T> registerFoliage(String name, Codec<T> codec) {
+    private static <T extends FoliagePlacer> FoliagePlacerType<T> registerFoliage(String name, MapCodec<T> codec) {
         return FoliagePlacerTypeAccessor.callRegister(Etherology.MOD_ID + ":" + name + "_foliage_placer", codec);
     }
 
-    private static <T extends TrunkPlacer> TrunkPlacerType<T> registerTrunk(String name, Codec<T> codec) {
+    private static <T extends TrunkPlacer> TrunkPlacerType<T> registerTrunk(String name, MapCodec<T> codec) {
         return TrunkPlacerTypeAccessor.callRegister(Etherology.MOD_ID + ":" + name + "_trunk_placer", codec);
     }
 

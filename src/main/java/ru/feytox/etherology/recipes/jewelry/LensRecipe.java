@@ -4,7 +4,6 @@ import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensPattern;
@@ -15,8 +14,8 @@ public class LensRecipe extends AbstractJewelryRecipe {
 
     private final Item outputItem;
 
-    public LensRecipe(LensPattern pattern, Item outputItem, int ether, Identifier id) {
-        super(pattern, ether, id);
+    public LensRecipe(Pattern pattern, Item outputItem, int ether) {
+        super(pattern, ether);
         this.outputItem = outputItem;
     }
 

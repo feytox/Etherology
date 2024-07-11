@@ -1,7 +1,7 @@
 package ru.feytox.etherology.world.trees;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.BlockState;
@@ -25,7 +25,7 @@ import static ru.feytox.etherology.registry.world.TreesRegistry.PEACH_TRUNK_PLAC
 
 public class PeachTrunkPlacer extends TrunkPlacer {
 
-    public static final Codec<PeachTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<PeachTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
             fillTrunkPlacerFields(instance).apply(instance, PeachTrunkPlacer::new));
 
     // TODO: 18.06.2024 replace arrays with something better

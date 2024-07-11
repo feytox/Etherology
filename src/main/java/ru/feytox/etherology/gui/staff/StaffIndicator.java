@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.lens.LensComponent;
-import ru.feytox.etherology.mixin.InGameHudAccessor;
 
 @Environment(EnvType.CLIENT)
 public class StaffIndicator {
@@ -42,9 +41,8 @@ public class StaffIndicator {
         float progress = MathHelper.lerp(tickDelta, prevHudData, hudData);
         if (progress >= 1.0f) return;
 
-        val accessor = ((InGameHudAccessor) client.inGameHud);
-        int x = accessor.getScaledWidth() / 2 - 8;
-        int y = accessor.getScaledHeight() / 2 - 7 + 16;
+        int x = context.getScaledWindowWidth() / 2 - 8;
+        int y = context.getScaledWindowHeight() / 2 - 7 + 16;
         int width = (int) (17.0f * progress);
 
         context.push();

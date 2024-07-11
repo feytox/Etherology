@@ -14,18 +14,18 @@ import static ru.feytox.etherology.registry.misc.EtherToolMaterials.ETHRIL;
 @UtilityClass
 public class ToolItems {
     // ethril tools
-    public static final Item ETHRIL_AXE = register("ethril_axe", new AxeItem(ETHRIL, 5, -3.0f, new Settings()));
-    public static final Item ETHRIL_PICKAXE = register("ethril_pickaxe", new PickaxeItem(ETHRIL, 1, -2.8F, new Settings()));
-    public static final Item ETHRIL_HOE = register("ethril_hoe", new HoeItem(ETHRIL, -3, 0.0f, new Settings()));
-    public static final Item ETHRIL_SHOVEL = register("ethril_shovel", new ShovelItem(ETHRIL, 1.5f, -3.0f, new Settings()));
-    public static final Item ETHRIL_SWORD = register("ethril_sword", new SwordItem(ETHRIL, 3, -2.4f, new Settings()));
+    public static final Item ETHRIL_AXE = register("ethril_axe", new AxeItem(ETHRIL, new Item.Settings().attributeModifiers(AxeItem.createAttributeModifiers(ETHRIL, 5, -3.0f))));
+    public static final Item ETHRIL_PICKAXE = register("ethril_pickaxe", new PickaxeItem(ETHRIL, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(ETHRIL, 1, -2.8F))));
+    public static final Item ETHRIL_HOE = register("ethril_hoe", new HoeItem(ETHRIL, new Item.Settings().attributeModifiers(HoeItem.createAttributeModifiers(ETHRIL, -3, 0.0f))));
+    public static final Item ETHRIL_SHOVEL = register("ethril_shovel", new ShovelItem(ETHRIL, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(ETHRIL, 1.5f, -3.0f))));
+    public static final Item ETHRIL_SWORD = register("ethril_sword", new SwordItem(ETHRIL, new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ETHRIL, 3, -2.4f))));
 
     // ebony tools
-    public static final Item EBONY_AXE = register("ebony_axe", new AxeItem(EBONY, 5, -3.1F, new Settings()));
-    public static final Item EBONY_PICKAXE = register("ebony_pickaxe", new PickaxeItem(EBONY, 0, -2.8F, new Settings()));
-    public static final Item EBONY_HOE = register("ebony_hoe", new HoeItem(EBONY, -2, -1, new Settings()));
-    public static final Item EBONY_SHOVEL = register("ebony_shovel", new ShovelItem(EBONY, 0.5f, -3, new Settings()));
-    public static final Item EBONY_SWORD = register("ebony_sword", new SwordItem(EBONY, 3, -2.4f, new Settings()));
+    public static final Item EBONY_AXE = register("ebony_axe", new AxeItem(EBONY, new Item.Settings().attributeModifiers(AxeItem.createAttributeModifiers(EBONY, 5, -3.1F))));
+    public static final Item EBONY_PICKAXE = register("ebony_pickaxe", new PickaxeItem(EBONY, new Item.Settings().attributeModifiers(PickaxeItem.createAttributeModifiers(EBONY, 0, -2.8F))));
+    public static final Item EBONY_HOE = register("ebony_hoe", new HoeItem(EBONY, new Item.Settings().attributeModifiers(HoeItem.createAttributeModifiers(EBONY, -2, -1))));
+    public static final Item EBONY_SHOVEL = register("ebony_shovel", new ShovelItem(EBONY, new Item.Settings().attributeModifiers(ShovelItem.createAttributeModifiers(EBONY, 0.5f, -3))));
+    public static final Item EBONY_SWORD = register("ebony_sword", new SwordItem(EBONY, new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(EBONY, 3, -2.4f))));
 
     // battle pickaxes
     public static final Item WOODEN_BATTLE_PICKAXE = register("wooden_battle_pickaxe", new BattlePickaxe(WOOD, 2, -2.6f));

@@ -23,7 +23,7 @@ public abstract class FallingBlockEntityMixin {
         FallingBlockEntity it = ((FallingBlockEntity)(Object) this);
         BlockPos blockPos = it.getBlockPos();
 
-        if (it.timeFalling > 100 && (blockPos.getY() <= it.world.getBottomY() || blockPos.getY() > it.world.getTopY()) || it.timeFalling > 600) {
+        if (it.timeFalling > 100 && (blockPos.getY() <= it.getWorld().getBottomY() || blockPos.getY() > it.getWorld().getTopY()) || it.timeFalling > 600) {
             onDestroyedOnLanding(block, blockPos);
         }
     }

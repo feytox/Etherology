@@ -1,9 +1,9 @@
 package ru.feytox.etherology.mixin;
 
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +29,7 @@ public class HandledScreenMixin {
 
     @SuppressWarnings("rawtypes")
     @Inject(method = "drawMouseoverTooltip", at = @At("HEAD"), cancellable = true)
-    private void drawOculusTooltip(MatrixStack matrices, int x, int y, CallbackInfo ci) {
+    private void drawOculusTooltip(DrawContext context, int x, int y, CallbackInfo ci) {
         HandledScreen it = ((HandledScreen) (Object) this);
         ItemStack cursorStack = it.getScreenHandler().getCursorStack();
         if (focusedSlot == null || !focusedSlot.hasStack() || !(cursorStack.getItem() instanceof OculusItem)) return;
@@ -40,7 +40,7 @@ public class HandledScreenMixin {
 
         List<TooltipComponent> tooltipComponents = new ArrayList<>();
         tooltipComponents.add(new AspectTooltipComponent(aspects));
-        ((ScreenAccessor) it).callRenderTooltipFromComponents(matrices, tooltipComponents, x, y, HoveredTooltipPositioner.INSTANCE);
+        ((DrawContextAccessor) context).callDrawTooltip(((ScreenAccessor) it).getTextRenderer(), tooltipComponents, x, y, HoveredTooltipPositioner.INSTANCE);
 
         ci.cancel();
     }

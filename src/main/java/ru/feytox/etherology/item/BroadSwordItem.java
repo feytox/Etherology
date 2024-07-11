@@ -1,9 +1,13 @@
 package ru.feytox.etherology.item;
 
 import lombok.val;
+import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -18,7 +22,8 @@ import ru.feytox.etherology.util.misc.DoubleModel;
 public class BroadSwordItem extends TwoHandheldSword implements DoubleModel {
 
     public BroadSwordItem() {
-        super(ToolMaterials.IRON, 5, -3.1f, new Settings().maxDamage(476));
+        super(ToolMaterials.IRON, new Settings().maxDamage(476).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 5, -3.1f)
+                .with(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, new EntityAttributeModifier("Reach Distance Modifier", 1.25f, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), AttributeModifierSlot.MAINHAND)));
     }
 
     public static boolean isUsing(PlayerEntity player) {

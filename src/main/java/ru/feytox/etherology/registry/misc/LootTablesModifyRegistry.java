@@ -4,15 +4,13 @@ import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableSource;
 import net.minecraft.item.Item;
-import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.RegistryKey;
 import ru.feytox.etherology.registry.item.EItems;
 
 import static net.minecraft.loot.LootTables.*;
@@ -24,13 +22,13 @@ public class LootTablesModifyRegistry {
         LootTableEvents.MODIFY.register(LootTablesModifyRegistry::registerModifications);
     }
 
-    private static void registerModifications(ResourceManager resourceManager, LootManager lootManager, Identifier id, LootTable.Builder tableBuilder, LootTableSource source) {
-        if (injectTabletPattern(id.equals(BASTION_OTHER_CHEST) || id.equals(BASTION_BRIDGE_CHEST) || id.equals(BASTION_TREASURE_CHEST) || id.equals(BASTION_HOGLIN_STABLE_CHEST), EItems.ROYAL_PATTERN_TABLET, tableBuilder)) return;
-        if (injectTabletPattern(id.equals(WOODLAND_MANSION_CHEST), EItems.ARISTOCRAT_PATTERN_TABLET, tableBuilder)) return;
-        if (injectTabletPattern(id.equals(DESERT_PYRAMID_CHEST), EItems.RITUAL_PATTERN_TABLET, tableBuilder)) return;
-        if (injectTabletPattern(id.equals(END_CITY_TREASURE_CHEST), EItems.OCULAR_PATTERN_TABLET, tableBuilder)) return;
-        if (injectTabletPattern(id.equals(SHIPWRECK_TREASURE_CHEST), EItems.HEAVENLY_PATTERN_TABLET, tableBuilder)) return;
-        injectTabletPattern(id.equals(JUNGLE_TEMPLE_CHEST), EItems.ASTRONOMY_PATTERN_TABLET, tableBuilder);
+    private static void registerModifications(RegistryKey<LootTable> key, LootTable.Builder builder, LootTableSource lootTableSource) {
+        if (injectTabletPattern(key.equals(BASTION_OTHER_CHEST) || key.equals(BASTION_BRIDGE_CHEST) || key.equals(BASTION_TREASURE_CHEST) || key.equals(BASTION_HOGLIN_STABLE_CHEST), EItems.ROYAL_PATTERN_TABLET, builder)) return;
+        if (injectTabletPattern(key.equals(WOODLAND_MANSION_CHEST), EItems.ARISTOCRAT_PATTERN_TABLET, builder)) return;
+        if (injectTabletPattern(key.equals(DESERT_PYRAMID_CHEST), EItems.RITUAL_PATTERN_TABLET, builder)) return;
+        if (injectTabletPattern(key.equals(END_CITY_TREASURE_CHEST), EItems.OCULAR_PATTERN_TABLET, builder)) return;
+        if (injectTabletPattern(key.equals(SHIPWRECK_TREASURE_CHEST), EItems.HEAVENLY_PATTERN_TABLET, builder)) return;
+        injectTabletPattern(key.equals(JUNGLE_TEMPLE_CHEST), EItems.ASTRONOMY_PATTERN_TABLET, builder);
     }
 
     private static boolean injectTabletPattern(boolean idTest, Item patternTablet, LootTable.Builder tableBuilder) {
