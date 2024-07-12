@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensMode;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.CodecUtil;
 
 @Getter
@@ -31,8 +31,9 @@ public enum LensSelectionType {
 
     private static SelectionHandler arrowHandler(LensMode lensMode) {
         return (player, staffStack, lensStack) -> {
-            val lens = LensItem.getStaffLensWrapper(staffStack);
-            if (lens != null) lens.set(lensMode, LensComponent::withMode).save();
+            ItemStack staffLensStack = LensItem.getStaffLens(staffStack);
+            LensComponent.getWrapper(staffLensStack).ifPresent(lens -> lens.set(lensMode, LensComponent::withMode).save());
+            staffStack.set(ComponentTypes.STAFF_LENS, staffLensStack);
         };
     }
 

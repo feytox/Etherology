@@ -194,7 +194,7 @@ public abstract class LensItem extends Item {
     public static ItemStack takeLensFromStaff(ItemStack staffStack) {
         if (!(staffStack.getItem() instanceof StaffItem)) return null;
 
-        ItemStack lensStack = getLensStack(staffStack);
+        ItemStack lensStack = getStaffLens(staffStack);
         if (lensStack == null) return null;
 
         StaffComponent.getWrapper(staffStack)
@@ -205,19 +205,13 @@ public abstract class LensItem extends Item {
     }
 
     @Nullable
-    public static LensComponent getStaffLens(ItemStack staffStack) {
-        ItemStack lensStack = getLensStack(staffStack);
+    public static LensComponent getStaffLensComponent(ItemStack staffStack) {
+        ItemStack lensStack = getStaffLens(staffStack);
         return lensStack == null ? null : LensComponent.get(lensStack).orElse(null);
     }
 
     @Nullable
-    public static ItemData<LensComponent> getStaffLensWrapper(ItemStack staffStack) {
-        ItemStack lensStack = getLensStack(staffStack);
-        return lensStack == null ? null : LensComponent.getWrapper(lensStack).orElse(null);
-    }
-
-    @Nullable
-    public static ItemStack getLensStack(ItemStack staffStack) {
+    public static ItemStack getStaffLens(ItemStack staffStack) {
         ItemStack lensStack = staffStack.get(ComponentTypes.STAFF_LENS);
         return lensStack == null || lensStack.isEmpty() ? null : lensStack;
     }

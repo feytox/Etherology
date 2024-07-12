@@ -36,14 +36,14 @@ public class ModelPredicates {
 
         register("staff_stream", (stack, world, entity, seed) -> {
             if (entity == null || !entity.getActiveItem().equals(stack)) return 0;
-            val lensData = LensItem.getStaffLens(stack);
+            val lensData = LensItem.getStaffLensComponent(stack);
             if (lensData == null) return 0;
             return lensData.mode().equals(LensMode.STREAM) ? 1 : 0;
         }, STAFF);
 
         register("staff_charge", (stack, world, entity, seed) -> {
             if (entity == null || !entity.getActiveItem().equals(stack)) return 0;
-            val lensData = LensItem.getStaffLens(stack);
+            val lensData = LensItem.getStaffLensComponent(stack);
             if (lensData == null) return 0;
             return lensData.mode().equals(LensMode.CHARGE) ? 1 : 0;
         }, STAFF);

@@ -2,7 +2,6 @@ package ru.feytox.etherology.item;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.NonNull;
-import lombok.val;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -24,6 +23,7 @@ import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
+import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -65,10 +65,10 @@ public class StaffItem extends Item {
     }
 
     private void useLensEffect(World world, LivingEntity user, ItemStack staffStack, boolean hold, Supplier<Hand> handGetter) {
-        val lensStack = LensItem.getLensStack(staffStack);
+        ItemStack lensStack = LensItem.getStaffLens(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return;
 
-        val lensData = LensItem.getStaffLensWrapper(staffStack);
+        ItemData<LensComponent> lensData = LensComponent.getWrapper(lensStack).orElse(null);
         if (lensData == null) return;
         if (!EtherComponent.isEnough(user, lensItem.getEtherCost(lensData.getComponent()))) return;
 
@@ -79,16 +79,17 @@ public class StaffItem extends Item {
 
         if (!isDamaged) return;
         onLensDamage(world, user, staffStack, lensItem, lensStack);
+        staffStack.set(ComponentTypes.STAFF_LENS, lensStack);
     }
 
     @Override
     public void onStoppedUsing(ItemStack staffStack, World world, LivingEntity user, int remainingUseTicks) {
         super.onStoppedUsing(staffStack, world, user, remainingUseTicks);
 
-        val lensStack = LensItem.getLensStack(staffStack);
+        ItemStack lensStack = LensItem.getStaffLens(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return;
 
-        val lensData = LensItem.getStaffLensWrapper(staffStack);
+        ItemData<LensComponent> lensData = LensComponent.getWrapper(lensStack).orElse(null);
         if (lensData == null) return;
 
         int holdTicks = getMaxUseTime(staffStack) - remainingUseTicks;
@@ -104,6 +105,7 @@ public class StaffItem extends Item {
 
         if (!isDamaged) return;
         onLensDamage(world, user, staffStack, lensItem, lensStack);
+        staffStack.set(ComponentTypes.STAFF_LENS, lensStack);
     }
 
     private static void onLensDamage(World world, LivingEntity user, ItemStack staffStack, LensItem lensItem, ItemStack lensStack) {

@@ -19,7 +19,7 @@ public class ComponentTypes {
 
     public static final DataComponentType<Float> STORED_ETHER = register("stored_ether", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
     public static final DataComponentType<LensComponent> LENS = register("lens", builder -> builder.codec(LensComponent.CODEC));
-    public static final DataComponentType<ItemStack> STAFF_LENS = register("staff_lens", builder -> builder.codec(ItemStack.CODEC).packetCodec(ItemStack.PACKET_CODEC));
+    public static final DataComponentType<ItemStack> STAFF_LENS = register("staff_lens", builder -> builder.codec(ItemStack.OPTIONAL_CODEC).packetCodec(ItemStack.OPTIONAL_PACKET_CODEC));
     public static final DataComponentType<StaffComponent> STAFF = register("staff", builder -> builder.codec(StaffComponent.CODEC));
     public static final DataComponentType<Corruption> CORRUPTION = register("corruption", builder -> builder.codec(Corruption.CODEC).packetCodec(Corruption.PACKET_CODEC));
 

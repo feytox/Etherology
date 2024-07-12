@@ -16,7 +16,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 public record StaffMenuSelectionC2S(LensSelectionType selected, ItemStack lensStack) implements AbstractC2SPacket {
 
     public static final Id<StaffMenuSelectionC2S> ID = new Id<>(EIdentifier.of("staff_menu_c2s"));
-    public static final PacketCodec<RegistryByteBuf, StaffMenuSelectionC2S> CODEC = PacketCodec.tuple(LensSelectionType.PACKET_CODEC, StaffMenuSelectionC2S::selected, ItemStack.PACKET_CODEC, StaffMenuSelectionC2S::lensStack, StaffMenuSelectionC2S::new);
+    public static final PacketCodec<RegistryByteBuf, StaffMenuSelectionC2S> CODEC = PacketCodec.tuple(LensSelectionType.PACKET_CODEC, StaffMenuSelectionC2S::selected, ItemStack.OPTIONAL_PACKET_CODEC, StaffMenuSelectionC2S::lensStack, StaffMenuSelectionC2S::new);
 
     public static void receive(StaffMenuSelectionC2S packet, ServerPlayNetworking.Context context) {
         if (packet.selected.equals(LensSelectionType.NONE)) return;

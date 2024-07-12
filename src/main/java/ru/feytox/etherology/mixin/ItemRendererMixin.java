@@ -43,7 +43,7 @@ public class ItemRendererMixin {
         ModelIdentifier modelId;
 
         if (entity != null && stack.getItem() instanceof StaffItem && stack.equals(entity.getActiveItem())) {
-            val lensData = LensItem.getStaffLens(stack);
+            val lensData = LensItem.getStaffLensComponent(stack);
             if (lensData == null) return original;
             modelId = lensData.mode().equals(LensMode.STREAM) ? EtherologyModelProvider.STAFF_STREAM : EtherologyModelProvider.STAFF_CHARGE;
         }

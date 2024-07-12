@@ -77,7 +77,7 @@ public class StaffIndicator {
         ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
         if (staffStack == null) return null;
 
-        ItemStack lensStack = LensItem.getLensStack(staffStack);
+        ItemStack lensStack = LensItem.getStaffLens(staffStack);
         if (lensStack == null || !(lensStack.getItem() instanceof LensItem lensItem)) return null;
 
         val lensData = LensComponent.get(lensStack).orElse(null);

@@ -266,7 +266,7 @@ public class StaffLensesScreen extends Screen {
             return;
         }
 
-        mainLens = LensItem.getLensStack(staffStack);
+        mainLens = LensItem.getStaffLens(staffStack);
         if (mainLens == null) {
             lensMode = null;
             return;

@@ -76,7 +76,7 @@ public enum EArmPose {
             return;
         }
 
-        val lensData = LensItem.getStaffLens(staffStack);
+        val lensData = LensItem.getStaffLensComponent(staffStack);
         if (lensData == null) return;
 
         switch (lensData.mode()) {

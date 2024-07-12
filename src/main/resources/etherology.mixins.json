@@ -47,6 +47,7 @@
     "WorldRendererAccessor"
   ],
   "client": [
+    "BakedModelManagerMixin",
     "BipedEntityModelMixin",
     "GameRendererMixin",
     "HandledScreenMixin",
