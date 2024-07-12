@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:ebony_nugget"
-            ]
+            "items": "etherology:ebony_nugget"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_ebony_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ebony_nugget"
     ]
   ],
   "rewards": {

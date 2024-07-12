@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "etherology:peach_logs"
+            "items": "#etherology:peach_logs"
           }
         ]
       },
@@ -20,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_logs",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_logs"
     ]
   ],
   "rewards": {

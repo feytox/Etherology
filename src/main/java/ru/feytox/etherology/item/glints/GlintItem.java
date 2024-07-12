@@ -12,7 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.math.Fraction;
 import ru.feytox.etherology.mixin.BundleContentsComponentAccessor;
-import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,11 +71,11 @@ public class GlintItem extends Item {
     }
 
     public static Float getStoredEther(ItemStack stack) {
-        return stack.getOrDefault(EComponentTypes.STORED_ETHER, 0.0f);
+        return stack.getOrDefault(ComponentTypes.STORED_ETHER, 0.0f);
     }
 
     private static void setStoredEther(ItemStack stack, float value) {
-        stack.set(EComponentTypes.STORED_ETHER, value);
+        stack.set(ComponentTypes.STORED_ETHER, value);
     }
 
     /**

@@ -26,7 +26,7 @@ import static ru.feytox.etherology.registry.item.ToolItems.register;
 public class ArmorItems {
 
     // armor materials 2 6 5 2
-    public static final RegistryEntry<ArmorMaterial> EBONY = registerMaterial("ebony", Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+    public static final RegistryEntry<ArmorMaterial> EBONY_MATERIAL = registerMaterial("ebony", Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(ArmorItem.Type.BOOTS, 2);
         map.put(ArmorItem.Type.LEGGINGS, 5);
         map.put(ArmorItem.Type.CHESTPLATE, 6);
@@ -47,10 +47,10 @@ public class ArmorItems {
     public static final Item ETHRIL_BOOTS = register("ethril_boots", new ArmorItem(ETHRIL, ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // ebony armor
-    public static final Item EBONY_HELMET = register("ebony_helmet", new ArmorItem(EBONY, ArmorItem.Type.HELMET, new Item.Settings().attributeModifiers(createEbonyAttributes())));
-    public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new ArmorItem(EBONY, ArmorItem.Type.CHESTPLATE, new Item.Settings().attributeModifiers(createEbonyAttributes())));
-    public static final Item EBONY_LEGGINGS = register("ebony_leggings", new ArmorItem(EBONY, ArmorItem.Type.LEGGINGS, new Item.Settings().attributeModifiers(createEbonyAttributes())));
-    public static final Item EBONY_BOOTS = register("ebony_boots", new ArmorItem(EBONY, ArmorItem.Type.BOOTS, new Item.Settings().attributeModifiers(createEbonyAttributes())));
+    public static final Item EBONY_HELMET = register("ebony_helmet", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.HELMET, new Item.Settings().attributeModifiers(createEbonyAttributes())));
+    public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Settings().attributeModifiers(createEbonyAttributes())));
+    public static final Item EBONY_LEGGINGS = register("ebony_leggings", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Settings().attributeModifiers(createEbonyAttributes())));
+    public static final Item EBONY_BOOTS = register("ebony_boots", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.BOOTS, new Item.Settings().attributeModifiers(createEbonyAttributes())));
 
     // trinkets
     public static final Item REVELATION_VIEW = register("revelation_view", new RevelationViewItem());

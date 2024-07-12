@@ -12,12 +12,12 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.registry.item.EItems;
-import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 
 public class CorruptionBucket extends Item {
     
     public CorruptionBucket() {
-        super(new Settings().maxCount(1).component(EComponentTypes.CORRUPTION, new Corruption(0)));
+        super(new Settings().maxCount(1).component(ComponentTypes.CORRUPTION, new Corruption(0)));
     }
 
     @Nullable
@@ -26,14 +26,14 @@ public class CorruptionBucket extends Item {
         Corruption corruption = Corruption.ofAspects(aspects);
         if (corruption == null) return null;
 
-        stack.set(EComponentTypes.CORRUPTION, corruption);
+        stack.set(ComponentTypes.CORRUPTION, corruption);
         return stack;
     }
 
     @Nullable
     public static Corruption getCorruptionFromBucket(ItemStack bucketStack) {
         if (!bucketStack.isOf(EItems.CORRUPTION_BUCKET)) return null;
-        Corruption corruption = bucketStack.get(EComponentTypes.CORRUPTION);
+        Corruption corruption = bucketStack.get(ComponentTypes.CORRUPTION);
         return corruption == null || corruption.isEmpty() ? null : corruption;
     }
 

@@ -8,7 +8,6 @@
   "start_height": {
     "absolute": 0
   },
-  "start_jigsaw_name": "etherology:start",
   "start_pool": "etherology:ether_monolith_start_pool",
   "step": "local_modifications",
   "terrain_adaptation": "beard_thin",

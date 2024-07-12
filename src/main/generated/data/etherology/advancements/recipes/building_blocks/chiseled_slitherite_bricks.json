@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:slitherite_brick_slab"
-            ]
+            "items": "etherology:slitherite_brick_slab"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_slitherite_brick_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_slitherite_brick_slab"
     ]
   ],
   "rewards": {

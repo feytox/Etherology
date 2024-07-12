@@ -15,8 +15,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 import java.util.function.UnaryOperator;
 
 @UtilityClass
-public class EComponentTypes {
-
+public class ComponentTypes {
 
     public static final DataComponentType<Float> STORED_ETHER = register("stored_ether", builder -> builder.codec(Codec.FLOAT).packetCodec(PacketCodecs.FLOAT));
     public static final DataComponentType<LensComponent> LENS = register("lens", builder -> builder.codec(LensComponent.CODEC));

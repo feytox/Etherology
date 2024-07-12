@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "etherology:slitherite_bricks"
   },
-  "result": "etherology:cracked_slitherite_bricks"
+  "result": {
+    "id": "etherology:cracked_slitherite_bricks"
+  }
 }

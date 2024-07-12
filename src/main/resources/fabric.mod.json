@@ -38,14 +38,12 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": "1.19.3"
+    "minecraft": "1.20.6"
   },
   "custom": {
     "cardinal-components": [
       "etherology:corruption",
       "etherology:essence_zone",
-      "etherology:lens",
-      "etherology:staff",
       "etherology:ether"
     ]
   },

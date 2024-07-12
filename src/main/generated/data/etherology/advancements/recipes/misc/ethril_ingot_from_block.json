@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:ethril_block"
-            ]
+            "items": "etherology:ethril_block"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_ethril_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ethril_block"
     ]
   ],
   "rewards": {

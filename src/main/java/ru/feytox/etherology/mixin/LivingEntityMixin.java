@@ -5,9 +5,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,10 +20,9 @@ import ru.feytox.etherology.item.EtherShield;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 
-    @ModifyExpressionValue(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"))
+    @ModifyExpressionValue(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FLnet/minecraft/entity/damage/DamageSource;FF)F"))
     private float getDamageByPick(float original, @Local(argsOnly = true) DamageSource source) {
-        if (!(source instanceof EntityDamageSource entitySource)) return original;
-        if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return original;
+        if (!(source.getAttacker() instanceof LivingEntity entity)) return original;
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
 
         LivingEntity it = ((LivingEntity) (Object) this);
@@ -33,8 +32,7 @@ public abstract class LivingEntityMixin {
 
     @ModifyExpressionValue(method = "modifyAppliedDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I"))
     private int getProtectionOnPick(int original, @Local(argsOnly = true) DamageSource source) {
-        if (!(source instanceof EntityDamageSource entitySource)) return original;
-        if (!(entitySource.getAttacker() instanceof LivingEntity entity)) return original;
+        if (!(source.getAttacker() instanceof LivingEntity entity)) return original;
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
 
         float k = pick.getDamagePercent();
@@ -59,7 +57,7 @@ public abstract class LivingEntityMixin {
             }
         }
 
-        if (!source.bypassesArmor() && shieldHolder.isBlocking()) {
+        if (!source.isIn(DamageTypeTags.BYPASSES_ARMOR) && shieldHolder.isBlocking()) {
             Vec3d damagePos = source.getPosition();
             if (damagePos != null) {
                 Vec3d holderRotation = shieldHolder.getRotationVec(1.0F);

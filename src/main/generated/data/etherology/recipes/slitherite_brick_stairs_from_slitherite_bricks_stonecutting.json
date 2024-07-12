@@ -1,8 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
   "ingredient": {
     "item": "etherology:slitherite_bricks"
   },
-  "result": "etherology:slitherite_brick_stairs"
+  "result": {
+    "count": 1,
+    "id": "etherology:slitherite_brick_stairs"
+  }
 }

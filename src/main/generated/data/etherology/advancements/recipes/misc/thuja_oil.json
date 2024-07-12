@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:thuja_seeds"
-            ]
+            "items": "etherology:thuja_seeds"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_thuja_seeds",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_thuja_seeds"
     ]
   ],
   "rewards": {

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:quartz"
-            ]
+            "items": "minecraft:quartz"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_quartz",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_quartz"
     ]
   ],
   "rewards": {

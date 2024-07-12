@@ -1,13 +1,10 @@
 package ru.feytox.etherology.util.misc;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.item.Items;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.datagen.BlockLootTableGeneration;
+import ru.feytox.etherology.registry.block.AutoBlockLootTable;
 
 public class EBlock {
     private final Block block;
@@ -25,11 +22,9 @@ public class EBlock {
     }
 
     public Block withItem(boolean generateDrop, @Nullable ItemConvertible drop) {
-        BlockItem blockItem = new BlockItem(block, new Item.Settings());
-        blockItem.appendBlocks(Item.BLOCK_ITEMS, blockItem);
-        Registry.register(Registries.ITEM, Registries.BLOCK.getId(blockItem.getBlock()), blockItem);
+        Items.register(block);
 
-        if (generateDrop) BlockLootTableGeneration.generateDrop(block, drop);
+        if (generateDrop) AutoBlockLootTable.markAsAuto(block, drop);
         return block;
     }
 

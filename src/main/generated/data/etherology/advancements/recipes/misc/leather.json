@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:forest_lantern"
-            ]
+            "items": "etherology:forest_lantern"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_forest_lantern",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_forest_lantern"
     ]
   ],
   "rewards": {

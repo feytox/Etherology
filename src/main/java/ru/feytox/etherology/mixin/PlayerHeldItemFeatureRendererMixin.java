@@ -2,7 +2,7 @@ package ru.feytox.etherology.mixin;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.PlayerHeldItemFeatureRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ import ru.feytox.etherology.item.TwoHandheldSword;
 public class PlayerHeldItemFeatureRendererMixin {
 
     @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
-    private void hideExtraItem(LivingEntity entity, ItemStack stack, ModelTransformation.Mode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+    private void hideExtraItem(LivingEntity entity, ItemStack stack, ModelTransformationMode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         if (TwoHandheldSword.hideExtraItem(entity, stack)) ci.cancel();
     }
 }

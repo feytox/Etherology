@@ -1,14 +1,15 @@
 package ru.feytox.etherology.util.misc;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.datagen.BlockLootTableGeneration;
+import ru.feytox.etherology.registry.block.AutoBlockLootTable;
 
+@Deprecated // use EBlock
 public interface RegistrableBlock {
     String getBlockId();
 
@@ -27,7 +28,7 @@ public interface RegistrableBlock {
     default Block registerAll(boolean generateDrop, @Nullable ItemConvertible drop) {
         Block block = registerBlock();
         registerItem();
-        if (generateDrop) BlockLootTableGeneration.generateDrop(block, drop);
+        if (generateDrop) AutoBlockLootTable.markAsAuto(block, drop);
         return block;
     }
 
@@ -37,8 +38,6 @@ public interface RegistrableBlock {
     }
 
     default void registerItem() {
-        String blockId = getBlockId();
-        BlockItem blockItem = new BlockItem((Block) this, new Item.Settings());
-        Registry.register(Registries.ITEM, EIdentifier.of(blockId), blockItem);
+        Items.register((Block) this);
     }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:resonating_wand"
-            ]
+            "items": "etherology:resonating_wand"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_resonating_wand",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_resonating_wand"
     ]
   ],
   "rewards": {

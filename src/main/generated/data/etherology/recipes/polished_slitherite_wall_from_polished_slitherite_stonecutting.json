@@ -1,8 +1,10 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 1,
   "ingredient": {
     "item": "etherology:polished_slitherite"
   },
-  "result": "etherology:polished_slitherite_wall"
+  "result": {
+    "count": 1,
+    "id": "etherology:polished_slitherite_wall"
+  }
 }

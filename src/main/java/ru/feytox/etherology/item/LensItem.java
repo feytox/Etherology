@@ -24,7 +24,7 @@ import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.staff.*;
-import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public abstract class LensItem extends Item {
 
     // TODO: #upd check damage
     protected LensItem(@Nullable StaffLenses lensType, float streamCost, float chargeCost) {
-        super(new Settings().maxCount(1).maxDamage(100).component(EComponentTypes.LENS, LensComponent.EMPTY));
+        super(new Settings().maxCount(1).maxDamage(100).component(ComponentTypes.LENS, LensComponent.EMPTY));
         this.lensType = lensType;
         this.streamCost = streamCost;
         this.chargeCost = chargeCost;
@@ -177,7 +177,7 @@ public abstract class LensItem extends Item {
         StaffLenses lensType = StaffLenses.getLens(lensStack);
         if (lensType == null) return;
 
-        staffStack.set(EComponentTypes.STAFF_LENS, lensStack.copy());
+        staffStack.set(ComponentTypes.STAFF_LENS, lensStack.copy());
         StaffComponent.getWrapper(staffStack)
                 .ifPresent(staff -> staff.set(new StaffPartInfo(StaffPart.LENS, lensType, StaffPattern.EMPTY), StaffComponent::setPartInfo).save());
 
@@ -199,7 +199,7 @@ public abstract class LensItem extends Item {
 
         StaffComponent.getWrapper(staffStack)
                 .ifPresent(staff -> staff.set(StaffPart.LENS, StaffComponent::removePartInfo).save());
-        staffStack.remove(EComponentTypes.STAFF_LENS);
+        staffStack.remove(ComponentTypes.STAFF_LENS);
 
         return lensStack;
     }
@@ -218,7 +218,7 @@ public abstract class LensItem extends Item {
 
     @Nullable
     public static ItemStack getLensStack(ItemStack staffStack) {
-        ItemStack lensStack = staffStack.get(EComponentTypes.STAFF_LENS);
+        ItemStack lensStack = staffStack.get(ComponentTypes.STAFF_LENS);
         return lensStack == null || lensStack.isEmpty() ? null : lensStack;
     }
 

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:furniture_slab"
-            ]
+            "items": "etherology:furniture_slab"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_furniture_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_furniture_slab"
     ]
   ],
   "rewards": {

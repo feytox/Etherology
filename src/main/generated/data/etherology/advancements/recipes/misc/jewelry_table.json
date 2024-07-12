@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:ethereal_channel"
-            ]
+            "items": "etherology:ethereal_channel"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_ethereal_channel",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ethereal_channel"
     ]
   ],
   "rewards": {

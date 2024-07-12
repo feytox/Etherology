@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:beam_fruit"
-            ]
+            "items": "etherology:beam_fruit"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_beam_fruit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_beam_fruit"
     ]
   ],
   "rewards": {

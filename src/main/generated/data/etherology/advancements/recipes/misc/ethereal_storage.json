@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:etheroscope"
-            ]
+            "items": "etherology:etheroscope"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_etheroscope",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_etheroscope"
     ]
   ],
   "rewards": {

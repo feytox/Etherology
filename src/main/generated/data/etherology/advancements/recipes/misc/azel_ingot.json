@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:attrahite"
-            ]
+            "items": "etherology:attrahite"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_attrahite",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_attrahite"
     ]
   ],
   "rewards": {

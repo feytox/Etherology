@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:thuja_oil"
-            ]
+            "items": "etherology:thuja_oil"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_thuja_oil",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_thuja_oil"
     ]
   ],
   "rewards": {

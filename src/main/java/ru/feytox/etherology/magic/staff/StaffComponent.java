@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.With;
 import net.minecraft.item.ItemStack;
-import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.Map;
@@ -30,11 +30,11 @@ public record StaffComponent(Map<StaffPart, StaffPartInfo> parts) {
     }
 
     public static Optional<ItemData<StaffComponent>> getWrapper(ItemStack stack) {
-        return get(stack).map(component -> new ItemData<>(stack, EComponentTypes.STAFF, component));
+        return get(stack).map(component -> new ItemData<>(stack, ComponentTypes.STAFF, component));
     }
 
     public static Optional<StaffComponent> get(ItemStack stack) {
-        return Optional.ofNullable(stack.get(EComponentTypes.STAFF));
+        return Optional.ofNullable(stack.get(ComponentTypes.STAFF));
     }
 
     static {

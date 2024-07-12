@@ -5,19 +5,20 @@ import com.llamalad7.mixinextras.sugar.Local;
 import lombok.val;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.RedstoneView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 
-@Mixin(World.class)
-public class WorldMixin {
+@Mixin(RedstoneView.class)
+public interface RedstoneViewMixin {
 
+    // TODO: #upd
     // TODO: 13.12.2023 simplify redstone lens injects
 
     @ModifyReturnValue(method = "isReceivingRedstonePower", at = @At("RETURN"))
     private boolean injectRedstoneLens(boolean original, @Local(argsOnly = true) BlockPos pos) {
-        World world = (World)(Object) this;
+        RedstoneView world = (RedstoneView) this;
         if (!(world instanceof ServerWorld serverWorld)) return original;
         RedstoneLensEffects effects = RedstoneLensEffects.getServerState(serverWorld);
         val effect = effects.getUsage(pos);
@@ -28,7 +29,7 @@ public class WorldMixin {
 
     @ModifyReturnValue(method = "getReceivedRedstonePower", at = @At("RETURN"))
     private int injectRedstoneLens2(int original, @Local(argsOnly = true) BlockPos pos) {
-        World world = (World)(Object) this;
+        RedstoneView world = (RedstoneView) this;
         if (!(world instanceof ServerWorld serverWorld)) return original;
         RedstoneLensEffects effects = RedstoneLensEffects.getServerState(serverWorld);
         val effect = effects.getUsage(pos);

@@ -6,7 +6,7 @@ import lombok.With;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.Optional;
@@ -65,11 +65,11 @@ public record LensComponent(int charge, LensMode mode, LensPattern pattern, Lens
     }
 
     public static Optional<ItemData<LensComponent>> getWrapper(ItemStack stack) {
-        return get(stack).map(component -> new ItemData<>(stack, EComponentTypes.LENS, component));
+        return get(stack).map(component -> new ItemData<>(stack, ComponentTypes.LENS, component));
     }
 
     public static Optional<LensComponent> get(ItemStack stack) {
-        return Optional.ofNullable(stack.get(EComponentTypes.LENS));
+        return Optional.ofNullable(stack.get(ComponentTypes.LENS));
     }
 
     static {

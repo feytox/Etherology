@@ -1,11 +1,8 @@
 package ru.feytox.etherology.datagen;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
@@ -13,12 +10,11 @@ import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.RegistryWrapper;
-import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
+import ru.feytox.etherology.registry.block.AutoBlockLootTable;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.util.misc.RandomChanceWithFortuneCondition;
 
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
@@ -29,15 +25,13 @@ import static ru.feytox.etherology.registry.item.DecoBlockItems.THUJA_SEEDS;
 
 public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
 
-    private static Map<Block, ItemConvertible> BLOCKS_TO_DROP = null;
-
     protected BlockLootTableGeneration(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, registryLookup);
     }
 
     @Override
     public void generate() {
-        BLOCKS_TO_DROP.forEach((block, drop) -> {
+        AutoBlockLootTable.acceptData((block, drop) -> {
             if (drop == null) addDrop(block);
             else addDrop(block, drop);
         });
@@ -58,8 +52,6 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addPottedPlantDrops(POTTED_PEACH_SAPLING);
 
         addDrop(LIGHTELET, this::shortPlantDrops);
-
-        BLOCKS_TO_DROP = null;
     }
 
     private void generateChannelDrop(Block channel, Block channelCase) {
@@ -74,9 +66,4 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
                                 .properties(StatePredicate.Builder.create().exactMatch(EtherealChannel.IN_CASE, true)))));
     }
 
-    public static void generateDrop(Block block, @Nullable ItemConvertible drop) {
-        if (!FabricDataGenHelper.ENABLED) return;
-        if (BLOCKS_TO_DROP == null) BLOCKS_TO_DROP = new Object2ObjectOpenHashMap<>();
-        BLOCKS_TO_DROP.put(block, drop);
-    }
 }

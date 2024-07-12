@@ -3,8 +3,11 @@ package ru.feytox.etherology.mixin;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.particle.ParticleEffect;
@@ -17,6 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.util.misc.ShockwaveUtil;
@@ -57,5 +61,13 @@ public class PlayerEntityMixin {
         PlayerEntity player = ((PlayerEntity) (Object) this);
         SoundEvent newSound = BroadSwordItem.replaceAttackSound(player, sound);
         original.call(instance, except, x, y, z, newSound, category, volume, pitch);
+    }
+
+    @Inject(method = "damageArmor", at = @At("HEAD"))
+    private void damageArmorByPick(DamageSource source, float amount, CallbackInfo ci, @Local(argsOnly = true) LocalFloatRef amountRef) {
+        if (!(source.getAttacker() instanceof LivingEntity entity)) return;
+        if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return;
+
+        amountRef.set(Math.round(amount * (1.5 + pick.getDamagePercent())));
     }
 }

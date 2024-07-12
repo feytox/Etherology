@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.val;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -16,6 +18,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentV3;
 import org.ladysnake.cca.api.v3.component.CopyableComponent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -45,6 +48,15 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("162b5a0d-deca-47e0-b829-929af7985629");
     private static final UUID SPEED_MODIFIER_ID = UUID.fromString("3364a987-2858-485d-948c-2bcf93c0ad1d");
     private static final Identifier OUTLINE = EIdentifier.of("textures/misc/corruption_outline.png");
+
+    private static final Identifier FULL_HEART = EIdentifier.of("hud/heart/devastating_full");
+    private static final Identifier FULL_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_full_blinking");
+    private static final Identifier HALF_HEART = EIdentifier.of("hud/heart/devastating_half");
+    private static final Identifier HALF_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_half_blinking");
+    private static final Identifier HARDCORE_FULL_HEART = EIdentifier.of("hud/heart/devastating_hardcore_full");
+    private static final Identifier HARDCORE_FULL_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_hardcore_full_blinking");
+    private static final Identifier HARDCORE_HALF_HEART = EIdentifier.of("hud/heart/devastating_hardcore_half");
+    private static final Identifier HARDCORE_HALF_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_hardcore_half_blinking");
 
     private final LivingEntity entity;
     @Getter @Setter
@@ -177,13 +189,13 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         return world.getRandom().nextFloat() <= chance * EX_TICKS;
     }
 
-    public static void renderOverlay(InGameHud hud) {
+    public static void renderOverlay(DrawContext context, InGameHud hud) {
         MinecraftClient client = MinecraftClient.getInstance();
         PlayerEntity player = client.player;
 
         Float opacity = getOverlayOpacity(player);
         if (opacity == null) return;
-        ((InGameHudAccessor) hud).callRenderOverlay(OUTLINE, opacity);
+        ((InGameHudAccessor) hud).callRenderOverlay(context, OUTLINE, opacity);
     }
 
     private static Float getOverlayOpacity(PlayerEntity player) {
@@ -194,9 +206,25 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
                 .orElse(null);
     }
 
-    public static boolean hasCurse(PlayerEntity player) {
+    private static boolean hasCurse(PlayerEntity player) {
         return EtherologyComponents.ETHER.maybeGet(player)
                 .map(etherComponent -> etherComponent.hasCurse).orElse(false);
+    }
+
+    @Nullable
+    public static Identifier getDevastatingTexture(InGameHud.HeartType originalHeart, boolean hardcore, boolean half, boolean blinking) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (originalHeart.equals(InGameHud.HeartType.CONTAINER) || player == null) return null;
+        if (originalHeart.equals(InGameHud.HeartType.ABSORBING)) return null;
+        if (!EtherComponent.hasCurse(player)) return null;
+
+        if (hardcore) {
+            if (half) return blinking ? HARDCORE_HALF_BLINKING_HEART :  HARDCORE_HALF_HEART;
+            return blinking ?  HARDCORE_FULL_BLINKING_HEART :  HARDCORE_FULL_HEART;
+        }
+
+        if (half) return blinking ? HALF_BLINKING_HEART : HALF_HEART;
+        return blinking ? FULL_BLINKING_HEART : FULL_HEART;
     }
 
     private void sync() {

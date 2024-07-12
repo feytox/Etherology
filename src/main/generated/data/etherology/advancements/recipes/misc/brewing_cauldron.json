@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:azel_ingot"
-            ]
+            "items": "etherology:azel_ingot"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_azel_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_azel_ingot"
     ]
   ],
   "rewards": {

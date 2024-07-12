@@ -1,7 +1,7 @@
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
-    id "io.freefair.lombok" version "8.0.1"
+    id "io.freefair.lombok" version "8.6"
 }
 
 version = project.mod_version
@@ -50,6 +50,8 @@ dependencies {
     include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${project.cca_version}")
     include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-item:${project.cca_version}")
 
+    // TODO: consider fixing MidnightLib dependency
+    include modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}")
     include modImplementation("com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}")
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}") {
         exclude(group: "net.fabricmc.fabric-api")

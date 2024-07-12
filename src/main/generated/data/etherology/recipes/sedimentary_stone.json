@@ -18,6 +18,7 @@
     "SRS"
   ],
   "result": {
-    "item": "etherology:sedimentary_stone"
+    "count": 1,
+    "id": "etherology:sedimentary_stone"
   }
 }

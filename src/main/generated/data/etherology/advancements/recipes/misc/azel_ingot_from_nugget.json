@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:azel_nugget"
-            ]
+            "items": "etherology:azel_nugget"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_azel_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_azel_nugget"
     ]
   ],
   "rewards": {

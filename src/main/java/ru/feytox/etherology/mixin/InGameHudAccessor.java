@@ -9,12 +9,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(InGameHud.class)
 public interface InGameHudAccessor {
 
-    // stopship: continue fixing mixins
-    // good luck
-
-    @Invoker
-    void callRenderOverlay(Identifier texture, float opacity);
-
     @Invoker
     void callRenderOverlay(DrawContext context, Identifier texture, float opacity);
 }

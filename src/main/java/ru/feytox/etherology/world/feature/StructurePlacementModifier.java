@@ -1,6 +1,7 @@
 package ru.feytox.etherology.world.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.registry.RegistryKey;
@@ -26,7 +27,7 @@ public class StructurePlacementModifier extends AbstractConditionalPlacementModi
     private final int radius;
     private final boolean exclude;
 
-    public static final Codec<StructurePlacementModifier> CODEC = RecordCodecBuilder.create(instance ->
+    public static final MapCodec<StructurePlacementModifier> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(Identifier.CODEC.fieldOf("structure").forGetter(modifier -> modifier.structureKey.getValue()),
                             Codecs.NONNEGATIVE_INT.fieldOf("radius").forGetter(modifier -> modifier.radius),
                             Codec.BOOL.fieldOf("exclude").forGetter(modifier -> modifier.exclude))

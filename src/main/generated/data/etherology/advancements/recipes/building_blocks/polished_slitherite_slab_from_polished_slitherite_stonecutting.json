@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:polished_slitherite"
-            ]
+            "items": "etherology:polished_slitherite"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_polished_slitherite",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_polished_slitherite"
     ]
   ],
   "rewards": {

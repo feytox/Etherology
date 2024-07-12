@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "etherology:forest_lantern"
   },
-  "result": "etherology:forest_lantern_crumb"
+  "result": {
+    "id": "etherology:forest_lantern_crumb"
+  }
 }

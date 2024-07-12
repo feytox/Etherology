@@ -22,7 +22,7 @@ import ru.feytox.etherology.gui.staff.StaffLensesScreen;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffComponent;
-import ru.feytox.etherology.registry.misc.EComponentTypes;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
 
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.stream.StreamSupport;
 public class StaffItem extends Item {
 
     public StaffItem() {
-        super(new Settings().maxCount(1).component(EComponentTypes.STAFF, StaffComponent.DEFAULT));
+        super(new Settings().maxCount(1).component(ComponentTypes.STAFF, StaffComponent.DEFAULT));
     }
 
     @Override

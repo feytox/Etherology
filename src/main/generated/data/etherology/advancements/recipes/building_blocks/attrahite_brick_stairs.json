@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:attrahite_bricks"
-            ]
+            "items": "etherology:attrahite_bricks"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_attrahite_bricks",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_attrahite_bricks"
     ]
   ],
   "rewards": {

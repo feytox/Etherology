@@ -1,7 +1,7 @@
 package ru.feytox.etherology.world.structure;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.structure.StructurePlacementData;
@@ -28,7 +28,7 @@ import java.util.function.Function;
 public class RotatedPoolElement extends SinglePoolElement {
 
     private static final RegistryEntry<StructureProcessorList> EMPTY_PROCESSORS;
-    public static final Codec<RotatedPoolElement> CODEC;
+    public static final MapCodec<RotatedPoolElement> CODEC;
 
     protected final BlockRotation rotation;
 
@@ -81,7 +81,7 @@ public class RotatedPoolElement extends SinglePoolElement {
 
     static {
         EMPTY_PROCESSORS = RegistryEntry.of(new StructureProcessorList(List.of()));
-        CODEC = RecordCodecBuilder.create(instance ->
+        CODEC = RecordCodecBuilder.mapCodec(instance ->
                 instance.group(locationGetter(), processorsGetter(), projectionGetter(), rotationGetter())
                         .apply(instance, RotatedPoolElement::new));
     }

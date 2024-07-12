@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "etherology:ebony_ingot"
-            ]
+            "items": "etherology:ebony_ingot"
           }
         ]
       },
@@ -22,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_material",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_material"
     ]
   ],
   "rewards": {

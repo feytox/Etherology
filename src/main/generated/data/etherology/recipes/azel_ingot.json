@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "etherology:raw_azel"
   },
-  "result": "etherology:azel_ingot"
+  "result": {
+    "id": "etherology:azel_ingot"
+  }
 }
