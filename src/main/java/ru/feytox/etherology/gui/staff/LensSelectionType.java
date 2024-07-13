@@ -32,6 +32,8 @@ public enum LensSelectionType {
     private static SelectionHandler arrowHandler(LensMode lensMode) {
         return (player, staffStack, lensStack) -> {
             ItemStack staffLensStack = LensItem.getStaffLens(staffStack);
+            if (staffLensStack == null) return;
+            staffLensStack = staffLensStack.copy();
             LensComponent.getWrapper(staffLensStack).ifPresent(lens -> lens.set(lensMode, LensComponent::withMode).save());
             staffStack.set(ComponentTypes.STAFF_LENS, staffLensStack);
         };

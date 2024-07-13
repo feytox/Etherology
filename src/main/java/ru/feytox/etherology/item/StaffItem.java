@@ -79,7 +79,6 @@ public class StaffItem extends Item {
 
         if (!isDamaged) return;
         onLensDamage(world, user, staffStack, lensItem, lensStack);
-        staffStack.set(ComponentTypes.STAFF_LENS, lensStack);
     }
 
     @Override
@@ -105,7 +104,6 @@ public class StaffItem extends Item {
 
         if (!isDamaged) return;
         onLensDamage(world, user, staffStack, lensItem, lensStack);
-        staffStack.set(ComponentTypes.STAFF_LENS, lensStack);
     }
 
     private static void onLensDamage(World world, LivingEntity user, ItemStack staffStack, LensItem lensItem, ItemStack lensStack) {
@@ -177,6 +175,11 @@ public class StaffItem extends Item {
     @Override
     public boolean allowComponentsUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
         return false;
+    }
+
+    public static boolean isStaffInHand(LivingEntity entity) {
+        return StreamSupport.stream(entity.getHandItems().spliterator(), false)
+                .anyMatch(stack -> stack.getItem() instanceof StaffItem);
     }
 
     @Nullable

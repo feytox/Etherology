@@ -63,7 +63,7 @@ public class RevelationViewRenderer {
     }
 
     public static void registerRendering() {
-        WorldRenderEvents.END.register(RevelationViewRenderer::renderAspects);
+        WorldRenderEvents.LAST.register(RevelationViewRenderer::renderAspects);
     }
 
     private static void renderAspects(WorldRenderContext context) {

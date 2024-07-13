@@ -85,8 +85,8 @@ public class JewelryTableInventory implements ImplementedInventory {
     @Nullable
     public AbstractJewelryRecipe getRecipe(ServerWorld world) {
         if (currentRecipe != null) {
-            if (RecipesRegistry.get(world, currentRecipe).value() instanceof AbstractJewelryRecipe recipe) return recipe;
             if (currentRecipe.equals(BrokenRecipe.INSTANCE.id())) return BrokenRecipe.INSTANCE.value();
+            return RecipesRegistry.maybeGet(world, currentRecipe).map(entry -> entry.value() instanceof AbstractJewelryRecipe recipe ? recipe : null).orElse(null);
         }
 
         return null;

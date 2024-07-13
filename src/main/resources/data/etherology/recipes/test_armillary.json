@@ -1,6 +1,6 @@
 {
   "type": "etherology:armillary_recipe",
-  "aspects": ["PLANTA", "ALCHEMA", "STRALFA"],
+  "aspects": ["planta", "alchema", "stralfa"],
   "center_input": {
     "item": "minecraft:iron_ingot"
   },

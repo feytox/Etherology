@@ -10,6 +10,7 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.model.custom.OculusModel;
 import ru.feytox.etherology.model.custom.StaffModel;
 import ru.feytox.etherology.registry.item.ToolItems;
@@ -33,10 +34,15 @@ public class EtherologyModelProvider {
     public static void register() {
         ModelLoadingPlugin.register(context -> {
             context.addModels(OCULUS_BASE, OCULUS_LENS, STAFF_CORE);
+            context.addModels(OCULUS_IN_HAND, STAFF, STAFF_CHARGE, STAFF_STREAM);
             StaffModel.loadPartModels(context);
 
             context.resolveModel().register(resolver -> {
                 Identifier modelId = resolver.id();
+                if (!modelId.getNamespace().equals(Etherology.MOD_ID)) return null;
+
+                modelId = modelId.withPath(path -> path.replace("item/", ""));
+
                 if (modelId.equals(OCULUS_IN_HAND)) return new UnbakedMultiItemModel(OculusModel::new);
                 if (modelId.equals(STAFF)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM));
                 if (modelId.equals(STAFF_CHARGE)) return new UnbakedMultiItemModel(() -> new StaffModel(ModelComponents.STAFF_ITEM_CHARGE));

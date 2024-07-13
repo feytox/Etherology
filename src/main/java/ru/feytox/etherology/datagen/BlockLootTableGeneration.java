@@ -45,6 +45,7 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(ATTRAHITE, dropsWithSilkTouch(ATTRAHITE, applyExplosionDecay(ATTRAHITE, ItemEntry.builder(ENRICHED_ATTRAHITE).conditionally(RandomChanceWithFortuneCondition.builder(0.02F, 0.02F)))));
         generateChannelDrop(ETHEREAL_CHANNEL, ETHEREAL_CHANNEL_CASE);
 
+        addDrop(BEAMER, DecoBlockItems.BEAM_FRUIT);
         addDrop(THUJA, THUJA_SEEDS);
         addDrop(THUJA_PLANT, THUJA_SEEDS);
         addPottedPlantDrops(POTTED_BEAMER);

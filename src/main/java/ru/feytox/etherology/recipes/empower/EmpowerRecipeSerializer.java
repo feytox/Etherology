@@ -15,10 +15,10 @@ public class EmpowerRecipeSerializer extends FeyRecipeSerializer<EmpowerRecipe> 
 
     private static final MapCodec<EmpowerRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             EmpowerRecipe.Pattern.CODEC.forGetter(EmpowerRecipe::getPattern),
-            Codec.INT.fieldOf("rellaCount").forGetter(EmpowerRecipe::getRellaCount),
-            Codec.INT.fieldOf("viaCount").forGetter(EmpowerRecipe::getViaCount),
-            Codec.INT.fieldOf("closCount").forGetter(EmpowerRecipe::getClosCount),
-            Codec.INT.fieldOf("ketaCount").forGetter(EmpowerRecipe::getKetaCount),
+            Codec.INT.fieldOf("rellaCount").orElse(0).forGetter(EmpowerRecipe::getRellaCount),
+            Codec.INT.fieldOf("viaCount").orElse(0).forGetter(EmpowerRecipe::getViaCount),
+            Codec.INT.fieldOf("closCount").orElse(0).forGetter(EmpowerRecipe::getClosCount),
+            Codec.INT.fieldOf("ketaCount").orElse(0).forGetter(EmpowerRecipe::getKetaCount),
             ItemStack.CODEC.fieldOf("result").forGetter(EmpowerRecipe::getOutput)
     ).apply(instance, EmpowerRecipe::new));
 

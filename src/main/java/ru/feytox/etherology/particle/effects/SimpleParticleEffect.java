@@ -5,6 +5,7 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleType;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 public class SimpleParticleEffect extends FeyParticleEffect<SimpleParticleEffect> {
 
@@ -19,6 +20,6 @@ public class SimpleParticleEffect extends FeyParticleEffect<SimpleParticleEffect
 
     @Override
     public PacketCodec<RegistryByteBuf, SimpleParticleEffect> createPacketCodec() {
-        return PacketCodec.unit(new SimpleParticleEffect(type));
+        return CodecUtil.unitUnchecked(new SimpleParticleEffect(type));
     }
 }

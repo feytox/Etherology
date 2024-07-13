@@ -3,6 +3,7 @@ package ru.feytox.etherology.gui.staff;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -77,6 +78,9 @@ public class LensWidget {
         if (notSideLit) DiffuseLighting.enableGuiDepthLighting();
     }
 
+    /**
+     * @see DrawContext#drawItemInSlot(TextRenderer, ItemStack, int, int, String) 
+     */
     private void renderItemBar(DrawContext context, float progress, float dx, float dy) {
         if (!stack.isItemBarVisible()) return;
         context.push();
@@ -87,8 +91,8 @@ public class LensWidget {
         int barStep = stack.getItemBarStep();
         int barColor = stack.getItemBarColor();
 
-        context.fill(RenderLayer.getGuiOverlay(), 0, 0, 13, 2, Colors.BLACK);
-        context.fill(RenderLayer.getGuiOverlay(), barStep, 0, 13, 1, barColor | Colors.BLACK);
+        context.fill(RenderLayer.getGuiOverlay(), 2, 13, 15, 15, Colors.BLACK);
+        context.fill(RenderLayer.getGuiOverlay(), 2, 13, 2+barStep, 14, barColor | Colors.BLACK);
 
         context.pop();
     }

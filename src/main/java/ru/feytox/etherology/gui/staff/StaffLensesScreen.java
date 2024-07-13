@@ -352,4 +352,7 @@ public class StaffLensesScreen extends Screen {
         val packet = new StaffMenuSelectionC2S(selected, stack);
         packet.sendToServer();
     }
+
+    @Override
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {}
 }

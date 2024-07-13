@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * partly taken from <a href="https://github.com/TechReborn/TechReborn/blob/1.19.3-port/src/client/java/techreborn/client/render/BaseDynamicFluidBakedModel.java">source</a>
+ * partly taken from <a href="https://github.com/TechReborn/TechReborn/blob/1.21/src/client/java/techreborn/client/render/BaseDynamicFluidBakedModel.java">source</a>
  */
 public abstract class MultiItemModel implements BakedModel, FabricBakedModel {
 

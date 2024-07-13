@@ -25,4 +25,17 @@ public class CodecUtil {
     public static <T extends Enum<T>> PacketCodec<ByteBuf, T> ofEnum(T[] values) {
         return PacketCodecs.indexed(ValueLists.createIdToValueFunction((ToIntFunction<T>) Enum::ordinal, values, ValueLists.OutOfBoundsHandling.ZERO), Enum::ordinal);
     }
+
+    /**
+     * @see PacketCodec#unit(Object)
+     */
+    public static <B, V> PacketCodec<B, V> unitUnchecked(final V value) {
+        return new PacketCodec<>() {
+            public V decode(B object) {
+                return value;
+            }
+
+            public void encode(B object, V object2) {}
+        };
+    }
 }

@@ -10,7 +10,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -25,6 +24,7 @@ public class StaffIndicator {
 
     private static final Identifier BACKGROUND_TEXTURE = EIdentifier.of("hud/staff/crosshair_cast_indicator_background");
     private static final Identifier PROGRESS_TEXTURE = EIdentifier.of("hud/staff/crosshair_cast_indicator_progress");
+    private static final Identifier FULL_TEXTURE = EIdentifier.of("hud/staff/crosshair_cast_indicator_full");
 
     @Nullable
     private static Float prevIndicatorProgress = null;
@@ -32,32 +32,32 @@ public class StaffIndicator {
     @Nullable
     private static Float indicatorProgress = null;
 
-    // TODO: 12.07.2024 consider to cancel default crosshair rendering
-    // TODO: 12.07.2024 consider to add full indicator
     /**
      * @see InGameHud#renderCrosshair(DrawContext, float)
      */
     public static void renderHud(DrawContext context, float tickDelta) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        PlayerEntity player = client.player;
-        if (player == null) return;
+        if (prevIndicatorProgress == null || indicatorProgress == null) return;
 
-        ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
-        if (staffStack == null || indicatorProgress == null || prevIndicatorProgress == null) return;
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.player == null) return;
+        if (!StaffItem.isStaffInHand(client.player)) return;
 
         float progress = MathHelper.lerp(tickDelta, prevIndicatorProgress, indicatorProgress);
-        if (progress >= 1.0f) return;
-
         int x = context.getScaledWindowWidth() / 2 - 8;
         int y = context.getScaledWindowHeight() / 2 - 7 + 16;
-        int width = (int) (17.0f * progress);
 
         context.push();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ONE_MINUS_DST_COLOR, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
 
-        context.drawGuiTexture(BACKGROUND_TEXTURE, x, y, 16, 4);
-        context.drawGuiTexture(PROGRESS_TEXTURE, 16, 4, 0, 0, x, y, width, 4);
+        if (progress >= 1.0f) {
+            context.drawGuiTexture(FULL_TEXTURE, x, y, 16, 16);
+        }
+        else {
+            int width = (int) (17.0f * progress);
+            context.drawGuiTexture(BACKGROUND_TEXTURE, x, y, 16, 4);
+            context.drawGuiTexture(PROGRESS_TEXTURE, 16, 4, 0, 0, x, y, width, 4);
+        }
 
         RenderSystem.defaultBlendFunc();
         context.pop();

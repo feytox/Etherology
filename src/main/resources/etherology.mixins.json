@@ -18,9 +18,6 @@
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
     "EntityHitResultAccessor",
-    "FabricShieldLibClientMixin",
-    "FabricShieldLibMixin",
-    "FallingBlockEntityMixin",
     "FlowerPotBlockMixin",
     "FoliagePlacerTypeAccessor",
     "InGameHudAccessor",
@@ -47,7 +44,6 @@
     "WorldRendererAccessor"
   ],
   "client": [
-    "BakedModelManagerMixin",
     "BipedEntityModelMixin",
     "GameRendererMixin",
     "HandledScreenMixin",

@@ -9,12 +9,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import ru.feytox.etherology.item.LensItem;
 import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
+import ru.feytox.etherology.util.misc.CodecUtil;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public record StaffTakeLensC2S() implements AbstractC2SPacket {
 
     public static final Id<StaffTakeLensC2S> ID = new Id<>(EIdentifier.of("staff_take_lens_c2s"));
-    public static final PacketCodec<RegistryByteBuf, StaffTakeLensC2S> CODEC = PacketCodec.unit(new StaffTakeLensC2S());
+    public static final PacketCodec<RegistryByteBuf, StaffTakeLensC2S> CODEC = CodecUtil.unitUnchecked(new StaffTakeLensC2S());
 
     public static void receive(StaffTakeLensC2S packet, ServerPlayNetworking.Context context) {
         ServerPlayerEntity player = context.player();

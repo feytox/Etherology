@@ -307,11 +307,11 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (recipeCache != null) return recipeCache;
         if (recipeId == null) return null;
 
-        if (RecipesRegistry.get(world, recipeId).value() instanceof ArmillaryRecipe armillaryRecipe) {
-            recipeCache = armillaryRecipe;
-            return armillaryRecipe;
-        }
-        return null;
+        return RecipesRegistry.maybeGet(world, recipeId).map(entry -> {
+                    if (!(entry.value() instanceof ArmillaryRecipe armillaryRecipe)) return null;
+                    recipeCache = armillaryRecipe;
+                    return armillaryRecipe;
+                }).orElse(null);
     }
 
     private static EGeoAnimation getRandomRuneAnimation(World world) {
@@ -493,7 +493,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     private Optional<LivingEntity> findClosestMob(World world) {
         Box entitiesBox = Box.enclosing(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS));
         val mobs = world.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), entitiesBox, entity -> !entity.isPlayer());
-        return mobs.isEmpty() ? Optional.empty() : Optional.of(mobs.get(0));
+        return mobs.isEmpty() ? Optional.empty() : Optional.of(mobs.getFirst());
     }
 
     /**

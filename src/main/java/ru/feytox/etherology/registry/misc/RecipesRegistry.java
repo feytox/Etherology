@@ -11,6 +11,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
@@ -21,6 +22,8 @@ import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.util.misc.EIdentifier;
+
+import java.util.Optional;
 
 @UtilityClass
 public class RecipesRegistry {
@@ -46,11 +49,21 @@ public class RecipesRegistry {
         Registry.register(Registries.RECIPE_TYPE, serializer.getId(), serializer.getRecipeType());
     }
 
-    public static <T extends Recipe<M>, M extends Inventory> RecipeEntry<T> getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
-        return world.getRecipeManager().getFirstMatch(serializer.getRecipeType(), inventory, world).orElse(null);
+    public static <T extends Recipe<M>, M extends Inventory> Optional<RecipeEntry<T>> maybeGetFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
+        return world.getRecipeManager().getFirstMatch(serializer.getRecipeType(), inventory, world);
     }
 
+    @Nullable
+    public static <T extends Recipe<M>, M extends Inventory> RecipeEntry<T> getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
+        return maybeGetFirstMatch(world, inventory, serializer).orElse(null);
+    }
+
+    public static Optional<RecipeEntry<?>> maybeGet(World world, @NonNull Identifier id) {
+        return world.getRecipeManager().get(id);
+    }
+
+    @Nullable
     public static RecipeEntry<?> get(World world, @NonNull Identifier id) {
-        return world.getRecipeManager().get(id).orElse(null);
+        return maybeGet(world, id).orElse(null);
     }
 }

@@ -70,6 +70,6 @@ public enum Aspect implements EtherologyAspect, StringIdentifiable {
 
     @Override
     public String asString() {
-        return name();
+        return getAspectName();
     }
 }

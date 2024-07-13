@@ -11,6 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -146,7 +147,8 @@ public class EmpowerTableBlockEntity extends BlockEntity implements UpdatableInv
     @Nullable
     public EmpowerRecipe getRecipe() {
         if (world == null) return null;
-        return RecipesRegistry.getFirstMatch(world, this, EmpowerRecipeSerializer.INSTANCE).value();
+        return RecipesRegistry.maybeGetFirstMatch(world, this, EmpowerRecipeSerializer.INSTANCE)
+                .map(RecipeEntry::value).orElse(null);
     }
 
     @Override
