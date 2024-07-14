@@ -39,6 +39,7 @@ public class RuTranslationBuilder {
         builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.potion.effect."), "Зелье " + name);
         builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.splash_potion.effect."), "Взрывное зелье " + name);
         builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.lingering_potion.effect."), "Туманное зелье " + name);
+        builder.add(Potion.finishTranslationKey(Optional.of(potion), "item.minecraft.tipped_arrow.effect."), "Стрела " + name);
     }
 
     public void add(String key, String name) {

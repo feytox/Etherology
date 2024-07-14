@@ -39,6 +39,7 @@
   "block.etherology.peach_door": "Персиковая дверь",
   "block.etherology.peach_fence": "Персиковый забор",
   "block.etherology.peach_fence_gate": "Персиковая калитка",
+  "block.etherology.peach_hanging_sign": "Персиковая подвесная табличка",
   "block.etherology.peach_leaves": "Персиковая листва",
   "block.etherology.peach_log": "Персиковое дерево",
   "block.etherology.peach_planks": "Персиковые доски",
@@ -133,6 +134,8 @@
   "item.etherology.netherite_battle_pickaxe": "Незеритовое кайло",
   "item.etherology.ocular_pattern_tablet": "Скрижаль с Окулярным Шаблоном",
   "item.etherology.oculus": "Окулус",
+  "item.etherology.peach_boat": "Персиковая лодка",
+  "item.etherology.peach_chest_boat": "Персиковая грузовая лодка",
   "item.etherology.primoshard_clos": "Первичный осколок",
   "item.etherology.primoshard_keta": "Первичный осколок",
   "item.etherology.primoshard_rella": "Первичный осколок",
@@ -157,6 +160,7 @@
   "item.minecraft.lingering_potion.effect.vital_energy": "Туманное зелье духовного восстановления",
   "item.minecraft.potion.effect.vital_energy": "Зелье духовного восстановления",
   "item.minecraft.splash_potion.effect.vital_energy": "Взрывное зелье духовного восстановления",
+  "item.minecraft.tipped_arrow.effect.vital_energy": "Стрела духовного восстановления",
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.empty": "Пусто",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",
@@ -164,5 +168,6 @@
   "subtitles.etherology.deflect": "Отражение снаряда щитом",
   "subtitles.etherology.hammer_damage": "Удар молота",
   "subtitles.etherology.hammer_swing": "Взмах молота",
-  "subtitles.etherology.small_lightning": "Маленькая молния"
+  "subtitles.etherology.small_lightning": "Маленькая молния",
+  "tag.item.etherology.peach_logs": "Peach Logs"
 }

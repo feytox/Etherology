@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "chest_boat",
+  "ingredients": [
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "etherology:peach_boat"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "etherology:peach_chest_boat"
+  }
+}

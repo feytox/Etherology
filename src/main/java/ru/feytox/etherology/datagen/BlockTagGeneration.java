@@ -11,6 +11,7 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
+import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(PEACH_LOGS, DecoBlocks.PEACH_LOG, DecoBlocks.PEACH_WOOD, DecoBlocks.STRIPPED_PEACH_LOG, DecoBlocks.STRIPPED_PEACH_WOOD);
         addBlocks(BlockTags.WOODEN_BUTTONS, DecoBlocks.PEACH_BUTTON);
         addBlocks(BlockTags.WOODEN_DOORS, DecoBlocks.PEACH_DOOR);
-        addBlocks(BlockTags.PLANKS, DecoBlocks.PEACH_PLANKS);
+        addBlocks(BlockTags.PLANKS, ExtraBlocksRegistry.PEACH_PLANKS);
         addBlocks(BlockTags.WOODEN_STAIRS, DecoBlocks.PEACH_STAIRS);
         addBlocks(BlockTags.WOODEN_SLABS, DecoBlocks.PEACH_SLAB);
         addBlocks(BlockTags.WOODEN_FENCES, DecoBlocks.PEACH_FENCE);
@@ -53,6 +54,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.WOODEN_TRAPDOORS, DecoBlocks.PEACH_TRAPDOOR);
         addBlocks(BlockTags.SIGNS, DecoBlocks.PEACH_SIGN);
         addBlocks(BlockTags.WALL_SIGNS, DecoBlocks.PEACH_WALL_SIGN);
+        addBlocks(BlockTags.CEILING_HANGING_SIGNS, DecoBlocks.PEACH_HANGING_SIGN);
+        addBlocks(BlockTags.WALL_HANGING_SIGNS, DecoBlocks.PEACH_WALL_HANGING_SIGN);
         addBlocks(BlockTags.LEAVES, DecoBlocks.PEACH_LEAVES);
         addTags(BlockTags.LOGS, PEACH_LOGS);
         addTags(BlockTags.LOGS_THAT_BURN, PEACH_LOGS);
@@ -81,7 +84,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.AXE_MINEABLE, ESSENCE_DETECTOR_BLOCK, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB, EMPOWERMENT_TABLE, SPILL_BARREL, CRATE, LEVITATOR, INVENTOR_TABLE, ETHEREAL_CHANNEL_CASE, DecoBlocks.LIGHTELET);
         addBlocks(BlockTags.HOE_MINEABLE, DecoBlocks.PEACH_LEAVES, DecoBlocks.FOREST_LANTERN);
 
-        // TODO: 18.02.2024 add to common tags
+        // TODO: 18.02.2024 add to convention tags
     }
 
     private void addBlocks(TagKey<Block> tagKey, Block... blocks) {

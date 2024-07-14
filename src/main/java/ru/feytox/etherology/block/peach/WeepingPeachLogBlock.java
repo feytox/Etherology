@@ -1,12 +1,13 @@
 package ru.feytox.etherology.block.peach;
 
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
@@ -25,7 +26,8 @@ public class WeepingPeachLogBlock extends PillarBlock {
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!(stack.getItem() instanceof AxeItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), DecoBlockItems.EBONY.getDefaultStack());
+        BlockPos itemPos = pos.add(hit.getSide().getVector());
+        ItemScatterer.spawn(world, itemPos.getX(), itemPos.getY(), itemPos.getZ(), DecoBlockItems.EBONY.getDefaultStack());
         return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 }

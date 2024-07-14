@@ -13,6 +13,7 @@ import ru.feytox.etherology.magic.staff.StaffPatterns;
 import ru.feytox.etherology.network.EtherologyNetwork;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.registry.entity.EntityRegistry;
 import ru.feytox.etherology.registry.item.EItemGroups;
 import ru.feytox.etherology.registry.item.EItems;
@@ -28,6 +29,7 @@ public class Etherology implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ExtraBlocksRegistry.registerAll();
         EItems.registerItems();
         EBlocks.registerAll();
         ResourceReloaders.registerServerData();

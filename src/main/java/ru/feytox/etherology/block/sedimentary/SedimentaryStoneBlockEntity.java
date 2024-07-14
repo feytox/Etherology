@@ -12,6 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceConsumer;
@@ -37,7 +38,7 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         super(SEDIMENTARY_BLOCK_ENTITY, pos, state);
     }
 
-    public boolean onUseAxe(BlockState state, World world) {
+    public boolean onUseAxe(BlockState state, World world, Vec3i sideVector) {
         if (state.get(ESSENCE_LEVEL) < 4) return false;
         world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f, true);
         EssenceZoneType zoneType = state.get(ESSENCE_STATE);
@@ -51,9 +52,10 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         syncData(serverWorld);
         updateBlockState(serverWorld, state, EssenceZoneType.EMPTY);
 
+        BlockPos itemPos = pos.add(sideVector);
         Optional<Item> match = Registries.ITEM.getOrEmpty(EIdentifier.of("primoshard_" + zoneType.name().toLowerCase()));
         match.ifPresent(item ->
-                ItemScatterer.spawn(serverWorld, pos.getX(), pos.getY() + 1, pos.getZ(), item.getDefaultStack()));
+                ItemScatterer.spawn(serverWorld, itemPos.getX(), itemPos.getY(), itemPos.getZ(), item.getDefaultStack()));
 
         return true;
     }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "ethril_ingot",
+  "ingredients": [
+    {
+      "item": "etherology:ethril_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "etherology:ethril_ingot"
+  }
+}

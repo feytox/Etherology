@@ -17,6 +17,8 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.registry.tag.ItemTags.*;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
+import static ru.feytox.etherology.registry.item.EItems.PEACH_BOAT;
+import static ru.feytox.etherology.registry.item.EItems.PEACH_CHEST_BOAT;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
 
 public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
@@ -60,6 +62,9 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         addItems(CHEST_ARMOR, ETHRIL_CHESTPLATE, EBONY_CHESTPLATE);
         addItems(LEG_ARMOR, ETHRIL_LEGGINGS, EBONY_LEGGINGS);
         addItems(FOOT_ARMOR, ETHRIL_BOOTS, EBONY_BOOTS);
+
+        addItems(BOATS, PEACH_BOAT);
+        addItems(CHEST_BOATS, PEACH_CHEST_BOAT);
 
         // TODO: 18.02.2024 add to convention tags
     }

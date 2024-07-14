@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_clay_jug": {
+      "conditions": {
+        "items": [
+          {
+            "items": "etherology:clay_jug"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "etherology:jug"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_clay_jug"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "etherology:jug"
+    ]
+  }
+}

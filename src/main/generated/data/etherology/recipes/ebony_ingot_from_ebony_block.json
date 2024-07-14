@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "ebony_ingot",
+  "ingredients": [
+    {
+      "item": "etherology:ebony_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "etherology:ebony_ingot"
+  }
+}

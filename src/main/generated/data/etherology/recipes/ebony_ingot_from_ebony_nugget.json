@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "ebony_ingot",
+  "key": {
+    "#": {
+      "item": "etherology:ebony_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "etherology:ebony_ingot"
+  }
+}

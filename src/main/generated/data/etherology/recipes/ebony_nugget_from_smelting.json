@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": [
+    {
+      "item": "etherology:ebony_helmet"
+    },
+    {
+      "item": "etherology:ebony_chestplate"
+    },
+    {
+      "item": "etherology:ebony_leggings"
+    },
+    {
+      "item": "etherology:ebony_boots"
+    },
+    {
+      "item": "etherology:ebony_axe"
+    },
+    {
+      "item": "etherology:ebony_pickaxe"
+    },
+    {
+      "item": "etherology:ebony_hoe"
+    },
+    {
+      "item": "etherology:ebony_shovel"
+    },
+    {
+      "item": "etherology:ebony_sword"
+    }
+  ],
+  "result": {
+    "id": "etherology:ebony_nugget"
+  }
+}

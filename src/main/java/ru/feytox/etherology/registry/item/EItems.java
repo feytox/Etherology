@@ -1,12 +1,14 @@
 package ru.feytox.etherology.registry.item;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.item.BoatItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.*;
 import ru.feytox.etherology.item.glints.GlintItem;
 import ru.feytox.etherology.magic.staff.StaffStyles;
+import ru.feytox.etherology.util.misc.BoatTypes;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 
@@ -39,6 +41,9 @@ public class EItems {
     public static final Item THUJA_OIL = registerSimple("thuja_oil");
 
     public static final Item FOREST_LANTERN_CRUMB = registerItem("forest_lantern_crumb", new Item(new Item.Settings().food(EFoodComponents.CRUMB)));
+
+    public static final Item PEACH_BOAT = registerItem("peach_boat", new BoatItem(false, BoatTypes.PEACH_TYPE.get(), new Item.Settings().maxCount(1)));
+    public static final Item PEACH_CHEST_BOAT = registerItem("peach_chest_boat", new BoatItem(true, BoatTypes.PEACH_TYPE.get(), new Item.Settings().maxCount(1)));
 
     private static Item registerItem(String itemId, Item item) {
         return Registry.register(Registries.ITEM, EIdentifier.of(itemId), item);

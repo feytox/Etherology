@@ -47,7 +47,8 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
     }
 
     private boolean tickFuel(ServerWorld world, BlockPos blockPos, BlockState state) {
-        if (fuel-- > 0) return true;
+        fuel = Math.max(0, fuel - 1);
+        if (fuel > 0) return true;
         int power = state.get(POWER);
         if (power <= 0) return false;
 

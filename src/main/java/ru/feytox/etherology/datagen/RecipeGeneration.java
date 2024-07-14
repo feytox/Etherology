@@ -20,6 +20,8 @@ import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
+import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.misc.TagsRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -32,6 +34,7 @@ import static net.minecraft.block.Blocks.*;
 import static net.minecraft.recipe.book.RecipeCategory.*;
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
+import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
 import static ru.feytox.etherology.registry.item.EItems.*;
 import static ru.feytox.etherology.registry.item.ToolItems.*;
@@ -45,10 +48,8 @@ public class RecipeGeneration extends FabricRecipeProvider {
     @Override
     public void generate(RecipeExporter exporter) {
         // azel
-        ShapelessRecipeJsonBuilder.create(MISC, AZEL_NUGGET, 9).input(AZEL_INGOT).criterion(has(AZEL_INGOT), from(AZEL_INGOT)).offerTo(exporter, getFromPath(AZEL_NUGGET, "ingot"));
-        ShapedRecipeJsonBuilder.create(MISC, AZEL_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', AZEL_NUGGET).criterion(has(AZEL_NUGGET), from(AZEL_NUGGET)).offerTo(exporter, getFromPath(AZEL_INGOT, "nugget"));
-        ShapelessRecipeJsonBuilder.create(MISC, AZEL_INGOT, 9).input(AZEL_BLOCK).criterion(has(AZEL_BLOCK), from(AZEL_BLOCK)).offerTo(exporter, getFromPath(AZEL_INGOT, "block"));
-        ShapedRecipeJsonBuilder.create(MISC, AZEL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', AZEL_INGOT).criterion(has(AZEL_INGOT), from(AZEL_INGOT)).offerTo(exporter);
+        offerMaterialBlock(exporter, AZEL_INGOT, AZEL_BLOCK);
+        offerMaterialNugget(exporter, AZEL_NUGGET, AZEL_INGOT);
         CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(ATTRAHITE), MISC, ATTRAHITE_BRICK, 0.1F, 200).criterion(has(ATTRAHITE), from(ATTRAHITE)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, ATTRAHITE_BRICKS).input('#', ATTRAHITE_BRICK).pattern("##").pattern("##").criterion(has(ATTRAHITE), from(ATTRAHITE)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(MISC, RAW_AZEL).input('#', ENRICHED_ATTRAHITE).input('C', CALCITE).pattern("#C").pattern("C#").criterion(has(ATTRAHITE), from(ATTRAHITE)).offerTo(exporter);
@@ -57,16 +58,12 @@ public class RecipeGeneration extends FabricRecipeProvider {
         offerStonecuttingRecipe(exporter, EBlockFamilies.ATTRAHITE_BRICKS);
 
         // ethril
-        ShapelessRecipeJsonBuilder.create(MISC, ETHRIL_NUGGET, 9).input(ETHRIL_INGOT).criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter, getFromPath(ETHRIL_NUGGET, "ingot"));
-        ShapedRecipeJsonBuilder.create(MISC, ETHRIL_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', ETHRIL_NUGGET).criterion(has(ETHRIL_NUGGET), from(ETHRIL_NUGGET)).offerTo(exporter, getFromPath(ETHRIL_INGOT, "nugget"));
-        ShapelessRecipeJsonBuilder.create(MISC, ETHRIL_INGOT, 9).input(ETHRIL_BLOCK).criterion(has(ETHRIL_BLOCK), from(ETHRIL_BLOCK)).offerTo(exporter, getFromPath(ETHRIL_INGOT, "block"));
-        ShapedRecipeJsonBuilder.create(MISC, ETHRIL_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', ETHRIL_INGOT).criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        offerMaterialBlock(exporter, ETHRIL_INGOT, ETHRIL_BLOCK);
+        offerMaterialNugget(exporter, ETHRIL_NUGGET, ETHRIL_INGOT);
 
         // ebony
-        ShapelessRecipeJsonBuilder.create(MISC, EBONY_NUGGET, 9).input(EBONY_INGOT).criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter, getFromPath(EBONY_NUGGET, "ingot"));
-        ShapedRecipeJsonBuilder.create(MISC, EBONY_INGOT).pattern("AAA").pattern("AAA").pattern("AAA").input('A', EBONY_NUGGET).criterion(has(EBONY_NUGGET), from(EBONY_NUGGET)).offerTo(exporter, getFromPath(EBONY_INGOT, "nugget"));
-        ShapelessRecipeJsonBuilder.create(MISC, EBONY_INGOT, 9).input(EBONY_BLOCK).criterion(has(EBONY_BLOCK), from(EBONY_BLOCK)).offerTo(exporter, getFromPath(EBONY_INGOT, "block"));
-        ShapedRecipeJsonBuilder.create(MISC, EBONY_BLOCK.asItem()).pattern("AAA").pattern("AAA").pattern("AAA").input('A', EBONY_INGOT).criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        offerMaterialBlock(exporter, EBONY_INGOT, EBONY_BLOCK);
+        offerMaterialNugget(exporter, EBONY_NUGGET, EBONY_INGOT);
 
         // forest lantern
         CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(FOREST_LANTERN), FOOD, FOREST_LANTERN_CRUMB, 0.35f, 200).criterion(has(FOREST_LANTERN), from(FOREST_LANTERN)).offerTo(exporter);
@@ -81,9 +78,12 @@ public class RecipeGeneration extends FabricRecipeProvider {
         registerFamilies(EBlockFamilies.FAMILIES, exporter, FeatureSet.of(FeatureFlags.VANILLA));
 
         // peach
-        offerPlanksRecipe(exporter, PEACH_PLANKS, TagsRegistry.PEACH_LOGS, 4);
+        offerPlanksRecipe(exporter, ExtraBlocksRegistry.PEACH_PLANKS, TagsRegistry.PEACH_LOGS, 4);
         offerBarkBlockRecipe(exporter, PEACH_WOOD, PEACH_LOG);
         offerBarkBlockRecipe(exporter, STRIPPED_PEACH_WOOD, STRIPPED_PEACH_LOG);
+        offerBoatRecipe(exporter, PEACH_BOAT, ExtraBlocksRegistry.PEACH_PLANKS);
+        offerChestBoatRecipe(exporter, PEACH_CHEST_BOAT, PEACH_BOAT);
+        offerHangingSignRecipe(exporter, DecoBlockItems.PEACH_HANGING_SIGN, STRIPPED_PEACH_LOG);
 
         // ethereal stones
         offerStonecuttingRecipe(exporter, EBlockFamilies.SLITHERITE, EBlockFamilies.CRACKED_SLITHERITE_BRICKS, EBlockFamilies.CHISELED_SLITHERITE_BRICKS, EBlockFamilies.SLITHERITE_BRICKS, EBlockFamilies.POLISHED_SLITHERITE);
@@ -119,6 +119,39 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(MISC, FURNITURE_SLAB, 2).input('#', ItemTags.PLANKS).input('I', Items.STICK)
                 .pattern("#I#")
                 .pattern("#I#").criterion("has_planks", conditionsFromTag(ItemTags.PLANKS)).offerTo(exporter);
+
+        // ebony vanilla items
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, EBONY_HELMET).input('X', EBONY_INGOT).pattern("XXX").pattern("X X").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, EBONY_CHESTPLATE).input('X', EBONY_INGOT).pattern("X X").pattern("XXX").pattern("XXX").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, EBONY_LEGGINGS).input('X', EBONY_INGOT).pattern("XXX").pattern("X X").pattern("X X").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, EBONY_BOOTS).input('X', EBONY_INGOT).pattern("X X").pattern("X X").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, EBONY_AXE).input('#', Items.STICK).input('X', EBONY_INGOT).pattern("XX").pattern("X#").pattern(" #").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, EBONY_PICKAXE).input('#', Items.STICK).input('X', EBONY_INGOT).pattern("XXX").pattern(" # ").pattern(" # ").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, EBONY_HOE).input('#', Items.STICK).input('X', EBONY_INGOT).pattern("XX").pattern(" #").pattern(" #").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, EBONY_SHOVEL).input('#', Items.STICK).input('X', EBONY_INGOT).pattern("X").pattern("#").pattern("#").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, EBONY_SWORD).input('#', Items.STICK).input('X', EBONY_INGOT).pattern("X").pattern("X").pattern("#").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(EBONY_HELMET, EBONY_CHESTPLATE, EBONY_LEGGINGS, EBONY_BOOTS, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD), MISC, EBONY_NUGGET, 0.1f, 200).criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter, getSmeltingItemPath(EBONY_NUGGET));
+        CookingRecipeJsonBuilder.createBlasting(Ingredient.ofItems(EBONY_HELMET, EBONY_CHESTPLATE, EBONY_LEGGINGS, EBONY_BOOTS, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD), MISC, EBONY_NUGGET, 0.1f, 100).criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter, getBlastingItemPath(EBONY_NUGGET));
+
+        // ethril vanilla items
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ETHRIL_HELMET).input('X', ETHRIL_INGOT).pattern("XXX").pattern("X X").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ETHRIL_CHESTPLATE).input('X', ETHRIL_INGOT).pattern("X X").pattern("XXX").pattern("XXX").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ETHRIL_LEGGINGS).input('X', ETHRIL_INGOT).pattern("XXX").pattern("X X").pattern("X X").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ETHRIL_BOOTS).input('X', ETHRIL_INGOT).pattern("X X").pattern("X X").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ETHRIL_AXE).input('#', Items.STICK).input('X', ETHRIL_INGOT).pattern("XX").pattern("X#").pattern(" #").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ETHRIL_PICKAXE).input('#', Items.STICK).input('X', ETHRIL_INGOT).pattern("XXX").pattern(" # ").pattern(" # ").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ETHRIL_HOE).input('#', Items.STICK).input('X', ETHRIL_INGOT).pattern("XX").pattern(" #").pattern(" #").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ETHRIL_SHOVEL).input('#', Items.STICK).input('X', ETHRIL_INGOT).pattern("X").pattern("#").pattern("#").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ETHRIL_SWORD).input('#', Items.STICK).input('X', ETHRIL_INGOT).pattern("X").pattern("X").pattern("#").criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD), MISC, ETHRIL_NUGGET, 0.1f, 200).criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter, getSmeltingItemPath(ETHRIL_NUGGET));
+        CookingRecipeJsonBuilder.createBlasting(Ingredient.ofItems(ETHRIL_HELMET, ETHRIL_CHESTPLATE, ETHRIL_LEGGINGS, ETHRIL_BOOTS, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD), MISC, ETHRIL_NUGGET, 0.1f, 100).criterion(has(ETHRIL_INGOT), from(ETHRIL_INGOT)).offerTo(exporter, getBlastingItemPath(ETHRIL_NUGGET));
+
+        // jug
+        ShapedRecipeJsonBuilder.create(MISC, CLAY_JUG).input('#', CLAY)
+                .pattern("# #")
+                .pattern("# #")
+                .pattern("###").criterion(has(CLAY), from(CLAY)).offerTo(exporter);
+        CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(CLAY_JUG), MISC, JUG, 0.35F, 200).criterion(has(CLAY_JUG), from(CLAY_JUG)).offerTo(exporter);
 
         // "simple" recipe
         ShapedRecipeJsonBuilder.create(MISC, EBlocks.SPILL_BARREL).input('S', ItemTags.WOODEN_SLABS).input('#', ItemTags.PLANKS)
@@ -246,6 +279,22 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
     private AdvancementCriterion<InventoryChangedCriterion.Conditions> from(ItemConvertible itemConvertible) {
         return conditionsFromItem(itemConvertible);
+    }
+
+    private void offerMaterialBlock(RecipeExporter exporter, ItemConvertible ingot, ItemConvertible block) {
+        offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, MISC, ingot, BUILDING_BLOCKS, block, from(ingot, block), group(ingot));
+    }
+
+    private void offerMaterialNugget(RecipeExporter exporter, ItemConvertible nugget, ItemConvertible ingot) {
+        offerReversibleCompactingRecipesWithCompactingRecipeGroup(exporter, MISC, nugget, MISC, ingot, from(ingot, nugget), group(ingot));
+    }
+
+    private String from(ItemConvertible from, ItemConvertible to) {
+        return getItemPath(from) + "_from_" + getItemPath(to);
+    }
+
+    private String group(ItemConvertible item) {
+        return getItemPath(item);
     }
     
     private Identifier getFromPath(ItemConvertible itemConvertible, String suffix) {

@@ -11,6 +11,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
+import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
@@ -46,8 +47,9 @@ public class EItemGroups {
                 SAMOVAR_BLOCK, JUG, CLAY_JUG, CRATE, TUNING_FORK).with(EItems.SPILL_BARREL);
         // peach
         etherItems.with(
-                PEACH_LOG, STRIPPED_PEACH_LOG, PEACH_WOOD, STRIPPED_PEACH_WOOD, WEEPING_PEACH_LOG, PEACH_PLANKS, PEACH_STAIRS, PEACH_SLAB, PEACH_BUTTON)
-                .with(DecoBlockItems.PEACH_DOOR, DecoBlockItems.PEACH_SIGN).with(PEACH_FENCE, PEACH_FENCE_GATE, PEACH_PRESSURE_PLATE, PEACH_TRAPDOOR, PEACH_LEAVES, PEACH_SAPLING);
+                PEACH_LOG, STRIPPED_PEACH_LOG, PEACH_WOOD, STRIPPED_PEACH_WOOD, WEEPING_PEACH_LOG, ExtraBlocksRegistry.PEACH_PLANKS, PEACH_STAIRS,
+                PEACH_SLAB, PEACH_BUTTON, DecoBlockItems.PEACH_DOOR, DecoBlockItems.PEACH_SIGN, DecoBlockItems.PEACH_HANGING_SIGN,
+                PEACH_BOAT, PEACH_CHEST_BOAT, PEACH_FENCE, PEACH_FENCE_GATE, PEACH_PRESSURE_PLATE, PEACH_TRAPDOOR, PEACH_LEAVES, PEACH_SAPLING);
         // ethereal stones
         etherItems.with(
                 SLITHERITE, SLITHERITE_BRICKS, CHISELED_SLITHERITE_BRICKS, CRACKED_SLITHERITE_BRICKS, POLISHED_SLITHERITE,

@@ -47,7 +47,7 @@ public class EBlockFamilies {
     }
 
     static {
-        PEACH = register(PEACH_PLANKS).button(PEACH_BUTTON).door(PEACH_DOOR).fence(PEACH_FENCE).fenceGate(PEACH_FENCE_GATE).pressurePlate(PEACH_PRESSURE_PLATE).sign(PEACH_SIGN, PEACH_WALL_SIGN).slab(PEACH_SLAB).stairs(PEACH_STAIRS).trapdoor(PEACH_TRAPDOOR).group("wooden").unlockCriterionName("has_planks").build();
+        PEACH = register(ExtraBlocksRegistry.PEACH_PLANKS).button(PEACH_BUTTON).door(PEACH_DOOR).fence(PEACH_FENCE).fenceGate(PEACH_FENCE_GATE).pressurePlate(PEACH_PRESSURE_PLATE).sign(PEACH_SIGN, PEACH_WALL_SIGN).slab(PEACH_SLAB).stairs(PEACH_STAIRS).trapdoor(PEACH_TRAPDOOR).group("wooden").unlockCriterionName("has_planks").build();
 
         SLITHERITE = register(DecoBlocks.SLITHERITE, BlockFamily.Variant.POLISHED).stairs(SLITHERITE_STAIRS).slab(SLITHERITE_SLAB).button(SLITHERITE_BUTTON).pressurePlate(SLITHERITE_PRESSURE_PLATE).wall(SLITHERITE_WALL).polished(DecoBlocks.POLISHED_SLITHERITE).build();
         SLITHERITE_BRICKS = register(DecoBlocks.SLITHERITE_BRICKS, BlockFamily.Variant.CHISELED, BlockFamily.Variant.CRACKED).slab(SLITHERITE_BRICK_SLAB).stairs(SLITHERITE_BRICK_STAIRS).wall(SLITHERITE_BRICK_WALL).chiseled(DecoBlocks.CHISELED_SLITHERITE_BRICKS).cracked(DecoBlocks.CRACKED_SLITHERITE_BRICKS).build();

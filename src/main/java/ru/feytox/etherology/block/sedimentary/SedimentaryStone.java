@@ -1,6 +1,5 @@
 package ru.feytox.etherology.block.sedimentary;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -14,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -40,10 +38,11 @@ public class SedimentaryStone extends Block implements RegistrableBlock, BlockEn
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!(stack.getItem() instanceof AxeItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
+
         boolean result = false;
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof SedimentaryStoneBlockEntity sedimentaryBlock) {
-            result = sedimentaryBlock.onUseAxe(state, world);
+            result = sedimentaryBlock.onUseAxe(state, world, hit.getSide().getVector());
         }
         return result ? ItemActionResult.SUCCESS : ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

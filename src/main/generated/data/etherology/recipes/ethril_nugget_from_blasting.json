@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": [
+    {
+      "item": "etherology:ethril_helmet"
+    },
+    {
+      "item": "etherology:ethril_chestplate"
+    },
+    {
+      "item": "etherology:ethril_leggings"
+    },
+    {
+      "item": "etherology:ethril_boots"
+    },
+    {
+      "item": "etherology:ethril_axe"
+    },
+    {
+      "item": "etherology:ethril_pickaxe"
+    },
+    {
+      "item": "etherology:ethril_hoe"
+    },
+    {
+      "item": "etherology:ethril_shovel"
+    },
+    {
+      "item": "etherology:ethril_sword"
+    }
+  ],
+  "result": {
+    "id": "etherology:ethril_nugget"
+  }
+}

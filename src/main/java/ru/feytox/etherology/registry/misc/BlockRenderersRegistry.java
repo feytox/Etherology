@@ -5,6 +5,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.block.entity.HangingSignBlockEntityRenderer;
+import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
 import ru.feytox.etherology.block.armillary.ArmillaryMatrixRenderer;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
@@ -15,6 +17,7 @@ import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableRenderer;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
+import ru.feytox.etherology.registry.block.DecoBlocks;
 
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 
@@ -32,6 +35,8 @@ public class BlockRenderersRegistry {
         register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
         register(ARMILLARY_MATRIX_BLOCK_ENTITY, ArmillaryMatrixRenderer::new);
         register(JEWELRY_TABLE_BLOCK_ENTITY, JewelryTableRenderer::new);
+        register(DecoBlocks.ETHEROLOGY_SIGN, SignBlockEntityRenderer::new);
+        register(DecoBlocks.ETHEROLOGY_HANGING_SIGN, HangingSignBlockEntityRenderer::new);
     }
 
     private static <T extends BlockEntity> void register(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererFactory<T> rendererFactory) {

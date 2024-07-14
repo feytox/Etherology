@@ -39,7 +39,7 @@ public class StaffIndicator {
         if (prevIndicatorProgress == null || indicatorProgress == null) return;
 
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return;
+        if (!client.options.getPerspective().isFirstPerson() || client.player == null) return;
         if (!StaffItem.isStaffInHand(client.player)) return;
 
         float progress = MathHelper.lerp(tickDelta, prevIndicatorProgress, indicatorProgress);

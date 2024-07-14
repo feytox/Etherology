@@ -7,12 +7,11 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.datagen.util.RuTranslationBuilder;
 import ru.feytox.etherology.datagen.util.RuTranslationPart;
 import ru.feytox.etherology.enchantment.EtherEnchantments;
-import ru.feytox.etherology.enchantment.PealEnchantment;
-import ru.feytox.etherology.enchantment.ReflectionEnchantment;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.registry.misc.EffectsRegistry;
 
 import java.nio.file.Path;
@@ -218,7 +217,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(STRIPPED_PEACH_LOG, "Обтёсанное персиковое дерево");
         builder.add(PEACH_WOOD, "Персиковая древесина");
         builder.add(STRIPPED_PEACH_WOOD, "Обтёсанная персиковая древесина");
-        builder.add(PEACH_PLANKS, "Персиковые доски");
+        builder.add(ExtraBlocksRegistry.PEACH_PLANKS, "Персиковые доски");
         builder.add(PEACH_STAIRS, "Персиковые ступеньки");
         builder.add(PEACH_SLAB, "Персиковый полублок");
         builder.add(PEACH_BUTTON, "Персиковая кнопка");
@@ -227,14 +226,19 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PEACH_FENCE_GATE, "Персиковая калитка");
         builder.add(PEACH_PRESSURE_PLATE, "Персиковая нажимная плита");
         builder.add(DecoBlocks.PEACH_SIGN, "Персиковая табличка");
+        builder.add(DecoBlocks.PEACH_HANGING_SIGN, "Персиковая подвесная табличка");
         builder.add(PEACH_TRAPDOOR, "Персиковый люк");
         builder.add(BREWING_CAULDRON, "Варочный тигель");
         builder.add(SEDIMENTARY_BLOCK, "Осадочный камень");
         builder.add(EtherEnchantments.PEAL, "Раскат");
         builder.add(EtherEnchantments.REFLECTION, "Отражение");
 
+        builder.add(PEACH_BOAT, "Персиковая лодка");
+        builder.add(PEACH_CHEST_BOAT, "Персиковая грузовая лодка");
+
+
         try {
-            Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").get();
+            Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").orElse(null);
             translationBuilder.add(existingFilePath);
         } catch (Exception e) {
             throw new RuntimeException("Failed to add existing language file!", e);

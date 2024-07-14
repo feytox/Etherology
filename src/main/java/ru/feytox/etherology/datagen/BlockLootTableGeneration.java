@@ -39,6 +39,8 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(PEACH_DOOR, doorDrops(PEACH_DOOR));
         addDrop(PEACH_SIGN, DecoBlockItems.PEACH_SIGN);
         addDrop(PEACH_WALL_SIGN, DecoBlockItems.PEACH_SIGN);
+        addDrop(PEACH_HANGING_SIGN, DecoBlockItems.PEACH_HANGING_SIGN);
+        addDrop(PEACH_WALL_HANGING_SIGN, DecoBlockItems.PEACH_HANGING_SIGN);
         addDrop(PEACH_LEAVES, leavesDrops(PEACH_LEAVES, PEACH_SAPLING, SAPLING_DROP_CHANCE));
         addDrop(WEEPING_PEACH_LOG, drops(WEEPING_PEACH_LOG, PEACH_LOG));
 

@@ -5,13 +5,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
@@ -58,8 +56,7 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
 
         renderItemIcon(1, context, "textures/gui/inventor_table/empty_slot_tablet.png", x + 28, y + 13);
         renderItemIcon(2, context, "textures/gui/inventor_table/empty_slot_ingot.png", x + 48, y + 13);
-
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        
         int k = (int) (27.0F * this.scrollPosition);
         context.drawTexture(TEXTURE, x + 67, y + 33 + k, 232 + (aLotOfParts ? 0 : 12), 0, 12, 15);
 
@@ -88,8 +85,7 @@ public class InventorTableScreen extends HandledScreen<InventorTableScreenHandle
                 context.push();
                 // part icon
                 RenderSystem.enableBlend();
-                RenderSystem.setShaderTexture(0, EIdentifier.of("textures/gui/inventor_table/it_staff_" + part.getName() + ".png"));
-                context.drawTexture(TEXTURE, partX-1, partY-1, 0, 0, 16, 16, 16, 16);
+                context.drawTexture(EIdentifier.of("textures/gui/inventor_table/it_staff_" + part.getName() + ".png"), partX-1, partY-1, 0, 0, 16, 16, 16, 16);
                 context.pop();
             }
         }
