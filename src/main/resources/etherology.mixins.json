@@ -4,9 +4,9 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractBlockStateMixin",
-    "ArmorItemMixin",
     "ArmorMaterialsAccessor",
     "AxeItemMixin",
+    "BlockEntityTypeMixin",
     "BlockFamilyMixin",
     "BlocksAccessor",
     "BlockTexturePoolMixin",

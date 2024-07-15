@@ -15,20 +15,17 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import static net.minecraft.client.render.model.json.ModelTransformationMode.FIXED;
 
-public class BrewingCauldronRenderer extends EGeoBlockRenderer<BrewingCauldronBlockEntity> {
+public class BrewingCauldronRenderer extends GeoBlockRenderer<BrewingCauldronBlockEntity> {
     private final BlockEntityRendererFactory.Context ctx;
 
     public BrewingCauldronRenderer(BlockEntityRendererFactory.Context ctx) {
         super(new BrewingCauldronModel());
         this.ctx = ctx;
     }
-
-    @Override
-    public void fixYOffset(MatrixStack poseStack) {}
 
     @Override
     public void defaultRender(MatrixStack matrices, BrewingCauldronBlockEntity cauldron, VertexConsumerProvider vertexConsumers, @Nullable RenderLayer renderType, @Nullable VertexConsumer buffer, float yaw, float tickDelta, int light) {

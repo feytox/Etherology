@@ -1,10 +1,13 @@
 package ru.feytox.etherology.magic.staff;
 
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.util.StringIdentifiable;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -19,6 +22,7 @@ public enum StaffPart implements StringIdentifiable {
     TIP(true, StaffStyles.STYLES, StaffMetals.METALS);
 
     public static final Codec<StaffPart> CODEC = StringIdentifiable.createBasicCodec(StaffPart::values);
+    public static final PacketCodec<ByteBuf, StaffPart> PACKET_CODEC = CodecUtil.ofEnum(values());
 
     @Getter
     private final boolean styled;

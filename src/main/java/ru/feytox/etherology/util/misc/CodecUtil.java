@@ -12,6 +12,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.function.ValueLists;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Map;
+import java.util.function.IntFunction;
 import java.util.function.ToIntFunction;
 
 @UtilityClass
@@ -37,5 +39,13 @@ public class CodecUtil {
 
             public void encode(B object, V object2) {}
         };
+    }
+
+    /**
+     * PacketCodec for Map without strong types for Map
+     * @see PacketCodecs#map(IntFunction, PacketCodec, PacketCodec)
+     */
+    public static <B extends ByteBuf, K, V> PacketCodec<B, Map<K, V>> map(IntFunction<Map<K, V>> factory, PacketCodec<? super B, K> keyCodec, PacketCodec<? super B, V> valueCodec) {
+        return PacketCodecs.map(factory, keyCodec, valueCodec);
     }
 }

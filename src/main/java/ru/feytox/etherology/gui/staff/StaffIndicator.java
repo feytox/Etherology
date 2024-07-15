@@ -74,7 +74,7 @@ public class StaffIndicator {
     }
 
     private static Float refreshProgress(ClientPlayerEntity player, ClientWorld world) {
-        ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
+        ItemStack staffStack = StaffItem.getStaffInHands(player);
         if (staffStack == null) return null;
 
         ItemStack lensStack = LensItem.getStaffLens(staffStack);

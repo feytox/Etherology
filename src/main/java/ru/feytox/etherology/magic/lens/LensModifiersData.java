@@ -1,10 +1,14 @@
 package ru.feytox.etherology.magic.lens;
 
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.*;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.util.Identifier;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +19,7 @@ import java.util.stream.Collectors;
 public class LensModifiersData {
 
     public static final Codec<LensModifiersData> CODEC = Codec.unboundedMap(Identifier.CODEC, Codec.INT).xmap(LensModifiersData::new, LensModifiersData::getModifiers);
+    public static final PacketCodec<ByteBuf, LensModifiersData> PACKET_CODEC = CodecUtil.map(Object2IntOpenHashMap::new, Identifier.PACKET_CODEC, PacketCodecs.VAR_INT).xmap(LensModifiersData::new, LensModifiersData::getModifiers);
 
     @NonNull
     protected final Map<Identifier, Integer> modifiers;

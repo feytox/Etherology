@@ -1,7 +1,6 @@
 package ru.feytox.etherology.block.brewingCauldron;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -93,7 +92,6 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         return world.isClient ? BrewingCauldronBlockEntity::clientTicker : BrewingCauldronBlockEntity::serverTicker;
     }
 
-    // TODO: #upd
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack handStack = player.getStackInHand(hand);
@@ -199,10 +197,10 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
     }
 
     static {
-        RAYCAST_SHAPE = createCuboidShape(3.5, 5.0, 3.5, 12.5, 15.1, 12.5);
+        RAYCAST_SHAPE = createCuboidShape(3.5, 5.0, 3.5, 12.5, 15.0, 12.5);
         INPUT_SHAPE = createCuboidShape(3.5, 5.0, 3.5, 12.5, 8.0, 12.5);
         OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(
-                createCuboidShape(1.5, 0, 1.5, 14.5, 15.1, 14.5),
+                createCuboidShape(1.5, 0, 1.5, 14.5, 15.0, 14.5),
                 RAYCAST_SHAPE,
                 BooleanBiFunction.ONLY_FIRST);
     }

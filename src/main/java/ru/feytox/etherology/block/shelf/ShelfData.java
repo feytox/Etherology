@@ -21,6 +21,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.furniture.FurnitureData;
+import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 
 public class ShelfData extends FurnitureData implements ImplementedInventory {
 
@@ -49,6 +50,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             player.setStackInHand(hand, playerStack);
             setStack(slot, currentStack);
             updateData(world, pos);
+            PedestalBlockEntity.playItemPlaceSound(world, pos);
 
         } else if (!currentStack.isEmpty() && !playerStack.isEmpty()) {
             // кладём предмет на НЕПУСТУЮ полку
@@ -58,6 +60,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             playerStack.decrement(takingStack.getCount());
             currentStack.increment(takingStack.getCount());
             updateData(world, pos);
+            PedestalBlockEntity.playItemPlaceSound(world, pos);
 
         } else if (!currentStack.isEmpty()) {
             // берём предмет ПУСТОЙ рукой с НЕПУСТОЙ полки
@@ -66,6 +69,7 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
             player.setStackInHand(hand, takingStack);
             updateData(world, pos);
+            PedestalBlockEntity.playItemTakeSound(world, pos);
         }
     }
 

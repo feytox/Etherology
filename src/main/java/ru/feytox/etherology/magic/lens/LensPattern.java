@@ -12,7 +12,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtIntArray;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.CodecUtil;
@@ -90,36 +89,11 @@ public class LensPattern {
                 .collect(Collectors.toCollection(IntArraySet::new));
     }
 
-    public void writeBuf(PacketByteBuf buf) {
-        writeIntSet(buf, cracks);
-        writeIntSet(buf, softCells);
-    }
-
-    public static LensPattern readBuf(PacketByteBuf buf) {
-        return new LensPattern(readIntSet(buf), readIntSet(buf));
-    }
-
-    private void writeIntSet(PacketByteBuf buf, IntArraySet intSet) {
-        buf.writeVarInt(intSet.size());
-        intSet.forEach(buf::writeVarInt);
-    }
-
-    private static IntArraySet readIntSet(PacketByteBuf buf) {
-        int size = buf.readVarInt();
-        IntArraySet intSet = new IntArraySet();
-
-        for (int i = 0; i < size; i++) {
-            intSet.add(buf.readVarInt());
-        }
-
-        return intSet;
-    }
-
     public Mutable asMutable() {
         return new Mutable(cracks.clone(), softCells.clone());
     }
 
-    // TODO: 08.07.2024 consider to add toImmutable again
+    // TODO: 08.07.2024 consider adding toImmutable again
     public static class Mutable extends LensPattern {
 
         public Mutable(@NonNull IntArraySet cracks, @NonNull IntArraySet softCells) {

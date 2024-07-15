@@ -4,11 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
@@ -40,9 +35,6 @@ public class AspectTooltipComponent implements TooltipComponent {
 
     @Override
     public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
-        context.push();
-        context.scale(0.5f, 0.5f, 1);
-
         int i = 0;
         for (Map.Entry<Aspect, Integer> entry : aspects.getAspects().entrySet()) {
             Aspect aspect = entry.getKey();
@@ -51,11 +43,17 @@ public class AspectTooltipComponent implements TooltipComponent {
             int xIndex = i % LINE_MAX;
             int yIndex = i / LINE_MAX;
 
+            context.push();
+
+            context.scale(0.5f, 0.5f, 1);
             renderIcon(x, y, context, aspect, xIndex, yIndex);
+            context.scale(2.0f, 2.0f, 1);
             renderCount(textRenderer, context, x + xIndex * 17, y + yIndex * 17, value);
+
+            context.pop();
             i++;
         }
-        context.pop();
+
     }
 
     private void renderIcon(int x, int y, DrawContext context, Aspect aspect, int xIndex, int yIndex) {
@@ -64,11 +62,8 @@ public class AspectTooltipComponent implements TooltipComponent {
     }
 
     private static void renderCount(TextRenderer textRenderer, DrawContext context, int x, int y, int count) {
-        MatrixStack matrices = new MatrixStack();
         String value = String.valueOf(count);
-        matrices.translate(0.0F, 0.0F, 200.0F);
-        VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-        context.drawText(textRenderer, value, x + 19 - 2 - textRenderer.getWidth(value), y + 6 + 3, 16777215, true);
-        immediate.draw();
+        context.translate(0.0F, 0.0F, 200.0F);
+        context.drawText(textRenderer, value, x + 17 - textRenderer.getWidth(value), y + 9, 16777215, true);
     }
 }

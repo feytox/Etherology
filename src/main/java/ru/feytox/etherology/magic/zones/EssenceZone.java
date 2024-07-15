@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.NbtCompound;
 
-// TODO: 08.07.2024 consider to replace with just float storing
+// TODO: 08.07.2024 consider replacing with just float storing
 @Deprecated
 public class EssenceZone {
 

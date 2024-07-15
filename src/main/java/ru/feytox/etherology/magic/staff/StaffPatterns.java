@@ -1,8 +1,11 @@
 package ru.feytox.etherology.magic.staff;
 
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.experimental.UtilityClass;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import ru.feytox.etherology.Etherology;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.function.Supplier;
 public class StaffPatterns {
 
     public static final Codec<StaffPattern> CODEC = Codec.STRING.xmap(StaffPatterns::get, StaffPattern::getName).stable();
+    public static final PacketCodec<ByteBuf, StaffPattern> PACKET_CODEC = PacketCodecs.STRING.xmap(StaffPatterns::get, StaffPattern::getName);
     private static final Map<String, StaffPattern> PATTERNS = new Object2ObjectOpenHashMap<>();
 
     public static void registerAll() {

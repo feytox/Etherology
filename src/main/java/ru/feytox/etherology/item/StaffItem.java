@@ -23,6 +23,7 @@ import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.registry.misc.KeybindsRegistry;
+import ru.feytox.etherology.util.misc.ItemComponent;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.List;
@@ -162,7 +163,7 @@ public class StaffItem extends Item {
         if (!(entity instanceof PlayerEntity player)) return;
         MinecraftClient client = MinecraftClient.getInstance();
 
-        ItemStack selectedStack = getStaffStackFromHand(player);
+        ItemStack selectedStack = getStaffInHands(player);
         if (stack == null) {
             if (client.currentScreen instanceof StaffLensesScreen screen) screen.tryClose();
             return;
@@ -183,10 +184,10 @@ public class StaffItem extends Item {
     }
 
     @Nullable
-    public static ItemStack getStaffStackFromHand(LivingEntity entity) {
+    public static ItemStack getStaffInHands(LivingEntity entity) {
         return StreamSupport.stream(entity.getHandItems().spliterator(), false)
                 .filter(stack -> stack.getItem() instanceof StaffItem)
-                .findAny().orElse(null);
+                .findFirst().orElse(null);
     }
 
     @Nullable
@@ -195,5 +196,9 @@ public class StaffItem extends Item {
             if (entity.getStackInHand(hand).equals(stack)) return hand;
         }
         return null;
+    }
+
+    public static void setLensComponent(ItemStack staffStack, ItemStack lensStack) {
+        staffStack.set(ComponentTypes.STAFF_LENS, new ItemComponent(lensStack));
     }
 }

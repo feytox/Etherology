@@ -10,9 +10,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
-import ru.feytox.etherology.util.gecko.EGeoBlockRenderer;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class ArmillaryMatrixRenderer extends EGeoBlockRenderer<ArmillaryMatrixBlockEntity> {
+public class ArmillaryMatrixRenderer extends GeoBlockRenderer<ArmillaryMatrixBlockEntity> {
 
     private final BlockEntityRendererFactory.Context ctx;
 

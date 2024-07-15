@@ -27,7 +27,6 @@ public class RevelationViewItem extends TrinketItem implements TrinketRenderer {
     private static final Identifier TEXTURE = EIdentifier.of("textures/entity/trinket/revelation_view.png");
     private BipedEntityModel<LivingEntity> model;
 
-    // TODO: #upd check as equipment
     public RevelationViewItem() {
         super(new Settings().maxCount(1));
     }

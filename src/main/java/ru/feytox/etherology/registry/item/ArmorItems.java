@@ -47,10 +47,10 @@ public class ArmorItems {
     public static final Item ETHRIL_BOOTS = register("ethril_boots", new ArmorItem(ETHRIL, ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // ebony armor
-    public static final Item EBONY_HELMET = register("ebony_helmet", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.HELMET, new Item.Settings().attributeModifiers(createEbonyAttributes())));
-    public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Settings().attributeModifiers(createEbonyAttributes())));
-    public static final Item EBONY_LEGGINGS = register("ebony_leggings", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Settings().attributeModifiers(createEbonyAttributes())));
-    public static final Item EBONY_BOOTS = register("ebony_boots", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.BOOTS, new Item.Settings().attributeModifiers(createEbonyAttributes())));
+    public static final Item EBONY_HELMET = register("ebony_helmet", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.HELMET, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.HEAD))));
+    public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.CHEST))));
+    public static final Item EBONY_LEGGINGS = register("ebony_leggings", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.LEGS))));
+    public static final Item EBONY_BOOTS = register("ebony_boots", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.BOOTS, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.FEET))));
 
     // trinkets
     public static final Item REVELATION_VIEW = register("revelation_view", new RevelationViewItem());
@@ -61,7 +61,7 @@ public class ArmorItems {
         return ArmorMaterialsAccessor.callRegister(EIdentifier.strId(id), defense, enchantability, equipSound, toughness, knockbackResistance, repairIngredient);
     }
 
-    private static AttributeModifiersComponent createEbonyAttributes() {
-        return AttributeModifiersComponent.builder().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier("Armor movement speed", 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), AttributeModifierSlot.ARMOR).build();
+    private static AttributeModifiersComponent createEbonyAttributes(AttributeModifierSlot slot) {
+        return AttributeModifiersComponent.builder().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier("Armor movement speed", 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), slot).build();
     }
 }

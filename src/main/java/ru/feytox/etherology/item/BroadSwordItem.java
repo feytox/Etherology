@@ -23,7 +23,7 @@ public class BroadSwordItem extends TwoHandheldSword implements DoubleModel {
 
     public BroadSwordItem() {
         super(ToolMaterials.IRON, new Settings().maxDamage(476).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 5, -3.1f)
-                .with(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, new EntityAttributeModifier("Reach Distance Modifier", 1.25f, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), AttributeModifierSlot.MAINHAND)));
+                .with(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE, new EntityAttributeModifier("Reach Distance Modifier", 0.33f, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), AttributeModifierSlot.MAINHAND)));
     }
 
     public static boolean isUsing(PlayerEntity player) {

@@ -9,9 +9,9 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.LensItem;
+import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensMode;
-import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.CodecUtil;
 
 @Getter
@@ -35,7 +35,7 @@ public enum LensSelectionType {
             if (staffLensStack == null) return;
             staffLensStack = staffLensStack.copy();
             LensComponent.getWrapper(staffLensStack).ifPresent(lens -> lens.set(lensMode, LensComponent::withMode).save());
-            staffStack.set(ComponentTypes.STAFF_LENS, staffLensStack);
+            StaffItem.setLensComponent(staffStack, staffLensStack);
         };
     }
 

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public record LensModifier(Identifier modifierId) {
 
-    // TODO: 04.06.2024 consider to use vanilla registry
+    // TODO: 04.06.2024 consider using vanilla registry
     // registry
     private static final Map<Identifier, LensModifier> MODIFIERS = new Object2ObjectOpenHashMap<>();
 

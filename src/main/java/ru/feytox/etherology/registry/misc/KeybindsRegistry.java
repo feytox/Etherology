@@ -9,6 +9,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.item.StaffItem;
 import ru.feytox.etherology.network.interaction.StaffTakeLensC2S;
 
 import java.util.function.Consumer;
@@ -20,8 +21,9 @@ public class KeybindsRegistry {
 
     public static void registerAll() {
         registerHandler(client -> {
+            if (client.player == null) return;
             while (client.currentScreen == null && isPressed(client.options.sneakKey) && STAFF_INTERACTION.wasPressed()) {
-                val packet = new StaffTakeLensC2S();
+                val packet = new StaffTakeLensC2S(StaffItem.getStaffInHands(client.player));
                 packet.sendToServer();
             }
         });

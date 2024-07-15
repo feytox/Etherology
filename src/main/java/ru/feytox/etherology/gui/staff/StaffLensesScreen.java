@@ -65,7 +65,9 @@ public class StaffLensesScreen extends Screen {
     private LensWidget mainLensWidget = null;
     @Nullable
     private LensMode lensMode = null;
-    private float ticks; // TODO: 12.05.2024 consider to replace with smth else
+    @Nullable
+    private ItemStack staffStack = null;
+    private float ticks; // TODO: 12.05.2024 consider replacing with smth else
     private float progressTicks; // I use two variables to ensure that the circle rotation does not reset when the ticks are reset.
     private boolean isClosing = false;
 
@@ -258,15 +260,14 @@ public class StaffLensesScreen extends Screen {
     private void refreshData(MinecraftClient client, ClientPlayerEntity player) {
         lensWidgets = createLensWidgets(client);
 
-        ItemStack staffStack = StaffItem.getStaffStackFromHand(player);
-        ItemStack mainLens;
+        staffStack = StaffItem.getStaffInHands(player);
         if (staffStack == null) {
             mainLensWidget = null;
             lensMode = null;
             return;
         }
 
-        mainLens = LensItem.getStaffLens(staffStack);
+        ItemStack mainLens = LensItem.getStaffLens(staffStack);
         if (mainLens == null) {
             lensMode = null;
             return;
@@ -345,11 +346,12 @@ public class StaffLensesScreen extends Screen {
     }
 
     public void sendSelectionPacket() {
+        if (staffStack == null) return;
         if (selected.equals(LensSelectionType.NONE)) return;
         if (!selected.isEmptySelectedItem() && (lensWidgets == null || lensWidgets.isEmpty())) return;
 
         ItemStack stack = selectedStack == null ? ItemStack.EMPTY : selectedStack;
-        val packet = new StaffMenuSelectionC2S(selected, stack);
+        val packet = new StaffMenuSelectionC2S(selected, staffStack, stack);
         packet.sendToServer();
     }
 

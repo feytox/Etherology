@@ -4,8 +4,6 @@ import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeBuilder;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
@@ -13,7 +11,6 @@ import ru.feytox.etherology.block.beamer.BeamerBlock;
 import ru.feytox.etherology.block.forestLantern.ForestLanternBlock;
 import ru.feytox.etherology.block.peach.PeachSaplingBlock;
 import ru.feytox.etherology.block.peach.WeepingPeachLogBlock;
-import ru.feytox.etherology.block.signs.*;
 import ru.feytox.etherology.block.thuja.ThujaBlock;
 import ru.feytox.etherology.block.thuja.ThujaPlantBlock;
 import ru.feytox.etherology.mixin.BlocksAccessor;
@@ -44,10 +41,10 @@ public class DecoBlocks {
     public static final Block PEACH_FENCE = register("peach_fence", new FenceBlock(copy(OAK_FENCE))).withItem();
     public static final Block PEACH_FENCE_GATE = register("peach_fence_gate", new FenceGateBlock(PEACH_WOOD_TYPE, copy(OAK_FENCE_GATE))).withItem();
     public static final Block PEACH_PRESSURE_PLATE = register("peach_pressure_plate", new PressurePlateBlock(PEACH_TYPE, copy(OAK_PRESSURE_PLATE))).withItem();
-    public static final Block PEACH_SIGN = register("peach_sign", new EtherSignBlock(PEACH_WOOD_TYPE, copy(OAK_SIGN))).withoutItem();
-    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new EtherWallSignBlock(PEACH_WOOD_TYPE, copy(OAK_WALL_SIGN).dropsLike(PEACH_SIGN))).withoutItem();
-    public static final Block PEACH_HANGING_SIGN = register("peach_hanging_sign", new EtherHangingSignBlock(PEACH_WOOD_TYPE, copy(OAK_HANGING_SIGN))).withoutItem();
-    public static final Block PEACH_WALL_HANGING_SIGN = register("peach_wall_hanging_sign", new EtherWallHangingSignBlock(PEACH_WOOD_TYPE, copy(OAK_WALL_HANGING_SIGN).dropsLike(PEACH_HANGING_SIGN))).withoutItem();
+    public static final Block PEACH_SIGN = register("peach_sign", new SignBlock(PEACH_WOOD_TYPE, copy(OAK_SIGN))).withoutItem();
+    public static final Block PEACH_WALL_SIGN = register("peach_wall_sign", new WallSignBlock(PEACH_WOOD_TYPE, copy(OAK_WALL_SIGN).dropsLike(PEACH_SIGN))).withoutItem();
+    public static final Block PEACH_HANGING_SIGN = register("peach_hanging_sign", new HangingSignBlock(PEACH_WOOD_TYPE, copy(OAK_HANGING_SIGN))).withoutItem();
+    public static final Block PEACH_WALL_HANGING_SIGN = register("peach_wall_hanging_sign", new WallHangingSignBlock(PEACH_WOOD_TYPE, copy(OAK_WALL_HANGING_SIGN).dropsLike(PEACH_HANGING_SIGN))).withoutItem();
     public static final Block PEACH_TRAPDOOR = register("peach_trapdoor", new TrapdoorBlock(PEACH_TYPE, copy(OAK_TRAPDOOR))).withItem();
     public static final Block PEACH_LEAVES = register("peach_leaves", createLeavesBlock(BlockSoundGroup.AZALEA_LEAVES)).withItem(false);
 
@@ -105,17 +102,9 @@ public class DecoBlocks {
     public static final Block ATTRAHITE_BRICK_SLAB = register("attrahite_brick_slab", new SlabBlock(copy(STONE_SLAB))).withItem();
     public static final Block ATTRAHITE_BRICK_STAIRS = registerStairs("attrahite_brick_stairs", ATTRAHITE_BRICKS).withItem();
 
-    // sign block entity
-    public static final BlockEntityType<SignBlockEntity> ETHEROLOGY_SIGN = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("sign_block_entity"),
-            BlockEntityType.Builder.create(SignBlockEntity::new, PEACH_SIGN, PEACH_WALL_SIGN).build()
-    );
-    public static final BlockEntityType<EtherHangingSignBlockEntity> ETHEROLOGY_HANGING_SIGN = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("hanging_sign_block_entity"),
-            BlockEntityType.Builder.create(EtherHangingSignBlockEntity::new, PEACH_HANGING_SIGN, PEACH_WALL_HANGING_SIGN).build()
-    );
+    // signs
+    public static final Block[] SIGNS = {PEACH_SIGN, PEACH_WALL_SIGN};
+    public static final Block[] HANGING_SIGNS = {PEACH_HANGING_SIGN, PEACH_WALL_HANGING_SIGN};
 
     private static EBlock register(String id, Block block) {
         Block registredBlock = Registry.register(Registries.BLOCK, EIdentifier.of(id), block);

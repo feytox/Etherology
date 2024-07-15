@@ -2,11 +2,8 @@ package ru.feytox.etherology.enchantment;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -20,15 +17,12 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static net.minecraft.enchantment.Enchantments.*;
 
 @UtilityClass
 public class EtherEnchantments {
 
-    @Setter @Getter
-    private static boolean battlePickWeaponMatched = true;
     private static final Map<Class<? extends Item>, List<Enchantment>> bannedEnchantments = new Object2ObjectOpenHashMap<>();
 
     public static final Enchantment PEAL = register("peal", new PealEnchantment());

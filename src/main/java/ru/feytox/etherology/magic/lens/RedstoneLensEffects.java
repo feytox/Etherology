@@ -15,7 +15,7 @@ import ru.feytox.etherology.Etherology;
 
 import java.util.Map;
 
-// TODO: 09.07.2024 consider to replace with chunk component
+// TODO: 09.07.2024 consider replacing with chunk component
 // TODO: rename and maybe move
 public class RedstoneLensEffects extends PersistentState {
 

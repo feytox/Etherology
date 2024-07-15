@@ -29,7 +29,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.UUID;
 
-// TODO: 15.06.2024 consider to split into multiple files
+// TODO: 15.06.2024 consider splitting into multiple files
 @RequiredArgsConstructor
 public class EtherComponent implements ComponentV3, CopyableComponent<EtherComponent>, ServerTickingComponent, AutoSyncedComponent {
 

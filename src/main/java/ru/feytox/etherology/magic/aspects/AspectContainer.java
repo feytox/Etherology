@@ -17,11 +17,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.helpers.CheckReturnValue;
+import ru.feytox.etherology.util.misc.CodecUtil;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -180,10 +180,6 @@ public class AspectContainer {
         return new AspectContainer(result, null);
     }
 
-    public void writeBuf(PacketByteBuf buf) {
-        buf.writeMap(aspects, PacketByteBuf::writeEnumConstant, PacketByteBuf::writeInt);
-    }
-
     public Optional<Integer> max() {
         return aspects.values().stream().max(Comparator.comparingInt(Integer::intValue));
     }
@@ -207,14 +203,8 @@ public class AspectContainer {
         return sortedAspects.subList(0, limit);
     }
 
-    public static AspectContainer readBuf(PacketByteBuf buf) {
-        Map<Aspect, Integer> aspectMap = buf.readMap(buff -> buff.readEnumConstant(Aspect.class), PacketByteBuf::readInt);
-        // this.parents should not be written to buf
-        return new AspectContainer(aspectMap, null);
-    }
-
     static {
         CODEC = Codec.unboundedMap(Aspect.CODEC, Codec.INT).xmap(AspectContainer::new, AspectContainer::getAspects).stable();
-        PACKET_CODEC = PacketCodecs.map(Object2IntOpenHashMap::new, Aspect.PACKET_CODEC, PacketCodecs.VAR_INT).xmap(AspectContainer::new, AspectContainer::getMutableAspects);
+        PACKET_CODEC = CodecUtil.map(Object2IntOpenHashMap::new, Aspect.PACKET_CODEC, PacketCodecs.VAR_INT).xmap(AspectContainer::new, AspectContainer::getAspects);
     }
 }

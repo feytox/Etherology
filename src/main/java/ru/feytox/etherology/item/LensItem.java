@@ -25,9 +25,11 @@ import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.staff.*;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
+import ru.feytox.etherology.util.misc.ItemComponent;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -44,7 +46,6 @@ public abstract class LensItem extends Item {
     private final float streamCost;
     private final float chargeCost;
 
-    // TODO: #upd check damage
     protected LensItem(@Nullable StaffLenses lensType, float streamCost, float chargeCost) {
         super(new Settings().maxCount(1).maxDamage(100).component(ComponentTypes.LENS, LensComponent.EMPTY));
         this.lensType = lensType;
@@ -177,7 +178,7 @@ public abstract class LensItem extends Item {
         StaffLenses lensType = StaffLenses.getLens(lensStack);
         if (lensType == null) return;
 
-        staffStack.set(ComponentTypes.STAFF_LENS, lensStack.copy());
+        StaffItem.setLensComponent(staffStack, lensStack.copy());
         StaffComponent.getWrapper(staffStack)
                 .ifPresent(staff -> staff.set(new StaffPartInfo(StaffPart.LENS, lensType, StaffPattern.EMPTY), StaffComponent::setPartInfo).save());
 
@@ -212,8 +213,8 @@ public abstract class LensItem extends Item {
 
     @Nullable
     public static ItemStack getStaffLens(ItemStack staffStack) {
-        ItemStack lensStack = staffStack.get(ComponentTypes.STAFF_LENS);
-        return lensStack == null || lensStack.isEmpty() ? null : lensStack;
+        return Optional.ofNullable(staffStack.get(ComponentTypes.STAFF_LENS))
+                .map(ItemComponent::stack).filter(stack -> !stack.isEmpty()).orElse(null);
     }
 
     public boolean isUnadjusted() {

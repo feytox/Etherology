@@ -48,6 +48,11 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
         setCorruption(corruption == null ? new Corruption(value) : corruption.increment(value));
     }
 
+    public void decrement(float value) {
+        if (value <= MIN_CORRUPTION) return;
+        setCorruption(corruption == null ? new Corruption(value) : corruption.increment(-value));
+    }
+
     @Override
     public void readFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound corruptionNbt = nbt.getCompound("Corruption");
@@ -80,7 +85,7 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
         World world = worldChunk.getWorld();
         float tipValue = Math.min(corruptionLevel - INFECTION_LIMIT, 1.0f);
         ChunkPos chunkPos = worldChunk.getPos();
-        increment(-tipValue);
+        decrement(tipValue);
 
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
@@ -100,7 +105,7 @@ public class CorruptionComponent implements ServerTickingComponent, AutoSyncedCo
         float value = corruption.corruptionValue();
         if (ticks % (1200 * EVAPORATION_TICK_RATE * EVAPORATION_SPEED * (value + EVAPORATION_DELTA)) != 0) return true;
 
-        increment(-1);
+        decrement(1);
         return false;
     }
 }

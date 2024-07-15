@@ -49,7 +49,7 @@ public abstract class AbstractJewelryRecipe implements FeyRecipe<JewelryTableInv
         public static final Codec<Pattern> CODEC = Codec.STRING.listOf().flatXmap(Pattern::fromData, pattern -> pattern.data().map(DataResult::success).orElseGet(() -> DataResult.error(() -> "Cannot encode unpacked recipe")));
         public static final PacketCodec<ByteBuf, Pattern> PACKET_CODEC = LensPattern.PACKET_CODEC.xmap(pattern -> new Pattern(pattern, Optional.empty()), Pattern::pattern);
 
-        // TODO: 11.07.2024 consider to add error on wrong pattern
+        // TODO: 11.07.2024 consider adding error on wrong pattern
         private static DataResult<Pattern> fromData(List<String> data) {
             String flatPattern = String.join("", data);
             IntArraySet cracks = IntStream.range(1, flatPattern.length())

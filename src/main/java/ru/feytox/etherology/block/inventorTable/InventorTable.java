@@ -1,7 +1,6 @@
 package ru.feytox.etherology.block.inventorTable;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -11,7 +10,6 @@ import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +21,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-public class InventorTable extends FacingBlock implements RegistrableBlock {
+public class InventorTable extends HorizontalFacingBlock implements RegistrableBlock {
 
     private static final MapCodec<InventorTable> CODEC = MapCodec.unit(InventorTable::new);
     private static final VoxelShape OUTLINE_SHAPE;
@@ -97,7 +95,7 @@ public class InventorTable extends FacingBlock implements RegistrableBlock {
     }
 
     @Override
-    protected MapCodec<? extends FacingBlock> getCodec() {
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
         return CODEC;
     }
 }

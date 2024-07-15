@@ -8,7 +8,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.ItemEntity;
@@ -50,7 +49,7 @@ public class PedestalRenderer implements BlockEntityRenderer<PedestalBlockEntity
     public static void renderVanillaGroundItem(MatrixStack matrices, World world, ItemStack itemStack, VertexConsumerProvider vertexConsumers, float tickDelta, int light, ItemRenderer itemRenderer, Vec3d offset, float uniqueOffset, BlockPos blockPos) {
         matrices.push();
         matrices.translate(offset.x, offset.y, offset.z);
-        // TODO: 17.06.2024 consider to replace with something BETTER
+        // TODO: 17.06.2024 consider replacing with something BETTER
         LivingEntity pseudoEntity = itemStack.isOf(ToolItems.WARP_COUNTER) ? new PseudoLivingEntity(world, blockPos) : null;
         BakedModel bakedModel = itemRenderer.getModel(itemStack, world, pseudoEntity, 5678);
         boolean hasDepth = bakedModel.hasDepth();

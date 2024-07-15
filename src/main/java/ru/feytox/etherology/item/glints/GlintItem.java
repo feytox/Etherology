@@ -24,7 +24,6 @@ public class GlintItem extends Item {
 
     private final float maxEther;
 
-    // TODO: #upd check damage and tooltip
     public GlintItem(float maxEther) {
         super(new Settings().maxDamage(MathHelper.floor(maxEther)).customDamage((stack, amount, entity, slot, breakCallback) -> 0));
         this.maxEther = maxEther;

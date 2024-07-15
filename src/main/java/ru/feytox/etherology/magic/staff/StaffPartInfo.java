@@ -2,9 +2,11 @@ package ru.feytox.etherology.magic.staff;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.NonNull;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.model.EtherologyModels;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -18,6 +20,7 @@ public record StaffPartInfo(@NonNull StaffPart part, @NonNull StaffPattern first
                             @NonNull StaffPattern secondPattern) {
 
     public static final Codec<StaffPartInfo> CODEC;
+    public static final PacketCodec<ByteBuf, StaffPartInfo> PACKET_CODEC;
 
     public static List<StaffPartInfo> generateAll() {
         return Arrays.stream(StaffPart.values())
@@ -49,5 +52,8 @@ public record StaffPartInfo(@NonNull StaffPart part, @NonNull StaffPattern first
                 StaffPatterns.CODEC.fieldOf("pattern1").forGetter(StaffPartInfo::firstPattern),
                 StaffPatterns.CODEC.fieldOf("pattern2").forGetter(StaffPartInfo::secondPattern)
         ).apply(instance, StaffPartInfo::new));
+        PACKET_CODEC = PacketCodec.tuple(StaffPart.PACKET_CODEC, StaffPartInfo::part,
+                StaffPatterns.PACKET_CODEC, StaffPartInfo::firstPattern,
+                StaffPatterns.PACKET_CODEC, StaffPartInfo::secondPattern, StaffPartInfo::new);
     }
 }

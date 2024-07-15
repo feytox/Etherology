@@ -13,7 +13,6 @@ import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
 @Mixin(RedstoneView.class)
 public interface RedstoneViewMixin {
 
-    // TODO: #upd
     // TODO: 13.12.2023 simplify redstone lens injects
 
     @ModifyReturnValue(method = "isReceivingRedstonePower", at = @At("RETURN"))

@@ -4,19 +4,21 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lombok.With;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.world.World;
-import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.ItemData;
 
 import java.util.Optional;
 
 @With
-public record LensComponent(int charge, LensMode mode, LensPattern pattern, LensModifiersData modifiers,
-                            long endTick, int gameId) {
+public record LensComponent(int charge, LensMode mode, LensPattern pattern, LensModifiersData modifiers, long endTick) {
 
     public static final Codec<LensComponent> CODEC;
-    public static final LensComponent EMPTY = new LensComponent(0, LensMode.STREAM, LensPattern.empty(), LensModifiersData.empty(), -1, Etherology.GAME_ID);
+    public static final PacketCodec<RegistryByteBuf, LensComponent> PACKET_CODEC;
+    public static final LensComponent EMPTY = new LensComponent(0, LensMode.STREAM, LensPattern.empty(), LensModifiersData.empty(), -1);
 
     public LensComponent incrementCooldown(World world, long cooldown) {
         if (checkCooldown(world)) return withEndTick(world.getTime() + cooldown);
@@ -78,8 +80,12 @@ public record LensComponent(int charge, LensMode mode, LensPattern pattern, Lens
                         LensMode.CODEC.fieldOf("mode").forGetter(LensComponent::mode),
                         LensPattern.CODEC.fieldOf("pattern").forGetter(LensComponent::pattern),
                         LensModifiersData.CODEC.fieldOf("modifiers").forGetter(LensComponent::modifiers),
-                        Codec.LONG.fieldOf("end_tick").forGetter(LensComponent::endTick),
-                        Codec.INT.fieldOf("game_id").forGetter(LensComponent::gameId)
+                        Codec.LONG.fieldOf("end_tick").forGetter(LensComponent::endTick)
                 ).apply(instance, LensComponent::new));
+        PACKET_CODEC = PacketCodec.tuple(PacketCodecs.VAR_INT, LensComponent::charge,
+                LensMode.PACKET_CODEC, LensComponent::mode,
+                LensPattern.PACKET_CODEC, LensComponent::pattern,
+                LensModifiersData.PACKET_CODEC, LensComponent::modifiers,
+                PacketCodecs.VAR_LONG, LensComponent::endTick, LensComponent::new);
     }
 }

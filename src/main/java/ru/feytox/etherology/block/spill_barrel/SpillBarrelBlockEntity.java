@@ -4,7 +4,9 @@ import io.wispforest.owo.util.ImplementedInventory;
 import lombok.Setter;
 import lombok.val;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -129,6 +131,18 @@ public class SpillBarrelBlockEntity extends TickableBlockEntity implements Imple
             if (!items.get(i).isEmpty()) count++;
         }
         return count;
+    }
+
+    @Override
+    protected void addComponents(ComponentMap.Builder componentMapBuilder) {
+        super.addComponents(componentMapBuilder);
+        componentMapBuilder.add(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(items));
+    }
+
+    @Override
+    protected void readComponents(ComponentsAccess components) {
+        super.readComponents(components);
+        components.getOrDefault(DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT).copyTo(items);
     }
 
     @Override
