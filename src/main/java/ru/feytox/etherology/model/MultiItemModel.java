@@ -36,7 +36,7 @@ public abstract class MultiItemModel implements BakedModel, FabricBakedModel {
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
         BakedModelManager modelManager = MinecraftClient.getInstance().getBakedModelManager();
 
-        getModels().forEach(modelId -> modelManager.getModel(modelId).emitItemQuads(stack, randomSupplier, context));
+        getModels().forEach(modelId -> modelManager.getModel(modelId.id()).emitItemQuads(stack, randomSupplier, context));
     }
 
     @Override

@@ -16,6 +16,7 @@ import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.util.TriConsumer;
+import ru.feytox.etherology.data.EItemTags;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
@@ -23,7 +24,6 @@ import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.registry.item.ToolItems;
-import ru.feytox.etherology.registry.misc.TagsRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
@@ -78,7 +78,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
         registerFamilies(EBlockFamilies.FAMILIES, exporter, FeatureSet.of(FeatureFlags.VANILLA));
 
         // peach
-        offerPlanksRecipe(exporter, ExtraBlocksRegistry.PEACH_PLANKS, TagsRegistry.PEACH_LOGS, 4);
+        offerPlanksRecipe(exporter, ExtraBlocksRegistry.PEACH_PLANKS, EItemTags.PEACH_LOGS, 4);
         offerBarkBlockRecipe(exporter, PEACH_WOOD, PEACH_LOG);
         offerBarkBlockRecipe(exporter, STRIPPED_PEACH_WOOD, STRIPPED_PEACH_LOG);
         offerBoatRecipe(exporter, PEACH_BOAT, ExtraBlocksRegistry.PEACH_PLANKS);

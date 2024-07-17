@@ -69,12 +69,11 @@ public class EmpowerTableScreen extends HandledScreen<EmpowerTableScreenHandler>
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.enableBlend();
 
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-        bufferBuilder.vertex(matrix, (float)x0, (float)y1, 0).texture(u0, v1).color(1.0F, 1.0F, 1.0F, alpha).next();
-        bufferBuilder.vertex(matrix, (float)x1, (float)y1, 0).texture(u1, v1).color(1.0F, 1.0F, 1.0F, alpha).next();
-        bufferBuilder.vertex(matrix, (float)x1, (float)y0, 0).texture(u1, v0).color(1.0F, 1.0F, 1.0F, alpha).next();
-        bufferBuilder.vertex(matrix, (float)x0, (float)y0, 0).texture(u0, v0).color(1.0F, 1.0F, 1.0F, alpha).next();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+        bufferBuilder.vertex(matrix, (float)x0, (float)y1, 0).texture(u0, v1).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix, (float)x1, (float)y1, 0).texture(u1, v1).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix, (float)x1, (float)y0, 0).texture(u1, v0).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix, (float)x0, (float)y0, 0).texture(u0, v0).color(1.0F, 1.0F, 1.0F, alpha);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 

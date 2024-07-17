@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +22,7 @@ public class InGameHudMixin {
     }
 
     @Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I"))
-    private void injectRevelationRendering(DrawContext context, float tickDelta, CallbackInfo ci) {
+    private void injectRevelationRendering(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         EtherComponent.renderOverlay(context, ((InGameHud)(Object) this));
     }
 }

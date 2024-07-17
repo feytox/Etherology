@@ -24,12 +24,11 @@ public class RenderUtils {
         float v1 = (float) (v + regionHeight) / textureHeight;
 
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(matrix, x0, y1, 0).texture(u0, v1).next();
-        bufferBuilder.vertex(matrix, x1, y1, 0).texture(u1, v1).next();
-        bufferBuilder.vertex(matrix, x1, y0, 0).texture(u1, v0).next();
-        bufferBuilder.vertex(matrix, x0, y0, 0).texture(u0, v0).next();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex(matrix, x0, y1, 0).texture(u0, v1);
+        bufferBuilder.vertex(matrix, x1, y1, 0).texture(u1, v1);
+        bufferBuilder.vertex(matrix, x1, y0, 0).texture(u1, v0);
+        bufferBuilder.vertex(matrix, x0, y0, 0).texture(u0, v0);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
@@ -43,12 +42,11 @@ public class RenderUtils {
         float v1 = (float) (v + regionHeight) / textureHeight;
 
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(matrix, x0, y1, z).texture(u0, v1).next();
-        bufferBuilder.vertex(matrix, x1, y1, z).texture(u1, v1).next();
-        bufferBuilder.vertex(matrix, x1, y0, z).texture(u1, v0).next();
-        bufferBuilder.vertex(matrix, x0, y0, z).texture(u0, v0).next();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex(matrix, x0, y1, z).texture(u0, v1);
+        bufferBuilder.vertex(matrix, x1, y1, z).texture(u1, v1);
+        bufferBuilder.vertex(matrix, x1, y0, z).texture(u1, v0);
+        bufferBuilder.vertex(matrix, x0, y0, z).texture(u0, v0);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 

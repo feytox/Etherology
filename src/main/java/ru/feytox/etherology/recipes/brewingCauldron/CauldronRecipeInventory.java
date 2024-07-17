@@ -1,17 +1,18 @@
 package ru.feytox.etherology.recipes.brewingCauldron;
 
-import lombok.Getter;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.input.RecipeInput;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 
-@Getter
-public class CauldronRecipeInventory extends SimpleInventory {
+public record CauldronRecipeInventory(AspectContainer cauldronAspects, ItemStack stack) implements RecipeInput {
 
-    private final AspectContainer cauldronAspects;
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return stack;
+    }
 
-    public CauldronRecipeInventory(AspectContainer cauldronAspects, ItemStack stack) {
-        super(stack);
-        this.cauldronAspects = cauldronAspects;
+    @Override
+    public int getSize() {
+        return 1;
     }
 }

@@ -11,8 +11,8 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 import java.util.List;
 
 public class OculusModel extends MultiItemModel {
-    public static final ModelIdentifier OCULUS_BASE = EtherologyModels.createItemModelId("oculus_base");
-    public static final ModelIdentifier OCULUS_LENS = EtherologyModels.createItemModelId("oculus_lens");
+    public static final ModelIdentifier OCULUS_BASE = EtherologyModels.createItemModelId("item/oculus_base");
+    public static final ModelIdentifier OCULUS_LENS = EtherologyModels.createItemModelId("item/oculus_lens");
 
 
     @Override

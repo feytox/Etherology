@@ -25,10 +25,6 @@ public class LensRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack craft(JewelryTableInventory inventory, RegistryWrapper.WrapperLookup lookup) {
-        return craft(inventory);
-    }
-
     public ItemStack craft(JewelryTableInventory inventory) {
         ItemStack newLens = inventory.getStack(0).copyComponentsToNewStack(outputItem, 1);
         LensComponent.getWrapper(newLens).ifPresent(data -> data.set(LensPattern.empty(), LensComponent::withPattern).save());

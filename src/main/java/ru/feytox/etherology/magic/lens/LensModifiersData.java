@@ -41,7 +41,7 @@ public class LensModifiersData {
     @NonNull
     public static LensModifiersData readNbt(NbtCompound nbt) {
         val modifiers = nbt.getKeys().stream()
-                .collect(Collectors.toMap(Identifier::new, nbt::getInt, Integer::max, Object2IntOpenHashMap::new));
+                .collect(Collectors.toMap(Identifier::of, nbt::getInt, Integer::max, Object2IntOpenHashMap::new));
         return new LensModifiersData(modifiers);
     }
 

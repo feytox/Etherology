@@ -16,7 +16,7 @@
                     "predicates": {
                       "minecraft:enchantments": [
                         {
-                          "enchantment": "minecraft:silk_touch",
+                          "enchantments": "minecraft:silk_touch",
                           "levels": {
                             "min": 1
                           }
@@ -26,16 +26,24 @@
                   }
                 }
               ],
-              "name": "etherology:weeping_peach_log"
+              "name": "etherology:attrahite"
             },
             {
               "type": "minecraft:item",
               "conditions": [
                 {
-                  "condition": "minecraft:survives_explosion"
+                  "chance": 0.02,
+                  "condition": "etherology:random_chance_with_fortune",
+                  "enchantment": "minecraft:fortune",
+                  "fortune_multiplier": 0.02
                 }
               ],
-              "name": "etherology:peach_log"
+              "functions": [
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ],
+              "name": "etherology:enriched_attrahite"
             }
           ]
         }

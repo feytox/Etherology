@@ -35,7 +35,7 @@ public record StaffPartInfo(@NonNull StaffPart part, @NonNull StaffPattern first
         String suffix = part.getName();
         if (!firstPattern.isEmpty()) suffix += "_" + firstPattern.getName();
         if (!secondPattern.isEmpty()) suffix += "_" + secondPattern.getName();
-        return EtherologyModels.createItemModelId("staff_" + suffix);
+        return EtherologyModels.createItemModelId("item/staff_" + suffix);
     }
 
     public Identifier toTextureId() {

@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import ru.feytox.etherology.registry.misc.EtherEnchantments;
 import ru.feytox.etherology.world.BiomesGen;
 import ru.feytox.etherology.world.ConfiguredFeaturesGen;
 import ru.feytox.etherology.world.PlacedFeaturesGen;
@@ -17,7 +18,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-        pack.addProvider(WorldGeneration::new);
+        pack.addProvider(RegistriesGeneration::new);
         pack.addProvider(ModelGeneration::new);
         pack.addProvider(RuLangGeneration::new);
         pack.addProvider(RecipeGeneration::new);
@@ -28,7 +29,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     }
 
     /**
-     * @see WorldGeneration#configure(RegistryWrapper.WrapperLookup, FabricDynamicRegistryProvider.Entries) 
+     * @see RegistriesGeneration#configure(RegistryWrapper.WrapperLookup, FabricDynamicRegistryProvider.Entries)
      */
     @Override
     public void buildRegistry(RegistryBuilder registryBuilder) {
@@ -38,5 +39,6 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE, StructuresGen::registerStructures);
         registryBuilder.addRegistry(RegistryKeys.TEMPLATE_POOL, StructuresGen::registerTemplates);
         registryBuilder.addRegistry(RegistryKeys.BIOME, BiomesGen::registerBiomes);
+        registryBuilder.addRegistry(RegistryKeys.ENCHANTMENT, EtherEnchantments::generateEnchantments);
     }
 }

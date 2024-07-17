@@ -20,9 +20,6 @@ import java.io.Reader;
  * from <a href="https://github.com/TechReborn/TechReborn/blob/1.21/src/client/java/techreborn/client/render/ModelHelper.java">source</a>
  */
 public class ModelComponents {
-    // TODO: 02.01.2024 deprecate unused???
-    public static final ModelTransformation DEFAULT_ITEM = loadTransformFromJson(new Identifier("minecraft:models/item/generated"));
-    public static final ModelTransformation HANDHELD_ITEM = loadTransformFromJson(new Identifier("minecraft:models/item/handheld"));
     public static final ModelTransformation STAFF_ITEM = loadTransformFromJson(EIdentifier.of("models/item/staff_core"));
     public static final ModelTransformation STAFF_ITEM_STREAM = loadTransformFromJson(EIdentifier.of("models/item/staff_core_stream"));
     public static final ModelTransformation STAFF_ITEM_CHARGE = loadTransformFromJson(EIdentifier.of("models/item/staff_core_charge"));
@@ -38,14 +35,14 @@ public class ModelComponents {
         try {
             return JsonUnbakedModel.deserialize(getReaderForResource(location));
         } catch (IOException e) {
-            Etherology.ELOGGER.warn("Can't load resource " + location);
+            Etherology.ELOGGER.warn("Can't load resource {}", location);
             Etherology.ELOGGER.error(e.getMessage());
             return null;
         }
     }
 
     private static Reader getReaderForResource(Identifier location) throws IOException {
-        Identifier file = new Identifier(location.getNamespace(), location.getPath() + ".json");
+        Identifier file = Identifier.of(location.getNamespace(), location.getPath() + ".json");
         Resource resource = MinecraftClient.getInstance().getResourceManager().getResource(file).orElseThrow();
         return new BufferedReader(new InputStreamReader(resource.getInputStream(), Charsets.UTF_8));
     }

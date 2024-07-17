@@ -20,7 +20,7 @@ import ru.feytox.etherology.item.EtherShield;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 
-    @ModifyExpressionValue(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FLnet/minecraft/entity/damage/DamageSource;FF)F"))
+    @ModifyExpressionValue(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(Lnet/minecraft/entity/LivingEntity;FLnet/minecraft/entity/damage/DamageSource;FF)F"))
     private float getDamageByPick(float original, @Local(argsOnly = true) DamageSource source) {
         if (!(source.getAttacker() instanceof LivingEntity entity)) return original;
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
@@ -30,8 +30,8 @@ public abstract class LivingEntityMixin {
         return original;
     }
 
-    @ModifyExpressionValue(method = "modifyAppliedDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Ljava/lang/Iterable;Lnet/minecraft/entity/damage/DamageSource;)I"))
-    private int getProtectionOnPick(int original, @Local(argsOnly = true) DamageSource source) {
+    @ModifyExpressionValue(method = "modifyAppliedDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getProtectionAmount(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/damage/DamageSource;)F"))
+    private float getProtectionOnPick(float original, @Local(argsOnly = true) DamageSource source) {
         if (!(source.getAttacker() instanceof LivingEntity entity)) return original;
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return original;
 

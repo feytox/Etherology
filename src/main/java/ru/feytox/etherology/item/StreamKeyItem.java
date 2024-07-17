@@ -5,13 +5,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolItem;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.registry.block.EBlocks;
@@ -36,8 +36,7 @@ public class StreamKeyItem extends ToolItem {
 
     @Nullable
     private ActionResult tryUseOnChannel(ItemUsageContext context) {
-        World world = context.getWorld();
-        if (world.isClient) return null;
+        if (!(context.getWorld() instanceof ServerWorld world)) return null;
 
         BlockPos pos = context.getBlockPos();
         BlockState state = world.getBlockState(pos);
@@ -60,10 +59,9 @@ public class StreamKeyItem extends ToolItem {
         state = EBlocks.ETHEREAL_CHANNEL.getChannelState(world, state.with(EtherealChannel.FACING, pipeFacing), pos);
         world.setBlockState(pos, state, EtherealChannel.NOTIFY_ALL);
 
-
         Hand hand = context.getHand();
         if (isPlayer) stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
-        else stack.damage(1, world.random, null, () -> stack.decrement(1));
+        else stack.damage(1, world, null, item -> {});
 
         return ActionResult.SUCCESS;
     }

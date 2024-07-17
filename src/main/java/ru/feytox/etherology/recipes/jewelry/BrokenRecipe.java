@@ -22,13 +22,9 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack craft(JewelryTableInventory inventory, RegistryWrapper.WrapperLookup lookup) {
-        return craft(inventory);
-    }
-
     public ItemStack craft(JewelryTableInventory inventory) {
         ItemStack lensStack = inventory.getStack(0);
-        if (!(lensStack.getItem() instanceof LensItem lensItem)) return lensStack;
+        if (!(lensStack.getItem() instanceof LensItem)) return lensStack;
 
         JewelryBlockEntity parent = inventory.getParent();
         if (parent == null) return lensStack;
@@ -37,9 +33,7 @@ public class BrokenRecipe extends AbstractJewelryRecipe {
                 .ifPresent(data -> {
                     data.set(LensPattern.empty(), LensComponent::withPattern).save();
                     parent.applyCorruption();
-                    if (!LensItem.damageLens(lensStack, 5)) return;
-                    JewelryTableInventory.onLensDamage(parent, lensStack, lensItem);
-                    parent.trySyncData();
+                    inventory.damageLens(lensStack, 5);
                 });
 
         return lensStack;

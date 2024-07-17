@@ -7,15 +7,21 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.tag.*;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagGroupLoader;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.mixin.TagEntryAccessor;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @see TagInjector
  */
+@Deprecated
 @UtilityClass
 public class TagExcludeUtil {
 
@@ -27,7 +33,7 @@ public class TagExcludeUtil {
 
     @SafeVarargs
     public static <T> void exclude(Registry<T> registry, TagKey<T> tag, T... values) {
-        EXCLUDING.computeIfAbsent(new TagInjector.TagLocation(TagManagerLoader.getPath(registry.getKey()), tag.id()), location -> new ObjectOpenHashSet<>())
+        EXCLUDING.computeIfAbsent(new TagInjector.TagLocation(RegistryKeys.getTagPath(registry.getKey()), tag.id()), location -> new ObjectOpenHashSet<>())
                 .addAll(Arrays.stream(values).map(registry::getId).toList());
     }
 

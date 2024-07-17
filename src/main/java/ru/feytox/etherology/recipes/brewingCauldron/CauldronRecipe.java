@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
@@ -28,10 +27,9 @@ public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
 
     @Override
     public boolean matches(CauldronRecipeInventory inventory, World world) {
-        DefaultedList<ItemStack> stacks = inventory.heldStacks;
-        if (stacks.size() != 1 || !inputItem.test(stacks.get(0)) || stacks.get(0).getCount() < inputAmount) return false;
+        if (!inputItem.test(inventory.stack()) || inventory.stack().getCount() < inputAmount) return false;
 
-        ImmutableMap<Aspect, Integer> cauldronAspects = inventory.getCauldronAspects().getAspects();
+        ImmutableMap<Aspect, Integer> cauldronAspects = inventory.cauldronAspects().getAspects();
         for (Map.Entry<Aspect, Integer> inputEntry : inputAspects.getAspects().entrySet()) {
             Integer cauldronValue = cauldronAspects.get(inputEntry.getKey());
             if (cauldronValue == null || cauldronValue < inputEntry.getValue()) return false;

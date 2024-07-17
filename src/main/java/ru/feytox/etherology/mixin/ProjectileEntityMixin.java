@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.enchantment.ReflectionEnchantment;
+import ru.feytox.etherology.registry.misc.EtherEnchantments;
 
 @Mixin(ProjectileEntity.class)
 public class ProjectileEntityMixin {
@@ -16,7 +16,7 @@ public class ProjectileEntityMixin {
     private void cancelByEtherShield(HitResult hitResult, CallbackInfo ci) {
         if (!(hitResult instanceof EntityHitResult entityHitResult)) return;
         ProjectileEntity projectile = ((ProjectileEntity) (Object) this);
-        if (ReflectionEnchantment.applyReflection(entityHitResult, projectile)) return;
+        if (EtherEnchantments.applyReflection(entityHitResult, projectile)) return;
         ci.cancel();
     }
 }

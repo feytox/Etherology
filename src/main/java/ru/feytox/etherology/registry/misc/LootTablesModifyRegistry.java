@@ -1,8 +1,8 @@
 package ru.feytox.etherology.registry.misc;
 
 import lombok.experimental.UtilityClass;
-import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
-import net.fabricmc.fabric.api.loot.v2.LootTableSource;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.minecraft.item.Item;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -11,6 +11,7 @@ import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import ru.feytox.etherology.registry.item.EItems;
 
 import static net.minecraft.loot.LootTables.*;
@@ -22,7 +23,7 @@ public class LootTablesModifyRegistry {
         LootTableEvents.MODIFY.register(LootTablesModifyRegistry::registerModifications);
     }
 
-    private static void registerModifications(RegistryKey<LootTable> key, LootTable.Builder builder, LootTableSource lootTableSource) {
+    private static void registerModifications(RegistryKey<LootTable> key, LootTable.Builder builder, LootTableSource lootTableSource, RegistryWrapper.WrapperLookup wrapperLookup) {
         if (injectTabletPattern(key.equals(BASTION_OTHER_CHEST) || key.equals(BASTION_BRIDGE_CHEST) || key.equals(BASTION_TREASURE_CHEST) || key.equals(BASTION_HOGLIN_STABLE_CHEST), EItems.ROYAL_PATTERN_TABLET, builder)) return;
         if (injectTabletPattern(key.equals(WOODLAND_MANSION_CHEST), EItems.ARISTOCRAT_PATTERN_TABLET, builder)) return;
         if (injectTabletPattern(key.equals(DESERT_PYRAMID_CHEST), EItems.RITUAL_PATTERN_TABLET, builder)) return;

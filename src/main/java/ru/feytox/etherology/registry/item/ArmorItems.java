@@ -9,15 +9,18 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import ru.feytox.etherology.item.revelationView.RevelationViewItem;
-import ru.feytox.etherology.mixin.ArmorMaterialsAccessor;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static ru.feytox.etherology.registry.item.ToolItems.register;
@@ -25,7 +28,7 @@ import static ru.feytox.etherology.registry.item.ToolItems.register;
 @UtilityClass
 public class ArmorItems {
 
-    // armor materials 2 6 5 2
+    // materials
     public static final RegistryEntry<ArmorMaterial> EBONY_MATERIAL = registerMaterial("ebony", Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(ArmorItem.Type.BOOTS, 2);
         map.put(ArmorItem.Type.LEGGINGS, 5);
@@ -38,7 +41,7 @@ public class ArmorItems {
         map.put(ArmorItem.Type.CHESTPLATE, 8);
         map.put(ArmorItem.Type.HELMET, 3);
     }), 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.ofItems(DecoBlockItems.ETHRIL_INGOT));
-
+    private static final Identifier EBONY_SPEED_ID = EIdentifier.of("ebony_speed");
 
     // ethril armor
     public static final Item ETHRIL_HELMET = register("ethril_helmet", new ArmorItem(ETHRIL, ArmorItem.Type.HELMET, new Item.Settings()));
@@ -58,10 +61,10 @@ public class ArmorItems {
     public static void registerAll() {}
 
     private static RegistryEntry<ArmorMaterial> registerMaterial(String id, EnumMap<ArmorItem.Type, Integer> defense, int enchantability, RegistryEntry<SoundEvent> equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
-        return ArmorMaterialsAccessor.callRegister(EIdentifier.strId(id), defense, enchantability, equipSound, toughness, knockbackResistance, repairIngredient);
+        return Registry.registerReference(Registries.ARMOR_MATERIAL, EIdentifier.of(id), new ArmorMaterial(defense, enchantability, equipSound, repairIngredient, List.of(new ArmorMaterial.Layer(EIdentifier.of(id))), toughness, knockbackResistance));
     }
 
     private static AttributeModifiersComponent createEbonyAttributes(AttributeModifierSlot slot) {
-        return AttributeModifiersComponent.builder().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier("Armor movement speed", 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), slot).build();
+        return AttributeModifiersComponent.builder().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(EBONY_SPEED_ID, 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), slot).build();
     }
 }

@@ -5,14 +5,13 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
+import ru.feytox.etherology.data.EBlockTags;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
 import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
-import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +22,6 @@ import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 
 public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
-
-    public static final TagKey<Block> PEACH_LOGS = TagKey.of(RegistryKeys.BLOCK, EIdentifier.of("peach_logs"));
 
     public BlockTagGeneration(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
@@ -42,7 +39,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addVariant(BlockTags.WALLS, BlockFamily.Variant.WALL, stoneFamilies);
         addVariant(BlockTags.STONE_PRESSURE_PLATES, BlockFamily.Variant.PRESSURE_PLATE, stoneFamilies);
 
-        addBlocks(PEACH_LOGS, DecoBlocks.PEACH_LOG, DecoBlocks.PEACH_WOOD, DecoBlocks.STRIPPED_PEACH_LOG, DecoBlocks.STRIPPED_PEACH_WOOD);
+        addBlocks(EBlockTags.PEACH_LOGS, DecoBlocks.PEACH_LOG, DecoBlocks.PEACH_WOOD, DecoBlocks.STRIPPED_PEACH_LOG, DecoBlocks.STRIPPED_PEACH_WOOD);
         addBlocks(BlockTags.WOODEN_BUTTONS, DecoBlocks.PEACH_BUTTON);
         addBlocks(BlockTags.WOODEN_DOORS, DecoBlocks.PEACH_DOOR);
         addBlocks(BlockTags.PLANKS, ExtraBlocksRegistry.PEACH_PLANKS);
@@ -57,8 +54,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.CEILING_HANGING_SIGNS, DecoBlocks.PEACH_HANGING_SIGN);
         addBlocks(BlockTags.WALL_HANGING_SIGNS, DecoBlocks.PEACH_WALL_HANGING_SIGN);
         addBlocks(BlockTags.LEAVES, DecoBlocks.PEACH_LEAVES);
-        addTags(BlockTags.LOGS, PEACH_LOGS);
-        addTags(BlockTags.LOGS_THAT_BURN, PEACH_LOGS);
+        addTags(BlockTags.LOGS, EBlockTags.PEACH_LOGS);
+        addTags(BlockTags.LOGS_THAT_BURN, EBlockTags.PEACH_LOGS);
         addBlocks(BlockTags.LOGS, DecoBlocks.WEEPING_PEACH_LOG);
         addBlocks(BlockTags.LOGS_THAT_BURN, DecoBlocks.WEEPING_PEACH_LOG);
 

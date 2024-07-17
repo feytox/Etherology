@@ -2,7 +2,6 @@ package ru.feytox.etherology.recipes.empower;
 
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
-import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.chars.CharArraySet;
 import it.unimi.dsi.fastutil.chars.CharSet;
 import lombok.AccessLevel;
@@ -21,13 +20,14 @@ import ru.feytox.etherology.mixin.DataAccessor;
 import ru.feytox.etherology.mixin.DefaultedListAccessor;
 import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
+import ru.feytox.etherology.util.misc.InventoryRecipeInput;
 
 import java.util.List;
 import java.util.Optional;
 
 @Getter
 @RequiredArgsConstructor
-public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
+public class EmpowerRecipe implements FeyRecipe<InventoryRecipeInput> {
 
     private final Pattern pattern;
     private final int rellaCount;
@@ -38,7 +38,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
     private final ItemStack outputStack;
 
     @Override
-    public boolean matches(ImplementedInventory inventory, World world) {
+    public boolean matches(InventoryRecipeInput inventory, World world) {
         if (inventory.size() != 10) return false;
 
         int invSlot = 0;
@@ -58,7 +58,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
         return true;
     }
 
-    public boolean checkShards(ImplementedInventory inventory) {
+    public boolean checkShards(InventoryRecipeInput inventory) {
         return inventory.getStack(5).getCount() >= rellaCount
                 && inventory.getStack(6).getCount() >= viaCount
                 && inventory.getStack(7).getCount() >= closCount
@@ -66,7 +66,7 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
     }
 
     @Override
-    public ItemStack craft(ImplementedInventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(InventoryRecipeInput inventory, RegistryWrapper.WrapperLookup lookup) {
         return ItemStack.EMPTY;
     }
 

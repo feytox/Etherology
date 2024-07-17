@@ -25,7 +25,7 @@ public class ModelPredicates {
 
     private static void register(String id, ClampedModelPredicateProvider provider, Item... items) {
         if (items.length == 0) throw new IllegalArgumentException("Expected > 1 items to register, found 0");
-        Arrays.stream(items).forEach(item -> ModelPredicateProviderRegistry.register(item, new Identifier(id), provider));
+        Arrays.stream(items).forEach(item -> ModelPredicateProviderRegistry.register(item, Identifier.of(id), provider));
     }
 
     public static void registerAll() {

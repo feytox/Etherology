@@ -1,6 +1,7 @@
 package ru.feytox.etherology.mixin;
 
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.render.model.BlockStatesLoader;
 import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
 import net.minecraft.client.util.ModelIdentifier;
@@ -21,15 +22,15 @@ import java.util.Map;
 @Mixin(ModelLoader.class)
 public abstract class ModelLoaderMixin {
 
-    @Shadow protected abstract void addModel(ModelIdentifier modelId);
+    @Shadow protected abstract void loadItemModel(ModelIdentifier id);
 
-    @Inject(method = "<init>(Lnet/minecraft/client/color/block/BlockColors;Lnet/minecraft/util/profiler/Profiler;Ljava/util/Map;Ljava/util/Map;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/model/ModelLoader;addModel(Lnet/minecraft/client/util/ModelIdentifier;)V", ordinal = 2))
-    private void injectInHandModels(BlockColors blockColors, Profiler profiler, Map<Identifier, JsonUnbakedModel> jsonUnbakedModels, Map<Identifier, List<ModelLoader.SourceTrackedData>> blockStates, CallbackInfo ci) {
+    @Inject(method = "<init>(Lnet/minecraft/client/color/block/BlockColors;Lnet/minecraft/util/profiler/Profiler;Ljava/util/Map;Ljava/util/Map;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/model/ModelLoader;loadItemModel(Lnet/minecraft/client/util/ModelIdentifier;)V", ordinal = 0))
+    private void injectInHandModels(BlockColors blockColors, Profiler profiler, Map<Identifier, JsonUnbakedModel> jsonUnbakedModels, Map<Identifier, List<BlockStatesLoader.SourceTrackedData>> blockStates, CallbackInfo ci) {
         // TODO: 02.01.2024 simplify
-        addModel(EtherologyModels.getReplacedModel(ToolItems.BROADSWORD, true));
-        addModel(EtherologyModels.getReplacedModel(ToolItems.OCULUS, true));
-        addModel(EtherologyModelProvider.STAFF);
-        addModel(EtherologyModelProvider.STAFF_STREAM);
-        addModel(EtherologyModelProvider.STAFF_CHARGE);
+        loadItemModel(EtherologyModels.getReplacedModel(ToolItems.BROADSWORD, true));
+        loadItemModel(EtherologyModels.getReplacedModel(ToolItems.OCULUS, true));
+        loadItemModel(EtherologyModelProvider.STAFF);
+        loadItemModel(EtherologyModelProvider.STAFF_STREAM);
+        loadItemModel(EtherologyModelProvider.STAFF_CHARGE);
     }
 }

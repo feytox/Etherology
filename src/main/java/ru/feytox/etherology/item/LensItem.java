@@ -3,10 +3,10 @@ package ru.feytox.etherology.item;
 import com.google.common.base.Suppliers;
 import lombok.Getter;
 import lombok.val;
-import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -121,7 +121,7 @@ public abstract class LensItem extends Item {
     /**
      * @return true if damaged, otherwise - false
      */
-    public static boolean damageLens(ItemStack lensStack, int damage) {
+    public static boolean damageLens(ServerWorld world, ItemStack lensStack, int damage) {
         if (!(lensStack.getItem() instanceof LensItem)) return false;
         Random random = RANDOM_PROVIDER.get();
         float damageChance = getDamageChance(lensStack);
@@ -131,7 +131,7 @@ public abstract class LensItem extends Item {
             if (lensStack.isEmpty()) break;
             if (damageChance < 1.0f && random.nextFloat() > damageChance) continue;
             isDamaged = true;
-            lensStack.damage(1, random, null, () -> lensStack.decrement(1));
+            lensStack.damage(1, world, null, item -> {});
         }
 
         return isDamaged;

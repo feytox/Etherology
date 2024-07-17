@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableInventory;
 import ru.feytox.etherology.magic.lens.LensComponent;
@@ -30,6 +31,13 @@ public abstract class AbstractJewelryRecipe implements FeyRecipe<JewelryTableInv
     public boolean matches(JewelryTableInventory inventory, World world) {
         return recipeMatches(inventory.getStack(0));
     }
+
+    @Override
+    public ItemStack craft(JewelryTableInventory input, RegistryWrapper.WrapperLookup lookup) {
+        return craft(input);
+    }
+
+    public abstract ItemStack craft(JewelryTableInventory input);
 
     protected boolean recipeMatches(ItemStack lensStack) {
         return LensComponent.get(lensStack)

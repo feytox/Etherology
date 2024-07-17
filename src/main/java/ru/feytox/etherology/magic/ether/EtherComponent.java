@@ -27,8 +27,6 @@ import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-import java.util.UUID;
-
 // TODO: 15.06.2024 consider splitting into multiple files
 @RequiredArgsConstructor
 public class EtherComponent implements ComponentV3, CopyableComponent<EtherComponent>, ServerTickingComponent, AutoSyncedComponent {
@@ -45,8 +43,8 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     private static final int REGEN_TICKS = 40;
     private static final int EX_TICKS = 20;
 
-    private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("162b5a0d-deca-47e0-b829-929af7985629");
-    private static final UUID SPEED_MODIFIER_ID = UUID.fromString("3364a987-2858-485d-948c-2bcf93c0ad1d");
+    private static final Identifier HEALTH_MODIFIER_ID = EIdentifier.of("devastating_health");
+    private static final Identifier SPEED_MODIFIER_ID = EIdentifier.of("devastating_speed");
     private static final Identifier OUTLINE = EIdentifier.of("textures/misc/corruption_outline.png");
 
     private static final Identifier FULL_HEART = EIdentifier.of("hud/heart/devastating_full");
@@ -170,7 +168,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         if (healthModifier >= 1.0f) return;
 
         double baseModifier = 20.0f / attrInstance.getValue();
-        attrInstance.addTemporaryModifier(new EntityAttributeModifier(HEALTH_MODIFIER_ID, "Max Health Exhaustion modifier", healthModifier * baseModifier - 1.0f, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        attrInstance.addTemporaryModifier(new EntityAttributeModifier(HEALTH_MODIFIER_ID, healthModifier * baseModifier - 1.0f, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     }
 
     private void tickSpeed() {
@@ -182,7 +180,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
         if (modifier >= 1.0f || modifier <= 0.0f) return;
 
         modifier *= -0.025;
-        attrInstance.addTemporaryModifier(new EntityAttributeModifier(SPEED_MODIFIER_ID, "Speed Exhaustion modifier", modifier, EntityAttributeModifier.Operation.ADD_VALUE));
+        attrInstance.addTemporaryModifier(new EntityAttributeModifier(SPEED_MODIFIER_ID, modifier, EntityAttributeModifier.Operation.ADD_VALUE));
     }
 
     private boolean checkRand(World world, float chance) {

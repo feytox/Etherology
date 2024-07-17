@@ -1,12 +1,12 @@
 package ru.feytox.etherology.recipes.staff;
 
 import net.minecraft.block.DyedCarpetBlock;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Pair;
 import net.minecraft.world.World;
@@ -24,21 +24,21 @@ public class StaffCarpetingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInputInventory inventory, World world) {
+    public boolean matches(CraftingRecipeInput inventory, World world) {
         Pair<Integer, Integer> result = getIndexesOfStaffAndCarpet(inventory);
         return result != null;
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(CraftingRecipeInput inventory, RegistryWrapper.WrapperLookup lookup) {
         Pair<Integer, Integer> pair = getIndexesOfStaffAndCarpet(inventory);
         if (pair == null) {
             throw new NullPointerException("Could not find staff and/or carpet");
         }
 
-        ItemStack staffStack = inventory.getStack(pair.getLeft());
+        ItemStack staffStack = inventory.getStackInSlot(pair.getLeft());
         ItemStack resultStack = staffStack.copy();
-        ItemStack carpetStack = inventory.getStack(pair.getRight());
+        ItemStack carpetStack = inventory.getStackInSlot(pair.getRight());
 
         if (!(carpetStack.getItem() instanceof BlockItem blockItem) || !(blockItem.getBlock() instanceof DyedCarpetBlock carpet)) {
             throw new NullPointerException("Could not find carpet");
@@ -56,19 +56,19 @@ public class StaffCarpetingRecipe extends SpecialCraftingRecipe {
     }
 
     @Nullable
-    private static Pair<Integer, Integer> getIndexesOfStaffAndCarpet(RecipeInputInventory inventory) {
+    private static Pair<Integer, Integer> getIndexesOfStaffAndCarpet(CraftingRecipeInput inventory) {
         return getIndexesOfPair(inventory, stack -> stack.isOf(ToolItems.STAFF), stack -> stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof DyedCarpetBlock);
     }
 
     @Nullable
-    public static Pair<Integer, Integer> getIndexesOfPair(RecipeInputInventory inventory, Predicate<ItemStack> leftPredicate, Predicate<ItemStack> rightPredicate) {
+    public static Pair<Integer, Integer> getIndexesOfPair(CraftingRecipeInput inventory, Predicate<ItemStack> leftPredicate, Predicate<ItemStack> rightPredicate) {
         int leftCount = 0;
         int rightCount = 0;
         int leftIndex = -1;
         int rightIndex = -1;
 
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
             if (stack.isEmpty()) continue;
             if (leftPredicate.test(stack)) {
                 leftCount++;

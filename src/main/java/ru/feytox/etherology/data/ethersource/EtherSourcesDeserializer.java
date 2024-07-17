@@ -18,7 +18,7 @@ public class EtherSourcesDeserializer {
         Map<Identifier, Float> result = new HashMap<>();
 
         itemsJson.forEach((itemId, jsonElement) -> {
-            Identifier id = new Identifier(itemId);
+            Identifier id = Identifier.of(itemId);
             float value = jsonElement.getAsFloat();
             result.put(id, value);
         });

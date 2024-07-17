@@ -1,6 +1,5 @@
 package ru.feytox.etherology.block.jewelryTable;
 
-import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,12 +25,13 @@ import ru.feytox.etherology.recipes.jewelry.BrokenRecipe;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
+import ru.feytox.etherology.util.misc.InventoryRecipeInput;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class JewelryTableInventory implements ImplementedInventory {
+public class JewelryTableInventory implements InventoryRecipeInput {
 
     public static final List<Integer> EMPTY_CELLS;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -52,7 +52,7 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        ImplementedInventory.super.setStack(slot, stack);
+        InventoryRecipeInput.super.setStack(slot, stack);
         if (stack.isEmpty()) {
             resetRecipe();
             return;
@@ -184,12 +184,24 @@ public class JewelryTableInventory implements ImplementedInventory {
      * @return true if lens broken, otherwise - false
      */
     public boolean damageLens(int amount) {
-        ItemStack lensStack = getStack(0);
+        return damageLens(getStack(0), amount);
+    }
+
+    /**
+     * @return true if lens broken, otherwise - false
+     */
+    public boolean damageLens(ItemStack lensStack, int amount) {
+        if (!(getWorld() instanceof ServerWorld world)) return false;
         Item lensItem = lensStack.getItem();
-        if (!LensItem.damageLens(lensStack, amount)) return false;
+        if (!LensItem.damageLens(world, lensStack, amount)) return false;
 
         markDirty();
         return onLensDamage(parent, lensStack, lensItem);
+    }
+
+    @Nullable
+    public World getWorld() {
+        return parent == null ? null : parent.getWorld();
     }
 
     public static boolean onLensDamage(@Nullable JewelryBlockEntity table, ItemStack lensStack, Item lensItem) {
@@ -219,7 +231,7 @@ public class JewelryTableInventory implements ImplementedInventory {
 
     @Override
     public void markDirty() {
-        ImplementedInventory.super.markDirty();
+        InventoryRecipeInput.super.markDirty();
         if (parent != null) parent.trySyncData();
     }
 

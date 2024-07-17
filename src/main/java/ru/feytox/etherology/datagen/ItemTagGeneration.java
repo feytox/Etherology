@@ -9,8 +9,9 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.data.EBlockTags;
+import ru.feytox.etherology.data.EItemTags;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
-import ru.feytox.etherology.registry.misc.TagsRegistry;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -46,10 +47,10 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.FENCES, FENCES);
 
         addItems(BEACON_PAYMENT_ITEMS, DecoBlockItems.EBONY_INGOT, DecoBlockItems.ETHRIL_INGOT);
-        copy(BlockTagGeneration.PEACH_LOGS, TagsRegistry.PEACH_LOGS);
+        copy(EBlockTags.PEACH_LOGS, EItemTags.PEACH_LOGS);
 
-        addItems(TagsRegistry.TUNING_MACES, TUNING_MACE);
-        addItems(TagsRegistry.ETHER_SHIELDS, IRON_SHIELD);
+        addItems(EItemTags.TUNING_MACES, TUNING_MACE);
+        addItems(EItemTags.ETHER_SHIELDS, IRON_SHIELD);
 
         addItems(AXES, ETHRIL_AXE, EBONY_AXE);
         addItems(HOES, ETHRIL_HOE, EBONY_HOE);

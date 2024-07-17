@@ -54,8 +54,7 @@ public class JewelryTableScreenHandler extends ScreenHandler {
             id -= 100;
         }
 
-        boolean result = tableInv.markCell(isSoft, id);
-        if (!result) return false;
+        if (!tableInv.markCell(isSoft, id)) return false;
 
         boolean broken = tableInv.damageLens(isSoft ? 1 : 2);
         if (!isSoft && !broken) tableInv.updateCells(id);

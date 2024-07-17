@@ -53,7 +53,7 @@ public class RevelationViewItem extends TrinketItem implements TrinketRenderer {
         model.animateModel(entity, limbAngle, limbDistance, tickDelta);
         TrinketRenderer.followBodyRotations(entity, model);
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.getLayer(TEXTURE));
-        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+        model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
     }
 
     @Environment(EnvType.CLIENT)

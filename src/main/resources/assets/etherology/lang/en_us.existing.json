@@ -1,6 +1,4 @@
 {
-  "tag.item.etherology.peach_logs": "Peach Logs",
-
   "item.etherology.glint.fullness": "%d/%d эфира",
   "lore.etherology.primoshard": "%s",
   "lore.etherology.spill_barrel.filled": "Наполнена \"%s%s\" в объёме %dx",

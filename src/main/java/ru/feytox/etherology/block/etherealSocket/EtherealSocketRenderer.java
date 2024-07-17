@@ -139,15 +139,15 @@ public class EtherealSocketRenderer implements BlockEntityRenderer<EtherealSocke
 
         vertexConsumer.vertex(modelMatrix, 0.0f, (float) height, 0.0f)
                 .color(255, 255, 255, 255).texture(0.0f, v2)
-                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f);
         vertexConsumer.vertex(modelMatrix, (float) width, (float) height, 0.0f)
                 .color(255, 255, 255, 255).texture(u2, v2)
-                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f);
         vertexConsumer.vertex(modelMatrix, (float) width, 0.0f, 0.0f)
                 .color(255, 255, 255, 255).texture(u2, 0.0f)
-                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f);
         vertexConsumer.vertex(modelMatrix, 0.0f, 0.0f, 0.0f)
                 .color(255, 255, 255, 255).texture(0.0f, 0.0f)
-                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f).next();
+                .overlay(overlay).light(light).normal(0.0f, 0.0f, 1.0f);
     }
 }

@@ -6,10 +6,12 @@ import lombok.val;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
@@ -36,12 +38,17 @@ public class StaffModel extends MultiItemModel {
 
         staffData.parts().values().forEach(partInfo -> {
             ModelIdentifier modelId = partInfo.toModelId();
-            modelManager.getModel(modelId).emitItemQuads(stack, randomSupplier, context);
+            BakedModel model = modelManager.getModel(modelId.id());
+            model.emitItemQuads(stack, randomSupplier, context);
         });
     }
 
     public static void loadPartModels(ModelLoadingPlugin.Context context) {
-        StaffPartInfo.generateAll().stream().map(StaffPartInfo::toModelId).forEach(context::addModels);
+        for (StaffPartInfo staffPartInfo : StaffPartInfo.generateAll()) {
+            ModelIdentifier modelId = staffPartInfo.toModelId();
+            Identifier id = modelId.id();
+            context.addModels(id);
+        }
     }
 
     @Override

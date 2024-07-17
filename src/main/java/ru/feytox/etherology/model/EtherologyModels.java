@@ -5,6 +5,7 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.data.client.Model;
 import net.minecraft.data.client.TextureKey;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.staff.StaffPart;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
@@ -26,7 +27,7 @@ public class EtherologyModels {
     public static ModelIdentifier getReplacedModel(Item item, boolean isInHand) {
         if (!(item instanceof DoubleModel)) return null;
         String modelPath = item + (isInHand ? "_in_hand" : "");
-        return createItemModelId(modelPath);
+        return new ModelIdentifier(Identifier.of(modelPath), "inventory");
     }
 
     public static ModelIdentifier createItemModelId(String modelPath) {

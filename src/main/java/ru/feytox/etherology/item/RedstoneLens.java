@@ -50,7 +50,7 @@ public class RedstoneLens extends LensItem {
             RedstoneLensEffects.getServerState(serverWorld).addUsage(serverWorld, hitPos, power, 10);
         }
 
-        boolean isDamaged = LensItem.damageLens(lensStack, 1);
+        boolean isDamaged = LensItem.damageLens(serverWorld, lensStack, 1);
         Vec3d startPos = entity.getBoundingBox().getCenter().add(entity.getHandPosOffset(ToolItems.STAFF));
         val packet = new RedstoneLensStreamS2C(startPos, blockHitResult.getPos(), isMiss);
         if (entity instanceof ServerPlayerEntity player) {
@@ -73,7 +73,7 @@ public class RedstoneLens extends LensItem {
 
     @Override
     public boolean onChargeStop(World world, LivingEntity entity, ItemData<LensComponent> lensData, ItemStack lensStack, int holdTicks, Supplier<Hand> handGetter) {
-        if (world.isClient) {
+        if (world.isClient || !(world instanceof ServerWorld serverWorld)) {
             entity.swingHand(handGetter.get());
             return false;
         }
@@ -89,7 +89,7 @@ public class RedstoneLens extends LensItem {
         int maxAge = lensData.getComponent().calcRoundValue(LensModifier.AREA, 100, 300, 0.8f);
         RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, power, holdTicks, speed, maxAge);
         world.spawnEntity(blob);
-        return LensItem.damageLens(lensStack, 1);
+        return LensItem.damageLens(serverWorld, lensStack, 1);
     }
 
     private int getPower(LensComponent lensData) {

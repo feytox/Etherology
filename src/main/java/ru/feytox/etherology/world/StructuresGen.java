@@ -34,9 +34,6 @@ import java.util.Map;
 @UtilityClass
 public class StructuresGen {
 
-    // TODO: 30.06.2024 remove
-    // /execute positioned ~2500 ~ ~2500 run locate structure etherology:ether_monolith
-
     private static final RegistryKey<StructureSet> ETHER_MONOLITHS = of("ether_monoliths", RegistryKeys.STRUCTURE_SET);
     public static final RegistryKey<Structure> ETHER_MONOLITH = of("ether_monolith", RegistryKeys.STRUCTURE);
     private static final RegistryKey<StructurePool> ETHER_MONOLITH_START_POOL = of("ether_monolith_start_pool", RegistryKeys.TEMPLATE_POOL);

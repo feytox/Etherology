@@ -4,15 +4,17 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.data.EBlockTags;
+import ru.feytox.etherology.data.EItemTags;
 import ru.feytox.etherology.datagen.util.RuTranslationBuilder;
 import ru.feytox.etherology.datagen.util.RuTranslationPart;
-import ru.feytox.etherology.enchantment.EtherEnchantments;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.registry.misc.EffectsRegistry;
+import ru.feytox.etherology.registry.misc.EtherEnchantments;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -236,6 +238,11 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PEACH_BOAT, "Персиковая лодка");
         builder.add(PEACH_CHEST_BOAT, "Персиковая грузовая лодка");
 
+        // tags
+        builder.add(EBlockTags.PEACH_LOGS, "Peach Logs");
+        builder.add(EItemTags.PEACH_LOGS, "Peach Logs");
+        builder.add(EItemTags.ETHER_SHIELDS, "Ether Shields");
+        builder.add(EItemTags.TUNING_MACES, "Tuning Maces");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").orElse(null);

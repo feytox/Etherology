@@ -2,7 +2,7 @@ package ru.feytox.etherology.util.misc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.component.DataComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.function.TriFunction;
 import org.slf4j.helpers.CheckReturnValue;
@@ -13,11 +13,11 @@ import java.util.function.BiFunction;
 public class ItemData<C> {
 
     private final ItemStack stack;
-    private final DataComponentType<C> componentType;
+    private final ComponentType<C> componentType;
     @Getter
     private C component;
 
-    public static <C> ItemData<C> of(ItemStack stack, DataComponentType<C> componentType) {
+    public static <C> ItemData<C> of(ItemStack stack, ComponentType<C> componentType) {
         return new ItemData<>(stack, componentType, stack.get(componentType));
     }
 

@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -33,16 +34,16 @@ public class StaffIndicator {
     private static Float indicatorProgress = null;
 
     /**
-     * @see InGameHud#renderCrosshair(DrawContext, float)
+     * @see InGameHud#renderCrosshair(DrawContext, RenderTickCounter)
      */
-    public static void renderHud(DrawContext context, float tickDelta) {
+    public static void renderHud(DrawContext context, RenderTickCounter tickCounter) {
         if (prevIndicatorProgress == null || indicatorProgress == null) return;
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (!client.options.getPerspective().isFirstPerson() || client.player == null) return;
         if (!StaffItem.isStaffInHand(client.player)) return;
 
-        float progress = MathHelper.lerp(tickDelta, prevIndicatorProgress, indicatorProgress);
+        float progress = MathHelper.lerp(tickCounter.getTickDelta(false), prevIndicatorProgress, indicatorProgress);
         int x = context.getScaledWindowWidth() / 2 - 8;
         int y = context.getScaledWindowHeight() / 2 - 7 + 16;
 

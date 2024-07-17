@@ -1,7 +1,6 @@
 package ru.feytox.etherology.block.armillary;
 
 import com.google.common.collect.ImmutableList;
-import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
@@ -56,6 +55,7 @@ import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoAnimation;
+import ru.feytox.etherology.util.misc.InventoryRecipeInput;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -70,7 +70,7 @@ import java.util.stream.Stream;
 import static ru.feytox.etherology.block.armillary.ArmillaryState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 
-public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
+public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements InventoryRecipeInput, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
 
     // constants
     private static final int HORIZONTAL_RADIUS = 7;
@@ -588,7 +588,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         allCurrentAspects = allCurrentAspects.readNbt(nbt);
 
         String id = nbt.getString("recipe_id");
-        recipeId = id.isEmpty() ? null : new Identifier(id);
+        recipeId = id.isEmpty() ? null : Identifier.of(id);
     }
 
     private void writeDecryptedItems(NbtCompound nbt) {
@@ -605,7 +605,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         NbtList nbtList = nbt.getList("decrypted_items", NbtElement.STRING_TYPE);
         return nbtList.stream()
                 .map(element -> (NbtString) element).map(NbtString::asString)
-                .map(Identifier::new).map(Registries.ITEM::get)
+                .map(Identifier::of).map(Registries.ITEM::get)
                 .collect(Collectors.toCollection(ObjectArrayList::new));
     }
 

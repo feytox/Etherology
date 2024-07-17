@@ -1,10 +1,10 @@
 package ru.feytox.etherology.recipes;
 
-import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.input.RecipeInput;
 
-public interface FeyRecipe<T extends Inventory> extends Recipe<T> {
+public interface FeyRecipe<T extends RecipeInput> extends Recipe<T> {
 
     @Override
     FeyRecipeSerializer<?> getSerializer();

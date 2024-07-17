@@ -22,6 +22,7 @@ import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
+import ru.feytox.etherology.mixin.TessellatorAccessor;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class RevelationViewRenderer {
             refreshData(world, client.player, hitResult);
         }
 
-        progress = MathHelper.lerp(0.1f*context.tickDelta(), progress, 1.0f);
+        progress = MathHelper.lerp(0.1f*context.tickCounter().getTickDelta(false), progress, 1.0f);
         MatrixStack matrices = context.matrixStack();
         if (aspects == null || aspects.isEmpty() || targetPos == null || offsetVec == null || matrices == null) return;
 
@@ -129,7 +130,7 @@ public class RevelationViewRenderer {
         matrices.scale(progress, progress, progress);
         matrices.translate(-col * 0.25f + startOffset - 0.18f, row * 0.275f - 0.18f, -0.0001);
         matrices.scale(-0.008F, -0.008F, 0.025F);
-        VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
+        VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(((TessellatorAccessor)Tessellator.getInstance()).getAllocator());
         client.textRenderer.draw(count.toString(), 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.SEE_THROUGH, 0, 15728880);
         immediate.draw();
         matrices.pop();

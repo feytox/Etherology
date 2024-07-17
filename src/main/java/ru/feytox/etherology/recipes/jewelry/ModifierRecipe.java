@@ -28,10 +28,6 @@ public class ModifierRecipe extends AbstractJewelryRecipe {
     }
 
     @Override
-    public ItemStack craft(JewelryTableInventory inventory, RegistryWrapper.WrapperLookup lookup) {
-        return craft(inventory);
-    }
-
     public ItemStack craft(JewelryTableInventory inventory) {
         ItemStack lensStack = inventory.getStack(0);
         LensComponent.getWrapper(inventory.getStack(0))

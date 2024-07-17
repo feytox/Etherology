@@ -61,7 +61,7 @@ public class StaffItem extends Item {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 72000;
     }
 
@@ -92,7 +92,7 @@ public class StaffItem extends Item {
         ItemData<LensComponent> lensData = LensComponent.getWrapper(lensStack).orElse(null);
         if (lensData == null) return;
 
-        int holdTicks = getMaxUseTime(staffStack) - remainingUseTicks;
+        int holdTicks = getMaxUseTime(staffStack, user) - remainingUseTicks;
         Supplier<Hand> handGetter = () -> getHandFromStack(user, staffStack);
 
         boolean isDamaged = switch (lensData.getComponent().mode()) {

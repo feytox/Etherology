@@ -8,7 +8,7 @@ import ru.feytox.etherology.Etherology;
 public class EIdentifier {
 
     public static Identifier of(String path) {
-        return Identifier.of(Etherology.MOD_ID, path);
+        return Identifier.tryParse(Etherology.MOD_ID, path);
     }
 
     public static String strId(String id) {
