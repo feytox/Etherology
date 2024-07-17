@@ -9,13 +9,13 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
-import ru.feytox.etherology.recipes.FeyRecipe;
+import ru.feytox.etherology.recipes.FeyInputRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class CauldronRecipe implements FeyRecipe<CauldronRecipeInventory> {
+public class CauldronRecipe implements FeyInputRecipe<CauldronRecipeInventory> {
 
     @Getter
     private final Ingredient inputItem;

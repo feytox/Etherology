@@ -1,16 +1,24 @@
 package ru.feytox.etherology.recipes;
 
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.input.RecipeInput;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.world.World;
+import ru.feytox.etherology.util.misc.RecipeInventory;
 
-public interface FeyRecipe<T extends RecipeInput> extends Recipe<T> {
+public interface FeyRecipe<T extends Inventory> extends FeyInputRecipe<RecipeInventory<T>> {
+
 
     @Override
-    FeyRecipeSerializer<?> getSerializer();
-
-    @Override
-    default RecipeType<?> getType() {
-        return getSerializer().getRecipeType();
+    default boolean matches(RecipeInventory<T> input, World world) {
+        return matches(input.getInventory(), world);
     }
+
+    @Override
+    default ItemStack craft(RecipeInventory<T> input, RegistryWrapper.WrapperLookup lookup) {
+        return craft(input.getInventory(), lookup);
+    }
+
+    boolean matches(T inventory, World world);
+    ItemStack craft(T inventory, RegistryWrapper.WrapperLookup lookup);
 }

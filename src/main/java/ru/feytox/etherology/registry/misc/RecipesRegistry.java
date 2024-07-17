@@ -2,6 +2,7 @@ package ru.feytox.etherology.registry.misc;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeSerializer;
@@ -22,6 +23,7 @@ import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.util.misc.EIdentifier;
+import ru.feytox.etherology.util.misc.RecipeInventory;
 
 import java.util.Optional;
 
@@ -47,6 +49,15 @@ public class RecipesRegistry {
     private static <T extends Recipe<?>> void register(FeyRecipeSerializer<T> serializer) {
         Registry.register(Registries.RECIPE_SERIALIZER, serializer.getId(), serializer);
         Registry.register(Registries.RECIPE_TYPE, serializer.getId(), serializer.getRecipeType());
+    }
+
+    public static <T extends Recipe<RecipeInventory<M>>, M extends Inventory> Optional<RecipeEntry<T>> maybeGetFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
+        return world.getRecipeManager().getFirstMatch(serializer.getRecipeType(), RecipeInventory.of(inventory), world);
+    }
+
+    @Nullable
+    public static <T extends Recipe<RecipeInventory<M>>, M extends Inventory> RecipeEntry<T> getFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {
+        return maybeGetFirstMatch(world, inventory, serializer).orElse(null);
     }
 
     public static <T extends Recipe<M>, M extends RecipeInput> Optional<RecipeEntry<T>> maybeGetFirstMatch(World world, M inventory, FeyRecipeSerializer<T> serializer) {

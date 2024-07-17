@@ -1,5 +1,6 @@
 package ru.feytox.etherology.block.jewelryTable;
 
+import io.wispforest.owo.util.ImplementedInventory;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,13 +26,12 @@ import ru.feytox.etherology.recipes.jewelry.BrokenRecipe;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
-import ru.feytox.etherology.util.misc.InventoryRecipeInput;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class JewelryTableInventory implements InventoryRecipeInput {
+public class JewelryTableInventory implements ImplementedInventory {
 
     public static final List<Integer> EMPTY_CELLS;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -52,7 +52,7 @@ public class JewelryTableInventory implements InventoryRecipeInput {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        InventoryRecipeInput.super.setStack(slot, stack);
+        ImplementedInventory.super.setStack(slot, stack);
         if (stack.isEmpty()) {
             resetRecipe();
             return;
@@ -231,7 +231,7 @@ public class JewelryTableInventory implements InventoryRecipeInput {
 
     @Override
     public void markDirty() {
-        InventoryRecipeInput.super.markDirty();
+        ImplementedInventory.super.markDirty();
         if (parent != null) parent.trySyncData();
     }
 
