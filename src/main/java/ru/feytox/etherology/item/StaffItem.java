@@ -46,7 +46,8 @@ public class StaffItem extends Item {
         ItemStack staffStack = user.getStackInHand(hand);
 
         useLensEffect(world, user, staffStack, false, () -> hand);
-        return TypedActionResult.pass(staffStack);
+        user.setCurrentHand(hand);
+        return TypedActionResult.consume(staffStack);
     }
 
     @Override

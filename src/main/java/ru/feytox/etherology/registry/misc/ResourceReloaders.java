@@ -26,7 +26,7 @@ public class ResourceReloaders {
     public static final Gson EGSON;
 
     public static void registerServerData() {
-        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new AspectsLoader());
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(AspectsLoader.INSTANCE);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(EtherSourceLoader.INSTANCE);
     }
 

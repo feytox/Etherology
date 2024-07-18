@@ -15,6 +15,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherPipe;
+import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
@@ -48,9 +49,13 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         if (outputDirection == null) return;
 
         BlockPos outputPos = isCrossEvaporating ? pos.up() : pos;
-        if (isEvaporating) {
-            spawnParticles(outputPos, world, outputDirection);
+        if (!isEvaporating) return;
+
+        if (isCrossEvaporating && world.getBlockEntity(outputPos) instanceof EtherStorage consumer) {
+            if (consumer.spawnCrossParticles(outputPos, world, outputDirection)) return;
         }
+
+        spawnParticles(outputPos, world, outputDirection);
     }
 
     public static void spawnParticles(BlockPos pos, ClientWorld world, Direction direction) {

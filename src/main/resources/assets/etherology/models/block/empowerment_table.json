@@ -7,6 +7,6 @@
     "particle": "etherology:block/empowerment_table_front",
     "south": "etherology:block/empowerment_table_side",
     "up": "etherology:block/empowerment_table_top",
-    "west": "etherology:block/empowerment_table_front"
+    "west": "etherology:block/empowerment_table_side"
   }
 }

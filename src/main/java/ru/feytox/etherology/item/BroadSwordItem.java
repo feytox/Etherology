@@ -14,9 +14,12 @@ import net.minecraft.item.ToolMaterials;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
 import ru.feytox.etherology.registry.misc.EtherSounds;
@@ -49,9 +52,15 @@ public class BroadSwordItem extends TwoHandheldSword implements DoubleModel {
         effect.spawnParticles(world, 1, 0, new Vec3d(x, y, z));
     }
 
-    public static SoundEvent replaceAttackSound(PlayerEntity player, SoundEvent sound) {
-        if (!BroadSwordItem.isUsing(player)) return sound;
+    @Nullable
+    public static SoundEvent replaceAttackSound(PlayerEntity player, SoundEvent original) {
+        if (original.equals(SoundEvents.ENTITY_PLAYER_ATTACK_WEAK) || original.equals(SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE)) return null;
+        if (!BroadSwordItem.isUsing(player)) return null;
         return EtherSounds.BROADSWORD;
+    }
+
+    public static float replaceAttackSoundPitch(World world) {
+        return world.getRandom().nextFloat() * 0.2f + 0.9f;
     }
 
     @Override

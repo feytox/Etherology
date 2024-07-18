@@ -60,7 +60,8 @@ public class PlayerEntityMixin {
     private void replaceBroadSwordSound(World instance, PlayerEntity except, double x, double y, double z, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original) {
         PlayerEntity player = ((PlayerEntity) (Object) this);
         SoundEvent newSound = BroadSwordItem.replaceAttackSound(player, sound);
-        original.call(instance, except, x, y, z, newSound, category, volume, pitch);
+        if (newSound != null) pitch = BroadSwordItem.replaceAttackSoundPitch(instance);
+        original.call(instance, except, x, y, z, newSound != null ? newSound : sound, category, volume, pitch);
     }
 
     @Inject(method = "damageArmor", at = @At("HEAD"))

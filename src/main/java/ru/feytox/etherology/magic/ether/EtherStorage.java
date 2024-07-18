@@ -1,5 +1,6 @@
 package ru.feytox.etherology.magic.ether;
 
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -32,6 +33,8 @@ public interface EtherStorage {
     default boolean isCrossEvaporate(Direction fromSide) {
         return false;
     }
+
+    default boolean spawnCrossParticles(BlockPos pos, ClientWorld world, Direction direction) { return false; }
 
     default boolean isOutputSide(Direction direction) {
         Direction outputSide = getOutputSide();
@@ -90,7 +93,7 @@ public interface EtherStorage {
         if (this instanceof EtherealChannelBlockEntity channel) {
             channel.setEvaporating(getStoredEther() != 0);
             channel.setCrossEvaporating(crossUseless);
-            decrement(1);
+            decrement(0.2f);
         }
     }
 

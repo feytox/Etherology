@@ -60,7 +60,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
             inventory.resetRecipe();
             tickRate = IDLE_TICK_RATE;
         }
-        if (world.getTime() % tickRate == 0) decrement(1);
+        if (world.getTime() % tickRate == 0) decrement(0.2f);
         if (!inventory.hasRecipe() || world.getTime() % 5 != 0) return;
 
         inventory.updateRecipe(world);
@@ -84,7 +84,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (inventory.isEmpty()) return;
+        if (!inventory.hasRecipe()) return;
         if (world.getTime() % 4 != 0 || storedEther == 0) return;
 
         val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
@@ -103,7 +103,17 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
 
     @Override
     public boolean isCrossEvaporate(Direction fromSide) {
-        return fromSide.equals(Direction.DOWN) && inventory.isEmpty();
+        return fromSide.equals(Direction.DOWN) && !inventory.hasRecipe();
+    }
+
+    @Override
+    public boolean spawnCrossParticles(BlockPos pos, ClientWorld world, Direction direction) {
+        if (inventory.isEmpty()) return false;
+        if (world.getTime() % 4 != 0) return true;
+
+        val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
+        effect.spawnParticles(world, 2, 0.2d, pos.toCenterPos().add(0, 0.75d, 0));
+        return true;
     }
 
     @Override

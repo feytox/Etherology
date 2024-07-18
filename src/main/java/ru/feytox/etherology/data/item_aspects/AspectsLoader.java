@@ -28,6 +28,7 @@ public class AspectsLoader implements IdentifiableResourceReloadListener {
 
     // TODO: 11.07.2024 consider using codecs... before it's too late :skull:
 
+    public static final AspectsLoader INSTANCE = new AspectsLoader();
     private static ImmutableMap<AspectContainerId, AspectContainer> cache = ImmutableMap.of();
     private static boolean isInitialized = false;
 

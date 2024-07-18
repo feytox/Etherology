@@ -34,7 +34,7 @@ public class RedstoneLens extends LensItem {
 
         if (!lensData.getComponent().checkCooldown(serverWorld)) return false;
 
-        float maxDistance = lensData.getComponent().calcValue(LensModifier.AREA, 40, 80, 0.8f);
+        float maxDistance = lensData.getComponent().calcValue(LensModifier.AREA, 12, 64, 0.8f);
         HitResult hitResult = entity.raycast(maxDistance, 1.0f, false);
         if (!(hitResult instanceof BlockHitResult blockHitResult)) return false;
         if (!hold) entity.setCurrentHand(handGetter.get());
@@ -86,7 +86,7 @@ public class RedstoneLens extends LensItem {
         float speed = lensData.getComponent().calcValue(LensModifier.STREAM, 1, 5, 0.75f);
         int power = getPower(lensData.getComponent());
 
-        int maxAge = lensData.getComponent().calcRoundValue(LensModifier.AREA, 100, 300, 0.8f);
+        int maxAge = lensData.getComponent().calcRoundValue(LensModifier.AREA, 200, 400, 0.8f);
         RedstoneChargeEntity blob = new RedstoneChargeEntity(world, chargePos.x, chargePos.y, chargePos.z, entityRotation, power, holdTicks, speed, maxAge);
         world.spawnEntity(blob);
         return LensItem.damageLens(serverWorld, lensStack, 1);

@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"elements": [
 		{
-			"from": [7.2499, -3.75, 7.2499],
-			"to": [8.7501, 19.75, 8.7501],
+			"from": [7.2449, -3.755, 7.2449],
+			"to": [8.7551, 19.755, 8.7551],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
 				"north": {"uv": [1, 0, 2, 12], "texture": "#style"},
