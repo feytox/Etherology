@@ -1,16 +1,19 @@
 {
   "type": "minecraft:ore",
   "config": {
+    "discard_chance_on_air_exposure": 0.0,
     "size": 52,
-    "discard_chance_on_air_exposure": 0,
     "targets": [
       {
+        "state": {
+          "Name": "minecraft:end_rod",
+          "Properties": {
+            "facing": "up"
+          }
+        },
         "target": {
           "predicate_type": "minecraft:tag_match",
           "tag": "minecraft:deepslate_ore_replaceables"
-        },
-        "state": {
-          "Name": "etherology:attrahite"
         }
       }
     ]

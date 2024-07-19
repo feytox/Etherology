@@ -3,7 +3,6 @@ package ru.feytox.etherology.world;
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -14,9 +13,11 @@ import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.intprovider.WeightedListIntProvider;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 import net.minecraft.world.gen.placementmodifier.*;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -37,6 +38,7 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> ETHER_ROCKS = of("ether_rocks");
     public static final RegistryKey<PlacedFeature> PATCH_BEAMER = of("patch_beamer");
     public static final RegistryKey<PlacedFeature> PATCH_THUJA = of("patch_thuja");
+    public static final RegistryKey<PlacedFeature> ATTRAHITE = of("attrahite");
 
     public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -98,11 +100,17 @@ public class PlacedFeaturesGen {
                 BiomePlacementModifier.of()
         );
         register(context, PATCH_THUJA, lookup.getOrThrow(ConfiguredFeaturesGen.PATCH_THUJA),
-                RarityFilterPlacementModifier.of(4),
+                RarityFilterPlacementModifier.of(7),
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
                 BlockFilterPlacementModifier.of(BlockPredicate.wouldSurvive(DecoBlocks.THUJA_PLANT.getDefaultState(), BlockPos.ORIGIN)),
                 CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
+                BiomePlacementModifier.of()
+        );
+        register(context, ATTRAHITE, lookup.getOrThrow(ConfiguredFeaturesGen.ATTRAHITE),
+                RarityFilterPlacementModifier.of(10),
+                SquarePlacementModifier.of(),
+                HeightRangePlacementModifier.of(UniformHeightProvider.create(YOffset.fixed(-58), YOffset.fixed(-8))),
                 BiomePlacementModifier.of()
         );
     }

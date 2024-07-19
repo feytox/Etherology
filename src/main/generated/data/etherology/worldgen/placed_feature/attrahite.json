@@ -2,7 +2,8 @@
   "feature": "etherology:attrahite",
   "placement": [
     {
-      "type": "minecraft:biome"
+      "type": "minecraft:rarity_filter",
+      "chance": 10
     },
     {
       "type": "minecraft:in_square"
@@ -11,17 +12,16 @@
       "type": "minecraft:height_range",
       "height": {
         "type": "minecraft:uniform",
-        "min_inclusive": {
-          "absolute": -58
-        },
         "max_inclusive": {
           "absolute": -8
+        },
+        "min_inclusive": {
+          "absolute": -58
         }
       }
     },
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 25
+      "type": "minecraft:biome"
     }
   ]
 }

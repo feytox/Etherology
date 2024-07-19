@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public class GoldenForestRegion extends Region {
 
     public GoldenForestRegion() {
-        super(EIdentifier.of("golden_forest_region"), RegionType.OVERWORLD, 3);
+        super(EIdentifier.of("golden_forest_region"), RegionType.OVERWORLD, 2);
     }
 
     @Override

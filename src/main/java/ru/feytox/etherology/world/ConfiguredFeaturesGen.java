@@ -7,6 +7,8 @@ import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.structure.rule.TagMatchRuleTest;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
@@ -39,6 +41,7 @@ public class ConfiguredFeaturesGen {
     public static final RegistryKey<ConfiguredFeature<?,?>> ETHER_ROCK = of("ether_rock");
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_BEAMER = of("patch_beamer");
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_THUJA = of("patch_thuja");
+    public static final RegistryKey<ConfiguredFeature<?,?>> ATTRAHITE = of("attrahite");
 
     public static void registerFeatures(Registerable<ConfiguredFeature<?, ?>> context) {
         register(context, PEACH_TREE, Feature.TREE,
@@ -64,6 +67,7 @@ public class ConfiguredFeaturesGen {
         register(context, PATCH_THUJA, Feature.RANDOM_PATCH, ConfiguredFeatures.createRandomPatchFeatureConfig(
                 WorldGenRegistry.THUJA, new DefaultFeatureConfig(), List.of(), 32
         ));
+        register(context, ATTRAHITE, Feature.ORE, new OreFeatureConfig(new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), DecoBlocks.ATTRAHITE.getDefaultState(), 52, 0));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {
