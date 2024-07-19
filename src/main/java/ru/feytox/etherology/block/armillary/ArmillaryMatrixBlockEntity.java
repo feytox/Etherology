@@ -1,8 +1,8 @@
 package ru.feytox.etherology.block.armillary;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import io.wispforest.owo.util.ImplementedInventory;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Getter;
@@ -277,7 +277,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         }
         val container = stackStream
                 .filter(stack -> !stack.isEmpty())
-                .map(stack -> AspectsLoader.getAspects(stack, false))
+                .map(stack -> AspectsLoader.getAspects(world ,stack, false))
                 .filter(Optional::isPresent).map(Optional::get)
                 .reduce(AspectContainer::add).orElse(null);
 
@@ -777,7 +777,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
-    public @Nullable AspectContainer getRevelationAspects() {
+    public @Nullable AspectContainer getRevelationAspects(World world) {
         return allCurrentAspects;
     }
 
@@ -788,6 +788,6 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     public List<Aspect> getSortedAspects() {
         return allCurrentAspects.sorted(true, 3).stream()
-                .map(Pair::key).collect(Collectors.toCollection(ObjectArrayList::new));
+                .map(Pair::getFirst).collect(Collectors.toCollection(ObjectArrayList::new));
     }
 }

@@ -1,6 +1,6 @@
 package ru.feytox.etherology.magic.aspects;
 
-import it.unimi.dsi.fastutil.Pair;
+import com.mojang.datafixers.util.Pair;
 import lombok.val;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 public interface RevelationAspectProvider {
 
     @Nullable
-    AspectContainer getRevelationAspects();
+    AspectContainer getRevelationAspects(World world);
 
     default int getRevelationAspectsLimit() {
         return -1;
@@ -27,8 +27,8 @@ public interface RevelationAspectProvider {
     static List<Pair<Aspect, Integer>> getSortedAspects(World world, HitResult hitResult) {
         val data = getData(world, hitResult);
         if (data == null) return null;
-        val aspects = data.key();
-        Integer limit = data.value();
+        val aspects = data.getFirst();
+        Integer limit = data.getSecond();
         if (aspects == null || limit == null) return null;
 
         return aspects.sorted(true, limit);
@@ -39,7 +39,7 @@ public interface RevelationAspectProvider {
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos pos = blockHitResult.getBlockPos();
             if (world.getBlockEntity(pos) instanceof RevelationAspectProvider provider) {
-                return Pair.of(provider.getRevelationAspects(), provider.getRevelationAspectsLimit());
+                return Pair.of(provider.getRevelationAspects(world), provider.getRevelationAspectsLimit());
             }
         }
 
@@ -47,6 +47,6 @@ public interface RevelationAspectProvider {
         Entity entity = entityHitResult.getEntity();
         if (!(entity instanceof ItemFrameEntity itemFrame)) return null;
 
-        return Pair.of(AspectsLoader.getAspects(itemFrame.getHeldItemStack(), false).orElse(null), -1);
+        return Pair.of(AspectsLoader.getAspects(world, itemFrame.getHeldItemStack(), false).orElse(null), -1);
     }
 }

@@ -239,7 +239,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         AtomicInteger count = new AtomicInteger();
         items.stream()
                 .filter(stack -> !stack.isEmpty())
-                .map(stack -> AspectsLoader.getAspects(stack, true).orElse(null))
+                .map(stack -> AspectsLoader.getAspects(world, stack, true).orElse(null))
                 .filter(Objects::nonNull)
                 .forEach(itemAspects -> {
                     count.addAndGet(1);
@@ -393,7 +393,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     @Override
-    public @Nullable AspectContainer getRevelationAspects() {
+    public @Nullable AspectContainer getRevelationAspects(World world) {
         return aspects;
     }
 

@@ -1,11 +1,11 @@
 package ru.feytox.etherology.item;
 
+import com.mojang.datafixers.util.Pair;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.core.Sizing;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
@@ -177,7 +177,7 @@ public class OculusItem extends Item implements DoubleModel {
 
         List<Pair<Aspect, Integer>> sortedAspects = aspects.sorted(true, -1);
         sortedAspects.forEach(pair -> {
-            AspectComponent aspectComponent = new AspectComponent(pair.key(), pair.value());
+            AspectComponent aspectComponent = new AspectComponent(pair.getFirst(), pair.getSecond());
             aspectsRoot.child(aspectComponent);
         });
         components.add(aspectsRoot);

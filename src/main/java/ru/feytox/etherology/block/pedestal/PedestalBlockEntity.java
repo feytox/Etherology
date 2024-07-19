@@ -20,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.item_aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
@@ -175,9 +176,9 @@ public class PedestalBlockEntity extends TickableBlockEntity
     }
 
     @Override
-    public AspectContainer getRevelationAspects() {
+    public AspectContainer getRevelationAspects(World world) {
         if (items.getFirst().isEmpty()) return null;
-        return AspectsLoader.getAspects(items.getFirst(), false).orElse(null);
+        return AspectsLoader.getAspects(world, items.getFirst(), false).orElse(null);
     }
 
     @Override

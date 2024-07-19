@@ -1,69 +1,50 @@
 package ru.feytox.etherology.magic.aspects;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.mojang.serialization.Codec;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.*;
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.val;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.StringIdentifiable;
 import org.slf4j.helpers.CheckReturnValue;
 import ru.feytox.etherology.util.misc.CodecUtil;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class AspectContainer {
 
     public static final Codec<AspectContainer> CODEC;
+    public static final MapCodec<AspectContainer> MAP_CODEC;
     public static final PacketCodec<ByteBuf, AspectContainer> PACKET_CODEC;
 
     @NonNull
     private final ImmutableMap<Aspect, Integer> aspects;
 
-    @Nullable // while reloading only
-    private final ImmutableSet<AspectContainerId> parents;
-
-    public AspectContainer(Map<Aspect, Integer> mutableAspects, Set<AspectContainerId> mutableParents) {
-        aspects = ImmutableMap.copyOf(mutableAspects);
-        parents = mutableParents == null || mutableParents.isEmpty() ? null : ImmutableSet.copyOf(mutableParents);
-    }
-
-    public AspectContainer(Map<Aspect, Integer> mutableAspects, boolean clearZeros, Set<AspectContainerId> mutableParents) {
-        this(clearZeros ? clearZeros(mutableAspects) : mutableAspects, mutableParents);
-    }
-
     public AspectContainer(Map<Aspect, Integer> mutableAspects) {
-        this(mutableAspects, null);
-    }
-
-    public AspectContainer() {
-        this(new Object2ObjectOpenHashMap<>(), null);
+        aspects = ImmutableMap.copyOf(mutableAspects);
     }
 
     public AspectContainer(Map<Aspect, Integer> mutableAspects, boolean clearZeros) {
-        this(mutableAspects, clearZeros, null);
+        this(clearZeros ? clearZeros(mutableAspects) : mutableAspects);
     }
 
-    @CheckReturnValue
-    public AspectContainer combineOnReload(AspectContainer otherContainer) {
-        return merge(otherContainer, true, Math::min);
+    public AspectContainer() {
+        this(new Object2ObjectOpenHashMap<>());
     }
 
     public boolean isEmpty() {
@@ -71,91 +52,36 @@ public class AspectContainer {
     }
 
     @CheckReturnValue
-    public AspectContainer applyParents(Map<AspectContainerId, AspectContainer> registryMap) {
-        if (parents == null || parents.isEmpty()) return this;
-        Optional<AspectContainer> sumParent = parents.stream()
-                .map(registryMap::get)
-                .map(container -> container.applyParents(registryMap))
-                .reduce(AspectContainer::add);
-        return sumParent.get().add(this);
-    }
-
-    @CheckReturnValue
     public AspectContainer add(AspectContainer otherContainer) {
-        return merge(otherContainer, false, Integer::sum);
+        return merge(otherContainer, Integer::sum);
     }
 
     @CheckReturnValue
     public AspectContainer subtract(AspectContainer otherContainer) {
-        return merge(otherContainer, false, (i1, i2) -> i1 - i2);
+        return merge(otherContainer, (i1, i2) -> i1 - i2);
     }
 
     @CheckReturnValue
-    private AspectContainer merge(AspectContainer otherContainer, boolean isReloading, BiFunction<Integer, Integer, Integer> mergeFunction) {
+    private AspectContainer merge(AspectContainer otherContainer, BiFunction<Integer, Integer, Integer> mergeFunction) {
         Map<Aspect, Integer> mutableAspects = getMutableAspects();
         otherContainer.aspects.forEach((otherAspect, otherValue) -> mutableAspects.merge(otherAspect, otherValue, mergeFunction));
-
-        val newParents = new ObjectArraySet<AspectContainerId>();
-        if (isReloading) {
-            val parents = getMutableParents();
-            val otherParents = otherContainer.getMutableParents();
-            if (parents != null) newParents.addAll(parents);
-            if (otherParents != null) newParents.addAll(otherParents);
-        }
-
-        return new AspectContainer(mutableAspects, newParents);
+        return new AspectContainer(mutableAspects);
     }
 
     public Object2IntOpenHashMap<Aspect> getMutableAspects() {
         return new Object2IntOpenHashMap<>(this.aspects);
     }
 
-    @Nullable
-    public Set<AspectContainerId> getMutableParents() {
-        return parents != null ? new ObjectArraySet<>(parents) : null;
-    }
-
     @CheckReturnValue
     public AspectContainer map(Function<Integer, Integer> mapper) {
         Map<Aspect, Integer> mutableAspects = getMutableAspects();
         mutableAspects.replaceAll((ignored, value) -> mapper.apply(value));
-        return new AspectContainer(mutableAspects, true, getMutableParents());
+        return new AspectContainer(mutableAspects, true);
     }
 
     public static Map<Aspect, Integer> clearZeros(Map<Aspect, Integer> map) {
-        return map.entrySet().stream().filter(entry -> entry.getValue() > 0).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    public static JsonDeserializer<AspectContainer> deserializer() throws JsonParseException, IllegalArgumentException {
-        return (json, type, context) -> {
-            JsonObject root = json.getAsJsonObject();
-
-            Map<Aspect, Integer> aspects = new Object2ObjectOpenHashMap<>();
-            Set<AspectContainerId> parents = new ObjectArraySet<>();
-            root.asMap().forEach((s, jsonElement) -> {
-                if (Objects.equals(s, "parent")) {
-                    // parent: [ value ]
-                    if (jsonElement.isJsonArray()) {
-                        jsonElement.getAsJsonArray().asList().stream()
-                                .map(JsonElement::getAsString)
-                                .map(AspectContainerId::of)
-                                .forEach(parents::add);
-                        return;
-                    }
-
-                    // parent: value
-                    parents.add(AspectContainerId.of(jsonElement.getAsString()));
-                    return;
-                }
-
-                Aspect aspect = Aspect.valueOf(s.toUpperCase());
-                int value = jsonElement.getAsInt();
-                if (value < 0) throw new IllegalArgumentException("The value of the aspect cannot be negative.");
-                if (value != 0) aspects.put(aspect, value);
-            });
-
-            return new AspectContainer(aspects, parents);
-        };
+        map.entrySet().removeIf(entry -> entry.getValue() <= 0);
+        return map;
     }
 
     public void writeNbt(NbtCompound nbt) {
@@ -177,7 +103,7 @@ public class AspectContainer {
         });
 
         // this.parents should not be written to nbt
-        return new AspectContainer(result, null);
+        return new AspectContainer(result);
     }
 
     public Optional<Integer> max() {
@@ -203,8 +129,19 @@ public class AspectContainer {
         return sortedAspects.subList(0, limit);
     }
 
+    public static <T> AspectContainer parse(DynamicOps<T> ops, Stream<Pair<T, T>> input) {
+        return new AspectContainer(input.map(pair -> pair.mapFirst(first -> Aspect.CODEC.parse(ops, first)).mapSecond(second -> Codec.INT.parse(ops, second)))
+                .map(pair -> pair.mapFirst(DataResult::getOrThrow).mapSecond(DataResult::getOrThrow))
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond, Integer::min)));
+    }
+
+    public static <T> void encodeStart(RecordBuilder<T> builder, DynamicOps<T> ops, AspectContainer container) {
+        container.getAspects().forEach((aspect, value) -> builder.add(Aspect.CODEC.encodeStart(ops, aspect), Codec.INT.encodeStart(ops, value)));
+    }
+
     static {
         CODEC = Codec.unboundedMap(Aspect.CODEC, Codec.INT).xmap(AspectContainer::new, AspectContainer::getAspects).stable();
+        MAP_CODEC = Codec.simpleMap(Aspect.CODEC, Codec.INT, StringIdentifiable.toKeyable(Aspect.values())).xmap(AspectContainer::new, AspectContainer::getAspects);
         PACKET_CODEC = CodecUtil.map(Object2IntOpenHashMap::new, Aspect.PACKET_CODEC, PacketCodecs.VAR_INT).xmap(AspectContainer::new, AspectContainer::getAspects);
     }
 }

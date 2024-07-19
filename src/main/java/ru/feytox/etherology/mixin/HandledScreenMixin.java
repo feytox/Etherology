@@ -1,5 +1,6 @@
 package ru.feytox.etherology.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
@@ -30,12 +31,15 @@ public class HandledScreenMixin {
     @SuppressWarnings("rawtypes")
     @Inject(method = "drawMouseoverTooltip", at = @At("HEAD"), cancellable = true)
     private void drawOculusTooltip(DrawContext context, int x, int y, CallbackInfo ci) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.world == null) return;
+
         HandledScreen it = ((HandledScreen) (Object) this);
         ItemStack cursorStack = it.getScreenHandler().getCursorStack();
         if (focusedSlot == null || !focusedSlot.hasStack() || !(cursorStack.getItem() instanceof OculusItem)) return;
 
         ItemStack focusedStack = focusedSlot.getStack();
-        AspectContainer aspects = AspectsLoader.getAspects(focusedStack, false).orElse(null);
+        AspectContainer aspects = AspectsLoader.getAspects(client.world, focusedStack, false).orElse(null);
         if (aspects == null || aspects.isEmpty()) return;
 
         List<TooltipComponent> tooltipComponents = new ArrayList<>();

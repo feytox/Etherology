@@ -31,17 +31,17 @@ public interface OculusAspectProvider {
             }
 
             BlockState state = world.getBlockState(pos);
-            return AspectsLoader.getAspects(state.getBlock().asItem().getDefaultStack(), false).orElse(null);
+            return AspectsLoader.getAspects(world, state.getBlock().asItem().getDefaultStack(), false).orElse(null);
         }
 
         if (!(hitResult instanceof EntityHitResult entityHitResult)) return null;
 
         Entity entity = entityHitResult.getEntity();
         if (entity instanceof ItemEntity itemEntity) {
-            return AspectsLoader.getAspects(itemEntity.getStack(), false).orElse(null);
+            return AspectsLoader.getAspects(world, itemEntity.getStack(), false).orElse(null);
         }
 
-        return AspectsLoader.getEntityAspects(entity).orElse(null);
+        return AspectsLoader.getEntityAspects(world, entity).orElse(null);
     }
 
     @Nullable

@@ -1,7 +1,7 @@
 package ru.feytox.etherology.item.revelationView;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import it.unimi.dsi.fastutil.Pair;
+import com.mojang.datafixers.util.Pair;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -104,8 +104,8 @@ public class RevelationViewRenderer {
             int r = i >= lastRowIndex ? lastRowSize : ROW_SIZE;
             float startOffset = r * 0.5f * 0.25f;
 
-            renderAspect(matrices, pair.key(), -col * 0.25f + startOffset, row * 0.275f);
-            renderCount(client, matrices, pair.value(), col, row, startOffset);
+            renderAspect(matrices, pair.getFirst(), -col * 0.25f + startOffset, row * 0.275f);
+            renderCount(client, matrices, pair.getSecond(), col, row, startOffset);
             i++;
         }
 

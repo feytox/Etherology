@@ -34,6 +34,7 @@ public class Etherology implements ModInitializer {
     @Override
     public void onInitialize() {
         ExtraBlocksRegistry.registerAll();
+        RegistriesRegistry.registerAll();
         EItems.registerItems();
         EBlocks.registerAll();
         ResourceReloaders.registerServerData();
