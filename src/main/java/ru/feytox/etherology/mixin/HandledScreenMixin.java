@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspects.AspectsLoader;
 import ru.feytox.etherology.gui.oculus.AspectTooltipComponent;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.aspects.AspectContainer;

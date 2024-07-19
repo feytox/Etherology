@@ -1,4 +1,4 @@
-package ru.feytox.etherology.data.item_aspects;
+package ru.feytox.etherology.data.aspects;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.val;

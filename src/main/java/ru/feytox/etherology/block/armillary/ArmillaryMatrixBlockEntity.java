@@ -39,7 +39,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
-import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;

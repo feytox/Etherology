@@ -10,7 +10,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspects.AspectsLoader;
 
 import java.util.List;
 

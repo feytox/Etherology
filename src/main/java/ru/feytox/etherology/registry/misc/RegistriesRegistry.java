@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspects.AspectsLoader;
 import ru.feytox.etherology.magic.aspects.AspectRegistryPart;
 import ru.feytox.etherology.util.misc.EIdentifier;
 

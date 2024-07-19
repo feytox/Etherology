@@ -11,7 +11,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.item_aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspects.AspectsLoader;
 
 public interface OculusAspectProvider {
 
