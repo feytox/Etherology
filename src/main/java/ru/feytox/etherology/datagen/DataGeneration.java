@@ -26,6 +26,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
         BlockTagGeneration blockTagGeneration = pack.addProvider(BlockTagGeneration::new);
         pack.addProvider(((output, registries) -> new ItemTagGeneration(output, registries, blockTagGeneration)));
         pack.addProvider(GameEventTagGeneration::new);
+        pack.addProvider(EnchantmentTagGeneration::new);
     }
 
     /**
