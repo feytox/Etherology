@@ -27,9 +27,6 @@
     ],
     "mm:early_risers": [
       "ru.feytox.etherology.mixin.EarlyRisers"
-    ],
-    "terrablender": [
-      "ru.feytox.etherology.world.biome.EtherBiomes"
     ]
   },
   "mixins": [

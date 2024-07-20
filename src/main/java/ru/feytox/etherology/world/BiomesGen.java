@@ -16,7 +16,7 @@ import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import ru.feytox.etherology.mixin.OverworldBiomeCreatorAccessor;
-import ru.feytox.etherology.world.biome.EtherBiomes;
+import ru.feytox.etherology.registry.world.WorldGenRegistry;
 
 public class BiomesGen {
 
@@ -47,7 +47,7 @@ public class BiomesGen {
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PATCH_LIGHTELET);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PATCH_BEAMER);
 
-        context.register(EtherBiomes.GOLDEN_FOREST, new Biome.Builder()
+        context.register(WorldGenRegistry.GOLDEN_FOREST, new Biome.Builder()
                 .temperature(0.45f)
                 .downfall(0.8f)
                 .precipitation(true)

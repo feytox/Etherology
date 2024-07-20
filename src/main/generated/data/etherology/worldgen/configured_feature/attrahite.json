@@ -6,10 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "minecraft:end_rod",
-          "Properties": {
-            "facing": "up"
-          }
+          "Name": "etherology:attrahite"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

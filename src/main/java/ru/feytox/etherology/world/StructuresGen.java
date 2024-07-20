@@ -25,8 +25,8 @@ import net.minecraft.world.gen.chunk.placement.SpreadType;
 import net.minecraft.world.gen.heightprovider.ConstantHeightProvider;
 import net.minecraft.world.gen.structure.JigsawStructure;
 import net.minecraft.world.gen.structure.Structure;
+import ru.feytox.etherology.registry.world.WorldGenRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
-import ru.feytox.etherology.world.biome.EtherBiomes;
 import ru.feytox.etherology.world.structure.RotatedPoolElement;
 
 import java.util.Map;
@@ -52,7 +52,7 @@ public class StructuresGen {
         val poolLookup = context.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
         context.register(ETHER_MONOLITH, new JigsawStructure(
                 createConfig(RegistryEntryList.of(
-                        biomeLookup.getOrThrow(EtherBiomes.GOLDEN_FOREST)),
+                        biomeLookup.getOrThrow(WorldGenRegistry.GOLDEN_FOREST)),
                         Map.of(), GenerationStep.Feature.LOCAL_MODIFICATIONS, StructureTerrainAdaptation.BEARD_THIN),
                 poolLookup.getOrThrow(ETHER_MONOLITH_START_POOL),
                 2,

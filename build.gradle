@@ -66,7 +66,7 @@ dependencies {
     }
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
     include modImplementation("dev.emi:trinkets:${project.trinkets_version}")
-    include modImplementation("com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}")
+    include modImplementation("com.terraformersmc:biolith-fabric:${project.biolith_version}")
 }
 
 processResources {

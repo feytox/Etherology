@@ -1,11 +1,15 @@
 package ru.feytox.etherology.registry.world;
 
+import com.terraformersmc.biolith.api.biome.BiomePlacement;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.structure.pool.StructurePoolElementType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
@@ -26,6 +30,7 @@ public class WorldGenRegistry {
 
     public static final Feature<DefaultFeatureConfig> ETHER_ROCK = registerFeature("ether_rock", new EtherRockFeature(DefaultFeatureConfig.CODEC));
     public static final Feature<DefaultFeatureConfig> THUJA = registerFeature("thuja", new ThujaFeature(DefaultFeatureConfig.CODEC));
+    public static final RegistryKey<Biome> GOLDEN_FOREST = of("golden_forest");
 
     public static final PlacementModifierType<StructurePlacementModifier> STRUCTURE_PLACEMENT_MODIFIER = PlacementModifierTypeAccessor.callRegister(EIdentifier.strId("structure_placement_modifier"), StructurePlacementModifier.CODEC);
     public static final StructurePoolElementType<RotatedPoolElement> ROTATED_POOL_ELEMENT = StructurePoolElementTypeAccessor.callRegister(EIdentifier.strId("rotated_pool_element"), RotatedPoolElement.CODEC);
@@ -33,6 +38,13 @@ public class WorldGenRegistry {
     public static void registerWorldGen() {
         TreesRegistry.registerTrees();
         registerModifications();
+        registerBiomes();
+    }
+
+    // TODO: 19.07.2024 remove
+    // /execute positioned ~2000 ~ ~2000 run locate biome etherology:golden_forest
+    private static void registerBiomes() {
+        BiomePlacement.replaceOverworld(BiomeKeys.CHERRY_GROVE, GOLDEN_FOREST, 0.2f);
     }
 
     private static void registerModifications() {
@@ -48,5 +60,9 @@ public class WorldGenRegistry {
 
     private static <C extends FeatureConfig, F extends Feature<C>> F registerFeature(String name, F feature) {
         return Registry.register(Registries.FEATURE, name, feature);
+    }
+
+    private static RegistryKey<Biome> of(String name) {
+        return RegistryKey.of(RegistryKeys.BIOME, EIdentifier.of(name));
     }
 }
