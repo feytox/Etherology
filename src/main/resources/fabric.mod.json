@@ -27,6 +27,9 @@
     ],
     "mm:early_risers": [
       "ru.feytox.etherology.mixin.EarlyRisers"
+    ],
+    "mixinsquared": [
+      "ru.feytox.etherology.mixin.EMixinCanceller"
     ]
   },
   "mixins": [

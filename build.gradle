@@ -32,6 +32,7 @@ repositories {
         url = "https://maven.terraformersmc.com/"
     }
     maven { url = 'https://maven.minecraftforge.net/' }
+    maven { url = "https://maven.bawnorton.com/releases/" }
     mavenCentral()
 }
 
@@ -67,6 +68,7 @@ dependencies {
     include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
     include modImplementation("dev.emi:trinkets:${project.trinkets_version}")
     include modImplementation("com.terraformersmc:biolith-fabric:${project.biolith_version}")
+    include(implementation(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixin_sqr}")))
 }
 
 processResources {
