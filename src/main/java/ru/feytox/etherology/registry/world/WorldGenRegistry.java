@@ -44,7 +44,7 @@ public class WorldGenRegistry {
     // TODO: 19.07.2024 remove
     // /execute positioned ~2000 ~ ~2000 run locate biome etherology:golden_forest
     private static void registerBiomes() {
-        BiomePlacement.replaceOverworld(BiomeKeys.CHERRY_GROVE, GOLDEN_FOREST, 0.2f);
+        BiomePlacement.replaceOverworld(BiomeKeys.CHERRY_GROVE, GOLDEN_FOREST, 0.3f);
     }
 
     private static void registerModifications() {

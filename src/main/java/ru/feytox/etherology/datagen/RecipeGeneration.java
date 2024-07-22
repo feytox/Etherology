@@ -189,6 +189,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("SFS")
                 .pattern(" F ")
                 .pattern("SFS").criterion(has(FOREST_LANTERN), from(FOREST_LANTERN)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(MISC, EMPOWERMENT_TABLE).input('A', Items.AMETHYST_SHARD).input('#', ItemTags.PLANKS)
+                .pattern("AA")
+                .pattern("##")
+                .pattern("##").criterion(has(Items.AMETHYST_SHARD), from(Items.AMETHYST_SHARD)).offerTo(exporter);
 
         // "hard" recipes
         ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', SEDIMENTARY_BLOCK).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)
