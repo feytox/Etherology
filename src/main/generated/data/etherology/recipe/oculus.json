@@ -1,11 +1,13 @@
 {
   "type": "etherology:empower_recipe",
+  "closCount": 0,
+  "ketaCount": 0,
   "key": {
-    "G": {
-      "item": "minecraft:gold_ingot"
-    },
     "A": {
       "item": "minecraft:amethyst_shard"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
     }
   },
   "pattern": [
@@ -13,7 +15,10 @@
     "GAG",
     " G "
   ],
+  "rellaCount": 0,
   "result": {
+    "count": 1,
     "id": "etherology:oculus"
-  }
+  },
+  "viaCount": 0
 }

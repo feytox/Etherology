@@ -23,6 +23,7 @@ import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Getter
@@ -95,6 +96,10 @@ public class EmpowerRecipe implements FeyRecipe<ImplementedInventory> {
         public static final PacketCodec<RegistryByteBuf, Pattern> PACKET_CODEC = Ingredient.PACKET_CODEC.collect(PacketCodecs.toList())
                 .xmap(ingredients -> new Pattern(DefaultedListAccessor.createDefaultedList(ingredients, Ingredient.EMPTY), Optional.empty()),
                         Pattern::ingredients);
+
+        public static Pattern create(Map<Character, Ingredient> key, List<String> pattern) {
+            return fromData(new RawShapedRecipe.Data(key, pattern)).getOrThrow();
+        }
 
         /**
          * @see RawShapedRecipe#fromData(RawShapedRecipe.Data)

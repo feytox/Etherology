@@ -1,5 +1,7 @@
 {
   "type": "etherology:modifier_recipe",
+  "ether": 12,
+  "outputModifier": "etherology:concentration",
   "pattern": [
     "00XXXX00",
     "0##XX##0",
@@ -9,7 +11,5 @@
     "###XX###",
     "0##XX##0",
     "00XXXX00"
-  ],
-  "outputModifier": "etherology:concentration",
-  "ether": 12
+  ]
 }

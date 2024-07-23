@@ -1,14 +1,16 @@
 {
   "type": "etherology:empower_recipe",
+  "closCount": 0,
+  "ketaCount": 2,
   "key": {
     "#": {
       "item": "etherology:ebony_ingot"
     },
-    "H": {
-      "item": "minecraft:heart_of_the_sea"
-    },
     "B": {
       "item": "minecraft:blaze_powder"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
     }
   },
   "pattern": [
@@ -16,9 +18,10 @@
     "#H#",
     " B "
   ],
+  "rellaCount": 1,
   "result": {
+    "count": 1,
     "id": "etherology:samovar"
   },
-  "rellaCount": 1,
-  "ketaCount": 2
+  "viaCount": 0
 }

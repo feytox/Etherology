@@ -1,11 +1,16 @@
 {
   "type": "etherology:armillary_recipe",
-  "aspects": ["planta", "alchema", "stralfa"],
+  "aspects": [
+    "planta",
+    "alchema",
+    "stralfa"
+  ],
   "center_input": {
     "item": "minecraft:iron_ingot"
   },
   "ether_points": 3.0,
   "result": {
+    "count": 1,
     "id": "etherology:peach_planks"
   }
 }

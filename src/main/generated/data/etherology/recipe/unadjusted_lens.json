@@ -1,10 +1,16 @@
 {
   "type": "etherology:brewing_cauldron_recipe",
+  "inputAmount": 1,
+  "inputAspects": {
+    "frado": 5,
+    "hendall": 5,
+    "vibra": 3
+  },
   "inputItem": {
     "item": "etherology:slitherite"
   },
-  "inputAspects": {"frado": 5, "vibra": 3, "hendall": 5},
   "result": {
+    "count": 1,
     "id": "etherology:unadjusted_lens"
   }
 }

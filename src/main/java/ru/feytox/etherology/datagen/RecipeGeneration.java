@@ -17,6 +17,13 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.util.TriConsumer;
 import ru.feytox.etherology.data.EItemTags;
+import ru.feytox.etherology.magic.lens.LensModifier;
+import ru.feytox.etherology.magic.staff.*;
+import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeBuilder;
+import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeBuilder;
+import ru.feytox.etherology.recipes.empower.EmpowerRecipeBuilder;
+import ru.feytox.etherology.recipes.jewelry.LensRecipeBuilder;
+import ru.feytox.etherology.recipes.jewelry.ModifierRecipeBuilder;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
@@ -24,6 +31,7 @@ import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.registry.item.DecoBlockItems;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
@@ -32,6 +40,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.block.Blocks.*;
 import static net.minecraft.recipe.book.RecipeCategory.*;
+import static ru.feytox.etherology.magic.aspects.Aspect.*;
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
@@ -233,6 +242,128 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(REDSTONE, TUNING_FORK, 2).input('#', ItemTags.PLANKS).input('R', Items.REDSTONE).input('I', RESONATING_WAND)
                 .pattern("IRI")
                 .pattern(" # ").criterion(has(RESONATING_WAND), from(RESONATING_WAND)).offerTo(exporter);
+
+        // Etherology recipe types
+
+        // TODO: 23.07.2024 remove
+        // test recipes
+        ArmillaryRecipeBuilder.create(Items.IRON_INGOT, ExtraBlocksRegistry.PEACH_PLANKS, 3.0f, PLANTA, ALCHEMA, STRALFA).offerTo(exporter, "test_armillary");
+
+        // brewing
+        CauldronRecipeBuilder.create(RAW_AZEL, BINDER).add(MEMO, 6).add(SOCE, 4).add(FELKA, 4).offerTo(exporter);
+        CauldronRecipeBuilder.create(EBONY, EBONY_INGOT).add(TALO, 3).add(FLIMA, 2).offerTo(exporter);
+        CauldronRecipeBuilder.create(CALCITE, GLINT).add(ETHA, 3).add(MORA, 5).add(AREA, 4).offerTo(exporter);
+        CauldronRecipeBuilder.create(SLITHERITE, UNADJUSTED_LENS).add(FRADO, 5).add(VIBRA, 3).add(HENDALL, 5).offerTo(exporter);
+
+        // empowerment
+        EmpowerRecipeBuilder.create(ETHEROSCOPE).via(1).keta(2).input('A', AZEL_INGOT).input('Q', Items.QUARTZ).input('R', Items.REDSTONE)
+                .pattern("   ")
+                .pattern("AQA")
+                .pattern(" R ").offerTo(exporter);
+        EmpowerRecipeBuilder.create(OCULUS).empty().input('G', Items.GOLD_INGOT).input('A', Items.AMETHYST_SHARD)
+                .pattern(" G ")
+                .pattern("GAG")
+                .pattern(" G ").offerTo(exporter);
+        EmpowerRecipeBuilder.create(RESONATING_WAND, 2).rella(2).keta(1).input('I', Items.IRON_INGOT).input('S', Items.ECHO_SHARD)
+                .pattern(" I ")
+                .pattern(" S ")
+                .pattern(" I ").offerTo(exporter);
+        EmpowerRecipeBuilder.create(SAMOVAR_BLOCK).rella(1).keta(2).input('#', EBONY_INGOT).input('H', Items.HEART_OF_THE_SEA).input('B', Items.BLAZE_POWDER)
+                .pattern(" # ")
+                .pattern("#H#")
+                .pattern(" B ").offerTo(exporter);
+        registerStaffs(exporter, STRIPPED_ACACIA_LOG, STRIPPED_BIRCH_LOG, STRIPPED_CRIMSON_STEM, STRIPPED_DARK_OAK_LOG,
+                STRIPPED_JUNGLE_LOG, STRIPPED_MANGROVE_LOG, STRIPPED_OAK_LOG, STRIPPED_PEACH_LOG, STRIPPED_SPRUCE_LOG,
+                STRIPPED_WARPED_STEM);
+
+        ModifierRecipeBuilder.create(LensModifier.AREA, 12)
+                .pattern("00####00")
+                .pattern("0######0")
+                .pattern("###XX###")
+                .pattern("##XX#X##")
+                .pattern("##X#XX##")
+                .pattern("###XX###")
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
+        ModifierRecipeBuilder.create(LensModifier.CHARGE, 12)
+                .pattern("00####00")
+                .pattern("0######0")
+                .pattern("##XX####")
+                .pattern("##X#XX##")
+                .pattern("##XX#X##")
+                .pattern("####XX##")
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
+        ModifierRecipeBuilder.create(LensModifier.CONCENTRATION, 12) // TODO: 23.07.2024 new recipe
+                .pattern("00XXXX00")
+                .pattern("0##XX##0")
+                .pattern("X##XX##X")
+                .pattern("###XX###")
+                .pattern("XXXXXXXX")
+                .pattern("###XX###")
+                .pattern("0##XX##0")
+                .pattern("00XXXX00").offerTo(exporter);
+        ModifierRecipeBuilder.create(LensModifier.FILTERING, 12)
+                .pattern("00####00")
+                .pattern("0######0")
+                .pattern("###XXX##")
+                .pattern("########")
+                .pattern("########")
+                .pattern("##XXX###")
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
+        ModifierRecipeBuilder.create(LensModifier.SAVING, 12)
+                .pattern("00####00")
+                .pattern("0######0")
+                .pattern("#XX#X###")
+                .pattern("#X##X###")
+                .pattern("###X##X#")
+                .pattern("###X#XX#")
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
+        ModifierRecipeBuilder.create(LensModifier.STREAM, 12)
+                .pattern("00####00")
+                .pattern("0###X##0")
+                .pattern("####X###")
+                .pattern("##X#XXX#")
+                .pattern("##X#####")
+                .pattern("##XXX###")
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
+        ModifierRecipeBuilder.create(LensModifier.REINFORCEMENT, 12)
+                .pattern("00####00")
+                .pattern("0####X#0")
+                .pattern("#XXXXX##")
+                .pattern("##X##X##")
+                .pattern("##X##X##")
+                .pattern("##XXXXX#")
+                .pattern("0#X####0")
+                .pattern("00####00").offerTo(exporter);
+        LensRecipeBuilder.create(REDSTONE_LENS, 12)
+                .pattern("00####00")
+                .pattern("0######0")
+                .pattern("##XXXX##")
+                .pattern("#X####X#")
+                .pattern("#X####X#")
+                .pattern("#XX##XX#")
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
+    }
+
+    private void registerStaffs(RecipeExporter exporter, ItemConvertible... strippedLogs) {
+        for (ItemConvertible log : strippedLogs) {
+            String strippedWood = getItemPath(log.asItem()).replace("_log", "").replace("_stem", "");
+            String woodType = strippedWood.replace("stripped_", "");
+            if (woodType.equals(strippedWood)) throw new IllegalArgumentException("Expected stripped log, found: " + log);
+            ItemStack staffStack = STAFF.getDefaultStack();
+            StaffMaterial core = StaffMaterial.valueOf(woodType.toUpperCase());
+            staffStack.apply(ComponentTypes.STAFF, StaffComponent.DEFAULT, component ->
+                    component.setPartInfo(new StaffPartInfo(StaffPart.CORE, core, StaffPattern.EMPTY)));
+            EmpowerRecipeBuilder.create(staffStack).clos(4).keta(6).via(6).input('I', Items.IRON_INGOT).input('B', BINDER).input('W', log)
+                    .pattern(" I ")
+                    .pattern("WBW")
+                    .pattern(" B ").offerTo(exporter, getItemPath(STAFF) + "_" + woodType);
+        }
     }
 
     private void registerPicks(RecipeExporter exporter) {

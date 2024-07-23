@@ -1,0 +1,51 @@
+{
+  "type": "etherology:empower_recipe",
+  "closCount": 4,
+  "ketaCount": 6,
+  "key": {
+    "B": {
+      "item": "etherology:binder"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "W": {
+      "item": "minecraft:stripped_birch_log"
+    }
+  },
+  "pattern": [
+    " I ",
+    "WBW",
+    " B "
+  ],
+  "rellaCount": 0,
+  "result": {
+    "components": {
+      "etherology:staff": {
+        "CORE": {
+          "part": "CORE",
+          "pattern1": "birch",
+          "pattern2": "empty"
+        },
+        "DECOR": {
+          "part": "DECOR",
+          "pattern1": "traditional",
+          "pattern2": "iron"
+        },
+        "HEAD": {
+          "part": "HEAD",
+          "pattern1": "traditional",
+          "pattern2": "iron"
+        },
+        "TIP": {
+          "part": "TIP",
+          "pattern1": "traditional",
+          "pattern2": "iron"
+        }
+      }
+    },
+    "count": 1,
+    "id": "etherology:staff"
+  },
+  "viaCount": 6
+}

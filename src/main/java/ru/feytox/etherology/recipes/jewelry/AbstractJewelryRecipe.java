@@ -17,8 +17,6 @@ import ru.feytox.etherology.recipes.FeyRecipe;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Getter
 @RequiredArgsConstructor
@@ -57,15 +55,25 @@ public abstract class AbstractJewelryRecipe implements FeyRecipe<JewelryTableInv
         public static final Codec<Pattern> CODEC = Codec.STRING.listOf().flatXmap(Pattern::fromData, pattern -> pattern.data().map(DataResult::success).orElseGet(() -> DataResult.error(() -> "Cannot encode unpacked recipe")));
         public static final PacketCodec<ByteBuf, Pattern> PACKET_CODEC = LensPattern.PACKET_CODEC.xmap(pattern -> new Pattern(pattern, Optional.empty()), Pattern::pattern);
 
+        public static Pattern create(List<String> pattern) {
+            return fromData(pattern).getOrThrow();
+        }
+
         // TODO: 11.07.2024 consider adding error on wrong pattern
         private static DataResult<Pattern> fromData(List<String> data) {
             String flatPattern = String.join("", data);
-            IntArraySet cracks = IntStream.range(1, flatPattern.length())
-                    .filter(i -> flatPattern.charAt(i) == 'X')
-                    .boxed().collect(Collectors.toCollection(IntArraySet::new));
-            IntArraySet softCells = IntStream.range(1, flatPattern.length())
-                    .filter(i -> flatPattern.charAt(i) == 'Y')
-                    .boxed().collect(Collectors.toCollection(IntArraySet::new));
+            if (flatPattern.length() != 64) throw new IllegalArgumentException("Jewelry Pattern must have 8x8 size");
+
+            IntArraySet cracks = new IntArraySet();
+            IntArraySet softCells = new IntArraySet();
+
+            for (int i = 1; i < flatPattern.length(); i++) {
+                switch (flatPattern.charAt(i)) {
+                    case 'X' -> cracks.add(i);
+                    case 'Y' -> softCells.add(i);
+                }
+            }
+
             return DataResult.success(new Pattern(new LensPattern(cracks, softCells), Optional.of(data)));
         }
     }

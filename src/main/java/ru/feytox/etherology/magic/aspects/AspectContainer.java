@@ -7,8 +7,10 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AspectContainer {
 
     public static final Codec<AspectContainer> CODEC;
@@ -36,7 +39,7 @@ public class AspectContainer {
     private final ImmutableMap<Aspect, Integer> aspects;
 
     public AspectContainer(Map<Aspect, Integer> mutableAspects) {
-        aspects = ImmutableMap.copyOf(mutableAspects);
+        this(ImmutableMap.copyOf(mutableAspects));
     }
 
     public AspectContainer(Map<Aspect, Integer> mutableAspects, boolean clearZeros) {
@@ -44,7 +47,11 @@ public class AspectContainer {
     }
 
     public AspectContainer() {
-        this(new Object2ObjectOpenHashMap<>());
+        this(ImmutableMap.of());
+    }
+
+    public static AspectContainer of(Aspect aspect, int value) {
+        return new AspectContainer(ImmutableMap.of(aspect, value));
     }
 
     public boolean isEmpty() {

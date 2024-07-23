@@ -1,5 +1,7 @@
 {
   "type": "etherology:modifier_recipe",
+  "ether": 12,
+  "outputModifier": "etherology:reinforcement",
   "pattern": [
     "00####00",
     "0####X#0",
@@ -9,7 +11,5 @@
     "##XXXXX#",
     "0#X####0",
     "00####00"
-  ],
-  "outputModifier": "etherology:reinforcement",
-  "ether": 12
+  ]
 }
