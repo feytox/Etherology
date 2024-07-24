@@ -8,7 +8,6 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven { url 'https://maven.wispforest.io' }
     maven {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
@@ -16,21 +15,12 @@ repositories {
             includeGroup("software.bernie.geckolib")
         }
     }
-    maven {
-        name = "Ladysnake Mods"
-        url = 'https://maven.ladysnake.org/releases'
-    }
-    maven {
-        name "KosmX's maven"
-        url 'https://maven.kosmx.dev/'
-    }
-    maven { url 'https://jitpack.io' }
+    maven { url = 'https://maven.wispforest.io' }
+    maven { url = 'https://maven.ladysnake.org/releases' }
+    maven { url = 'https://jitpack.io' }
     maven { url = "https://api.modrinth.com/maven" }
-    maven { url "https://maven.shedaniel.me/" }
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.terraformersmc.com/"}
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = "https://maven.bawnorton.com/releases/" }
     mavenCentral()
@@ -50,25 +40,17 @@ dependencies {
     include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
     include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${project.cca_version}")
     include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-item:${project.cca_version}")
+    include modImplementation("dev.emi:trinkets:${project.trinkets_version}")
+    include modImplementation("com.terraformersmc:biolith-fabric:${project.biolith_version}")
+    modCompileOnly modRuntimeOnly ("com.terraformersmc:modmenu:${project.mod_menu}"), { exclude(group: "net.fabricmc.fabric-api") }
 
     // TODO: consider fixing MidnightLib dependency
     include modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}")
     // TODO: replace with original after update
     include modImplementation("com.github.feytox:Fabric-Shield-Lib:1.21-without-enchantments-SNAPSHOT")
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    include("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
-    modCompileOnly modRuntimeOnly ("com.terraformersmc:modmenu:${project.mod_menu}"), {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}") {
-        exclude (group: "net.fabricmc.fabric-api")
-    }
-    include("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}")
-    include modImplementation("dev.emi:trinkets:${project.trinkets_version}")
-    include modImplementation("com.terraformersmc:biolith-fabric:${project.biolith_version}")
+
     include(implementation(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixin_sqr}")))
+    include modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}") { exclude (group: "net.fabricmc.fabric-api") }
 }
 
 processResources {

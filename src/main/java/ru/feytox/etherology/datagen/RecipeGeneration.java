@@ -276,6 +276,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 STRIPPED_JUNGLE_LOG, STRIPPED_MANGROVE_LOG, STRIPPED_OAK_LOG, STRIPPED_PEACH_LOG, STRIPPED_SPRUCE_LOG,
                 STRIPPED_WARPED_STEM);
 
+        // lens modifiers
         ModifierRecipeBuilder.create(LensModifier.AREA, 12)
                 .pattern("00####00")
                 .pattern("0######0")
@@ -339,6 +340,8 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("##XXXXX#")
                 .pattern("0#X####0")
                 .pattern("00####00").offerTo(exporter);
+
+        // lenses
         LensRecipeBuilder.create(REDSTONE_LENS, 12)
                 .pattern("00####00")
                 .pattern("0######0")
