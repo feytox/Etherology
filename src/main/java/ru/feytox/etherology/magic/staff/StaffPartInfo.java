@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
 public record StaffPartInfo(@NonNull StaffPart part, @NonNull StaffPattern firstPattern,
                             @NonNull StaffPattern secondPattern) {
 
+    public static StaffPartInfo of(@NonNull StaffPart part, @NonNull StaffPattern firstPattern) {
+        return new StaffPartInfo(part, firstPattern, StaffPattern.EMPTY);
+    }
+
     public static final Codec<StaffPartInfo> CODEC;
     public static final PacketCodec<ByteBuf, StaffPartInfo> PACKET_CODEC;
 

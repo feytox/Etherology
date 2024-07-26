@@ -30,6 +30,9 @@
     ],
     "mixinsquared": [
       "ru.feytox.etherology.mixin.EMixinCanceller"
+    ],
+    "rei_client": [
+      "ru.feytox.etherology.compat.rei.EtherREIPlugin"
     ]
   },
   "mixins": [

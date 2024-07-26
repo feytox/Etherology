@@ -38,7 +38,7 @@ public class EmpowerTableScreenHandler extends ScreenHandler {
         int gridNum = 0;
         for (m = 0; m < 3; m++) {
             for (l = 0; l < 3; l++) {
-                if ((m == 0 || m == 2) && (l == 0 || l == 2)) continue;
+                if (m != 1 && l != 1) continue;
                 this.addSlot(new TrackedSlot(inventory, gridNum, 27 + l * 19, 21 + m * 19));
                 gridNum++;
             }
