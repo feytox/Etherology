@@ -18,7 +18,6 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
@@ -114,14 +113,14 @@ public class RevelationViewRenderer {
 
     private static void renderAspect(MatrixStack matrices, Aspect aspect, float dx, float dy) {
         matrices.push();
-        RenderSystem.setShaderTexture(0, AspectComponent.TEXTURE);
+        RenderSystem.setShaderTexture(0, Aspect.TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
         RenderSystem.disableDepthTest();
         matrices.scale(progress, progress, progress);
         matrices.translate(dx, dy, 0);
-        RenderUtils.renderTexture(matrices, 0, 0, 0, aspect.getTextureMinX(), aspect.getTextureMinY(), 0.25f, 0.25f, 32, 32, EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
+        RenderUtils.renderTexture(matrices, 0, 0, 0, aspect.getTextureMinX(), aspect.getTextureMinY(), 0.25f, 0.25f, aspect.getWidth(), aspect.getHeight(), EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
         matrices.pop();
     }
 

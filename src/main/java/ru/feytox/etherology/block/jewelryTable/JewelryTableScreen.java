@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import ru.feytox.etherology.magic.lens.LensPattern;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
@@ -61,7 +62,10 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
 
         RenderUtils.renderTexture(context, x0, y, 176, v, 8, height, 8, height, 256, 256);
     }
-    
+
+    /**
+     * @see ru.feytox.etherology.compat.rei.category.JewelryCategory#createGrid(DrawContext, LensPattern)
+     */
     private void renderButtons(DrawContext context, int x0, int y0, int mouseX, int mouseY) {
         if (handler.getTableInv().isEmpty()) return;
 

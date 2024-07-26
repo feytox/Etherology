@@ -1,5 +1,7 @@
 package ru.feytox.etherology.magic.aspects;
 
+import org.apache.commons.lang3.StringUtils;
+
 public interface EtherologyAspect {
 
     int TEXTURE_WIDTH = 320;
@@ -9,19 +11,23 @@ public interface EtherologyAspect {
     int getTextureRow();
     int getTextureColumn();
 
-    default int getTextureMinX() {
-        return 32 + 32 * getTextureColumn();
+    default String getDisplayName() {
+        return StringUtils.capitalize(getAspectName());
     }
 
-    default int getTextureMaxX() {
-        return getTextureMinX() + 31;
+    default int getTextureMinX() {
+        return 32 + 32 * getTextureColumn();
     }
 
     default int getTextureMinY() {
         return 32 + 32 * getTextureRow();
     }
 
-    default int getTextureMaxY() {
-        return getTextureMinY() + 31;
+    default int getWidth() {
+        return 32;
+    }
+
+    default int getHeight() {
+        return 32;
     }
 }

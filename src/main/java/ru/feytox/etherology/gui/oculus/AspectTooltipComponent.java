@@ -4,16 +4,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
-import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Map;
 
 public class AspectTooltipComponent implements TooltipComponent {
-    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/aspects.png");
+
     private static final int LINE_MAX = 5;
     private final AspectContainer aspects;
 
@@ -58,7 +56,7 @@ public class AspectTooltipComponent implements TooltipComponent {
 
     private void renderIcon(int x, int y, DrawContext context, Aspect aspect, int xIndex, int yIndex) {
         RenderSystem.enableBlend();
-        context.drawTexture(TEXTURE, x * 2 + xIndex * 34, y * 2 + yIndex * 34, aspect.getTextureMinX(), aspect.getTextureMinY(), 32, 32, EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
+        context.drawTexture(Aspect.TEXTURE, x * 2 + xIndex * 34, y * 2 + yIndex * 34, aspect.getTextureMinX(), aspect.getTextureMinY(), aspect.getWidth(), aspect.getHeight(), EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
     }
 
     private static void renderCount(TextRenderer textRenderer, DrawContext context, int x, int y, int count) {

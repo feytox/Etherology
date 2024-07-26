@@ -32,6 +32,10 @@ public class LensModifiersData {
         return modifiers.getOrDefault(modifier.modifierId(), 0);
     }
 
+    public boolean isEmpty() {
+        return modifiers.isEmpty();
+    }
+
     public NbtCompound writeNbt() {
         NbtCompound nbt = new NbtCompound();
         modifiers.forEach((id, level) -> nbt.putInt(id.toString(), level));

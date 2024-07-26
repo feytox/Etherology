@@ -36,6 +36,7 @@ public class EItems {
 
     public static final Item UNADJUSTED_LENS = registerItem("unadjusted_lens", new UnadjustedLens());
     public static final Item REDSTONE_LENS = registerItem("redstone_lens", new RedstoneLens());
+    public static final Item[] LENSES = {REDSTONE_LENS};
 
     public static final Item ETHEROSCOPE = registerSimple("etheroscope");
     public static final Item THUJA_OIL = registerSimple("thuja_oil");

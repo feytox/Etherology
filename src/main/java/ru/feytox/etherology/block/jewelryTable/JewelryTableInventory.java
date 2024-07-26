@@ -218,8 +218,7 @@ public class JewelryTableInventory implements ImplementedInventory {
     }
 
     public int getTextureOffset(int index) {
-        return LensComponent.get(getStack(0))
-                .map(LensComponent::pattern)
+        return LensComponent.get(getStack(0)).map(LensComponent::pattern)
                 .map(pattern -> pattern.getTextureOffset(index))
                 .orElse(0);
     }

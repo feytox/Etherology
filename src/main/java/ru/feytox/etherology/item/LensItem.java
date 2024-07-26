@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensModifier;
+import ru.feytox.etherology.magic.lens.LensModifiersData;
 import ru.feytox.etherology.magic.staff.*;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.ItemComponent;
@@ -219,5 +220,10 @@ public abstract class LensItem extends Item {
 
     public boolean isUnadjusted() {
         return false;
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return !LensComponent.get(stack).map(LensComponent::modifiers).map(LensModifiersData::isEmpty).orElse(true);
     }
 }

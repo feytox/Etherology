@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+// TODO: 26.07.2024 move from enums to data-driven patterns
 public interface StaffPattern {
 
     EmptyPattern EMPTY = new EmptyPattern();

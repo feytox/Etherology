@@ -73,7 +73,7 @@ public class EItemGroups {
         // patterns
         etherItems.with(PATTERN_TABLETS);
         // staff and lenses
-        etherItems.with(STAFF, UNADJUSTED_LENS, REDSTONE_LENS);
+        etherItems.with(STAFF, UNADJUSTED_LENS).with(LENSES);
         // magic
         // TODO: 12.04.2024 fix corruption bucket
         etherItems.with(

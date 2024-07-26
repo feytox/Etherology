@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 import ru.feytox.etherology.util.misc.CodecUtil;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.List;
 
@@ -58,6 +60,7 @@ public enum Aspect implements EtherologyAspect, StringIdentifiable {
     public static final Codec<Aspect> CODEC = StringIdentifiable.createBasicCodec(Aspect::values);
     public static final PacketCodec<ByteBuf, Aspect> PACKET_CODEC = CodecUtil.ofEnum(values());
     public static final PacketCodec<ByteBuf, List<Aspect>> LIST_PACKET_CODEC = PACKET_CODEC.collect(PacketCodecs.toList());
+    public static final Identifier TEXTURE = EIdentifier.of("textures/gui/aspects.png");
 
     private final int textureRow;
     private final int textureColumn;
@@ -66,6 +69,10 @@ public enum Aspect implements EtherologyAspect, StringIdentifiable {
     @Override
     public String getAspectName() {
         return this.name().toLowerCase();
+    }
+
+    public Identifier getId() {
+        return EIdentifier.of(getAspectName());
     }
 
     @Override
