@@ -19,8 +19,8 @@ import org.apache.logging.log4j.util.TriConsumer;
 import ru.feytox.etherology.data.EItemTags;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.staff.*;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeBuilder;
 import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeBuilder;
-import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeBuilder;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeBuilder;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeBuilder;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeBuilder;
@@ -250,10 +250,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ArmillaryRecipeBuilder.create(Items.IRON_INGOT, ExtraBlocksRegistry.PEACH_PLANKS, 3.0f, PLANTA, ALCHEMA, STRALFA).offerTo(exporter, "test_armillary");
 
         // brewing
-        CauldronRecipeBuilder.create(RAW_AZEL, BINDER).add(MEMO, 6).add(SOCE, 4).add(FELKA, 4).offerTo(exporter);
-        CauldronRecipeBuilder.create(EBONY, EBONY_INGOT).add(TALO, 3).add(FLIMA, 2).offerTo(exporter);
-        CauldronRecipeBuilder.create(CALCITE, GLINT).add(ETHA, 3).add(MORA, 5).add(AREA, 4).offerTo(exporter);
-        CauldronRecipeBuilder.create(SLITHERITE, UNADJUSTED_LENS).add(FRADO, 5).add(VIBRA, 3).add(HENDALL, 5).offerTo(exporter);
+        AlchemyRecipeBuilder.create(RAW_AZEL, BINDER).add(MEMO, 6).add(SOCE, 4).add(FELKA, 4).offerTo(exporter);
+        AlchemyRecipeBuilder.create(EBONY, EBONY_INGOT).add(TALO, 3).add(FLIMA, 2).offerTo(exporter);
+        AlchemyRecipeBuilder.create(CALCITE, GLINT).add(ETHA, 3).add(MORA, 5).add(AREA, 4).offerTo(exporter);
+        AlchemyRecipeBuilder.create(SLITHERITE, UNADJUSTED_LENS).add(FRADO, 5).add(VIBRA, 3).add(HENDALL, 5).offerTo(exporter);
 
         // empowerment
         EmpowerRecipeBuilder.create(ETHEROSCOPE).via(1).keta(2).input('A', AZEL_INGOT).input('Q', Items.QUARTZ).input('R', Items.REDSTONE)

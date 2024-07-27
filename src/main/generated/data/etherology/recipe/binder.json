@@ -1,5 +1,5 @@
 {
-  "type": "etherology:brewing_cauldron_recipe",
+  "type": "etherology:alchemy_recipe",
   "inputAmount": 1,
   "inputAspects": {
     "felka": 4,

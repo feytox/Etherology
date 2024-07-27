@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.brewingCauldron;
+package ru.feytox.etherology.recipes.alchemy;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 
 @RequiredArgsConstructor
-public class CauldronRecipeBuilder implements CraftingRecipeJsonBuilder {
+public class AlchemyRecipeBuilder implements CraftingRecipeJsonBuilder {
 
     private final Ingredient inputItem;
     private final int inputAmount;
@@ -24,23 +24,23 @@ public class CauldronRecipeBuilder implements CraftingRecipeJsonBuilder {
     private AspectContainer inputAspects = null;
     private final ItemStack outputStack;
 
-    public static CauldronRecipeBuilder create(@NonNull ItemConvertible inputItem, @NonNull Item output) {
+    public static AlchemyRecipeBuilder create(@NonNull ItemConvertible inputItem, @NonNull Item output) {
         return create(Ingredient.ofItems(inputItem), 1, output, 1);
     }
 
-    public static CauldronRecipeBuilder create(@NonNull Ingredient inputItem, @NonNull Item output) {
+    public static AlchemyRecipeBuilder create(@NonNull Ingredient inputItem, @NonNull Item output) {
         return create(inputItem, 1, output, 1);
     }
 
-    public static CauldronRecipeBuilder create(@NonNull Ingredient inputItem, int inputAmount, @NonNull Item output) {
+    public static AlchemyRecipeBuilder create(@NonNull Ingredient inputItem, int inputAmount, @NonNull Item output) {
         return create(inputItem, inputAmount, output, 1);
     }
 
-    public static CauldronRecipeBuilder create(@NonNull Ingredient inputItem, int inputAmount, @NonNull Item output, int outputCount) {
-        return new CauldronRecipeBuilder(inputItem, inputAmount, new ItemStack(output, outputCount));
+    public static AlchemyRecipeBuilder create(@NonNull Ingredient inputItem, int inputAmount, @NonNull Item output, int outputCount) {
+        return new AlchemyRecipeBuilder(inputItem, inputAmount, new ItemStack(output, outputCount));
     }
 
-    public CauldronRecipeBuilder add(Aspect aspect, int value) {
+    public AlchemyRecipeBuilder add(Aspect aspect, int value) {
         if (inputAspects == null) inputAspects = AspectContainer.of(aspect, value);
         else inputAspects = inputAspects.add(AspectContainer.of(aspect, value));
         return this;
@@ -69,7 +69,7 @@ public class CauldronRecipeBuilder implements CraftingRecipeJsonBuilder {
             Etherology.ELOGGER.warn("Input aspects is empty for recipe {}", recipeId);
             inputAspects = new AspectContainer();
         }
-        CauldronRecipe recipe = new CauldronRecipe(inputItem, inputAmount, inputAspects, outputStack);
+        AlchemyRecipe recipe = new AlchemyRecipe(inputItem, inputAmount, inputAspects, outputStack);
         exporter.accept(recipeId, recipe, null);
     }
 }

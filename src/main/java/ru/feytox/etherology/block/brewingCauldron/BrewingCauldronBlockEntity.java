@@ -34,9 +34,9 @@ import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
-import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipe;
-import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeInventory;
-import ru.feytox.etherology.recipes.brewingCauldron.CauldronRecipeSerializer;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeInventory;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
@@ -260,8 +260,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     }
 
     private boolean tryCraft(ServerWorld world, ItemStack inputStack, BlockState state) {
-        CauldronRecipeInventory inventory = new CauldronRecipeInventory(aspects, inputStack);
-        val recipeEntry = RecipesRegistry.getFirstMatch(world, inventory, CauldronRecipeSerializer.INSTANCE);
+        AlchemyRecipeInventory inventory = new AlchemyRecipeInventory(aspects, inputStack);
+        val recipeEntry = RecipesRegistry.getFirstMatch(world, inventory, AlchemyRecipeSerializer.INSTANCE);
         if (recipeEntry == null) return false;
 
         ItemStack resultStack = craft(world, inputStack, recipeEntry.value(), state);
@@ -283,8 +283,8 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         }
     }
 
-    private ItemStack craft(ServerWorld world, ItemStack itemStack, CauldronRecipe recipe, BlockState state) {
-        CauldronRecipeInventory inventory;
+    private ItemStack craft(ServerWorld world, ItemStack itemStack, AlchemyRecipe recipe, BlockState state) {
+        AlchemyRecipeInventory inventory;
         Item outputItem = recipe.getOutput().getItem();
         int count = 0;
 
@@ -295,7 +295,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
 
             int oldLevel = state.get(BrewingCauldronBlock.LEVEL);
             state = state.with(BrewingCauldronBlock.LEVEL, oldLevel-1);
-            inventory = new CauldronRecipeInventory(aspects, itemStack);
+            inventory = new AlchemyRecipeInventory(aspects, itemStack);
         } while (recipe.matches(inventory, world) && BrewingCauldronBlock.isFilled(state));
 
         if (!BrewingCauldronBlock.isFilled(state)) temperature = 20;

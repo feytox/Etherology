@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.brewingCauldron;
+package ru.feytox.etherology.recipes.alchemy;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class CauldronRecipe implements FeyInputRecipe<CauldronRecipeInventory> {
+public class AlchemyRecipe implements FeyInputRecipe<AlchemyRecipeInventory> {
 
     @Getter
     private final Ingredient inputItem;
@@ -26,7 +26,7 @@ public class CauldronRecipe implements FeyInputRecipe<CauldronRecipeInventory> {
     private final ItemStack outputStack;
 
     @Override
-    public boolean matches(CauldronRecipeInventory inventory, World world) {
+    public boolean matches(AlchemyRecipeInventory inventory, World world) {
         if (!inputItem.test(inventory.stack()) || inventory.stack().getCount() < inputAmount) return false;
 
         ImmutableMap<Aspect, Integer> cauldronAspects = inventory.cauldronAspects().getAspects();
@@ -39,7 +39,7 @@ public class CauldronRecipe implements FeyInputRecipe<CauldronRecipeInventory> {
     }
 
     @Override
-    public ItemStack craft(CauldronRecipeInventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(AlchemyRecipeInventory inventory, RegistryWrapper.WrapperLookup lookup) {
         return ItemStack.EMPTY;
     }
 
@@ -59,6 +59,6 @@ public class CauldronRecipe implements FeyInputRecipe<CauldronRecipeInventory> {
 
     @Override
     public FeyRecipeSerializer<?> getSerializer() {
-        return CauldronRecipeSerializer.INSTANCE;
+        return AlchemyRecipeSerializer.INSTANCE;
     }
 }
