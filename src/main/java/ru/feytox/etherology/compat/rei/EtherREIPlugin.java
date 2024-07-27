@@ -17,19 +17,15 @@ import me.shedaniel.rei.plugin.client.categories.crafting.filler.CraftingRecipeF
 import net.minecraft.text.Text;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableScreen;
-import ru.feytox.etherology.compat.rei.category.AspectionCategory;
-import ru.feytox.etherology.compat.rei.category.EmpowerCategory;
-import ru.feytox.etherology.compat.rei.category.InventorCategory;
-import ru.feytox.etherology.compat.rei.category.JewelryCategory;
-import ru.feytox.etherology.compat.rei.display.AspectionDisplay;
-import ru.feytox.etherology.compat.rei.display.EmpowerDisplay;
-import ru.feytox.etherology.compat.rei.display.InventorDisplay;
-import ru.feytox.etherology.compat.rei.display.JewelryDisplay;
+import ru.feytox.etherology.compat.rei.category.*;
+import ru.feytox.etherology.compat.rei.display.*;
 import ru.feytox.etherology.compat.rei.filler.StaffCarpetCuttingFiller;
 import ru.feytox.etherology.compat.rei.filler.StaffCarpetingFiller;
 import ru.feytox.etherology.compat.rei.misc.AspectEntryDefinition;
 import ru.feytox.etherology.compat.rei.misc.AspectPair;
 import ru.feytox.etherology.magic.aspects.Aspect;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.LensRecipe;
@@ -47,6 +43,7 @@ public class EtherREIPlugin implements REIClientPlugin {
     public static final CategoryIdentifier<JewelryDisplay.Lens> JEWELRY_LENS = id("jewelry_lens");
     public static final CategoryIdentifier<JewelryDisplay.Modifier> JEWELRY_MODIFIER = id("jewelry_modifier");
     public static final CategoryIdentifier<AspectionDisplay> ASPECTION = id("aspection");
+    public static final CategoryIdentifier<AlchemyDisplay> ALCHEMY = id("alchemy");
 
     public static final EntryType<AspectPair> ASPECT_ENTRY = EntryType.deferred(EIdentifier.of("aspect"));
 
@@ -57,13 +54,14 @@ public class EtherREIPlugin implements REIClientPlugin {
     @Override
     public void registerCategories(CategoryRegistry registry) {
         registry.add(new EmpowerCategory(), new InventorCategory(), new JewelryCategory.Lens(), new JewelryCategory.Modifier(),
-                new AspectionCategory());
+                new AspectionCategory(), new AlchemyCategory());
 
         registry.addWorkstations(EMPOWERMENT, EntryStacks.of(EBlocks.EMPOWERMENT_TABLE));
         registry.addWorkstations(INVENTOR, EntryStacks.of(EBlocks.INVENTOR_TABLE));
         registry.addWorkstations(JEWELRY_LENS, EntryStacks.of(EBlocks.JEWELRY_TABLE));
         registry.addWorkstations(JEWELRY_MODIFIER, EntryStacks.of(EBlocks.JEWELRY_TABLE));
         registry.addWorkstations(ASPECTION, EntryStacks.of(ToolItems.OCULUS));
+        registry.addWorkstations(ALCHEMY, EntryStacks.of(EBlocks.BREWING_CAULDRON));
 
         for (CraftingRecipeFiller<?> filler : CRAFTING_RECIPE_FILLERS) {
             filler.registerCategories(registry);
@@ -75,6 +73,7 @@ public class EtherREIPlugin implements REIClientPlugin {
         registry.registerRecipeFiller(EmpowerRecipe.class, EmpowerRecipeSerializer.INSTANCE.getRecipeType(), EmpowerDisplay::of);
         registry.registerRecipeFiller(LensRecipe.class, LensRecipeSerializer.INSTANCE.getRecipeType(), JewelryDisplay.Lens::of);
         registry.registerRecipeFiller(ModifierRecipe.class, ModifierRecipeSerializer.INSTANCE.getRecipeType(), JewelryDisplay.Modifier::of);
+        registry.registerRecipeFiller(AlchemyRecipe.class, AlchemyRecipeSerializer.INSTANCE.getRecipeType(), AlchemyDisplay::of);
         InventorDisplay.registerFillers(registry);
         AspectionDisplay.registerFillers(registry);
 

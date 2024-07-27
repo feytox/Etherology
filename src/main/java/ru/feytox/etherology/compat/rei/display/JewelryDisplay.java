@@ -20,6 +20,7 @@ import ru.feytox.etherology.registry.misc.ComponentTypes;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public abstract class JewelryDisplay<T extends AbstractJewelryRecipe> extends BasicDisplay {
@@ -27,7 +28,7 @@ public abstract class JewelryDisplay<T extends AbstractJewelryRecipe> extends Ba
     protected final T recipe;
 
     protected JewelryDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, RecipeEntry<T> entry) {
-        super(inputs, outputs);
+        super(inputs, outputs, Optional.of(entry.id()));
         recipe = entry.value();
     }
 
