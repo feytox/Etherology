@@ -32,6 +32,8 @@ import ru.feytox.etherology.recipes.jewelry.LensRecipe;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipe;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipe;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -44,6 +46,7 @@ public class EtherREIPlugin implements REIClientPlugin {
     public static final CategoryIdentifier<JewelryDisplay.Modifier> JEWELRY_MODIFIER = id("jewelry_modifier");
     public static final CategoryIdentifier<AspectionDisplay> ASPECTION = id("aspection");
     public static final CategoryIdentifier<AlchemyDisplay> ALCHEMY = id("alchemy");
+    public static final CategoryIdentifier<MatrixDisplay> MATRIX = id("matrix");
 
     public static final EntryType<AspectPair> ASPECT_ENTRY = EntryType.deferred(EIdentifier.of("aspect"));
 
@@ -54,7 +57,7 @@ public class EtherREIPlugin implements REIClientPlugin {
     @Override
     public void registerCategories(CategoryRegistry registry) {
         registry.add(new EmpowerCategory(), new InventorCategory(), new JewelryCategory.Lens(), new JewelryCategory.Modifier(),
-                new AspectionCategory(), new AlchemyCategory());
+                new AspectionCategory(), new AlchemyCategory(), new MatrixCategory());
 
         registry.addWorkstations(EMPOWERMENT, EntryStacks.of(EBlocks.EMPOWERMENT_TABLE));
         registry.addWorkstations(INVENTOR, EntryStacks.of(EBlocks.INVENTOR_TABLE));
@@ -62,6 +65,7 @@ public class EtherREIPlugin implements REIClientPlugin {
         registry.addWorkstations(JEWELRY_MODIFIER, EntryStacks.of(EBlocks.JEWELRY_TABLE));
         registry.addWorkstations(ASPECTION, EntryStacks.of(ToolItems.OCULUS));
         registry.addWorkstations(ALCHEMY, EntryStacks.of(EBlocks.BREWING_CAULDRON));
+        registry.addWorkstations(MATRIX, EntryStacks.of(EBlocks.ARMILLARY_MATRIX));
 
         for (CraftingRecipeFiller<?> filler : CRAFTING_RECIPE_FILLERS) {
             filler.registerCategories(registry);
@@ -74,6 +78,7 @@ public class EtherREIPlugin implements REIClientPlugin {
         registry.registerRecipeFiller(LensRecipe.class, LensRecipeSerializer.INSTANCE.getRecipeType(), JewelryDisplay.Lens::of);
         registry.registerRecipeFiller(ModifierRecipe.class, ModifierRecipeSerializer.INSTANCE.getRecipeType(), JewelryDisplay.Modifier::of);
         registry.registerRecipeFiller(AlchemyRecipe.class, AlchemyRecipeSerializer.INSTANCE.getRecipeType(), AlchemyDisplay::of);
+        registry.registerRecipeFiller(MatrixRecipe.class, MatrixRecipeSerializer.INSTANCE.getRecipeType(), MatrixDisplay::of);
         InventorDisplay.registerFillers(registry);
         AspectionDisplay.registerFillers(registry);
 
