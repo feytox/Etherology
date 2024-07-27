@@ -11,6 +11,7 @@ import ru.feytox.etherology.compat.rei.EtherREIPlugin;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipe;
 import ru.feytox.etherology.registry.item.EItems;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class EmpowerDisplay extends BasicDisplay {
         inputs.add(EntryIngredients.of(EItems.PRIMOSHARD_VIA, recipe.getViaCount()));
         inputs.add(EntryIngredients.of(EItems.PRIMOSHARD_CLOS, recipe.getClosCount()));
         inputs.add(EntryIngredients.of(EItems.PRIMOSHARD_KETA, recipe.getKetaCount()));
-        List<EntryIngredient> outputs = List.of(EntryIngredients.of(recipe.getOutput()));
+        List<EntryIngredient> outputs = Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
         return new EmpowerDisplay(inputs, outputs, entry);
     }
 

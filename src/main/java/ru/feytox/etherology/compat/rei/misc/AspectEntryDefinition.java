@@ -72,13 +72,24 @@ public class AspectEntryDefinition implements EntryDefinition<AspectPair> {
     }
 
     @Override
+    public AspectPair add(AspectPair o1, AspectPair o2) {
+        return new AspectPair(o1.aspect(), o1.value() + o2.value());
+    }
+
+    @Override
     public long hash(EntryStack<AspectPair> entry, AspectPair value, ComparisonContext context) {
-        return value.hashCode();
+        return switch (context) {
+            case FUZZY -> value.aspectHash();
+            case EXACT -> value.hashCode();
+        };
     }
 
     @Override
     public boolean equals(AspectPair o1, AspectPair o2, ComparisonContext context) {
-        return o1.equals(o2);
+        return switch (context) {
+            case FUZZY -> o1.aspectEquals(o2);
+            case EXACT -> o1.equals(o2);
+        };
     }
 
     @Override @Nullable
@@ -136,15 +147,16 @@ public class AspectEntryDefinition implements EntryDefinition<AspectPair> {
 
         @Override
         public void renderOverlay(EntryStack<AspectPair> entry, Void extraData, DrawContext graphics, VertexConsumerProvider.Immediate immediate, Rectangle bounds, int mouseX, int mouseY, float delta) {
-            Aspect aspect = entry.getValue().aspect();
+            TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
             int count = entry.getValue().value();
             if (count == 1) return;
+            String value = Integer.toString(count);
 
             graphics.push();
             graphics.translate(bounds.x, bounds.y, 0);
-            graphics.scale((float) bounds.width / aspect.getWidth(), (bounds.getWidth() + bounds.getHeight()) / 2f / (aspect.getHeight()), 1.0f);
+            graphics.scale(bounds.width / 16f, (bounds.getWidth() + bounds.getHeight()) / 2f / 16f, 1.0f);
 
-            MinecraftClient.getInstance().textRenderer.draw(Integer.toString(count), 0, 0, 0xFFFFFF, false, graphics.getMatrices().peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+            textRenderer.draw(value, 17 - textRenderer.getWidth(value), 9, 0xFFFFFF, true, graphics.getMatrices().peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
             graphics.pop();
         }
 

@@ -17,6 +17,7 @@ import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class InventorDisplay extends BasicDisplay {
@@ -41,7 +42,7 @@ public class InventorDisplay extends BasicDisplay {
                     staffStack.apply(ComponentTypes.STAFF, StaffComponent.DEFAULT, component -> component.setPartInfo(new StaffPartInfo(part, style, metal)));
                     return EntryStacks.of(staffStack);
                 }).toList();
-                registry.add(new InventorDisplay(List.of(inputStaff, tabletInput, metals), List.of(EntryIngredient.of(output))));
+                registry.add(new InventorDisplay(List.of(inputStaff, tabletInput, metals), Collections.singletonList(EntryIngredient.of(output))));
             }
         }
     }

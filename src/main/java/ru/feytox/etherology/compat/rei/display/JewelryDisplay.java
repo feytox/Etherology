@@ -18,6 +18,7 @@ import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -37,8 +38,8 @@ public abstract class JewelryDisplay<T extends AbstractJewelryRecipe> extends Ba
         }
 
         public static Lens of(RecipeEntry<LensRecipe> entry) {
-            List<EntryIngredient> input = List.of(EntryIngredients.of(EItems.UNADJUSTED_LENS));
-            List<EntryIngredient> output = List.of(EntryIngredients.of(entry.value().getOutputItem()));
+            List<EntryIngredient> input = Collections.singletonList(EntryIngredients.of(EItems.UNADJUSTED_LENS));
+            List<EntryIngredient> output = Collections.singletonList(EntryIngredients.of(entry.value().getOutputItem()));
             return new Lens(input, output, entry);
         }
 
@@ -56,8 +57,8 @@ public abstract class JewelryDisplay<T extends AbstractJewelryRecipe> extends Ba
 
         public static Modifier of(RecipeEntry<ModifierRecipe> entry) {
             LensModifier modifier = entry.value().getModifier();
-            List<EntryIngredient> input = List.of(EntryIngredient.of(Arrays.stream(EItems.LENSES).map(EntryStacks::of).toList()));
-            List<EntryIngredient> output = List.of(EntryIngredient.of(Arrays.stream(EItems.LENSES).map(item -> {
+            List<EntryIngredient> input = Collections.singletonList(EntryIngredient.of(Arrays.stream(EItems.LENSES).map(EntryStacks::of).toList()));
+            List<EntryIngredient> output = Collections.singletonList(EntryIngredient.of(Arrays.stream(EItems.LENSES).map(item -> {
                 ItemStack lensStack = item.getDefaultStack();
                 lensStack.apply(ComponentTypes.LENS, LensComponent.EMPTY, component -> component.incrementLevel(modifier));
                 return lensStack;

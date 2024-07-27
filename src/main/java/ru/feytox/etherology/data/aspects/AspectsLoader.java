@@ -2,6 +2,9 @@ package ru.feytox.etherology.data.aspects;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.val;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
@@ -11,6 +14,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.AspectContainerId;
 import ru.feytox.etherology.magic.aspects.AspectContainerType;
@@ -20,6 +24,7 @@ import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 public class AspectsLoader {
 
@@ -29,7 +34,7 @@ public class AspectsLoader {
     private static CompletableFuture<ImmutableMap<AspectContainerId, AspectContainer>> cacheFuture = null;
 
     private static Optional<AspectContainer> get(World world, AspectContainerId id) {
-        Map<AspectContainerId, AspectContainer> cache = getCache(world);
+        Map<AspectContainerId, AspectContainer> cache = getCache(world, false);
         if (cache == null) return Optional.empty();
 
         return Optional.ofNullable(cache.get(id));
@@ -43,6 +48,19 @@ public class AspectsLoader {
 
         if (multiplyCount) itemAspects = itemAspects.map(value -> value * stack.getCount());
         return Optional.of(itemAspects);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void forEach(BiConsumer<AspectContainerId, AspectContainer> consumer) {
+        World world = MinecraftClient.getInstance().world;
+        if (world != null) {
+            Map<AspectContainerId, AspectContainer> cache = getCache(world, true);
+            if (cache != null) {
+                cache.forEach(consumer);
+                return;
+            }
+        }
+        Etherology.ELOGGER.warn("Aspects were not loaded during the addition of REI entries.");
     }
 
     private static Optional<AspectContainer> getAspects(World world, ItemStack stack) {
@@ -86,11 +104,11 @@ public class AspectsLoader {
     }
 
     @Nullable
-    private static Map<AspectContainerId, AspectContainer> getCache(World world) {
+    private static Map<AspectContainerId, AspectContainer> getCache(World world, boolean force) {
         if (cache != null) return cache;
         if (cacheFuture != null) {
-            if (!cacheFuture.isDone()) return null;
-            cache = cacheFuture.join();
+            if (!cacheFuture.isDone() && !force) return null;
+            cache = cacheFuture.isDone() ? cacheFuture.join() : forceGetCache();
             cacheFuture = null;
             return cache;
         }
@@ -101,9 +119,19 @@ public class AspectsLoader {
                 .thenApplyAsync(s -> s.reduce(AspectRegistryPart::merge))
                 .thenApplyAsync(o -> o.map(ImmutableMap::copyOf).orElseThrow());
 
-        if (!cacheFuture.isDone()) return null;
-        cache = cacheFuture.join();
+        if (!cacheFuture.isDone() && !force) return null;
+        cache = cacheFuture.isDone() ? cacheFuture.join() : forceGetCache();
         cacheFuture = null;
         return cache;
+    }
+
+    @Nullable
+    private static ImmutableMap<AspectContainerId, AspectContainer> forceGetCache() {
+        if (cacheFuture == null) return null;
+        try {
+            return cacheFuture.get();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

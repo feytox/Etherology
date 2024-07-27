@@ -16,6 +16,14 @@ public record AspectPair(Aspect aspect, int value) {
         return new AspectPair(aspect, 1);
     }
 
+    public boolean aspectEquals(AspectPair that) {
+        return aspect.equals(that.aspect);
+    }
+
+    public int aspectHash() {
+        return new HashCodeBuilder(17, 37).append(aspect).toHashCode();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
