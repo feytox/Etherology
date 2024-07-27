@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillary;
+package ru.feytox.etherology.block.matrix;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -25,19 +25,19 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 
-public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+public class MatrixBlock extends Block implements RegistrableBlock, BlockEntityProvider {
 
-    public static final EnumProperty<ArmillaryState> MATRIX_STATE = EnumProperty.of("matrix_state", ArmillaryState.class);
+    public static final EnumProperty<MatrixState> MATRIX_STATE = EnumProperty.of("matrix_state", MatrixState.class);
     private static final VoxelShape OUTLINE_SHAPE;
 
-    public ArmillaryMatrixBlock() {
+    public MatrixBlock() {
         super(Settings.copy(EBlocks.PEDESTAL_BLOCK).nonOpaque());
-        setDefaultState(getDefaultState().with(MATRIX_STATE, ArmillaryState.IDLE));
+        setDefaultState(getDefaultState().with(MATRIX_STATE, MatrixState.IDLE));
     }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.isClient || !(world.getBlockEntity(pos) instanceof ArmillaryMatrixBlockEntity matrix)) return ActionResult.CONSUME;
+        if (world.isClient || !(world.getBlockEntity(pos) instanceof MatrixBlockEntity matrix)) return ActionResult.CONSUME;
         matrix.onHandUse((ServerWorld) world, state, player, player.getActiveHand());
         matrix.syncData((ServerWorld) world);
         return ActionResult.CONSUME;
@@ -46,7 +46,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock() && !moved) {
-            if (world.getBlockEntity(pos) instanceof ArmillaryMatrixBlockEntity matrix) {
+            if (world.getBlockEntity(pos) instanceof MatrixBlockEntity matrix) {
                 ItemScatterer.spawn(world, pos, matrix);
             }
             super.onStateReplaced(state, world, pos, newState, false);
@@ -63,7 +63,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         if (!type.equals(ARMILLARY_MATRIX_BLOCK_ENTITY)) return null;
 
-        return world.isClient ? ArmillaryMatrixBlockEntity::clientTicker : ArmillaryMatrixBlockEntity::serverTicker;
+        return world.isClient ? MatrixBlockEntity::clientTicker : MatrixBlockEntity::serverTicker;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ArmillaryMatrixBlock extends Block implements RegistrableBlock, Blo
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ArmillaryMatrixBlockEntity(pos, state);
+        return new MatrixBlockEntity(pos, state);
     }
 
     @Override

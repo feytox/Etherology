@@ -48,13 +48,13 @@ public class AlchemyRecipeBuilder implements CraftingRecipeJsonBuilder {
 
     @Override
     public CraftingRecipeJsonBuilder criterion(String name, AdvancementCriterion<?> criterion) {
-        Etherology.ELOGGER.warn("Criterion is not yet supported by Brewing Cauldron recipe type.");
+        Etherology.ELOGGER.warn("Criterion is not yet supported by Alchemy recipe type.");
         return null;
     }
 
     @Override
     public CraftingRecipeJsonBuilder group(@Nullable String group) {
-        Etherology.ELOGGER.warn("Group is not yet supported by Brewing Cauldron recipe type.");
+        Etherology.ELOGGER.warn("Group is not yet supported by Alchemy recipe type.");
         return null;
     }
 

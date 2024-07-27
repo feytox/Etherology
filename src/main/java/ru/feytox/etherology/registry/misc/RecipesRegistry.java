@@ -15,11 +15,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
-import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.BrokenRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -38,7 +38,7 @@ public class RecipesRegistry {
         register(ModifierRecipeSerializer.INSTANCE);
         register(AlchemyRecipeSerializer.INSTANCE);
         register(EmpowerRecipeSerializer.INSTANCE);
-        register(ArmillaryRecipeSerializer.INSTANCE);
+        register(MatrixRecipeSerializer.INSTANCE);
         register(BrokenRecipeSerializer.INSTANCE);
     }
 

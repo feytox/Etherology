@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.armillary;
+package ru.feytox.etherology.recipes.matrix;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,31 +17,31 @@ import ru.feytox.etherology.magic.aspects.Aspect;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ArmillaryRecipeBuilder implements CraftingRecipeJsonBuilder {
+public class MatrixRecipeBuilder implements CraftingRecipeJsonBuilder {
 
     private final Ingredient centerInput;
     private final List<Aspect> aspects;
     private final float etherPoints;
     private final ItemStack outputStack;
 
-    public static ArmillaryRecipeBuilder create(@NonNull ItemConvertible centerInput, @NonNull ItemConvertible output, float etherPoints, Aspect... aspects) {
+    public static MatrixRecipeBuilder create(@NonNull ItemConvertible centerInput, @NonNull ItemConvertible output, float etherPoints, Aspect... aspects) {
         return create(Ingredient.ofItems(centerInput), output, etherPoints, aspects);
     }
 
-    public static ArmillaryRecipeBuilder create(@NonNull Ingredient centerInput, @NonNull ItemConvertible output, float etherPoints, Aspect... aspects) {
+    public static MatrixRecipeBuilder create(@NonNull Ingredient centerInput, @NonNull ItemConvertible output, float etherPoints, Aspect... aspects) {
         if (aspects.length != 3) throw new IllegalArgumentException("You must provide exactly 3 aspects, found: " + aspects.length);
-        return new ArmillaryRecipeBuilder(centerInput, List.of(aspects), etherPoints, output.asItem().getDefaultStack());
+        return new MatrixRecipeBuilder(centerInput, List.of(aspects), etherPoints, output.asItem().getDefaultStack());
     }
 
     @Override
     public CraftingRecipeJsonBuilder criterion(String name, AdvancementCriterion<?> criterion) {
-        Etherology.ELOGGER.warn("Criterion is not yet supported by Armillary recipe type.");
+        Etherology.ELOGGER.warn("Criterion is not yet supported by Matrix recipe type.");
         return null;
     }
 
     @Override
     public CraftingRecipeJsonBuilder group(@Nullable String group) {
-        Etherology.ELOGGER.warn("Group is not yet supported by Armillary recipe type.");
+        Etherology.ELOGGER.warn("Group is not yet supported by Matrix recipe type.");
         return null;
     }
 
@@ -52,7 +52,7 @@ public class ArmillaryRecipeBuilder implements CraftingRecipeJsonBuilder {
 
     @Override
     public void offerTo(RecipeExporter exporter, Identifier recipeId) {
-        ArmillaryRecipe recipe = new ArmillaryRecipe(centerInput, aspects, etherPoints, outputStack);
+        MatrixRecipe recipe = new MatrixRecipe(centerInput, aspects, etherPoints, outputStack);
         exporter.accept(recipeId, recipe, null);
     }
 }

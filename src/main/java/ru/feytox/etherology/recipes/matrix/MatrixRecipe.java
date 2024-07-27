@@ -1,4 +1,4 @@
-package ru.feytox.etherology.recipes.armillary;
+package ru.feytox.etherology.recipes.matrix;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
-import ru.feytox.etherology.block.armillary.ArmillaryMatrixBlockEntity;
+import ru.feytox.etherology.block.matrix.MatrixBlockEntity;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.recipes.FeyRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
@@ -14,7 +14,7 @@ import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
+public class MatrixRecipe implements FeyRecipe<MatrixBlockEntity> {
 
     @Getter
     private final Ingredient centerInput;
@@ -25,7 +25,7 @@ public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
     private final ItemStack outputStack;
 
     @Override
-    public boolean matches(ArmillaryMatrixBlockEntity inventory, World world) {
+    public boolean matches(MatrixBlockEntity inventory, World world) {
         if (!centerInput.test(inventory.getStack(0))) return false;
 
         List<Aspect> aspects = inventory.getSortedAspects();
@@ -34,7 +34,7 @@ public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
     }
 
     @Override
-    public ItemStack craft(ArmillaryMatrixBlockEntity inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(MatrixBlockEntity inventory, RegistryWrapper.WrapperLookup lookup) {
         return ItemStack.EMPTY;
     }
 
@@ -54,6 +54,6 @@ public class ArmillaryRecipe implements FeyRecipe<ArmillaryMatrixBlockEntity> {
 
     @Override
     public FeyRecipeSerializer<?> getSerializer() {
-        return ArmillaryRecipeSerializer.INSTANCE;
+        return MatrixRecipeSerializer.INSTANCE;
     }
 }

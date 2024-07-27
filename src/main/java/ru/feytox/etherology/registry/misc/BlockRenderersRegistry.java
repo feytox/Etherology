@@ -5,7 +5,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import ru.feytox.etherology.block.armillary.ArmillaryMatrixRenderer;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronRenderer;
 import ru.feytox.etherology.block.crate.CrateBlockRenderer;
 import ru.feytox.etherology.block.etherealGenerators.metronome.EtherealMetronomeRenderer;
@@ -14,6 +13,7 @@ import ru.feytox.etherology.block.etherealSocket.EtherealSocketRenderer;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageRenderer;
 import ru.feytox.etherology.block.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableRenderer;
+import ru.feytox.etherology.block.matrix.MatrixRenderer;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
 
 import static ru.feytox.etherology.registry.block.EBlocks.*;
@@ -30,7 +30,7 @@ public class BlockRenderersRegistry {
         register(CRATE_BLOCK_ENTITY, CrateBlockRenderer::new);
         register(BREWING_CAULDRON_BLOCK_ENTITY, BrewingCauldronRenderer::new);
         register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
-        register(ARMILLARY_MATRIX_BLOCK_ENTITY, ArmillaryMatrixRenderer::new);
+        register(ARMILLARY_MATRIX_BLOCK_ENTITY, MatrixRenderer::new);
         register(JEWELRY_TABLE_BLOCK_ENTITY, JewelryTableRenderer::new);
     }
 

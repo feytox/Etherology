@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillary;
+package ru.feytox.etherology.block.matrix;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import net.minecraft.util.StringIdentifiable;
 
 @Getter
 @RequiredArgsConstructor
-public enum ArmillaryState implements StringIdentifiable {
+public enum MatrixState implements StringIdentifiable {
     IDLE,
     RESETTING,
     TESTED,

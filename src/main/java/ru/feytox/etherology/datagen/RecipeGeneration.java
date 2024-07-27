@@ -20,10 +20,10 @@ import ru.feytox.etherology.data.EItemTags;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.staff.*;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeBuilder;
-import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeBuilder;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeBuilder;
 import ru.feytox.etherology.recipes.jewelry.LensRecipeBuilder;
 import ru.feytox.etherology.recipes.jewelry.ModifierRecipeBuilder;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipeBuilder;
 import ru.feytox.etherology.recipes.staff.StaffCarpetCuttingRecipe;
 import ru.feytox.etherology.recipes.staff.StaffCarpetingRecipe;
 import ru.feytox.etherology.registry.block.EBlockFamilies;
@@ -247,7 +247,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
         // TODO: 23.07.2024 remove
         // test recipes
-        ArmillaryRecipeBuilder.create(Items.IRON_INGOT, ExtraBlocksRegistry.PEACH_PLANKS, 3.0f, PLANTA, ALCHEMA, STRALFA).offerTo(exporter, "test_armillary");
+        MatrixRecipeBuilder.create(Items.IRON_INGOT, ExtraBlocksRegistry.PEACH_PLANKS, 3.0f, PLANTA, ALCHEMA, STRALFA).offerTo(exporter, "test_armillary");
 
         // brewing
         AlchemyRecipeBuilder.create(RAW_AZEL, BINDER).add(MEMO, 6).add(SOCE, 4).add(FELKA, 4).offerTo(exporter);

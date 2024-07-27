@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillary;
+package ru.feytox.etherology.block.matrix;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -12,17 +12,17 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class ArmillaryMatrixRenderer extends GeoBlockRenderer<ArmillaryMatrixBlockEntity> {
+public class MatrixRenderer extends GeoBlockRenderer<MatrixBlockEntity> {
 
     private final BlockEntityRendererFactory.Context ctx;
 
-    public ArmillaryMatrixRenderer(BlockEntityRendererFactory.Context context) {
-        super(new ArmillaryMatrixModel());
+    public MatrixRenderer(BlockEntityRendererFactory.Context context) {
+        super(new MatrixModel());
         ctx = context;
     }
 
     @Override
-    public void defaultRender(MatrixStack poseStack, ArmillaryMatrixBlockEntity animatable, VertexConsumerProvider bufferSource, @Nullable RenderLayer renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+    public void defaultRender(MatrixStack poseStack, MatrixBlockEntity animatable, VertexConsumerProvider bufferSource, @Nullable RenderLayer renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
         World world = animatable.getWorld();
         if (world != null) {
             Vec3d offset = new Vec3d(0.5, 2.3, 0.5);

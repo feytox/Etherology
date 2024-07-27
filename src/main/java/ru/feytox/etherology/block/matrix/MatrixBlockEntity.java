@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.armillary;
+package ru.feytox.etherology.block.matrix;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -49,8 +49,8 @@ import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
 import ru.feytox.etherology.particle.subtypes.LightSubtype;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
-import ru.feytox.etherology.recipes.armillary.ArmillaryRecipe;
-import ru.feytox.etherology.recipes.armillary.ArmillaryRecipeSerializer;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipe;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
@@ -67,10 +67,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ru.feytox.etherology.block.armillary.ArmillaryState.*;
+import static ru.feytox.etherology.block.matrix.MatrixState.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
 
-public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
+public class MatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
 
     // constants
     private static final int HORIZONTAL_RADIUS = 7;
@@ -106,7 +106,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
 
     // server cache
     @Nullable
-    private ArmillaryRecipe recipeCache = null;
+    private MatrixRecipe recipeCache = null;
     @Nullable
     private List<BlockPos> pedestalsCache = null;
     @Nullable
@@ -117,10 +117,10 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     @Setter
     private Float cachedUniqueOffset = null;
     @Nullable
-    private ArmillaryMatrixSoundInstance soundInstance = null;
+    private MatrixSoundInstance soundInstance = null;
     private boolean animationsRefreshed = false;
 
-    public ArmillaryMatrixBlockEntity(BlockPos pos, BlockState state) {
+    public MatrixBlockEntity(BlockPos pos, BlockState state) {
         super(ARMILLARY_MATRIX_BLOCK_ENTITY, pos, state);
     }
 
@@ -291,7 +291,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     public boolean testForRecipe(ServerWorld world) {
-        val recipeEntry = RecipesRegistry.getFirstMatch(world, this, ArmillaryRecipeSerializer.INSTANCE);
+        val recipeEntry = RecipesRegistry.getFirstMatch(world, this, MatrixRecipeSerializer.INSTANCE);
         if (recipeEntry == null) return false;
 
         recipeId = recipeEntry.id();
@@ -300,7 +300,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
     }
 
     @Nullable
-    public ArmillaryRecipe getRecipe(ServerWorld world, boolean refresh) {
+    public MatrixRecipe getRecipe(ServerWorld world, boolean refresh) {
         if (refresh || recipeId == null) {
             if (!refreshAspectsPedestals(world) || !testForRecipe(world)) return null;
         }
@@ -308,9 +308,9 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (recipeId == null) return null;
 
         return RecipesRegistry.maybeGet(world, recipeId).map(entry -> {
-                    if (!(entry.value() instanceof ArmillaryRecipe armillaryRecipe)) return null;
-                    recipeCache = armillaryRecipe;
-                    return armillaryRecipe;
+                    if (!(entry.value() instanceof MatrixRecipe matrixRecipe)) return null;
+                    recipeCache = matrixRecipe;
+                    return matrixRecipe;
                 }).orElse(null);
     }
 
@@ -338,7 +338,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
         if (client.player == null) return;
 
         if (soundInstance == null && client.player.squaredDistanceTo(getCenterPos()) < 36) {
-            soundInstance = new ArmillaryMatrixSoundInstance(this, client.player);
+            soundInstance = new MatrixSoundInstance(this, client.player);
             client.getSoundManager().play(soundInstance);
             return;
         }
@@ -380,7 +380,7 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
                     return;
                 }
                 DECRYPTING_START.trigger(this);
-                setMatrixState(world, state, ArmillaryState.DECRYPTING_START);
+                setMatrixState(world, state, MatrixState.DECRYPTING_START);
             }
             case DECRYPTING_START -> {
                 if (currentTick++ >= 59) {
@@ -715,8 +715,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  blockState  the BlockState to get the ArmillaryState from
      * @return             the ArmillaryState of the BlockState
      */
-    public ArmillaryState getMatrixState(BlockState blockState) {
-        return blockState.get(ArmillaryMatrixBlock.MATRIX_STATE);
+    public MatrixState getMatrixState(BlockState blockState) {
+        return blockState.get(MatrixBlock.MATRIX_STATE);
     }
 
     /**
@@ -727,8 +727,8 @@ public class ArmillaryMatrixBlockEntity extends TickableBlockEntity implements I
      * @param  matrixState   the new matrix state to set
      * @return               the updated block state with the new matrix state
      */
-    public BlockState setMatrixState(ServerWorld world, BlockState state, ArmillaryState matrixState) {
-        state = state.with(ArmillaryMatrixBlock.MATRIX_STATE, matrixState);
+    public BlockState setMatrixState(ServerWorld world, BlockState state, MatrixState matrixState) {
+        state = state.with(MatrixBlock.MATRIX_STATE, matrixState);
         world.setBlockState(pos, state);
         currentTick = 0;
         return state;

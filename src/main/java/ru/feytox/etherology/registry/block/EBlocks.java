@@ -6,8 +6,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import ru.feytox.etherology.block.armillary.ArmillaryMatrixBlock;
-import ru.feytox.etherology.block.armillary.ArmillaryMatrixBlockEntity;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlockEntity;
 import ru.feytox.etherology.block.closet.ClosetSlabBlock;
@@ -42,6 +40,8 @@ import ru.feytox.etherology.block.jug.JugBlockEntity;
 import ru.feytox.etherology.block.jug.JugType;
 import ru.feytox.etherology.block.levitator.LevitatorBlock;
 import ru.feytox.etherology.block.levitator.LevitatorBlockEntity;
+import ru.feytox.etherology.block.matrix.MatrixBlock;
+import ru.feytox.etherology.block.matrix.MatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlock;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.block.samovar.SamovarBlock;
@@ -180,11 +180,11 @@ public class EBlocks {
             BlockEntityType.Builder.create(LevitatorBlockEntity::new, LEVITATOR).build()
     );
 
-    public static final ArmillaryMatrixBlock ARMILLARY_MATRIX = (ArmillaryMatrixBlock) new ArmillaryMatrixBlock().registerAll();
-    public static final BlockEntityType<ArmillaryMatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
+    public static final MatrixBlock ARMILLARY_MATRIX = (MatrixBlock) new MatrixBlock().registerAll();
+    public static final BlockEntityType<MatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             EIdentifier.of("armillary_matrix_block_entity"),
-            BlockEntityType.Builder.create(ArmillaryMatrixBlockEntity::new, ARMILLARY_MATRIX).build()
+            BlockEntityType.Builder.create(MatrixBlockEntity::new, ARMILLARY_MATRIX).build()
     );
 
     public static final InventorTable INVENTOR_TABLE = (InventorTable) new InventorTable().registerAll();
