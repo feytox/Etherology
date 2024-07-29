@@ -6,8 +6,8 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.component.ComponentChanges;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.compat.emi.EtherEMIPlugin;
 import ru.feytox.etherology.compat.emi.misc.FeyEmiRecipe;
@@ -40,9 +40,8 @@ public class InventorERecipe extends FeyEmiRecipe {
                 if (!part.isStyled()) continue;
 
                 List<EmiStack> output = Arrays.stream(StaffMetals.values()).map(metal -> {
-                    ItemStack staffStack = ToolItems.STAFF.getDefaultStack();
-                    staffStack.apply(ComponentTypes.STAFF, StaffComponent.DEFAULT, component -> component.setPartInfo(new StaffPartInfo(part, style, metal)));
-                    return EmiStack.of(staffStack);
+                    ComponentChanges changes = ComponentChanges.builder().add(ComponentTypes.STAFF, StaffComponent.DEFAULT.setPartInfo(new StaffPartInfo(part, style, metal))).build();
+                    return EmiStack.of(ToolItems.STAFF, changes);
                 }).toList();
                 registry.addRecipe(new InventorERecipe(List.of(inputStaff, tabletInput, metals), output, ItemUtils.suffixId(ToolItems.STAFF, style.getName() + "_" + part.getName())));
             }

@@ -6,7 +6,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import ru.feytox.etherology.commands.DevCommands;
@@ -28,7 +27,6 @@ public class Etherology implements ModInitializer {
 
     public static final Logger ELOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "etherology";
-    public static final int GAME_ID;
     private static final ObjectArrayList<ServerWorld> loadedWorlds = new ObjectArrayList<>();
 
     @Override
@@ -68,9 +66,5 @@ public class Etherology implements ModInitializer {
     @Nullable
     public static ServerWorld getAnyServerWorld() {
         return loadedWorlds.isEmpty() ? null : loadedWorlds.getFirst();
-    }
-
-    static {
-        GAME_ID = Random.create().nextBetween(0, 999999999);
     }
 }

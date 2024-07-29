@@ -54,8 +54,8 @@ dependencies {
     modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
 
     // REI and EMI (uncomment only 1)
-//    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+//    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
 
     // TODO: consider fixing MidnightLib dependency
     include modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}")
