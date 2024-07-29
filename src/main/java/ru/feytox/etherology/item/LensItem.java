@@ -1,6 +1,5 @@
 package ru.feytox.etherology.item;
 
-import com.google.common.base.Suppliers;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.entity.LivingEntity;
@@ -16,6 +15,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -39,8 +39,8 @@ import java.util.function.Supplier;
  */
 public abstract class LensItem extends Item {
 
-    private static final Supplier<Random> RANDOM_PROVIDER = Suppliers.memoize(Random::create);
     public static final int CHARGE_LIMIT = 100;
+    public static final int MAX_DAMAGE = 100;
 
     @Nullable @Getter
     private final StaffLenses lensType;
@@ -48,7 +48,7 @@ public abstract class LensItem extends Item {
     private final float chargeCost;
 
     protected LensItem(@Nullable StaffLenses lensType, float streamCost, float chargeCost) {
-        super(new Settings().maxCount(1).maxDamage(100).component(ComponentTypes.LENS, LensComponent.EMPTY));
+        super(new Settings().maxCount(1).component(ComponentTypes.LENS, LensComponent.EMPTY).component(ComponentTypes.PSEUDO_DAMAGE, 0));
         this.lensType = lensType;
         this.streamCost = streamCost;
         this.chargeCost = chargeCost;
@@ -124,7 +124,7 @@ public abstract class LensItem extends Item {
      */
     public static boolean damageLens(ServerWorld world, ItemStack lensStack, int damage) {
         if (!(lensStack.getItem() instanceof LensItem)) return false;
-        Random random = RANDOM_PROVIDER.get();
+        Random random = world.getRandom();
         float damageChance = getDamageChance(lensStack);
 
         boolean isDamaged = false;
@@ -132,10 +132,36 @@ public abstract class LensItem extends Item {
             if (lensStack.isEmpty()) break;
             if (damageChance < 1.0f && random.nextFloat() > damageChance) continue;
             isDamaged = true;
-            lensStack.damage(1, world, null, item -> {});
+            int lensDamage = getDamage(lensStack) + 1;
+            if (lensDamage > MAX_DAMAGE) lensStack.decrement(1);
+            else setDamage(lensStack, lensDamage);
         }
 
         return isDamaged;
+    }
+
+    @Override
+    public boolean isItemBarVisible(ItemStack stack) {
+        return getDamage(stack) > 0;
+    }
+
+    @Override
+    public int getItemBarColor(ItemStack stack) {
+        float f = Math.max(0.0F, (float) (MAX_DAMAGE - getDamage(stack)) / MAX_DAMAGE);
+        return MathHelper.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public int getItemBarStep(ItemStack stack) {
+        return MathHelper.clamp(Math.round(13.0F - getDamage(stack) * 13.0F / MAX_DAMAGE), 0, 13);
+    }
+
+    private static int getDamage(ItemStack stack) {
+        return stack.getOrDefault(ComponentTypes.PSEUDO_DAMAGE, 0);
+    }
+
+    private static void setDamage(ItemStack stack, int damage) {
+        stack.set(ComponentTypes.PSEUDO_DAMAGE, damage);
     }
 
     public static void playLensBrakeSound(ServerWorld world, Vec3d pos) {

@@ -34,7 +34,7 @@ public class EtherGlint {
      * @return количество забранного эфира
      */
     public float decrement(float value) {
-        return GlintItem.decrement(stack, maxEther, value);
+        return GlintItem.decrement(stack, value);
     }
 
     public float getStoredEther() {

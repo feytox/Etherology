@@ -22,6 +22,7 @@ public class ComponentTypes {
     public static final ComponentType<ItemComponent> STAFF_LENS = register("staff_lens", builder -> builder.codec(ItemComponent.CODEC).packetCodec(ItemComponent.PACKET_CODEC));
     public static final ComponentType<StaffComponent> STAFF = register("staff", builder -> builder.codec(StaffComponent.CODEC).packetCodec(StaffComponent.PACKET_CODEC));
     public static final ComponentType<Corruption> CORRUPTION = register("corruption", builder -> builder.codec(Corruption.CODEC).packetCodec(Corruption.PACKET_CODEC));
+    public static final ComponentType<Integer> PSEUDO_DAMAGE = register("pseudo_damage", builder -> builder.codec(Codec.INT).packetCodec(PacketCodecs.VAR_INT));
 
     public static void registerAll() {}
 

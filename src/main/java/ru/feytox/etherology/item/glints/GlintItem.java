@@ -25,7 +25,7 @@ public class GlintItem extends Item {
     private final float maxEther;
 
     public GlintItem(float maxEther) {
-        super(new Settings().maxDamage(MathHelper.floor(maxEther)).customDamage((stack, amount, entity, slot, breakCallback) -> 0));
+        super(new Settings().maxCount(1).component(ComponentTypes.STORED_ETHER, 0f));
         this.maxEther = maxEther;
     }
 
@@ -56,17 +56,21 @@ public class GlintItem extends Item {
         tooltip.add(Text.translatable("item.etherology.glint.fullness", etherValue, MathHelper.floor(getMaxEther())).formatted(Formatting.GRAY));
     }
 
-    /**
-     * @return излишек, который не поместился в глинт
-     */
-    public static float increment(ItemStack stack, float maxEther, float value) {
-        float storedEther = getStoredEther(stack);
-        float newEther = Math.min(storedEther + value, maxEther);
+    @Override
+    public int getItemBarStep(ItemStack stack) {
+        return MathHelper.clamp(Math.round(13.0f * getStoredEther(stack) / maxEther), 0, 13);
+    }
 
-        setStoredEther(stack, newEther);
-        stack.setDamage(MathHelper.floor(maxEther - newEther));
+    @Override
+    public int getItemBarColor(ItemStack stack) {
+        float percent = Math.max(0.0F, (getStoredEther(stack) / maxEther));
+        return MathHelper.hsvToRgb(percent / 3.0F, 1.0F, 1.0F);
+    }
 
-        return value + storedEther - newEther;
+    @Override
+    public boolean isItemBarVisible(ItemStack stack) {
+        float ether = getStoredEther(stack);
+        return ether > 0 && ether < maxEther;
     }
 
     public static Float getStoredEther(ItemStack stack) {
@@ -78,14 +82,23 @@ public class GlintItem extends Item {
     }
 
     /**
+     * @return излишек, который не поместился в глинт
+     */
+    public static float increment(ItemStack stack, float maxEther, float value) {
+        float storedEther = getStoredEther(stack);
+        float newEther = Math.min(storedEther + value, maxEther);
+        setStoredEther(stack, newEther);
+
+        return value + storedEther - newEther;
+    }
+
+    /**
      * @return количество забранного эфира
      */
-    public static float decrement(ItemStack stack, float maxEther, float value) {
+    public static float decrement(ItemStack stack, float value) {
         float storedEther = getStoredEther(stack);
         float newEther = Math.max(storedEther - value, 0);
-
         setStoredEther(stack, newEther);
-        stack.setDamage(MathHelper.floor(maxEther - newEther));
 
         return storedEther - newEther;
     }
