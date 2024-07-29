@@ -22,6 +22,8 @@ import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.recipes.jewelry.LensRecipeSerializer;
+import ru.feytox.etherology.recipes.jewelry.ModifierRecipeSerializer;
 import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.ToolItems;
@@ -39,6 +41,8 @@ public class EtherEMIPlugin implements EmiPlugin {
     public static final FeyEmiCategory ALCHEMY = FeyEmiCategory.of("alchemy", EBlocks.BREWING_CAULDRON);
     public static final FeyEmiCategory ASPECTION = FeyEmiCategory.of("aspection", ToolItems.OCULUS, "gui.etherology.aspects");
     public static final FeyEmiCategory MATRIX = FeyEmiCategory.of("matrix", EBlocks.ARMILLARY_MATRIX);
+    public static final FeyEmiCategory JEWELRY_LENS = FeyEmiCategory.of("jewelry", EBlocks.JEWELRY_TABLE);
+    public static final FeyEmiCategory JEWELRY_MODIFIER = FeyEmiCategory.of("jewelry", EBlocks.JEWELRY_TABLE);
 
     @Override
     public void initialize(EmiInitRegistry registry) {
@@ -57,6 +61,8 @@ public class EtherEMIPlugin implements EmiPlugin {
         registerCategory(registry, ALCHEMY);
         registerCategory(registry, ASPECTION);
         registerCategory(registry, MATRIX);
+        registerCategory(registry, JEWELRY_LENS);
+        registerCategory(registry, JEWELRY_MODIFIER);
     }
 
     private void registerRecipes(EmiRegistry registry) {
@@ -68,6 +74,8 @@ public class EtherEMIPlugin implements EmiPlugin {
         registerRecipe(registry, EmpowerRecipeSerializer.INSTANCE, EmpowerERecipe::of);
         registerRecipe(registry, AlchemyRecipeSerializer.INSTANCE, AlchemyERecipe::of);
         registerRecipe(registry, MatrixRecipeSerializer.INSTANCE, MatrixERecipe::of);
+        registerRecipe(registry, LensRecipeSerializer.INSTANCE, JewelryERecipe.Lens::of);
+        registerRecipe(registry, ModifierRecipeSerializer.INSTANCE, JewelryERecipe.Modifier::of);
     }
 
     private <T extends Recipe<I>, I extends RecipeInput, R extends EmiRecipe> void registerRecipe(EmiRegistry registry, FeyRecipeSerializer<T> feySerializer, Function<RecipeEntry<T>, R> mapper) {

@@ -63,9 +63,7 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
         RenderUtils.renderTexture(context, x0, y, 176, v, 8, height, 8, height, 256, 256);
     }
 
-    /**
-     * @see ru.feytox.etherology.compat.rei.category.JewelryCategory#createGrid(DrawContext, LensPattern)
-     */
+    // TODO: 29.07.2024 consider combining renderButtons and renderGrid
     private void renderButtons(DrawContext context, int x0, int y0, int mouseX, int mouseY) {
         if (handler.getTableInv().isEmpty()) return;
 
@@ -88,6 +86,27 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
             context.fillGradient(RenderLayer.getGuiOverlay(), x, y, x + 12, y + 12, -2130706433, -2130706433, 0);
             RenderSystem.enableDepthTest();
         }
+    }
+
+    public static void renderGrid(DrawContext context, LensPattern pattern, int x0, int y0) {
+        context.push();
+
+        for (int pos = 0; pos < 64; pos++) {
+            if (JewelryTableInventory.EMPTY_CELLS.contains(pos)) continue;
+            int x = x0 + (pos & 0b111) * 12;
+            int y = y0 + ((pos >> 3) & 0b111) * 12;
+            int offset = pattern.getTextureOffset(pos);
+
+            RenderSystem.setShaderTexture(0, JewelryTableScreen.TEXTURE);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableDepthTest();
+
+            RenderUtils.renderTexture(context, x, y, 176 + 12 * offset, 0, 12, 12, 12, 12, 256, 256);
+        }
+
+        context.pop();
     }
 
     @Override
