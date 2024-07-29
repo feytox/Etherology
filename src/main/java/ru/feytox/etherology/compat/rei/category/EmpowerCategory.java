@@ -47,6 +47,7 @@ public class EmpowerCategory implements DisplayCategory<EmpowerDisplay> {
         widgets.add(Widgets.createArrow(start.add(60, 18)));
         widgets.add(Widgets.createResultSlotBackground(start.add(95, 19)));
 
+        // grid
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (row != 1 && col != 1) continue;
@@ -54,6 +55,7 @@ public class EmpowerCategory implements DisplayCategory<EmpowerDisplay> {
             }
         }
 
+        // shards
         widgets.add(Widgets.createSlot(start.add(1, 1)).entries(display.getInputEntries().get(9)).markInput());
         widgets.add(Widgets.createSlot(start.add(41, 1)).entries(display.getInputEntries().get(10)).markInput());
         widgets.add(Widgets.createSlot(start.add(1, 41)).entries(display.getInputEntries().get(11)).markInput());

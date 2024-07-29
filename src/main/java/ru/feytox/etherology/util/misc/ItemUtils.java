@@ -4,8 +4,11 @@ import lombok.experimental.UtilityClass;
 import lombok.val;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
 
 @UtilityClass
@@ -35,5 +38,9 @@ public class ItemUtils {
         if (damage >= stack.getMaxDamage()) {
             stack.decrement(1);
         }
+    }
+
+    public static Identifier suffixId(ItemConvertible item, String suffix) {
+        return Registries.ITEM.getId(item.asItem()).withPath(path -> path + "_" + suffix);
     }
 }

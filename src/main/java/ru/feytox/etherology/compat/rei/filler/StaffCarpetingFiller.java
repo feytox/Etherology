@@ -27,12 +27,11 @@ public class StaffCarpetingFiller implements CraftingRecipeFiller<StaffCarpeting
         List<Display> displays = new ObjectArrayList<>();
         EntryIngredient staff = EntryIngredients.of(ToolItems.STAFF);
 
-        Arrays.stream(StaffColors.values())
-                .map(color -> {
-                    ItemStack resultStaff = ToolItems.STAFF.getDefaultStack();
-                    resultStaff.apply(ComponentTypes.STAFF, StaffComponent.DEFAULT, component -> component.setPartInfo(StaffPartInfo.of(StaffPart.HANDLE, color)));
-                    return new DefaultCustomShapelessDisplay(recipe, List.of(staff, EntryIngredients.of(color.getCarpet())), List.of(EntryIngredients.of(resultStaff)));
-                }).forEach(displays::add);
+        Arrays.stream(StaffColors.values()).map(color -> {
+            ItemStack resultStaff = ToolItems.STAFF.getDefaultStack();
+            resultStaff.apply(ComponentTypes.STAFF, StaffComponent.DEFAULT, component -> component.setPartInfo(StaffPartInfo.of(StaffPart.HANDLE, color)));
+            return new DefaultCustomShapelessDisplay(recipe, List.of(staff, EntryIngredients.of(color.getCarpet())), List.of(EntryIngredients.of(resultStaff)));
+        }).forEach(displays::add);
         return displays;
     }
 

@@ -32,4 +32,9 @@ public class AspectContainerId {
         String prefix = containerType.getPrefix();
         return (prefix != null ? prefix + ":" : "") + id.toString();
     }
+
+    public Identifier toTypedId() {
+        String prefix = containerType.getPrefix();
+        return id.withPrefixedPath((prefix != null ? prefix : "item") + "_");
+    }
 }

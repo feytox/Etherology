@@ -33,6 +33,9 @@
     ],
     "rei_client": [
       "ru.feytox.etherology.compat.rei.EtherREIPlugin"
+    ],
+    "emi": [
+      "ru.feytox.etherology.compat.emi.EtherEMIPlugin"
     ]
   },
   "mixins": [

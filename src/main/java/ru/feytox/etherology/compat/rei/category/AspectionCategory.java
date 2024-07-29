@@ -56,8 +56,7 @@ public class AspectionCategory implements DisplayCategory<AspectionDisplay> {
 
         List<EntryIngredient> outputEntries = display.getOutputEntries();
         for (int i = 0; i < outputEntries.size(); i++) {
-            EntryIngredient entry = outputEntries.get(i);
-            widgets.add(Widgets.createSlot(start.add(56 + i*18, 14)).entries(entry).markOutput());
+            widgets.add(Widgets.createSlot(start.add(56 + i*18, 14)).entries(outputEntries.get(i)).markOutput());
         }
 
         return widgets;

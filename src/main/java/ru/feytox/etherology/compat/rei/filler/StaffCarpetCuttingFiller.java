@@ -19,13 +19,14 @@ import ru.feytox.etherology.registry.misc.ComponentTypes;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class StaffCarpetCuttingFiller implements CraftingRecipeFiller<StaffCarpetCuttingRecipe> {
 
     @Override
     public Collection<Display> apply(RecipeEntry<StaffCarpetCuttingRecipe> recipe) {
-        EntryIngredient resultStaff = EntryIngredients.of(ToolItems.STAFF);
+        List<EntryIngredient> resultStaff = Collections.singletonList(EntryIngredients.of(ToolItems.STAFF));
         EntryIngredient shears = EntryIngredients.of(Items.SHEARS);
 
         EntryIngredient staffs = EntryIngredient.of(Arrays.stream(StaffColors.values()).map(color -> {
@@ -34,7 +35,7 @@ public class StaffCarpetCuttingFiller implements CraftingRecipeFiller<StaffCarpe
             return EntryStacks.of(inputStaff);
         }).toList());
 
-        return List.of(new DefaultCustomShapelessDisplay(recipe, List.of(staffs, shears), List.of(resultStaff)));
+        return Collections.singletonList(new DefaultCustomShapelessDisplay(recipe, List.of(staffs, shears), resultStaff));
     }
 
     @Override

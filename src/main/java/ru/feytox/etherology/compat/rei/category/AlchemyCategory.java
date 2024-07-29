@@ -54,8 +54,7 @@ public class AlchemyCategory implements DisplayCategory<AlchemyDisplay> {
         int dx = 1;
         List<EntryIngredient> inputs = display.getInputEntries();
         for (int i = 0; i < inputs.size(); i++) {
-            EntryIngredient entry = inputs.get(i);
-            widgets.add(Widgets.createSlot(start.add(dx, 14)).entries(entry).markInput());
+            widgets.add(Widgets.createSlot(start.add(dx, 14)).entries(inputs.get(i)).markInput());
             if (i == 0) dx += 9;
             dx += 18;
         }

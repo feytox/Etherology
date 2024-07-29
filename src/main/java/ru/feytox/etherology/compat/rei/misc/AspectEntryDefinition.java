@@ -99,7 +99,7 @@ public class AspectEntryDefinition implements EntryDefinition<AspectPair> {
 
     @Override
     public Text asFormattedText(EntryStack<AspectPair> entry, AspectPair value) {
-        return Text.of(StringUtils.capitalize(value.aspect().getAspectName()) + " " + value.value());
+        return Text.of(StringUtils.capitalize(value.aspect().getAspectName()) + " " + value.value() + "x");
     }
 
     @Override

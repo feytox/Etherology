@@ -8,6 +8,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
+import org.apache.commons.lang3.EnumUtils;
 import ru.feytox.etherology.util.misc.CodecUtil;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -73,6 +74,10 @@ public enum Aspect implements EtherologyAspect, StringIdentifiable {
 
     public Identifier getId() {
         return EIdentifier.of(getAspectName());
+    }
+
+    public static Aspect get(Identifier id) {
+        return EnumUtils.getEnumIgnoreCase(Aspect.class, id.getPath());
     }
 
     @Override
