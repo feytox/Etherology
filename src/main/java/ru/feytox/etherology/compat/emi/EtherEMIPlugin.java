@@ -14,10 +14,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.input.RecipeInput;
 import ru.feytox.etherology.compat.emi.misc.AspectStack;
 import ru.feytox.etherology.compat.emi.misc.FeyEmiCategory;
-import ru.feytox.etherology.compat.emi.recipe.AlchemyERecipe;
-import ru.feytox.etherology.compat.emi.recipe.AspectionERecipe;
-import ru.feytox.etherology.compat.emi.recipe.EmpowerERecipe;
-import ru.feytox.etherology.compat.emi.recipe.InventorERecipe;
+import ru.feytox.etherology.compat.emi.recipe.*;
 import ru.feytox.etherology.magic.staff.StaffColors;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.magic.staff.StaffPart;
@@ -25,6 +22,7 @@ import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
@@ -40,6 +38,7 @@ public class EtherEMIPlugin implements EmiPlugin {
     public static final FeyEmiCategory INVENTOR = FeyEmiCategory.of("inventor", EBlocks.INVENTOR_TABLE);
     public static final FeyEmiCategory ALCHEMY = FeyEmiCategory.of("alchemy", EBlocks.BREWING_CAULDRON);
     public static final FeyEmiCategory ASPECTION = FeyEmiCategory.of("aspection", ToolItems.OCULUS, "gui.etherology.aspects");
+    public static final FeyEmiCategory MATRIX = FeyEmiCategory.of("matrix", EBlocks.ARMILLARY_MATRIX);
 
     @Override
     public void initialize(EmiInitRegistry registry) {
@@ -57,6 +56,7 @@ public class EtherEMIPlugin implements EmiPlugin {
         registerCategory(registry, INVENTOR);
         registerCategory(registry, ALCHEMY);
         registerCategory(registry, ASPECTION);
+        registerCategory(registry, MATRIX);
     }
 
     private void registerRecipes(EmiRegistry registry) {
@@ -67,6 +67,7 @@ public class EtherEMIPlugin implements EmiPlugin {
 
         registerRecipe(registry, EmpowerRecipeSerializer.INSTANCE, EmpowerERecipe::of);
         registerRecipe(registry, AlchemyRecipeSerializer.INSTANCE, AlchemyERecipe::of);
+        registerRecipe(registry, MatrixRecipeSerializer.INSTANCE, MatrixERecipe::of);
     }
 
     private <T extends Recipe<I>, I extends RecipeInput, R extends EmiRecipe> void registerRecipe(EmiRegistry registry, FeyRecipeSerializer<T> feySerializer, Function<RecipeEntry<T>, R> mapper) {
