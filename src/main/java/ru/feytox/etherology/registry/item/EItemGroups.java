@@ -39,6 +39,7 @@ public class EItemGroups {
 
     private static void registerMainGroup() {
         Builder etherItems = new Builder();
+        etherItems.with(TELDECORE);
         // functional blocks
         etherItems.with(
                 BREWING_CAULDRON, PEDESTAL_BLOCK, ARMILLARY_MATRIX, EMPOWERMENT_TABLE, INVENTOR_TABLE, JEWELRY_TABLE, ETHEREAL_STORAGE,
