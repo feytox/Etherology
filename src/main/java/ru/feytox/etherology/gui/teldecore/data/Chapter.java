@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
+import ru.feytox.etherology.gui.teldecore.content.ImageContent;
 import ru.feytox.etherology.gui.teldecore.content.TextContent;
 import ru.feytox.etherology.gui.teldecore.page.AbstractPage;
 import ru.feytox.etherology.gui.teldecore.page.EmptyPage;
@@ -50,7 +51,8 @@ public class Chapter {
                 TextContent.of(Text.of("Fusce nulla arcu, blandit ac consequat et, finibus non felis. Fusce ultrices auctor eros, et fermentum leo vestibulum vel. ")),
                 TextContent.of(Text.of("Praesent euismod malesuada nulla, quis posuere odio pharetra in. Vivamus vel nibh elementum, semper elit nec, eleifend quam. Morbi tempus ac ligula at eleifend. Curabitur odio nunc, vestibulum in nulla sit amet, faucibus pulvinar augue.")),
                 TextContent.of(Text.of("Praesent euismod malesuada nulla, quis posuere odio pharetra in. Vivamus vel nibh elementum, semper elit nec, eleifend quam.")),
-                TextContent.of(Text.of("Morbi tempus ac ligula at eleifend. Curabitur odio nunc, vestibulum in nulla sit amet, faucibus pulvinar augue."))
+                TextContent.of(Text.of("Morbi tempus ac ligula at eleifend. Curabitur odio nunc, vestibulum in nulla sit amet, faucibus pulvinar augue.")),
+                ImageContent.of(EIdentifier.of("textures/gui/teldecore/image/test1.png"), 1920, 1080)
         ));
     }
 }

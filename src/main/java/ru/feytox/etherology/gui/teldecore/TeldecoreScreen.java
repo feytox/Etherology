@@ -62,13 +62,6 @@ public class TeldecoreScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        // TODO: 30.07.2024 todo
-    }
-
-    @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         super.renderBackground(context, mouseX, mouseY, delta);
         RenderSystem.setShaderTexture(0, BASE);

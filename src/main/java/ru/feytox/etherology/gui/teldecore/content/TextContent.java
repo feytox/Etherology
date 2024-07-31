@@ -27,6 +27,7 @@ public class TextContent extends AbstractContent {
         this.text = text;
     }
 
+    @Deprecated
     public static TextContent of(Text text) {
         return new TextContent(text, 0, 8);
     }
