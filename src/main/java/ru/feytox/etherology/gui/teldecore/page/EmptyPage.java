@@ -14,7 +14,5 @@ public class EmptyPage extends AbstractPage {
     }
 
     @Override
-    public void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta) {
-
-    }
+    public void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta) {}
 }

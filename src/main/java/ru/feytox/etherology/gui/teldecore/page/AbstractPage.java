@@ -1,6 +1,7 @@
 package ru.feytox.etherology.gui.teldecore.page;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -9,6 +10,8 @@ import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
 import ru.feytox.etherology.gui.teldecore.misc.ParentedWidget;
 import ru.feytox.etherology.util.misc.RenderUtils;
+
+import java.util.List;
 
 public abstract class AbstractPage extends ParentedWidget {
 
@@ -20,9 +23,10 @@ public abstract class AbstractPage extends ParentedWidget {
     private final boolean isLeft;
     private final float pageX;
     private final float pageY;
+    private final float contentEnd;
     @Getter
     private float contentHeight;
-    private final float contentEnd;
+    private final List<ParentedWidget> contentWidgets = new ObjectArrayList<>();
 
     public AbstractPage(TeldecoreScreen parent, Identifier pageTexture, boolean isLeft, float contentStart, float contentEnd) {
         super(parent);
@@ -44,9 +48,13 @@ public abstract class AbstractPage extends ParentedWidget {
         float height = content.getHeight(textRenderer) + content.getOffsetUp() + content.getOffsetDown();
         if (height > contentHeight) return false;
 
-        addDrawableChild(content.toWidget(parent, pageX+dx+(isLeft ? 0 : 4), pageY + (contentEnd - contentHeight + content.getOffsetUp())));
+        contentWidgets.add(content.toWidget(parent, pageX+dx+(isLeft ? 0 : 4), pageY + (contentEnd - contentHeight + content.getOffsetUp())));
         contentHeight -= height;
         return true;
+    }
+
+    public void initContent() {
+        contentWidgets.forEach(this::addDrawableChild);
     }
 
     @Override

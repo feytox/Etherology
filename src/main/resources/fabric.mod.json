@@ -50,7 +50,8 @@
     "cardinal-components": [
       "etherology:corruption",
       "etherology:essence_zone",
-      "etherology:ether"
+      "etherology:ether",
+      "etherology:teldecore"
     ]
   },
   "accessWidener" : "etherology.accesswidener"

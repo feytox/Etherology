@@ -8,15 +8,21 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.gui.teldecore.button.TurnPageButton;
 import ru.feytox.etherology.gui.teldecore.data.Chapter;
+import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.gui.teldecore.page.AbstractPage;
+import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class TeldecoreScreen extends Screen {
 
@@ -38,14 +44,21 @@ public class TeldecoreScreen extends Screen {
     }
 
     @Override
-    protected void init() {
+    public void init() {
         super.init();
         x = (width - BASE_WIDTH) / 2.0f;
         y = (height - BASE_HEIGHT) / 2.0f;
 
-        List<AbstractPage> pages = Chapter.TEST.toPages(this);
-        Etherology.ELOGGER.info("{}", pages.size());
-        pages.forEach(this::addDrawableChild);
+        getData().ifPresentOrElse(data -> {
+            List<AbstractPage> pages = Chapter.TEST.toPages(this);
+            int page = 2 * data.getPage();
+            if (pages.size() < page) {
+                page = 0;
+                data.setPage(0);
+            }
+            addPage(pages.get(page), page, pages.size());
+            if (page+1 < pages.size()) addPage(pages.get(page+1), page+1, pages.size());
+        }, () -> Etherology.ELOGGER.error("Could not get player's teldecore data."));
     }
 
     @Override
@@ -62,9 +75,30 @@ public class TeldecoreScreen extends Screen {
         RenderUtils.renderTexture(context, x, y, 0, 0, BASE_WIDTH, BASE_HEIGHT, BASE_WIDTH, BASE_HEIGHT);
     }
 
-    @Override
+    @Override // for public access
+    public void clearAndInit() {
+        super.clearAndInit();
+    }
+
+    private void addPage(AbstractPage page, int pageId, int pages) {
+        addDrawableChild(page);
+        page.initContent();
+        if (page.isLeft() && pageId > 0) addDrawableChild(TurnPageButton.of(this, true));
+        if (!page.isLeft() && pageId+1 < pages) addDrawableChild(TurnPageButton.of(this, false));
+    }
+
+    @Override // for public access
     public <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement) {
         return super.addDrawableChild(drawableElement);
+    }
+
+    public Optional<TeldecoreComponent> getData() {
+        if (client == null || client.player == null) return Optional.empty();
+        return EtherologyComponents.TELDECORE.maybeGet(client.player);
+    }
+
+    public void executeOnPlayer(Consumer<PlayerEntity> playerConsumer) {
+        if (client != null && client.player != null) playerConsumer.accept(client.player);
     }
 
     public TextRenderer getTextRenderer() {

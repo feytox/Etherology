@@ -10,8 +10,8 @@ import net.minecraft.client.util.math.MatrixStack;
 @UtilityClass
 public class RenderUtils {
 
-    public static void renderTexture(DrawContext context, float x0, float y0, int u, int v, float width, float height, int textureWidth, int textureHeight) {
-        renderTexture(context, x0, y0, u, v, width, height, textureWidth, textureHeight, textureWidth, textureHeight);
+    public static void renderTexture(DrawContext context, float x0, float y0, int u, int v, float width, float height, int regionWidth, int regionHeight) {
+        renderTexture(context, x0, y0, u, v, width, height, regionWidth, regionHeight, regionWidth, regionHeight);
     }
 
     public static void renderTexture(MatrixStack matrices, float x0, float y0, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {

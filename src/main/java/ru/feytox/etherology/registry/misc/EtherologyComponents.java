@@ -8,6 +8,8 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistryV3;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
+import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
+import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.magic.corruption.CorruptionComponent;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.zones.ZoneComponent;
@@ -24,9 +26,13 @@ public class EtherologyComponents implements EntityComponentInitializer, ChunkCo
     public static final ComponentKey<EtherComponent> ETHER =
             ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("ether"), EtherComponent.class);
 
+    public static final ComponentKey<TeldecoreComponent> TELDECORE =
+            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("teldecore"), TeldecoreComponent.class);
+
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerFor(LivingEntity.class, ETHER, EtherComponent::new);
+        registry.registerForPlayers(TELDECORE, TeldecoreComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
 
     }
 
