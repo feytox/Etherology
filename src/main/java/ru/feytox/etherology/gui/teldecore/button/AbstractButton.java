@@ -5,14 +5,18 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
+import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.gui.teldecore.misc.ParentedWidget;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
+import java.util.function.Consumer;
+
 public abstract class AbstractButton extends ParentedWidget {
 
-    private final int width;
-    private final int height;
+    protected final int width;
+    protected final int height;
     private final Identifier texture;
     @Nullable
     private final Identifier hoveredTexture;
@@ -27,6 +31,16 @@ public abstract class AbstractButton extends ParentedWidget {
     }
 
     public abstract boolean onClick(int button);
+
+    protected boolean dataAction(String errorMsg, Consumer<TeldecoreComponent> dataConsumer) {
+        TeldecoreComponent data = parent.getData().orElse(null);
+        if (data == null) {
+            Etherology.ELOGGER.error(errorMsg);
+            return false;
+        }
+        dataConsumer.accept(data);
+        return true;
+    }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

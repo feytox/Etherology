@@ -1,6 +1,11 @@
 package ru.feytox.etherology.gui.teldecore.content;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lombok.NonNull;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -15,21 +20,17 @@ import java.util.List;
 
 public class TextContent extends AbstractContent {
 
+    public static final MapCodec<TextContent> CODEC;
     public static final int TEXT_WIDTH = AbstractPage.PAGE_WIDTH - 12;
     private static final int TEXT_HEIGHT = 6;
     private static final int TEXT_SPACE = 4;
 
     @NonNull
-    private final Text text;
+    private final String textKey;
 
-    public TextContent(@NotNull Text text, float offsetUp, float offsetDown) {
+    public TextContent(@NotNull String textKey, float offsetUp, float offsetDown) {
         super(offsetUp, offsetDown);
-        this.text = text;
-    }
-
-    @Deprecated
-    public static TextContent of(Text text) {
-        return new TextContent(text, 0, 8);
+        this.textKey = textKey;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class TextContent extends AbstractContent {
 
     // TODO: 30.07.2024 consider caching rows
     private List<OrderedText> wrapText(TextRenderer textRenderer) {
-        return textRenderer.wrapLines(text, TEXT_WIDTH);
+        return textRenderer.wrapLines(Text.translatable(textKey), TEXT_WIDTH);
     }
 
     @Override
@@ -49,6 +50,12 @@ public class TextContent extends AbstractContent {
         return new Widget(parent, wrapText(parent.getTextRenderer()), x, y);
     }
 
+    @Override
+    public String getType() {
+        return "text";
+    }
+
+    @Environment(EnvType.CLIENT)
     public static class Widget extends ParentedWidget {
 
         private final List<OrderedText> textRows;
@@ -72,5 +79,11 @@ public class TextContent extends AbstractContent {
 
         @Override
         public void appendNarrations(NarrationMessageBuilder builder) {}
+    }
+
+    static {
+        CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Codec.STRING.fieldOf("text").forGetter(c -> c.textKey),
+                codecOffsetUp(), codecOffsetDown()).apply(instance, TextContent::new));
     }
 }

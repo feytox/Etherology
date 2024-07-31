@@ -9,16 +9,14 @@ import net.minecraft.util.Identifier;
 import org.ladysnake.cca.api.v3.component.ComponentV3;
 import org.ladysnake.cca.api.v3.component.CopyableComponent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
-import ru.feytox.etherology.util.misc.EIdentifier;
 
 @RequiredArgsConstructor @Getter
 public class TeldecoreComponent implements ComponentV3, CopyableComponent<TeldecoreComponent>, AutoSyncedComponent {
 
-    public static final Identifier MENU = EIdentifier.of("menu");
-
     private final PlayerEntity player;
-    private Identifier selected = MENU;
+    private Identifier selected = TeldecoreScreen.CHAPTER_MENU;
     private int page = 0;
 
     public void turnPage(boolean isLeft) {
@@ -28,6 +26,12 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
 
     public void setPage(int page) {
         this.page = page;
+        sync();
+    }
+
+    public void setSelected(Identifier selected) {
+        this.page = 0;
+        this.selected = selected;
         sync();
     }
 

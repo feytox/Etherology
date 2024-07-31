@@ -173,5 +173,10 @@
   "tag.block.etherology.peach_logs": "Peach Logs",
   "tag.item.etherology.ether_shields": "Ether Shields",
   "tag.item.etherology.peach_logs": "Peach Logs",
-  "tag.item.etherology.tuning_maces": "Tuning Maces"
+  "tag.item.etherology.tuning_maces": "Tuning Maces",
+  "text.teldecore.test.1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "text.teldecore.test.2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "text.teldecore.test.3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  "text.teldecore.test.4": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "text.teldecore.test.title": "Тест Телдекора"
 }

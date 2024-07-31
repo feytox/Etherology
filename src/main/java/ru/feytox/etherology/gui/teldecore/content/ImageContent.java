@@ -1,6 +1,11 @@
 package ru.feytox.etherology.gui.teldecore.content;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -12,6 +17,7 @@ import ru.feytox.etherology.util.misc.RenderUtils;
 
 public class ImageContent extends AbstractContent {
 
+    public static final MapCodec<ImageContent> CODEC;
     public static final float MAX_WIDTH = AbstractPage.PAGE_WIDTH - 12;
 
     private final Identifier texture;
@@ -27,11 +33,6 @@ public class ImageContent extends AbstractContent {
         this.textureHeight = textureHeight;
     }
 
-    @Deprecated
-    public static ImageContent of(Identifier texture, int textureWidth, int textureHeight) {
-        return new ImageContent(texture, textureWidth, textureHeight, 0, 8);
-    }
-
     @Override
     public float getHeight(TextRenderer textRenderer) {
         return height;
@@ -42,6 +43,12 @@ public class ImageContent extends AbstractContent {
         return new Widget(parent, this, x, y);
     }
 
+    @Override
+    public String getType() {
+        return "image";
+    }
+
+    @Environment(EnvType.CLIENT)
     private static class Widget extends ParentedWidget {
 
         private final ImageContent content;
@@ -64,5 +71,13 @@ public class ImageContent extends AbstractContent {
 
         @Override
         public void appendNarrations(NarrationMessageBuilder builder) {}
+    }
+
+    static {
+        CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Identifier.CODEC.fieldOf("path").forGetter(c -> c.texture),
+                Codec.INT.fieldOf("texture_width").forGetter(c -> c.textureWidth),
+                Codec.INT.fieldOf("texture_height").forGetter(c -> c.textureHeight),
+                codecOffsetUp(), codecOffsetDown()).apply(instance, ImageContent::new));
     }
 }
