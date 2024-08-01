@@ -26,7 +26,7 @@ import java.util.Map;
 public class Chapter {
 
     private static final Map<String, MapCodec<? extends AbstractContent>> CONTENT_TYPES;
-    private static final Codec<AbstractContent> CONTENT_CODEC;
+    public static final Codec<AbstractContent> CONTENT_CODEC;
     public static final Codec<Chapter> CODEC;
 
     @Getter

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentV3;
 import org.ladysnake.cca.api.v3.component.CopyableComponent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -17,10 +18,19 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
 
     private final PlayerEntity player;
     private Identifier selected = TeldecoreScreen.CHAPTER_MENU;
+    @Nullable
+    private Identifier tab = null;
     private int page = 0;
 
     public void turnPage(boolean isLeft) {
         this.page = Math.max(0, this.page + (isLeft ? -1 : 1));
+        sync();
+    }
+
+    public void switchTab(Identifier tab) {
+        this.tab = tab;
+        this.page = 0;
+        this.selected = TeldecoreScreen.CHAPTER_MENU;
         sync();
     }
 
@@ -39,18 +49,22 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
     public void copyFrom(TeldecoreComponent other, RegistryWrapper.WrapperLookup registryLookup) {
         selected = other.selected;
         page = other.page;
+        tab = other.tab;
     }
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         selected = Identifier.of(tag.getString("selected"));
         page = tag.getInt("page");
+        String tabStr = tag.getString("tab");
+        tab = tabStr.isEmpty() ? null : Identifier.of(tabStr);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         tag.putString("selected", selected.toString());
         tag.putInt("page", page);
+        if (tab != null) tag.putString("tab", tab.toString());
     }
 
     public void sync() {

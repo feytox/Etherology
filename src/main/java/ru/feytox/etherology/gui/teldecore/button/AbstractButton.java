@@ -50,10 +50,14 @@ public abstract class AbstractButton extends ParentedWidget {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        Identifier texture = hoveredTexture == null || !isMouseOver(mouseX, mouseY) ? this.texture : hoveredTexture;
+        boolean hovered = isMouseOver(mouseX, mouseY);
+        Identifier texture = hoveredTexture == null || !hovered ? this.texture : hoveredTexture;
         RenderSystem.setShaderTexture(0, texture);
         RenderUtils.renderTexture(context, baseX, baseY, 0, 0, width, height, width, height);
+        renderExtra(context, hovered);
     }
+
+    protected void renderExtra(DrawContext context, boolean hovered) {}
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {

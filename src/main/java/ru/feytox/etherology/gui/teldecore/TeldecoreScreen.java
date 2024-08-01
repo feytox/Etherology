@@ -2,6 +2,7 @@ package ru.feytox.etherology.gui.teldecore;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
+import lombok.val;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -9,18 +10,20 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.gui.teldecore.button.ChapterButton;
+import ru.feytox.etherology.gui.teldecore.button.AbstractButton;
+import ru.feytox.etherology.gui.teldecore.button.SelectedTabButton;
+import ru.feytox.etherology.gui.teldecore.button.TabButton;
 import ru.feytox.etherology.gui.teldecore.button.TurnPageButton;
 import ru.feytox.etherology.gui.teldecore.data.Chapter;
+import ru.feytox.etherology.gui.teldecore.data.Tab;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.gui.teldecore.page.AbstractPage;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
@@ -28,8 +31,9 @@ import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -83,33 +87,47 @@ public class TeldecoreScreen extends Screen {
         Identifier selected = data.getSelected();
         // TODO: 31.07.2024 use smth better
         if (selected.equals(CHAPTER_MENU)) {
-            initChapterMenu();
+            initChapterMenu(data);
             return;
         }
         if (initChapter(data, selected)) return;
         Etherology.ELOGGER.error("Failed to get chapter {}, falling back to default", selected);
         data.setSelected(CHAPTER_MENU);
-        initChapterMenu();
+        initChapterMenu(data);
     }
 
-    private void initChapterMenu() {
-        Registry<Chapter> chapterRegistry = getChapters();
-        if (chapterRegistry == null) return;
+    private void initChapterMenu(TeldecoreComponent data) {
+        Registry<Tab> tabs = getRegistry(RegistriesRegistry.TABS);
+        if (tabs == null) return;
 
-        Iterator<RegistryEntry.Reference<Chapter>> chapters = chapterRegistry.streamEntries().iterator();
+        Optional<RegistryEntry.Reference<Tab>> optionalTab = data.getTab() != null ? tabs.getEntry(data.getTab()) : Optional.empty();
+        RegistryEntry.Reference<Tab> tabEntry = optionalTab.or(tabs::getDefaultEntry).orElseThrow(() -> new NoSuchElementException("Could not find any teldecore tab."));
+        initSelectedTab(tabEntry.value());
+        initTabs(tabs, tabEntry.registryKey());
+    }
+
+    private void initSelectedTab(Tab tab) {
+        tab.addPages(this);
+    }
+
+    private void initTabs(@Nullable Registry<Tab> tabsRegistry, @Nullable RegistryKey<Tab> selected) {
+        tabsRegistry = tabsRegistry == null ? getRegistry(RegistriesRegistry.TABS) : tabsRegistry;
+        if (tabsRegistry == null) return;
+
+        val tabs = tabsRegistry.streamEntries().sorted(Comparator.comparingInt(ref -> ref.value().getTabId())).iterator();
 
         int i = 0;
-        while (chapters.hasNext()) {
-            RegistryEntry.Reference<Chapter> reference = chapters.next();
-            Identifier target = reference.registryKey().getValue();
-            ItemStack icon = Registries.ITEM.get(reference.value().getIcon()).getDefaultStack();
-            addDrawableChild(new ChapterButton(this, target, icon, 15+i*32, 15));
+        while (tabs.hasNext()) {
+            RegistryEntry.Reference<Tab> tabEntry = tabs.next();
+            AbstractButton button = selected != null && tabEntry.matchesKey(selected) ? SelectedTabButton.of(this, tabEntry.value(), -23, 8+i*29)
+                    : TabButton.of(this, tabEntry.registryKey().getValue(), tabEntry.value(), -23, 8+i*29);
+            addDrawableChild(button);
             i++;
         }
     }
 
     private boolean initChapter(TeldecoreComponent data, Identifier selected) {
-        Registry<Chapter> chapters = getChapters();
+        Registry<Chapter> chapters = getRegistry(RegistriesRegistry.CHAPTERS);
         if (chapters == null) return false;
 
         Chapter chapter = chapters.get(selected);
@@ -123,13 +141,14 @@ public class TeldecoreScreen extends Screen {
         }
         addPage(pages.get(page), page, pages.size());
         if (page+1 < pages.size()) addPage(pages.get(page+1), page+1, pages.size());
+        initTabs(null, null);
         return true;
     }
 
     @Nullable
-    private Registry<Chapter> getChapters() {
+    private <T> Registry<T> getRegistry(RegistryKey<? extends Registry<? extends T>> registryKey) {
         if (client == null || client.world == null) return null;
-        return client.world.getRegistryManager().get(RegistriesRegistry.CHAPTERS);
+        return client.world.getRegistryManager().get(registryKey);
     }
 
     @Override
