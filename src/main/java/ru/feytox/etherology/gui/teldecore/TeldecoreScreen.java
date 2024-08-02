@@ -101,8 +101,8 @@ public class TeldecoreScreen extends Screen {
         int i = 0;
         while (tabs.hasNext()) {
             RegistryEntry.Reference<Tab> tabEntry = tabs.next();
-            AbstractButton button = selected != null && tabEntry.matchesKey(selected) ? SelectedTabButton.of(this, tabEntry.value(), -23, 8+i*29)
-                    : TabButton.of(this, tabEntry.registryKey().getValue(), tabEntry.value(), -23, 8+i*29);
+            AbstractButton button = selected != null && tabEntry.matchesKey(selected) ? SelectedTabButton.of(this, tabEntry.value(), -18, 12+i*29)
+                    : TabButton.of(this, tabEntry.registryKey().getValue(), tabEntry.value(), -18, 12+i*29);
             addDrawableChild(button);
             i++;
         }
