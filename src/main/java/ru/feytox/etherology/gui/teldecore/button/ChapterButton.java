@@ -13,11 +13,20 @@ public class ChapterButton extends AbstractButton {
 
     private final Identifier target;
     private final ItemStack icon;
+    private final float dx;
+    private final float dy;
 
-    public ChapterButton(TeldecoreScreen parent, Identifier target, ItemStack icon, float dx, float dy) {
-        super(parent, TEXTURE, null, dx, dy, 26, 26);
+    public ChapterButton(TeldecoreScreen parent, Identifier target, ItemStack icon, float rootX, float rootY, float dx, float dy) {
+        super(parent, TEXTURE, null, rootX, rootY, dx-13, dy-13, 26, 26);
         this.target = target;
         this.icon = icon;
+        this.dx = dx-13;
+        this.dy = dy-13;
+    }
+
+    public void move(float rootX, float rootY) {
+        this.baseX = rootX + dx;
+        this.baseY = rootY + dy;
     }
 
     @Override

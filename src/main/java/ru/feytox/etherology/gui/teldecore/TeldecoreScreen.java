@@ -16,7 +16,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.button.AbstractButton;
 import ru.feytox.etherology.gui.teldecore.button.SelectedTabButton;
@@ -64,23 +63,6 @@ public class TeldecoreScreen extends Screen {
         y = (height - BASE_HEIGHT) / 2.0f;
 
         getData().ifPresentOrElse(this::initPages, () -> Etherology.ELOGGER.error("Could not get player's teldecore data."));
-    }
-
-    @Override @Deprecated
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_H) {
-            getData().ifPresent(data -> {
-                data.setSelected(CHAPTER_MENU);
-                clearAndInit();
-            });
-            return true;
-        }
-
-        for (Element child : children()) {
-            if (child.keyPressed(keyCode, scanCode, modifiers)) return true;
-        }
-
-        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private void initPages(TeldecoreComponent data) {
@@ -145,8 +127,25 @@ public class TeldecoreScreen extends Screen {
         return true;
     }
 
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        for (Element child : children()) {
+            if (child.keyPressed(keyCode, scanCode, modifiers)) return true;
+        }
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        for (Element child : children()) {
+            if (child.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) return true;
+        }
+        return false;
+    }
+
     @Nullable
-    private <T> Registry<T> getRegistry(RegistryKey<? extends Registry<? extends T>> registryKey) {
+    public <T> Registry<T> getRegistry(RegistryKey<? extends Registry<? extends T>> registryKey) {
         if (client == null || client.world == null) return null;
         return client.world.getRegistryManager().get(registryKey);
     }

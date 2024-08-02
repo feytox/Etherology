@@ -6,15 +6,21 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
-import ru.feytox.etherology.gui.teldecore.page.EmptyPage;
+import ru.feytox.etherology.gui.teldecore.page.GridPage;
 import ru.feytox.etherology.gui.teldecore.page.TitlePage;
+import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 
 import java.util.List;
+import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class Tab {
@@ -31,17 +37,30 @@ public class Tab {
 
     @Environment(EnvType.CLIENT)
     public void addPages(TeldecoreScreen screen) {
+        Registry<Chapter> chapterRegistry = screen.getRegistry(RegistriesRegistry.CHAPTERS);
+        if (chapterRegistry == null) {
+            Etherology.ELOGGER.error("Failed to load chapters registry.");
+            return;
+        }
+
         Text text = Text.translatable(titleKey);
         TitlePage left = new TitlePage(screen, text, true, true);
         contents.forEach(content -> {
             if (!left.addContent(content, 6)) Etherology.ELOGGER.error("Failed to fit all contents on tab \"{}\" ", text.getString());
         });
 
-        EmptyPage right = new EmptyPage(screen, false);
+        Function<Identifier, ItemStack> idToIcon = id -> {
+            Chapter chapter = chapterRegistry.get(id);
+            if (chapter == null) {
+                Etherology.ELOGGER.error("Failed to load icon on tab \"{}\" ", text.getString());
+                return Items.BARRIER.getDefaultStack();
+            }
+            return Registries.ITEM.get(chapter.getIcon()).getDefaultStack();
+        };
+
+        screen.addDrawableChild(new GridPage(screen, grid, idToIcon, false));
         screen.addDrawableChild(left);
-        screen.addDrawableChild(right);
         left.initContent();
-        right.initContent();
     }
 
     static {

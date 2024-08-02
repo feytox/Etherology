@@ -10,8 +10,8 @@ public abstract class ParentedWidget implements Drawable, Element, Selectable {
 
     protected final TeldecoreScreen parent;
     protected final TextRenderer textRenderer;
-    protected final float baseX;
-    protected final float baseY;
+    protected float baseX;
+    protected float baseY;
     protected boolean focused = false;
 
     public ParentedWidget(TeldecoreScreen parent, float baseX, float baseY) {

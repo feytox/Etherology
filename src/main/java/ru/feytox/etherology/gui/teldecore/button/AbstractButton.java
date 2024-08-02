@@ -22,12 +22,16 @@ public abstract class AbstractButton extends ParentedWidget {
     private final Identifier hoveredTexture;
     protected boolean active = true;
 
-    public AbstractButton(TeldecoreScreen parent, Identifier texture, @Nullable Identifier hoveredTexture, float dx, float dy, int width, int height) {
-        super(parent, parent.getX()+dx, parent.getY()+dy);
+    public AbstractButton(TeldecoreScreen parent, Identifier texture, @Nullable Identifier hoveredTexture, float baseX, float baseY, float dx, float dy, int width, int height) {
+        super(parent, baseX+dx, baseY+dy);
         this.width = width;
         this.height = height;
         this.texture = texture;
         this.hoveredTexture = hoveredTexture;
+    }
+
+    public AbstractButton(TeldecoreScreen parent, Identifier texture, @Nullable Identifier hoveredTexture, float dx, float dy, int width, int height) {
+        this(parent, texture, hoveredTexture, parent.getX(), parent.getY(), dx, dy, width, height);
     }
 
     public abstract boolean onClick(int button);

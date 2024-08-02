@@ -6,10 +6,10 @@
     {"type": "text", "text": "text.teldecore.test.1"}
   ],
   "chapters": [
-    {"id": "etherology:test"},
-    {"id": "etherology:test2", "after": ["etherology:test"]},
-    {"id": "etherology:test3", "after": ["etherology:test"]},
-    {"id": "etherology:test4", "after": ["etherology:test2"]},
-    {"id": "etherology:test5", "after": ["etherology:test3", "etherology:test4"]}
+    {"id": "etherology:test", "x": 0, "y": 0},
+    {"id": "etherology:test2", "after": ["etherology:test"], "x": -0.5, "y": 1 },
+    {"id": "etherology:test3", "after": ["etherology:test"], "x": 0.5, "y": 1 },
+    {"id": "etherology:test4", "after": ["etherology:test2"], "x": -0.5, "y": 2 },
+    {"id": "etherology:test5", "after": ["etherology:test3", "etherology:test4"], "x": 0.5, "y": 2 }
   ]
 }

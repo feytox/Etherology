@@ -21,12 +21,14 @@ public abstract class AbstractPage extends ParentedWidget {
     private final Identifier pageTexture;
     @Getter
     private final boolean isLeft;
+    @Getter
     private final float pageX;
+    @Getter
     private final float pageY;
     private final float contentEnd;
     @Getter
     private float contentHeight;
-    private final List<ParentedWidget> contentWidgets = new ObjectArrayList<>();
+    private final List<ParentedWidget> widgets = new ObjectArrayList<>();
 
     public AbstractPage(TeldecoreScreen parent, Identifier pageTexture, boolean isLeft, float contentStart, float contentEnd) {
         super(parent);
@@ -40,6 +42,11 @@ public abstract class AbstractPage extends ParentedWidget {
 
     public abstract void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta);
 
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return mouseX >= baseX && mouseY >= baseY && mouseX <= baseX+PAGE_WIDTH && mouseY <= baseY+PAGE_HEIGHT;
+    }
+
     /**
      * @param dx offset relative to the left page (the right page is automatically offset)
      * @return true if the content was added. false if the content doesn't fit into the available height.
@@ -48,13 +55,13 @@ public abstract class AbstractPage extends ParentedWidget {
         float height = content.getHeight(textRenderer) + content.getOffsetUp() + content.getOffsetDown();
         if (height > contentHeight) return false;
 
-        contentWidgets.add(content.toWidget(parent, pageX+dx+(isLeft ? 0 : 4), pageY + (contentEnd - contentHeight + content.getOffsetUp())));
+        widgets.add(content.toWidget(parent, pageX+dx+(isLeft ? 0 : 4), pageY + (contentEnd - contentHeight + content.getOffsetUp())));
         contentHeight -= height;
         return true;
     }
 
     public void initContent() {
-        contentWidgets.forEach(this::addDrawableChild);
+        widgets.forEach(this::addDrawableChild);
     }
 
     @Override
