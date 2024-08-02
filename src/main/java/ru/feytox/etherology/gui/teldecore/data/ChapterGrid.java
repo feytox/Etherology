@@ -5,6 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec2f;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
@@ -28,7 +31,7 @@ public class ChapterGrid {
         this.infoMap = info.stream().collect(Collectors.toMap(ChapterInfo::id, Function.identity()));
     }
 
-    public List<ChapterButton> toButtons(TeldecoreScreen parent, Function<Identifier, ItemStack> idToIcon, float rootX, float rootY, float scale) {
+    public List<ChapterButton> toButtons(TeldecoreScreen parent, Function<Identifier, Chapter> idToIcon, float rootX, float rootY, float scale) {
         return info.stream().map(info -> info.toButton(parent, idToIcon, rootX, rootY, scale)).toList();
     }
 
@@ -39,8 +42,13 @@ public class ChapterGrid {
 
     private record ChapterInfo(Identifier id, List<Identifier> after, float x, float y) {
 
-        ChapterButton toButton(TeldecoreScreen parent, Function<Identifier, ItemStack> idToIcon, float rootX, float rootY, float scale) {
-            return new ChapterButton(parent, id, idToIcon.apply(id), rootX, rootY, x*scale, y*scale);
+        ChapterButton toButton(TeldecoreScreen parent, Function<Identifier, Chapter> idToIcon, float rootX, float rootY, float scale) {
+            Chapter chapter = idToIcon.apply(id);
+            Identifier texture = chapter.getType().getTexture();
+            ItemStack icon = Registries.ITEM.get(chapter.getIcon()).getDefaultStack();
+            Text title = Text.translatable(chapter.getTitleKey()).formatted(Formatting.WHITE);
+            Text desc = Text.translatable(chapter.getDescKey()).formatted(Formatting.GRAY);
+            return new ChapterButton(parent, texture, id, icon, List.of(title, desc), rootX, rootY, x*scale, y*scale);
         }
 
         Stream<Pair<Vec2f, Vec2f>> toLines(Map<Identifier, ChapterInfo> infoMap, float scale) {

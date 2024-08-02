@@ -30,8 +30,13 @@ public class Chapter {
     public static final Codec<Chapter> CODEC;
 
     @Getter
+    private final ChapterType type;
+    @Getter
     private final Identifier icon;
+    @Getter
     private final String titleKey;
+    @Getter
+    private final String descKey;
     private final List<AbstractContent> contents;
 
     @Environment(EnvType.CLIENT)
@@ -61,8 +66,10 @@ public class Chapter {
         CONTENT_CODEC = Codec.STRING.dispatch(AbstractContent::getType, CONTENT_TYPES::get);
 
         CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ChapterType.CODEC.fieldOf("type").forGetter(c -> c.type),
                 Identifier.CODEC.fieldOf("icon").forGetter(c -> c.icon),
                 Codec.STRING.fieldOf("title").forGetter(c -> c.titleKey),
+                Codec.STRING.fieldOf("desc").forGetter(c -> c.descKey),
                 CONTENT_CODEC.listOf().fieldOf("content").forGetter(c -> c.contents)
         ).apply(instance, Chapter::new));
     }

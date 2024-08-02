@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -18,6 +15,7 @@ import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
 import ru.feytox.etherology.gui.teldecore.page.GridPage;
 import ru.feytox.etherology.gui.teldecore.page.TitlePage;
 import ru.feytox.etherology.registry.misc.RegistriesRegistry;
+import ru.feytox.etherology.util.misc.Color;
 
 import java.util.List;
 import java.util.function.Function;
@@ -32,6 +30,8 @@ public class Tab {
     @Getter
     private final Identifier icon;
     private final String titleKey;
+    @Getter
+    private final Color color;
     private final List<AbstractContent> contents;
     private final ChapterGrid grid;
 
@@ -49,13 +49,12 @@ public class Tab {
             if (!left.addContent(content, 11)) Etherology.ELOGGER.error("Failed to fit all contents on tab \"{}\" ", text.getString());
         });
 
-        Function<Identifier, ItemStack> idToIcon = id -> {
+        Function<Identifier, Chapter> idToIcon = id -> {
             Chapter chapter = chapterRegistry.get(id);
-            if (chapter == null) {
-                Etherology.ELOGGER.error("Failed to load icon on tab \"{}\" ", text.getString());
-                return Items.BARRIER.getDefaultStack();
-            }
-            return Registries.ITEM.get(chapter.getIcon()).getDefaultStack();
+            if (chapter != null) return chapter;
+            Etherology.ELOGGER.error("Failed to load chapter \"{}\". Closing screen to prevent errors.", text.getString());
+            screen.close();
+            return null;
         };
 
         screen.addDrawableChild(new GridPage(screen, grid, idToIcon, false));
@@ -68,6 +67,7 @@ public class Tab {
                 Codec.INT.fieldOf("tab_id").forGetter(t -> t.tabId),
                 Identifier.CODEC.fieldOf("icon").forGetter(t -> t.icon),
                 Codec.STRING.fieldOf("title").forGetter(t -> t.titleKey),
+                Color.CODEC.fieldOf("color").forGetter(t -> t.color),
                 Chapter.CONTENT_CODEC.listOf().fieldOf("content").forGetter(t -> t.contents),
                 ChapterGrid.CODEC.fieldOf("chapters").forGetter(t -> t.grid)
         ).apply(instance, Tab::new));

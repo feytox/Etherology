@@ -2,6 +2,7 @@
   "tab_id": 0,
   "icon": "etherology:stream_key",
   "title": "Тестовая вкладка",
+  "color": "00FF00",
   "content": [
     {"type": "text", "text": "text.teldecore.test.1"}
   ],

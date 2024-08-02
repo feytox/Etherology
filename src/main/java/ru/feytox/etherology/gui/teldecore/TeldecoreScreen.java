@@ -74,7 +74,7 @@ public class TeldecoreScreen extends Screen {
         }
         if (initChapter(data, selected)) return;
         Etherology.ELOGGER.error("Failed to get chapter {}, falling back to default", selected);
-        data.setSelected(CHAPTER_MENU);
+        data.setSelectedChapter(CHAPTER_MENU);
         initChapterMenu(data);
     }
 
@@ -119,7 +119,7 @@ public class TeldecoreScreen extends Screen {
         int page = 2 * data.getPage();
         if (pages.size() < page) {
             page = 0;
-            data.setPage(0);
+            data.setChapterPage(0);
         }
         addPage(pages.get(page), page, pages.size());
         if (page+1 < pages.size()) addPage(pages.get(page+1), page+1, pages.size());

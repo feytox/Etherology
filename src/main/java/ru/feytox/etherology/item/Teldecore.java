@@ -13,7 +13,7 @@ import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 public class Teldecore extends Item {
 
     public Teldecore() {
-        super(new Settings());
+        super(new Settings().maxCount(1));
     }
 
     @Override

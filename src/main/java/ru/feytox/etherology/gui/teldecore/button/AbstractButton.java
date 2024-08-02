@@ -17,9 +17,9 @@ public abstract class AbstractButton extends ParentedWidget {
 
     protected final int width;
     protected final int height;
-    private final Identifier texture;
+    protected final Identifier texture;
     @Nullable
-    private final Identifier hoveredTexture;
+    protected final Identifier hoveredTexture;
     protected boolean active = true;
 
     public AbstractButton(TeldecoreScreen parent, Identifier texture, @Nullable Identifier hoveredTexture, float baseX, float baseY, float dx, float dy, int width, int height) {

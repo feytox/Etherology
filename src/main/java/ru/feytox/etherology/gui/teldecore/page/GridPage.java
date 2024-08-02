@@ -2,11 +2,11 @@ package ru.feytox.etherology.gui.teldecore.page;
 
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec2f;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.button.ChapterButton;
+import ru.feytox.etherology.gui.teldecore.data.Chapter;
 import ru.feytox.etherology.gui.teldecore.data.ChapterGrid;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
@@ -19,7 +19,7 @@ public class GridPage extends EmptyPage {
     private final List<ChapterButton> buttons;
     private float deltaY = 0.0f;
 
-    public GridPage(TeldecoreScreen parent, ChapterGrid grid, Function<Identifier, ItemStack> idToIcon, boolean isLeft) {
+    public GridPage(TeldecoreScreen parent, ChapterGrid grid, Function<Identifier, Chapter> idToIcon, boolean isLeft) {
         super(parent, isLeft);
         this.buttons = grid.toButtons(parent, idToIcon, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
         this.lines = grid.toLines(32f);
@@ -31,6 +31,8 @@ public class GridPage extends EmptyPage {
         renderLines(context, pageX, pageY);
         buttons.forEach(button -> button.render(context, mouseX, mouseY, delta));
         context.disableScissor();
+
+        buttons.forEach(button -> button.renderTooltip(context, mouseX, mouseY));
     }
 
     private void renderLines(DrawContext context, float pageX, float pageY) {
@@ -39,7 +41,7 @@ public class GridPage extends EmptyPage {
         lines.forEach(line -> {
             Vec2f start = line.first();
             Vec2f end = line.second();
-            RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, 0xFF70523D);
+            RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, 0xFFAE9C89);
         });
     }
 

@@ -10,10 +10,7 @@ import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.Stop2BlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.network.animation.SwitchBlockAnimS2C;
-import ru.feytox.etherology.network.interaction.RedstoneLensStreamS2C;
-import ru.feytox.etherology.network.interaction.RemoveBlockEntityS2C;
-import ru.feytox.etherology.network.interaction.StaffMenuSelectionC2S;
-import ru.feytox.etherology.network.interaction.StaffTakeLensC2S;
+import ru.feytox.etherology.network.interaction.*;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.network.util.AbstractS2CPacket;
 
@@ -31,6 +28,11 @@ public class EtherologyNetwork {
         registerS2C(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C.CODEC);
         registerC2S(StaffMenuSelectionC2S.ID, StaffMenuSelectionC2S.CODEC, StaffMenuSelectionC2S::receive);
         registerC2S(StaffTakeLensC2S.ID, StaffTakeLensC2S.CODEC, StaffTakeLensC2S::receive);
+
+        // entity components
+        registerC2S(EntityComponentC2SType.TELDECORE_SELECTED);
+        registerC2S(EntityComponentC2SType.TELDECORE_PAGE);
+        registerC2S(EntityComponentC2SType.TELDECORE_TAB);
     }
 
     public static void registerClientSide() {
@@ -43,6 +45,10 @@ public class EtherologyNetwork {
         // interaction
         registerHandlerS2C(RedstoneLensStreamS2C.ID, RedstoneLensStreamS2C::receive);
         registerHandlerS2C(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C::receive);
+    }
+
+    private static <T extends AbstractC2SPacket> void registerC2S(AbstractC2SPacket.PacketType<T> packetType) {
+        registerC2S(packetType.getId(), packetType.getCodec(), packetType.getHandler());
     }
 
     private static <T extends AbstractC2SPacket> void registerC2S(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec, ServerPlayNetworking.PlayPayloadHandler<T> handler) {

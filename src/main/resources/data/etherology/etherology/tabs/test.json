@@ -2,6 +2,7 @@
   "tab_id": 0,
   "icon": "etherology:peach_planks",
   "title": "Тестовая вкладка",
+  "color": "FF0000",
   "content": [
     {"type": "text", "text": "text.teldecore.test.1"}
   ],
