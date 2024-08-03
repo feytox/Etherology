@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "etherology:block/cracked_slitherite_bricks",
-    "side": "etherology:block/cracked_slitherite_bricks",
-    "top": "etherology:block/cracked_slitherite_bricks"
-  }
-}

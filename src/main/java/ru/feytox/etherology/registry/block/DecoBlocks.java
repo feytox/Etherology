@@ -67,8 +67,6 @@ public class DecoBlocks {
 
     // cracked slitherite
     public static final Block CRACKED_SLITHERITE_BRICKS = registerSimple("cracked_slitherite_bricks", copy(CRACKED_STONE_BRICKS)).withItem();
-    public static final Block CRACKED_SLITHERITE_BRICK_SLAB = register("cracked_slitherite_brick_slab", new SlabBlock(copy(STONE_SLAB))).withItem();
-    public static final Block CRACKED_SLITHERITE_BRICK_STAIRS = registerStairs("cracked_slitherite_brick_stairs", CRACKED_SLITHERITE_BRICKS).withItem();
 
     // polished slitherite
     public static final Block POLISHED_SLITHERITE = registerSimple("polished_slitherite", copy(SMOOTH_STONE)).withItem();

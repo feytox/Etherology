@@ -59,9 +59,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(CHISELED_SLITHERITE_BRICKS, "Резные слизеритовые кирпичи");
 
         builder.add(CRACKED_SLITHERITE_BRICKS, "Потрескавшиеся слизеритовые кирпичи");
-        RuTranslationPart.of(builder, "потрескавшегося слизеритового кирпича")
-                .slab(CRACKED_SLITHERITE_BRICK_SLAB)
-                .stairs(CRACKED_SLITHERITE_BRICK_STAIRS);
 
         builder.add(POLISHED_SLITHERITE, "Полированный слизерит");
         RuTranslationPart.of(builder, "полированного слизерита")
