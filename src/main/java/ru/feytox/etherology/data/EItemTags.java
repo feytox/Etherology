@@ -11,5 +11,5 @@ public class EItemTags {
 
     public static final TagKey<Item> PEACH_LOGS = TagKey.of(RegistryKeys.ITEM, EIdentifier.of("peach_logs"));
     public static final TagKey<Item> TUNING_MACES = TagKey.of(RegistryKeys.ITEM, EIdentifier.of("tuning_maces"));
-    public static final TagKey<Item> ETHER_SHIELDS = TagKey.of(RegistryKeys.ITEM, EIdentifier.of("ether_shields"));
+    public static final TagKey<Item> IRON_SHIELDS = TagKey.of(RegistryKeys.ITEM, EIdentifier.of("iron_shields"));
 }

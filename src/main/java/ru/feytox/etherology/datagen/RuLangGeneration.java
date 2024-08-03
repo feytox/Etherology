@@ -238,7 +238,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         // tags
         builder.add(EBlockTags.PEACH_LOGS, "Peach Logs");
         builder.add(EItemTags.PEACH_LOGS, "Peach Logs");
-        builder.add(EItemTags.ETHER_SHIELDS, "Ether Shields");
+        builder.add(EItemTags.IRON_SHIELDS, "Iron Shields");
         builder.add(EItemTags.TUNING_MACES, "Tuning Maces");
 
         try {

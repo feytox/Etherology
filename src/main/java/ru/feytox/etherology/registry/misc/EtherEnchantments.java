@@ -32,7 +32,7 @@ public class EtherEnchantments {
     public static void generateEnchantments(Registerable<Enchantment> context) {
         RegistryEntryLookup<Item> itemLookup = context.getRegistryLookup(RegistryKeys.ITEM);
         register(context, PEAL, Enchantment.builder(Enchantment.definition(itemLookup.getOrThrow(EItemTags.TUNING_MACES), 10, 3, Enchantment.leveledCost(1, 11), Enchantment.leveledCost(21, 11), 3, AttributeModifierSlot.MAINHAND)));
-        register(context, REFLECTION, Enchantment.builder(Enchantment.definition(itemLookup.getOrThrow(EItemTags.ETHER_SHIELDS), 10, 1, Enchantment.constantCost(1), Enchantment.constantCost(21), 3, AttributeModifierSlot.MAINHAND, AttributeModifierSlot.OFFHAND)));
+        register(context, REFLECTION, Enchantment.builder(Enchantment.definition(itemLookup.getOrThrow(EItemTags.IRON_SHIELDS), 10, 1, Enchantment.constantCost(1), Enchantment.constantCost(21), 3, AttributeModifierSlot.MAINHAND, AttributeModifierSlot.OFFHAND)));
     }
 
     private RegistryKey<Enchantment> of(String id) {

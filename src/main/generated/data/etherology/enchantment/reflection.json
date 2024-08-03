@@ -16,6 +16,6 @@
     "mainhand",
     "offhand"
   ],
-  "supported_items": "#etherology:ether_shields",
+  "supported_items": "#etherology:iron_shields",
   "weight": 10
 }

@@ -51,7 +51,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         copy(EBlockTags.PEACH_LOGS, EItemTags.PEACH_LOGS);
 
         addItems(EItemTags.TUNING_MACES, TUNING_MACE);
-        addItems(EItemTags.ETHER_SHIELDS, IRON_SHIELD);
+        addItems(EItemTags.IRON_SHIELDS, IRON_SHIELD);
 
         addItems(AXES, ETHRIL_AXE, EBONY_AXE);
         addItems(HOES, ETHRIL_HOE, EBONY_HOE);
