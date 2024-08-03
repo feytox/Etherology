@@ -17,11 +17,13 @@ public class GridPage extends EmptyPage {
 
     private final List<Pair<Vec2f, Vec2f>> lines;
     private final List<ChapterButton> buttons;
+    private final float maxY;
     private float deltaY = 0.0f;
 
     public GridPage(TeldecoreScreen parent, ChapterGrid grid, Function<Identifier, Chapter> idToIcon, boolean isLeft) {
         super(parent, isLeft);
         this.buttons = grid.toButtons(parent, idToIcon, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
+        this.maxY = Math.max(0f, this.buttons.stream().map(ChapterButton::getDy).max(Float::compare).orElse(0f) - PAGE_HEIGHT+52f);
         this.lines = grid.toLines(32f);
     }
 
@@ -57,7 +59,7 @@ public class GridPage extends EmptyPage {
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         if (verticalAmount == 0.0f) return false;
 
-        deltaY += (float) (verticalAmount * 10f);
+        deltaY = Math.clamp(deltaY + (float) (verticalAmount * 10f), -maxY, 0);
         buttons.forEach(button -> button.move(getPageX() + PAGE_WIDTH/2f, getPageY()+19+deltaY));
         return true;
     }

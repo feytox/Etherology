@@ -1,5 +1,5 @@
 {
-  "tab_id": 0,
+  "tab_id": 1,
   "icon": "etherology:stream_key",
   "title": "Тестовая вкладка",
   "color": "00FF00",
@@ -9,8 +9,13 @@
   "chapters": [
     {"id": "etherology:test", "x": 0, "y": 0},
     {"id": "etherology:test2", "after": ["etherology:test"], "x": -0.5, "y": 1 },
-    {"id": "etherology:test3", "after": ["etherology:test"], "x": 0.5, "y": 1 },
-    {"id": "etherology:test4", "after": ["etherology:test2"], "x": -0.5, "y": 2 },
-    {"id": "etherology:test5", "after": ["etherology:test3", "etherology:test4"], "x": 0.5, "y": 2 }
+    {"id": "etherology:test3", "after": ["etherology:test"], "x": 0.5, "y": 2 },
+    {"id": "etherology:test4", "after": ["etherology:test2"], "x": -0.5, "y": 3 },
+    {"id": "etherology:test5", "after": ["etherology:test3", "etherology:test4"], "x": 0.5, "y": 4 },
+    {"id": "etherology:test6", "after": ["etherology:test4", "etherology:test5"], "x": -0.5, "y": 5 },
+    {"id": "etherology:test7", "after": ["etherology:test5", "etherology:test6"], "x": 0.5, "y": 6 },
+    {"id": "etherology:test8", "after": ["etherology:test6", "etherology:test7"], "x": -0.5, "y": 7 },
+    {"id": "etherology:test9", "after": ["etherology:test7", "etherology:test8"], "x": 0.5, "y": 8 },
+    {"id": "etherology:test10", "after": ["etherology:test8", "etherology:test9"], "x": -0.5, "y": 9 }
   ]
 }
