@@ -115,8 +115,8 @@ public class AspectsLoader {
 
         cacheFuture = CompletableFuture.supplyAsync(() -> world.getRegistryManager().get(RegistriesRegistry.ASPECTS))
                 .thenApplyAsync(Registry::stream)
-                .thenApplyAsync(s -> s.map(AspectRegistryPart::applyParents))
                 .thenApplyAsync(s -> s.reduce(AspectRegistryPart::merge))
+                .thenApplyAsync(s -> s.map(AspectRegistryPart::applyParents))
                 .thenApplyAsync(o -> o.map(ImmutableMap::copyOf).orElseThrow());
 
         if (!cacheFuture.isDone() && !force) return null;
