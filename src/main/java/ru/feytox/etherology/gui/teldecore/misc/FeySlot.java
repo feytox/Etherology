@@ -19,7 +19,13 @@ public abstract class FeySlot implements FeyIngredient {
 
     public abstract void render(DrawContext context, int mouseX, int mouseY, float delta);
 
+    public abstract void renderTooltip(DrawContext context, int mouseX, int mouseY);
+
     public boolean canBeFocused() {
+        return true;
+    }
+
+    public boolean hasTooltip() {
         return true;
     }
 
@@ -61,6 +67,11 @@ public abstract class FeySlot implements FeyIngredient {
         }
 
         @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
+            context.drawItemTooltip(textRenderer, stack, mouseX, mouseY);
+        }
+
+        @Override
         public Object getContent() {
             return stack;
         }
@@ -75,9 +86,13 @@ public abstract class FeySlot implements FeyIngredient {
             this.stacks = ingredient.getMatchingStacks();
         }
 
+        private int getItemIndex() {
+            return (int) ((System.currentTimeMillis() / 1000L) % stacks.length);
+        }
+
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-            int i = (int) ((System.currentTimeMillis() / 1000L) % stacks.length);
+            int i = getItemIndex();
             context.push();
             context.translate(x, y, 0);
             context.scale(width / 16f, height / 16f, 1);
@@ -87,8 +102,14 @@ public abstract class FeySlot implements FeyIngredient {
         }
 
         @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
+            int i = getItemIndex();
+            context.drawItemTooltip(textRenderer, stacks[i], mouseX, mouseY);
+        }
+
+        @Override
         public Object getContent() {
-            int i = (int) ((System.currentTimeMillis() / 1000L) % stacks.length);
+            int i = getItemIndex();
             return stacks[i];
         }
     }
@@ -103,12 +124,20 @@ public abstract class FeySlot implements FeyIngredient {
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {}
 
         @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {}
+
+        @Override
         public Object getContent() {
             return null;
         }
 
         @Override
         public boolean canBeFocused() {
+            return false;
+        }
+
+        @Override
+        public boolean hasTooltip() {
             return false;
         }
     }
@@ -128,12 +157,20 @@ public abstract class FeySlot implements FeyIngredient {
         }
 
         @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {}
+
+        @Override
         public Object getContent() {
             return null;
         }
 
         @Override
         public boolean canBeFocused() {
+            return false;
+        }
+
+        @Override
+        public boolean hasTooltip() {
             return false;
         }
     }

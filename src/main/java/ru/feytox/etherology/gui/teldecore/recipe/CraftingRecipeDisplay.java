@@ -18,8 +18,8 @@ public class CraftingRecipeDisplay extends AbstractRecipeDisplay<CraftingRecipe>
     private static final Identifier SHAPELESS = EIdentifier.of("textures/gui/teldecore/icon/shapeless.png");
     private static final Identifier TEXTURE = EIdentifier.of("textures/gui/teldecore/recipe/crafting.png");
 
-    public CraftingRecipeDisplay(CraftingRecipe recipe) {
-        super(recipe, TEXTURE);
+    public CraftingRecipeDisplay(CraftingRecipe recipe, int width, int height) {
+        super(recipe, width, height, TEXTURE);
     }
 
     @SuppressWarnings("IntegerDivisionInFloatingPointContext")

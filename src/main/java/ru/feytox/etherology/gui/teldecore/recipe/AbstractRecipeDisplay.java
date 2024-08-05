@@ -20,32 +20,40 @@ import java.util.List;
 public abstract class AbstractRecipeDisplay<T extends Recipe<?>> {
 
     protected final T recipe;
+    private final int width;
+    private final int height;
     private final Identifier texture;
 
     public abstract List<FeySlot> toSlots(float x, float y);
 
     public ParentedWidget toWidget(TeldecoreScreen parent, float x, float y) {
-        return new Widget(parent, toSlots(x, y), texture, x, y);
+        return new Widget(parent, toSlots(x, y), texture, x, y, width, height);
     }
 
     private static class Widget extends ParentedWidget implements FocusedIngredientProvider {
 
         private final List<FeySlot> slots;
         private final Identifier texture;
+        private final int width;
+        private final int height;
 
-        public Widget(TeldecoreScreen parent, List<FeySlot> slots, Identifier texture, float baseX, float baseY) {
+        public Widget(TeldecoreScreen parent, List<FeySlot> slots, Identifier texture, float baseX, float baseY, int width, int height) {
             super(parent, baseX, baseY);
             this.slots = slots;
             this.texture = texture;
+            this.width = width;
+            this.height = height;
         }
 
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
             RenderSystem.setShaderTexture(0, texture);
-            // TODO: 04.08.2024 replace width and height
-            RenderUtils.renderTexture(context, baseX, baseY, 0, 0, 123, 72, 123, 72);
+            RenderUtils.renderTexture(context, baseX, baseY, 0, 0, width, height, width, height);
 
             slots.forEach(slot -> slot.render(context, mouseX, mouseY, delta));
+            slots.forEach(slot -> {
+                if (slot.hasTooltip() && slot.isMouseOver(mouseX, mouseY)) slot.renderTooltip(context, mouseX, mouseY);
+            });
         }
 
         @Override
