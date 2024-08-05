@@ -1,14 +1,12 @@
 package ru.feytox.etherology.gui.teldecore.button;
 
 import lombok.Getter;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
-import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 
@@ -39,7 +37,10 @@ public class ChapterButton extends AbstractButton {
     protected void renderExtra(DrawContext context, boolean hovered) {
         float x = baseX + width / 2f - 8.0f;
         float y = baseY + height / 2f - 8.0f;
-        RenderUtils.drawItem(context, MinecraftClient.getInstance(), icon, x, y);
+        context.push();
+        context.translate(x, y, 0);
+        context.drawItem(icon, 0, 0);
+        context.pop();
     }
 
     public void renderTooltip(DrawContext context, int mouseX, int mouseY) {

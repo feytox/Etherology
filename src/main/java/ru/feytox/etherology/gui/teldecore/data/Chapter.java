@@ -14,6 +14,7 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
 import ru.feytox.etherology.gui.teldecore.content.ImageContent;
+import ru.feytox.etherology.gui.teldecore.content.RecipeContent;
 import ru.feytox.etherology.gui.teldecore.content.TextContent;
 import ru.feytox.etherology.gui.teldecore.page.AbstractPage;
 import ru.feytox.etherology.gui.teldecore.page.EmptyPage;
@@ -61,7 +62,7 @@ public class Chapter {
 
     static {
         CONTENT_TYPES = Map.of(
-                "text", TextContent.CODEC, "image", ImageContent.CODEC
+                "text", TextContent.CODEC, "image", ImageContent.CODEC, "recipe", RecipeContent.CODEC
         );
         CONTENT_CODEC = Codec.STRING.dispatch(AbstractContent::getType, CONTENT_TYPES::get);
 

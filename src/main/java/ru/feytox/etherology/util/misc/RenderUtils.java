@@ -3,19 +3,9 @@ package ru.feytox.etherology.util.misc;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.experimental.UtilityClass;
 import lombok.val;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.crash.CrashException;
-import net.minecraft.util.crash.CrashReport;
-import net.minecraft.util.crash.CrashReportSection;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 @UtilityClass
@@ -124,48 +114,6 @@ public class RenderUtils {
         vertexConsumer.vertex(matrix4f, x2, y2, 0).color(color);
         vertexConsumer.vertex(matrix4f, x2, y1, 0).color(color);
         context.draw();
-    }
-
-    /**
-     * @see DrawContext#drawItem(ItemStack, int, int)
-     */
-    public static void drawItem(DrawContext context, MinecraftClient client, ItemStack stack, float x, float y) {
-        drawItem(context, client.player, client.world, stack, x, y, 0, 0);
-    }
-
-    /**
-     * @see DrawContext#drawItem(LivingEntity, World, ItemStack, int, int, int, int)
-     */
-    public static void drawItem(DrawContext context, @Nullable LivingEntity entity, @Nullable World world, ItemStack stack, float x, float y, int seed, int z) {
-        if (stack.isEmpty()) return;
-
-        MinecraftClient client = MinecraftClient.getInstance();
-        BakedModel bakedModel = client.getItemRenderer().getModel(stack, world, entity, seed);
-        context.push();
-        context.translate(x + 8, y + 8, (float)(150 + (bakedModel.hasDepth() ? z : 0)));
-
-        try {
-            context.scale(16.0F, -16.0F, 16.0F);
-            boolean bl = !bakedModel.isSideLit();
-            if (bl) {
-                DiffuseLighting.disableGuiDepthLighting();
-            }
-
-            client.getItemRenderer().renderItem(stack, ModelTransformationMode.GUI, false, context.getMatrices(), context.getVertexConsumers(), 15728880, OverlayTexture.DEFAULT_UV, bakedModel);
-            context.draw();
-            if (bl) {
-                DiffuseLighting.enableGuiDepthLighting();
-            }
-        } catch (Throwable var12) {
-            CrashReport crashReport = CrashReport.create(var12, "Rendering item");
-            CrashReportSection crashReportSection = crashReport.addElement("Item being rendered");
-            crashReportSection.add("Item Type", () -> String.valueOf(stack.getItem()));
-            crashReportSection.add("Item Components", () -> String.valueOf(stack.getComponents()));
-            crashReportSection.add("Item Foil", () -> String.valueOf(stack.hasGlint()));
-            throw new CrashException(crashReport);
-        }
-
-        context.pop();
     }
 
 }

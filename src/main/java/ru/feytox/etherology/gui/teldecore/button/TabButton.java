@@ -1,7 +1,6 @@
 package ru.feytox.etherology.gui.teldecore.button;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -46,7 +45,10 @@ public class TabButton extends AbstractButton {
 
     @Override
     protected void renderExtra(DrawContext context, boolean hovered) {
-        RenderUtils.drawItem(context, MinecraftClient.getInstance(), icon, baseX + 13 - (hovered ? 1 : 0), baseY + 2);
+        context.push();
+        context.translate(baseX + 13 - (hovered ? 1 : 0), baseY + 2, 0);
+        context.drawItem(icon, 0, 0);
+        context.pop();
     }
 
     @Override

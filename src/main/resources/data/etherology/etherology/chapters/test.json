@@ -9,6 +9,9 @@
     {"type": "text", "text": "text.teldecore.test.3"},
     {"type": "image", "path": "etherology:textures/gui/teldecore/image/test1.png", "texture_width": 1920, "texture_height": 1080},
     {"type": "text", "text": "text.teldecore.test.4"},
-    {"type": "text", "text": "text.teldecore.test.5"}
+    {"type": "recipe", "id": "minecraft:crafting_table"},
+    {"type": "text", "text": "text.teldecore.test.5"},
+    {"type": "recipe", "id": "minecraft:diamond_sword"},
+    {"type": "recipe", "id": "etherology:shelf_slab"}
   ]
 }

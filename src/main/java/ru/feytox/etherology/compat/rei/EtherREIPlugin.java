@@ -1,20 +1,27 @@
 package ru.feytox.etherology.compat.rei;
 
 
+import dev.architectury.event.CompoundEventResult;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.CollapsibleEntryRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
+import me.shedaniel.rei.api.client.registry.screen.DisplayBoundsProvider;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
+import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.EntryType;
 import me.shedaniel.rei.api.common.entry.type.EntryTypeRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.client.categories.crafting.filler.CraftingRecipeFiller;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableScreen;
 import ru.feytox.etherology.compat.rei.category.*;
@@ -23,6 +30,8 @@ import ru.feytox.etherology.compat.rei.filler.StaffCarpetCuttingFiller;
 import ru.feytox.etherology.compat.rei.filler.StaffCarpetingFiller;
 import ru.feytox.etherology.compat.rei.misc.AspectEntryDefinition;
 import ru.feytox.etherology.compat.rei.misc.AspectPair;
+import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
+import ru.feytox.etherology.gui.teldecore.misc.FeyIngredient;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipe;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
@@ -100,6 +109,7 @@ public class EtherREIPlugin implements REIClientPlugin {
     }
 
     @Override
+    @SuppressWarnings("UnstableApiUsage")
     public void registerCollapsibleEntries(CollapsibleEntryRegistry registry) {
         registry.group(EIdentifier.of("aspects"), Text.translatable("gui.etherology.aspects"), entry -> entry.getType().equals(ASPECT_ENTRY));
     }
@@ -107,9 +117,45 @@ public class EtherREIPlugin implements REIClientPlugin {
     @Override
     public void registerScreens(ScreenRegistry registry) {
         registry.registerContainerClickArea(new Rectangle(88, 32, 28, 23), EmpowerTableScreen.class, EMPOWERMENT);
+
+        registry.registerFocusedStack((screen, mouse) -> {
+            if (!(screen instanceof TeldecoreScreen teldecoreScreen)) return CompoundEventResult.pass();
+            FeyIngredient focusedIngredient = teldecoreScreen.getFocusedIngredient(mouse.x, mouse.y);
+            if (focusedIngredient == null) return CompoundEventResult.pass();
+            EntryStack<?> focusedStack = toEntryStack(focusedIngredient);
+            return focusedStack == null ? CompoundEventResult.pass() : CompoundEventResult.interruptTrue(focusedStack);
+        });
+
+        registry.registerDecider(new DisplayBoundsProvider<>() {
+            @Override
+            public <R extends Screen> boolean isHandingScreen(Class<R> screen) {
+                return TeldecoreScreen.class.isAssignableFrom(screen);
+            }
+
+            @Override
+            public @Nullable Rectangle getScreenBounds(Object object) {
+                if (!(object instanceof TeldecoreScreen screen)) return null;
+                return new Rectangle(screen.getX()-15, screen.getY()-5, TeldecoreScreen.BASE_WIDTH+20, TeldecoreScreen.BASE_HEIGHT+10);
+            }
+
+            @Override
+            public <R extends Screen> ActionResult shouldScreenBeOverlaid(R screen) {
+                return screen instanceof TeldecoreScreen ? ActionResult.SUCCESS : ActionResult.PASS;
+            }
+        });
     }
 
     private static <T extends Display> CategoryIdentifier<T> id(String path) {
         return CategoryIdentifier.of(Etherology.MOD_ID, path);
+    }
+
+    @Nullable
+    private static EntryStack<?> toEntryStack(FeyIngredient ingredient) {
+        Object content = ingredient.getContent();
+        if (content == null) return null;
+        return switch (content) {
+            case ItemStack stack -> EntryStacks.of(stack);
+            default -> null;
+        };
     }
 }

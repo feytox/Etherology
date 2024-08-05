@@ -24,25 +24,24 @@ import ru.feytox.etherology.gui.teldecore.button.TurnPageButton;
 import ru.feytox.etherology.gui.teldecore.data.Chapter;
 import ru.feytox.etherology.gui.teldecore.data.Tab;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
+import ru.feytox.etherology.gui.teldecore.misc.FeyIngredient;
+import ru.feytox.etherology.gui.teldecore.misc.FocusedIngredientProvider;
 import ru.feytox.etherology.gui.teldecore.page.AbstractPage;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
-public class TeldecoreScreen extends Screen {
+public class TeldecoreScreen extends Screen implements FocusedIngredientProvider {
 
     // static
     public static final Identifier CHAPTER_MENU;
     public static final Identifier BASE;
-    private static final int BASE_WIDTH = 310;
-    private static final int BASE_HEIGHT = 210;
+    public static final int BASE_WIDTH = 310;
+    public static final int BASE_HEIGHT = 210;
 
     // screen data
     private final Screen parent;
@@ -195,5 +194,13 @@ public class TeldecoreScreen extends Screen {
     static {
         BASE = EIdentifier.of("textures/gui/teldecore/page/base.png");
         CHAPTER_MENU = EIdentifier.of("chapter_menu");
+    }
+
+    @Override @Nullable
+    public FeyIngredient getFocusedIngredient(int mouseX, int mouseY) {
+        return children().stream().map(child -> {
+            if (!(child instanceof FocusedIngredientProvider provider)) return null;
+            return provider.getFocusedIngredient(mouseX, mouseY);
+        }).filter(Objects::nonNull).findAny().orElse(null);
     }
 }

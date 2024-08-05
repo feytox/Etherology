@@ -111,4 +111,25 @@ public class EtherEMIPlugin implements EmiPlugin {
         registry.addCategory(category);
         registry.addWorkstation(category, category.getIcon());
     }
+
+    // TODO: 05.08.2024 find a solution to add EMI support for Teldecore
+
+    //    private void registerStackProviders(EmiRegistry registry) {
+//        registry.addStackProvider(TeldecoreScreen.class, (screen, x, y) -> {
+//            FeyIngredient focusedIngredient = screen.getFocusedIngredient(x, y);
+//            if (focusedIngredient == null) return EmiStackInteraction.EMPTY;
+//            EmiStack focusedStack = toEmiStack(focusedIngredient);
+//            return focusedStack == null ? EmiStackInteraction.EMPTY : new EmiStackInteraction(focusedStack);
+//        });
+//    }
+
+//    @Nullable
+//    private static EmiStack toEmiStack(FeyIngredient ingredient) {
+//        Object content = ingredient.getContent();
+//        if (content == null) return null;
+//        return switch (content) {
+//            case ItemStack stack -> EmiStack.of(stack);
+//            default -> null;
+//        };
+//    }
 }
