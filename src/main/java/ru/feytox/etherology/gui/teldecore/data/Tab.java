@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
-import ru.feytox.etherology.gui.teldecore.page.GridPage;
+import ru.feytox.etherology.gui.teldecore.page.ResearchTreePage;
 import ru.feytox.etherology.gui.teldecore.page.TitlePage;
 import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 import ru.feytox.etherology.util.misc.Color;
@@ -33,7 +33,7 @@ public class Tab {
     @Getter
     private final Color color;
     private final List<AbstractContent> contents;
-    private final ChapterGrid grid;
+    private final ResearchTree tree;
 
     @Environment(EnvType.CLIENT)
     public void addPages(TeldecoreScreen screen) {
@@ -57,7 +57,7 @@ public class Tab {
             return null;
         };
 
-        screen.addDrawableChild(new GridPage(screen, grid, idToIcon, false));
+        screen.addDrawableChild(new ResearchTreePage(screen, tree, idToIcon, false));
         screen.addDrawableChild(left);
         left.initContent();
     }
@@ -69,7 +69,7 @@ public class Tab {
                 Codec.STRING.fieldOf("title").forGetter(t -> t.titleKey),
                 Color.CODEC.fieldOf("color").forGetter(t -> t.color),
                 Chapter.CONTENT_CODEC.listOf().fieldOf("content").forGetter(t -> t.contents),
-                ChapterGrid.CODEC.fieldOf("chapters").forGetter(t -> t.grid)
+                ResearchTree.CODEC.fieldOf("chapters").forGetter(t -> t.tree)
         ).apply(instance, Tab::new));
     }
 }

@@ -41,12 +41,12 @@ public class TurnPageButton extends AbstractButton {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (turnKey.matchesKey(keyCode, scanCode)) return onClick(0);
+        if (turnKey.matchesKey(keyCode, scanCode)) return onClick(0, 0, 0);
         return false;
     }
 
     @Override
-    public boolean onClick(int button) {
+    public boolean onClick(double mouseX, double mouseY, int button) {
         return dataAction("Failed to turn the page.", data -> {
             data.turnPage(isLeft);
             parent.clearAndInit();

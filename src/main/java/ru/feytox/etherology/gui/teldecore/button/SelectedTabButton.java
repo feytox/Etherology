@@ -46,7 +46,7 @@ public class SelectedTabButton extends AbstractButton {
     }
 
     @Override
-    public boolean onClick(int button) {
+    public boolean onClick(double mouseX, double mouseY, int button) {
         return false;
     }
 }

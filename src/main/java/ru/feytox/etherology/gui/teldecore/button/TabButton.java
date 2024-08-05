@@ -52,7 +52,7 @@ public class TabButton extends AbstractButton {
     }
 
     @Override
-    public boolean onClick(int button) {
+    public boolean onClick(double mouseX, double mouseY, int button) {
         return dataAction("Failed to handle click on tab %s button".formatted(target.toString()), data -> {
             data.switchTab(target);
             parent.clearAndInit();

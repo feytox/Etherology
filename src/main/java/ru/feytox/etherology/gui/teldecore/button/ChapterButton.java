@@ -49,7 +49,7 @@ public class ChapterButton extends AbstractButton {
     }
 
     @Override
-    public boolean onClick(int button) {
+    public boolean onClick(double mouseX, double mouseY, int button) {
         return dataAction("Failed to handle click on chapter %s button".formatted(target.toString()), data -> {
             data.setSelectedChapter(target);
             parent.clearAndInit();

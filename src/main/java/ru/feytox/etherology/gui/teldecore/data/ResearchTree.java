@@ -19,14 +19,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ChapterGrid {
+public class ResearchTree {
 
     private static final Codec<ChapterInfo> INFO_CODEC;
-    public static final Codec<ChapterGrid> CODEC;
+    public static final Codec<ResearchTree> CODEC;
     private final List<ChapterInfo> info;
     private final Map<Identifier, ChapterInfo> infoMap;
 
-    private ChapterGrid(List<ChapterInfo> info) {
+    private ResearchTree(List<ChapterInfo> info) {
         this.info = info;
         this.infoMap = info.stream().collect(Collectors.toMap(ChapterInfo::id, Function.identity()));
     }
@@ -68,6 +68,6 @@ public class ChapterGrid {
                 Codec.FLOAT.fieldOf("x").forGetter(ChapterInfo::x),
                 Codec.FLOAT.fieldOf("y").forGetter(ChapterInfo::y)
         ).apply(instance, ChapterInfo::new));
-        CODEC = INFO_CODEC.listOf().xmap(ChapterGrid::new, grid -> grid.info);
+        CODEC = INFO_CODEC.listOf().xmap(ResearchTree::new, grid -> grid.info);
     }
 }

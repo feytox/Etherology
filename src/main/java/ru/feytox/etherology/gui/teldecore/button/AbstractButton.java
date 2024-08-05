@@ -34,7 +34,7 @@ public abstract class AbstractButton extends ParentedWidget {
         this(parent, texture, hoveredTexture, parent.getX(), parent.getY(), dx, dy, width, height);
     }
 
-    public abstract boolean onClick(int button);
+    public abstract boolean onClick(double mouseX, double mouseY, int button);
 
     protected boolean dataAction(String errorMsg, Consumer<TeldecoreComponent> dataConsumer) {
         TeldecoreComponent data = parent.getData().orElse(null);
@@ -48,7 +48,7 @@ public abstract class AbstractButton extends ParentedWidget {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (active && isMouseOver(mouseX, mouseY)) return onClick(button);
+        if (active && isMouseOver(mouseX, mouseY)) return onClick(mouseX, mouseY, button);
         return false;
     }
 
