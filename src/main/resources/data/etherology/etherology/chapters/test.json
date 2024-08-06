@@ -12,6 +12,8 @@
     {"type": "recipe", "id": "minecraft:crafting_table"},
     {"type": "text", "text": "text.teldecore.test.5"},
     {"type": "recipe", "id": "minecraft:diamond_sword"},
-    {"type": "recipe", "id": "etherology:shelf_slab"}
+    {"type": "recipe", "id": "etherology:shelf_slab"},
+    {"type": "recipe", "id": "etherology:oculus"},
+    {"type": "recipe", "id": "etherology:samovar"}
   ]
 }

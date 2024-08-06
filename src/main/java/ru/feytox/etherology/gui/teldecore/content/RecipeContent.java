@@ -17,7 +17,9 @@ import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.misc.ParentedWidget;
 import ru.feytox.etherology.gui.teldecore.recipe.AbstractRecipeDisplay;
 import ru.feytox.etherology.gui.teldecore.recipe.CraftingRecipeDisplay;
+import ru.feytox.etherology.gui.teldecore.recipe.EmpowerRecipeDisplay;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
+import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
 import java.util.Map;
@@ -79,6 +81,7 @@ public class RecipeContent extends AbstractContent {
         if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) return;
         DISPLAYS = new DisplayRegistry();
         DISPLAYS.add(RecipeType.CRAFTING, CraftingRecipeDisplay::new, 123, 72);
+        DISPLAYS.add(EmpowerRecipeSerializer.INSTANCE, EmpowerRecipeDisplay::new, 123, 72);
     }
 
     static {
@@ -93,13 +96,12 @@ public class RecipeContent extends AbstractContent {
     private static class DisplayRegistry {
         private final Map<RecipeType<?>, Pair<DisplaySize, DisplayFiller<?>>> typeToDisplay = new Object2ObjectOpenHashMap<>();
 
-        <V extends Recipe<?>> DisplayRegistry add(RecipeType<V> type, DisplayFiller<V> displayFunction, int width, int height) {
+        <V extends Recipe<?>> void add(RecipeType<V> type, DisplayFiller<V> displayFunction, int width, int height) {
             typeToDisplay.put(type, Pair.of(new DisplaySize(width, height), displayFunction));
-            return this;
         }
 
-        <V extends Recipe<?>> DisplayRegistry add(FeyRecipeSerializer<V> feySerializer, DisplayFiller<V> displayFunction, int width, int height) {
-            return add(feySerializer.getRecipeType(), displayFunction, width, height);
+        <V extends Recipe<?>> void add(FeyRecipeSerializer<V> feySerializer, DisplayFiller<V> displayFunction, int width, int height) {
+            add(feySerializer.getRecipeType(), displayFunction, width, height);
         }
 
         Optional<Pair<DisplaySize, DisplayFiller<?>>> get(Recipe<?> recipe) {
