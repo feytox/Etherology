@@ -55,7 +55,7 @@ public abstract class AbstractPage extends ParentedWidget {
         float height = content.getHeight(textRenderer) + content.getOffsetUp() + content.getOffsetDown();
         if (height > contentHeight) return false;
 
-        widgets.add(content.toWidget(parent, pageX+dx+(isLeft ? 0 : 4), pageY + (contentEnd - contentHeight + content.getOffsetUp())));
+        widgets.add(content.toWidget(parent, pageX+dx, pageY + (contentEnd - contentHeight + content.getOffsetUp())));
         contentHeight -= height;
         return true;
     }

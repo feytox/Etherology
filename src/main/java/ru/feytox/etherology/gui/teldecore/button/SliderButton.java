@@ -1,7 +1,6 @@
 package ru.feytox.etherology.gui.teldecore.button;
 
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.page.ResearchTreePage;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -34,7 +33,6 @@ public class SliderButton extends AbstractButton {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (!active || !sliderDragged) return false;
-        Etherology.ELOGGER.info("{}", deltaY);
         baseY = Math.clamp((float) mouseY - height/2f, rootY, rootY + ResearchTreePage.SLIDER_LENGTH);
         deltaConsumer.accept(baseY - rootY);
         return true;

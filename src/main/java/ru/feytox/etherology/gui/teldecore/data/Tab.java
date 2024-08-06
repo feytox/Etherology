@@ -46,7 +46,7 @@ public class Tab {
         Text text = Text.translatable(titleKey);
         TitlePage left = new TitlePage(screen, text, true, true);
         contents.forEach(content -> {
-            if (!left.addContent(content, 11)) Etherology.ELOGGER.error("Failed to fit all contents on tab \"{}\" ", text.getString());
+            if (!left.addContent(content, 10)) Etherology.ELOGGER.error("Failed to fit all contents on tab \"{}\" ", text.getString());
         });
 
         Function<Identifier, Chapter> idToIcon = id -> {

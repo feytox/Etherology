@@ -21,7 +21,7 @@ import java.util.List;
 public class TextContent extends AbstractContent {
 
     public static final MapCodec<TextContent> CODEC;
-    public static final int TEXT_WIDTH = AbstractPage.PAGE_WIDTH - 17;
+    public static final int TEXT_WIDTH = AbstractPage.PAGE_WIDTH - 20;
     private static final int TEXT_HEIGHT = 6;
     private static final int TEXT_SPACE = 4;
 

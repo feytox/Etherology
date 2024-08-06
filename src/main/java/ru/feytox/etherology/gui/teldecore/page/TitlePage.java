@@ -16,7 +16,7 @@ public class TitlePage extends AbstractPage {
     private final OrderedText title;
 
     public TitlePage(TeldecoreScreen parent, Text title, boolean isLeft, boolean isFancy) {
-        super(parent, isFancy ? TITLE_1 : TITLE_2, isLeft, 26, 192);
+        super(parent, isFancy ? TITLE_1 : TITLE_2, isLeft, 33, 186);
         this.title = title.asOrderedText();
     }
 

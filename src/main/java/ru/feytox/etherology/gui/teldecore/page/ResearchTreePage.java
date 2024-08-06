@@ -27,7 +27,7 @@ public class ResearchTreePage extends AbstractPage {
     private float deltaY = 0.0f;
 
     public ResearchTreePage(TeldecoreScreen parent, ResearchTree grid, Function<Identifier, Chapter> idToIcon, boolean isLeft) {
-        super(parent, TEXTURE, isLeft, 4, 192);
+        super(parent, TEXTURE, isLeft, 10, 186);
         this.buttons = grid.toButtons(parent, idToIcon, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
         this.maxY = Math.max(0f, this.buttons.stream().map(ChapterButton::getDy).max(Float::compare).orElse(0f) - PAGE_HEIGHT+52f);
         this.lines = grid.toLines(32f);

@@ -18,7 +18,7 @@ import ru.feytox.etherology.util.misc.RenderUtils;
 public class ImageContent extends AbstractContent {
 
     public static final MapCodec<ImageContent> CODEC;
-    public static final float MAX_WIDTH = AbstractPage.PAGE_WIDTH - 21;
+    public static final float MAX_WIDTH = AbstractPage.PAGE_WIDTH - 20;
 
     private final Identifier texture;
     private final int textureWidth;
