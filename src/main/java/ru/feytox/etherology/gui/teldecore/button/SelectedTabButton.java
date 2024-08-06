@@ -13,19 +13,22 @@ import ru.feytox.etherology.util.misc.RenderUtils;
 
 public class SelectedTabButton extends AbstractButton {
 
-    private static final Identifier SELECTED_TAB = EIdentifier.of("textures/gui/teldecore/icon/tab_2.png");
+    private static final Identifier LEFT = EIdentifier.of("textures/gui/teldecore/icon/tab_left_2.png");
+    private static final Identifier RIGHT = EIdentifier.of("textures/gui/teldecore/icon/tab_right_2.png");
 
     private final ItemStack icon;
     private final Color color;
+    private final boolean isLeft;
 
-    private SelectedTabButton(TeldecoreScreen parent, ItemStack icon, Color color, float dx, float dy) {
-        super(parent, SELECTED_TAB, null, dx, dy, 40, 25);
+    private SelectedTabButton(TeldecoreScreen parent, ItemStack icon, Color color, boolean isLeft, float dx, float dy) {
+        super(parent, isLeft ? LEFT : RIGHT, null, dx, dy, 40, 25);
         this.icon = icon;
         this.color = color;
+        this.isLeft = isLeft;
     }
 
-    public static SelectedTabButton of(TeldecoreScreen parent, Tab tab, float dx, float dy) {
-        return new SelectedTabButton(parent, Registries.ITEM.get(tab.getIcon()).getDefaultStack(), tab.getColor(), dx, dy);
+    public static SelectedTabButton of(TeldecoreScreen parent, Tab tab, boolean isLeft, float dx, float dy) {
+        return new SelectedTabButton(parent, Registries.ITEM.get(tab.getIcon()).getDefaultStack(), tab.getColor(), isLeft, dx, dy);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class SelectedTabButton extends AbstractButton {
     @Override
     protected void renderExtra(DrawContext context, boolean hovered) {
         context.push();
-        context.translate(baseX + 13, baseY + 2, 0);
+        context.translate(baseX + (isLeft ? 12 : 11), baseY + 2, 0);
         context.drawItem(icon, 0, 0);
         context.pop();
     }

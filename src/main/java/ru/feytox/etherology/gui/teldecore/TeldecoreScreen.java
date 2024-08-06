@@ -100,8 +100,9 @@ public class TeldecoreScreen extends Screen implements FocusedIngredientProvider
         int i = 0;
         while (tabs.hasNext()) {
             RegistryEntry.Reference<Tab> tabEntry = tabs.next();
-            AbstractButton button = selected != null && tabEntry.matchesKey(selected) ? SelectedTabButton.of(this, tabEntry.value(), -18, 12+i*29)
-                    : TabButton.of(this, tabEntry.registryKey().getValue(), tabEntry.value(), -18, 12+i*29);
+            boolean isLeft = i < 6;
+            AbstractButton button = selected != null && tabEntry.matchesKey(selected) ? SelectedTabButton.of(this, tabEntry.value(), isLeft, isLeft ? -18 : 288, 12+i*29)
+                    : TabButton.of(this, tabEntry.registryKey().getValue(), tabEntry.value(), isLeft, isLeft ? -18 : 298, 12+i*29);
             addDrawableChild(button);
             i++;
         }
