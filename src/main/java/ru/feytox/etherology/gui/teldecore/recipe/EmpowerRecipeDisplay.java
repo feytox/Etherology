@@ -27,17 +27,17 @@ public class EmpowerRecipeDisplay extends AbstractRecipeDisplay<EmpowerRecipe> {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (row != 1 && col != 1) continue;
-                slots.add(FeySlot.of(input.get(col+row*3), x+11+col*17, y+11+row*17, 16, 16));
+                slots.add(FeySlot.of(input.get(col+row*3), x+11+col*17, y+11+row*17));
             }
         }
 
-        if (recipe.getRellaCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_RELLA, recipe.getRellaCount()), x+10, y+10, 16, 16));
-        if (recipe.getViaCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_VIA, recipe.getViaCount()), x+46, y+10, 16, 16));
-        if (recipe.getClosCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_CLOS, recipe.getClosCount()), x+10, y+46, 16, 16));
-        if (recipe.getKetaCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_KETA, recipe.getKetaCount()), x+46, y+46, 16, 16));
+        if (recipe.getRellaCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_RELLA, recipe.getRellaCount()), x+10, y+10));
+        if (recipe.getViaCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_VIA, recipe.getViaCount()), x+46, y+10));
+        if (recipe.getClosCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_CLOS, recipe.getClosCount()), x+10, y+46));
+        if (recipe.getKetaCount() > 0) slots.add(FeySlot.of(new ItemStack(EItems.PRIMOSHARD_KETA, recipe.getKetaCount()), x+46, y+46));
 
 
-        slots.add(FeySlot.of(recipe.getOutput(), x+95, y+28, 16, 16));
+        slots.add(FeySlot.of(recipe.getOutput(), x+95, y+28));
 
         return slots;
     }

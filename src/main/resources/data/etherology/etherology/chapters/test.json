@@ -14,6 +14,8 @@
     {"type": "recipe", "id": "minecraft:diamond_sword"},
     {"type": "recipe", "id": "etherology:shelf_slab"},
     {"type": "recipe", "id": "etherology:oculus"},
-    {"type": "recipe", "id": "etherology:samovar"}
+    {"type": "recipe", "id": "etherology:samovar"},
+    {"type": "recipe", "id": "etherology:azel_ingot"},
+    {"type": "recipe", "id": "etherology:forest_lantern_crumb"}
   ]
 }

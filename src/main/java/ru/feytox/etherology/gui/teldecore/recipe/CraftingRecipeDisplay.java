@@ -36,10 +36,10 @@ public class CraftingRecipeDisplay extends AbstractRecipeDisplay<CraftingRecipe>
         }
 
         for (int i = 0; i < ingredients.size(); i++) {
-            slots.add(FeySlot.of(ingredients.get(i), x+11+17*(i % width), y+11+17*(i / width), 16, 16));
+            slots.add(FeySlot.of(ingredients.get(i), x+11+17*(i % width), y+11+17*(i / width)));
         }
 
-        slots.add(FeySlot.of(recipe.getResult(null), x+95, y+28, 16, 16));
+        slots.add(FeySlot.of(recipe.getResult(null), x+95, y+28));
 
         return slots;
     }

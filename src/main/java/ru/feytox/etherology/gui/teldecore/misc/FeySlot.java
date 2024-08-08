@@ -38,9 +38,17 @@ public abstract class FeySlot implements FeyIngredient {
         return new Item(stack, x, y, width, height);
     }
 
+    public static FeySlot of(ItemStack stack, float x, float y) {
+        return of(stack, x, y, 16, 16);
+    }
+
     public static FeySlot of(Ingredient ingredient, float x, float y, float width, float height) {
         if (ingredient.isEmpty()) return new EmptySlot(x, y, width, height);
         return new IngredientSlot(ingredient, x, y, width, height);
+    }
+
+    public static FeySlot of(Ingredient ingredient, float x, float y) {
+        return of(ingredient, x, y, 16, 16);
     }
 
     public static FeySlot drawable(DrawableElement drawable, float x, float y, float width, float height) {
