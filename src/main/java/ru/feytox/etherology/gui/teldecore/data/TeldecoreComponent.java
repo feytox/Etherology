@@ -1,10 +1,14 @@
 package ru.feytox.etherology.gui.teldecore.data;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -16,6 +20,9 @@ import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.network.interaction.EntityComponentC2SType;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor @Getter
 public class TeldecoreComponent implements ComponentV3, CopyableComponent<TeldecoreComponent>, AutoSyncedComponent {
 
@@ -26,6 +33,16 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
     private Identifier tab = null;
     @Setter
     private int page = 0;
+    private Set<Identifier> completedQuests = new ObjectOpenHashSet<>();
+
+    public void addCompletedQuest(Identifier chapterId) {
+        completedQuests.add(chapterId);
+        sync();
+    }
+
+    public boolean isCompleted(Identifier chapterId) {
+        return completedQuests.contains(chapterId);
+    }
 
     public void turnPage(boolean isLeft) {
         setPage(Math.max(0, page + (isLeft ? -1 : 1)));
@@ -62,6 +79,9 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
         page = tag.getInt("page");
         String tabStr = tag.getString("tab");
         tab = tabStr.isEmpty() ? null : Identifier.of(tabStr);
+
+        completedQuests = tag.getList("completed", NbtList.STRING_TYPE).stream().map(NbtElement::asString)
+                .map(Identifier::of).collect(Collectors.toCollection(ObjectOpenHashSet::new));
     }
 
     @Override
@@ -69,6 +89,11 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
         tag.putString("selected", selected.toString());
         tag.putInt("page", page);
         if (tab != null) tag.putString("tab", tab.toString());
+
+        if (completedQuests.isEmpty()) return;
+        NbtList quests = new NbtList();
+        completedQuests.stream().map(Identifier::toString).map(NbtString::of).forEach(quests::add);
+        tag.put("completed", quests);
     }
 
     private void sync() {

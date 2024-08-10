@@ -115,7 +115,7 @@ public class TeldecoreScreen extends Screen implements FocusedIngredientProvider
         Chapter chapter = chapters.get(selected);
         if (chapter == null) return false;
 
-        List<AbstractPage> pages = chapter.toPages(this);
+        List<AbstractPage> pages = chapter.toPages(this, data, selected);
         int page = 2 * data.getPage();
         if (pages.size() < page) {
             page = 0;

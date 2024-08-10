@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.Etherology;
@@ -18,11 +19,14 @@ import ru.feytox.etherology.gui.teldecore.content.RecipeContent;
 import ru.feytox.etherology.gui.teldecore.content.TextContent;
 import ru.feytox.etherology.gui.teldecore.page.AbstractPage;
 import ru.feytox.etherology.gui.teldecore.page.EmptyPage;
+import ru.feytox.etherology.gui.teldecore.page.QuestPage;
 import ru.feytox.etherology.gui.teldecore.page.TitlePage;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @RequiredArgsConstructor
 public class Chapter {
 
@@ -39,12 +43,23 @@ public class Chapter {
     @Getter
     private final String descKey;
     private final List<AbstractContent> contents;
+    private final Optional<Quest> quest;
 
     @Environment(EnvType.CLIENT)
-    public List<AbstractPage> toPages(TeldecoreScreen screen) {
+    public List<AbstractPage> toPages(TeldecoreScreen screen, TeldecoreComponent data, Identifier chapterId) {
         List<AbstractPage> pages = new ObjectArrayList<>();
         Text title = Text.translatable(titleKey);
-        pages.add(new TitlePage(screen, title, true, true));
+
+        quest.ifPresent(quest -> {
+            if (data.isCompleted(chapterId)) return;
+            QuestPage page = new QuestPage(screen, quest, chapterId, true);
+            for (AbstractContent content : quest.contents()) {
+                if (!page.addContent(content, 10)) Etherology.ELOGGER.error("Found a content in the chapter \"{}\", that doesn't fit in quest info.", title);
+            }
+            pages.add(page);
+        });
+
+        pages.add(new TitlePage(screen, title, pages.isEmpty(), true));
 
         for (AbstractContent content : contents) {
             AbstractPage lastPage = pages.getLast();
@@ -60,6 +75,13 @@ public class Chapter {
         return pages;
     }
 
+    public void tryCompleteQuest(ServerPlayerEntity player, Identifier chapterId) {
+        quest.ifPresentOrElse(quest -> {
+            if (quest.tryComplete(player, chapterId)) return;
+            Etherology.ELOGGER.error("Failed to complete a quest from the chapter {}.", chapterId.toString());
+        }, () -> Etherology.ELOGGER.error("Unexpected attempt to complete a quest from the chapter {} without a quest.", chapterId.toString()));
+    }
+
     static {
         CONTENT_TYPES = Map.of(
                 "text", TextContent.CODEC, "image", ImageContent.CODEC, "recipe", RecipeContent.CODEC
@@ -71,7 +93,8 @@ public class Chapter {
                 Identifier.CODEC.fieldOf("icon").forGetter(c -> c.icon),
                 Codec.STRING.fieldOf("title").forGetter(c -> c.titleKey),
                 Codec.STRING.fieldOf("desc").forGetter(c -> c.descKey),
-                CONTENT_CODEC.listOf().fieldOf("content").forGetter(c -> c.contents)
+                CONTENT_CODEC.listOf().fieldOf("content").forGetter(c -> c.contents),
+                Quest.CODEC.optionalFieldOf("quest").forGetter(c -> c.quest)
         ).apply(instance, Chapter::new));
     }
 }

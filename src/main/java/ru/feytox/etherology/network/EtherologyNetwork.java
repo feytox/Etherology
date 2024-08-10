@@ -28,11 +28,12 @@ public class EtherologyNetwork {
         registerS2C(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C.CODEC);
         registerC2S(StaffMenuSelectionC2S.ID, StaffMenuSelectionC2S.CODEC, StaffMenuSelectionC2S::receive);
         registerC2S(StaffTakeLensC2S.ID, StaffTakeLensC2S.CODEC, StaffTakeLensC2S::receive);
+        registerC2S(QuestCompleteC2S.ID, QuestCompleteC2S.CODEC, QuestCompleteC2S::receive);
 
         // entity components
-        registerC2S(EntityComponentC2SType.TELDECORE_SELECTED);
-        registerC2S(EntityComponentC2SType.TELDECORE_PAGE);
-        registerC2S(EntityComponentC2SType.TELDECORE_TAB);
+        registerTypedC2S(EntityComponentC2SType.TELDECORE_SELECTED);
+        registerTypedC2S(EntityComponentC2SType.TELDECORE_PAGE);
+        registerTypedC2S(EntityComponentC2SType.TELDECORE_TAB);
     }
 
     public static void registerClientSide() {
@@ -47,7 +48,7 @@ public class EtherologyNetwork {
         registerHandlerS2C(RemoveBlockEntityS2C.ID, RemoveBlockEntityS2C::receive);
     }
 
-    private static <T extends AbstractC2SPacket> void registerC2S(AbstractC2SPacket.PacketType<T> packetType) {
+    private static <T extends AbstractC2SPacket> void registerTypedC2S(AbstractC2SPacket.PacketType<T> packetType) {
         registerC2S(packetType.getId(), packetType.getCodec(), packetType.getHandler());
     }
 
