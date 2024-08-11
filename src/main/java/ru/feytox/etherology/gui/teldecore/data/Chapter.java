@@ -42,6 +42,7 @@ public class Chapter {
     private final String titleKey;
     @Getter
     private final String descKey;
+    private final List<Identifier> requirements;
     private final List<AbstractContent> contents;
     private final Optional<Quest> quest;
 
@@ -82,6 +83,11 @@ public class Chapter {
         }, () -> Etherology.ELOGGER.error("Unexpected attempt to complete a quest from the chapter {} without a quest.", chapterId.toString()));
     }
 
+    public boolean isAvailable(TeldecoreComponent data) {
+        if (requirements.isEmpty()) return true;
+        return requirements.stream().noneMatch(id -> !data.isCompleted(id));
+    }
+
     static {
         CONTENT_TYPES = Map.of(
                 "text", TextContent.CODEC, "image", ImageContent.CODEC, "recipe", RecipeContent.CODEC
@@ -93,6 +99,7 @@ public class Chapter {
                 Identifier.CODEC.fieldOf("icon").forGetter(c -> c.icon),
                 Codec.STRING.fieldOf("title").forGetter(c -> c.titleKey),
                 Codec.STRING.fieldOf("desc").forGetter(c -> c.descKey),
+                Identifier.CODEC.listOf().optionalFieldOf("require", List.of()).forGetter(c -> c.requirements),
                 CONTENT_CODEC.listOf().fieldOf("content").forGetter(c -> c.contents),
                 Quest.CODEC.optionalFieldOf("quest").forGetter(c -> c.quest)
         ).apply(instance, Chapter::new));

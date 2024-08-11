@@ -192,6 +192,11 @@ public class TeldecoreScreen extends Screen implements FocusedIngredientProvider
         if (client != null) client.setScreen(parent);
     }
 
+    @Override
+    public boolean shouldPause() {
+        return false;
+    }
+
     static {
         BASE = EIdentifier.of("textures/gui/teldecore/page/base.png");
         CHAPTER_MENU = EIdentifier.of("chapter_menu");

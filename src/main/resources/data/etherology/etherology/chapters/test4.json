@@ -3,6 +3,7 @@
   "icon": "minecraft:stone",
   "title": "text.teldecore.test.title",
   "desc": "text.teldecore.test.desc",
+  "require": ["etherology:test2"],
   "content": [
     {"type": "text", "text": "text.teldecore.test.1", "down": 16},
     {"type": "text", "text": "text.teldecore.test.2"},

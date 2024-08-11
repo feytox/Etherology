@@ -14,6 +14,7 @@ import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class ResearchTreePage extends AbstractPage {
 
@@ -26,11 +27,11 @@ public class ResearchTreePage extends AbstractPage {
     private final float maxY;
     private float deltaY = 0.0f;
 
-    public ResearchTreePage(TeldecoreScreen parent, ResearchTree grid, Function<Identifier, Chapter> idToIcon, boolean isLeft) {
+    public ResearchTreePage(TeldecoreScreen parent, ResearchTree grid, Function<Identifier, Chapter> idToChapter, Predicate<Identifier> chapterCheck, boolean isLeft) {
         super(parent, TEXTURE, isLeft, 10, 186);
-        this.buttons = grid.toButtons(parent, idToIcon, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
+        this.buttons = grid.toButtons(parent, idToChapter, chapterCheck, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
         this.maxY = Math.max(0f, this.buttons.stream().map(ChapterButton::getDy).max(Float::compare).orElse(0f) - PAGE_HEIGHT+52f);
-        this.lines = grid.toLines(32f);
+        this.lines = grid.toLines(chapterCheck, 32f);
         this.slider = new SliderButton(parent, getPageX()+(isLeft ? 1f : 131f), getPageY()+2, maxY != 0, dy -> {
             deltaY = -maxY * dy / SLIDER_LENGTH;
             updateButtonsPos();

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
@@ -40,6 +41,9 @@ public class DevCommands {
                                 .executes(DevCommands::getCorruption)
                                 .then(argument("new value", FloatArgumentType.floatArg())
                                         .executes(DevCommands::setCorruption)))
+                        .then(literal("teldecore")
+                                .then(literal("clear")
+                                        .executes(DevCommands::clearTeldecoreData)))
                 )));
     }
 
@@ -95,6 +99,16 @@ public class DevCommands {
         val data = dataOptional.get();
         float value = Float.parseFloat(context.getInput().split(" ")[2]);
         data.setCorruption(new Corruption(value));
+        return 1;
+    }
+
+    private static int clearTeldecoreData(CommandContext<ServerCommandSource> context) {
+        PlayerEntity player = context.getSource().getPlayer();
+        if (player == null) return 0;
+        TeldecoreComponent data = EtherologyComponents.TELDECORE.getNullable(player);
+        if (data == null) return 0;
+
+        data.clearQuests();
         return 1;
     }
 }

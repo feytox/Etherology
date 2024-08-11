@@ -18,7 +18,9 @@ import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 import ru.feytox.etherology.util.misc.Color;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 public class Tab {
@@ -49,15 +51,17 @@ public class Tab {
             if (!left.addContent(content, 10)) Etherology.ELOGGER.error("Failed to fit all contents on tab \"{}\" ", text.getString());
         });
 
-        Function<Identifier, Chapter> idToIcon = id -> {
+        Function<Identifier, Chapter> idToChapter = id -> {
             Chapter chapter = chapterRegistry.get(id);
             if (chapter != null) return chapter;
             Etherology.ELOGGER.error("Failed to load chapter \"{}\". Closing screen to prevent errors.", text.getString());
             screen.close();
             return null;
         };
+        TeldecoreComponent data = TeldecoreComponent.maybeGetClient().orElseThrow(() -> new NoSuchElementException("Failed to get teldecore data for client player"));
+        Predicate<Identifier> chapterCheck = id -> idToChapter.apply(id).isAvailable(data);
 
-        screen.addDrawableChild(new ResearchTreePage(screen, tree, idToIcon, false));
+        screen.addDrawableChild(new ResearchTreePage(screen, tree, idToChapter, chapterCheck, false));
         screen.addDrawableChild(left);
         left.initContent();
     }

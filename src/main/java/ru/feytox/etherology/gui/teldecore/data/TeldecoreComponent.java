@@ -4,6 +4,9 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -20,6 +23,7 @@ import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.network.interaction.EntityComponentC2SType;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -107,5 +111,15 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
     @Override
     public boolean shouldSyncWith(ServerPlayerEntity player) {
         return this.player.equals(player);
+    }
+
+    public void clearQuests() {
+        completedQuests.clear();
+        sync();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static Optional<TeldecoreComponent> maybeGetClient() {
+        return Optional.ofNullable(MinecraftClient.getInstance().player).flatMap(EtherologyComponents.TELDECORE::maybeGet);
     }
 }

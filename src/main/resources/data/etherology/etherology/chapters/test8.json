@@ -3,6 +3,7 @@
   "icon": "minecraft:dirt",
   "title": "text.teldecore.test.title",
   "desc": "Здесь могла быть ваша реклама...",
+  "require": ["etherology:test4", "etherology:test5", "etherology:test6"],
   "content": [
     {"type": "text", "text": "text.teldecore.test.1", "down": 16},
     {"type": "text", "text": "text.teldecore.test.2"},
@@ -10,5 +11,15 @@
     {"type": "image", "path": "etherology:textures/gui/teldecore/image/test1.png", "texture_width": 1920, "texture_height": 1080},
     {"type": "text", "text": "text.teldecore.test.4"},
     {"type": "text", "text": "text.teldecore.test.5"}
-  ]
+  ],
+  "quest": {
+    "title": "Название квеста",
+    "content": [
+      {"type": "text", "text": "text.teldecore.test.2"}
+    ],
+    "tasks": [
+      {"type": "item", "item": "minecraft:diamond", "count": 3},
+      {"type": "item", "item": "etherology:oculus", "consume": false}
+    ]
+  }
 }
