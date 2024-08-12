@@ -1,6 +1,5 @@
 package ru.feytox.etherology.gui.teldecore.button;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.util.Identifier;
@@ -9,7 +8,6 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.gui.teldecore.misc.ParentedWidget;
-import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.function.Consumer;
 
@@ -56,8 +54,10 @@ public abstract class AbstractButton extends ParentedWidget {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         boolean hovered = isMouseOver(mouseX, mouseY);
         Identifier texture = hoveredTexture == null || !hovered ? this.texture : hoveredTexture;
-        RenderSystem.setShaderTexture(0, texture);
-        RenderUtils.renderTexture(context, baseX, baseY, 0, 0, width, height, width, height);
+        context.push();
+        context.translate(baseX, baseY, 0);
+        context.drawTexture(texture, 0, 0, 0, 0, width, height, width, height);
+        context.pop();
         renderExtra(context, hovered);
     }
 

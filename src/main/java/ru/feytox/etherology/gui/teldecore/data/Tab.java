@@ -20,7 +20,6 @@ import ru.feytox.etherology.util.misc.Color;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 public class Tab {
@@ -59,9 +58,8 @@ public class Tab {
             return null;
         };
         TeldecoreComponent data = TeldecoreComponent.maybeGetClient().orElseThrow(() -> new NoSuchElementException("Failed to get teldecore data for client player"));
-        Predicate<Identifier> chapterCheck = id -> idToChapter.apply(id).isAvailable(data);
 
-        screen.addDrawableChild(new ResearchTreePage(screen, tree, idToChapter, chapterCheck, false));
+        screen.addDrawableChild(new ResearchTreePage(screen, data, tree, idToChapter, false));
         screen.addDrawableChild(left);
         left.initContent();
     }

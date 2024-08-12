@@ -1,37 +1,42 @@
 package ru.feytox.etherology.gui.teldecore.page;
 
-import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.world.World;
+import org.joml.Math;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.button.ChapterButton;
 import ru.feytox.etherology.gui.teldecore.button.SliderButton;
 import ru.feytox.etherology.gui.teldecore.data.Chapter;
 import ru.feytox.etherology.gui.teldecore.data.ResearchTree;
+import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
+import ru.feytox.etherology.gui.teldecore.misc.TreeLine;
 import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class ResearchTreePage extends AbstractPage {
 
     private static final Identifier TEXTURE = EIdentifier.of("textures/gui/teldecore/page/research.png");
     public static final int SLIDER_LENGTH = 179;
 
-    private final List<Pair<Vec2f, Vec2f>> lines;
+    private final List<TreeLine> lines;
     private final List<ChapterButton> buttons;
     private final SliderButton slider;
     private final float maxY;
     private float deltaY = 0.0f;
 
-    public ResearchTreePage(TeldecoreScreen parent, ResearchTree grid, Function<Identifier, Chapter> idToChapter, Predicate<Identifier> chapterCheck, boolean isLeft) {
+    public ResearchTreePage(TeldecoreScreen parent, TeldecoreComponent data, ResearchTree grid, Function<Identifier, Chapter> idToChapter, boolean isLeft) {
         super(parent, TEXTURE, isLeft, 10, 186);
-        this.buttons = grid.toButtons(parent, idToChapter, chapterCheck, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
+        this.buttons = grid.toButtons(parent, data, idToChapter, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
         this.maxY = Math.max(0f, this.buttons.stream().map(ChapterButton::getDy).max(Float::compare).orElse(0f) - PAGE_HEIGHT+52f);
-        this.lines = grid.toLines(chapterCheck, 32f);
+        this.lines = grid.toLines(data, idToChapter, 32f);
         this.slider = new SliderButton(parent, getPageX()+(isLeft ? 1f : 131f), getPageY()+2, maxY != 0, dy -> {
             deltaY = -maxY * dy / SLIDER_LENGTH;
             updateButtonsPos();
@@ -41,7 +46,7 @@ public class ResearchTreePage extends AbstractPage {
     @Override
     public void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta) {
         context.enableScissor((int) (pageX+4), (int) (pageY+4), (int) (pageX+PAGE_WIDTH-4), (int) (pageY+PAGE_HEIGHT-4));
-        renderLines(context, pageX, pageY);
+        renderLines(context, pageX, pageY, delta);
         buttons.forEach(button -> button.render(context, mouseX, mouseY, delta));
         context.disableScissor();
 
@@ -49,13 +54,20 @@ public class ResearchTreePage extends AbstractPage {
         slider.render(context, mouseX, mouseY, delta);
     }
 
-    private void renderLines(DrawContext context, float pageX, float pageY) {
+    private void renderLines(DrawContext context, float pageX, float pageY, float delta) {
+        World world = MinecraftClient.getInstance().world;
+        if (world == null) return;
+
+        float time = world.getTime() + delta;
+        int alpha = (int) (255 * (0.5f * (Math.abs(Math.sin((MathHelper.PI * time) / 40f)) + 1)));
+
         float rootX = pageX + PAGE_WIDTH / 2f;
         float rootY = pageY + 19 + deltaY;
         lines.forEach(line -> {
-            Vec2f start = line.first();
-            Vec2f end = line.second();
-            RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, 0xFFAE9C89);
+            Vec2f start = line.start();
+            Vec2f end = line.end();
+            int color = line.glowing() ? ColorHelper.Argb.withAlpha(alpha, 0xAE9C89) : 0xFFAE9C89;
+            RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, color);
         });
     }
 

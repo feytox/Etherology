@@ -44,6 +44,7 @@ public class Chapter {
     private final String descKey;
     private final List<Identifier> requirements;
     private final List<AbstractContent> contents;
+    @Getter
     private final Optional<Quest> quest;
 
     @Environment(EnvType.CLIENT)
