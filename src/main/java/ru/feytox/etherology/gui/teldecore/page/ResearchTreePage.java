@@ -59,7 +59,7 @@ public class ResearchTreePage extends AbstractPage {
         if (world == null) return;
 
         float time = world.getTime() + delta;
-        int alpha = (int) (255 * (0.5f * (Math.abs(Math.sin((MathHelper.PI * time) / 40f)) + 1)));
+        int alpha = (int) (255 * (0.5f * Math.abs(Math.sin((MathHelper.PI * time) / 40f))));
 
         float rootX = pageX + PAGE_WIDTH / 2f;
         float rootY = pageY + 19 + deltaY;
