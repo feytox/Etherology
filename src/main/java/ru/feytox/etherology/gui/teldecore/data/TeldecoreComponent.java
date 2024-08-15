@@ -38,10 +38,22 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
     @Setter
     private int page = 0;
     private Set<Identifier> completedQuests = new ObjectOpenHashSet<>();
+    @Setter
+    private Set<Identifier> openedChapters = new ObjectOpenHashSet<>();
 
     public void addCompletedQuest(Identifier chapterId) {
         completedQuests.add(chapterId);
         sync();
+    }
+
+    public boolean wasOpened(Identifier chapterId) {
+        return openedChapters.contains(chapterId);
+    }
+
+    public void addOpened(Identifier chapterId) {
+        if (openedChapters.add(chapterId)) {
+            sendToServer(EntityComponentC2SType.TELDECORE_OPENED);
+        }
     }
 
     public boolean isCompleted(Identifier chapterId) {
@@ -86,6 +98,8 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
 
         completedQuests = tag.getList("completed", NbtList.STRING_TYPE).stream().map(NbtElement::asString)
                 .map(Identifier::of).collect(Collectors.toCollection(ObjectOpenHashSet::new));
+        openedChapters = tag.getList("opened", NbtList.STRING_TYPE).stream().map(NbtElement::asString)
+                .map(Identifier::of).collect(Collectors.toCollection(ObjectOpenHashSet::new));
     }
 
     @Override
@@ -94,10 +108,28 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
         tag.putInt("page", page);
         if (tab != null) tag.putString("tab", tab.toString());
 
-        if (completedQuests.isEmpty()) return;
+        writeQuests(tag);
+        writeOpenedChapters(tag);
+    }
+
+    private void writeQuests(NbtCompound tag) {
+        if (completedQuests.isEmpty()) {
+            tag.remove("completed");
+            return;
+        }
         NbtList quests = new NbtList();
         completedQuests.stream().map(Identifier::toString).map(NbtString::of).forEach(quests::add);
         tag.put("completed", quests);
+    }
+
+    private void writeOpenedChapters(NbtCompound tag) {
+        if (openedChapters.isEmpty()) {
+            tag.remove("opened");
+            return;
+        }
+        NbtList quests = new NbtList();
+        openedChapters.stream().map(Identifier::toString).map(NbtString::of).forEach(quests::add);
+        tag.put("opened", quests);
     }
 
     private void sync() {
@@ -113,8 +145,12 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
         return this.player.equals(player);
     }
 
-    public void clearQuests() {
+    public void resetAllData() {
+        tab = null;
+        page = 0;
+        selected = TeldecoreScreen.CHAPTER_MENU;
         completedQuests.clear();
+        openedChapters.clear();
         sync();
     }
 

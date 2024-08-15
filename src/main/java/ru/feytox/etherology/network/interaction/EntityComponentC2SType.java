@@ -1,6 +1,7 @@
 package ru.feytox.etherology.network.interaction;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.RequiredArgsConstructor;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryByteBuf;
@@ -15,6 +16,7 @@ import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -24,6 +26,7 @@ public class EntityComponentC2SType<C extends Component, V> extends AbstractC2SP
     public static final EntityComponentC2SType<TeldecoreComponent, Identifier> TELDECORE_SELECTED;
     public static final EntityComponentC2SType<TeldecoreComponent, Integer> TELDECORE_PAGE;
     public static final EntityComponentC2SType<TeldecoreComponent, Identifier> TELDECORE_TAB;
+    public static final EntityComponentC2SType<TeldecoreComponent, Set<Identifier>> TELDECORE_OPENED;
 
     private final Function<C, V> getter;
 
@@ -67,5 +70,7 @@ public class EntityComponentC2SType<C extends Component, V> extends AbstractC2SP
                 TeldecoreComponent::setPage, PacketCodecs.VAR_INT);
         TELDECORE_TAB = of(EtherologyComponents.TELDECORE, "tab", TeldecoreComponent::getTab,
                 TeldecoreComponent::setTab, Identifier.PACKET_CODEC);
+        TELDECORE_OPENED = of(EtherologyComponents.TELDECORE, "opened", TeldecoreComponent::getOpenedChapters,
+                TeldecoreComponent::setOpenedChapters, Identifier.PACKET_CODEC.collect(PacketCodecs.toCollection(ObjectOpenHashSet::new)));
     }
 }

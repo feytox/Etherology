@@ -34,6 +34,7 @@ public class EtherologyNetwork {
         registerTypedC2S(EntityComponentC2SType.TELDECORE_SELECTED);
         registerTypedC2S(EntityComponentC2SType.TELDECORE_PAGE);
         registerTypedC2S(EntityComponentC2SType.TELDECORE_TAB);
+        registerTypedC2S(EntityComponentC2SType.TELDECORE_OPENED);
     }
 
     public static void registerClientSide() {

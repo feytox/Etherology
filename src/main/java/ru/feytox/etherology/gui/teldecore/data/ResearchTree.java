@@ -52,7 +52,8 @@ public class ResearchTree {
             ItemStack icon = Registries.ITEM.get(chapter.getIcon()).getDefaultStack();
             Text title = Text.translatable(chapter.getTitleKey()).formatted(Formatting.WHITE);
             Text desc = Text.translatable(chapter.getDescKey()).formatted(Formatting.GRAY);
-            return Optional.of(new ChapterButton(parent, texture, id, icon, List.of(title, desc), rootX, rootY, x*scale, y*scale));
+            boolean wasOpened = data.wasOpened(id);
+            return Optional.of(new ChapterButton(parent, texture, id, icon, List.of(title, desc), wasOpened, rootX, rootY, x*scale, y*scale));
         }
 
         Optional<Stream<TreeLine>> toLines(TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, Map<Identifier, ChapterInfo> infoMap, float scale) {

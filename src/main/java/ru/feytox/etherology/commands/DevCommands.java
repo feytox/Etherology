@@ -42,8 +42,8 @@ public class DevCommands {
                                 .then(argument("new value", FloatArgumentType.floatArg())
                                         .executes(DevCommands::setCorruption)))
                         .then(literal("teldecore")
-                                .then(literal("clear")
-                                        .executes(DevCommands::clearTeldecoreData)))
+                                .then(literal("reset")
+                                        .executes(DevCommands::resetTeldecoreData)))
                 )));
     }
 
@@ -102,13 +102,13 @@ public class DevCommands {
         return 1;
     }
 
-    private static int clearTeldecoreData(CommandContext<ServerCommandSource> context) {
+    private static int resetTeldecoreData(CommandContext<ServerCommandSource> context) {
         PlayerEntity player = context.getSource().getPlayer();
         if (player == null) return 0;
         TeldecoreComponent data = EtherologyComponents.TELDECORE.getNullable(player);
         if (data == null) return 0;
 
-        data.clearQuests();
+        data.resetAllData();
         return 1;
     }
 }
