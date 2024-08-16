@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ChapterButton extends AbstractButton {
 
-    private static final Identifier MARK = EIdentifier.of("textures/gui/teldecore/icon/mark.png");
+    private static final Identifier MARK = EIdentifier.of("textures/gui/teldecore/icon/chapter_mark.png");
 
     private final Identifier target;
     private final ItemStack icon;
@@ -49,8 +49,8 @@ public class ChapterButton extends AbstractButton {
         if (wasOpened) return;
 
         context.push();
-        context.translate(baseX+width-10, baseY-2, 0);
-        context.drawTexture(MARK, 0, 0, 0, 0, 11, 11, 11, 11);
+        context.translate(baseX+width-8, baseY-2, 0);
+        context.drawTexture(MARK, 0, 0, 0, 0, 4, 11, 4, 11);
         context.pop();
     }
 
