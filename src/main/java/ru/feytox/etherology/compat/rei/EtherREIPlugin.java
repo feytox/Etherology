@@ -45,6 +45,7 @@ import ru.feytox.etherology.recipes.matrix.MatrixRecipe;
 import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.misc.CountedAspect;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EtherREIPlugin implements REIClientPlugin {
@@ -155,6 +156,7 @@ public class EtherREIPlugin implements REIClientPlugin {
         if (content == null) return null;
         return switch (content) {
             case ItemStack stack -> EntryStacks.of(stack);
+            case CountedAspect aspectPair -> AspectPair.entry(aspectPair.aspect(), aspectPair.count());
             default -> null;
         };
     }

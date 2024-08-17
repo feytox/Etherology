@@ -16,6 +16,8 @@
     {"type": "recipe", "id": "etherology:oculus"},
     {"type": "recipe", "id": "etherology:samovar"},
     {"type": "recipe", "id": "etherology:azel_ingot"},
-    {"type": "recipe", "id": "etherology:forest_lantern_crumb"}
+    {"type": "recipe", "id": "etherology:forest_lantern_crumb"},
+    {"type": "recipe", "id": "etherology:binder"},
+    {"type": "recipe", "id": "etherology:glint_shard"}
   ]
 }

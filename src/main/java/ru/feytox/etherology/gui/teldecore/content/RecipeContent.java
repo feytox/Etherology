@@ -15,11 +15,9 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.misc.ParentedWidget;
-import ru.feytox.etherology.gui.teldecore.recipe.AbstractRecipeDisplay;
-import ru.feytox.etherology.gui.teldecore.recipe.CraftingRecipeDisplay;
-import ru.feytox.etherology.gui.teldecore.recipe.EmpowerRecipeDisplay;
-import ru.feytox.etherology.gui.teldecore.recipe.SmeltingRecipeDisplay;
+import ru.feytox.etherology.gui.teldecore.recipe.*;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
+import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
@@ -84,6 +82,7 @@ public class RecipeContent extends AbstractContent {
         DISPLAYS.add(RecipeType.CRAFTING, CraftingRecipeDisplay::new, 123, 72);
         DISPLAYS.add(EmpowerRecipeSerializer.INSTANCE, EmpowerRecipeDisplay::new, 123, 72);
         DISPLAYS.add(RecipeType.SMELTING, SmeltingRecipeDisplay::new, 123, 76);
+        DISPLAYS.add(AlchemyRecipeSerializer.INSTANCE, AlchemyRecipeDisplay::new, 123, 72);
     }
 
     static {

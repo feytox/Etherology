@@ -1,5 +1,6 @@
 package ru.feytox.etherology.gui.teldecore.misc;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.MinecraftClient;
@@ -7,6 +8,9 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.text.Text;
+import ru.feytox.etherology.magic.aspects.Aspect;
+import ru.feytox.etherology.util.misc.CountedAspect;
 
 @RequiredArgsConstructor @Getter
 public abstract class FeySlot implements FeyIngredient {
@@ -49,6 +53,14 @@ public abstract class FeySlot implements FeyIngredient {
 
     public static FeySlot of(Ingredient ingredient, float x, float y) {
         return of(ingredient, x, y, 16, 16);
+    }
+
+    public static FeySlot of(Aspect aspect, Integer count, float x, float y) {
+        return of(aspect, count, x, y, 16, 16);
+    }
+
+    public static FeySlot of(Aspect aspect, int count, float x, float y, float width, float height) {
+        return new AspectSlot(aspect, count, x, y, width, height);
     }
 
     public static FeySlot drawable(DrawableElement drawable, float x, float y, float width, float height) {
@@ -119,6 +131,47 @@ public abstract class FeySlot implements FeyIngredient {
         public Object getContent() {
             int i = getItemIndex();
             return stacks[i];
+        }
+    }
+
+    private static class AspectSlot extends FeySlot {
+
+        private final CountedAspect aspectPair;
+
+        public AspectSlot(Aspect aspect, int count, float x, float y, float width, float height) {
+            super(x, y, width, height);
+            this.aspectPair = new CountedAspect(aspect, count);
+        }
+
+        @Override
+        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+            Aspect aspect = aspectPair.aspect();
+
+            context.push();
+            context.translate(x, y, 0);
+            context.scale(width / aspect.getWidth(), height / aspect.getHeight(), 1);
+            RenderSystem.enableBlend();
+            context.drawTexture(Aspect.TEXTURE, 0, 0, aspect.getTextureMinX(), aspect.getTextureMinY(), aspect.getWidth(), aspect.getHeight(), Aspect.TEXTURE_WIDTH, Aspect.TEXTURE_HEIGHT);
+            RenderSystem.disableBlend();
+            context.pop();
+
+            String count = Integer.toString(aspectPair.count());
+
+            context.push();
+            context.translate(x, y, 0);
+            context.scale(width / 16f, height / 16f, 1);
+            textRenderer.draw(count, 17 - textRenderer.getWidth(count), 9, 0xFFFFFF, true, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+            context.pop();
+        }
+
+        @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
+            context.drawTooltip(textRenderer, Text.of(aspectPair.aspect().getDisplayName()), mouseX, mouseY);
+        }
+
+        @Override
+        public Object getContent() {
+            return aspectPair;
         }
     }
 
