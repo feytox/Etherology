@@ -53,7 +53,9 @@ public class ResearchTree {
             Text title = Text.translatable(chapter.getTitleKey()).formatted(Formatting.WHITE);
             Text desc = Text.translatable(chapter.getDescKey()).formatted(Formatting.GRAY);
             boolean wasOpened = data.wasOpened(id);
-            return Optional.of(new ChapterButton(parent, texture, id, icon, List.of(title, desc), wasOpened, rootX, rootY, x*scale, y*scale));
+            boolean isSubTab = chapter.getSubTab().isPresent();
+            Identifier target = chapter.getSubTab().orElse(id);
+            return Optional.of(new ChapterButton(parent, texture, target, icon, List.of(title, desc), wasOpened, isSubTab, rootX, rootY, x*scale, y*scale));
         }
 
         Optional<Stream<TreeLine>> toLines(TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, Map<Identifier, ChapterInfo> infoMap, float scale) {

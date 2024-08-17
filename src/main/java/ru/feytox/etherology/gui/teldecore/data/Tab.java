@@ -33,6 +33,8 @@ public class Tab {
     private final String titleKey;
     @Getter
     private final Color color;
+    @Getter
+    private final boolean show;
     private final List<AbstractContent> contents;
     private final ResearchTree tree;
 
@@ -70,6 +72,7 @@ public class Tab {
                 Identifier.CODEC.fieldOf("icon").forGetter(t -> t.icon),
                 Codec.STRING.fieldOf("title").forGetter(t -> t.titleKey),
                 Color.CODEC.fieldOf("color").forGetter(t -> t.color),
+                Codec.BOOL.optionalFieldOf("show", true).forGetter(t -> t.show),
                 Chapter.CONTENT_CODEC.listOf().fieldOf("content").forGetter(t -> t.contents),
                 ResearchTree.CODEC.fieldOf("chapters").forGetter(t -> t.tree)
         ).apply(instance, Tab::new));

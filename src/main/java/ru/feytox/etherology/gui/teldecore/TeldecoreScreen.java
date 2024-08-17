@@ -95,7 +95,8 @@ public class TeldecoreScreen extends Screen implements FocusedIngredientProvider
         tabsRegistry = tabsRegistry == null ? getRegistry(RegistriesRegistry.TABS) : tabsRegistry;
         if (tabsRegistry == null) return;
 
-        val tabs = tabsRegistry.streamEntries().sorted(Comparator.comparingInt(ref -> ref.value().getTabId())).iterator();
+        val tabs = tabsRegistry.streamEntries().filter(ref -> ref.value().isShow())
+                .sorted(Comparator.comparingInt(ref -> ref.value().getTabId())).iterator();
 
         int i = 0;
         while (tabs.hasNext()) {

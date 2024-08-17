@@ -22,8 +22,9 @@ public class ChapterButton extends AbstractButton {
     @Getter
     private final float dy;
     private final boolean wasOpened;
+    private final boolean isSubTab;
 
-    public ChapterButton(TeldecoreScreen parent, Identifier texture, Identifier target, ItemStack icon, List<Text> tooltip, boolean wasOpened, float rootX, float rootY, float dx, float dy) {
+    public ChapterButton(TeldecoreScreen parent, Identifier texture, Identifier target, ItemStack icon, List<Text> tooltip, boolean wasOpened, boolean isSubTab, float rootX, float rootY, float dx, float dy) {
         super(parent, texture, null, rootX, rootY, dx-13, dy-13, 26, 26);
         this.target = target;
         this.icon = icon;
@@ -31,6 +32,7 @@ public class ChapterButton extends AbstractButton {
         this.dy = dy-13;
         this.tooltip = tooltip;
         this.wasOpened = wasOpened;
+        this.isSubTab = isSubTab;
     }
 
     public void move(float rootX, float rootY) {
@@ -62,7 +64,8 @@ public class ChapterButton extends AbstractButton {
     @Override
     public boolean onClick(double mouseX, double mouseY, int button) {
         return dataAction("Failed to handle click on chapter %s button".formatted(target.toString()), data -> {
-            data.setSelectedChapter(target);
+            if (isSubTab) data.switchTab(target);
+            else data.setSelectedChapter(target);
             data.addOpened(target);
             parent.clearAndInit();
             parent.executeOnPlayer(player -> player.playSound(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0f, 0.9f + 0.1f * player.getWorld().getRandom().nextFloat()));

@@ -46,6 +46,8 @@ public class Chapter {
     private final List<AbstractContent> contents;
     @Getter
     private final Optional<Quest> quest;
+    @Getter
+    private final Optional<Identifier> subTab;
 
     @Environment(EnvType.CLIENT)
     public List<AbstractPage> toPages(TeldecoreScreen screen, TeldecoreComponent data, Identifier chapterId) {
@@ -101,8 +103,9 @@ public class Chapter {
                 Codec.STRING.fieldOf("title").forGetter(c -> c.titleKey),
                 Codec.STRING.fieldOf("desc").forGetter(c -> c.descKey),
                 Identifier.CODEC.listOf().optionalFieldOf("require", List.of()).forGetter(c -> c.requirements),
-                CONTENT_CODEC.listOf().fieldOf("content").forGetter(c -> c.contents),
-                Quest.CODEC.optionalFieldOf("quest").forGetter(c -> c.quest)
+                CONTENT_CODEC.listOf().optionalFieldOf("content", List.of()).forGetter(c -> c.contents),
+                Quest.CODEC.optionalFieldOf("quest").forGetter(c -> c.quest),
+                Identifier.CODEC.optionalFieldOf("sub_tab").forGetter(c -> c.subTab)
         ).apply(instance, Chapter::new));
     }
 }
