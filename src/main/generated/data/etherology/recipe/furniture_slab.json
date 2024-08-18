@@ -3,15 +3,15 @@
   "category": "misc",
   "key": {
     "#": {
-      "tag": "minecraft:planks"
+      "tag": "minecraft:wooden_slabs"
     },
     "I": {
-      "item": "minecraft:stick"
+      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
-    "#I#",
-    "#I#"
+    "I#I",
+    "I#I"
   ],
   "result": {
     "count": 2,

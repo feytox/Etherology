@@ -37,8 +37,8 @@ public class LootTablesModifyRegistry {
 
         LootPool.Builder pool = LootPool.builder()
                 .rolls(ConstantLootNumberProvider.create(1.0f))
-                .with(ItemEntry.builder(patternTablet).weight(5)
-                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f))));
+                .with(ItemEntry.builder(patternTablet).weight(1)
+                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f))));
         tableBuilder.pool(pool);
         return true;
     }

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slitherite": {
+    "has_polished_slitherite": {
       "conditions": {
         "items": [
           {
-            "items": "etherology:slitherite"
+            "items": "etherology:polished_slitherite"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_slitherite"
+      "has_polished_slitherite"
     ]
   ],
   "rewards": {

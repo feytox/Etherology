@@ -141,13 +141,13 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(STAFF, "Посох");
         builder.add(EBlocks.INVENTOR_TABLE, "Стол изобретателя");
         builder.add(EBlocks.JEWELRY_TABLE, "Стол ювелира");
-        builder.add(ARISTOCRAT_PATTERN_TABLET, "Скрижаль со Знатным Шаблоном");
-        builder.add(ASTRONOMY_PATTERN_TABLET, "Скрижаль с Астрономическим Шаблоном");
-        builder.add(HEAVENLY_PATTERN_TABLET, "Скрижаль с Вольным Шаблоном");
-        builder.add(OCULAR_PATTERN_TABLET, "Скрижаль с Окулярным Шаблоном");
-        builder.add(RITUAL_PATTERN_TABLET, "Скрижаль с Ритуальным Шаблоном");
-        builder.add(ROYAL_PATTERN_TABLET, "Скрижаль с Королевским Шаблоном");
-        builder.add(TRADITIONAL_PATTERN_TABLET, "Скрижаль с Традиционным Шаблоном");
+        builder.add(ARISTOCRAT_PATTERN_TABLET, "Знатный шаблон");
+        builder.add(ASTRONOMY_PATTERN_TABLET, "Астрономический шаблон");
+        builder.add(HEAVENLY_PATTERN_TABLET, "Вольный шаблон");
+        builder.add(OCULAR_PATTERN_TABLET, "Окулярный шаблон");
+        builder.add(RITUAL_PATTERN_TABLET, "Ритуальный шаблон");
+        builder.add(ROYAL_PATTERN_TABLET, "Королевский шаблон");
+        builder.add(TRADITIONAL_PATTERN_TABLET, "Традиционный шаблон");
 
         builder.add(UNADJUSTED_LENS, "Ненастроенная линза");
         builder.add(REDSTONE_LENS, "Линза красного камня");

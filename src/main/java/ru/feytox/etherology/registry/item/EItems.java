@@ -63,5 +63,6 @@ public class EItems {
 
     private static void registerFuel() {
         FuelRegistry.INSTANCE.add(THUJA_OIL, 200);
+        FuelRegistry.INSTANCE.add(ToolItems.WOODEN_BATTLE_PICKAXE, 200);
     }
 }

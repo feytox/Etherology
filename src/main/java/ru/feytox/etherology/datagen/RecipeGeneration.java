@@ -2,6 +2,7 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.data.family.BlockFamily;
@@ -94,13 +95,14 @@ public class RecipeGeneration extends FabricRecipeProvider {
         offerChestBoatRecipe(exporter, PEACH_CHEST_BOAT, PEACH_BOAT);
         offerHangingSignRecipe(exporter, DecoBlockItems.PEACH_HANGING_SIGN, STRIPPED_PEACH_LOG);
 
-        // ethereal stones
+        // slitherite
         offerStonecuttingRecipe(exporter, EBlockFamilies.SLITHERITE, EBlockFamilies.CRACKED_SLITHERITE_BRICKS, EBlockFamilies.CHISELED_SLITHERITE_BRICKS, EBlockFamilies.SLITHERITE_BRICKS, EBlockFamilies.POLISHED_SLITHERITE);
+        offerPolishedStoneRecipe(exporter, BUILDING_BLOCKS, SLITHERITE_BRICKS, POLISHED_SLITHERITE);
 
-        // stone -> ethereal stone
+        // TODO: 18.08.2024 find a better solution
+        // stone -> slitherite
         ShapedRecipeJsonBuilder.create(REDSTONE, COMPARATOR).input('#', REDSTONE_TORCH).input('X', Items.QUARTZ).input('I', SLITHERITE).pattern(" # ").pattern("#X#").pattern("III").criterion(has(Items.QUARTZ), from(Items.QUARTZ)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(REDSTONE, REPEATER).input('#', REDSTONE_TORCH).input('X', Items.REDSTONE).input('I', SLITHERITE).pattern("#X#").pattern("III").criterion(has(REDSTONE_TORCH), from(REDSTONE_TORCH)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(BUILDING_BLOCKS, SLITHERITE_BRICKS, 4).input('#', SLITHERITE).pattern("##").pattern("##").criterion(has(SLITHERITE), from(SLITHERITE)).offerTo(exporter);
         ShapedRecipeJsonBuilder.create(DECORATIONS, STONECUTTER).input('I', Items.IRON_INGOT).input('#', SLITHERITE).pattern(" I ").pattern("###").criterion(has(SLITHERITE), from(SLITHERITE)).offerTo(exporter);
 
         ShapelessRecipeJsonBuilder.create(MISC, THUJA_OIL, 2).input(THUJA_SEEDS).criterion(has(THUJA_SEEDS), from(THUJA_SEEDS)).offerTo(exporter);
@@ -125,9 +127,9 @@ public class RecipeGeneration extends FabricRecipeProvider {
         // furniture
         ShapelessRecipeJsonBuilder.create(MISC, SHELF_SLAB).input(Items.ITEM_FRAME).input(FURNITURE_SLAB).criterion(has(FURNITURE_SLAB), from(FURNITURE_SLAB)).offerTo(exporter);
         ShapelessRecipeJsonBuilder.create(MISC, CLOSET_SLAB).input(Items.CHEST).input(FURNITURE_SLAB).criterion(has(FURNITURE_SLAB), from(FURNITURE_SLAB)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(MISC, FURNITURE_SLAB, 2).input('#', ItemTags.PLANKS).input('I', Items.STICK)
-                .pattern("#I#")
-                .pattern("#I#").criterion("has_planks", conditionsFromTag(ItemTags.PLANKS)).offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(MISC, FURNITURE_SLAB, 2).input('#', ItemTags.WOODEN_SLABS).input('I', ConventionalItemTags.WOODEN_RODS)
+                .pattern("I#I")
+                .pattern("I#I").criterion("has_wooden_slab", conditionsFromTag(ItemTags.WOODEN_SLABS)).offerTo(exporter);
 
         // ebony vanilla items
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, EBONY_HELMET).input('X', EBONY_INGOT).pattern("XXX").pattern("X X").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
