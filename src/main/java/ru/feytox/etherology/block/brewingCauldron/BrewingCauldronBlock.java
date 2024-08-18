@@ -118,12 +118,12 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
 
     @NotNull
     private ItemActionResult fillBucketWithCorruption(World world, BlockState state, BlockPos pos, PlayerEntity player, ItemStack handStack, Hand hand) {
-        if (world.isClient || state.get(LEVEL) == 0) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        if (world.isClient || state.get(LEVEL) == 0) return ItemActionResult.SUCCESS;
         if (!(world.getBlockEntity(pos) instanceof BrewingCauldronBlockEntity cauldron)) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
         boolean wasWithAspects = cauldron.isWasWithAspects();
         ItemStack filledStack = wasWithAspects ? CorruptionBucket.createBucketStack(cauldron.getAspects()) : Items.WATER_BUCKET.getDefaultStack();
-        if (filledStack == null) return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        if (filledStack == null) return ItemActionResult.CONSUME;
         ItemStack newStack = ItemUsage.exchangeStack(handStack, player, filledStack);
         player.setStackInHand(hand, newStack);
 
@@ -131,7 +131,7 @@ public class BrewingCauldronBlock extends HorizontalFacingBlock implements Regis
         cauldron.clearAspects((ServerWorld) world);
         ItemScatterer.spawn(world, pos.up(), cauldron);
         world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        return ItemActionResult.SUCCESS;
+        return ItemActionResult.CONSUME;
     }
 
     private ActionResult tryTakeLastItem(World world, PlayerEntity player, BlockState state, BlockPos pos) {

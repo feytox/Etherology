@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.feytox.etherology.item.BattlePickaxe;
-import ru.feytox.etherology.item.EtherShield;
+import ru.feytox.etherology.item.IronShield;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -42,7 +42,7 @@ public abstract class LivingEntityMixin {
     @Inject(method = "blockedByShield", at = @At(value = "HEAD"), cancellable = true)
     private void onShieldBlocking(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity shieldHolder = ((LivingEntity) (Object) this);
-        if (!(shieldHolder.getActiveItem().getItem() instanceof EtherShield)) return;
+        if (!(shieldHolder.getActiveItem().getItem() instanceof IronShield)) return;
 
         cir.setReturnValue(modifiedBlockedByShield(shieldHolder, source));
     }
@@ -61,7 +61,7 @@ public abstract class LivingEntityMixin {
             Vec3d damagePos = source.getPosition();
             if (damagePos != null) {
                 Vec3d holderRotation = shieldHolder.getRotationVec(1.0F);
-                return EtherShield.shieldBlockCheck(holderRotation, shieldHolder.getPos(), damagePos, isProjectile);
+                return IronShield.shieldBlockCheck(holderRotation, shieldHolder.getPos(), damagePos, isProjectile);
             }
         }
 

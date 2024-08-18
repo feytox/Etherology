@@ -17,7 +17,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.feytox.etherology.data.EItemTags;
-import ru.feytox.etherology.item.EtherShield;
+import ru.feytox.etherology.item.IronShield;
 import ru.feytox.etherology.mixin.EntityHitResultAccessor;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -58,16 +58,16 @@ public class EtherEnchantments {
         if (world == null || world.isClient) return true;
         Entity entity = entityHitResult.getEntity();
         if (!(entity instanceof LivingEntity target)) return true;
-        Optional<ItemStack> optionalShield = EtherShield.getUsingShield(target);
+        Optional<ItemStack> optionalShield = IronShield.getUsingShield(target);
         if (optionalShield.isEmpty()) return true;
         ItemStack shield = optionalShield.get();
         if (getLevel(world, REFLECTION, shield) < 1) return true;
 
         Vec3d targetRotation = target.getRotationVec(1.0F);
         Vec3d targetPos = target.getPos();
-        if (!EtherShield.shieldBlockCheck(targetRotation, targetPos, projectile.getPos(), true)) return true;
+        if (!IronShield.shieldBlockCheck(targetRotation, targetPos, projectile.getPos(), true)) return true;
 
-        Vec3d newVelocity = projectile.getVelocity().negate();
+        Vec3d newVelocity = target.getRotationVec(1.0f).multiply(projectile.getVelocity().length());
         Entity newProj = projectile.getType().create(world);
         if (newProj == null) return true;
 

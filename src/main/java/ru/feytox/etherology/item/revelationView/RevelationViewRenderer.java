@@ -122,6 +122,8 @@ public class RevelationViewRenderer {
         matrices.translate(dx, dy, 0);
         RenderUtils.renderTexture(matrices, 0, 0, 0, aspect.getTextureMinX(), aspect.getTextureMinY(), 0.25f, 0.25f, aspect.getWidth(), aspect.getHeight(), EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
         matrices.pop();
+
+        RenderSystem.enableCull();
     }
 
     private static void renderCount(MinecraftClient client, MatrixStack matrices, Integer count, int col, int row, float startOffset) {

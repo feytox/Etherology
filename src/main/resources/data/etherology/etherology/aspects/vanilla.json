@@ -175,7 +175,7 @@
 
     "minecraft:cobweb": {"anema": 3, "alchema": 3},
 
-    "minecraft:grass": {"planta": 2},
+    "minecraft:short_grass": {"planta": 2},
     "minecraft:fern": {"planta": 2},
     "minecraft:azalea": {"gema": 1, "planta": 4, "groseal": 2},
     "minecraft:flowering_azalea": {"gema": 2, "planta": 4, "groseal": 2},

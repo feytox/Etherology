@@ -8,9 +8,9 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
 
-public class EtherShield extends FabricShieldItem {
+public class IronShield extends FabricShieldItem {
 
-    public EtherShield(Settings settings, int coolDownTicks, int enchantability, Item... repairItems) {
+    public IronShield(Settings settings, int coolDownTicks, int enchantability, Item... repairItems) {
         super(settings, coolDownTicks, enchantability, repairItems);
     }
 
@@ -23,7 +23,7 @@ public class EtherShield extends FabricShieldItem {
 
     public static Optional<ItemStack> getUsingShield(LivingEntity user) {
         ItemStack activeStack = user.getActiveItem();
-        if (!(activeStack.getItem() instanceof EtherShield)) return Optional.empty();
+        if (!(activeStack.getItem() instanceof IronShield)) return Optional.empty();
         return Optional.of(activeStack);
     }
 }

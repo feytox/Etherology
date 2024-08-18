@@ -2,7 +2,6 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.block.Block;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
@@ -45,7 +44,7 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(WEEPING_PEACH_LOG, drops(WEEPING_PEACH_LOG, PEACH_LOG));
 
         addDrop(ATTRAHITE, dropsWithSilkTouch(ATTRAHITE, applyExplosionDecay(ATTRAHITE, ItemEntry.builder(ENRICHED_ATTRAHITE).conditionally(RandomChanceWithFortuneCondition.builder(registryLookup, 0.02F, 0.02F)))));
-        generateChannelDrop(ETHEREAL_CHANNEL, ETHEREAL_CHANNEL_CASE);
+        generateChannelDrop();
 
         addDrop(BEAMER, DecoBlockItems.BEAM_FRUIT);
         addDrop(THUJA, THUJA_SEEDS);
@@ -57,16 +56,15 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
         addDrop(LIGHTELET, this::shortPlantDrops);
     }
 
-    private void generateChannelDrop(Block channel, Block channelCase) {
-        addDrop(channel, LootTable.builder()
+    private void generateChannelDrop() {
+        addDrop(ETHEREAL_CHANNEL, LootTable.builder()
                 .pool(LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1.0F))
-                        .with(this.applyExplosionDecay(channel, ItemEntry.builder(channel))))
+                        .with(this.applyExplosionDecay(ETHEREAL_CHANNEL, ItemEntry.builder(ETHEREAL_CHANNEL))))
                 .pool(LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1.0F))
-                        .with(this.applyExplosionDecay(channelCase, ItemEntry.builder(channelCase)))
-                        .conditionally(BlockStatePropertyLootCondition.builder(channel)
+                        .with(this.applyExplosionDecay(ETHEREAL_CHANNEL_CASE, ItemEntry.builder(ETHEREAL_CHANNEL_CASE)))
+                        .conditionally(BlockStatePropertyLootCondition.builder(ETHEREAL_CHANNEL)
                                 .properties(StatePredicate.Builder.create().exactMatch(EtherealChannel.IN_CASE, true)))));
     }
-
 }

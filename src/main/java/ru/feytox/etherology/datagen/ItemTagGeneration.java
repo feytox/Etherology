@@ -3,7 +3,6 @@ package ru.feytox.etherology.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.registry.RegistryWrapper;
@@ -46,9 +45,16 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.WOODEN_TRAPDOORS, WOODEN_TRAPDOORS);
         copy(BlockTags.TRAPDOORS, TRAPDOORS);
         copy(BlockTags.FENCES, FENCES);
+        copy(BlockTags.WALLS, WALLS);
+        copy(BlockTags.LOGS, LOGS);
+        copy(BlockTags.LOGS_THAT_BURN, LOGS_THAT_BURN);
+        copy(BlockTags.SIGNS, SIGNS);
+        copy(BlockTags.CEILING_HANGING_SIGNS, HANGING_SIGNS);
+        copy(BlockTags.LEAVES, LEAVES);
+        copy(BlockTags.SAPLINGS, SAPLINGS);
 
-        addItems(BEACON_PAYMENT_ITEMS, DecoBlockItems.EBONY_INGOT, DecoBlockItems.ETHRIL_INGOT);
         copy(EBlockTags.PEACH_LOGS, EItemTags.PEACH_LOGS);
+        addItems(BEACON_PAYMENT_ITEMS, DecoBlockItems.EBONY_INGOT, DecoBlockItems.ETHRIL_INGOT);
 
         addItems(EItemTags.TUNING_MACES, TUNING_MACE);
         addItems(EItemTags.IRON_SHIELDS, IRON_SHIELD);
@@ -72,13 +78,6 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
 
         addItems(ConventionalItemTags.SHIELD_TOOLS, IRON_SHIELD);
         // TODO: 18.02.2024 add to convention tags
-    }
-
-    public void copy(TagKey<Block>[] blockTags, TagKey<Item>[] itemTags) throws Exception {
-        if (blockTags.length != itemTags.length) throw new Exception("Block and item tags must have the same length");
-        for (int i = 0; i < blockTags.length; i++) {
-            copy(blockTags[i], itemTags[i]);
-        }
     }
 
     private void addItems(TagKey<Item> tagKey, ItemConvertible... items) {

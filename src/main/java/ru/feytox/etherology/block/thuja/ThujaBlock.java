@@ -68,9 +68,14 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
     }
 
     @Override
+    protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if (isMaxLength(world, pos)) return;
+        super.randomTick(state, world, pos, random);
+    }
+
+    @Override
     public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-        int blocksCount = 1 + countBelow(world, pos) + countAbove(world, pos);
-        if (blocksCount >= MAX_LENGTH) return;
+        if (isMaxLength(world, pos)) return;
 
         int age = state.get(AGE) + getGrowthAmount(random);
         age = Math.min(age, MAX_AGE);
@@ -86,7 +91,11 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
         }
     }
 
-    private int countBelow(ServerWorld world, BlockPos pos) {
+    private static boolean isMaxLength(ServerWorld world, BlockPos pos) {
+        return 1 + countBelow(world, pos) + countAbove(world, pos) >= MAX_LENGTH;
+    }
+
+    private static int countBelow(ServerWorld world, BlockPos pos) {
         int result = 0;
         while(result < 4 && world.getBlockState(pos.down(result+1)).getBlock() instanceof ThujaShapeController) {
             result++;
@@ -94,7 +103,7 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
         return result;
     }
 
-    private int countAbove(ServerWorld world, BlockPos pos) {
+    private static int countAbove(ServerWorld world, BlockPos pos) {
         int result = 0;
         while(result < 4 && world.getBlockState(pos.up(result+1)).getBlock() instanceof ThujaShapeController) {
             result++;

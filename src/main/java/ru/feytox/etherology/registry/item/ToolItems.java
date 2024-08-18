@@ -39,7 +39,7 @@ public class ToolItems {
     public static final Item[] BATTLE_PICKAXES = {WOODEN_BATTLE_PICKAXE, STONE_BATTLE_PICKAXE, IRON_BATTLE_PICKAXE, GOLDEN_BATTLE_PICKAXE, ETHRIL_BATTLE_PICKAXE, EBONY_BATTLE_PICKAXE, DIAMOND_BATTLE_PICKAXE, NETHERITE_BATTLE_PICKAXE};
 
     // combat tools
-    public static final Item IRON_SHIELD = register("iron_shield", new EtherShield(new Item.Settings().maxDamage(452), 140, 14, Items.IRON_INGOT));
+    public static final Item IRON_SHIELD = register("iron_shield", new IronShield(new Item.Settings().maxDamage(452), 140, 14, Items.IRON_INGOT));
     public static final Item TUNING_MACE = register("tuning_mace", new TuningMaceItem());
     public static final Item BROADSWORD = register("broadsword", new BroadSwordItem());
 

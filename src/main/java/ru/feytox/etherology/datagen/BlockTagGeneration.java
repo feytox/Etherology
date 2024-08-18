@@ -29,6 +29,7 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
+        // don't forget to copy block tags to item tags!!!
         addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.SLITHERITE_BRICKS, DecoBlocks.CHISELED_SLITHERITE_BRICKS, DecoBlocks.CRACKED_SLITHERITE_BRICKS);
 
         // add all, that defined in variants
@@ -59,15 +60,14 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addBlocks(BlockTags.LOGS, DecoBlocks.WEEPING_PEACH_LOG);
         addBlocks(BlockTags.LOGS_THAT_BURN, DecoBlocks.WEEPING_PEACH_LOG);
 
-        addBlocks(BlockTags.FLOWERS, DecoBlocks.BEAMER);
-        addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
-        addBlocks(BlockTags.REPLACEABLE_BY_TREES, DecoBlocks.THUJA, DecoBlocks.THUJA_PLANT, DecoBlocks.LIGHTELET);
-
-        addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK);
         addBlocks(BlockTags.SMALL_FLOWERS, DecoBlocks.BEAMER);
         addBlocks(BlockTags.FLOWER_POTS, DecoBlocks.POTTED_BEAMER);
         addBlocks(BlockTags.FLOWER_POTS, DecoBlocks.POTTED_THUJA);
         addBlocks(BlockTags.FLOWER_POTS, DecoBlocks.POTTED_PEACH_SAPLING);
+        addBlocks(BlockTags.SAPLINGS, DecoBlocks.PEACH_SAPLING);
+        addBlocks(BlockTags.REPLACEABLE_BY_TREES, DecoBlocks.THUJA, DecoBlocks.THUJA_PLANT, DecoBlocks.LIGHTELET);
+
+        addBlocks(BlockTags.BEACON_BASE_BLOCKS, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK);
 
         Block[] needsStonePick = {BREWING_CAULDRON, ETHEREAL_STORAGE, ETHEREAL_CHANNEL, ETHEREAL_FORK, ETHEREAL_SOCKET, ETHEREAL_FURNACE, ETHEREAL_SPINNER, SAMOVAR_BLOCK, DecoBlocks.ATTRAHITE, TUNING_FORK};
         Block[] needsIronPick = {DecoBlocks.AZEL_BLOCK, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};

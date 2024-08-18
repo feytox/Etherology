@@ -7,6 +7,7 @@ import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
@@ -26,6 +27,7 @@ public class WeepingPeachLogBlock extends PillarBlock {
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!(stack.getItem() instanceof AxeItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (hand.equals(Hand.MAIN_HAND) && player.getOffHandStack().isOf(Items.SHIELD) && !player.shouldCancelInteraction()) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         BlockPos itemPos = pos.add(hit.getSide().getVector());
         ItemScatterer.spawn(world, itemPos.getX(), itemPos.getY(), itemPos.getZ(), DecoBlockItems.EBONY.getDefaultStack());
         return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

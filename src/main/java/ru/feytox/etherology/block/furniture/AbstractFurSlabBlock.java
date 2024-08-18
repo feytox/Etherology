@@ -8,6 +8,13 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTables;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -27,6 +34,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.FurnitureType;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static ru.feytox.etherology.enums.FurnitureType.EMPTY;
@@ -57,6 +66,29 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
     }
 
     @Override
+    protected List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+        FurnitureType bottom = state.get(BOTTOM_TYPE);
+        FurnitureType top = state.get(TOP_TYPE);
+
+        List<ItemStack> result = generateTypedLoot(bottom, state, builder);
+        result.addAll(generateTypedLoot(top, state, builder));
+        return result;
+    }
+
+    private List<ItemStack> generateTypedLoot(FurnitureType furType, BlockState state, LootContextParameterSet.Builder builder) {
+        Block block = furType.getBlock();
+        if (block == null) return Collections.emptyList();
+
+        RegistryKey<LootTable> tableKey = block.getLootTableKey();
+        if (tableKey == LootTables.EMPTY) return Collections.emptyList();
+
+        LootContextParameterSet parameters = builder.add(LootContextParameters.BLOCK_STATE, state).build(LootContextTypes.BLOCK);
+        ServerWorld world = parameters.getWorld();
+        LootTable lootTable = world.getServer().getReloadableRegistries().getLootTable(tableKey);
+        return lootTable.generateLoot(parameters);
+    }
+
+    @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof FurSlabBlockEntity furBlockEntity) {
@@ -80,10 +112,10 @@ public abstract class AbstractFurSlabBlock extends Block implements RegistrableB
         builder.add(TOP_TYPE, BOTTOM_TYPE, TOP_ACTIVE, BOTTOM_ACTIVE, HorizontalFacingBlock.FACING);
     }
 
-    @Override
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        return super.onBreak(world, pos, state.with(BOTTOM_TYPE, EMPTY), player);
-    }
+//    @Override
+//    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+//        return super.onBreak(world, pos, state.with(BOTTOM_TYPE, EMPTY), player);
+//    }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {

@@ -52,6 +52,7 @@ import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.block.tuningFork.TuningFork;
 import ru.feytox.etherology.block.tuningFork.TuningForkBlockEntity;
+import ru.feytox.etherology.enums.FurnitureType;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 @UtilityClass
@@ -90,7 +91,7 @@ public class EBlocks {
     public static final BlockEntityType<FurSlabBlockEntity> FURNITURE_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             EIdentifier.of("furniture_block_entity"),
-            BlockEntityType.Builder.create(FurSlabBlockEntity::new, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB).build()
+            BlockEntityType.Builder.create(FurSlabBlockEntity::new, FurnitureType.getBlocks()).build()
     );
 
     public static final EtherealStorageBlock ETHEREAL_STORAGE = (EtherealStorageBlock) new EtherealStorageBlock().registerAll();

@@ -13,7 +13,7 @@ import ru.feytox.etherology.registry.misc.EtherEnchantments;
 public class ProjectileEntityMixin {
 
     @Inject(method = "onCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;onEntityHit(Lnet/minecraft/util/hit/EntityHitResult;)V"), cancellable = true)
-    private void cancelByEtherShield(HitResult hitResult, CallbackInfo ci) {
+    private void cancelByIronShield(HitResult hitResult, CallbackInfo ci) {
         if (!(hitResult instanceof EntityHitResult entityHitResult)) return;
         ProjectileEntity projectile = ((ProjectileEntity) (Object) this);
         if (EtherEnchantments.applyReflection(entityHitResult, projectile)) return;
