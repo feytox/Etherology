@@ -3,18 +3,19 @@ package ru.feytox.etherology.block.spill_barrel;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -30,6 +31,8 @@ import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
+
+import java.util.List;
 
 public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
 
@@ -51,6 +54,23 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
         this.setDefaultState(this.getDefaultState()
                 .with(WITH_FRAME, false)
                 .with(HorizontalFacingBlock.FACING, Direction.NORTH));
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
+        super.appendTooltip(stack, context, tooltip, options);
+
+        ContainerComponent barrelData = stack.get(DataComponentTypes.CONTAINER);
+        ItemStack potionStack = barrelData != null ? barrelData.copyFirstStack() : null;
+        long potionCount = barrelData != null ? barrelData.streamNonEmpty().count() : 0;
+        MutableText potionInfo = potionStack == null ? null : SpillBarrelBlockEntity.getPotionInfo(potionStack, potionCount, false, Text.empty());
+
+        if (potionCount == 0 || potionInfo == null) {
+            tooltip.add(1, Text.translatable("lore.etherology.spill_barrel.empty").formatted(Formatting.GRAY));
+            return;
+        }
+
+        tooltip.add(1, potionInfo.formatted(Formatting.GRAY));
     }
 
     @Override
@@ -97,13 +117,12 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
 
     }
 
-
     @Override
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof SpillBarrelBlockEntity spillBarrel) {
             if (!world.isClient && (!player.isCreative() || (player.isCreative() && !spillBarrel.isEmpty()))) {
-                ItemStack barrelStack = EBlocks.SPILL_BARREL.getItem().getDefaultStack();
+                ItemStack barrelStack = asItem().getDefaultStack();
                 barrelStack.applyComponentsFrom(spillBarrel.createComponentMap());
                 if (spillBarrel.hasCustomName()) {
                     barrelStack.set(DataComponentTypes.CUSTOM_NAME, spillBarrel.getCustomName());

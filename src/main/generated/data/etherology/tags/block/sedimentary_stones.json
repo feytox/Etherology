@@ -1,0 +1,21 @@
+{
+  "values": [
+    "etherology:sedimentary_stone",
+    "etherology:sedimentary_stone_keta_low",
+    "etherology:sedimentary_stone_keta_medium",
+    "etherology:sedimentary_stone_keta_high",
+    "etherology:sedimentary_stone_keta_full",
+    "etherology:sedimentary_stone_rella_low",
+    "etherology:sedimentary_stone_rella_medium",
+    "etherology:sedimentary_stone_rella_high",
+    "etherology:sedimentary_stone_rella_full",
+    "etherology:sedimentary_stone_via_low",
+    "etherology:sedimentary_stone_via_medium",
+    "etherology:sedimentary_stone_via_high",
+    "etherology:sedimentary_stone_via_full",
+    "etherology:sedimentary_stone_clos_low",
+    "etherology:sedimentary_stone_clos_medium",
+    "etherology:sedimentary_stone_clos_high",
+    "etherology:sedimentary_stone_clos_full"
+  ]
+}

@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.item.Item;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BiomeTags;
@@ -15,21 +17,25 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.misc.CodecUtil;
 import ru.feytox.etherology.util.misc.RGBColor;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 @Getter
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 public enum EssenceZoneType implements StringIdentifiable {
     NOT_INITIALIZED,
     EMPTY,
-    KETA(EssenceZoneType::ketaTest, new RGBColor(128, 205, 247), new RGBColor(105, 128, 231)),
-    RELLA(EssenceZoneType::rellaTest, new RGBColor(177, 229,106), new RGBColor(106, 182, 81)),
-    VIA(EssenceZoneType::viaTest, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
-    CLOS(EssenceZoneType::closTest, new RGBColor(106, 182, 81), new RGBColor(208, 158, 89));
+    KETA(EssenceZoneType::ketaTest, () -> EItems.PRIMOSHARD_KETA, new RGBColor(128, 205, 247), new RGBColor(105, 128, 231)),
+    RELLA(EssenceZoneType::rellaTest, () -> EItems.PRIMOSHARD_RELLA, new RGBColor(177, 229,106), new RGBColor(106, 182, 81)),
+    VIA(EssenceZoneType::viaTest, () -> EItems.PRIMOSHARD_VIA, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
+    CLOS(EssenceZoneType::closTest, () -> EItems.PRIMOSHARD_CLOS, new RGBColor(106, 182, 81), new RGBColor(208, 158, 89));
 
     public static final Codec<EssenceZoneType> CODEC = StringIdentifiable.createBasicCodec(EssenceZoneType::values);
     public static final PacketCodec<ByteBuf, EssenceZoneType> PACKET_CODEC = CodecUtil.ofEnum(values());
@@ -38,18 +44,19 @@ public enum EssenceZoneType implements StringIdentifiable {
 
     @Nullable
     private final GenerationSetting generationSetting;
-
+    @Nullable
+    private final Supplier<Item> shardGetter;
     @Nullable
     private final RGBColor startColor;
-
     @Nullable
     private final RGBColor endColor;
 
-    private boolean isZone = true;
+    public Optional<Item> getPrimoShard() {
+        return Optional.ofNullable(shardGetter).map(Supplier::get);
+    }
 
-    EssenceZoneType() {
-        this(null, null, null);
-        isZone = false;
+    public boolean isZone() {
+        return generationSetting != null;
     }
 
     public static List<EssenceZoneType> getShuffledTypes(Random random) {

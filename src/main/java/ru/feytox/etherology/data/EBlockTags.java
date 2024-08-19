@@ -10,4 +10,5 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 public class EBlockTags {
 
     public static final TagKey<Block> PEACH_LOGS = TagKey.of(RegistryKeys.BLOCK, EIdentifier.of("peach_logs"));
+    public static final TagKey<Block> SEDIMENTARY_STONES = TagKey.of(RegistryKeys.BLOCK, EIdentifier.of("sedimentary_stones"));
 }

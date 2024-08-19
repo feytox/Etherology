@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
-import static ru.feytox.etherology.registry.block.EBlocks.SPILL_BARREL;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 import static ru.feytox.etherology.registry.item.ArmorItems.*;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.*;
@@ -228,7 +227,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(DecoBlocks.PEACH_HANGING_SIGN, "Персиковая подвесная табличка");
         builder.add(PEACH_TRAPDOOR, "Персиковый люк");
         builder.add(BREWING_CAULDRON, "Варочный тигель");
-        builder.add(SEDIMENTARY_BLOCK, "Осадочный камень");
+        builder.add(SEDIMENTARY_STONE, "Осадочный камень");
         builder.add(EtherEnchantments.PEAL, "Раскат");
         builder.add(EtherEnchantments.REFLECTION, "Отражение");
 
@@ -240,6 +239,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EItemTags.PEACH_LOGS, "Peach Logs");
         builder.add(EItemTags.IRON_SHIELDS, "Iron Shields");
         builder.add(EItemTags.TUNING_MACES, "Tuning Maces");
+        builder.add(EItemTags.SEDIMENTARY_STONES, "Осадочные камни");
+        builder.add(EBlockTags.SEDIMENTARY_STONES, "Осадочные камни");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").orElse(null);

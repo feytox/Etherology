@@ -15,7 +15,7 @@
       "item": "minecraft:iron_ingot"
     },
     "S": {
-      "item": "etherology:sedimentary_stone"
+      "tag": "etherology:sedimentary_stones"
     }
   },
   "pattern": [

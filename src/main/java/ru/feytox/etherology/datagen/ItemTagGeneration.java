@@ -54,6 +54,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.SAPLINGS, SAPLINGS);
 
         copy(EBlockTags.PEACH_LOGS, EItemTags.PEACH_LOGS);
+        copy(EBlockTags.SEDIMENTARY_STONES, EItemTags.SEDIMENTARY_STONES);
         addItems(BEACON_PAYMENT_ITEMS, DecoBlockItems.EBONY_INGOT, DecoBlockItems.ETHRIL_INGOT);
 
         addItems(EItemTags.TUNING_MACES, TUNING_MACE);

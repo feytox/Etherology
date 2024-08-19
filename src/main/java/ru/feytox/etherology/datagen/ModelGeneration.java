@@ -41,6 +41,7 @@ public class ModelGeneration extends FabricModelProvider {
         registerBlockFamilies(generator, FAMILIES);
         // all simple blocks
         registerSimpleBlock(generator, DecoBlocks.AZEL_BLOCK, DecoBlocks.ETHRIL_BLOCK, DecoBlocks.EBONY_BLOCK, EBlocks.ETHEREAL_CHANNEL_CASE, DecoBlocks.ATTRAHITE);
+        registerSimpleBlock(generator, EBlocks.SEDIMENTARY_STONES);
         // peach
         generator.registerSingleton(DecoBlocks.PEACH_LEAVES, TexturedModel.LEAVES);
         generator.registerTintableCross(DecoBlocks.PEACH_SAPLING, BlockStateModelGenerator.TintType.NOT_TINTED);

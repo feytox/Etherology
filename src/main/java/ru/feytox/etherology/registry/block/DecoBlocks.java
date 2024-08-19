@@ -104,7 +104,7 @@ public class DecoBlocks {
     public static final Block[] SIGNS = {PEACH_SIGN, PEACH_WALL_SIGN};
     public static final Block[] HANGING_SIGNS = {PEACH_HANGING_SIGN, PEACH_WALL_HANGING_SIGN};
 
-    private static EBlock register(String id, Block block) {
+    public static EBlock register(String id, Block block) {
         Block registredBlock = Registry.register(Registries.BLOCK, EIdentifier.of(id), block);
         return new EBlock(registredBlock);
     }

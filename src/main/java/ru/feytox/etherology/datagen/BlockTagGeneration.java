@@ -71,7 +71,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
 
         Block[] needsStonePick = {BREWING_CAULDRON, ETHEREAL_STORAGE, ETHEREAL_CHANNEL, ETHEREAL_FORK, ETHEREAL_SOCKET, ETHEREAL_FURNACE, ETHEREAL_SPINNER, SAMOVAR_BLOCK, DecoBlocks.ATTRAHITE, TUNING_FORK};
         Block[] needsIronPick = {DecoBlocks.AZEL_BLOCK, DecoBlocks.EBONY_BLOCK, DecoBlocks.ETHRIL_BLOCK, ETHEREAL_METRONOME};
-        addBlocks(BlockTags.PICKAXE_MINEABLE, PEDESTAL_BLOCK, SEDIMENTARY_BLOCK, JUG, CLAY_JUG, ARMILLARY_MATRIX, JEWELRY_TABLE);
+        addBlocks(BlockTags.PICKAXE_MINEABLE, PEDESTAL_BLOCK, JUG, CLAY_JUG, ARMILLARY_MATRIX, JEWELRY_TABLE);
+        addBlocks(BlockTags.PICKAXE_MINEABLE, SEDIMENTARY_STONES);
         addBlocks(BlockTags.PICKAXE_MINEABLE, needsStonePick);
         addBlocks(BlockTags.PICKAXE_MINEABLE, needsIronPick);
         addBlocks(BlockTags.NEEDS_STONE_TOOL, needsStonePick);
@@ -80,6 +81,8 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
         addAllBlocks(BlockTags.AXE_MINEABLE, PEACH);
         addBlocks(BlockTags.AXE_MINEABLE, ESSENCE_DETECTOR_BLOCK, FURNITURE_SLAB, CLOSET_SLAB, SHELF_SLAB, EMPOWERMENT_TABLE, SPILL_BARREL, CRATE, LEVITATOR, INVENTOR_TABLE, ETHEREAL_CHANNEL_CASE, DecoBlocks.LIGHTELET);
         addBlocks(BlockTags.HOE_MINEABLE, DecoBlocks.PEACH_LEAVES, DecoBlocks.FOREST_LANTERN);
+
+        addBlocks(EBlockTags.SEDIMENTARY_STONES, SEDIMENTARY_STONES);
 
         // TODO: 18.02.2024 add to convention tags
     }

@@ -2,6 +2,7 @@ package ru.feytox.etherology.registry.block;
 
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -45,6 +46,7 @@ import ru.feytox.etherology.block.matrix.MatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlock;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.block.samovar.SamovarBlock;
+import ru.feytox.etherology.block.sedimentary.EssenceLevel;
 import ru.feytox.etherology.block.sedimentary.SedimentaryStone;
 import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
 import ru.feytox.etherology.block.shelf.ShelfSlabBlock;
@@ -53,7 +55,13 @@ import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.block.tuningFork.TuningFork;
 import ru.feytox.etherology.block.tuningFork.TuningForkBlockEntity;
 import ru.feytox.etherology.enums.FurnitureType;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.util.misc.EIdentifier;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import static ru.feytox.etherology.registry.block.DecoBlocks.register;
 
 @UtilityClass
 public class EBlocks {
@@ -71,11 +79,12 @@ public class EBlocks {
             BlockEntityType.Builder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build()
     );
 
-    public static final SedimentaryStone SEDIMENTARY_BLOCK = (SedimentaryStone) new SedimentaryStone().registerAll();
+    public static final SedimentaryStone SEDIMENTARY_STONE = (SedimentaryStone) registerSedimentaryBlock(EssenceZoneType.EMPTY, EssenceLevel.EMPTY);
+    public static final Block[] SEDIMENTARY_STONES = registerSedimentaryStones();
     public static final BlockEntityType<SedimentaryStoneBlockEntity> SEDIMENTARY_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             EIdentifier.of("sedimentary_stone_block_entity"),
-            BlockEntityType.Builder.create(SedimentaryStoneBlockEntity::new, SEDIMENTARY_BLOCK).build()
+            BlockEntityType.Builder.create(SedimentaryStoneBlockEntity::new, SEDIMENTARY_STONES).build()
     );
 
     public static final EssenceDetectorBlock ESSENCE_DETECTOR_BLOCK = (EssenceDetectorBlock) new EssenceDetectorBlock().registerAll();
@@ -152,7 +161,7 @@ public class EBlocks {
 
     public static final SamovarBlock SAMOVAR_BLOCK = (SamovarBlock) new SamovarBlock().registerAll();
 
-    public static final SpillBarrelBlock SPILL_BARREL = (SpillBarrelBlock) new SpillBarrelBlock().registerBlock();
+    public static final SpillBarrelBlock SPILL_BARREL = (SpillBarrelBlock) new SpillBarrelBlock().registerAll(false);
     public static final BlockEntityType<SpillBarrelBlockEntity> SPILL_BARREL_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             EIdentifier.of("spill_barrel_block_entity"),
@@ -209,5 +218,17 @@ public class EBlocks {
     public static void registerAll() {
         DecoBlocks.registerAll();
         DevBlocks.registerAll();
+    }
+
+    private static Block[] registerSedimentaryStones() {
+        Stream<Block> zoneStones = Arrays.stream(EssenceZoneType.values())
+                .filter(EssenceZoneType::isZone)
+                .flatMap(zone -> Arrays.stream(EssenceLevel.values()).filter(EssenceLevel::isPresent).map(level -> registerSedimentaryBlock(zone, level)));
+
+        return Stream.concat(Stream.of(SEDIMENTARY_STONE), zoneStones).toArray(Block[]::new);
+    }
+
+    private static Block registerSedimentaryBlock(EssenceZoneType zoneType, EssenceLevel level) {
+        return register(SedimentaryStone.createId(zoneType, level), new SedimentaryStone(zoneType, level)).withItem(false);
     }
 }

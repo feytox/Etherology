@@ -1,6 +1,5 @@
 package ru.feytox.etherology.block.samovar;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +11,6 @@ import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -26,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class SamovarBlock extends Block implements RegistrableBlock {
-    private static final VoxelShape OUTLINE_SHAPE;
 
+    private static final VoxelShape OUTLINE_SHAPE;
 
     public SamovarBlock() {
         super(Settings.create().mapColor(MapColor.BROWN).strength(1f).nonOpaque());

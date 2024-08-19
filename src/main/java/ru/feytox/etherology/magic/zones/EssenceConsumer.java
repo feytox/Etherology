@@ -24,9 +24,10 @@ public interface EssenceConsumer {
         ZoneComponent zoneComponent = getZone(world, pos, blockType);
         if (zoneComponent == null) return Optional.empty();
 
+        EssenceZoneType zoneType = zoneComponent.getZoneType();
         float consumedPoints = zoneComponent.decrement(getConsumingValue());
         increment(consumedPoints);
-        return Optional.of(zoneComponent.getZoneType());
+        return Optional.of(zoneType);
     }
 
     default void tickZoneParticles(ClientWorld world, BlockPos pos, EssenceZoneType blockType) {

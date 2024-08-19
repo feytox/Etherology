@@ -206,7 +206,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("##").criterion(has(Items.AMETHYST_SHARD), from(Items.AMETHYST_SHARD)).offerTo(exporter);
 
         // "hard" recipes
-        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', SEDIMENTARY_BLOCK).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)
+        ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SPINNER).input('C', Items.IRON_NUGGET).input('I', Items.IRON_INGOT).input('S', EItemTags.SEDIMENTARY_STONES).input('#', SMOOTH_STONE).input('E', ETHEROSCOPE)
                 .pattern("CIC")
                 .pattern("ISI")
                 .pattern("#E#").criterion(has(ETHEROSCOPE), from(ETHEROSCOPE)).offerTo(exporter);
@@ -225,7 +225,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(MISC, ETHEREAL_SOCKET).input('#', IRON_BARS).input('S', STONE).input('E', ETHEROSCOPE)
                 .pattern(" # ")
                 .pattern("SES").criterion(has(ETHEROSCOPE), from(ETHEROSCOPE)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(MISC, SEDIMENTARY_BLOCK).input('S', STONE).input('A', AZEL_INGOT).input('R', Items.REDSTONE)
+        ShapedRecipeJsonBuilder.create(MISC, SEDIMENTARY_STONE).input('S', STONE).input('A', AZEL_INGOT).input('R', Items.REDSTONE)
                 .pattern("SSS")
                 .pattern("SAS")
                 .pattern("SRS").criterion(has(AZEL_INGOT), from(AZEL_INGOT)).offerTo(exporter);
