@@ -2,6 +2,7 @@ package ru.feytox.etherology.world;
 
 import com.google.common.collect.ImmutableList;
 import lombok.experimental.UtilityClass;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
@@ -9,11 +10,13 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.structure.rule.TagMatchRuleTest;
+import net.minecraft.util.collection.DataPool;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.stateprovider.PredicatedStateProvider;
+import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.treedecorator.BeehiveTreeDecorator;
 import ru.feytox.etherology.block.beamer.BeamerBlock;
 import ru.feytox.etherology.mixin.TreeConfiguredFeaturesAccessor;
@@ -42,6 +45,7 @@ public class ConfiguredFeaturesGen {
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_BEAMER = of("patch_beamer");
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_THUJA = of("patch_thuja");
     public static final RegistryKey<ConfiguredFeature<?,?>> ATTRAHITE = of("attrahite");
+    public static final RegistryKey<ConfiguredFeature<?,?>> SINGLE_PIECE_OF_GRASS_LIGHTELET = of("single_piece_of_grass_lightelet");
 
     public static void registerFeatures(Registerable<ConfiguredFeature<?, ?>> context) {
         register(context, PEACH_TREE, Feature.TREE,
@@ -68,6 +72,10 @@ public class ConfiguredFeaturesGen {
                 WorldGenRegistry.THUJA, new DefaultFeatureConfig(), List.of(), 32
         ));
         register(context, ATTRAHITE, Feature.ORE, new OreFeatureConfig(new TagMatchRuleTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), DecoBlocks.ATTRAHITE.getDefaultState(), 52, 0));
+        register(context, SINGLE_PIECE_OF_GRASS_LIGHTELET, Feature.SIMPLE_BLOCK,
+                new SimpleBlockFeatureConfig(new WeightedBlockStateProvider(DataPool.<BlockState>builder()
+                        .add(Blocks.SHORT_GRASS.getDefaultState(), 1)
+                        .add(DecoBlocks.LIGHTELET.getDefaultState(), 2).build())));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {

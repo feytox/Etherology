@@ -8,19 +8,15 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -76,23 +72,6 @@ public class ThujaPlantBlock extends AbstractPlantBlock implements RegistrableBl
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
         builder.add(ThujaBlock.SHAPE);
-    }
-
-    protected int getGrowthAmount(Random random) {
-        return MathHelper.nextInt(random, 0, 18);
-    }
-
-    @Override
-    public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-        Optional<BlockPos> optional = getCrownPos(world, state, pos);
-        if (optional.isEmpty()) return;
-        BlockPos crownPos = optional.get();
-        BlockState crownState = world.getBlockState(crownPos);
-
-        int i = crownState.get(AGE) + getGrowthAmount(random);
-        i = Math.min(i, MAX_AGE);
-        world.setBlockState(crownPos, crownState.with(AGE, i), Block.NOTIFY_LISTENERS);
-        if (i == MAX_AGE) super.grow(world, random, pos, state);
     }
 
     @Nullable

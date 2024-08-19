@@ -1,10 +1,6 @@
 package ru.feytox.etherology.registry.item;
 
 import lombok.experimental.UtilityClass;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
@@ -14,8 +10,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import ru.feytox.etherology.item.EbonyArmorItem;
 import ru.feytox.etherology.item.revelationView.RevelationViewItem;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -41,7 +37,6 @@ public class ArmorItems {
         map.put(ArmorItem.Type.CHESTPLATE, 8);
         map.put(ArmorItem.Type.HELMET, 3);
     }), 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.ofItems(DecoBlockItems.ETHRIL_INGOT));
-    private static final Identifier EBONY_SPEED_ID = EIdentifier.of("ebony_speed");
 
     // ethril armor
     public static final Item ETHRIL_HELMET = register("ethril_helmet", new ArmorItem(ETHRIL, ArmorItem.Type.HELMET, new Item.Settings()));
@@ -50,10 +45,10 @@ public class ArmorItems {
     public static final Item ETHRIL_BOOTS = register("ethril_boots", new ArmorItem(ETHRIL, ArmorItem.Type.BOOTS, new Item.Settings()));
 
     // ebony armor
-    public static final Item EBONY_HELMET = register("ebony_helmet", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.HELMET, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.HEAD))));
-    public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.CHEST))));
-    public static final Item EBONY_LEGGINGS = register("ebony_leggings", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.LEGGINGS, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.LEGS))));
-    public static final Item EBONY_BOOTS = register("ebony_boots", new ArmorItem(EBONY_MATERIAL, ArmorItem.Type.BOOTS, new Item.Settings().attributeModifiers(createEbonyAttributes(AttributeModifierSlot.FEET))));
+    public static final Item EBONY_HELMET = register("ebony_helmet", new EbonyArmorItem(EBONY_MATERIAL, ArmorItem.Type.HELMET));
+    public static final Item EBONY_CHESTPLATE = register("ebony_chestplate", new EbonyArmorItem(EBONY_MATERIAL, ArmorItem.Type.CHESTPLATE));
+    public static final Item EBONY_LEGGINGS = register("ebony_leggings", new EbonyArmorItem(EBONY_MATERIAL, ArmorItem.Type.LEGGINGS));
+    public static final Item EBONY_BOOTS = register("ebony_boots", new EbonyArmorItem(EBONY_MATERIAL, ArmorItem.Type.BOOTS));
 
     // trinkets
     public static final Item REVELATION_VIEW = register("revelation_view", new RevelationViewItem());
@@ -64,7 +59,4 @@ public class ArmorItems {
         return Registry.registerReference(Registries.ARMOR_MATERIAL, EIdentifier.of(id), new ArmorMaterial(defense, enchantability, equipSound, repairIngredient, List.of(new ArmorMaterial.Layer(EIdentifier.of(id))), toughness, knockbackResistance));
     }
 
-    private static AttributeModifiersComponent createEbonyAttributes(AttributeModifierSlot slot) {
-        return AttributeModifiersComponent.builder().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(EBONY_SPEED_ID, 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), slot).build();
-    }
 }

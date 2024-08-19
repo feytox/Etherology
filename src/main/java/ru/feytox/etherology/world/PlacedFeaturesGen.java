@@ -17,6 +17,7 @@ import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.feature.PlacedFeatures;
 import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 import net.minecraft.world.gen.placementmodifier.*;
 import ru.feytox.etherology.registry.block.DecoBlocks;
@@ -39,6 +40,7 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> PATCH_BEAMER = of("patch_beamer");
     public static final RegistryKey<PlacedFeature> PATCH_THUJA = of("patch_thuja");
     public static final RegistryKey<PlacedFeature> ATTRAHITE = of("attrahite");
+    public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_BONEMEAL = of("golden_forest_bonemeal");
 
     public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -113,6 +115,7 @@ public class PlacedFeaturesGen {
                 HeightRangePlacementModifier.of(UniformHeightProvider.create(YOffset.fixed(-58), YOffset.fixed(-8))),
                 BiomePlacementModifier.of()
         );
+        register(context, GOLDEN_FOREST_BONEMEAL, lookup.getOrThrow(SINGLE_PIECE_OF_GRASS_LIGHTELET), PlacedFeatures.isAir());
     }
 
     public static RegistryKey<PlacedFeature> of(String name) {

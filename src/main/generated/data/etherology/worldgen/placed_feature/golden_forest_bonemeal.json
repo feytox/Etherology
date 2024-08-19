@@ -1,0 +1,12 @@
+{
+  "feature": "etherology:single_piece_of_grass_lightelet",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": "minecraft:air"
+      }
+    }
+  ]
+}

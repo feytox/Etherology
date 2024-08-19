@@ -18,6 +18,6 @@ public class AspectComponent extends FlowLayout {
         TextureComponent aspectTexture = Components.texture(Aspect.TEXTURE, aspect.getTextureMinX(), aspect.getTextureMinY(), aspect.getWidth(), aspect.getHeight(), EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
         LabelComponent valueComponent = Components.label(Text.of(String.valueOf(value))).shadow(true);
 
-        this.child(aspectTexture.blend(true).sizing(Sizing.fixed(28))).child(valueComponent.positioning(Positioning.relative(95, 95)));
+        this.child(aspectTexture.blend(true).sizing(Sizing.fixed(32))).child(valueComponent.positioning(Positioning.relative(95, 95)));
     }
 }

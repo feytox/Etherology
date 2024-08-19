@@ -8,13 +8,16 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.pool.StructurePoolElementType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.PlacementModifierType;
 import ru.feytox.etherology.mixin.PlacementModifierTypeAccessor;
 import ru.feytox.etherology.mixin.StructurePoolElementTypeAccessor;
@@ -24,6 +27,8 @@ import ru.feytox.etherology.world.feature.EtherRockFeature;
 import ru.feytox.etherology.world.feature.StructurePlacementModifier;
 import ru.feytox.etherology.world.feature.ThujaFeature;
 import ru.feytox.etherology.world.structure.RotatedPoolElement;
+
+import java.util.Optional;
 
 @UtilityClass
 public class WorldGenRegistry {
@@ -39,6 +44,10 @@ public class WorldGenRegistry {
         TreesRegistry.registerTrees();
         registerModifications();
         registerBiomes();
+    }
+
+    public static Optional<RegistryKey<PlacedFeature>> getGoldenForestBonemeal(ServerWorld world, BlockPos pos) {
+        return world.getBiome(pos).matchesKey(GOLDEN_FOREST) ? Optional.of(PlacedFeaturesGen.GOLDEN_FOREST_BONEMEAL) : Optional.empty();
     }
 
     // TODO: 19.07.2024 remove

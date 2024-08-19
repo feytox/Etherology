@@ -13,7 +13,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -63,10 +62,6 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
         return getThujaStateForNeighborUpdate(state, world, pos, neighborPos);
     }
 
-    protected int getGrowthAmount(Random random) {
-        return MathHelper.nextInt(random, 0, 18);
-    }
-
     @Override
     protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (isMaxLength(world, pos)) return;
@@ -77,18 +72,9 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
     public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
         if (isMaxLength(world, pos)) return;
 
-        int age = state.get(AGE) + getGrowthAmount(random);
-        age = Math.min(age, MAX_AGE);
-        world.setBlockState(pos, state.with(AGE, age), Block.NOTIFY_LISTENERS);
-        if (age != MAX_AGE) return;
-
+        world.setBlockState(pos, state.with(AGE, MAX_AGE), Block.NOTIFY_LISTENERS);
         BlockPos blockPos = pos.offset(this.growthDirection);
-        int growthLength = this.getGrowthLength(random);
-
-        for(int k = 0; k < growthLength && this.chooseStemState(world.getBlockState(blockPos)); ++k) {
-            world.setBlockState(blockPos, state.with(AGE, 0));
-            blockPos = blockPos.offset(this.growthDirection);
-        }
+        world.setBlockState(blockPos, state.with(AGE, 0));
     }
 
     private static boolean isMaxLength(ServerWorld world, BlockPos pos) {
@@ -118,7 +104,7 @@ public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlo
 
     @Override
     protected int getGrowthLength(Random random) {
-        return MathHelper.nextInt(random, 1, 2);
+        return 1;
     }
 
     @Override
