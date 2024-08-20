@@ -53,7 +53,7 @@ public class BiomesGen {
                 .precipitation(true)
                 .effects(new BiomeEffects.Builder()
                         .skyColor(9026303).fogColor(13037311).waterColor(3840969)
-                        .waterFogColor(1129027).grassColor(5236584).foliageColor(4122414)
+                        .waterFogColor(1129027).grassColor(15519828).foliageColor(4122414)
                         .moodSound(BiomeMoodSound.CAVE)
                         .music(MusicType.createIngameMusic(SoundEvents.MUSIC_OVERWORLD_FOREST))
                         .build())
