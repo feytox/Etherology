@@ -2,7 +2,6 @@ package ru.feytox.etherology.block.pedestal;
 
 import com.mojang.serialization.MapCodec;
 import lombok.val;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -83,7 +82,7 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
         if (!world.isClient) {
             PedestalBlockEntity pedestalBlockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
             if (pedestalBlockEntity != null) {
-                pedestalBlockEntity.interact((ServerWorld) world, state, player, player.getActiveHand());
+                pedestalBlockEntity.interact((ServerWorld) world, state, player, Hand.MAIN_HAND);
                 pedestalBlockEntity.syncData((ServerWorld) world);
             }
         }
