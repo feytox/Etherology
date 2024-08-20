@@ -61,7 +61,7 @@ public abstract class LivingEntityMixin {
             Vec3d damagePos = source.getPosition();
             if (damagePos != null) {
                 Vec3d holderRotation = shieldHolder.getRotationVec(1.0F);
-                return IronShield.shieldBlockCheck(holderRotation, shieldHolder.getPos(), damagePos, isProjectile);
+                return IronShield.shieldBlockCheck(holderRotation, shieldHolder.getPos(), damagePos);
             }
         }
 

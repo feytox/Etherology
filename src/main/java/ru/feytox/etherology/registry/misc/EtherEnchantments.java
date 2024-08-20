@@ -65,7 +65,7 @@ public class EtherEnchantments {
 
         Vec3d targetRotation = target.getRotationVec(1.0F);
         Vec3d targetPos = target.getPos();
-        if (!IronShield.shieldBlockCheck(targetRotation, targetPos, projectile.getPos(), true)) return true;
+        if (!IronShield.shieldBlockCheck(targetRotation, targetPos, projectile.getPos())) return true;
 
         Vec3d newVelocity = target.getRotationVec(1.0f).multiply(projectile.getVelocity().length());
         Entity newProj = projectile.getType().create(world);

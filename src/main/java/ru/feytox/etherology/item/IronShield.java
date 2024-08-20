@@ -14,11 +14,10 @@ public class IronShield extends FabricShieldItem {
         super(settings, coolDownTicks, enchantability, repairItems);
     }
 
-    public static boolean shieldBlockCheck(Vec3d entityRotation, Vec3d entityPos, Vec3d damagePos, boolean isProjectile) {
-        Vec3d damageVec = damagePos.relativize(entityPos).normalize();
-        damageVec = new Vec3d(damageVec.x, 0, damageVec.z);
-        double cosVal = isProjectile ? 0.0 : -0.866025;
-        return damageVec.dotProduct(entityRotation) < cosVal;
+    public static boolean shieldBlockCheck(Vec3d entityRotation, Vec3d entityPos, Vec3d damagePos) {
+        Vec3d damageVec = damagePos.relativize(entityPos);
+        damageVec = new Vec3d(damageVec.x, 0, damageVec.z).normalize();
+        return damageVec.dotProduct(entityRotation) < 0.135;
     }
 
     public static Optional<ItemStack> getUsingShield(LivingEntity user) {
