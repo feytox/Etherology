@@ -68,16 +68,16 @@ public class EtherEnchantments {
         if (!IronShield.shieldBlockCheck(targetRotation, targetPos, projectile.getPos())) return true;
 
         Vec3d newVelocity = target.getRotationVec(1.0f).multiply(projectile.getVelocity().length());
-        Entity newProj = projectile.getType().create(world);
-        if (newProj == null) return true;
+        if (!(projectile.getType().create(world) instanceof ProjectileEntity newProjectile)) return true;
 
-        newProj.copyFrom(projectile);
-        newProj.refreshPositionAndAngles(projectile.getX(), projectile.getY(), projectile.getZ(), projectile.getYaw(), projectile.getPitch());
-        newProj.setVelocity(newVelocity);
+        newProjectile.copyFrom(projectile);
+        newProjectile.refreshPositionAndAngles(projectile.getX(), projectile.getY(), projectile.getZ(), projectile.getYaw(), projectile.getPitch());
+        newProjectile.setVelocity(newVelocity);
         projectile.setPosition(projectile.getPos().add(0, -10000, 0));
         ((EntityHitResultAccessor) entityHitResult).setEntity(projectile);
         projectile.discard();
-        world.spawnEntity(newProj);
+        world.spawnEntity(newProjectile);
+        newProjectile.setOwner(target);
 
         world.playSound(null, target.getBlockPos(), EtherSounds.DEFLECT, target.getSoundCategory(), 0.5f, 1.0f);
         shield.damage(2, target, LivingEntity.getSlotForHand(target.getActiveHand()));
