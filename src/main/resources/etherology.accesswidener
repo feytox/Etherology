@@ -11,3 +11,5 @@ accessible method net/minecraft/block/FireBlock registerFlammableBlock (Lnet/min
 accessible method net/minecraft/data/client/Model createTextureMap (Lnet/minecraft/data/client/TextureMap;)Ljava/util/Map;
 accessible field net/minecraft/client/option/KeyBinding timesPressed I
 accessible field net/minecraft/client/option/KeyBinding boundKey Lnet/minecraft/client/util/InputUtil$Key;
+
+extendable class net/minecraft/world/biome/BiomeEffects$GrassColorModifier

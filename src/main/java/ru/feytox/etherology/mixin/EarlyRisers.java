@@ -14,6 +14,9 @@ public class EarlyRisers implements Runnable {
         String block = "L" + remapper.mapClassName("intermediary", "net.minecraft.class_2248") + ";";
         ClassTinkerers.enumBuilder(boatType,block, "Ljava/lang/String;").addEnum("ETHEROLOGY_PEACH", () -> new Object[]{ExtraBlocksRegistry.PEACH_PLANKS, "etherology_peach"}).build();
 
+        String grassColor = remapper.mapClassName("intermediary", "net.minecraft.class_4763$class_5486");
+        ClassTinkerers.enumBuilder(grassColor, String.class).addEnumSubclass("ETHEROLOGY_GOLDEN_FOREST", "ru.feytox.etherology.util.misc.GoldenForestGrassModifier", "etherology_golden_forest").build();
+
         String armPose = remapper.mapClassName("intermediary", "net.minecraft.class_572$class_573");
         String useAction = remapper.mapClassName("intermediary", "net.minecraft.class_1839");
 

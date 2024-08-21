@@ -1,5 +1,6 @@
 package ru.feytox.etherology.world;
 
+import com.google.common.base.Suppliers;
 import lombok.val;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
@@ -15,10 +16,15 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.mixin.OverworldBiomeCreatorAccessor;
 import ru.feytox.etherology.registry.world.WorldGenRegistry;
 
+import java.util.function.Supplier;
+
 public class BiomesGen {
+
+    public static final Supplier<BiomeEffects.GrassColorModifier> GOLDEN_FOREST_MODIFIER = Suppliers.memoize(() -> BiomeEffects.GrassColorModifier.valueOf("ETHEROLOGY_GOLDEN_FOREST"));
 
     public static void registerBiomes(Registerable<Biome> context) {
         val featureLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
@@ -27,6 +33,10 @@ public class BiomesGen {
     }
 
     private static void addGoldenForest(Registerable<Biome> context, RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
+        for (BiomeEffects.GrassColorModifier value : BiomeEffects.GrassColorModifier.values()) {
+            Etherology.ELOGGER.info("{}", value.name());
+        }
+
         val baseSpawnerBuilder = new SpawnSettings.Builder();
         DefaultBiomeFeatures.addBatsAndMonsters(baseSpawnerBuilder);
         DefaultBiomeFeatures.addFarmAnimals(baseSpawnerBuilder);
@@ -53,7 +63,8 @@ public class BiomesGen {
                 .precipitation(true)
                 .effects(new BiomeEffects.Builder()
                         .skyColor(9026303).fogColor(13037311).waterColor(3840969)
-                        .waterFogColor(1129027).grassColor(15519828).foliageColor(4122414)
+                        .waterFogColor(1129027).grassColor(0x4FE768).foliageColor(4122414)
+                        .grassColorModifier(GOLDEN_FOREST_MODIFIER.get())
                         .moodSound(BiomeMoodSound.CAVE)
                         .music(MusicType.createIngameMusic(SoundEvents.MUSIC_OVERWORLD_FOREST))
                         .build())
