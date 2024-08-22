@@ -15,9 +15,7 @@ import net.minecraft.util.math.intprovider.WeightedListIntProvider;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.PlacedFeature;
-import net.minecraft.world.gen.feature.PlacedFeatures;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 import net.minecraft.world.gen.placementmodifier.*;
 import ru.feytox.etherology.registry.block.DecoBlocks;
@@ -25,6 +23,7 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.world.feature.StructurePlacementModifier;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static ru.feytox.etherology.world.ConfiguredFeaturesGen.*;
 
@@ -41,14 +40,16 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> PATCH_THUJA = of("patch_thuja");
     public static final RegistryKey<PlacedFeature> ATTRAHITE = of("attrahite");
     public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_BONEMEAL = of("golden_forest_bonemeal");
+    public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_RED_MUSHROOM = of("golden_forest_red_mushroom");
+    public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_BROWN_MUSHROOM = of("golden_forest_brown_mushroom");
 
     public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
         register(context, PEACH_TREES, lookup.getOrThrow(PEACH_TREE),
                 CountPlacementModifier.of(new WeightedListIntProvider(DataPool.<IntProvider>builder()
-                        .add(ConstantIntProvider.create(3), 9)
-                        .add(ConstantIntProvider.create(4), 1)
+                        .add(ConstantIntProvider.create(1), 9)
+                        .add(ConstantIntProvider.create(2), 1)
                         .build())),
                 SquarePlacementModifier.of(),
                 SurfaceWaterDepthFilterPlacementModifier.of(0),
@@ -78,7 +79,7 @@ public class PlacedFeaturesGen {
         register(context, PATCH_LIGHTELET, lookup.getOrThrow(ConfiguredFeaturesGen.PATCH_LIGHTELET),
                 SquarePlacementModifier.of(),
                 HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
-                CountPlacementModifier.of(1),
+                CountPlacementModifier.of(2),
                 BiomePlacementModifier.of()
         );
         register(context, DISK_COARSE_DIRT, lookup.getOrThrow(ConfiguredFeaturesGen.DISK_COARSE_DIRT),
@@ -116,6 +117,8 @@ public class PlacedFeaturesGen {
                 BiomePlacementModifier.of()
         );
         register(context, GOLDEN_FOREST_BONEMEAL, lookup.getOrThrow(SINGLE_PIECE_OF_GRASS_LIGHTELET), PlacedFeatures.isAir());
+        register(context, GOLDEN_FOREST_RED_MUSHROOM, lookup.getOrThrow(VegetationConfiguredFeatures.PATCH_RED_MUSHROOM), mushroomModifiers());
+        register(context, GOLDEN_FOREST_BROWN_MUSHROOM, lookup.getOrThrow(VegetationConfiguredFeatures.PATCH_BROWN_MUSHROOM), mushroomModifiers());
     }
 
     public static RegistryKey<PlacedFeature> of(String name) {
@@ -123,6 +126,20 @@ public class PlacedFeaturesGen {
     }
 
     private static void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key, RegistryEntry<ConfiguredFeature<?, ?>> configuration, PlacementModifier... modifiers) {
-        context.register(key, new PlacedFeature(configuration, Arrays.stream(modifiers).toList()));
+        register(context, key, configuration, Arrays.stream(modifiers).toList());
+    }
+
+    private static void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key, RegistryEntry<ConfiguredFeature<?, ?>> configuration, List<PlacementModifier> modifiers) {
+        context.register(key, new PlacedFeature(configuration, modifiers));
+    }
+
+    /**
+     * @see VegetationPlacedFeatures#mushroomModifiers(int, PlacementModifier)
+     */
+    private static List<PlacementModifier> mushroomModifiers() {
+        return List.of(RarityFilterPlacementModifier.of(5),
+                HeightmapPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG),
+                SquarePlacementModifier.of(),
+                BiomePlacementModifier.of());
     }
 }

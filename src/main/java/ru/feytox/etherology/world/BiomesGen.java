@@ -53,6 +53,8 @@ public class BiomesGen {
         generationBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, PlacedFeaturesGen.ETHER_ROCKS);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PEACH_TREES);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.BIRCH_BRANCH_TREES);
+        generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.GOLDEN_FOREST_BROWN_MUSHROOM);
+        generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.GOLDEN_FOREST_RED_MUSHROOM);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.GOLDEN_FOREST_FLOWERS);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PATCH_LIGHTELET);
         generationBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION, PlacedFeaturesGen.PATCH_BEAMER);
