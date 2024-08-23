@@ -1,7 +1,6 @@
 package ru.feytox.etherology.block.sedimentary;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
@@ -66,12 +65,6 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         if (!state.get(SedimentaryStone.POWERED)) return;
         SedimentaryStone.executeOnStone(state, stone -> consumingTick(world, stone, state));
-    }
-
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (!state.get(SedimentaryStone.POWERED)) return;
-        SedimentaryStone.executeOnStone(state, stone -> tickZoneParticles(world, blockPos, stone.getZoneType()));
     }
 
     private void consumingTick(ServerWorld world, SedimentaryStone sedimentary, BlockState state) {

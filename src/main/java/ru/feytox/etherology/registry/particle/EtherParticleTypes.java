@@ -13,7 +13,6 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 public class EtherParticleTypes {
     public static final FeyParticleType<LightParticleEffect> LIGHT = register("light", LightParticleEffect::new);
     public static final FeyParticleType<SimpleParticleEffect> STEAM = register("steam", SimpleParticleEffect::new);
-    public static final FeyParticleType<ZoneParticleEffect> ZONE_PARTICLE = register("zone_particle", ZoneParticleEffect::new);
     public static final FeyParticleType<SparkParticleEffect> SPARK = register("spark", SparkParticleEffect::new);
     public static final FeyParticleType<ElectricityParticleEffect> ELECTRICITY1 = register("electricity1", ElectricityParticleEffect::new);
     public static final FeyParticleType<ElectricityParticleEffect> ELECTRICITY2 = register("electricity2", ElectricityParticleEffect::new);

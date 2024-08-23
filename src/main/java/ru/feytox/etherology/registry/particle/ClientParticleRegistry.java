@@ -21,7 +21,6 @@ public class ClientParticleRegistry {
     public static void registerAll() {
         register(LIGHT, LightParticle::new);
         register(STEAM, SteamParticle::new);
-        register(ZONE_PARTICLE, ZoneParticle::new);
         register(SPARK, SparkParticle::new);
         register(ELECTRICITY1, ElectricityParticle::new);
         register(ELECTRICITY2, ElectricityParticle::new);

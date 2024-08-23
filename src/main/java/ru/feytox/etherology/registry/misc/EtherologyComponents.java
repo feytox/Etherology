@@ -12,16 +12,12 @@ import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.magic.corruption.CorruptionComponent;
 import ru.feytox.etherology.magic.ether.EtherComponent;
-import ru.feytox.etherology.magic.zones.ZoneComponent;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 public class EtherologyComponents implements EntityComponentInitializer, ChunkComponentInitializer {
 
     public static final ComponentKey<CorruptionComponent> CORRUPTION =
             ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("corruption"), CorruptionComponent.class);
-
-    public static final ComponentKey<ZoneComponent> ESSENCE_ZONE =
-            ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("essence_zone"), ZoneComponent.class);
 
     public static final ComponentKey<EtherComponent> ETHER =
             ComponentRegistryV3.INSTANCE.getOrCreate(EIdentifier.of("ether"), EtherComponent.class);
@@ -33,12 +29,10 @@ public class EtherologyComponents implements EntityComponentInitializer, ChunkCo
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerFor(LivingEntity.class, ETHER, EtherComponent::new);
         registry.registerForPlayers(TELDECORE, TeldecoreComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
-
     }
 
     @Override
     public void registerChunkComponentFactories(@NotNull ChunkComponentFactoryRegistry registry) {
         registry.register(CORRUPTION, CorruptionComponent::new);
-        registry.register(ESSENCE_ZONE, ZoneComponent::new);
     }
 }

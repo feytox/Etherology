@@ -10,7 +10,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NonNull;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -21,21 +20,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.OculusAspectProvider;
-import ru.feytox.etherology.magic.zones.EssenceZone;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.magic.zones.ZoneComponent;
-import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
-import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.DoubleModel;
 import ru.feytox.etherology.util.misc.ItemUtils;
 import ru.feytox.etherology.util.misc.ScaledLabelComponent;
@@ -49,8 +42,6 @@ public class OculusItem extends Item implements DoubleModel {
     private static final FlowLayout displayedHud = createRoot();
     @Nullable
     private static CompletableFuture<Void> componentFuture = null;
-    private static final int ESSENCE_PARTICLE_Y_DISTANCE = 16;
-    private static final int ESSENCE_PARTICLE_CHUNK_DISTANCE = 1;
 
     public OculusItem() {
         super(new Settings().maxCount(1));
@@ -75,59 +66,13 @@ public class OculusItem extends Item implements DoubleModel {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-        if (!(entity instanceof ClientPlayerEntity player) || !world.isClient) return;
-        if (OculusItem.isUsing(player)) {
-            tickZoneParticles((ClientWorld) world, player);
-        }
+        if (!world.isClient) return;
         if (!selected) {
             displayedHud.clearChildren();
             return;
         }
 
         tickHud((ClientWorld) world);
-    }
-
-    private void tickZoneParticles(ClientWorld world, ClientPlayerEntity player) {
-        ChunkPos centerChunk = player.getChunkPos();
-        int d = ESSENCE_PARTICLE_CHUNK_DISTANCE;
-        for (int x = -d; x <= d; x++) {
-            for (int z = -d; z <= d; z++) {
-                trySpawnZoneParticles(world, player, centerChunk, x, z);
-            }
-        }
-    }
-
-    private void trySpawnZoneParticles(ClientWorld world, ClientPlayerEntity player, ChunkPos centerChunk, int x, int z) {
-        Chunk chunk = world.getChunk(x + centerChunk.x, z + centerChunk.z);
-        ZoneComponent zone = ZoneComponent.getZone(chunk);
-        if (zone == null || zone.isEmpty()) return;
-
-        EssenceZoneType zoneType = zone.getZoneType();
-        EssenceZone essenceZone = zone.getEssenceZone();
-        if (essenceZone == null) return;
-
-        spawnZoneParticles(world, player, chunk, zoneType, essenceZone);
-    }
-
-    private void spawnZoneParticles(ClientWorld world, ClientPlayerEntity player, Chunk chunk, EssenceZoneType zoneType, EssenceZone essenceZone) {
-        float k = essenceZone.getValue() / 64.0f;
-
-        int count = MathHelper.ceil(5 * k);
-        ChunkPos chunkPos = chunk.getPos();
-        int botY = player.getBlockY() - ESSENCE_PARTICLE_Y_DISTANCE;
-        int topY = player.getBlockY() + ESSENCE_PARTICLE_Y_DISTANCE;
-        BlockPos startPos = new BlockPos(chunkPos.getStartX(), botY, chunkPos.getStartZ());
-        BlockPos endPos = new BlockPos(chunkPos.getEndX(), topY, chunkPos.getEndZ());
-        Random random = world.getRandom();
-        
-        BlockPos.iterate(startPos, endPos).forEach(particlePos -> {
-            if (random.nextFloat() > k * 1/300f) return;
-            Vec3d pos = particlePos.toCenterPos();
-            Vec3d targetPos = pos.add(6 * (random.nextDouble() - 0.5d), 4 * (random.nextDouble() - 0.5d), 6 * (random.nextDouble() - 0.5d));
-
-            ZoneParticleEffect effect = new ZoneParticleEffect(EtherParticleTypes.ZONE_PARTICLE, zoneType, targetPos);
-            effect.spawnParticles(world, count, 0.5, pos);
-        });
     }
 
     private static void tickHud(@NonNull final ClientWorld world) {
