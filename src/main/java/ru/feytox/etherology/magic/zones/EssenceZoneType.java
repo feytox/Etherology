@@ -99,7 +99,7 @@ public enum EssenceZoneType implements StringIdentifiable {
     private static Integer closTest(World world, BlockPos centerPos, Random random) {
         BlockPos surfacePos = getSurfacePos(world, centerPos);
         RegistryEntry<Biome> biome = world.getBiome(surfacePos);
-        if (biome.isIn(BiomeTags.IS_OVERWORLD) && (surfacePos.getY() > 128 || biome.isIn(BiomeTags.IS_MOUNTAIN))) return surfacePos.getY();
+        if (biome.isIn(BiomeTags.IS_OVERWORLD) && (surfacePos.getY() > 100 || biome.isIn(BiomeTags.IS_MOUNTAIN))) return surfacePos.getY();
         if (biome.isIn(BiomeTags.IS_END) && random.nextFloat() <= RARE_CHANCE) return surfacePos.getY();
         return null;
     }
