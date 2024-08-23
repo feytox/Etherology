@@ -54,6 +54,8 @@ import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.block.tuningFork.TuningFork;
 import ru.feytox.etherology.block.tuningFork.TuningForkBlockEntity;
+import ru.feytox.etherology.block.zone.ZoneCoreBlock;
+import ru.feytox.etherology.block.zone.ZoneCoreBlockEntity;
 import ru.feytox.etherology.enums.FurnitureType;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -215,6 +217,13 @@ public class EBlocks {
             BlockEntityType.Builder.create(TuningForkBlockEntity::new, TUNING_FORK).build()
     );
 
+    public static final Block[] ZONE_CORES = registerZones();
+    public static final BlockEntityType<ZoneCoreBlockEntity> ZONE_CORE_BLOCK_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            EIdentifier.of("zone_core_block_entity"),
+            BlockEntityType.Builder.create(ZoneCoreBlockEntity::new, ZONE_CORES).build()
+    );
+
     public static void registerAll() {
         DecoBlocks.registerAll();
         DevBlocks.registerAll();
@@ -230,5 +239,13 @@ public class EBlocks {
 
     private static Block registerSedimentaryBlock(EssenceZoneType zoneType, EssenceLevel level) {
         return register(SedimentaryStone.createId(zoneType, level), new SedimentaryStone(zoneType, level)).withItem(false);
+    }
+
+    private static Block[] registerZones() {
+        return Arrays.stream(EssenceZoneType.values())
+                .filter(EssenceZoneType::isZone)
+                .map(zoneType -> register(ZoneCoreBlock.createId(zoneType), new ZoneCoreBlock(zoneType)))
+                .map(eBlock -> eBlock.withItem(false))
+                .toArray(Block[]::new);
     }
 }

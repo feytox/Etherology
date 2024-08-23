@@ -20,6 +20,7 @@ import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated
 @Slf4j
 @RequiredArgsConstructor
 public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponent {
@@ -132,11 +133,6 @@ public class ZoneComponent implements ServerTickingComponent, AutoSyncedComponen
         // TODO: 24.07.2023 change value
         this.essenceZone = new EssenceZone(MAX_VALUE);
         save();
-    }
-
-    public float getFillPercent() {
-        if (isEmpty() || essenceZone == null) return 0.0f;
-        return essenceZone.getValue() / MAX_VALUE;
     }
 
     @Override

@@ -16,9 +16,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.magic.zones.ZoneComponent;
+import ru.feytox.etherology.magic.zones.EssenceDetector;
+import ru.feytox.etherology.magic.zones.EssenceSupplier;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
@@ -31,11 +33,12 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.block.etherealGenerators.AbstractEtherealGenerator.STALLED;
 
-public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlockEntity implements EtherStorage, EGeoBlockEntity {
+public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlockEntity implements EtherStorage, EGeoBlockEntity, EssenceDetector {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float storedEther;
@@ -43,6 +46,8 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     private boolean isLaunched = false;
     private boolean isMess = false;
     private CompletableFuture<Boolean> messCheck = null;
+    @Nullable
+    private EssenceSupplier cachedZone;
 
     public AbstractEtherealGeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -143,7 +148,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
             if (isInZone && random.nextDouble() <= 0.5) nextGenTime -= random.nextBetween(0, 1);
             return;
         }
-        increment(1);
+        incrementEssence(1);
 
         if (getCachedState().getBlock() instanceof AbstractEtherealGenerator generator) {
             int min = generator.getMinCooldown();
@@ -157,8 +162,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     }
 
     public boolean isInZone(World world) {
-        ZoneComponent zoneComponent = ZoneComponent.getZone(world.getChunk(pos));
-        return zoneComponent != null && !zoneComponent.isEmpty();
+        return getAndCacheZone(world, pos).isPresent();
     }
 
     @Override
@@ -242,5 +246,15 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Override
+    public Optional<EssenceSupplier> getCachedZone() {
+        return Optional.ofNullable(cachedZone);
+    }
+
+    @Override
+    public void setCachedZone(EssenceSupplier zoneCore) {
+        cachedZone = zoneCore;
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.particle.effects.ZoneParticleEffect;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
@@ -17,16 +16,34 @@ import java.util.Optional;
 
 public interface EssenceConsumer {
 
+    int getRadius();
     float getConsumingValue();
-    void increment(float value);
+    void incrementEssence(float value);
+    Optional<EssenceSupplier> getCachedZone();
+    void setCachedZone(EssenceSupplier zoneCore);
+
+    default Optional<EssenceSupplier> getAndCacheZone(World world, BlockPos pos, EssenceZoneType blockType) {
+        if (getCachedZone().isPresent()) return getCachedZone();
+
+        int consumerRadius = getRadius();
+        Optional<EssenceSupplier> zoneOptional = BlockPos.findClosest(pos, consumerRadius, consumerRadius, blockPos -> {
+                    if (!(world.getBlockEntity(blockPos) instanceof EssenceSupplier essenceSupplier)) return false;
+                    return !blockType.isZone() || essenceSupplier.getZoneType().equals(blockType);
+                })
+                .map(blockPos -> (EssenceSupplier) world.getBlockEntity(blockPos))
+                .filter(essenceSupplier -> essenceSupplier.getPos().isWithinDistance(pos, essenceSupplier.getRadius()));
+
+        zoneOptional.ifPresent(this::setCachedZone);
+        return zoneOptional;
+    }
 
     default Optional<EssenceZoneType> tickConsuming(ServerWorld world, BlockPos pos, EssenceZoneType blockType) {
-        ZoneComponent zoneComponent = getZone(world, pos, blockType);
-        if (zoneComponent == null) return Optional.empty();
+        EssenceSupplier zone = getAndCacheZone(world, pos, blockType).orElse(null);
+        if (zone == null) return Optional.empty();
 
-        EssenceZoneType zoneType = zoneComponent.getZoneType();
-        float consumedPoints = zoneComponent.decrement(getConsumingValue());
-        increment(consumedPoints);
+        EssenceZoneType zoneType = zone.getZoneType();
+        float consumedPoints = zone.decrement(world, getConsumingValue());
+        incrementEssence(consumedPoints);
         return Optional.of(zoneType);
     }
 
@@ -35,14 +52,12 @@ public interface EssenceConsumer {
         if (player == null) return;
         if (!OculusItem.isUsing(player)) return;
 
-        ZoneComponent zoneComponent = getZone(world, pos, blockType);
-        if (zoneComponent == null) return;
-        EssenceZone zone = zoneComponent.getEssenceZone();
+        EssenceSupplier zone = getAndCacheZone(world, pos, blockType).orElse(null);
         if (zone == null) return;
 
-        float zonePercent = zone.getValue() / 64.0f;
+        float zonePercent = zone.getPoints() / 64.0f;
         int count = MathHelper.ceil(5 * zonePercent);
-        ZoneParticleEffect effect = new ZoneParticleEffect(EtherParticleTypes.ZONE_PARTICLE, zoneComponent.getZoneType(), pos.toCenterPos());
+        ZoneParticleEffect effect = new ZoneParticleEffect(EtherParticleTypes.ZONE_PARTICLE, zone.getZoneType(), pos.toCenterPos());
         Random random = world.getRandom();
 
         for (int dx = -2; dx <= 2; dx++) {
@@ -53,13 +68,5 @@ public interface EssenceConsumer {
                 }
             }
         }
-    }
-
-    @Nullable
-    default ZoneComponent getZone(World world, BlockPos pos, EssenceZoneType blockType) {
-        ZoneComponent zoneComponent = ZoneComponent.getZone(world.getChunk(pos));
-        if (zoneComponent == null || zoneComponent.isEmpty()) return null;
-        if (blockType.isZone() && !zoneComponent.getZoneType().equals(blockType)) return null;
-        return zoneComponent;
     }
 }

@@ -13,7 +13,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.block.zone.ZoneCoreBlockEntity;
 import ru.feytox.etherology.magic.zones.EssenceConsumer;
+import ru.feytox.etherology.magic.zones.EssenceSupplier;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.particle.info.SparkSedimentaryInfo;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
@@ -25,6 +27,8 @@ import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTI
 public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements EssenceConsumer {
 
     private static final float MAX_POINTS = 32.0f;
+    @Nullable
+    private EssenceSupplier cachedZone;
     private float points = 0;
 
     public SedimentaryStoneBlockEntity(BlockPos pos, BlockState state) {
@@ -88,9 +92,24 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     }
 
     @Override
-    public void increment(float value) {
+    public void incrementEssence(float value) {
         points += value;
         points = Math.min(MAX_POINTS, points);
+    }
+
+    @Override
+    public Optional<EssenceSupplier> getCachedZone() {
+        return Optional.ofNullable(cachedZone);
+    }
+
+    @Override
+    public void setCachedZone(EssenceSupplier zoneCore) {
+        cachedZone = zoneCore;
+    }
+
+    @Override
+    public int getRadius() {
+        return ZoneCoreBlockEntity.MAX_RADIUS;
     }
 
     @Override
