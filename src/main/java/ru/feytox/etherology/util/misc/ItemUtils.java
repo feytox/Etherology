@@ -14,7 +14,7 @@ import ru.feytox.etherology.Etherology;
 @UtilityClass
 public class ItemUtils {
 
-    public static boolean isUsingItem(LivingEntity entity, Class<? extends Item> itemClass) {
+    public static boolean isInHands(LivingEntity entity, Class<? extends Item> itemClass) {
         val items = entity.getHandItems();
         for (ItemStack stack : items) {
             if (itemClass.isInstance(stack.getItem())) return true;

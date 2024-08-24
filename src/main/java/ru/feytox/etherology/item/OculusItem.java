@@ -52,8 +52,8 @@ public class OculusItem extends Item implements DoubleModel {
         return EArmPose.OCULUS_ETHEROLOGY.getUseAction();
     }
 
-    public static boolean isUsing(LivingEntity entity) {
-        return ItemUtils.isUsingItem(entity, OculusItem.class);
+    public static boolean isInHands(LivingEntity entity) {
+        return ItemUtils.isInHands(entity, OculusItem.class);
     }
 
 

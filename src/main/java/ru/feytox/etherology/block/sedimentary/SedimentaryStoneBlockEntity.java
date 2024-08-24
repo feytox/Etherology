@@ -26,6 +26,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTI
 public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements EssenceConsumer {
 
     private static final float MAX_POINTS = 32.0f;
+    private static final float CONSUME_CHANCE = 0.85f;
     @Nullable
     private EssenceSupplier cachedZone;
     private float points = 0;
@@ -68,7 +69,8 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     }
 
     private void consumingTick(ServerWorld world, SedimentaryStone sedimentary, BlockState state) {
-        if (points >= MAX_POINTS || world.getTime() % 200 != 0) return;
+        if (points >= MAX_POINTS || world.getTime() % 170 != 0) return;
+        if (world.getRandom().nextFloat() > CONSUME_CHANCE) return;
         tickConsuming(world, pos, sedimentary.getZoneType()).ifPresent(zone -> updateBlockState(world, state, zone));
     }
 
