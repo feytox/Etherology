@@ -8,7 +8,7 @@ public interface EssenceSupplier {
     int getRadius();
     BlockPos getPos();
     EssenceZoneType getZoneType();
-    float getPoints();
     float getFillPercent();
     float decrement(ServerWorld world, float value);
+    boolean isAlive();
 }

@@ -126,7 +126,7 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
         ItemStack stack = SEDIMENTARY_STONE.asItem().getDefaultStack();
 
         RegistryEntry<Enchantment> silkTouch = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.SILK_TOUCH).orElse(null);
-        if (silkTouch != null && EnchantmentHelper.getEquipmentLevel(silkTouch, player) > 0) {
+        if (zoneType.isZone() && silkTouch != null && EnchantmentHelper.getEquipmentLevel(silkTouch, player) > 0) {
             stack = asItem().getDefaultStack();
             stack.applyComponentsFrom(sedimentary.createComponentMap());
         }

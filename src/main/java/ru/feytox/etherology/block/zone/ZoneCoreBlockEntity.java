@@ -55,6 +55,11 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
         return result;
     }
 
+    @Override
+    public boolean isAlive() {
+        return !isRemoved();
+    }
+
     private void onEmptied(ServerWorld world) {
         world.breakBlock(pos, false);
     }

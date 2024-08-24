@@ -100,10 +100,10 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
 
             // TODO: 18.06.2023 clamping
 
-            if (entity instanceof ServerPlayerEntity serverPlayerTarget && entity.velocityModified) {
-                serverPlayerTarget.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(entity));
-                entity.velocityModified = false;
-                entity.setVelocity(oldVelocity);
+            if (!world.isClient && entity instanceof ServerPlayerEntity player && player.velocityModified) {
+                player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
+                player.velocityModified = false;
+                player.setVelocity(oldVelocity);
             }
         }
     }

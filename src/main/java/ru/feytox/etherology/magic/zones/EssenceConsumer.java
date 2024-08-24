@@ -15,11 +15,12 @@ public interface EssenceConsumer {
     void setCachedZone(EssenceSupplier zoneCore);
 
     default Optional<EssenceSupplier> getAndCacheZone(World world, BlockPos pos, EssenceZoneType blockType) {
-        if (getCachedZone().isPresent()) return getCachedZone();
+        if (getCachedZone().filter(EssenceSupplier::isAlive).isPresent()) return getCachedZone();
 
         int consumerRadius = getRadius();
         Optional<EssenceSupplier> zoneOptional = BlockPos.findClosest(pos, consumerRadius, consumerRadius, blockPos -> {
                     if (!(world.getBlockEntity(blockPos) instanceof EssenceSupplier essenceSupplier)) return false;
+                    if (!essenceSupplier.isAlive()) return false;
                     return !blockType.isZone() || essenceSupplier.getZoneType().equals(blockType);
                 })
                 .map(blockPos -> (EssenceSupplier) world.getBlockEntity(blockPos))

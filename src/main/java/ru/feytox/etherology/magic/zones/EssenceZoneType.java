@@ -2,7 +2,6 @@ package ru.feytox.etherology.magic.zones;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +20,10 @@ import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.misc.CodecUtil;
 import ru.feytox.etherology.util.misc.RGBColor;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+// TODO: 24.08.2024 add a field for capitalized variant of zone name
 @Getter
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
@@ -57,14 +55,6 @@ public enum EssenceZoneType implements StringIdentifiable {
 
     public boolean isZone() {
         return generationSetting != null;
-    }
-
-    public static List<EssenceZoneType> getShuffledTypes(Random random) {
-        List<EssenceZoneType> zoneTypes = ObjectArrayList.of(KETA, RELLA, VIA, CLOS);
-        for (int i = zoneTypes.size(); i > 1; i--) {
-            Collections.swap(zoneTypes, i-1, random.nextInt(i));
-        }
-        return zoneTypes;
     }
 
     private static Integer ketaTest(World world, BlockPos centerPos, Random random) {

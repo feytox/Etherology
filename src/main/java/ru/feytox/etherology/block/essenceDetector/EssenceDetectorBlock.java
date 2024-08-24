@@ -1,6 +1,5 @@
 package ru.feytox.etherology.block.essenceDetector;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -31,9 +30,7 @@ public class EssenceDetectorBlock extends Block implements BlockEntityProvider, 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (type != ESSENCE_DETECTOR_BLOCK_ENTITY) return null;
-
-        return world.isClient ? EssenceDetectorBlockEntity::clientTicker : EssenceDetectorBlockEntity::serverTicker;
+        return EssenceDetectorBlockEntity.getTicker(world, type, ESSENCE_DETECTOR_BLOCK_ENTITY);
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
