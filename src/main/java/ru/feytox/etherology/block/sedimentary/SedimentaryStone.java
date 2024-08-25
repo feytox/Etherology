@@ -53,13 +53,11 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
 
     private final EssenceZoneType zoneType;
     private final EssenceLevel essenceLevel;
-    private final String zoneId;
 
     public SedimentaryStone(EssenceZoneType zoneType, EssenceLevel essenceLevel) {
         super(Settings.copy(Blocks.STONE));
         this.zoneType = zoneType;
         this.essenceLevel = essenceLevel;
-        this.zoneId = StringUtils.capitalize(zoneType.asString());
         TYPE_TO_STONE.put(new SedimentaryType(zoneType, essenceLevel), this);
 
         setDefaultState(getDefaultState().with(POWERED, false));
@@ -84,7 +82,7 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         super.appendTooltip(stack, context, tooltip, options);
-        if (zoneType.isZone()) tooltip.add(1, Text.translatable("lore.etherology.primoshard", zoneId).formatted(Formatting.DARK_PURPLE));
+        if (zoneType.isZone()) tooltip.add(1, Text.translatable("lore.etherology.primoshard", StringUtils.capitalize(zoneType.asString())).formatted(Formatting.DARK_PURPLE));
     }
 
     @Override

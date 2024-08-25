@@ -1,11 +1,18 @@
 package ru.feytox.etherology.util.misc;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.gui.DrawContext;
+import org.jetbrains.annotations.Nullable;
 
 public record Color(float red, float green, float blue) {
 
     public static Codec<Color> CODEC;
+
+    public static Color from(@Nullable RGBColor color) {
+        if (color == null) return of(0xFFFFFF);
+        return of(color.asHex());
+    }
 
     private static Color of(int hex) {
         float r = ((hex >> 16) & 0xFF) / 255f;
@@ -20,6 +27,10 @@ public record Color(float red, float green, float blue) {
 
     public void applyColor(DrawContext context) {
         context.setShaderColor(red, green, blue, 1.0f);
+    }
+
+    public void applyColor(float alpha) {
+        RenderSystem.setShaderColor(red, green, blue, alpha);
     }
 
     @Override

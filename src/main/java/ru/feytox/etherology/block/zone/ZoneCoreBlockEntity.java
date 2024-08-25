@@ -45,7 +45,7 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (world.getTime() % REFRESH_TIME == 0) ZoneCoreRenderer.refreshZone(pos, world.getTime());
+        if (world.getTime() % REFRESH_TIME == 0) ZoneCoreRenderer.refreshZone(pos, zoneType, world.getTime());
     }
 
     @Override

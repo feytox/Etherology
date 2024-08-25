@@ -33,6 +33,10 @@ public class RenderUtils {
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
+    public static void renderTexture(MatrixStack matrices, float x0, float y0, float z, int u, int v, float width, float height, int regionWidth, int regionHeight) {
+        renderTexture(matrices, x0, y0, z, u, v, width, height, regionWidth, regionHeight, regionWidth, regionHeight);
+    }
+
     public static void renderTexture(MatrixStack matrices, float x0, float y0, float z, int u, int v, float width, float height, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         val matrix = matrices.peek().getPositionMatrix();
         float x1 = x0 - width;

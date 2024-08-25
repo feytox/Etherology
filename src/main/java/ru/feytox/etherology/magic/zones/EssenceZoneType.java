@@ -3,12 +3,11 @@ package ru.feytox.etherology.magic.zones;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.item.Item;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -18,6 +17,7 @@ import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.util.misc.CodecUtil;
+import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RGBColor;
 
 import java.util.Optional;
@@ -25,11 +25,8 @@ import java.util.function.Supplier;
 
 // TODO: 24.08.2024 add a field for capitalized variant of zone name
 @Getter
-@NoArgsConstructor(force = true)
-@RequiredArgsConstructor
 public enum EssenceZoneType implements StringIdentifiable {
-    NOT_INITIALIZED,
-    EMPTY,
+    EMPTY(null, null, null, null),
     KETA(EssenceZoneType::ketaTest, () -> EItems.PRIMOSHARD_KETA, new RGBColor(128, 205, 247), new RGBColor(105, 128, 231)),
     RELLA(EssenceZoneType::rellaTest, () -> EItems.PRIMOSHARD_RELLA, new RGBColor(177, 229,106), new RGBColor(106, 182, 81)),
     VIA(EssenceZoneType::viaTest, () -> EItems.PRIMOSHARD_VIA, new RGBColor(248, 122, 95), new RGBColor(205, 58, 76)),
@@ -48,6 +45,21 @@ public enum EssenceZoneType implements StringIdentifiable {
     private final RGBColor startColor;
     @Nullable
     private final RGBColor endColor;
+    @Nullable
+    private final Identifier textureId;
+    @Nullable
+    private final Identifier textureLightId;
+
+    EssenceZoneType(GenerationSetting generationSetting, Supplier<Item> shardGetter, RGBColor startColor, RGBColor endColor) {
+        this.generationSetting = generationSetting;
+        this.shardGetter = shardGetter;
+        this.startColor = startColor;
+        this.endColor = endColor;
+
+        boolean isZone = generationSetting != null;
+        this.textureId = isZone ? EIdentifier.of("textures/block/%s_seal.png".formatted(asString())) : null;
+        this.textureLightId = isZone ? EIdentifier.of("textures/block/%s_seal_light.png".formatted(asString())) : null;
+    }
 
     public Optional<Item> getPrimoShard() {
         return Optional.ofNullable(shardGetter).map(Supplier::get);

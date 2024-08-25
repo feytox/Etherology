@@ -30,12 +30,10 @@ import java.util.List;
 public class ZoneCoreBlock extends Block implements BlockEntityProvider {
 
     private final EssenceZoneType zoneType;
-    private final String zoneId;
 
     public ZoneCoreBlock(EssenceZoneType zoneType) {
         super(Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().noCollision());
         this.zoneType = zoneType;
-        this.zoneId = StringUtils.capitalize(zoneType.asString());
     }
 
     @Override
@@ -58,7 +56,7 @@ public class ZoneCoreBlock extends Block implements BlockEntityProvider {
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         super.appendTooltip(stack, context, tooltip, options);
-        tooltip.add(1, Text.translatable("lore.etherology.primoshard", zoneId).formatted(Formatting.DARK_PURPLE));
+        tooltip.add(1, Text.translatable("lore.etherology.primoshard", StringUtils.capitalize(zoneType.asString())).formatted(Formatting.DARK_PURPLE));
     }
 
     @Override
