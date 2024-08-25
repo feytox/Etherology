@@ -24,6 +24,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.block.zone.ZoneCoreRenderer;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.Aspect;
@@ -56,7 +57,6 @@ public class OculusItem extends Item implements DoubleModel {
         return ItemUtils.isInHands(entity, OculusItem.class);
     }
 
-
     // TODO: 21.02.2024 move to another class
     @NonNull
     public static Component initHud() {
@@ -67,11 +67,12 @@ public class OculusItem extends Item implements DoubleModel {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (!world.isClient) return;
-        if (!selected) {
+        if (!selected && slot != 0) {
             displayedHud.clearChildren();
             return;
         }
 
+        ZoneCoreRenderer.refreshOculus(world.getTime());
         tickHud((ClientWorld) world);
     }
 

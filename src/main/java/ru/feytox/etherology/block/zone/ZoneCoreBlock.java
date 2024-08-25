@@ -6,6 +6,8 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.registry.block.EBlocks;
 
 import java.util.List;
 
@@ -56,6 +59,11 @@ public class ZoneCoreBlock extends Block implements BlockEntityProvider {
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         super.appendTooltip(stack, context, tooltip, options);
         tooltip.add(1, Text.translatable("lore.etherology.primoshard", zoneId).formatted(Formatting.DARK_PURPLE));
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return ZoneCoreBlockEntity.getTicker(world, type, EBlocks.ZONE_CORE_BLOCK_ENTITY);
     }
 
     @Override

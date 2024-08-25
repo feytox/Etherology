@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import ru.feytox.etherology.block.zone.ZoneCoreRenderer;
 import ru.feytox.etherology.model.custom.RevelationViewModel;
 import ru.feytox.etherology.registry.item.ArmorItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -36,6 +37,7 @@ public class RevelationViewItem extends TrinketItem implements TrinketRenderer {
         World world = entity.getWorld();
         if (world == null || !world.isClient) return;
         if (!(entity instanceof PlayerEntity player)) return;
+        ZoneCoreRenderer.refreshRevelation(world.getTime());
         RevelationViewRenderer.tickData(world, player);
     }
 

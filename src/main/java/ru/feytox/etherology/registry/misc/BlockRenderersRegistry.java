@@ -15,7 +15,6 @@ import ru.feytox.etherology.block.furniture.FurnitureBlockEntityRenderer;
 import ru.feytox.etherology.block.jewelryTable.JewelryTableRenderer;
 import ru.feytox.etherology.block.matrix.MatrixRenderer;
 import ru.feytox.etherology.block.pedestal.PedestalRenderer;
-import ru.feytox.etherology.block.zone.ZoneCoreBlockRenderer;
 
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 
@@ -33,7 +32,6 @@ public class BlockRenderersRegistry {
         register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
         register(ARMILLARY_MATRIX_BLOCK_ENTITY, MatrixRenderer::new);
         register(JEWELRY_TABLE_BLOCK_ENTITY, JewelryTableRenderer::new);
-        register(ZONE_CORE_BLOCK_ENTITY, ZoneCoreBlockRenderer::new);
     }
 
     private static <T extends BlockEntity> void register(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererFactory<T> rendererFactory) {

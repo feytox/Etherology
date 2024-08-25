@@ -2,6 +2,7 @@ package ru.feytox.etherology.block.zone;
 
 import lombok.Getter;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
@@ -18,6 +19,7 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
     private static final float MAX_POINTS = 256.0f;
     private static final int MIN_RADIUS = 8;
     public static final int MAX_RADIUS = 24;
+    private static final int REFRESH_TIME = ZoneCoreRenderer.LIFETIME / 4;
 
     @Getter
     private final EssenceZoneType zoneType;
@@ -39,6 +41,11 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
         this.maxPoints = percent * (MAX_POINTS - MIN_POINTS) + MIN_POINTS;
         this.points = maxPoints;
         this.radius = (int) (percent * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS);
+    }
+
+    @Override
+    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
+        if (world.getTime() % REFRESH_TIME == 0) ZoneCoreRenderer.refreshZone(pos, world.getTime());
     }
 
     @Override
