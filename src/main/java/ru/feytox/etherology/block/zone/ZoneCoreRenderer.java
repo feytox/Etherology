@@ -25,6 +25,7 @@ import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class ZoneCoreRenderer {
@@ -43,8 +44,8 @@ public class ZoneCoreRenderer {
         revelationLastTick = time;
     }
 
-    public static void refreshZone(BlockPos pos, EssenceZoneType zoneType, long time) {
-        zonesData.merge(pos, new Data(zoneType, Color.from(zoneType.getStartColor()), time), (oldData, data) -> {
+    public static void refreshZone(BlockPos pos, EssenceZoneType zoneType, Supplier<Boolean> isRemoved, long time) {
+        zonesData.merge(pos, new Data(zoneType, Color.from(zoneType.getEndColor()), isRemoved, time), (oldData, data) -> {
             if (!oldData.zoneType.equals(data.zoneType)) return data;
             oldData.lastTime = data.lastTime;
             return oldData;
@@ -61,7 +62,7 @@ public class ZoneCoreRenderer {
 
         boolean seeThrough = canSeeThrough(time);
 
-        zonesData.entrySet().removeIf(entry -> time - entry.getValue().lastTime > LIFETIME);
+        zonesData.entrySet().removeIf(entry -> entry.getValue().isRemoved.get() || time - entry.getValue().lastTime > LIFETIME);
         zonesData.forEach((pos, data) -> data.render(context, pos, time, seeThrough));
     }
 
@@ -77,13 +78,18 @@ public class ZoneCoreRenderer {
     private static class Data {
 
         private static final int DISPERSION_COOLDOWN = 5;
+        private static final int LIGHT_COOLDOWN = 5;
         private static final float DISPERSION_CHANCE = 0.2f;
+        private static final float LIGHT_CHANCE = 0.2f;
+        private static final int SEAL_TIMING = 10;
 
         private final EssenceZoneType zoneType;
         private final Color color;
+        private final Supplier<Boolean> isRemoved;
         @Setter
         private long lastTime;
         private final List<Dispersion> dispersions = new ObjectArrayList<>();
+        private final List<SealLight> sealLights = new ObjectArrayList<>();
 
         private void render(WorldRenderContext context, BlockPos pos, long time, boolean seeThrough) {
             MatrixStack matrices = context.matrixStack();
@@ -92,6 +98,7 @@ public class ZoneCoreRenderer {
             float tickDelta = context.tickCounter().getTickDelta(false);
             Camera camera = context.camera();
             Vec3d coreVec = pos.toCenterPos().subtract(camera.getPos());
+            Random random = context.world().getRandom();
 
             matrices.push();
             matrices.translate(coreVec.x, coreVec.y, coreVec.z);
@@ -99,11 +106,59 @@ public class ZoneCoreRenderer {
             RenderSystem.enableBlend();
             if (seeThrough) RenderSystem.disableDepthTest();
 
-            renderDispersions(matrices, context.world().getRandom(), time, tickDelta);
+            renderSeal(matrices, random, time, tickDelta);
+            renderDispersions(matrices, random, time, tickDelta);
 
             RenderSystem.disableBlend();
             if (seeThrough) RenderSystem.enableDepthTest();
             matrices.pop();
+        }
+
+        private void renderSeal(MatrixStack matrices, Random random, long time, float tickDelta) {
+            float percent = MathHelper.TAU * ((time+tickDelta) % SEAL_TIMING) / SEAL_TIMING;
+            double dx = 0.25d * Math.sin(100 * percent) + 0.3d * Math.cos(percent);
+            double dy = 0.25d * Math.cos(100 * percent) + 0.3d * Math.sin(percent);
+
+            matrices.push();
+            matrices.scale(2, 2, 2);
+
+            matrices.push();
+            renderSealLights(matrices, random, time, tickDelta);
+            matrices.pop();
+
+            RenderSystem.setShaderTexture(0, zoneType.getTextureId());
+
+            matrices.push();
+            matrices.translate(dx+32, dy+32, 0);
+            RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+            matrices.pop();
+
+            matrices.push();
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotation(MathHelper.PI));
+            matrices.translate(dx+32, dy+32, 0);
+            RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+            matrices.pop();
+
+            matrices.pop();
+        }
+
+        private void renderSealLights(MatrixStack matrices, Random random, long time, float tickDelta) {
+            refreshLights(random, time, tickDelta);
+            sealLights.forEach(sealLight -> sealLight.render(matrices, zoneType.getTextureLightId(), time, tickDelta));
+        }
+
+        private void refreshLights(Random random, long time, float tickDelta) {
+            sealLights.removeIf(sealLight -> sealLight.isDead(time, tickDelta));
+
+            if (time % LIGHT_COOLDOWN != 0) return;
+            if (random.nextFloat() > LIGHT_CHANCE) return;
+
+            int maxAge = random.nextBetween(20, 30);
+            float targetDx = MathHelper.lerp(random.nextFloat(), -5, 5);
+            float targetDy = MathHelper.lerp(random.nextFloat(), -5, 5);
+            float targetRoll = MathHelper.lerp(random.nextFloat(), -0.15f, 0.15f);
+
+            sealLights.add(new SealLight(maxAge, time, targetDx, targetDy, targetRoll));
         }
 
         private void renderDispersions(MatrixStack matrices, Random random, long time, float tickDelta) {
@@ -123,6 +178,38 @@ public class ZoneCoreRenderer {
             float roll = random.nextFloat() * MathHelper.TAU;
 
             dispersions.add(new Dispersion(maxAge, time, yaw, pitch, roll));
+        }
+    }
+
+    private record SealLight(int maxAge, long spawnTime, float targetDx, float targetDy, float targetRoll) {
+
+        private boolean isDead(long time, float tickDelta) {
+            return time - spawnTime + tickDelta > maxAge;
+        }
+
+        private void render(MatrixStack matrices, Identifier texture, long time, float tickDelta) {
+            float percent = (time - spawnTime + tickDelta) / maxAge;
+            float alpha = 1.0f - percent;
+
+            matrices.push();
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
+
+            RenderSystem.setShaderTexture(0, texture);
+            renderFace(matrices, percent);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotation(MathHelper.PI));
+            renderFace(matrices, percent);
+
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            matrices.pop();
+        }
+
+        private void renderFace(MatrixStack matrices, float percent) {
+            matrices.push();
+            matrices.translate(targetDx * percent, targetDy + percent, 0.1);
+            matrices.multiply(new Quaternionf().rotateLocalZ(targetRoll * percent));
+            matrices.translate(32, 32, 0);
+            RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+            matrices.pop();
         }
     }
 
