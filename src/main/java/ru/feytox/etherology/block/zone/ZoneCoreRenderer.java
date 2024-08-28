@@ -78,9 +78,9 @@ public class ZoneCoreRenderer {
     private static class Data {
 
         private static final int DISPERSION_COOLDOWN = 5;
-        private static final int LIGHT_COOLDOWN = 5;
+        private static final int LIGHT_COOLDOWN = 10;
         private static final float DISPERSION_CHANCE = 0.2f;
-        private static final float LIGHT_CHANCE = 0.2f;
+        private static final float LIGHT_CHANCE = 0.15f;
         private static final int SEAL_TIMING = 10;
 
         private final EssenceZoneType zoneType;
@@ -104,6 +104,7 @@ public class ZoneCoreRenderer {
             matrices.translate(coreVec.x, coreVec.y, coreVec.z);
             matrices.scale(1 / 128f, 1 / 128f, 1 / 128f);
             RenderSystem.enableBlend();
+            RenderSystem.depthMask(false);
             if (seeThrough) RenderSystem.disableDepthTest();
 
             renderSeal(matrices, random, time, tickDelta);
@@ -144,7 +145,10 @@ public class ZoneCoreRenderer {
 
         private void renderSealLights(MatrixStack matrices, Random random, long time, float tickDelta) {
             refreshLights(random, time, tickDelta);
-            sealLights.forEach(sealLight -> sealLight.render(matrices, zoneType.getTextureLightId(), time, tickDelta));
+            for (int i = 0, sealLightsSize = sealLights.size(); i < sealLightsSize; i++) {
+                SealLight sealLight = sealLights.get(i);
+                sealLight.render(matrices, zoneType.getTextureLightId(), time, tickDelta, i*0.01f);
+            }
         }
 
         private void refreshLights(Random random, long time, float tickDelta) {
@@ -187,25 +191,27 @@ public class ZoneCoreRenderer {
             return time - spawnTime + tickDelta > maxAge;
         }
 
-        private void render(MatrixStack matrices, Identifier texture, long time, float tickDelta) {
+        private void render(MatrixStack matrices, Identifier texture, long time, float tickDelta, float dz) {
             float percent = (time - spawnTime + tickDelta) / maxAge;
             float alpha = 1.0f - percent;
+            float scale = MathHelper.lerp(percent, 0.9f, 0.75f);
 
             matrices.push();
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
 
+            matrices.scale(scale, scale, scale);
             RenderSystem.setShaderTexture(0, texture);
-            renderFace(matrices, percent);
+            renderFace(matrices, percent, dz);
             matrices.multiply(RotationAxis.POSITIVE_Y.rotation(MathHelper.PI));
-            renderFace(matrices, percent);
+            renderFace(matrices, percent, dz);
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             matrices.pop();
         }
 
-        private void renderFace(MatrixStack matrices, float percent) {
+        private void renderFace(MatrixStack matrices, float percent, float dz) {
             matrices.push();
-            matrices.translate(targetDx * percent, targetDy + percent, 0.1);
+            matrices.translate(targetDx * percent, targetDy + percent, 0.1+dz);
             matrices.multiply(new Quaternionf().rotateLocalZ(targetRoll * percent));
             matrices.translate(32, 32, 0);
             RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
