@@ -34,7 +34,7 @@ import java.util.Optional;
 @Getter
 public class ZoneCoreBlock extends Block implements BlockEntityProvider {
 
-    private static final float ROTATE_ANGLE = 15.0f;
+    private static final float ROTATE_ANGLE = 45.0f;
     private final EssenceZoneType zoneType;
 
     public ZoneCoreBlock(EssenceZoneType zoneType) {
@@ -44,18 +44,21 @@ public class ZoneCoreBlock extends Block implements BlockEntityProvider {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        return tryRotateZone(world, pos, player, hit).orElse(super.onUse(state, world, pos, player, hit));
+        return tryRotateZone(world, pos, player).orElse(super.onUse(state, world, pos, player, hit));
     }
 
-    private Optional<ActionResult> tryRotateZone(World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    private Optional<ActionResult> tryRotateZone(World world, BlockPos pos, PlayerEntity player) {
         if (!(world.getBlockEntity(pos) instanceof ZoneCoreBlockEntity zoneCore)) return Optional.empty();
 
-        boolean isNegative = player.isSneaking();
-        if (hit.getSide().getAxis().isHorizontal()) zoneCore.setPitch(zoneCore.getPitch()+ROTATE_ANGLE * (isNegative ? -1 : 1));
-        else zoneCore.setYaw(zoneCore.getYaw()+ROTATE_ANGLE * (isNegative ? -1 : 1));
+        zoneCore.setPitch(toAngle(player.getPitch()));
+        zoneCore.setYaw(toAngle(-player.getYaw()));
 
         if (world instanceof ServerWorld serverWorld) zoneCore.syncData(serverWorld);
         return Optional.of(ActionResult.success(world.isClient));
+    }
+
+    private float toAngle(float playerAngle) {
+        return Math.round(playerAngle / ROTATE_ANGLE) * ROTATE_ANGLE;
     }
 
     @Override
