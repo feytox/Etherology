@@ -9,13 +9,17 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -25,15 +29,33 @@ import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.registry.block.EBlocks;
 
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class ZoneCoreBlock extends Block implements BlockEntityProvider {
 
+    private static final float ROTATE_ANGLE = 15.0f;
     private final EssenceZoneType zoneType;
 
     public ZoneCoreBlock(EssenceZoneType zoneType) {
         super(Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().noCollision());
         this.zoneType = zoneType;
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        return tryRotateZone(world, pos, player, hit).orElse(super.onUse(state, world, pos, player, hit));
+    }
+
+    private Optional<ActionResult> tryRotateZone(World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (!(world.getBlockEntity(pos) instanceof ZoneCoreBlockEntity zoneCore)) return Optional.empty();
+
+        boolean isNegative = player.isSneaking();
+        if (hit.getSide().getAxis().isHorizontal()) zoneCore.setPitch(zoneCore.getPitch()+ROTATE_ANGLE * (isNegative ? -1 : 1));
+        else zoneCore.setYaw(zoneCore.getYaw()+ROTATE_ANGLE * (isNegative ? -1 : 1));
+
+        if (world instanceof ServerWorld serverWorld) zoneCore.syncData(serverWorld);
+        return Optional.of(ActionResult.success(world.isClient));
     }
 
     @Override

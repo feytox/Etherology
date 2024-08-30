@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
@@ -25,7 +24,6 @@ import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class ZoneCoreRenderer {
@@ -44,8 +42,8 @@ public class ZoneCoreRenderer {
         revelationLastTick = time;
     }
 
-    public static void refreshZone(BlockPos pos, EssenceZoneType zoneType, Supplier<Boolean> isRemoved, long time) {
-        zonesData.merge(pos, new Data(zoneType, Color.from(zoneType.getEndColor()), isRemoved, time), (oldData, data) -> {
+    public static void refreshZone(ZoneCoreBlockEntity blockEntity, BlockPos pos, EssenceZoneType zoneType, long time) {
+        zonesData.merge(pos, new Data(blockEntity, zoneType, Color.from(zoneType.getEndColor()), time), (oldData, data) -> {
             if (!oldData.zoneType.equals(data.zoneType)) return data;
             oldData.lastTime = data.lastTime;
             return oldData;
@@ -62,7 +60,7 @@ public class ZoneCoreRenderer {
 
         boolean seeThrough = canSeeThrough(time);
 
-        zonesData.entrySet().removeIf(entry -> entry.getValue().isRemoved.get() || time - entry.getValue().lastTime > LIFETIME);
+        zonesData.entrySet().removeIf(entry -> entry.getValue().blockEntity.isRemoved() || time - entry.getValue().lastTime > LIFETIME);
         zonesData.forEach((pos, data) -> data.render(context, pos, time, seeThrough));
     }
 
@@ -83,10 +81,9 @@ public class ZoneCoreRenderer {
         private static final float LIGHT_CHANCE = 0.15f;
         private static final int SEAL_TIMING = 10;
 
+        private final ZoneCoreBlockEntity blockEntity;
         private final EssenceZoneType zoneType;
         private final Color color;
-        private final Supplier<Boolean> isRemoved;
-        @Setter
         private long lastTime;
         private final List<Dispersion> dispersions = new ObjectArrayList<>();
         private final List<SealLight> sealLights = new ObjectArrayList<>();
@@ -102,6 +99,8 @@ public class ZoneCoreRenderer {
 
             matrices.push();
             matrices.translate(coreVec.x, coreVec.y, coreVec.z);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(blockEntity.getYaw()));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(blockEntity.getPitch()));
             matrices.scale(1 / 128f, 1 / 128f, 1 / 128f);
             RenderSystem.enableBlend();
             RenderSystem.depthMask(false);

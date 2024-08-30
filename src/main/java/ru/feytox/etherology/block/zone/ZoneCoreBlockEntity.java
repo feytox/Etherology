@@ -13,6 +13,7 @@ import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
+@Getter
 public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceSupplier {
 
     private static final float MIN_POINTS = 64.0f;
@@ -21,13 +22,12 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
     public static final int MAX_RADIUS = 24;
     private static final int REFRESH_TIME = ZoneCoreRenderer.LIFETIME / 4;
 
-    @Getter
     private final EssenceZoneType zoneType;
-    @Getter
     private int radius;
-    @Getter
     private float points;
     private float maxPoints;
+    private float pitch;
+    private float yaw;
 
     public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
         this(pos, state, ((ZoneCoreBlock) state.getBlock()).getZoneType());
@@ -45,7 +45,7 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (world.getTime() % REFRESH_TIME == 0) ZoneCoreRenderer.refreshZone(pos, zoneType, this::isRemoved, world.getTime());
+        if (world.getTime() % REFRESH_TIME == 0) ZoneCoreRenderer.refreshZone(this, pos, zoneType, world.getTime());
     }
 
     @Override
@@ -71,11 +71,21 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
         world.breakBlock(pos, false);
     }
 
+    public void setYaw(float yaw) {
+        this.yaw = yaw % 360;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch % 360;
+    }
+
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putFloat("max_points", maxPoints);
         nbt.putInt("radius", radius);
         nbt.putFloat("points", points);
+        nbt.putFloat("pitch", pitch);
+        nbt.putFloat("yaw", yaw);
 
         super.writeNbt(nbt, registryLookup);
     }
@@ -87,5 +97,7 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
         maxPoints = nbt.getFloat("max_points");
         radius = nbt.getInt("radius");
         points = nbt.getInt("points");
+        pitch = nbt.getFloat("pitch");
+        yaw = nbt.getFloat("yaw");
     }
 }
