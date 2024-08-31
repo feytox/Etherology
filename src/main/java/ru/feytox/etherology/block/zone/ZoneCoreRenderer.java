@@ -60,7 +60,7 @@ public class ZoneCoreRenderer {
 
         boolean seeThrough = canSeeThrough(time);
 
-        zonesData.entrySet().removeIf(entry -> entry.getValue().blockEntity.isRemoved() || time - entry.getValue().lastTime > LIFETIME);
+        zonesData.entrySet().removeIf(entry -> entry.getValue().zoneCore.isRemoved() || time - entry.getValue().lastTime > LIFETIME);
         zonesData.forEach((pos, data) -> data.render(context, pos, time, seeThrough));
     }
 
@@ -78,10 +78,10 @@ public class ZoneCoreRenderer {
         private static final int DISPERSION_COOLDOWN = 5;
         private static final int LIGHT_COOLDOWN = 10;
         private static final float DISPERSION_CHANCE = 0.2f;
-        private static final float LIGHT_CHANCE = 0.15f;
+        private static final float LIGHT_CHANCE = 0.3f;
         private static final int SEAL_TIMING = 10;
 
-        private final ZoneCoreBlockEntity blockEntity;
+        private final ZoneCoreBlockEntity zoneCore;
         private final EssenceZoneType zoneType;
         private final Color color;
         private long lastTime;
@@ -92,6 +92,7 @@ public class ZoneCoreRenderer {
             MatrixStack matrices = context.matrixStack();
             if (matrices == null) return;
 
+            float scale = 1/100f * MathHelper.lerp(zoneCore.getScale(), 1.0f, 2.0f);
             float tickDelta = context.tickCounter().getTickDelta(false);
             Camera camera = context.camera();
             Vec3d coreVec = pos.toCenterPos().subtract(camera.getPos());
@@ -99,22 +100,20 @@ public class ZoneCoreRenderer {
 
             matrices.push();
             matrices.translate(coreVec.x, coreVec.y, coreVec.z);
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(blockEntity.getYaw()));
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(blockEntity.getPitch()));
-            matrices.scale(1 / 128f, 1 / 128f, 1 / 128f);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(zoneCore.getYaw()));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(zoneCore.getPitch()));
+            matrices.scale(scale, scale, scale);
             RenderSystem.enableBlend();
             RenderSystem.depthMask(false);
-            if (seeThrough) RenderSystem.disableDepthTest();
 
-            renderSeal(matrices, random, time, tickDelta);
+            renderSeal(matrices, random, time, tickDelta, seeThrough);
             renderDispersions(matrices, random, time, tickDelta);
 
             RenderSystem.disableBlend();
-            if (seeThrough) RenderSystem.enableDepthTest();
             matrices.pop();
         }
 
-        private void renderSeal(MatrixStack matrices, Random random, long time, float tickDelta) {
+        private void renderSeal(MatrixStack matrices, Random random, long time, float tickDelta, boolean seeThrough) {
             float percent = MathHelper.TAU * ((time+tickDelta) % SEAL_TIMING) / SEAL_TIMING;
             double dx = 0.25d * Math.sin(100 * percent) + 0.3d * Math.cos(percent);
             double dy = 0.25d * Math.cos(100 * percent) + 0.3d * Math.sin(percent);
@@ -123,7 +122,9 @@ public class ZoneCoreRenderer {
             matrices.scale(2, 2, 2);
 
             matrices.push();
+            if (seeThrough) RenderSystem.disableDepthTest();
             renderSealLights(matrices, random, time, tickDelta);
+            if (seeThrough) RenderSystem.enableDepthTest();
             matrices.pop();
 
             RenderSystem.setShaderTexture(0, zoneType.getTextureId());
@@ -144,9 +145,10 @@ public class ZoneCoreRenderer {
 
         private void renderSealLights(MatrixStack matrices, Random random, long time, float tickDelta) {
             refreshLights(random, time, tickDelta);
+            float fillPercent = zoneCore.getFillPercent();
             for (int i = 0, sealLightsSize = sealLights.size(); i < sealLightsSize; i++) {
                 SealLight sealLight = sealLights.get(i);
-                sealLight.render(matrices, zoneType.getTextureLightId(), time, tickDelta, i*0.01f);
+                sealLight.render(matrices, zoneType.getTextureLightId(), time, fillPercent, tickDelta, i*0.01f);
             }
         }
 
@@ -190,9 +192,9 @@ public class ZoneCoreRenderer {
             return time - spawnTime + tickDelta > maxAge;
         }
 
-        private void render(MatrixStack matrices, Identifier texture, long time, float tickDelta, float dz) {
+        private void render(MatrixStack matrices, Identifier texture, long time, float fillPercent, float tickDelta, float dz) {
             float percent = (time - spawnTime + tickDelta) / maxAge;
-            float alpha = 1.0f - percent;
+            float alpha = Math.max(0.0f, fillPercent - percent);
             float scale = MathHelper.lerp(percent, 0.9f, 0.75f);
 
             matrices.push();

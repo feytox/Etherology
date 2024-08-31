@@ -53,6 +53,10 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
         return points / maxPoints;
     }
 
+    public float getScale() {
+        return (maxPoints - MIN_POINTS) / (MAX_POINTS - MIN_POINTS);
+    }
+
     @Override
     public float decrement(ServerWorld world, float value) {
         float result = Math.min(points, value);

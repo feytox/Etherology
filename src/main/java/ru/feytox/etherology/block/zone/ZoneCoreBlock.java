@@ -65,7 +65,7 @@ public class ZoneCoreBlock extends Block implements BlockEntityProvider {
     protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         Vec3d collisionVec = entity.getBoundingBox().getCenter().subtract(pos.toCenterPos());
         collisionVec = collisionVec.multiply(1 / Math.max(0.001d, collisionVec.length()))
-                .multiply(0.2d);
+                .multiply(0.1d);
 
         Vec3d oldVelocity = entity.getVelocity();
         Vec3d newVelocity = oldVelocity.add(collisionVec);
