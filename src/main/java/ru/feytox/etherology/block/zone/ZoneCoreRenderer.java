@@ -3,7 +3,7 @@ package ru.feytox.etherology.block.zone;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
@@ -43,9 +43,9 @@ public class ZoneCoreRenderer {
     }
 
     public static void refreshZone(ZoneCoreBlockEntity blockEntity, BlockPos pos, EssenceZoneType zoneType, long time) {
-        zonesData.merge(pos, new Data(blockEntity, zoneType, Color.from(zoneType.getEndColor()), time), (oldData, data) -> {
+        zonesData.merge(pos, new Data(blockEntity, zoneType, Color.from(zoneType.getEndColor())).setTime(time), (oldData, data) -> {
             if (!oldData.zoneType.equals(data.zoneType)) return data;
-            oldData.lastTime = data.lastTime;
+            oldData.setTime(data.lastTime);
             return oldData;
         });
     }
@@ -72,21 +72,27 @@ public class ZoneCoreRenderer {
         return time - oculusLastTick <= VISIBLE_COOLDOWN;
     }
 
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     private static class Data {
 
         private static final int DISPERSION_COOLDOWN = 5;
-        private static final int LIGHT_COOLDOWN = 10;
-        private static final float DISPERSION_CHANCE = 0.2f;
-        private static final float LIGHT_CHANCE = 0.3f;
+        private static final float DISPERSION_CHANCE = 0.1f;
+        private static final float LIGHT_CHANCE = 0.05f;
         private static final int SEAL_TIMING = 10;
 
         private final ZoneCoreBlockEntity zoneCore;
         private final EssenceZoneType zoneType;
         private final Color color;
         private long lastTime;
+        private long lastDispersionTime;
+        private long lastLightTime;
         private final List<Dispersion> dispersions = new ObjectArrayList<>();
         private final List<SealLight> sealLights = new ObjectArrayList<>();
+
+        private Data setTime(long lastTime) {
+            this.lastTime = lastTime;
+            return this;
+        }
 
         private void render(WorldRenderContext context, BlockPos pos, long time, boolean seeThrough) {
             MatrixStack matrices = context.matrixStack();
@@ -155,13 +161,14 @@ public class ZoneCoreRenderer {
         private void refreshLights(Random random, long time, float tickDelta) {
             sealLights.removeIf(sealLight -> sealLight.isDead(time, tickDelta));
 
-            if (time % LIGHT_COOLDOWN != 0) return;
+            if (time == lastLightTime) return;
             if (random.nextFloat() > LIGHT_CHANCE) return;
 
             int maxAge = random.nextBetween(20, 30);
             float targetDx = MathHelper.lerp(random.nextFloat(), -5, 5);
             float targetDy = MathHelper.lerp(random.nextFloat(), -5, 5);
             float targetRoll = MathHelper.lerp(random.nextFloat(), -0.15f, 0.15f);
+            lastLightTime = time;
 
             sealLights.add(new SealLight(maxAge, time, targetDx, targetDy, targetRoll));
         }
@@ -174,13 +181,14 @@ public class ZoneCoreRenderer {
         private void refreshDispersions(Random random, long time, float tickDelta) {
             dispersions.removeIf(dispersion -> dispersion.isDead(time, tickDelta));
 
-            if (time % DISPERSION_COOLDOWN != 0) return;
+            if (time == lastDispersionTime || time % DISPERSION_COOLDOWN != 0) return;
             if (random.nextFloat() > DISPERSION_CHANCE) return;
 
             int maxAge = random.nextBetween(30, 50);
             float yaw = random.nextFloat() * MathHelper.TAU;
             float pitch = random.nextFloat() * MathHelper.TAU;
             float roll = random.nextFloat() * MathHelper.TAU;
+            lastDispersionTime = time;
 
             dispersions.add(new Dispersion(maxAge, time, yaw, pitch, roll));
         }
