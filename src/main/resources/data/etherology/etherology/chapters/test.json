@@ -19,6 +19,8 @@
     {"type": "recipe", "id": "etherology:forest_lantern_crumb"},
     {"type": "recipe", "id": "etherology:binder"},
     {"type": "recipe", "id": "etherology:glint_shard"},
-    {"type": "recipe", "id": "etherology:test_armillary"}
+    {"type": "recipe", "id": "etherology:test_armillary"},
+    {"type": "recipe", "id": "etherology:redstone_lens"},
+    {"type": "recipe", "id": "etherology:area"}
   ]
 }

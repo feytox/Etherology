@@ -27,7 +27,7 @@ public class MatrixRecipeDisplay extends AbstractRecipeDisplay<MatrixRecipe> {
         // 5 27 49
         List<Aspect> aspects = recipe.getAspects();
         for (int i = 0; i < aspects.size(); i++) {
-            slots.add(FeySlot.of(aspects.get(i), 1, x+71, y+5+i*22).skipCount());
+            slots.add(FeySlot.of(aspects.get(i), 1, x+71, y+4+i*22).skipCount());
         }
 
         return slots;
