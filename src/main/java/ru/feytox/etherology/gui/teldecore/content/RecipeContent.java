@@ -19,6 +19,7 @@ import ru.feytox.etherology.gui.teldecore.recipe.*;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 import ru.feytox.etherology.recipes.alchemy.AlchemyRecipeSerializer;
 import ru.feytox.etherology.recipes.empower.EmpowerRecipeSerializer;
+import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.misc.RecipesRegistry;
 
 import java.util.Map;
@@ -83,6 +84,7 @@ public class RecipeContent extends AbstractContent {
         DISPLAYS.add(EmpowerRecipeSerializer.INSTANCE, EmpowerRecipeDisplay::new, 123, 72);
         DISPLAYS.add(RecipeType.SMELTING, SmeltingRecipeDisplay::new, 123, 76);
         DISPLAYS.add(AlchemyRecipeSerializer.INSTANCE, AlchemyRecipeDisplay::new, 123, 72);
+        DISPLAYS.add(MatrixRecipeSerializer.INSTANCE, MatrixRecipeDisplay::new, 123, 72);
     }
 
     static {

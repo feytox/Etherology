@@ -55,19 +55,19 @@ public abstract class FeySlot implements FeyIngredient {
         return of(ingredient, x, y, 16, 16);
     }
 
-    public static FeySlot of(Aspect aspect, Integer count, float x, float y) {
+    public static AspectSlot of(Aspect aspect, Integer count, float x, float y) {
         return of(aspect, count, x, y, 16, 16);
     }
 
-    public static FeySlot of(Aspect aspect, int count, float x, float y, float width, float height) {
+    public static AspectSlot of(Aspect aspect, int count, float x, float y, float width, float height) {
         return new AspectSlot(aspect, count, x, y, width, height);
     }
 
-    public static FeySlot drawable(DrawableElement drawable, float x, float y, float width, float height) {
+    public static Drawable drawable(DrawableElement drawable, float x, float y, float width, float height) {
         return new Drawable(drawable, x, y, width, height);
     }
 
-    private static class Item extends FeySlot {
+    public static class Item extends FeySlot {
 
         private final ItemStack stack;
 
@@ -97,7 +97,7 @@ public abstract class FeySlot implements FeyIngredient {
         }
     }
 
-    private static class IngredientSlot extends FeySlot {
+    public static class IngredientSlot extends FeySlot {
 
         private final ItemStack[] stacks;
 
@@ -134,13 +134,19 @@ public abstract class FeySlot implements FeyIngredient {
         }
     }
 
-    private static class AspectSlot extends FeySlot {
+    public static class AspectSlot extends FeySlot {
 
         private final CountedAspect aspectPair;
+        private boolean skipCount;
 
         public AspectSlot(Aspect aspect, int count, float x, float y, float width, float height) {
             super(x, y, width, height);
             this.aspectPair = new CountedAspect(aspect, count);
+        }
+
+        public AspectSlot skipCount() {
+            skipCount = true;
+            return this;
         }
 
         @Override
@@ -155,6 +161,7 @@ public abstract class FeySlot implements FeyIngredient {
             RenderSystem.disableBlend();
             context.pop();
 
+            if (skipCount) return;
             String count = Integer.toString(aspectPair.count());
 
             context.push();
@@ -175,7 +182,7 @@ public abstract class FeySlot implements FeyIngredient {
         }
     }
 
-    private static class EmptySlot extends FeySlot {
+    public static class EmptySlot extends FeySlot {
 
         public EmptySlot(float x, float y, float width, float height) {
             super(x, y, width, height);
@@ -203,7 +210,7 @@ public abstract class FeySlot implements FeyIngredient {
         }
     }
 
-    private static class Drawable extends FeySlot {
+    public static class Drawable extends FeySlot {
 
         private final DrawableElement drawable;
 
