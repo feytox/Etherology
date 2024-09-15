@@ -3,6 +3,8 @@ package ru.feytox.etherology.gui.teldecore.page;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.util.Identifier;
@@ -29,6 +31,8 @@ public abstract class AbstractPage extends ParentedWidget {
     @Getter
     private float contentHeight;
     private final List<ParentedWidget> widgets = new ObjectArrayList<>();
+    @Setter
+    private int pageIndex = -1;
 
     public AbstractPage(TeldecoreScreen parent, Identifier pageTexture, boolean isLeft, float contentStart, float contentEnd) {
         super(parent);
@@ -69,6 +73,15 @@ public abstract class AbstractPage extends ParentedWidget {
         RenderSystem.setShaderTexture(0, pageTexture);
         RenderUtils.renderTexture(context, pageX, pageY, isLeft ? 0 : PAGE_WIDTH, 0, PAGE_WIDTH, PAGE_HEIGHT, PAGE_WIDTH, PAGE_HEIGHT, PAGE_WIDTH*2, PAGE_HEIGHT);
         renderPage(context, pageX, pageY, mouseX, mouseY, delta);
+        renderPageIndex(context);
+    }
+
+    public void renderPageIndex(DrawContext context) {
+        if (this.pageIndex == -1) return;
+        String pageIndex = String.valueOf(this.pageIndex);
+        float x = pageX + (PAGE_WIDTH - textRenderer.getWidth(pageIndex)) / 2f;
+        float y = pageY + PAGE_HEIGHT - 10;
+        textRenderer.draw(pageIndex, x, y, 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
     }
 
     @Override

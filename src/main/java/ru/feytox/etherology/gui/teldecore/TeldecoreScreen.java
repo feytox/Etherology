@@ -166,6 +166,7 @@ public class TeldecoreScreen extends Screen implements FocusedIngredientProvider
     private void addPage(AbstractPage page, int pageId, int pages) {
         addDrawableChild(page);
         page.initContent();
+        page.setPageIndex(pageId+1);
         if (page.isLeft() && pageId > 0) addDrawableChild(TurnPageButton.of(this, true));
         if (!page.isLeft() && pageId+1 < pages) addDrawableChild(TurnPageButton.of(this, false));
     }
