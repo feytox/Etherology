@@ -18,8 +18,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.joml.Quaternionf;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
-import ru.feytox.etherology.util.misc.Color;
-import ru.feytox.etherology.util.misc.EIdentifier;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class ZoneCoreRenderer {
     }
 
     public static void refreshZone(ZoneCoreBlockEntity blockEntity, BlockPos pos, EssenceZoneType zoneType, long time) {
-        zonesData.merge(pos, new Data(blockEntity, zoneType, Color.from(zoneType.getEndColor())).setTime(time), (oldData, data) -> {
+        zonesData.merge(pos, new Data(blockEntity, zoneType).setTime(time), (oldData, data) -> {
             if (!oldData.zoneType.equals(data.zoneType)) return data;
             oldData.setTime(data.lastTime);
             return oldData;
@@ -75,18 +73,13 @@ public class ZoneCoreRenderer {
     @RequiredArgsConstructor
     private static class Data {
 
-        private static final int DISPERSION_COOLDOWN = 5;
-        private static final float DISPERSION_CHANCE = 0.1f;
         private static final float LIGHT_CHANCE = 0.05f;
         private static final int SEAL_TIMING = 10;
 
         private final ZoneCoreBlockEntity zoneCore;
         private final EssenceZoneType zoneType;
-        private final Color color;
         private long lastTime;
-        private long lastDispersionTime;
         private long lastLightTime;
-        private final List<Dispersion> dispersions = new ObjectArrayList<>();
         private final List<SealLight> sealLights = new ObjectArrayList<>();
 
         private Data setTime(long lastTime) {
@@ -113,7 +106,6 @@ public class ZoneCoreRenderer {
             RenderSystem.depthMask(false);
 
             renderSeal(matrices, random, time, tickDelta, seeThrough);
-            renderDispersions(matrices, random, time, tickDelta);
 
             RenderSystem.disableBlend();
             matrices.pop();
@@ -172,26 +164,6 @@ public class ZoneCoreRenderer {
 
             sealLights.add(new SealLight(maxAge, time, targetDx, targetDy, targetRoll));
         }
-
-        private void renderDispersions(MatrixStack matrices, Random random, long time, float tickDelta) {
-            refreshDispersions(random, time, tickDelta);
-            dispersions.forEach(dispersion -> dispersion.render(matrices, color, time, tickDelta));
-        }
-
-        private void refreshDispersions(Random random, long time, float tickDelta) {
-            dispersions.removeIf(dispersion -> dispersion.isDead(time, tickDelta));
-
-            if (time == lastDispersionTime || time % DISPERSION_COOLDOWN != 0) return;
-            if (random.nextFloat() > DISPERSION_CHANCE) return;
-
-            int maxAge = random.nextBetween(30, 50);
-            float yaw = random.nextFloat() * MathHelper.TAU;
-            float pitch = random.nextFloat() * MathHelper.TAU;
-            float roll = random.nextFloat() * MathHelper.TAU;
-            lastDispersionTime = time;
-
-            dispersions.add(new Dispersion(maxAge, time, yaw, pitch, roll));
-        }
     }
 
     private record SealLight(int maxAge, long spawnTime, float targetDx, float targetDy, float targetRoll) {
@@ -224,39 +196,6 @@ public class ZoneCoreRenderer {
             matrices.multiply(new Quaternionf().rotateLocalZ(targetRoll * percent));
             matrices.translate(32, 32, 0);
             RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
-            matrices.pop();
-        }
-    }
-
-    private record Dispersion(int maxAge, long spawnTime, float yaw, float pitch, float roll) {
-
-        private static final Identifier DISPERSION = EIdentifier.of("textures/block/seal_dispersion.png");
-        private static final float MAX_SCALE = 2.0f;
-
-        private boolean isDead(long time, float tickDelta) {
-            return time - spawnTime + tickDelta > maxAge;
-        }
-
-        private void render(MatrixStack matrices, Color color, long time, float tickDelta) {
-            float percent = (time - spawnTime + tickDelta) / maxAge;
-            float alpha = 0.5f - Math.abs(percent - 0.5f);
-            float scale = MathHelper.lerp(percent, 1.0f, MAX_SCALE);
-            float angle = percent * MathHelper.TAU;
-
-            matrices.push();
-            color.applyColor(alpha);
-
-            matrices.scale(scale, scale, scale);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotation(roll));
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotation(yaw));
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotation(pitch));
-            matrices.multiply(new Quaternionf().rotateLocalZ(angle));
-
-            matrices.translate(32, 32, 0);
-            RenderSystem.setShaderTexture(0, DISPERSION);
-            RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
-
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             matrices.pop();
         }
     }
