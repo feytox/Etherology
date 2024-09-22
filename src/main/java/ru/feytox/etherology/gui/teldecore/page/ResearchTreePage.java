@@ -34,9 +34,9 @@ public class ResearchTreePage extends AbstractPage {
 
     public ResearchTreePage(TeldecoreScreen parent, TeldecoreComponent data, ResearchTree grid, Function<Identifier, Chapter> idToChapter, boolean isLeft) {
         super(parent, TEXTURE, isLeft, 10, 186);
-        this.buttons = grid.toButtons(parent, data, idToChapter, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 32f);
+        this.buttons = grid.toButtons(parent, data, idToChapter, getPageX() + PAGE_WIDTH/2f, getPageY()+19, 36f);
         this.maxY = Math.max(0f, this.buttons.stream().map(ChapterButton::getDy).max(Float::compare).orElse(0f) - PAGE_HEIGHT+52f);
-        this.lines = grid.toLines(data, idToChapter, 32f);
+        this.lines = grid.toLines(data, idToChapter, 36f);
         this.slider = new SliderButton(parent, getPageX()+(isLeft ? 1f : 131f), getPageY()+2, maxY != 0, dy -> {
             deltaY = -maxY * dy / SLIDER_LENGTH;
             updateButtonsPos();
@@ -66,7 +66,7 @@ public class ResearchTreePage extends AbstractPage {
         lines.forEach(line -> {
             Vec2f start = line.start();
             Vec2f end = line.end();
-            int color = line.glowing() ? ColorHelper.Argb.withAlpha(alpha, 0xAE9C89) : 0xFFAE9C89;
+            int color = line.glowing() ? ColorHelper.Argb.withAlpha(alpha, 0xF6F2E3) : 0xFFF6F2E3;
             RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, color);
         });
     }

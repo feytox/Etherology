@@ -1,5 +1,6 @@
 package ru.feytox.etherology.gui.teldecore.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.util.Identifier;
@@ -56,7 +57,9 @@ public abstract class AbstractButton extends ParentedWidget {
         Identifier texture = hoveredTexture == null || !hovered ? this.texture : hoveredTexture;
         context.push();
         context.translate(baseX, baseY, 0);
+        RenderSystem.enableBlend();
         context.drawTexture(texture, 0, 0, 0, 0, width, height, width, height);
+        RenderSystem.disableBlend();
         context.pop();
         renderExtra(context, hovered);
     }

@@ -1,5 +1,5 @@
 {
-  "type": "important",
+  "type": "new_tab",
   "icon": "minecraft:dirt",
   "title": "text.teldecore.test.title",
   "desc": "text.teldecore.test.desc",

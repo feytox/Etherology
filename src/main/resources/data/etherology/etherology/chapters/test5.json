@@ -1,5 +1,5 @@
 {
-  "type": "required",
+  "type": "quest",
   "icon": "minecraft:dirt",
   "title": "text.teldecore.test.title",
   "desc": "text.teldecore.test.desc",

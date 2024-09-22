@@ -1,5 +1,5 @@
 {
-  "type": "required",
+  "type": "quest",
   "icon": "etherology:teldecore",
   "title": "text.teldecore.test.title",
   "desc": "text.teldecore.test.desc",

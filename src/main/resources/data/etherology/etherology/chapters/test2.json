@@ -1,5 +1,5 @@
 {
-  "type": "required",
+  "type": "quest",
   "icon": "minecraft:diamond",
   "title": "text.teldecore.test.title",
   "desc": "text.teldecore.test.desc",

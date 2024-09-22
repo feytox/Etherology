@@ -25,7 +25,7 @@ public class ChapterButton extends AbstractButton {
     private final boolean isSubTab;
 
     public ChapterButton(TeldecoreScreen parent, Identifier texture, Identifier target, ItemStack icon, List<Text> tooltip, boolean wasOpened, boolean isSubTab, float rootX, float rootY, float dx, float dy) {
-        super(parent, texture, null, rootX, rootY, dx-13, dy-13, 26, 26);
+        super(parent, texture, null, rootX, rootY, dx-16, dy-16, 32, 32);
         this.target = target;
         this.icon = icon;
         this.dx = dx-13;

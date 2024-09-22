@@ -1,5 +1,5 @@
 {
-  "type": "important",
+  "type": "new_tab",
   "icon": "minecraft:stone",
   "title": "text.teldecore.test.title",
   "desc": "text.teldecore.test.desc",
