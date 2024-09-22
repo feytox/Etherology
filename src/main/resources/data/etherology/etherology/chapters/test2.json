@@ -18,7 +18,9 @@
     ],
     "tasks": [
       {"type": "item", "item": "minecraft:diamond", "count": 3},
-      {"type": "item", "item": "etherology:oculus", "consume": false}
+      {"type": "item", "item": "etherology:oculus", "consume": false},
+      {"type": "biome", "id": "minecraft:plains"},
+      {"type": "biome", "id": "etherology:golden_forest"}
     ]
   }
 }

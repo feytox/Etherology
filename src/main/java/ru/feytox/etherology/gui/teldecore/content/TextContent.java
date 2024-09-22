@@ -37,7 +37,7 @@ public class TextContent extends AbstractContent {
     public float getHeight(TextRenderer textRenderer) {
         List<OrderedText> rows = wrapText(textRenderer);
         int size = rows.size();
-        return TEXT_HEIGHT * size + TEXT_SPACE * (size-1);
+        return TEXT_HEIGHT * size + TEXT_SPACE * (size - 1);
     }
 
     // TODO: 30.07.2024 consider caching rows
@@ -68,7 +68,7 @@ public class TextContent extends AbstractContent {
         @Override
         public void render(DrawContext context, int mouseX, int mouseY, float delta) {
             for (int i = 0; i < textRows.size(); i++) {
-                textRenderer.draw(textRows.get(i), baseX, baseY + i*(TEXT_HEIGHT+TEXT_SPACE), 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+                TeldecoreScreen.renderText(context, textRenderer, textRows.get(i), baseX, baseY + i * (TEXT_HEIGHT + TEXT_SPACE));
             }
         }
 
@@ -78,7 +78,8 @@ public class TextContent extends AbstractContent {
         }
 
         @Override
-        public void appendNarrations(NarrationMessageBuilder builder) {}
+        public void appendNarrations(NarrationMessageBuilder builder) {
+        }
     }
 
     static {

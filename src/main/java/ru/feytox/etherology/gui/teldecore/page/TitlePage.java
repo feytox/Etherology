@@ -1,6 +1,5 @@
 package ru.feytox.etherology.gui.teldecore.page;
 
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -24,6 +23,6 @@ public class TitlePage extends AbstractPage {
     public void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta) {
         float x = pageX + (PAGE_WIDTH - textRenderer.getWidth(title)) / 2f;
         float y = pageY + 8;
-        textRenderer.draw(title, x, y, 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+        TeldecoreScreen.renderText(context, textRenderer, title, x, y);
     }
 }

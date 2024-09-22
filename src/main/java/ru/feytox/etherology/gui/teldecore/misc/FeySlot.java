@@ -7,10 +7,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.util.misc.CountedAspect;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
 @RequiredArgsConstructor @Getter
 public abstract class FeySlot implements FeyIngredient {
@@ -38,7 +41,7 @@ public abstract class FeySlot implements FeyIngredient {
     }
 
     public static FeySlot of(ItemStack stack, float x, float y, float width, float height) {
-        if (stack.isEmpty()) return new EmptySlot(x, y, width, height);
+        if (stack.isEmpty()) return empty(x, y);
         return new Item(stack, x, y, width, height);
     }
 
@@ -47,7 +50,7 @@ public abstract class FeySlot implements FeyIngredient {
     }
 
     public static FeySlot of(Ingredient ingredient, float x, float y, float width, float height) {
-        if (ingredient.isEmpty()) return new EmptySlot(x, y, width, height);
+        if (ingredient.isEmpty()) return empty(x, y);
         return new IngredientSlot(ingredient, x, y, width, height);
     }
 
@@ -65,6 +68,10 @@ public abstract class FeySlot implements FeyIngredient {
 
     public static Drawable drawable(DrawableElement drawable, float x, float y, float width, float height) {
         return new Drawable(drawable, x, y, width, height);
+    }
+
+    public static EmptySlot empty(float x, float y) {
+        return new EmptySlot(x, y, 0, 0);
     }
 
     public static class Item extends FeySlot {
@@ -179,6 +186,62 @@ public abstract class FeySlot implements FeyIngredient {
         @Override
         public Object getContent() {
             return aspectPair;
+        }
+    }
+
+    public static class ItemTask extends Item {
+
+        private static final Identifier CHECK = EIdentifier.of("textures/gui/teldecore/quest/quest_check.png");
+
+        private final boolean isCompleted;
+
+        public ItemTask(ItemStack stack, boolean isCompleted, float x, float y, float width, float height) {
+            super(stack, x, y, width, height);
+            this.isCompleted = isCompleted;
+        }
+
+        @Override
+        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+            super.render(context, mouseX, mouseY, delta);
+            if (!isCompleted) return;
+
+            context.push();
+            context.translate(x, y, 500);
+            context.scale(width / 16f, height / 16f, 1);
+            context.drawTexture(CHECK, 0, 0, 0, 0, 16, 16, 16, 16);
+            context.pop();
+        }
+
+        @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
+            context.push();
+            context.translate(0, 0, 510);
+            super.renderTooltip(context, mouseX, mouseY);
+            context.pop();
+        }
+    }
+
+    // TODO: 22.09.2024 change when icon is ready
+    public static class SearchTask extends ItemTask {
+
+        private final Text target;
+
+        public SearchTask(Text target, boolean isCompleted, float x, float y, float width, float height) {
+            super(Items.GRASS_BLOCK.getDefaultStack(), isCompleted, x, y, width, height);
+            this.target = target;
+        }
+
+        @Override
+        public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
+            context.push();
+            context.translate(0, 0, 510);
+            context.drawTooltip(textRenderer, target, mouseX, mouseY);
+            context.pop();
+        }
+
+        @Override
+        public boolean canBeFocused() {
+            return false;
         }
     }
 

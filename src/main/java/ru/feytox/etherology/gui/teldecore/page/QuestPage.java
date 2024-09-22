@@ -1,8 +1,7 @@
 package ru.feytox.etherology.gui.teldecore.page;
 
-import net.minecraft.client.font.TextRenderer;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -14,39 +13,43 @@ import ru.feytox.etherology.gui.teldecore.misc.FeySlot;
 import ru.feytox.etherology.gui.teldecore.misc.FocusedIngredientProvider;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
+import java.util.EnumMap;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Map;
 
-public class QuestPage extends AbstractPage implements FocusedIngredientProvider {
+public class QuestPage extends TitlePage implements FocusedIngredientProvider {
 
-    private static final Identifier TEXTURE = EIdentifier.of("textures/gui/teldecore/page/quest.png");
+    private static final Identifier CAP = EIdentifier.of("textures/gui/teldecore/quest/quest_cap.png");
 
     private final List<FeySlot> tasks;
-    private final OrderedText title;
     private final Quest quest;
     private final Identifier chapterId;
 
     public QuestPage(TeldecoreScreen parent, Quest quest, Identifier chapterId, boolean isLeft) {
-        super(parent, TEXTURE, isLeft, 31, 145);
-        this.tasks = IntStream.range(0, quest.tasks().size())
-                .mapToObj(i -> quest.tasks().get(i).toSlot(getPageX()+i*20+(isLeft ? 8 : 156), getPageY()+165, 16, 16))
-                .toList();
-        this.title = Text.translatable(quest.titleKey()).asOrderedText();
+        super(parent, Text.translatable(quest.titleKey()), isLeft, false);
         this.quest = quest;
         this.chapterId = chapterId;
+
+        Map<TaskType, Integer> typesCount = new EnumMap<>(TaskType.class);
+        this.tasks = new ObjectArrayList<>();
+        quest.tasks().forEach(task -> {
+            int i = typesCount.getOrDefault(task.getTaskType(), 0);
+            FeySlot slot = task.toSlot(getPageX() + i * 20 + (isLeft ? 24 : 170), getPageY() + 146 + task.getTaskType().getDy(), 16, 16);
+            typesCount.put(task.getTaskType(), i+1);
+            tasks.add(slot);
+        });
     }
 
     @Override
     public void initContent() {
         super.initContent();
-        addDrawableChild(new QuestButton(parent, quest, chapterId, getPageX(), getPageY(), 112+(isLeft() ? 0 : 5), 165));
+        addDrawableChild(new QuestButton(parent, quest, chapterId, getPageX(), getPageY(), (PAGE_WIDTH - QuestButton.WIDTH - 9) / 2f, PAGE_HEIGHT - 65));
     }
 
     @Override
     public void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta) {
-        float titleX = pageX + (PAGE_WIDTH - textRenderer.getWidth(title)) / 2f;
-        float titleY = pageY + 8;
-        textRenderer.draw(title, titleX, titleY, 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+        super.renderPage(context, pageX, pageY, mouseX, mouseY, delta);
+        renderQuestBackground(context, pageX, pageY);
 
         tasks.forEach(slot -> slot.render(context, mouseX, mouseY, delta));
         tasks.forEach(slot -> {
@@ -54,7 +57,22 @@ public class QuestPage extends AbstractPage implements FocusedIngredientProvider
         });
     }
 
-    @Override @Nullable
+    private void renderQuestBackground(DrawContext context, float pageX, float pageY) {
+        context.push();
+
+        context.translate(pageX + 8, pageY + PAGE_HEIGHT - 60, 0);
+        context.drawTexture(CAP, 0, 0, 0, 0, 118, 1, 118, 1);
+
+        context.translate(0, 12, 0);
+        for (TaskType taskType : TaskType.values()) {
+            taskType.render(context);
+        }
+
+        context.pop();
+    }
+
+    @Override
+    @Nullable
     public FeyIngredient getFocusedIngredient(int mouseX, int mouseY) {
         return tasks.stream().filter(FeySlot::canBeFocused)
                 .filter(slot -> slot.isMouseOver(mouseX, mouseY)).findAny().orElse(null);

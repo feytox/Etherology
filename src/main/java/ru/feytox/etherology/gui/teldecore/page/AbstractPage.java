@@ -4,9 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
@@ -78,10 +79,10 @@ public abstract class AbstractPage extends ParentedWidget {
 
     public void renderPageIndex(DrawContext context) {
         if (this.pageIndex == -1) return;
-        String pageIndex = String.valueOf(this.pageIndex);
+        OrderedText pageIndex = Text.literal(String.valueOf(this.pageIndex)).asOrderedText();
         float x = pageX + (PAGE_WIDTH - textRenderer.getWidth(pageIndex)) / 2f;
         float y = pageY + PAGE_HEIGHT - 10;
-        textRenderer.draw(pageIndex, x, y, 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+        TeldecoreScreen.renderText(context, textRenderer, pageIndex, x, y);
     }
 
     @Override

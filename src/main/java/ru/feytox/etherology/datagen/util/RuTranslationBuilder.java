@@ -2,7 +2,6 @@ package ru.feytox.etherology.datagen.util;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -48,8 +47,10 @@ public class RuTranslationBuilder {
         builder.add(key, value);
     }
 
-    public void add(RegistryKey<Enchantment> enchantment, String value) {
-        builder.add(enchantment.getValue().toTranslationKey("enchantment"), value);
+    public void add(RegistryKey<?> registryKey, String value) {
+        String[] splittedPrefix = registryKey.getRegistry().getPath().split("/");
+        String prefix = splittedPrefix[splittedPrefix.length-1];
+        builder.add(registryKey.getValue().toTranslationKey(prefix), value);
     }
 
     public void add(TagKey<?> tag, String value) {

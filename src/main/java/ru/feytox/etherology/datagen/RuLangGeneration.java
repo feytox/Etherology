@@ -15,6 +15,7 @@ import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
 import ru.feytox.etherology.registry.misc.EffectsRegistry;
 import ru.feytox.etherology.registry.misc.EtherEnchantments;
+import ru.feytox.etherology.registry.world.WorldGenRegistry;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -241,6 +242,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EItemTags.TUNING_MACES, "Tuning Maces");
         builder.add(EItemTags.SEDIMENTARY_STONES, "Осадочные камни");
         builder.add(EBlockTags.SEDIMENTARY_STONES, "Осадочные камни");
+
+        builder.add(WorldGenRegistry.GOLDEN_FOREST, "Златолесье");
 
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/" + Etherology.MOD_ID + "/lang/" + langCode + ".existing.json").orElse(null);

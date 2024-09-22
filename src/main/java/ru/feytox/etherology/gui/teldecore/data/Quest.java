@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
 import ru.feytox.etherology.gui.teldecore.task.AbstractTask;
+import ru.feytox.etherology.gui.teldecore.task.BiomeTask;
 import ru.feytox.etherology.gui.teldecore.task.ItemTask;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 
@@ -20,6 +21,12 @@ public record Quest(String titleKey, List<AbstractTask> tasks, List<AbstractCont
     private static final Map<String, MapCodec<? extends AbstractTask>> TASK_TYPES;
     private static final Codec<AbstractTask> TASK_CODEC;
     public static final Codec<Quest> CODEC;
+
+    public static Quest createAndReload(String titleKey, List<AbstractTask> tasks, List<AbstractContent> contents) {
+        Quest quest = new Quest(titleKey, tasks, contents);
+        quest.tasks.forEach(AbstractTask::onLoad);
+        return quest;
+    }
 
     public boolean isCompleted(@Nullable PlayerEntity player) {
         if (player == null) return false;
@@ -36,14 +43,14 @@ public record Quest(String titleKey, List<AbstractTask> tasks, List<AbstractCont
     }
 
     static {
-        TASK_TYPES = Map.of("item", ItemTask.CODEC);
+        TASK_TYPES = Map.of("item", ItemTask.CODEC, "biome", BiomeTask.CODEC);
         TASK_CODEC = Codec.STRING.dispatch(AbstractTask::getType, TASK_TYPES::get);
 
         CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("title").forGetter(q -> q.titleKey),
                 TASK_CODEC.listOf().fieldOf("tasks").forGetter(q -> q.tasks),
                 Chapter.CONTENT_CODEC.listOf().fieldOf("content").forGetter(q -> q.contents)
-        ).apply(instance, Quest::new));
+        ).apply(instance, Quest::createAndReload));
     }
 
 }

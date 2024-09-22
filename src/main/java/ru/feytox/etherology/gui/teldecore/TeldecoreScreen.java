@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -210,5 +211,13 @@ public class TeldecoreScreen extends Screen implements FocusedIngredientProvider
             if (!(child instanceof FocusedIngredientProvider provider)) return null;
             return provider.getFocusedIngredient(mouseX, mouseY);
         }).filter(Objects::nonNull).findAny().orElse(null);
+    }
+
+    public static void renderText(DrawContext context, TextRenderer textRenderer, Text text, float x, float y) {
+        textRenderer.draw(text, x, y, 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+    }
+
+    public static void renderText(DrawContext context, TextRenderer textRenderer, OrderedText text, float x, float y) {
+        textRenderer.draw(text, x, y, 0x70523D, false, context.getMatrices().peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL, 0, 15728880);
     }
 }

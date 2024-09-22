@@ -9,6 +9,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
+import ru.feytox.etherology.gui.teldecore.misc.VisitedComponent;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
@@ -106,9 +107,11 @@ public class DevCommands {
         PlayerEntity player = context.getSource().getPlayer();
         if (player == null) return 0;
         TeldecoreComponent data = EtherologyComponents.TELDECORE.getNullable(player);
-        if (data == null) return 0;
+        VisitedComponent visitedData = EtherologyComponents.VISITED.getNullable(player);
+        if (data == null || visitedData == null) return 0;
 
         data.resetAllData();
+        visitedData.resetAll();
         return 1;
     }
 }
