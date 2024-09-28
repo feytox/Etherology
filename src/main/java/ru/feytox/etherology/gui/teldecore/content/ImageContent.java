@@ -25,8 +25,8 @@ public class ImageContent extends AbstractContent {
     private final int textureHeight;
     private final float height;
 
-    public ImageContent(Identifier texture, int textureWidth, int textureHeight, float offsetUp, float offsetDown) {
-        super(offsetUp, offsetDown);
+    public ImageContent(Identifier texture, int textureWidth, int textureHeight, float offsetUp, float offsetDown, ContentBehaviour behaviour) {
+        super(offsetUp, offsetDown, behaviour);
         this.texture = texture;
         this.height = textureHeight * (MAX_WIDTH / textureWidth);
         this.textureWidth = textureWidth;
@@ -78,6 +78,6 @@ public class ImageContent extends AbstractContent {
                 Identifier.CODEC.fieldOf("path").forGetter(c -> c.texture),
                 Codec.INT.fieldOf("texture_width").forGetter(c -> c.textureWidth),
                 Codec.INT.fieldOf("texture_height").forGetter(c -> c.textureHeight),
-                codecOffsetUp(), codecOffsetDown()).apply(instance, ImageContent::new));
+                codecOffsetUp(), codecOffsetDown(), codecBehaviour()).apply(instance, ImageContent::new));
     }
 }

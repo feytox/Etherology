@@ -13,6 +13,7 @@ public abstract class AbstractContent {
 
     private final float offsetUp;
     private final float offsetDown;
+    private final ContentBehaviour behaviour;
 
     public abstract String getType();
     public abstract float getHeight(TextRenderer textRenderer);
@@ -24,5 +25,9 @@ public abstract class AbstractContent {
 
     protected static <T extends AbstractContent> RecordCodecBuilder<T, Float> codecOffsetDown() {
         return Codec.FLOAT.optionalFieldOf("down", 8f).forGetter(AbstractContent::getOffsetDown);
+    }
+
+    protected static <T extends AbstractContent> RecordCodecBuilder<T, ContentBehaviour> codecBehaviour() {
+        return ContentBehaviour.CODEC.optionalFieldOf("show", ContentBehaviour.ALWAYS).forGetter(AbstractContent::getBehaviour);
     }
 }

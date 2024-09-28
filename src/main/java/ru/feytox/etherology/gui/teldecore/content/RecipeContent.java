@@ -37,8 +37,8 @@ public class RecipeContent extends AbstractContent {
     private final Identifier recipeId;
     private Recipe<?> cachedRecipe = null;
 
-    private RecipeContent(Identifier recipeId, float offsetUp, float offsetDown) {
-        super(offsetUp, offsetDown);
+    private RecipeContent(Identifier recipeId, float offsetUp, float offsetDown, ContentBehaviour behaviour) {
+        super(offsetUp, offsetDown, behaviour);
         this.recipeId = recipeId;
     }
 
@@ -94,7 +94,7 @@ public class RecipeContent extends AbstractContent {
     static {
         CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Identifier.CODEC.fieldOf("id").forGetter(c -> c.recipeId),
-                codecOffsetUp(), codecOffsetDown()
+                codecOffsetUp(), codecOffsetDown(), codecBehaviour()
         ).apply(instance, RecipeContent::new));
         registerDisplays();
     }

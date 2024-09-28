@@ -28,8 +28,8 @@ public class TextContent extends AbstractContent {
     @NonNull
     private final String textKey;
 
-    public TextContent(@NotNull String textKey, float offsetUp, float offsetDown) {
-        super(offsetUp, offsetDown);
+    public TextContent(@NotNull String textKey, float offsetUp, float offsetDown, ContentBehaviour behaviour) {
+        super(offsetUp, offsetDown, behaviour);
         this.textKey = textKey;
     }
 
@@ -85,6 +85,6 @@ public class TextContent extends AbstractContent {
     static {
         CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.STRING.fieldOf("text").forGetter(c -> c.textKey),
-                codecOffsetUp(), codecOffsetDown()).apply(instance, TextContent::new));
+                codecOffsetUp(), codecOffsetDown(), codecBehaviour()).apply(instance, TextContent::new));
     }
 }

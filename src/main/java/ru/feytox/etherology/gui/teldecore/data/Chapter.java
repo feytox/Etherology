@@ -63,11 +63,15 @@ public class Chapter {
             pages.add(page);
         });
 
-        pages.add(new TitlePage(screen, title, pages.isEmpty(), true));
+        boolean hasQuest = !pages.isEmpty();
+        pages.add(new TitlePage(screen, title, !hasQuest, true));
 
         for (AbstractContent content : contents) {
+            if (!content.getBehaviour().test(hasQuest)) continue;
+
             AbstractPage lastPage = pages.getLast();
             if (lastPage.addContent(content, 10)) continue;
+            
             EmptyPage page = new EmptyPage(screen, !lastPage.isLeft());
             if (!page.addContent(content, 10)) {
                 Etherology.ELOGGER.error("Found a content in the chapter \"{}\", that doesn't fit anywhere.", title);
