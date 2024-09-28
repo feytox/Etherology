@@ -51,8 +51,8 @@ public class ChapterButton extends AbstractButton {
         if (wasOpened) return;
 
         context.push();
-        context.translate(baseX+width-8, baseY-2, 0);
-        context.drawTexture(MARK, 0, 0, 0, 0, 4, 11, 4, 11);
+        context.translate(baseX+width-7, baseY-1, 0);
+        context.drawTexture(MARK, 0, 0, 0, 0, 3, 10, 3, 10);
         context.pop();
     }
 
