@@ -54,20 +54,21 @@ public class ResearchTree {
             Text desc = Text.translatable(chapter.getDescKey()).formatted(Formatting.GRAY);
             boolean wasOpened = data.wasOpened(id);
             boolean isSubTab = chapter.getSubTab().isPresent();
+            boolean glowing = chapter.getQuest().isPresent() && !data.isCompleted(id);
             Identifier target = chapter.getSubTab().orElse(id);
-            return Optional.of(new ChapterButton(parent, texture, target, icon, List.of(title, desc), wasOpened, isSubTab, rootX, rootY, x*scale, y*scale));
+
+            return Optional.of(new ChapterButton(parent, texture, target, icon, List.of(title, desc), wasOpened, isSubTab, glowing, rootX, rootY, x*scale, y*scale));
         }
 
         Optional<Stream<TreeLine>> toLines(TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, Map<Identifier, ChapterInfo> infoMap, float scale) {
             Chapter chapter = idToChapter.apply(id);
             if (!chapter.isAvailable(data)) return Optional.empty();
 
-            boolean glowing = chapter.getQuest().isPresent() && !data.isCompleted(id);
             return Optional.of(after.stream().map(infoMap::get).flatMap(src -> Stream.of(
                     // vertical line
-                    new TreeLine(new Vec2f(src.x*scale, src.y*scale), new Vec2f(x*scale, src.y*scale), glowing),
+                    new TreeLine(new Vec2f(src.x*scale, src.y*scale), new Vec2f(x*scale, src.y*scale)),
                     // horizontal line
-                    new TreeLine(new Vec2f(x*scale, src.y*scale), new Vec2f(x*scale, y*scale), glowing))));
+                    new TreeLine(new Vec2f(x*scale, src.y*scale), new Vec2f(x*scale, y*scale)))));
         }
     }
 

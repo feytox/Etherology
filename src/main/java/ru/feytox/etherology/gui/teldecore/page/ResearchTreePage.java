@@ -3,7 +3,6 @@ package ru.feytox.etherology.gui.teldecore.page;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
@@ -25,6 +24,7 @@ public class ResearchTreePage extends AbstractPage {
 
     private static final Identifier TEXTURE = EIdentifier.of("textures/gui/teldecore/page/research.png");
     public static final int SLIDER_LENGTH = 179;
+    private static final int LINE_COLOR = 0xFFF6F2E3;
 
     private final List<TreeLine> lines;
     private final List<ChapterButton> buttons;
@@ -46,28 +46,31 @@ public class ResearchTreePage extends AbstractPage {
     @Override
     public void renderPage(DrawContext context, float pageX, float pageY, int mouseX, int mouseY, float delta) {
         context.enableScissor((int) (pageX+4), (int) (pageY+4), (int) (pageX+PAGE_WIDTH-4), (int) (pageY+PAGE_HEIGHT-4));
-        renderLines(context, pageX, pageY, delta);
-        buttons.forEach(button -> button.render(context, mouseX, mouseY, delta));
+        renderLines(context, pageX, pageY);
+        renderChapterButtons(context, mouseX, mouseY, delta);
         context.disableScissor();
 
         buttons.forEach(button -> button.renderTooltip(context, mouseX, mouseY));
         slider.render(context, mouseX, mouseY, delta);
     }
 
-    private void renderLines(DrawContext context, float pageX, float pageY, float delta) {
+    private void renderChapterButtons(DrawContext context, int mouseX, int mouseY, float delta) {
         World world = MinecraftClient.getInstance().world;
         if (world == null) return;
 
-        float time = world.getTime() + delta;
-        int alpha = (int) (255 * (0.5f * Math.abs(Math.sin((MathHelper.PI * time) / 40f))));
+        float progress = MathHelper.PI * (world.getTime() + delta) / 40f;
+        float tint = 0.25f * (Math.sin(2f * progress) + 3);
 
+        buttons.forEach(button -> button.renderTinted(context, mouseX, mouseY, delta, tint));
+    }
+
+    private void renderLines(DrawContext context, float pageX, float pageY) {
         float rootX = pageX + PAGE_WIDTH / 2f;
         float rootY = pageY + 19 + deltaY;
         lines.forEach(line -> {
             Vec2f start = line.start();
             Vec2f end = line.end();
-            int color = line.glowing() ? ColorHelper.Argb.withAlpha(alpha, 0xF6F2E3) : 0xFFF6F2E3;
-            RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, color);
+            RenderUtils.drawStraightLine(context, start.x+rootX, start.y+rootY, end.x+rootX, end.y+rootY, 2, LINE_COLOR);
         });
     }
 

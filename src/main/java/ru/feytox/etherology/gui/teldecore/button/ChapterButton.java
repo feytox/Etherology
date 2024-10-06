@@ -1,5 +1,6 @@
 package ru.feytox.etherology.gui.teldecore.button;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.Getter;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
@@ -23,8 +24,9 @@ public class ChapterButton extends AbstractButton {
     private final float dy;
     private final boolean wasOpened;
     private final boolean isSubTab;
+    private final boolean glowing;
 
-    public ChapterButton(TeldecoreScreen parent, Identifier texture, Identifier target, ItemStack icon, List<Text> tooltip, boolean wasOpened, boolean isSubTab, float rootX, float rootY, float dx, float dy) {
+    public ChapterButton(TeldecoreScreen parent, Identifier texture, Identifier target, ItemStack icon, List<Text> tooltip, boolean wasOpened, boolean isSubTab, boolean glowing, float rootX, float rootY, float dx, float dy) {
         super(parent, texture, null, rootX, rootY, dx-16, dy-16, 32, 32);
         this.target = target;
         this.icon = icon;
@@ -33,11 +35,18 @@ public class ChapterButton extends AbstractButton {
         this.tooltip = tooltip;
         this.wasOpened = wasOpened;
         this.isSubTab = isSubTab;
+        this.glowing = glowing;
     }
 
     public void move(float rootX, float rootY) {
         this.baseX = rootX + dx;
         this.baseY = rootY + dy;
+    }
+
+    public void renderTinted(DrawContext context, int mouseX, int mouseY, float delta, float tint) {
+        if (glowing) RenderSystem.setShaderColor(tint, tint, tint, 1.0f);
+        super.render(context, mouseX, mouseY, delta);
+        if (glowing) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     @Override
