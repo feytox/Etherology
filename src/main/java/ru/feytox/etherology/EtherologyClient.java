@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.network.ClientPlayerEntity;
+import ru.feytox.etherology.block.zone.ZoneCoreRenderer;
 import ru.feytox.etherology.gui.staff.StaffIndicator;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.model.EtherologyModelProvider;
@@ -37,11 +38,13 @@ public class EtherologyClient implements ClientModInitializer {
             ClientTaskManager.INSTANCE.tickTasks();
 
             StaffIndicator.tickHudData(client);
+            ZoneCoreRenderer.tickDataResetting(client);
 
-            // TODO: 12.04.2024 simplify
             ClientPlayerEntity player = client.player;
             if (player == null) return;
             if (!OculusItem.isInHands(player)) OculusItem.getDisplayedHud().clearChildren();
         }));
+
+
     }
 }

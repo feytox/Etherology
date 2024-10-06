@@ -3,11 +3,13 @@ package ru.feytox.etherology.registry.world;
 import com.terraformersmc.biolith.api.biome.BiomePlacement;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.pool.StructurePoolElementType;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +31,10 @@ import ru.feytox.etherology.world.feature.ThujaFeature;
 import ru.feytox.etherology.world.structure.RotatedPoolElement;
 
 import java.util.Optional;
+import java.util.function.Predicate;
+
+import static net.fabricmc.fabric.api.biome.v1.BiomeSelectors.*;
+import static ru.feytox.etherology.world.PlacedFeaturesGen.*;
 
 @UtilityClass
 public class WorldGenRegistry {
@@ -50,8 +56,6 @@ public class WorldGenRegistry {
         return world.getBiome(pos).matchesKey(GOLDEN_FOREST) ? Optional.of(PlacedFeaturesGen.GOLDEN_FOREST_BONEMEAL) : Optional.empty();
     }
 
-    // TODO: 19.07.2024 remove
-    // /execute positioned ~2000 ~ ~2000 run locate biome etherology:golden_forest
     private static void registerBiomes() {
         BiomePlacement.replaceOverworld(BiomeKeys.BIRCH_FOREST, GOLDEN_FOREST, 0.3f);
         BiomePlacement.replaceOverworld(BiomeKeys.OLD_GROWTH_BIRCH_FOREST, GOLDEN_FOREST, 0.3f);
@@ -59,13 +63,24 @@ public class WorldGenRegistry {
 
     private static void registerModifications() {
         BiomeModifications.addFeature(
-                BiomeSelectors.foundInOverworld(),
+                foundInOverworld(),
                 GenerationStep.Feature.UNDERGROUND_ORES,
                 PlacedFeaturesGen.ATTRAHITE);
         BiomeModifications.addFeature(
                 BiomeSelectors.includeByKey(BiomeKeys.TAIGA, BiomeKeys.OLD_GROWTH_PINE_TAIGA, BiomeKeys.OLD_GROWTH_SPRUCE_TAIGA),
                 GenerationStep.Feature.VEGETAL_DECORATION,
                 PlacedFeaturesGen.PATCH_THUJA);
+
+        addSeal(foundInOverworld(), RELLA_SEAL);
+        addSeal(foundInTheNether(), RELLA_SEAL_VERY_RARE);
+        addSeal(tag(BiomeTags.IS_MOUNTAIN), CLOS_SEAL);
+        addSeal(foundInTheEnd(), CLOS_SEAL_RARE);
+        addSeal(foundInOverworld(), VIA_SEAL);
+        addSeal(foundInOverworld().and(ctx -> ctx.getBiome().getTemperature() >= 1.0f), VIA_SEAL_RARE);
+        addSeal(foundInTheNether(), VIA_SEAL_RARE2);
+        addSeal(foundInOverworld().and(ctx -> ctx.getBiome().getTemperature() <= 0.05f), KETA_SEAL);
+        addSeal(tag(BiomeTags.WATER_ON_MAP_OUTLINES), KETA_SEAL_RARE);
+        addSeal(foundInTheEnd(), KETA_SEAL_VERY_RARE);
     }
 
     private static <C extends FeatureConfig, F extends Feature<C>> F registerFeature(String name, F feature) {
@@ -74,5 +89,9 @@ public class WorldGenRegistry {
 
     private static RegistryKey<Biome> of(String name) {
         return RegistryKey.of(RegistryKeys.BIOME, EIdentifier.of(name));
+    }
+
+    private static void addSeal(Predicate<BiomeSelectionContext> selector, PlacedFeaturesGen.PlacedFeatureKey sealKey) {
+        BiomeModifications.addFeature(selector, GenerationStep.Feature.VEGETAL_DECORATION, sealKey.placedFeatureKey());
     }
 }

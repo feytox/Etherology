@@ -8,6 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.joml.Quaternionf;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.util.misc.RenderUtils;
@@ -31,6 +33,7 @@ public class ZoneCoreRenderer {
     public static final int LIFETIME = 100;
     private static long oculusLastTick;
     private static long revelationLastTick;
+    private static World lastWorld;
 
     public static void refreshOculus(long time) {
         oculusLastTick = time;
@@ -50,6 +53,13 @@ public class ZoneCoreRenderer {
 
     public static void registerRendering() {
         WorldRenderEvents.LAST.register(ZoneCoreRenderer::render);
+    }
+
+    public static void tickDataResetting(MinecraftClient client) {
+        if (lastWorld == client.world) return;
+
+        lastWorld = client.world;
+        zonesData.clear();
     }
 
     private static void render(WorldRenderContext context) {

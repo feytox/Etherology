@@ -19,6 +19,7 @@ import net.minecraft.world.gen.stateprovider.PredicatedStateProvider;
 import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.treedecorator.BeehiveTreeDecorator;
 import ru.feytox.etherology.block.beamer.BeamerBlock;
+import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.mixin.TreeConfiguredFeaturesAccessor;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.world.WorldGenRegistry;
@@ -44,6 +45,10 @@ public class ConfiguredFeaturesGen {
     public static final RegistryKey<ConfiguredFeature<?,?>> PATCH_THUJA = of("patch_thuja");
     public static final RegistryKey<ConfiguredFeature<?,?>> ATTRAHITE = of("attrahite");
     public static final RegistryKey<ConfiguredFeature<?,?>> SINGLE_PIECE_OF_GRASS_LIGHTELET = of("single_piece_of_grass_lightelet");
+    public static final RegistryKey<ConfiguredFeature<?,?>> KETA_SEAL = of("keta_seal");
+    public static final RegistryKey<ConfiguredFeature<?,?>> RELLA_SEAL = of("rella_seal");
+    public static final RegistryKey<ConfiguredFeature<?,?>> CLOS_SEAL = of("clos_seal");
+    public static final RegistryKey<ConfiguredFeature<?,?>> VIA_SEAL = of("via_seal");
 
     public static void registerFeatures(Registerable<ConfiguredFeature<?, ?>> context) {
         register(context, PEACH_TREE, Feature.TREE,
@@ -72,10 +77,18 @@ public class ConfiguredFeaturesGen {
                 new SimpleBlockFeatureConfig(new WeightedBlockStateProvider(DataPool.<BlockState>builder()
                         .add(Blocks.SHORT_GRASS.getDefaultState(), 1)
                         .add(DecoBlocks.LIGHTELET.getDefaultState(), 2).build())));
+        registerSeal(context, KETA_SEAL, EssenceZoneType.KETA);
+        registerSeal(context, RELLA_SEAL, EssenceZoneType.RELLA);
+        registerSeal(context, CLOS_SEAL, EssenceZoneType.CLOS);
+        registerSeal(context, VIA_SEAL, EssenceZoneType.VIA);
 
     }
 
-    public static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {
+    private static void registerSeal(Registerable<ConfiguredFeature<?, ?>> context, RegistryKey<ConfiguredFeature<?,?>> key, EssenceZoneType zoneType) {
+        register(context, key, Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(zoneType.getBlock())));
+    }
+
+    private static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {
         return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, EIdentifier.of(name));
     }
 }
