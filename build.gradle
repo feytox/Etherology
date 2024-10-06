@@ -33,19 +33,20 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 
-    // TODO: include -> mod requirements for all libs
     modImplementation("io.wispforest:owo-lib:${project.owo_version}")
     include "io.wispforest:owo-sentinel:${project.owo_version}"
 
-    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
-    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
-    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${project.cca_version}")
-    include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-item:${project.cca_version}")
+    modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
+    modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
+    modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${project.cca_version}")
+    modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-item:${project.cca_version}")
 
-    include modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${gecko_version}")
-    include modImplementation("dev.emi:trinkets:${project.trinkets_version}")
-    include modImplementation("com.terraformersmc:biolith-fabric:${project.biolith_version}")
+    modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${gecko_version}")
+    modImplementation("dev.emi:trinkets:${project.trinkets_version}")
+    modImplementation("com.terraformersmc:biolith-fabric:${project.biolith_version}")
     modCompileOnly modRuntimeOnly ("com.terraformersmc:modmenu:${project.mod_menu}"), { exclude(group: "net.fabricmc.fabric-api") }
+    modImplementation("com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}")
+    modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}")
 
     modCompileOnlyApi "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}"
     modCompileOnly "dev.architectury:architectury-fabric:${project.architectury_version}"
@@ -56,11 +57,6 @@ dependencies {
     // REI and EMI (uncomment only 1)
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 //    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
-
-    // TODO: consider fixing MidnightLib dependency
-    include modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}")
-    // TODO: replace with original after update
-    include modImplementation("com.github.feytox:Fabric-Shield-Lib:1.21-without-enchantments-SNAPSHOT")
 
     include(implementation(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixin_sqr}")))
     include modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}") { exclude (group: "net.fabricmc.fabric-api") }
