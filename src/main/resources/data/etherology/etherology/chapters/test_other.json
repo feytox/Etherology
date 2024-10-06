@@ -1,0 +1,21 @@
+{
+  "type": "quest",
+  "icon": "etherology:peach_sapling",
+  "title": "text.etherology.chapter.test_other",
+  "desc": "text.etherology.chapter.test_other.desc",
+  "content": [
+    {"type": "text", "text": "text.etherology.chapter.test_other.2", "show": "after"},
+    {"type": "recipe", "id": "etherology:spill_barrel", "show": "after"}
+  ],
+  "quest": {
+    "title": "text.etherology.chapter.test_other.quest",
+    "content": [
+      {"type": "text", "text": "text.etherology.chapter.test_other.1"}
+    ],
+    "tasks": [
+      {"type": "item", "item": "minecraft:apple", "consume": false},
+      {"type": "item", "item": "minecraft:stick", "consume": false},
+      {"type": "biome", "id": "minecraft:forest"}
+    ]
+  }
+}

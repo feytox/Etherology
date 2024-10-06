@@ -18,11 +18,18 @@
   "subtitles.etherology.hammer_damage": "Удар молота",
   "subtitles.etherology.deflect": "Отражение снаряда щитом",
 
-  "text.teldecore.test.title": "Тест Телдекора",
-  "text.teldecore.test.desc": "Maecenas ultrices, ligula et tincidunt",
-  "text.teldecore.test.1": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  "text.teldecore.test.2": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "text.teldecore.test.3": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  "text.teldecore.test.4": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  "text.teldecore.test.5": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  "text.etherology.tab.main": "Основная вкладка",
+  "text.etherology.tab.main.1": "Телдекор находится в стадии разработки, здесь будет описана вся информация о моде",
+  "text.etherology.tab.main.2": "Версия мода: ",
+  "text.etherology.tab.main.3": "Авторы: ",
+
+  "text.etherology.chapter.test_main": "Основная глава",
+  "text.etherology.chapter.test_main.desc": "Тут могло быть описание",
+  "text.etherology.chapter.test_main.1": "Вам придётся открывать новые главы для продвижения своего развития в моде",
+
+  "text.etherology.chapter.test_other": "Ответвлённая глава",
+  "text.etherology.chapter.test_other.desc": "Тут тоже могло быть описание",
+  "text.etherology.chapter.test_other.quest": "Пример квеста",
+  "text.etherology.chapter.test_other.1": "В большинстве случаев вам придётся завершить испытания для открытия новых глав. Как например, иметь в инвентаре необходимый предмет, или найти конкретное место",
+  "text.etherology.chapter.test_other.2": "С завершением испытания, вам откроется новая информация, главы или рецепты создания определённых предметов."
 }

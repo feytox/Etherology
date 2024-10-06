@@ -1,8 +1,0 @@
-{
-  "type": "info",
-  "icon": "etherology:staff",
-  "title": "text.teldecore.test.title",
-  "desc": "text.teldecore.test.desc",
-  "require": ["etherology:test2"],
-  "sub_tab": "etherology:test_sub"
-}

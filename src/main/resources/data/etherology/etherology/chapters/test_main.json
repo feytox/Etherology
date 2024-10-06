@@ -1,0 +1,9 @@
+{
+  "type": "info",
+  "icon": "etherology:teldecore",
+  "title": "text.etherology.chapter.test_main",
+  "desc": "text.etherology.chapter.test_main.desc",
+  "content": [
+    {"type": "text", "text": "text.etherology.chapter.test_main.1", "down": 16}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "tab_id": 0,
+  "icon": "etherology:peach_planks",
+  "title": "text.etherology.tab.main",
+  "color": "FF0000",
+  "content": [
+    {"type": "text", "text": "text.etherology.tab.main.1"},
+    {"type": "text", "text": "text.etherology.tab.main.2", "up": 16},
+    {"type": "text", "text": "- 0.1.x"},
+    {"type": "text", "text": "text.etherology.tab.main.3", "up": 16},
+    {"type": "text", "text": "- Feytox"},
+    {"type": "text", "text": "- Yellow Fire"}
+  ],
+  "chapters": [
+    {"id": "etherology:test_main", "x": 0, "y": 0},
+    {"id": "etherology:test_other", "after": ["etherology:test_main"], "x": -0.5, "y": 1}
+  ]
+}
