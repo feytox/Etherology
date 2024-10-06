@@ -24,7 +24,7 @@ public class ResearchTreePage extends AbstractPage {
 
     private static final Identifier TEXTURE = EIdentifier.of("textures/gui/teldecore/page/research.png");
     public static final int SLIDER_LENGTH = 179;
-    private static final int LINE_COLOR = 0xFFF6F2E3;
+    private static final int LINE_COLOR = 0xFFAE9C89;
 
     private final List<TreeLine> lines;
     private final List<ChapterButton> buttons;

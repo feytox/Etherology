@@ -15,6 +15,8 @@ import java.util.List;
 public class ChapterButton extends AbstractButton {
 
     private static final Identifier MARK = EIdentifier.of("textures/gui/teldecore/icon/chapter_mark.png");
+    private static final int WIDTH = 32;
+    private static final int HEIGHT = 32;
 
     private final Identifier target;
     private final ItemStack icon;
@@ -27,11 +29,11 @@ public class ChapterButton extends AbstractButton {
     private final boolean glowing;
 
     public ChapterButton(TeldecoreScreen parent, Identifier texture, Identifier target, ItemStack icon, List<Text> tooltip, boolean wasOpened, boolean isSubTab, boolean glowing, float rootX, float rootY, float dx, float dy) {
-        super(parent, texture, null, rootX, rootY, dx-16, dy-16, 32, 32);
+        super(parent, texture, null, rootX, rootY, dx-WIDTH/2f, dy-HEIGHT/2f, WIDTH, HEIGHT);
         this.target = target;
         this.icon = icon;
-        this.dx = dx-13;
-        this.dy = dy-13;
+        this.dx = dx-WIDTH/2f;
+        this.dy = dy-HEIGHT/2f;
         this.tooltip = tooltip;
         this.wasOpened = wasOpened;
         this.isSubTab = isSubTab;
