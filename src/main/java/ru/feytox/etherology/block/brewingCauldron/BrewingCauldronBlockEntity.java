@@ -56,6 +56,7 @@ import static ru.feytox.etherology.registry.particle.EtherParticleTypes.STEAM;
 public class BrewingCauldronBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeoBlockEntity, RevelationAspectProvider {
 
     private static final RawAnimation MIXING = RawAnimation.begin().thenPlay("brewing_cauldron.mixing");
+    public static final int VAPORIZATION_COOLDOWN = 200;
 
     @Getter
     private AspectContainer aspects = new AspectContainer();
@@ -139,9 +140,9 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         int oldCount = aspects.sum().orElse(0);
         updateAspectsLvl(world, state, oldCount);
 
-        if (world.getTime() % 100 != 0 || oldCount == 0) return;
-        Random random = world.getRandom();
+        if (world.getTime() % VAPORIZATION_COOLDOWN != 0 || oldCount == 0) return;
 
+        Random random = world.getRandom();
         vaporizeAspects(world, 0.1d, 0.05d, random, oldCount);
     }
 

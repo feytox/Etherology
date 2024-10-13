@@ -27,12 +27,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.registry.block.EBlocks;
+import ru.feytox.etherology.util.misc.HideSurvivalBlockOutline;
 
 import java.util.List;
 import java.util.Optional;
 
 @Getter
-public class ZoneCoreBlock extends Block implements BlockEntityProvider {
+public class ZoneCoreBlock extends Block implements BlockEntityProvider, HideSurvivalBlockOutline {
 
     private static final float ROTATE_ANGLE = 45.0f;
     private final EssenceZoneType zoneType;

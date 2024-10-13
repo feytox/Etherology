@@ -7,6 +7,7 @@ import dev.emi.trinkets.api.client.TrinketRenderer;
 import lombok.val;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -14,7 +15,6 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -36,7 +36,7 @@ public class RevelationViewItem extends TrinketItem implements TrinketRenderer {
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         World world = entity.getWorld();
         if (world == null || !world.isClient) return;
-        if (!(entity instanceof PlayerEntity player)) return;
+        if (!(entity instanceof ClientPlayerEntity player)) return;
         ZoneCoreRenderer.refreshRevelation(world.getTime());
         RevelationViewRenderer.tickData(world, player);
     }

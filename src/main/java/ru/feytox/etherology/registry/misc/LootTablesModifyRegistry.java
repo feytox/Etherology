@@ -8,7 +8,6 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
@@ -36,7 +35,7 @@ public class LootTablesModifyRegistry {
         if (!idTest) return false;
 
         LootPool.Builder pool = LootPool.builder()
-                .rolls(ConstantLootNumberProvider.create(1.0f))
+                .rolls(UniformLootNumberProvider.create(0, 1))
                 .with(ItemEntry.builder(patternTablet).weight(1)
                 .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f))));
         tableBuilder.pool(pool);

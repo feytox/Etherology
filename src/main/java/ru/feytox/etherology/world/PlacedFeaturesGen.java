@@ -47,19 +47,19 @@ public class PlacedFeaturesGen {
     public static final RegistryKey<PlacedFeature> GOLDEN_FOREST_BROWN_MUSHROOM = of("golden_forest_brown_mushroom");
 
     // seals
-    public static final PlacedFeatureKey KETA_SEAL = PlacedFeatureKey.of(ConfiguredFeaturesGen.KETA_SEAL, "keta_seal");
-    public static final PlacedFeatureKey KETA_SEAL_RARE = PlacedFeatureKey.of(ConfiguredFeaturesGen.KETA_SEAL, "keta_seal_rare");
-    public static final PlacedFeatureKey KETA_SEAL_VERY_RARE = PlacedFeatureKey.of(ConfiguredFeaturesGen.KETA_SEAL, "keta_seal_very_rare");
-    public static final PlacedFeatureKey RELLA_SEAL = PlacedFeatureKey.of(ConfiguredFeaturesGen.RELLA_SEAL, "rella_seal");
-    public static final PlacedFeatureKey RELLA_SEAL_VERY_RARE = PlacedFeatureKey.of(ConfiguredFeaturesGen.RELLA_SEAL, "rella_seal_very_rare");
-    public static final PlacedFeatureKey CLOS_SEAL = PlacedFeatureKey.of(ConfiguredFeaturesGen.CLOS_SEAL, "clos_seal");
-    public static final PlacedFeatureKey CLOS_SEAL_RARE = PlacedFeatureKey.of(ConfiguredFeaturesGen.CLOS_SEAL, "clos_seal_rare");
-    public static final PlacedFeatureKey VIA_SEAL = PlacedFeatureKey.of(ConfiguredFeaturesGen.VIA_SEAL, "via_seal");
-    public static final PlacedFeatureKey VIA_SEAL_RARE = PlacedFeatureKey.of(ConfiguredFeaturesGen.VIA_SEAL, "via_seal_rare");
-    public static final PlacedFeatureKey VIA_SEAL_RARE2 = PlacedFeatureKey.of(ConfiguredFeaturesGen.VIA_SEAL, "via_seal_rare2");
-    private static final int COMMON = 40;
-    private static final int RARE = 50;
-    private static final int VERY_RARE = 65;
+    public static final SealKey KETA_SEAL = SealKey.of(ConfiguredFeaturesGen.KETA_SEAL, "keta_seal");
+    public static final SealKey KETA_SEAL_RARE = SealKey.of(ConfiguredFeaturesGen.KETA_SEAL, "keta_seal_rare");
+    public static final SealKey KETA_SEAL_VERY_RARE = SealKey.of(ConfiguredFeaturesGen.KETA_SEAL, "keta_seal_very_rare");
+    public static final SealKey RELLA_SEAL = SealKey.of(ConfiguredFeaturesGen.RELLA_SEAL, "rella_seal");
+    public static final SealKey RELLA_SEAL_VERY_RARE = SealKey.of(ConfiguredFeaturesGen.RELLA_SEAL, "rella_seal_very_rare");
+    public static final SealKey CLOS_SEAL = SealKey.of(ConfiguredFeaturesGen.CLOS_SEAL, "clos_seal");
+    public static final SealKey CLOS_SEAL_RARE = SealKey.of(ConfiguredFeaturesGen.CLOS_SEAL, "clos_seal_rare");
+    public static final SealKey VIA_SEAL = SealKey.of(ConfiguredFeaturesGen.VIA_SEAL, "via_seal");
+    public static final SealKey VIA_SEAL_RARE = SealKey.of(ConfiguredFeaturesGen.VIA_SEAL, "via_seal_rare");
+    public static final SealKey VIA_SEAL_RARE2 = SealKey.of(ConfiguredFeaturesGen.VIA_SEAL, "via_seal_rare2");
+    private static final int COMMON = 60;
+    private static final int RARE = 70;
+    private static final int VERY_RARE = 85;
 
     public static void registerFeatures(Registerable<PlacedFeature> context) {
         var lookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -141,13 +141,13 @@ public class PlacedFeaturesGen {
         KETA_SEAL.register(context, lookup, COMMON, HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
         KETA_SEAL_RARE.register(context, lookup, RARE, HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
         KETA_SEAL_VERY_RARE.register(context, lookup, VERY_RARE, HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
-        RELLA_SEAL.register(context, lookup, COMMON, HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(128)));
+        RELLA_SEAL.register(context, lookup, COMMON, HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(128)), HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
         RELLA_SEAL_VERY_RARE.register(context, lookup, VERY_RARE, HeightRangePlacementModifier.uniform(YOffset.fixed(5), YOffset.fixed(122)));
         CLOS_SEAL.register(context, lookup, COMMON, HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
         CLOS_SEAL_RARE.register(context, lookup, RARE, HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
-        VIA_SEAL.register(context, lookup, COMMON, HeightRangePlacementModifier.uniform(YOffset.fixed(-64), YOffset.fixed(0)));
+        VIA_SEAL.register(context, lookup, COMMON, HeightRangePlacementModifier.uniform(YOffset.fixed(-64), YOffset.fixed(0)), HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
         VIA_SEAL_RARE.register(context, lookup, RARE, HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
-        VIA_SEAL_RARE2.register(context, lookup, RARE, HeightRangePlacementModifier.uniform(YOffset.fixed(5), YOffset.fixed(122)));
+        VIA_SEAL_RARE2.register(context, lookup, RARE, HeightRangePlacementModifier.uniform(YOffset.fixed(5), YOffset.fixed(122)), HeightmapPlacementModifier.of(Heightmap.Type.MOTION_BLOCKING));
     }
 
     public static RegistryKey<PlacedFeature> of(String name) {
@@ -172,19 +172,17 @@ public class PlacedFeaturesGen {
                 BiomePlacementModifier.of());
     }
 
+    public record SealKey(RegistryKey<PlacedFeature> placedFeatureKey, RegistryKey<ConfiguredFeature<?, ?>> configuredFeatureKey) {
 
-
-    public record PlacedFeatureKey(RegistryKey<PlacedFeature> placedFeatureKey, RegistryKey<ConfiguredFeature<?, ?>> configuredFeatureKey) {
-
-        private static PlacedFeatureKey of(RegistryKey<ConfiguredFeature<?,?>> configuredFeatureKey, String name) {
-            return new PlacedFeatureKey(PlacedFeaturesGen.of(name), configuredFeatureKey);
+        private static SealKey of(RegistryKey<ConfiguredFeature<?,?>> configuredFeatureKey, String name) {
+            return new SealKey(PlacedFeaturesGen.of(name), configuredFeatureKey);
         }
 
         private void register(Registerable<PlacedFeature> context, RegistryEntryLookup<ConfiguredFeature<?,?>> lookup, int chance, PlacementModifier... modifiers) {
             var modifiersStream = Stream.of(
                     SquarePlacementModifier.of(),
                     RarityFilterPlacementModifier.of(chance),
-                    CountPlacementModifier.of(1),
+                    CountPlacementModifier.of(UniformIntProvider.create(0, 1)),
                     BiomePlacementModifier.of()
             );
             var modifiersList = Stream.concat(modifiersStream, Arrays.stream(modifiers)).toList();

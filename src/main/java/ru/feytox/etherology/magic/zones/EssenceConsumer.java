@@ -24,7 +24,7 @@ public interface EssenceConsumer {
                     return !blockType.isZone() || essenceSupplier.getZoneType().equals(blockType);
                 })
                 .map(blockPos -> (EssenceSupplier) world.getBlockEntity(blockPos))
-                .filter(essenceSupplier -> essenceSupplier.getPos().isWithinDistance(pos, essenceSupplier.getRadius()));
+                .filter(essenceSupplier -> essenceSupplier.getSupplierPos().isWithinDistance(pos, essenceSupplier.getRadius()));
 
         zoneOptional.ifPresent(this::setCachedZone);
         return zoneOptional;

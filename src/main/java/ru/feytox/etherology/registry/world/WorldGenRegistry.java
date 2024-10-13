@@ -91,7 +91,7 @@ public class WorldGenRegistry {
         return RegistryKey.of(RegistryKeys.BIOME, EIdentifier.of(name));
     }
 
-    private static void addSeal(Predicate<BiomeSelectionContext> selector, PlacedFeaturesGen.PlacedFeatureKey sealKey) {
+    private static void addSeal(Predicate<BiomeSelectionContext> selector, SealKey sealKey) {
         BiomeModifications.addFeature(selector, GenerationStep.Feature.VEGETAL_DECORATION, sealKey.placedFeatureKey());
     }
 }

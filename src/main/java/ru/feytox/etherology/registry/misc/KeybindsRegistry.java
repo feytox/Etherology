@@ -22,6 +22,7 @@ public class KeybindsRegistry {
     public static void registerAll() {
         registerHandler(client -> {
             if (client.player == null) return;
+            if (!StaffItem.isStaffInHand(client.player)) return;
             while (client.currentScreen == null && isPressed(client.options.sneakKey) && STAFF_INTERACTION.wasPressed()) {
                 val packet = new StaffTakeLensC2S(StaffItem.getStaffInHands(client.player));
                 packet.sendToServer();

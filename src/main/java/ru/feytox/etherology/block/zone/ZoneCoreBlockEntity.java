@@ -49,6 +49,11 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
     }
 
     @Override
+    public BlockPos getSupplierPos() {
+        return getPos();
+    }
+
+    @Override
     public float getFillPercent() {
         return points / maxPoints;
     }

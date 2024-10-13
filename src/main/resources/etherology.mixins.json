@@ -18,6 +18,8 @@
     "DispenserBlockMixin",
     "DrawContextAccessor",
     "EntityHitResultAccessor",
+    "FabricShieldLibClientMixin",
+    "FabricShieldLibMixin",
     "FlowerPotBlockMixin",
     "FoliagePlacerTypeAccessor",
     "GrassBlockMixin",

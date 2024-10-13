@@ -55,8 +55,8 @@ dependencies {
     modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
 
     // REI and EMI (uncomment only 1)
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-//    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+//    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
 
     include(implementation(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixin_sqr}")))
     include modImplementation("com.github.Chocohead:Fabric-ASM:${project.fabric_asm}") { exclude (group: "net.fabricmc.fabric-api") }

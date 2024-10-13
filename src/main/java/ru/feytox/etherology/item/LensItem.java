@@ -223,8 +223,6 @@ public abstract class LensItem extends Item {
         if (!(staffStack.getItem() instanceof StaffItem)) return null;
 
         ItemStack lensStack = getStaffLens(staffStack);
-        if (lensStack == null) return null;
-
         StaffComponent.getWrapper(staffStack)
                 .ifPresent(staff -> staff.set(StaffPart.LENS, StaffComponent::removePartInfo).save());
         staffStack.remove(ComponentTypes.STAFF_LENS);
