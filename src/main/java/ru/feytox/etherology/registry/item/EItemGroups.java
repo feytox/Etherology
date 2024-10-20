@@ -79,7 +79,7 @@ public class EItemGroups {
         // TODO: 12.04.2024 fix corruption bucket
         etherItems.with(
                 OCULUS, REVELATION_VIEW, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
-                PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET);
+                PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET).with(SEALS);
         // materials
         etherItems.with(ETHEROSCOPE, BINDER, DecoBlockItems.EBONY, RESONATING_WAND);
         // plants
