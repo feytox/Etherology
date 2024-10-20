@@ -65,7 +65,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
         ShapedRecipeJsonBuilder.create(MISC, RAW_AZEL).input('#', ENRICHED_ATTRAHITE).input('C', CALCITE).pattern("#C").pattern("C#").criterion(has(ATTRAHITE), from(ATTRAHITE)).offerTo(exporter);
         CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(RAW_AZEL), MISC, AZEL_INGOT, 0.3F, 200).criterion(has(ATTRAHITE), from(ATTRAHITE)).offerTo(exporter);
         CookingRecipeJsonBuilder.createBlasting(Ingredient.ofItems(RAW_AZEL), MISC, AZEL_INGOT, 0.3F, 100).criterion(has(ATTRAHITE), from(ATTRAHITE)).offerTo(exporter, getBlastingItemPath(AZEL_INGOT));
-        offerStonecuttingRecipe(exporter, EBlockFamilies.ATTRAHITE_BRICKS);
 
         // ethril
         offerMaterialBlock(exporter, ETHRIL_INGOT, ETHRIL_BLOCK);
@@ -95,9 +94,8 @@ public class RecipeGeneration extends FabricRecipeProvider {
         offerChestBoatRecipe(exporter, PEACH_CHEST_BOAT, PEACH_BOAT);
         offerHangingSignRecipe(exporter, DecoBlockItems.PEACH_HANGING_SIGN, STRIPPED_PEACH_LOG);
 
-        // slitherite
-        offerStonecuttingRecipe(exporter, EBlockFamilies.SLITHERITE, EBlockFamilies.CRACKED_SLITHERITE_BRICKS, EBlockFamilies.CHISELED_SLITHERITE_BRICKS, EBlockFamilies.SLITHERITE_BRICKS, EBlockFamilies.POLISHED_SLITHERITE);
-        offerPolishedStoneRecipe(exporter, BUILDING_BLOCKS, SLITHERITE_BRICKS, POLISHED_SLITHERITE);
+        // stone families recipes
+        offerStonecuttingRecipe(exporter, EBlockFamilies.STONE_FAMILIES);
 
         // TODO: 18.08.2024 find a better solution
         // stone -> slitherite

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "etherology:block/slitherite_bricks",
-    "side": "etherology:block/slitherite_bricks",
-    "top": "etherology:block/slitherite_bricks"
-  }
-}

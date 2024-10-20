@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_polished_slitherite": {
+      "conditions": {
+        "items": [
+          {
+            "items": "etherology:polished_slitherite"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:chiseled_polished_slitherite_from_polished_slitherite_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_polished_slitherite"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:chiseled_polished_slitherite_from_polished_slitherite_stonecutting"
+    ]
+  }
+}

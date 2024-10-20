@@ -11,4 +11,8 @@ public interface BlockFamilyAccess {
     List<BlockFamily.Variant> etherology$getExcludedVariants();
 
     void etherology$addExcludedVariants(BlockFamily.Variant... variants);
+
+    boolean etherology$shouldSkipModelGeneration();
+
+    void etherology$skipModelGeneration(boolean skip);
 }

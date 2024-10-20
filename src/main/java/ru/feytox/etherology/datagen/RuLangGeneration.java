@@ -46,25 +46,25 @@ public class RuLangGeneration extends FabricLanguageProvider {
         RuTranslationPart.of(builder, "Слизеритовая")
                 .stairs(SLITHERITE_STAIRS)
                 .slab(SLITHERITE_SLAB)
-                .wall(SLITHERITE_WALL)
-                .button(SLITHERITE_BUTTON)
-                .plate(SLITHERITE_PRESSURE_PLATE);
-
-        builder.add(SLITHERITE_BRICKS, "Слизеритовые кирпичи");
-        RuTranslationPart.of(builder, "слизеритового кирпича")
-                .stairs(SLITHERITE_BRICK_STAIRS)
-                .slab(SLITHERITE_BRICK_SLAB)
-                .wall(SLITHERITE_BRICK_WALL);
-
-        builder.add(CHISELED_SLITHERITE_BRICKS, "Резные слизеритовые кирпичи");
-
-        builder.add(CRACKED_SLITHERITE_BRICKS, "Потрескавшиеся слизеритовые кирпичи");
+                .wall(SLITHERITE_WALL);
 
         builder.add(POLISHED_SLITHERITE, "Полированный слизерит");
         RuTranslationPart.of(builder, "полированного слизерита")
                 .stairs(POLISHED_SLITHERITE_STAIRS)
                 .wall(POLISHED_SLITHERITE_WALL)
-                .slab(POLISHED_SLITHERITE_SLAB);
+                .slab(POLISHED_SLITHERITE_SLAB)
+                .button(POLISHED_SLITHERITE_BUTTON)
+                .plate(POLISHED_SLITHERITE_PRESSURE_PLATE);
+
+        builder.add(POLISHED_SLITHERITE_BRICKS, "Полированные слизеритовые кирпичи");
+        RuTranslationPart.of(builder, "полированного слизеритового кирпича")
+                .stairs(POLISHED_SLITHERITE_BRICK_STAIRS)
+                .slab(POLISHED_SLITHERITE_BRICK_SLAB)
+                .wall(POLISHED_SLITHERITE_BRICK_WALL);
+
+        builder.add(CHISELED_POLISHED_SLITHERITE, "Резной полированный слизерит");
+        builder.add(CHISELED_POLISHED_SLITHERITE_BRICKS, "Резные полированные слизеритовые кирпичи");
+        builder.add(CRACKED_POLISHED_SLITHERITE_BRICKS, "Потрескавшиеся полированные слизеритовые кирпичи");
 
         // azel
         builder.add(AZEL_BLOCK, "Азельный блок");

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "etherology:polished_slitherite"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "etherology:polished_slitherite_button"
+  }
+}

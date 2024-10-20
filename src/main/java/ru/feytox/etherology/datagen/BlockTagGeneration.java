@@ -18,7 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static ru.feytox.etherology.registry.block.EBlockFamilies.*;
+import static ru.feytox.etherology.registry.block.EBlockFamilies.PEACH;
+import static ru.feytox.etherology.registry.block.EBlockFamilies.STONE_FAMILIES;
 import static ru.feytox.etherology.registry.block.EBlocks.*;
 
 public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
@@ -30,15 +31,14 @@ public class BlockTagGeneration extends FabricTagProvider.BlockTagProvider {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         // don't forget to copy block tags to item tags!!!
-        addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.SLITHERITE_BRICKS, DecoBlocks.CHISELED_SLITHERITE_BRICKS, DecoBlocks.CRACKED_SLITHERITE_BRICKS);
+        addBlocks(BlockTags.STONE_BRICKS, DecoBlocks.POLISHED_SLITHERITE_BRICKS, DecoBlocks.CHISELED_POLISHED_SLITHERITE_BRICKS, DecoBlocks.CRACKED_POLISHED_SLITHERITE_BRICKS);
 
-        // add all, that defined in variants
-        BlockFamily[] stoneFamilies = {SLITHERITE, SLITHERITE_BRICKS, CHISELED_SLITHERITE_BRICKS, CRACKED_SLITHERITE_BRICKS, POLISHED_SLITHERITE, ATTRAHITE_BRICKS};
-        addAllBlocks(BlockTags.PICKAXE_MINEABLE, stoneFamilies);
-        addVariant(BlockTags.SLABS, BlockFamily.Variant.SLAB, stoneFamilies);
-        addVariant(BlockTags.STAIRS, BlockFamily.Variant.STAIRS, stoneFamilies);
-        addVariant(BlockTags.WALLS, BlockFamily.Variant.WALL, stoneFamilies);
-        addVariant(BlockTags.STONE_PRESSURE_PLATES, BlockFamily.Variant.PRESSURE_PLATE, stoneFamilies);
+        // stone families
+        addAllBlocks(BlockTags.PICKAXE_MINEABLE, STONE_FAMILIES);
+        addVariant(BlockTags.SLABS, BlockFamily.Variant.SLAB, STONE_FAMILIES);
+        addVariant(BlockTags.STAIRS, BlockFamily.Variant.STAIRS, STONE_FAMILIES);
+        addVariant(BlockTags.WALLS, BlockFamily.Variant.WALL, STONE_FAMILIES);
+        addVariant(BlockTags.STONE_PRESSURE_PLATES, BlockFamily.Variant.PRESSURE_PLATE, STONE_FAMILIES);
 
         addBlocks(EBlockTags.PEACH_LOGS, DecoBlocks.PEACH_LOG, DecoBlocks.PEACH_WOOD, DecoBlocks.STRIPPED_PEACH_LOG, DecoBlocks.STRIPPED_PEACH_WOOD);
         addBlocks(BlockTags.WOODEN_BUTTONS, DecoBlocks.PEACH_BUTTON);
