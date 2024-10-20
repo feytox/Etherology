@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_polished_slitherite_bricks": {
+    "has_polished_slitherite": {
       "conditions": {
         "items": [
           {
-            "items": "etherology:polished_slitherite_bricks"
+            "items": "etherology:polished_slitherite"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cracked_polished_slitherite_bricks_from_polished_slitherite_bricks_stonecutting"
+        "recipe": "minecraft:polished_slitherite_bricks_from_polished_slitherite_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_polished_slitherite_bricks"
+      "has_polished_slitherite"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cracked_polished_slitherite_bricks_from_polished_slitherite_bricks_stonecutting"
+      "minecraft:polished_slitherite_bricks_from_polished_slitherite_stonecutting"
     ]
   }
 }

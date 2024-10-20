@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "etherology:block/chiseled_polished_slitherite_bricks_top",
+    "up": "etherology:block/chiseled_polished_slitherite_bricks_top",
+    "east": "etherology:block/chiseled_polished_slitherite_bricks_side",
+    "north": "etherology:block/chiseled_polished_slitherite_bricks_side",
+    "particle": "etherology:block/chiseled_polished_slitherite_bricks_side",
+    "south": "etherology:block/chiseled_polished_slitherite_bricks_side",
+    "west": "etherology:block/chiseled_polished_slitherite_bricks_side"
+  }
+}

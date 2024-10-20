@@ -96,6 +96,8 @@ public class RecipeGeneration extends FabricRecipeProvider {
 
         // stone families recipes
         offerStonecuttingRecipe(exporter, EBlockFamilies.STONE_FAMILIES);
+        offerStonecuttingRecipe(exporter, BUILDING_BLOCKS, POLISHED_SLITHERITE_BRICKS, POLISHED_SLITHERITE);
+        offerPolishedStoneRecipe(exporter, BUILDING_BLOCKS, POLISHED_SLITHERITE_BRICKS, POLISHED_SLITHERITE);
 
         // TODO: 18.08.2024 find a better solution
         // stone -> slitherite
@@ -407,7 +409,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
             switch (variant) {
                 case SLAB -> count = 2;
                 case WALL -> category = DECORATIONS;
-                case BUTTON, PRESSURE_PLATE -> exclude = true;
+                case BUTTON, PRESSURE_PLATE, CRACKED -> exclude = true;
             }
 
             if (exclude) return;

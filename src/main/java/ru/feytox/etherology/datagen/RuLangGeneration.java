@@ -44,9 +44,9 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(DecoBlocks.SLITHERITE, "Слизерит");
         RuTranslationPart.of(builder, "Слизеритовая")
-                .stairs(SLITHERITE_STAIRS)
                 .slab(SLITHERITE_SLAB)
                 .wall(SLITHERITE_WALL);
+        builder.add(SLITHERITE_STAIRS, "Слизеритовые ступеньки");
 
         builder.add(POLISHED_SLITHERITE, "Полированный слизерит");
         RuTranslationPart.of(builder, "полированного слизерита")

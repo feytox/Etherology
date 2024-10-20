@@ -10,6 +10,7 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;
 import ru.feytox.etherology.magic.staff.StaffPartInfo;
 import ru.feytox.etherology.model.EtherologyModels;
+import ru.feytox.etherology.registry.block.BlockFamilyAccess;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.block.DevBlocks;
 import ru.feytox.etherology.registry.block.EBlocks;
@@ -81,7 +82,11 @@ public class ModelGeneration extends FabricModelProvider {
     }
 
     private static void registerBlockFamilies(BlockStateModelGenerator generator, List<BlockFamily> blockFamilies) {
-        blockFamilies.forEach(family -> generator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family));
+        blockFamilies.forEach(family -> {
+            if (family instanceof BlockFamilyAccess access && access.etherology$shouldSkipModelGeneration())
+                return;
+            generator.registerCubeAllModelTexturePool(family.getBaseBlock()).family(family);
+        });
     }
 
     private static void registerItems(ItemModelGenerator generator, Model model, ItemConvertible... items) {
