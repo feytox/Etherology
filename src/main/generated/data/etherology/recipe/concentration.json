@@ -3,13 +3,13 @@
   "ether": 12,
   "outputModifier": "etherology:concentration",
   "pattern": [
-    "00XXXX00",
-    "0##XX##0",
-    "X##XX##X",
+    "00####00",
+    "0######0",
+    "########",
+    "#XX##XX#",
+    "##X##X##",
     "###XX###",
-    "XXXXXXXX",
-    "###XX###",
-    "0##XX##0",
-    "00XXXX00"
+    "0######0",
+    "00####00"
   ]
 }

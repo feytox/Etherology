@@ -1,0 +1,27 @@
+{
+  "type": "etherology:empower_recipe",
+  "closCount": 0,
+  "ketaCount": 0,
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "O": {
+      "item": "etherology:oculus"
+    }
+  },
+  "pattern": [
+    " L ",
+    "OGO",
+    "   "
+  ],
+  "rellaCount": 4,
+  "result": {
+    "count": 1,
+    "id": "etherology:revelation_view"
+  },
+  "viaCount": 0
+}

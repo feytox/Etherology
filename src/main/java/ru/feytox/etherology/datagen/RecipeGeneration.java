@@ -266,6 +266,10 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern(" G ")
                 .pattern("GAG")
                 .pattern(" G ").offerTo(exporter);
+        EmpowerRecipeBuilder.create(REVELATION_VIEW).rella(4).input('G', Items.GOLD_INGOT).input('O', OCULUS).input('L', Items.LEATHER)
+                .pattern(" L ")
+                .pattern("OGO")
+                .pattern("   ").offerTo(exporter);
         EmpowerRecipeBuilder.create(RESONATING_WAND, 2).rella(2).keta(1).input('I', Items.IRON_INGOT).input('S', Items.ECHO_SHARD)
                 .pattern(" I ")
                 .pattern(" S ")
@@ -297,15 +301,15 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("####XX##")
                 .pattern("0######0")
                 .pattern("00####00").offerTo(exporter);
-        ModifierRecipeBuilder.create(LensModifier.CONCENTRATION, 12) // TODO: 23.07.2024 new recipe
-                .pattern("00XXXX00")
-                .pattern("0##XX##0")
-                .pattern("X##XX##X")
+        ModifierRecipeBuilder.create(LensModifier.CONCENTRATION, 12)
+                .pattern("00####00")
+                .pattern("0######0")
+                .pattern("########")
+                .pattern("#XX##XX#")
+                .pattern("##X##X##")
                 .pattern("###XX###")
-                .pattern("XXXXXXXX")
-                .pattern("###XX###")
-                .pattern("0##XX##0")
-                .pattern("00XXXX00").offerTo(exporter);
+                .pattern("0######0")
+                .pattern("00####00").offerTo(exporter);
         ModifierRecipeBuilder.create(LensModifier.FILTERING, 12)
                 .pattern("00####00")
                 .pattern("0######0")
