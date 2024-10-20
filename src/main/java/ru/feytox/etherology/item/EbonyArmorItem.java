@@ -19,8 +19,8 @@ public class EbonyArmorItem extends ArmorItem {
     public static final Identifier EBONY_SPEED_ID = EIdentifier.of("ebony_speed");
     private final Supplier<AttributeModifiersComponent> modifiers;
 
-    public EbonyArmorItem(RegistryEntry<ArmorMaterial> material, Type type) {
-        super(material, type, new Settings());
+    public EbonyArmorItem(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
+        super(material, type, settings);
 
         this.modifiers = Suppliers.memoize(() -> ((ArmorItemAccessor) this).getModifiersSupplier().get()
                 .with(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(EBONY_SPEED_ID, 0.075d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),

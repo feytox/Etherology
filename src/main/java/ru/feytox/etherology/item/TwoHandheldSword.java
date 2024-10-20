@@ -1,6 +1,5 @@
 package ru.feytox.etherology.item;
 
-import lombok.val;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,14 +20,16 @@ public abstract class TwoHandheldSword extends SwordItem {
         return cls.isInstance(player.getMainHandStack().getItem());
     }
 
-    private static boolean isInHands(LivingEntity entity) {
-        for (val stack : entity.getHandItems()) {
-            if (stack.getItem() instanceof TwoHandheldSword) return true;
-        }
-        return false;
-    }
-
     public static boolean hideExtraItem(LivingEntity entity, ItemStack stack) {
-        return TwoHandheldSword.isInHands(entity) && !(stack.getItem() instanceof TwoHandheldSword);
+        var mainStack = entity.getMainHandStack();
+        var offStack = entity.getOffHandStack();
+
+        if (!(mainStack.getItem() instanceof TwoHandheldSword) && !(offStack.getItem() instanceof TwoHandheldSword))
+            return false;
+
+        if (!(stack.getItem() instanceof TwoHandheldSword))
+            return true;
+
+        return !mainStack.equals(stack);
     }
 }
