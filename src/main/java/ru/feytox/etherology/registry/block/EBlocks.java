@@ -46,6 +46,8 @@ import ru.feytox.etherology.block.matrix.MatrixBlockEntity;
 import ru.feytox.etherology.block.pedestal.PedestalBlock;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 import ru.feytox.etherology.block.samovar.SamovarBlock;
+import ru.feytox.etherology.block.seal.SealBlock;
+import ru.feytox.etherology.block.seal.SealBlockEntity;
 import ru.feytox.etherology.block.sedimentary.EssenceLevel;
 import ru.feytox.etherology.block.sedimentary.SedimentaryStone;
 import ru.feytox.etherology.block.sedimentary.SedimentaryStoneBlockEntity;
@@ -54,10 +56,8 @@ import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlock;
 import ru.feytox.etherology.block.spill_barrel.SpillBarrelBlockEntity;
 import ru.feytox.etherology.block.tuningFork.TuningFork;
 import ru.feytox.etherology.block.tuningFork.TuningForkBlockEntity;
-import ru.feytox.etherology.block.zone.ZoneCoreBlock;
-import ru.feytox.etherology.block.zone.ZoneCoreBlockEntity;
 import ru.feytox.etherology.enums.FurnitureType;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
@@ -81,7 +81,7 @@ public class EBlocks {
             BlockEntityType.Builder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build()
     );
 
-    public static final SedimentaryStone SEDIMENTARY_STONE = (SedimentaryStone) registerSedimentaryBlock(EssenceZoneType.EMPTY, EssenceLevel.EMPTY);
+    public static final SedimentaryStone SEDIMENTARY_STONE = (SedimentaryStone) registerSedimentaryBlock(SealType.EMPTY, EssenceLevel.EMPTY);
     public static final Block[] SEDIMENTARY_STONES = registerSedimentaryStones();
     public static final BlockEntityType<SedimentaryStoneBlockEntity> SEDIMENTARY_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
@@ -217,11 +217,11 @@ public class EBlocks {
             BlockEntityType.Builder.create(TuningForkBlockEntity::new, TUNING_FORK).build()
     );
 
-    public static final Block[] ZONE_CORES = registerZones();
-    public static final BlockEntityType<ZoneCoreBlockEntity> ZONE_CORE_BLOCK_ENTITY = Registry.register(
+    public static final Block[] SEALS = registerSeals();
+    public static final BlockEntityType<SealBlockEntity> SEAL_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("zone_core_block_entity"),
-            BlockEntityType.Builder.create(ZoneCoreBlockEntity::new, ZONE_CORES).build()
+            EIdentifier.of("seal_block_entity"),
+            BlockEntityType.Builder.create(SealBlockEntity::new, SEALS).build()
     );
 
     public static void registerAll() {
@@ -230,21 +230,21 @@ public class EBlocks {
     }
 
     private static Block[] registerSedimentaryStones() {
-        Stream<Block> zoneStones = Arrays.stream(EssenceZoneType.values())
-                .filter(EssenceZoneType::isZone)
-                .flatMap(zone -> Arrays.stream(EssenceLevel.values()).filter(EssenceLevel::isPresent).map(level -> registerSedimentaryBlock(zone, level)));
+        Stream<Block> sealStones = Arrays.stream(SealType.values())
+                .filter(SealType::isSeal)
+                .flatMap(seal -> Arrays.stream(EssenceLevel.values()).filter(EssenceLevel::isPresent).map(level -> registerSedimentaryBlock(seal, level)));
 
-        return Stream.concat(Stream.of(SEDIMENTARY_STONE), zoneStones).toArray(Block[]::new);
+        return Stream.concat(Stream.of(SEDIMENTARY_STONE), sealStones).toArray(Block[]::new);
     }
 
-    private static Block registerSedimentaryBlock(EssenceZoneType zoneType, EssenceLevel level) {
-        return register(SedimentaryStone.createId(zoneType, level), new SedimentaryStone(zoneType, level)).withItem(false);
+    private static Block registerSedimentaryBlock(SealType sealType, EssenceLevel level) {
+        return register(SedimentaryStone.createId(sealType, level), new SedimentaryStone(sealType, level)).withItem(false);
     }
 
-    private static Block[] registerZones() {
-        return Arrays.stream(EssenceZoneType.values())
-                .filter(EssenceZoneType::isZone)
-                .map(zoneType -> register(ZoneCoreBlock.createId(zoneType), new ZoneCoreBlock(zoneType)))
+    private static Block[] registerSeals() {
+        return Arrays.stream(SealType.values())
+                .filter(SealType::isSeal)
+                .map(sealType -> register(SealBlock.createId(sealType), new SealBlock(sealType)))
                 .map(eBlock -> eBlock.withItem(false))
                 .toArray(Block[]::new);
     }

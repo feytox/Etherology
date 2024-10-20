@@ -12,10 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.zone.ZoneCoreBlockEntity;
-import ru.feytox.etherology.magic.zones.EssenceConsumer;
-import ru.feytox.etherology.magic.zones.EssenceSupplier;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.block.seal.SealBlockEntity;
+import ru.feytox.etherology.magic.seal.EssenceConsumer;
+import ru.feytox.etherology.magic.seal.EssenceSupplier;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.particle.info.SparkSedimentaryInfo;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
@@ -28,7 +28,7 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     private static final float MAX_POINTS = 32.0f;
     private static final float CONSUME_CHANCE = 0.85f;
     @Nullable
-    private EssenceSupplier cachedZone;
+    private EssenceSupplier cachedSeal;
     private float points = 0;
 
     public SedimentaryStoneBlockEntity(BlockPos pos, BlockState state) {
@@ -43,20 +43,20 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         markDirty();
     }
 
-    public boolean onUseAxe(BlockState state, World world, EssenceZoneType zoneType, Vec3i sideVector) {
+    public boolean onUseAxe(BlockState state, World world, SealType sealType, Vec3i sideVector) {
         world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f, true);
 
         if (!(world instanceof ServerWorld serverWorld)) {
-            SparkSedimentaryInfo.spawnSedimentaryParticle(world, pos, zoneType);
+            SparkSedimentaryInfo.spawnSedimentaryParticle(world, pos, sealType);
             return true;
         }
 
         points = 0;
         syncData(serverWorld);
-        updateBlockState(serverWorld, state, EssenceZoneType.EMPTY);
+        updateBlockState(serverWorld, state, SealType.EMPTY);
 
         BlockPos itemPos = pos.add(sideVector);
-        Optional<Item> match = zoneType.getPrimoShard();
+        Optional<Item> match = sealType.getPrimoShard();
         match.ifPresent(item -> ItemScatterer.spawn(serverWorld, itemPos.getX(), itemPos.getY(), itemPos.getZ(), item.getDefaultStack()));
 
         return true;
@@ -71,13 +71,13 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     private void consumingTick(ServerWorld world, SedimentaryStone sedimentary, BlockState state) {
         if (points >= MAX_POINTS || world.getTime() % 170 != 0) return;
         if (world.getRandom().nextFloat() > CONSUME_CHANCE) return;
-        tickConsuming(world, pos, sedimentary.getZoneType()).ifPresent(zone -> updateBlockState(world, state, zone));
+        tickConsuming(world, pos, sedimentary.getSealType()).ifPresent(seal -> updateBlockState(world, state, seal));
     }
 
-    private void updateBlockState(ServerWorld world, BlockState state, EssenceZoneType newZoneType) {
+    private void updateBlockState(ServerWorld world, BlockState state, SealType newSealType) {
         EssenceLevel level = EssenceLevel.fromFullness(points / MAX_POINTS);
-        EssenceZoneType zoneType = level.isPresent() ? newZoneType : EssenceZoneType.EMPTY;
-        BlockState newState = SedimentaryStone.transformState(state, zoneType, level);
+        SealType sealType = level.isPresent() ? newSealType : SealType.EMPTY;
+        BlockState newState = SedimentaryStone.transformState(state, sealType, level);
         if (!state.equals(newState)) world.setBlockState(pos, newState);
     }
 
@@ -93,18 +93,18 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
     }
 
     @Override
-    public Optional<EssenceSupplier> getCachedZone() {
-        return Optional.ofNullable(cachedZone);
+    public Optional<EssenceSupplier> getCachedSeal() {
+        return Optional.ofNullable(cachedSeal);
     }
 
     @Override
-    public void setCachedZone(EssenceSupplier zoneCore) {
-        cachedZone = zoneCore;
+    public void setCachedSeal(EssenceSupplier seal) {
+        cachedSeal = seal;
     }
 
     @Override
     public int getRadius() {
-        return ZoneCoreBlockEntity.MAX_RADIUS;
+        return SealBlockEntity.MAX_RADIUS;
     }
 
     @Override

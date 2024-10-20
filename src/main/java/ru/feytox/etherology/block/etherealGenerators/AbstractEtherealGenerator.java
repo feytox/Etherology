@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -128,8 +127,8 @@ public abstract class AbstractEtherealGenerator extends FacingBlock implements R
         return WEST_SHAPE;
     }
 
-    public float getStopChance(boolean isInZone) {
-        return isInZone ? stopChance * 3.0f : stopChance;
+    public float getStopChance(boolean isInSeal) {
+        return isInSeal ? stopChance * 3.0f : stopChance;
     }
 
     static {

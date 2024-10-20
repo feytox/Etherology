@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.zone;
+package ru.feytox.etherology.block.seal;
 
 import lombok.Getter;
 import net.minecraft.block.BlockState;
@@ -8,34 +8,34 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import ru.feytox.etherology.magic.zones.EssenceSupplier;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.EssenceSupplier;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 @Getter
-public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceSupplier {
+public class SealBlockEntity extends TickableBlockEntity implements EssenceSupplier {
 
     private static final float MIN_POINTS = 64.0f;
     private static final float MAX_POINTS = 256.0f;
     private static final int MIN_RADIUS = 8;
     public static final int MAX_RADIUS = 24;
-    private static final int REFRESH_TIME = ZoneCoreRenderer.LIFETIME / 4;
+    private static final int REFRESH_TIME = SealBlockRenderer.LIFETIME / 4;
 
-    private final EssenceZoneType zoneType;
+    private final SealType sealType;
     private int radius;
     private float points;
     private float maxPoints;
     private float pitch;
     private float yaw;
 
-    public ZoneCoreBlockEntity(BlockPos pos, BlockState state) {
-        this(pos, state, ((ZoneCoreBlock) state.getBlock()).getZoneType());
+    public SealBlockEntity(BlockPos pos, BlockState state) {
+        this(pos, state, ((SealBlock) state.getBlock()).getSealType());
     }
 
-    public ZoneCoreBlockEntity(BlockPos pos, BlockState state, EssenceZoneType zoneType) {
-        super(EBlocks.ZONE_CORE_BLOCK_ENTITY, pos, state);
-        this.zoneType = zoneType;
+    public SealBlockEntity(BlockPos pos, BlockState state, SealType sealType) {
+        super(EBlocks.SEAL_BLOCK_ENTITY, pos, state);
+        this.sealType = sealType;
 
         float percent = Random.create().nextFloat();
         this.maxPoints = percent * (MAX_POINTS - MIN_POINTS) + MIN_POINTS;
@@ -45,7 +45,7 @@ public class ZoneCoreBlockEntity extends TickableBlockEntity implements EssenceS
 
     @Override
     public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (world.getTime() % REFRESH_TIME == 0) ZoneCoreRenderer.refreshZone(this, pos, zoneType, world.getTime());
+        if (world.getTime() % REFRESH_TIME == 0) SealBlockRenderer.refreshSeal(this, pos, sealType, world.getTime());
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.subtypes.SparkSubtype;
@@ -31,8 +31,8 @@ public class SparkSedimentaryInfo extends ParticleInfo<SparkParticle, SparkParti
         this.endColor = endColor;
     }
 
-    public static ParticleInfo.Factory<SparkParticle, SparkParticleEffect> of(EssenceZoneType zoneType) {
-        return (clientWorld, x, y, z, parameters, spriteProvider) -> new SparkSedimentaryInfo(clientWorld, x, y, z, parameters, spriteProvider, zoneType.getStartColor(), zoneType.getEndColor());
+    public static ParticleInfo.Factory<SparkParticle, SparkParticleEffect> of(SealType sealType) {
+        return (clientWorld, x, y, z, parameters, spriteProvider) -> new SparkSedimentaryInfo(clientWorld, x, y, z, parameters, spriteProvider, sealType.getStartColor(), sealType.getEndColor());
     }
 
     @Override
@@ -57,9 +57,9 @@ public class SparkSedimentaryInfo extends ParticleInfo<SparkParticle, SparkParti
         return 20;
     }
 
-    public static void spawnSedimentaryParticle(World world, BlockPos blockPos, EssenceZoneType zoneType) {
-        if (!zoneType.isZone()) return;
-        SparkSubtype sparkType = SparkSubtype.of(zoneType);
+    public static void spawnSedimentaryParticle(World world, BlockPos blockPos, SealType sealType) {
+        if (!sealType.isSeal()) return;
+        SparkSubtype sparkType = SparkSubtype.of(sealType);
         if (sparkType == null) return;
 
         Vec3d centerPos = blockPos.toCenterPos();

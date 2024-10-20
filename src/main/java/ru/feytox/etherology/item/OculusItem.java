@@ -24,7 +24,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.block.zone.ZoneCoreRenderer;
+import ru.feytox.etherology.block.seal.SealBlockRenderer;
 import ru.feytox.etherology.enums.EArmPose;
 import ru.feytox.etherology.gui.oculus.AspectComponent;
 import ru.feytox.etherology.magic.aspects.Aspect;
@@ -72,7 +72,7 @@ public class OculusItem extends Item implements DoubleModel {
             return;
         }
 
-        ZoneCoreRenderer.refreshOculus(world.getTime());
+        SealBlockRenderer.refreshOculus(world.getTime());
         tickHud((ClientWorld) world);
     }
 

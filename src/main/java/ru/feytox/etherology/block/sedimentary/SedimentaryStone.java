@@ -35,7 +35,7 @@ import net.minecraft.world.WorldView;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 
 import java.util.List;
 import java.util.Map;
@@ -51,14 +51,14 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
     private static final Map<SedimentaryType, SedimentaryStone> TYPE_TO_STONE = new Object2ObjectOpenHashMap<>();
     public static final BooleanProperty POWERED = Properties.POWERED;
 
-    private final EssenceZoneType zoneType;
+    private final SealType sealType;
     private final EssenceLevel essenceLevel;
 
-    public SedimentaryStone(EssenceZoneType zoneType, EssenceLevel essenceLevel) {
+    public SedimentaryStone(SealType sealType, EssenceLevel essenceLevel) {
         super(Settings.copy(Blocks.STONE));
-        this.zoneType = zoneType;
+        this.sealType = sealType;
         this.essenceLevel = essenceLevel;
-        TYPE_TO_STONE.put(new SedimentaryType(zoneType, essenceLevel), this);
+        TYPE_TO_STONE.put(new SedimentaryType(sealType, essenceLevel), this);
 
         setDefaultState(getDefaultState().with(POWERED, false));
     }
@@ -82,7 +82,7 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         super.appendTooltip(stack, context, tooltip, options);
-        if (zoneType.isZone()) tooltip.add(1, Text.translatable("lore.etherology.primoshard", StringUtils.capitalize(zoneType.asString())).formatted(Formatting.DARK_PURPLE));
+        if (sealType.isSeal()) tooltip.add(1, Text.translatable("lore.etherology.primoshard", StringUtils.capitalize(sealType.asString())).formatted(Formatting.DARK_PURPLE));
     }
 
     @Override
@@ -104,7 +104,7 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
         boolean result = false;
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof SedimentaryStoneBlockEntity sedimentaryBlock) {
-            result = sedimentaryBlock.onUseAxe(state, world, zoneType, hit.getSide().getVector());
+            result = sedimentaryBlock.onUseAxe(state, world, sealType, hit.getSide().getVector());
         }
         return result ? ItemActionResult.SUCCESS : ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
@@ -124,7 +124,7 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
         ItemStack stack = SEDIMENTARY_STONE.asItem().getDefaultStack();
 
         RegistryEntry<Enchantment> silkTouch = world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.SILK_TOUCH).orElse(null);
-        if (zoneType.isZone() && silkTouch != null && EnchantmentHelper.getEquipmentLevel(silkTouch, player) > 0) {
+        if (sealType.isSeal() && silkTouch != null && EnchantmentHelper.getEquipmentLevel(silkTouch, player) > 0) {
             stack = asItem().getDefaultStack();
             stack.applyComponentsFrom(sedimentary.createComponentMap());
         }
@@ -154,9 +154,9 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
         return SedimentaryStoneBlockEntity.getTicker(world, type, SEDIMENTARY_BLOCK_ENTITY);
     }
 
-    public static String createId(EssenceZoneType zone, EssenceLevel essenceLevel) {
+    public static String createId(SealType seal, EssenceLevel essenceLevel) {
         String id = BASE_ID;
-        if (zone.isZone()) id = id.concat("_" + zone.asString());
+        if (seal.isSeal()) id = id.concat("_" + seal.asString());
         if (essenceLevel.isPresent()) id = id.concat("_" + essenceLevel.asString());
         return id;
     }
@@ -170,16 +170,16 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
         stoneConsumer.accept(stone);
     }
 
-    public static BlockState transformState(BlockState oldState, EssenceZoneType zone, EssenceLevel level) {
-        SedimentaryStone block = TYPE_TO_STONE.get(new SedimentaryType(zone, level));
+    public static BlockState transformState(BlockState oldState, SealType seal, EssenceLevel level) {
+        SedimentaryStone block = TYPE_TO_STONE.get(new SedimentaryType(seal, level));
         if (oldState.getBlock().equals(block)) return oldState;
         if (block == null) {
-            Etherology.ELOGGER.error("Failed to get sedimentary stone for zone {} and level {}", zone, level);
+            Etherology.ELOGGER.error("Failed to get sedimentary stone for seal {} and level {}", seal, level);
             return oldState;
         }
 
         return block.getDefaultState().with(POWERED, oldState.get(POWERED));
     }
 
-    private record SedimentaryType(EssenceZoneType zone, EssenceLevel essenceLevel) {}
+    private record SedimentaryType(SealType seal, EssenceLevel essenceLevel) {}
 }

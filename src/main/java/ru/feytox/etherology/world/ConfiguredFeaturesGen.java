@@ -19,7 +19,7 @@ import net.minecraft.world.gen.stateprovider.PredicatedStateProvider;
 import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.treedecorator.BeehiveTreeDecorator;
 import ru.feytox.etherology.block.beamer.BeamerBlock;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.mixin.TreeConfiguredFeaturesAccessor;
 import ru.feytox.etherology.registry.block.DecoBlocks;
 import ru.feytox.etherology.registry.world.WorldGenRegistry;
@@ -77,15 +77,15 @@ public class ConfiguredFeaturesGen {
                 new SimpleBlockFeatureConfig(new WeightedBlockStateProvider(DataPool.<BlockState>builder()
                         .add(Blocks.SHORT_GRASS.getDefaultState(), 1)
                         .add(DecoBlocks.LIGHTELET.getDefaultState(), 2).build())));
-        registerSeal(context, KETA_SEAL, EssenceZoneType.KETA);
-        registerSeal(context, RELLA_SEAL, EssenceZoneType.RELLA);
-        registerSeal(context, CLOS_SEAL, EssenceZoneType.CLOS);
-        registerSeal(context, VIA_SEAL, EssenceZoneType.VIA);
+        registerSeal(context, KETA_SEAL, SealType.KETA);
+        registerSeal(context, RELLA_SEAL, SealType.RELLA);
+        registerSeal(context, CLOS_SEAL, SealType.CLOS);
+        registerSeal(context, VIA_SEAL, SealType.VIA);
 
     }
 
-    private static void registerSeal(Registerable<ConfiguredFeature<?, ?>> context, RegistryKey<ConfiguredFeature<?,?>> key, EssenceZoneType zoneType) {
-        register(context, key, Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(zoneType.getBlock())));
+    private static void registerSeal(Registerable<ConfiguredFeature<?, ?>> context, RegistryKey<ConfiguredFeature<?,?>> key, SealType sealType) {
+        register(context, key, Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(sealType.getBlock())));
     }
 
     private static RegistryKey<ConfiguredFeature<?, ?>> of(String name) {

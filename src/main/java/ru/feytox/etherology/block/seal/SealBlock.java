@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.zone;
+package ru.feytox.etherology.block.seal;
 
 import lombok.Getter;
 import net.minecraft.block.Block;
@@ -25,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.HideSurvivalBlockOutline;
 
@@ -33,28 +33,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter
-public class ZoneCoreBlock extends Block implements BlockEntityProvider, HideSurvivalBlockOutline {
+public class SealBlock extends Block implements BlockEntityProvider, HideSurvivalBlockOutline {
 
     private static final float ROTATE_ANGLE = 45.0f;
-    private final EssenceZoneType zoneType;
+    private final SealType sealType;
 
-    public ZoneCoreBlock(EssenceZoneType zoneType) {
+    public SealBlock(SealType sealType) {
         super(Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().noCollision());
-        this.zoneType = zoneType;
+        this.sealType = sealType;
     }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        return tryRotateZone(world, pos, player).orElse(super.onUse(state, world, pos, player, hit));
+        return tryRotateSeal(world, pos, player).orElse(super.onUse(state, world, pos, player, hit));
     }
 
-    private Optional<ActionResult> tryRotateZone(World world, BlockPos pos, PlayerEntity player) {
-        if (!(world.getBlockEntity(pos) instanceof ZoneCoreBlockEntity zoneCore)) return Optional.empty();
+    private Optional<ActionResult> tryRotateSeal(World world, BlockPos pos, PlayerEntity player) {
+        if (!(world.getBlockEntity(pos) instanceof SealBlockEntity seal)) return Optional.empty();
 
-        zoneCore.setPitch(toAngle(player.getPitch()));
-        zoneCore.setYaw(toAngle(-player.getYaw()));
+        seal.setPitch(toAngle(player.getPitch()));
+        seal.setYaw(toAngle(-player.getYaw()));
 
-        if (world instanceof ServerWorld serverWorld) zoneCore.syncData(serverWorld);
+        if (world instanceof ServerWorld serverWorld) seal.syncData(serverWorld);
         return Optional.of(ActionResult.success(world.isClient));
     }
 
@@ -82,25 +82,25 @@ public class ZoneCoreBlock extends Block implements BlockEntityProvider, HideSur
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         super.appendTooltip(stack, context, tooltip, options);
-        tooltip.add(1, Text.translatable("lore.etherology.primoshard", StringUtils.capitalize(zoneType.asString())).formatted(Formatting.DARK_PURPLE));
+        tooltip.add(1, Text.translatable("lore.etherology.primoshard", StringUtils.capitalize(sealType.asString())).formatted(Formatting.DARK_PURPLE));
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return ZoneCoreBlockEntity.getTicker(world, type, EBlocks.ZONE_CORE_BLOCK_ENTITY);
+        return SealBlockEntity.getTicker(world, type, EBlocks.SEAL_BLOCK_ENTITY);
     }
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ZoneCoreBlockEntity(pos, state, zoneType);
+        return new SealBlockEntity(pos, state, sealType);
     }
 
     @Override
     public String getTranslationKey() {
-        return "block.etherology.zone_core";
+        return "block.etherology.seal";
     }
 
-    public static String createId(EssenceZoneType zoneType) {
-        return "zone_core_" + zoneType.asString();
+    public static String createId(SealType sealType) {
+        return sealType.asString() + "_seal";
     }
 }

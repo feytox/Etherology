@@ -7,8 +7,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import ru.feytox.etherology.item.*;
 import ru.feytox.etherology.item.glints.GlintItem;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.magic.staff.StaffStyles;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
 import ru.feytox.etherology.util.misc.BoatTypes;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -17,10 +17,10 @@ public class EItems {
 
     public static final Item TELDECORE = registerItem("teldecore", new Teldecore());
 
-    public static final Item PRIMOSHARD_KETA = registerItem("primoshard_keta", new PrimoShard(EssenceZoneType.KETA));
-    public static final Item PRIMOSHARD_RELLA = registerItem("primoshard_rella", new PrimoShard(EssenceZoneType.RELLA));
-    public static final Item PRIMOSHARD_CLOS = registerItem("primoshard_clos", new PrimoShard(EssenceZoneType.CLOS));
-    public static final Item PRIMOSHARD_VIA = registerItem("primoshard_via", new PrimoShard(EssenceZoneType.VIA));
+    public static final Item PRIMOSHARD_KETA = registerItem("primoshard_keta", new PrimoShard(SealType.KETA));
+    public static final Item PRIMOSHARD_RELLA = registerItem("primoshard_rella", new PrimoShard(SealType.RELLA));
+    public static final Item PRIMOSHARD_CLOS = registerItem("primoshard_clos", new PrimoShard(SealType.CLOS));
+    public static final Item PRIMOSHARD_VIA = registerItem("primoshard_via", new PrimoShard(SealType.VIA));
     public static final Item GLINT = registerItem("glint_shard", new GlintItem(128));
     public static final Item ETHER_SHARD = registerSimple("ether_shard");
     public static final Item CORRUPTION_BUCKET = registerItem("corruption_bucket", new CorruptionBucket());

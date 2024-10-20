@@ -7,7 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.event.GameEvent;
-import ru.feytox.etherology.block.zone.ZoneCoreRenderer;
+import ru.feytox.etherology.block.seal.SealBlockRenderer;
 import ru.feytox.etherology.item.revelationView.RevelationViewRenderer;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -19,7 +19,7 @@ public class EventsRegistry {
     public static void registerClientSide() {
         // TODO: 07.07.2024 move
         RevelationViewRenderer.registerRendering();
-        ZoneCoreRenderer.registerRendering();
+        SealBlockRenderer.registerRendering();
     }
 
     public static void registerGameEvents() {

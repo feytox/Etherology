@@ -8,7 +8,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.util.StringIdentifiable;
 import org.apache.commons.lang3.EnumUtils;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.particle.SparkParticle;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.info.SparkJewelryInfo;
@@ -22,10 +22,10 @@ import ru.feytox.etherology.util.misc.CodecUtil;
 @RequiredArgsConstructor
 public enum SparkSubtype implements ParticleInfoProvider<SparkParticle, SparkParticleEffect>, StringIdentifiable {
     SIMPLE(null),
-    KETA(SparkSedimentaryInfo.of(EssenceZoneType.KETA)),
-    RELLA(SparkSedimentaryInfo.of(EssenceZoneType.RELLA)),
-    VIA(SparkSedimentaryInfo.of(EssenceZoneType.VIA)),
-    CLOS(SparkSedimentaryInfo.of(EssenceZoneType.CLOS)),
+    KETA(SparkSedimentaryInfo.of(SealType.KETA)),
+    RELLA(SparkSedimentaryInfo.of(SealType.RELLA)),
+    VIA(SparkSedimentaryInfo.of(SealType.VIA)),
+    CLOS(SparkSedimentaryInfo.of(SealType.CLOS)),
     RISING(SparkRisingInfo::new),
     JEWELRY(SparkJewelryInfo::new);
 
@@ -35,8 +35,8 @@ public enum SparkSubtype implements ParticleInfoProvider<SparkParticle, SparkPar
     private final ParticleInfo.Factory<SparkParticle, SparkParticleEffect> factory;
 
     @Nullable
-    public static SparkSubtype of(EssenceZoneType zoneType) {
-        return EnumUtils.getEnum(SparkSubtype.class, zoneType.name(), null);
+    public static SparkSubtype of(SealType sealType) {
+        return EnumUtils.getEnum(SparkSubtype.class, sealType.name(), null);
     }
 
     @Override

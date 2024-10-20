@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.zone;
+package ru.feytox.etherology.block.seal;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -19,16 +19,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
-import ru.feytox.etherology.magic.zones.EssenceZoneType;
+import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.util.misc.RenderUtils;
 
 import java.util.List;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class ZoneCoreRenderer {
+public class SealBlockRenderer {
 
-    private static final Map<BlockPos, Data> zonesData = new Object2ObjectOpenHashMap<>();
+    private static final Map<BlockPos, Data> sealsData = new Object2ObjectOpenHashMap<>();
     private static final int VISIBLE_COOLDOWN = 4;
     public static final int LIFETIME = 100;
     private static long oculusLastTick;
@@ -43,36 +43,36 @@ public class ZoneCoreRenderer {
         revelationLastTick = time;
     }
 
-    public static void refreshZone(ZoneCoreBlockEntity blockEntity, BlockPos pos, EssenceZoneType zoneType, long time) {
-        zonesData.merge(pos, new Data(blockEntity, zoneType).setTime(time), (oldData, data) -> {
-            if (!oldData.zoneType.equals(data.zoneType)) return data;
+    public static void refreshSeal(SealBlockEntity blockEntity, BlockPos pos, SealType sealType, long time) {
+        sealsData.merge(pos, new Data(blockEntity, sealType).setTime(time), (oldData, data) -> {
+            if (!oldData.sealType.equals(data.sealType)) return data;
             oldData.setTime(data.lastTime);
             return oldData;
         });
     }
 
     public static void registerRendering() {
-        WorldRenderEvents.LAST.register(ZoneCoreRenderer::render);
+        WorldRenderEvents.LAST.register(SealBlockRenderer::render);
     }
 
     public static void tickDataResetting(MinecraftClient client) {
         if (lastWorld == client.world) return;
 
         lastWorld = client.world;
-        zonesData.clear();
+        sealsData.clear();
     }
 
     private static void render(WorldRenderContext context) {
         long time = context.world().getTime();
-        if (!canSeeZone(time)) return;
+        if (!canSeeSeal(time)) return;
 
         boolean seeThrough = canSeeThrough(time);
 
-        zonesData.entrySet().removeIf(entry -> entry.getValue().zoneCore.isRemoved() || time - entry.getValue().lastTime > LIFETIME);
-        zonesData.forEach((pos, data) -> data.render(context, pos, time, seeThrough));
+        sealsData.entrySet().removeIf(entry -> entry.getValue().seal.isRemoved() || time - entry.getValue().lastTime > LIFETIME);
+        sealsData.forEach((pos, data) -> data.render(context, pos, time, seeThrough));
     }
 
-    private static boolean canSeeZone(long time) {
+    private static boolean canSeeSeal(long time) {
         return time - oculusLastTick <= VISIBLE_COOLDOWN || time - revelationLastTick <= VISIBLE_COOLDOWN;
     }
 
@@ -86,8 +86,8 @@ public class ZoneCoreRenderer {
         private static final float LIGHT_CHANCE = 0.05f;
         private static final int SEAL_TIMING = 10;
 
-        private final ZoneCoreBlockEntity zoneCore;
-        private final EssenceZoneType zoneType;
+        private final SealBlockEntity seal;
+        private final SealType sealType;
         private long lastTime;
         private long lastLightTime;
         private final List<SealLight> sealLights = new ObjectArrayList<>();
@@ -101,7 +101,7 @@ public class ZoneCoreRenderer {
             MatrixStack matrices = context.matrixStack();
             if (matrices == null) return;
 
-            float scale = 1/100f * MathHelper.lerp(zoneCore.getScale(), 1.0f, 2.0f);
+            float scale = 1/100f * MathHelper.lerp(seal.getScale(), 1.0f, 2.0f);
             float tickDelta = context.tickCounter().getTickDelta(false);
             Camera camera = context.camera();
             Vec3d coreVec = pos.toCenterPos().subtract(camera.getPos());
@@ -109,8 +109,8 @@ public class ZoneCoreRenderer {
 
             matrices.push();
             matrices.translate(coreVec.x, coreVec.y, coreVec.z);
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(zoneCore.getYaw()));
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(zoneCore.getPitch()));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(seal.getYaw()));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(seal.getPitch()));
             matrices.scale(scale, scale, scale);
             RenderSystem.enableBlend();
             RenderSystem.depthMask(false);
@@ -135,7 +135,7 @@ public class ZoneCoreRenderer {
             if (seeThrough) RenderSystem.enableDepthTest();
             matrices.pop();
 
-            RenderSystem.setShaderTexture(0, zoneType.getTextureId());
+            RenderSystem.setShaderTexture(0, sealType.getTextureId());
 
             matrices.push();
             matrices.translate(dx+32, dy+32, 0);
@@ -153,10 +153,10 @@ public class ZoneCoreRenderer {
 
         private void renderSealLights(MatrixStack matrices, Random random, long time, float tickDelta) {
             refreshLights(random, time, tickDelta);
-            float fillPercent = zoneCore.getFillPercent();
+            float fillPercent = seal.getFillPercent();
             for (int i = 0, sealLightsSize = sealLights.size(); i < sealLightsSize; i++) {
                 SealLight sealLight = sealLights.get(i);
-                sealLight.render(matrices, zoneType.getTextureLightId(), time, fillPercent, tickDelta, i*0.01f);
+                sealLight.render(matrices, sealType.getTextureLightId(), time, fillPercent, tickDelta, i*0.01f);
             }
         }
 

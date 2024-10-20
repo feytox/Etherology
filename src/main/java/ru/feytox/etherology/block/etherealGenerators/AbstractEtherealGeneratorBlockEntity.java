@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.magic.zones.EssenceDetector;
-import ru.feytox.etherology.magic.zones.EssenceSupplier;
+import ru.feytox.etherology.magic.seal.EssenceDetector;
+import ru.feytox.etherology.magic.seal.EssenceSupplier;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
@@ -47,7 +47,7 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     private boolean isMess = false;
     private CompletableFuture<Boolean> messCheck = null;
     @Nullable
-    private EssenceSupplier cachedZone;
+    private EssenceSupplier cachedSeal;
 
     public AbstractEtherealGeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -142,10 +142,10 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     public void generateTick(ServerWorld world, BlockState state) {
         if (state.get(STALLED) || isMess) return;
 
-        boolean isInZone = isInZone(world);
+        boolean isInSeal = isInSeal(world);
         Random random = world.getRandom();
         if (nextGenTime-- > 0) {
-            if (isInZone && random.nextDouble() <= 0.5) nextGenTime -= random.nextBetween(0, 1);
+            if (isInSeal && random.nextDouble() <= 0.5) nextGenTime -= random.nextBetween(0, 1);
             return;
         }
         incrementEssence(1);
@@ -155,14 +155,14 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
             int max = generator.getMaxCooldown();
             nextGenTime = random.nextBetween(min, max);
 
-            if (random.nextDouble() <= generator.getStopChance(isInZone)) {
+            if (random.nextDouble() <= generator.getStopChance(isInSeal)) {
                 stall(world, state);
             }
         }
     }
 
-    public boolean isInZone(World world) {
-        return getAndCacheZone(world, pos).isPresent();
+    public boolean isInSeal(World world) {
+        return getAndCacheSeal(world, pos).isPresent();
     }
 
     @Override
@@ -249,12 +249,12 @@ public abstract class AbstractEtherealGeneratorBlockEntity extends TickableBlock
     }
 
     @Override
-    public Optional<EssenceSupplier> getCachedZone() {
-        return Optional.ofNullable(cachedZone);
+    public Optional<EssenceSupplier> getCachedSeal() {
+        return Optional.ofNullable(cachedSeal);
     }
 
     @Override
-    public void setCachedZone(EssenceSupplier zoneCore) {
-        cachedZone = zoneCore;
+    public void setCachedSeal(EssenceSupplier seal) {
+        cachedSeal = seal;
     }
 }
