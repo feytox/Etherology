@@ -1,6 +1,5 @@
 package ru.feytox.etherology.gui.staff;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -8,11 +7,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Colors;
 import net.minecraft.util.math.MathHelper;
-import org.joml.Matrix4fStack;
 
 import static ru.feytox.etherology.gui.staff.StaffLensesScreen.ITEM_RADIUS;
 import static ru.feytox.etherology.gui.staff.StaffLensesScreen.LENS_OPEN_DELAY;
@@ -33,9 +30,6 @@ public class LensWidget {
         itemRenderer = MinecraftClient.getInstance().getItemRenderer();
     }
 
-    /**
-     * @see io.wispforest.owo.ui.component.ItemComponent#draw(OwoUIDrawContext, int, int, float, float)
-     */
     public void render(StaffLensesScreen parent, VertexConsumerProvider.Immediate immediate, DrawContext context, float centerX, float centerY, float progress, float circleScale) {
         if (stack == null || stack.isEmpty()) return;
 
@@ -47,7 +41,7 @@ public class LensWidget {
         }
 
         float selectionScale = getLensScale();
-        draw(immediate, progress*selectionScale, dx, dy);
+        draw(context, immediate, progress*selectionScale, dx, dy);
         renderItemBar(context, progress, dx, dy);
 
         if (!selected) return;
@@ -57,25 +51,23 @@ public class LensWidget {
         context.pop();
     }
 
-    private void draw(VertexConsumerProvider.Immediate immediate, float progress, float dx, float dy) {
-        boolean notSideLit = itemRenderer.getModel(stack, null, null, 0).isSideLit();
-        if (notSideLit) DiffuseLighting.disableGuiDepthLighting();
-
+    /**
+     * @see io.wispforest.owo.ui.component.ItemComponent#draw(OwoUIDrawContext, int, int, float, float)
+     */
+    private void draw(DrawContext context, VertexConsumerProvider.Immediate immediate, float progress, float dx, float dy) {
         DiffuseLighting.disableGuiDepthLighting();
-        Matrix4fStack modelView = RenderSystem.getModelViewStack();
-        modelView.pushMatrix();
+        var matrices = context.getMatrices();
 
-        modelView.translate(dx, dy, 100);
-        modelView.scale(progress, progress, progress);
-        modelView.scale(16, -16, 16);
+        matrices.push();
+        matrices.translate(dx, dy, 100);
+        matrices.scale(progress, progress, progress);
+        matrices.scale(16, -16, 16);
 
-        RenderSystem.applyModelViewMatrix();
-        itemRenderer.renderItem(stack, ModelTransformationMode.GUI, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, new MatrixStack(), immediate, MinecraftClient.getInstance().world, 0);
+        itemRenderer.renderItem(this.stack, ModelTransformationMode.GUI, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, matrices, immediate, MinecraftClient.getInstance().world, 0);
         immediate.draw();
+        matrices.pop();
 
-        modelView.popMatrix();
-        RenderSystem.applyModelViewMatrix();
-        if (notSideLit) DiffuseLighting.enableGuiDepthLighting();
+        DiffuseLighting.enableGuiDepthLighting();
     }
 
     /**

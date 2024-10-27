@@ -1,10 +1,11 @@
 package ru.feytox.etherology.block.etherealFork;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
@@ -24,12 +25,12 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import static net.minecraft.state.property.Properties.WATERLOGGED;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
-public class EtherealForkBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+public class EtherealForkBlock extends Block implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
     private static final VoxelShape CENTER_SHAPE;
 
@@ -42,32 +43,39 @@ public class EtherealForkBlock extends Block implements RegistrableBlock, BlockE
                 .with(WEST, PipeSide.EMPTY)
                 .with(EAST, PipeSide.EMPTY)
                 .with(UP, PipeSide.EMPTY)
-                .with(DOWN, PipeSide.EMPTY));
+                .with(DOWN, PipeSide.EMPTY)
+                .with(WATERLOGGED, false));
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         List<VoxelShape> shapes = new ArrayList<>();
+        return getShape(state, shapes, CENTER_SHAPE);
+    }
+
+    public static VoxelShape getShape(BlockState state, List<VoxelShape> shapes, VoxelShape centerShape) {
         if (!state.get(NORTH).equals(PipeSide.EMPTY)) shapes.add(NORTH_SHAPE);
         if (!state.get(SOUTH).equals(PipeSide.EMPTY)) shapes.add(SOUTH_SHAPE);
         if (!state.get(EAST).equals(PipeSide.EMPTY)) shapes.add(EAST_SHAPE);
         if (!state.get(WEST).equals(PipeSide.EMPTY)) shapes.add(WEST_SHAPE);
         if (!state.get(UP).equals(PipeSide.EMPTY)) shapes.add(UP_SHAPE);
         if (!state.get(DOWN).equals(PipeSide.EMPTY)) shapes.add(DOWN_SHAPE);
-        VoxelShape branchShape = shapes.stream().reduce(CENTER_SHAPE, VoxelShapes::union);
+        VoxelShape branchShape = shapes.stream().reduce(centerShape, VoxelShapes::union);
 
-        return VoxelShapes.combineAndSimplify(CENTER_SHAPE, branchShape, BooleanBiFunction.OR);
+        return VoxelShapes.combineAndSimplify(centerShape, branchShape, BooleanBiFunction.OR);
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(ACTIVATED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+        builder.add(ACTIVATED, NORTH, SOUTH, WEST, EAST, UP, DOWN, WATERLOGGED);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getForkState(ctx.getWorld(), this.getDefaultState(), ctx.getBlockPos());
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        return getForkState(ctx.getWorld(), this.getDefaultState(), ctx.getBlockPos())
+                .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
     public BlockState getForkState(BlockView world, BlockState state, BlockPos pos) {
@@ -94,11 +102,19 @@ public class EtherealForkBlock extends Block implements RegistrableBlock, BlockE
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+
         int weak = neighborState.getWeakRedstonePower(world, neighborPos, direction);
         int strong = neighborState.getStrongRedstonePower(world, neighborPos, direction);
         boolean result = weak > 0 || strong > 0;
 
         return getForkState(world, this.getDefaultState(), pos).with(ACTIVATED, result);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Override

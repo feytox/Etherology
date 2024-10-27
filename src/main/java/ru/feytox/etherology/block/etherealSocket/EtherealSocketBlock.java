@@ -1,18 +1,18 @@
 package ru.feytox.etherology.block.etherealSocket;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
@@ -22,12 +22,14 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
+import static net.minecraft.state.property.Properties.WATERLOGGED;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
-public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider {
+public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
     private static final MapCodec<EtherealSocketBlock> CODEC = MapCodec.unit(EtherealSocketBlock::new);
     protected static final BooleanProperty WITH_GLINT = BooleanProperty.of("with_glint");
@@ -42,7 +44,8 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
         super(Settings.create().mapColor(MapColor.IRON_GRAY).strength(1.5F).nonOpaque());
         setDefaultState(getDefaultState()
                 .with(FACING, Direction.DOWN)
-                .with(WITH_GLINT, false));
+                .with(WITH_GLINT, false)
+                .with(WATERLOGGED, false));
     }
 
     @Override
@@ -58,7 +61,7 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, WITH_GLINT);
+        builder.add(FACING, WITH_GLINT, WATERLOGGED);
     }
 
     @Override
@@ -89,9 +92,23 @@ public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction side = ctx.getSide();
-        Direction facing = side.equals(Direction.DOWN) || side.equals(Direction.UP) ? side.getOpposite() : side;
-        return getDefaultState().with(FACING, facing);
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        var side = ctx.getSide();
+        var facing = side.equals(Direction.DOWN) || side.equals(Direction.UP) ? side.getOpposite() : side;
+        return getDefaultState().with(FACING, facing)
+                .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Override

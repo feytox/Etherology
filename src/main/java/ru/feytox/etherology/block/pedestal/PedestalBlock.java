@@ -5,6 +5,8 @@ import lombok.val;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -29,7 +31,9 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.Optional;
 
-public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityProvider, RegistrableBlock {
+import static net.minecraft.state.property.Properties.WATERLOGGED;
+
+public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityProvider, RegistrableBlock, Waterloggable {
 
     private static final MapCodec<PedestalBlock> CODEC = MapCodec.unit(PedestalBlock::new);
     public static final EnumProperty<PedestalShape> SHAPE = EnumProperty.of("shape", PedestalShape.class);
@@ -47,12 +51,13 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
                 .with(SHAPE, PedestalShape.FULL)
                 .with(DECORATION, false)
                 .with(CLOTH_COLOR, DyeColor.WHITE)
+                .with(WATERLOGGED, false)
         );
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(SHAPE, DECORATION, CLOTH_COLOR, FACING);
+        builder.add(SHAPE, DECORATION, CLOTH_COLOR, FACING, WATERLOGGED);
     }
 
     @Override
@@ -62,19 +67,24 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (!neighborPos.down().equals(pos) && !neighborPos.up().equals(pos)) return state;
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        if (!neighborPos.down().equals(pos) && !neighborPos.up().equals(pos))
+            return state;
         PedestalShape shape = PedestalShape.getShape(world.getBlockState(pos.down()), world.getBlockState(pos.up()));
-        if (!shape.isHasItem()) state = state.with(CLOTH_COLOR, DyeColor.WHITE).with(DECORATION, false);
+        if (!shape.isHasItem())
+            state = state.with(CLOTH_COLOR, DyeColor.WHITE).with(DECORATION, false);
         return state.with(SHAPE, shape);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        World world = ctx.getWorld();
-        BlockPos currentPos = ctx.getBlockPos();
-        PedestalShape shape = PedestalShape.getShape(world.getBlockState(currentPos.down()), world.getBlockState(currentPos.up()));
-        return getDefaultState().with(SHAPE, shape);
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        var world = ctx.getWorld();
+        var currentPos = ctx.getBlockPos();
+        var shape = PedestalShape.getShape(world.getBlockState(currentPos.down()), world.getBlockState(currentPos.up()));
+        return getDefaultState().with(SHAPE, shape).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
     @Override
@@ -114,6 +124,11 @@ public class PedestalBlock extends HorizontalFacingBlock implements BlockEntityP
             val packet = new RemoveBlockEntityS2C(pos);
             packet.sendForTracking(pedestal);
         }
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     static {

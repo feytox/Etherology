@@ -1,8 +1,9 @@
 package ru.feytox.etherology.registry.item;
 
-import com.google.common.collect.ImmutableList;
 import lombok.experimental.UtilityClass;
+import lombok.val;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
@@ -12,8 +13,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import ru.feytox.etherology.registry.block.ExtraBlocksRegistry;
+import ru.feytox.etherology.registry.misc.ComponentTypes;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
@@ -75,29 +79,49 @@ public class EItemGroups {
         etherItems.with(PATTERN_TABLETS);
         // staff and lenses
         etherItems.with(STAFF, UNADJUSTED_LENS).with(LENSES);
+
+        val fullGlint = GLINT.getDefaultStack();
+        fullGlint.apply(ComponentTypes.STORED_ETHER, GLINT.getMaxEther(), oldValue -> GLINT.getMaxEther());
+
         // magic
         // TODO: 12.04.2024 fix corruption bucket
         etherItems.with(
                 OCULUS, REVELATION_VIEW, PRIMOSHARD_CLOS, PRIMOSHARD_KETA, PRIMOSHARD_RELLA,
-                PRIMOSHARD_VIA, GLINT, THUJA_OIL, CORRUPTION_BUCKET).with(SEALS);
+                PRIMOSHARD_VIA, GLINT).with(fullGlint).with(THUJA_OIL, CORRUPTION_BUCKET).with(SEALS);
         // materials
         etherItems.with(ETHEROSCOPE, BINDER, DecoBlockItems.EBONY, RESONATING_WAND);
         // plants
         etherItems.with(FOREST_LANTERN, FOREST_LANTERN_CRUMB, LIGHTELET, BEAMER_SEEDS, THUJA_SEEDS, BEAM_FRUIT);
 
-        ItemGroupEvents.modifyEntriesEvent(ETHEROLOGY_GROUP_KEY).register(content -> etherItems.build().forEach(content::add));
+        ItemGroupEvents.modifyEntriesEvent(ETHEROLOGY_GROUP_KEY).register(etherItems::addToContent);
     }
 
     private class Builder {
-        private final ImmutableList.Builder<ItemConvertible> listBuilder = new ImmutableList.Builder<>();
+
+        private final List<GroupComponent<?>> components = new LinkedList<>();
 
         public Builder with(ItemConvertible... items) {
-            listBuilder.add(items);
+            Arrays.stream(items).map(GroupComponent<ItemConvertible>::new).forEach(components::add);
             return this;
         }
 
-        public List<ItemConvertible> build() {
-            return listBuilder.build();
+        public Builder with(ItemStack... stacks) {
+            Arrays.stream(stacks).map(GroupComponent<ItemStack>::new).forEach(components::add);
+            return this;
+        }
+
+        public void addToContent(FabricItemGroupEntries content) {
+            components.forEach(component -> component.addToContent(content));
+        }
+    }
+
+    private record GroupComponent<T>(T value) {
+
+        public void addToContent(FabricItemGroupEntries content) {
+            if (value instanceof ItemStack stack)
+                content.add(stack);
+            if (value instanceof ItemConvertible item)
+                content.add(item);
         }
     }
 }

@@ -76,6 +76,7 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         addItems(CHEST_BOATS, PEACH_CHEST_BOAT);
 
         addItems(DURABILITY_ENCHANTABLE, IRON_SHIELD);
+        addItems(DURABILITY_ENCHANTABLE, STREAM_KEY);
 
         addItems(ConventionalItemTags.SHIELD_TOOLS, IRON_SHIELD);
         // TODO: 18.02.2024 add to convention tags

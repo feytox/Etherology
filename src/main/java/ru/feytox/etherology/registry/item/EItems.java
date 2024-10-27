@@ -21,7 +21,7 @@ public class EItems {
     public static final Item PRIMOSHARD_RELLA = registerItem("primoshard_rella", new PrimoShard(SealType.RELLA));
     public static final Item PRIMOSHARD_CLOS = registerItem("primoshard_clos", new PrimoShard(SealType.CLOS));
     public static final Item PRIMOSHARD_VIA = registerItem("primoshard_via", new PrimoShard(SealType.VIA));
-    public static final Item GLINT = registerItem("glint_shard", new GlintItem(128));
+    public static final GlintItem GLINT = (GlintItem) registerItem("glint_shard", new GlintItem(128));
     public static final Item ETHER_SHARD = registerSimple("ether_shard");
     public static final Item CORRUPTION_BUCKET = registerItem("corruption_bucket", new CorruptionBucket());
 

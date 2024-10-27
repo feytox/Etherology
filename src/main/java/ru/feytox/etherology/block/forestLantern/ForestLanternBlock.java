@@ -28,7 +28,7 @@ public class ForestLanternBlock extends HorizontalFacingBlock implements Registr
     private static final Map<Direction, VoxelShape> SHAPES;
 
     public ForestLanternBlock() {
-        super(Settings.copy(Blocks.BROWN_MUSHROOM_BLOCK).sounds(BlockSoundGroup.FUNGUS).luminance(value -> 8).postProcess((a, b, c) -> true).emissiveLighting((a, b, c) -> true));
+        super(Settings.copy(Blocks.BROWN_MUSHROOM_BLOCK).notSolid().sounds(BlockSoundGroup.FUNGUS).luminance(value -> 8).postProcess((a, b, c) -> true).emissiveLighting((a, b, c) -> true));
         setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 

@@ -1,12 +1,13 @@
 package ru.feytox.etherology.block.etherealChannel;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -15,10 +16,8 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -26,6 +25,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherStorage;
@@ -35,9 +35,11 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.minecraft.state.property.Properties.WATERLOGGED;
+import static ru.feytox.etherology.block.etherealFork.EtherealForkBlock.getShape;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
-public class EtherealChannel extends Block implements RegistrableBlock, BlockEntityProvider {
+public class EtherealChannel extends Block implements RegistrableBlock, BlockEntityProvider, Waterloggable {
     public static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
     public static final DirectionProperty FACING = FacingBlock.FACING;
     public static final BooleanProperty IN_CASE = BooleanProperty.of("in_case");
@@ -58,7 +60,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     public static final VoxelShape UP_SHAPE;
 
     public EtherealChannel() {
-        super(Settings.create().mapColor(MapColor.BROWN).strength(1.0f).nonOpaque());
+        super(Settings.create().mapColor(MapColor.BROWN).strength(1.0f).nonOpaque().solid());
         setDefaultState(getDefaultState()
                 .with(ACTIVATED, false)
                 .with(FACING, Direction.NORTH)
@@ -69,12 +71,13 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
                 .with(WEST, PipeSide.EMPTY)
                 .with(EAST, PipeSide.EMPTY)
                 .with(UP, PipeSide.EMPTY)
-                .with(DOWN, PipeSide.EMPTY));
+                .with(DOWN, PipeSide.EMPTY)
+                .with(WATERLOGGED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ACTIVATED, IN_CASE, IS_CROSS, NORTH, SOUTH, WEST, EAST, UP, DOWN);
+        builder.add(FACING, ACTIVATED, IN_CASE, IS_CROSS, NORTH, SOUTH, WEST, EAST, UP, DOWN, WATERLOGGED);
     }
 
     @Override
@@ -93,24 +96,30 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (state.get(IN_CASE)) return VoxelShapes.fullCube();
         List<VoxelShape> shapes = new ObjectArrayList<>();
-        if (!state.get(NORTH).equals(PipeSide.EMPTY)) shapes.add(NORTH_SHAPE);
-        if (!state.get(SOUTH).equals(PipeSide.EMPTY)) shapes.add(SOUTH_SHAPE);
-        if (!state.get(EAST).equals(PipeSide.EMPTY)) shapes.add(EAST_SHAPE);
-        if (!state.get(WEST).equals(PipeSide.EMPTY)) shapes.add(WEST_SHAPE);
-        if (!state.get(UP).equals(PipeSide.EMPTY)) shapes.add(UP_SHAPE);
-        if (!state.get(DOWN).equals(PipeSide.EMPTY)) shapes.add(DOWN_SHAPE);
-        VoxelShape branchShape = shapes.stream().reduce(CENTER_SHAPE, VoxelShapes::union);
-
-        return VoxelShapes.combineAndSimplify(CENTER_SHAPE, branchShape, BooleanBiFunction.OR);
+        return getShape(state, shapes, CENTER_SHAPE);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction playerDirection = ctx.getPlayerLookDirection();
-        BlockState playerPlacementState = getDefaultState().with(FACING, playerDirection);
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        var playerDirection = ctx.getPlayerLookDirection();
+        var playerPlacementState = getDefaultState().with(FACING, playerDirection);
 
-        return getChannelState(ctx.getWorld(), playerPlacementState, ctx.getBlockPos());
+        return getChannelState(ctx.getWorld(), playerPlacementState, ctx.getBlockPos())
+                .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     public BlockState getChannelState(BlockView world, BlockState state, BlockPos pos) {
@@ -180,6 +189,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     }
 
     // TODO: 03.03.2024 rename below and above because they are confusing
+    // TODO: 27.10.2024 and combine in one method
 
     public static EnumProperty<PipeSide> getAsOut(Direction direction) {
         switch (direction) {

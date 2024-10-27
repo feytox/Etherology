@@ -94,17 +94,19 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
             double speedK = Math.max(0, (length - distance) / length);
             Vec3d speedVec = minLevitation.multiply(1 + 2 * speedK);
 
-            Vec3d oldVelocity = entity.getVelocity();
-            Vec3d newVelocity = oldVelocity.add(speedVec);
-            entity.setVelocity(newVelocity);
+            applySpeed(world, entity, speedVec);
+        }
+    }
 
-            // TODO: 18.06.2023 clamping
+    public static void applySpeed(World world, Entity entity, Vec3d speedVec) {
+        Vec3d oldVelocity = entity.getVelocity();
+        Vec3d newVelocity = oldVelocity.add(speedVec);
+        entity.setVelocity(newVelocity);
 
-            if (!world.isClient && entity instanceof ServerPlayerEntity player && player.velocityModified) {
-                player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
-                player.velocityModified = false;
-                player.setVelocity(oldVelocity);
-            }
+        if (!world.isClient && entity instanceof ServerPlayerEntity player && player.velocityModified) {
+            player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
+            player.velocityModified = false;
+            player.setVelocity(oldVelocity);
         }
     }
 

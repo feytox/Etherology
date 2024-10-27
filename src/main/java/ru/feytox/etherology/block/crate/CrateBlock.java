@@ -1,17 +1,17 @@
 package ru.feytox.etherology.block.crate;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -19,12 +19,15 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-public class CrateBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider {
+import static net.minecraft.state.property.Properties.WATERLOGGED;
+
+public class CrateBlock extends HorizontalFacingBlock implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
     private static final VoxelShape NORTH_SHAPE;
     private static final VoxelShape WEST_SHAPE;
@@ -33,7 +36,8 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     public CrateBlock() {
         super(Settings.copy(Blocks.CHEST).nonOpaque());
         setDefaultState(getDefaultState()
-                .with(FACING, Direction.NORTH));
+                .with(FACING, Direction.NORTH)
+                .with(WATERLOGGED, false));
     }
 
     @Override
@@ -48,7 +52,7 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, WATERLOGGED);
     }
 
     @Override
@@ -97,7 +101,21 @@ public class CrateBlock extends HorizontalFacingBlock implements RegistrableBloc
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        return getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite())
+                .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Nullable

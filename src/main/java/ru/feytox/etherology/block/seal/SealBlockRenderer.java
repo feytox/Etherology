@@ -66,6 +66,8 @@ public class SealBlockRenderer {
         long time = context.world().getTime();
         if (!canSeeSeal(time)) return;
 
+        // force disable depth test to prevent bugs
+        RenderSystem.enableDepthTest();
         boolean seeThrough = canSeeThrough(time);
 
         sealsData.entrySet().removeIf(entry -> entry.getValue().seal.isRemoved() || time - entry.getValue().lastTime > LIFETIME);

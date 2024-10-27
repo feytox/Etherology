@@ -2,7 +2,6 @@ package ru.feytox.etherology.block.tuningFork;
 
 import com.mojang.serialization.MapCodec;
 import lombok.val;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -17,7 +16,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.*;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -134,17 +132,18 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-        int power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
-        boolean powered = power > 0;
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        var power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
+        var powered = power > 0;
         return getDefaultState().with(VERTICAL_FACING, ctx.getSide())
                 .with(HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite())
                 .with(POWERED, powered).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
+    @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (state.get(WATERLOGGED)) world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 

@@ -7,6 +7,8 @@ import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.sound.SoundCategory;
@@ -34,7 +36,9 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.List;
 
-public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+import static net.minecraft.state.property.Properties.WATERLOGGED;
+
+public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
     private static final BooleanProperty WITH_FRAME = BooleanProperty.of("with_frame");
     private static final VoxelShape NORTH_LOG;
@@ -53,7 +57,8 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
         super(Settings.copy(Blocks.BARREL).nonOpaque());
         this.setDefaultState(this.getDefaultState()
                 .with(WITH_FRAME, false)
-                .with(HorizontalFacingBlock.FACING, Direction.NORTH));
+                .with(HorizontalFacingBlock.FACING, Direction.NORTH)
+                .with(WATERLOGGED, false));
     }
 
     @Override
@@ -138,28 +143,37 @@ public class SpillBarrelBlock extends Block implements RegistrableBlock, BlockEn
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(HorizontalFacingBlock.FACING, WITH_FRAME);
+        builder.add(HorizontalFacingBlock.FACING, WITH_FRAME, WATERLOGGED);
     }
 
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockState underState = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
-        BlockState state = this.getDefaultState().with(HorizontalFacingBlock.FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        var underState = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
+        var state = this.getDefaultState().with(HorizontalFacingBlock.FACING, ctx.getHorizontalPlayerFacing().getOpposite());
         if (underState.isAir() || underState.isOf(EBlocks.SPILL_BARREL)) {
             state = state.with(WITH_FRAME, true);
         }
-        return state;
+        return state.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+
         if (!neighborPos.equals(pos.down())) return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 
         if (neighborState.isAir() || neighborState.isOf(EBlocks.SPILL_BARREL)) {
             return state.with(WITH_FRAME, true);
         }
         return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Override

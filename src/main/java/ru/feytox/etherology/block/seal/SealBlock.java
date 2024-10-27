@@ -13,8 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -25,6 +23,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.block.levitator.LevitatorBlockEntity;
 import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.HideSurvivalBlockOutline;
@@ -39,7 +38,7 @@ public class SealBlock extends Block implements BlockEntityProvider, HideSurviva
     private final SealType sealType;
 
     public SealBlock(SealType sealType) {
-        super(Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().noCollision());
+        super(Settings.copy(Blocks.BEDROCK).noBlockBreakParticles().noCollision().solid());
         this.sealType = sealType;
     }
 
@@ -68,15 +67,7 @@ public class SealBlock extends Block implements BlockEntityProvider, HideSurviva
         collisionVec = collisionVec.multiply(1 / Math.max(0.001d, collisionVec.length()))
                 .multiply(0.1d);
 
-        Vec3d oldVelocity = entity.getVelocity();
-        Vec3d newVelocity = oldVelocity.add(collisionVec);
-        entity.setVelocity(newVelocity);
-
-        if (!world.isClient && entity instanceof ServerPlayerEntity player && player.velocityModified) {
-            player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(player));
-            player.velocityModified = false;
-            player.setVelocity(oldVelocity);
-        }
+        LevitatorBlockEntity.applySpeed(world, entity, collisionVec);
     }
 
     @Override

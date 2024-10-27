@@ -42,21 +42,21 @@ public class ItemParticle extends MovingParticle<ItemParticleEffect> {
 
     @Override
     protected float getMinU() {
-        return this.sprite.getFrameU((this.sampleU + 1.0F) / 4.0F * 16.0F);
+        return this.sprite.getFrameU((this.sampleU + 1.0F) / 4.0F);
     }
 
     @Override
     protected float getMaxU() {
-        return this.sprite.getFrameU(this.sampleU / 4.0F * 16.0F);
+        return this.sprite.getFrameU(this.sampleU / 4.0F);
     }
 
     @Override
     protected float getMinV() {
-        return this.sprite.getFrameV(this.sampleV / 4.0F * 16.0F);
+        return this.sprite.getFrameV(this.sampleV / 4.0F);
     }
 
     @Override
     protected float getMaxV() {
-        return this.sprite.getFrameV((this.sampleV + 1.0F) / 4.0F * 16.0F);
+        return this.sprite.getFrameV((this.sampleV + 1.0F) / 4.0F);
     }
 }

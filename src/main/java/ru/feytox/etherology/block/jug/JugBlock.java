@@ -3,20 +3,28 @@ package ru.feytox.etherology.block.jug;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-public class JugBlock extends Block implements RegistrableBlock, BlockEntityProvider {
+import static net.minecraft.state.property.Properties.WATERLOGGED;
+
+public class JugBlock extends Block implements RegistrableBlock, BlockEntityProvider, Waterloggable {
     private static final VoxelShape OUTLINE_SHAPE;
     private static final VoxelShape TOP_SHAPE;
     private final String blockId;
@@ -30,6 +38,13 @@ public class JugBlock extends Block implements RegistrableBlock, BlockEntityProv
         super(settings.nonOpaque());
         this.blockId = blockId;
         this.jugType = jugType;
+
+        setDefaultState(getDefaultState().with(WATERLOGGED, false));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
     }
 
     @Override
@@ -70,6 +85,25 @@ public class JugBlock extends Block implements RegistrableBlock, BlockEntityProv
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return jugType.equals(JugType.RAW) ? null : new JugBlockEntity(pos, state);
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        var state = super.getPlacementState(ctx);
+        return state == null ? null : state.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     static {
