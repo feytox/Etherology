@@ -32,9 +32,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
     private final String langCode;
 
     protected RuLangGeneration(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
-        // TODO: 07.07.2024 replace with "ru_ru"
-        super(dataOutput, "en_us", registryLookup);
-        langCode = "en_us";
+        super(dataOutput, "ru_ru", registryLookup);
+        langCode = "ru_ru";
     }
 
 
@@ -67,9 +66,9 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(CRACKED_POLISHED_SLITHERITE_BRICKS, "Потрескавшиеся полированные слизеритовые кирпичи");
 
         // azel
-        builder.add(AZEL_BLOCK, "Азельный блок");
-        builder.add(AZEL_INGOT, "Азельный слиток");
-        builder.add(AZEL_NUGGET, "Азельный самородок");
+        builder.add(AZEL_BLOCK, "Блок азеля");
+        builder.add(AZEL_INGOT, "Слиток азеля");
+        builder.add(AZEL_NUGGET, "Кусочек азеля");
 
         // attrahite
         builder.add(ATTRAHITE, "Аттрахит");
@@ -84,12 +83,12 @@ public class RuLangGeneration extends FabricLanguageProvider {
         // ethril
         builder.add(ETHRIL_BLOCK, "Эфриловый блок");
         builder.add(ETHRIL_INGOT, "Эфриловый слиток");
-        builder.add(ETHRIL_NUGGET, "Эфриловый самородок");
+        builder.add(ETHRIL_NUGGET, "Эфриловый кусочек");
 
         // ebony
         builder.add(EBONY_BLOCK, "Эбонитовый блок");
         builder.add(EBONY_INGOT, "Эбонитовый слиток");
-        builder.add(EBONY_NUGGET, "Эбонитовый самородок");
+        builder.add(EBONY_NUGGET, "Эбонитовый кусочек");
 
         // beamer
         builder.add(BEAMER, "Лучевод");
@@ -98,8 +97,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
 
         builder.add(CRATE, "Ящик");
 
-        builder.add(PEACH_SAPLING, "Саженец персикового дерева");
-        builder.add(PEACH_LEAVES, "Персиковая листва");
+        builder.add(PEACH_SAPLING, "Саженец персика");
+        builder.add(PEACH_LEAVES, "Персиковые листья");
         builder.add(WEEPING_PEACH_LOG, "Плакучее персиковое бревно");
 
         builder.add(ETHRIL_AXE, "Эфриловый топор");
@@ -161,7 +160,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EBONY, "Эбен");
         builder.add(RESONATING_WAND, "Резонирующая палочка");
 
-        builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка эфирного канала");
+        builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка канала");
         builder.add(STREAM_KEY, "Ключ трансляции");
         builder.add(REVELATION_VIEW, "Окуляр");
 
@@ -185,8 +184,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EffectsRegistry.VITAL_ENERGY.value(), "Духовное восстановление");
         builder.add(EffectsRegistry.VITAL_ENERGY_POTION, "духовного восстановления");
 
-        builder.add(TELDECORE, "Телдекор");
-        builder.add(ARMILLARY_MATRIX, "Армиллярная сфера");
+        builder.add(TELDECORE, "Телдекор [WIP]");
+        builder.add(ARMILLARY_MATRIX, "Армиллярная сфера [WIP]");
         builder.add(CLAY_JUG, "Форма сосуда для хранения");
         builder.add(PRIMOSHARD_KETA, "Первичный осколок");
         builder.add(PRIMOSHARD_RELLA, "Первичный осколок");
@@ -205,17 +204,17 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHEREAL_FORK, "Эфирная развилка");
         builder.add(ETHEREAL_STORAGE, "Эфирное хранилище");
         builder.add(ETHEREAL_SOCKET, "Разъём питания");
-        builder.add(ETHEREAL_FURNACE, "Эфирный горн");
+        builder.add(ETHEREAL_FURNACE, "Эфирный горн [WIP]");
         builder.add(ETHEREAL_SPINNER, "Волчок");
         builder.add(ETHEREAL_METRONOME, "Метроном");
-        builder.add(EMPOWERMENT_TABLE, "Стол Великоестествия");
+        builder.add(EMPOWERMENT_TABLE, "Стол великоестествия");
         builder.add(SAMOVAR_BLOCK, "Самовар");
         builder.add(SPILL_BARREL, "Разливная бочка");
         builder.add(JUG, "Сосуд для хранения");
-        builder.add(PEACH_LOG, "Персиковое дерево");
-        builder.add(STRIPPED_PEACH_LOG, "Обтёсанное персиковое дерево");
-        builder.add(PEACH_WOOD, "Персиковая древесина");
-        builder.add(STRIPPED_PEACH_WOOD, "Обтёсанная персиковая древесина");
+        builder.add(PEACH_LOG, "Персиковое бревно");
+        builder.add(STRIPPED_PEACH_LOG, "Обтёсанное персиковое бревно");
+        builder.add(PEACH_WOOD, "Персиковое дерево");
+        builder.add(STRIPPED_PEACH_WOOD, "Обтёсанное персиковое дерево");
         builder.add(ExtraBlocksRegistry.PEACH_PLANKS, "Персиковые доски");
         builder.add(PEACH_STAIRS, "Персиковые ступеньки");
         builder.add(PEACH_SLAB, "Персиковый полублок");
@@ -223,7 +222,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(DecoBlocks.PEACH_DOOR, "Персиковая дверь");
         builder.add(PEACH_FENCE, "Персиковый забор");
         builder.add(PEACH_FENCE_GATE, "Персиковая калитка");
-        builder.add(PEACH_PRESSURE_PLATE, "Персиковая нажимная плита");
+        builder.add(PEACH_PRESSURE_PLATE, "Персиковая плита");
         builder.add(DecoBlocks.PEACH_SIGN, "Персиковая табличка");
         builder.add(DecoBlocks.PEACH_HANGING_SIGN, "Персиковая подвесная табличка");
         builder.add(PEACH_TRAPDOOR, "Персиковый люк");
@@ -236,10 +235,10 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PEACH_CHEST_BOAT, "Персиковая грузовая лодка");
 
         // tags
-        builder.add(EBlockTags.PEACH_LOGS, "Peach Logs");
-        builder.add(EItemTags.PEACH_LOGS, "Peach Logs");
-        builder.add(EItemTags.IRON_SHIELDS, "Iron Shields");
-        builder.add(EItemTags.TUNING_MACES, "Tuning Maces");
+        builder.add(EBlockTags.PEACH_LOGS, "Персиковые брёвна");
+        builder.add(EItemTags.PEACH_LOGS, "Персиковые брёвна");
+        builder.add(EItemTags.IRON_SHIELDS, "Железные щиты");
+        builder.add(EItemTags.TUNING_MACES, "Тональные булавы");
         builder.add(EItemTags.SEDIMENTARY_STONES, "Осадочные камни");
         builder.add(EBlockTags.SEDIMENTARY_STONES, "Осадочные камни");
 

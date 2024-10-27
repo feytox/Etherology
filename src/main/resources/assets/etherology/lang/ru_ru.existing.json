@@ -19,17 +19,17 @@
   "subtitles.etherology.deflect": "Отражение снаряда щитом",
 
   "text.etherology.tab.main": "Основная вкладка",
-  "text.etherology.tab.main.1": "Телдекор находится в стадии разработки, здесь будет описана вся информация о моде",
+  "text.etherology.tab.main.1": "Телдекор находится в стадии разработки, здесь будет описана вся информация о моде.",
   "text.etherology.tab.main.2": "Версия мода: ",
   "text.etherology.tab.main.3": "Авторы: ",
 
   "text.etherology.chapter.test_main": "Основная глава",
   "text.etherology.chapter.test_main.desc": "Тут могло быть описание",
-  "text.etherology.chapter.test_main.1": "Вам придётся открывать новые главы для продвижения своего развития в моде",
+  "text.etherology.chapter.test_main.1": "Вам придётся открывать новые главы для продвижения своего развития в моде.",
 
   "text.etherology.chapter.test_other": "Ответвлённая глава",
   "text.etherology.chapter.test_other.desc": "Тут тоже могло быть описание",
   "text.etherology.chapter.test_other.quest": "Пример квеста",
-  "text.etherology.chapter.test_other.1": "В большинстве случаев вам придётся завершить испытания для открытия новых глав. Как например, иметь в инвентаре необходимый предмет, или найти конкретное место",
+  "text.etherology.chapter.test_other.1": "В большинстве случаев вам придётся завершить испытания для открытия новых глав. Как например, иметь в инвентаре необходимый предмет, или найти конкретное место.",
   "text.etherology.chapter.test_other.2": "С завершением испытания, вам откроется новая информация, главы или рецепты создания определённых предметов."
 }
