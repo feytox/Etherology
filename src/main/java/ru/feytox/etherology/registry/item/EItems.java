@@ -22,7 +22,7 @@ public class EItems {
     public static final Item PRIMOSHARD_CLOS = registerItem("primoshard_clos", new PrimoShard(SealType.CLOS));
     public static final Item PRIMOSHARD_VIA = registerItem("primoshard_via", new PrimoShard(SealType.VIA));
     public static final GlintItem GLINT = (GlintItem) registerItem("glint_shard", new GlintItem(128));
-    public static final Item ETHER_SHARD = registerSimple("ether_shard");
+    public static final Item ETHER = registerSimple("ether");
     public static final Item CORRUPTION_BUCKET = registerItem("corruption_bucket", new CorruptionBucket());
 
     public static final Item ARISTOCRAT_PATTERN_TABLET = registerItem("aristocrat_pattern_tablet", new PatternTabletItem(StaffStyles.ARISTOCRAT));

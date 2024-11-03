@@ -90,8 +90,8 @@
     "etherology:ethereal_fork": {"etha": 1, "mounta": 2},
     "etherology:ethereal_socket": {"etha": 1, "via": 2},
     "etherology:ethereal_furnace": {"chaos": 2, "rella": 2, "mounta": 4},
-    "etherology:ethereal_spinner": {"frado": 2, "mounta": 2, "via": 2},
-    "etherology:ethereal_metronome": {"frado": 4, "mounta": 4, "via": 2},
+    "etherology:spinner": {"frado": 2, "mounta": 2, "via": 2},
+    "etherology:metronome": {"frado": 4, "mounta": 4, "via": 2},
     "etherology:empowerment_table": {"dizord": 2, "iskil": 2, "mounta": 4},
     "etherology:samovar": {"talo": 4, "etha": 6, "keta": 5},
     "etherology:jug": {"flima": 2, "area": 2, "mounta": 4},
@@ -103,7 +103,7 @@
 
     "etherology:inventor_table": {"talo": 4, "iskil": 2, "mounta": 3},
     "etherology:jewelry_table": {"solista": 6, "frado": 2, "mounta": 4},
-    "etherology:ethereal_channel_case": {"materra": 2},
+    "etherology:channel_case": {"materra": 2},
     "etherology:tuning_fork": {"talo": 4, "vibra": 6, "mounta": 2},
     "etherology:spill_barrel": {"area": 2, "mounta": 2},
 

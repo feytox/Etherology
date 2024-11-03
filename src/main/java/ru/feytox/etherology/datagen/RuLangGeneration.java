@@ -159,7 +159,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EBONY, "Эбен");
         builder.add(RESONATING_WAND, "Резонирующая палочка");
 
-        builder.add(EBlocks.ETHEREAL_CHANNEL_CASE, "Обшивка канала");
+        builder.add(EBlocks.CHANNEL_CASE, "Обшивка канала");
         builder.add(STREAM_KEY, "Ключ трансляции");
         builder.add(REVELATION_VIEW, "Окуляр");
 
@@ -191,7 +191,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PRIMOSHARD_CLOS, "Первичный осколок");
         builder.add(PRIMOSHARD_VIA, "Первичный осколок");
         builder.add(GLINT, "Огонёк");
-        builder.add(ETHER_SHARD, "Эфир");
+        builder.add(ETHER, "Эфир");
         builder.add(IRON_SHIELD, "Железный щит");
         builder.add(OCULUS, "Окулус");
         builder.add(CORRUPTION_BUCKET, "Ведро с мутной водой");
@@ -204,8 +204,8 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(ETHEREAL_STORAGE, "Эфирное хранилище");
         builder.add(ETHEREAL_SOCKET, "Разъём питания");
         builder.add(ETHEREAL_FURNACE, "Эфирный горн [WIP]");
-        builder.add(ETHEREAL_SPINNER, "Волчок");
-        builder.add(ETHEREAL_METRONOME, "Метроном");
+        builder.add(SPINNER, "Волчок");
+        builder.add(METRONOME, "Метроном");
         builder.add(EMPOWERMENT_TABLE, "Стол великоестествия");
         builder.add(SAMOVAR_BLOCK, "Самовар");
         builder.add(SPILL_BARREL, "Разливная бочка");

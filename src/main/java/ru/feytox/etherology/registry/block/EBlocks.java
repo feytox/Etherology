@@ -16,23 +16,23 @@ import ru.feytox.etherology.block.crate.CrateBlock;
 import ru.feytox.etherology.block.crate.CrateBlockEntity;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlock;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlockEntity;
+import ru.feytox.etherology.block.etherealChannel.ChannelCase;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
-import ru.feytox.etherology.block.etherealChannel.EtherealChannelCase;
 import ru.feytox.etherology.block.etherealFork.EtherealForkBlock;
 import ru.feytox.etherology.block.etherealFork.EtherealForkBlockEntity;
 import ru.feytox.etherology.block.etherealFurnace.EtherealFurnace;
 import ru.feytox.etherology.block.etherealFurnace.EtherealFurnaceBlockEntity;
-import ru.feytox.etherology.block.etherealGenerators.metronome.EtherealMetronomeBlock;
-import ru.feytox.etherology.block.etherealGenerators.metronome.EtherealMetronomeBlockEntity;
-import ru.feytox.etherology.block.etherealGenerators.spinner.EtherealSpinnerBlock;
-import ru.feytox.etherology.block.etherealGenerators.spinner.EtherealSpinnerBlockEntity;
 import ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock;
 import ru.feytox.etherology.block.etherealSocket.EtherealSocketBlockEntity;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageBlock;
 import ru.feytox.etherology.block.etherealStorage.EtherealStorageBlockEntity;
 import ru.feytox.etherology.block.furniture.FurSlabBlock;
 import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
+import ru.feytox.etherology.block.generators.metronome.MetronomeBlock;
+import ru.feytox.etherology.block.generators.metronome.MetronomeBlockEntity;
+import ru.feytox.etherology.block.generators.spinner.SpinnerBlock;
+import ru.feytox.etherology.block.generators.spinner.SpinnerBlockEntity;
 import ru.feytox.etherology.block.inventorTable.InventorTable;
 import ru.feytox.etherology.block.jewelryTable.JewelryBlockEntity;
 import ru.feytox.etherology.block.jewelryTable.JewelryTable;
@@ -140,18 +140,18 @@ public class EBlocks {
             BlockEntityType.Builder.create(EtherealFurnaceBlockEntity::new, ETHEREAL_FURNACE).build()
     );
 
-    public static final EtherealSpinnerBlock ETHEREAL_SPINNER = (EtherealSpinnerBlock) new EtherealSpinnerBlock().registerAll();
-    public static final BlockEntityType<EtherealSpinnerBlockEntity> ETHEREAL_SPINNER_BLOCK_ENTITY = Registry.register(
+    public static final SpinnerBlock SPINNER = (SpinnerBlock) new SpinnerBlock().registerAll();
+    public static final BlockEntityType<SpinnerBlockEntity> SPINNER_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("ethereal_spinner_block_entity"),
-            BlockEntityType.Builder.create(EtherealSpinnerBlockEntity::new, ETHEREAL_SPINNER).build()
+            EIdentifier.of("spinner_block_entity"),
+            BlockEntityType.Builder.create(SpinnerBlockEntity::new, SPINNER).build()
     );
 
-    public static final EtherealMetronomeBlock ETHEREAL_METRONOME = (EtherealMetronomeBlock) new EtherealMetronomeBlock().registerAll();
-    public static final BlockEntityType<EtherealMetronomeBlockEntity> ETHEREAL_METRONOME_BLOCK_ENTITY = Registry.register(
+    public static final MetronomeBlock METRONOME = (MetronomeBlock) new MetronomeBlock().registerAll();
+    public static final BlockEntityType<MetronomeBlockEntity> METRONOME_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("ethereal_metronome_block_entity"),
-            BlockEntityType.Builder.create(EtherealMetronomeBlockEntity::new, ETHEREAL_METRONOME).build()
+            EIdentifier.of("metronome_block_entity"),
+            BlockEntityType.Builder.create(MetronomeBlockEntity::new, METRONOME).build()
     );
 
     public static final EmpowerTableBlock EMPOWERMENT_TABLE = (EmpowerTableBlock) new EmpowerTableBlock().registerAll();
@@ -208,7 +208,7 @@ public class EBlocks {
             BlockEntityType.Builder.create(JewelryBlockEntity::new, JEWELRY_TABLE).build()
     );
 
-    public static final EtherealChannelCase ETHEREAL_CHANNEL_CASE = (EtherealChannelCase) new EtherealChannelCase().registerAll();
+    public static final ChannelCase CHANNEL_CASE = (ChannelCase) new ChannelCase().registerAll();
 
     public static final TuningFork TUNING_FORK = (TuningFork) new TuningFork().registerAll();
     public static final BlockEntityType<TuningForkBlockEntity> TUNING_FORK_BLOCK_ENTITY = Registry.register(

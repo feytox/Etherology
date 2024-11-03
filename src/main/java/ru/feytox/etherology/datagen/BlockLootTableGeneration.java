@@ -17,8 +17,8 @@ import ru.feytox.etherology.util.misc.RandomChanceWithFortuneCondition;
 import java.util.concurrent.CompletableFuture;
 
 import static ru.feytox.etherology.registry.block.DecoBlocks.*;
+import static ru.feytox.etherology.registry.block.EBlocks.CHANNEL_CASE;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL;
-import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_CASE;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.ENRICHED_ATTRAHITE;
 import static ru.feytox.etherology.registry.item.DecoBlockItems.THUJA_SEEDS;
 
@@ -63,7 +63,7 @@ public class BlockLootTableGeneration extends FabricBlockLootTableProvider {
                         .with(this.applyExplosionDecay(ETHEREAL_CHANNEL, ItemEntry.builder(ETHEREAL_CHANNEL))))
                 .pool(LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1.0F))
-                        .with(this.applyExplosionDecay(ETHEREAL_CHANNEL_CASE, ItemEntry.builder(ETHEREAL_CHANNEL_CASE)))
+                        .with(this.applyExplosionDecay(CHANNEL_CASE, ItemEntry.builder(CHANNEL_CASE)))
                         .conditionally(BlockStatePropertyLootCondition.builder(ETHEREAL_CHANNEL)
                                 .properties(StatePredicate.Builder.create().exactMatch(EtherealChannel.IN_CASE, true)))));
     }

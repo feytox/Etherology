@@ -35,7 +35,7 @@
               "function": "minecraft:explosion_decay"
             }
           ],
-          "name": "etherology:ethereal_channel_case"
+          "name": "etherology:channel_case"
         }
       ],
       "rolls": 1.0

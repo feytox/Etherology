@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "etherology:thuja_oil"
+    },
+    "W": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "IWI",
+    "WTW",
+    "IWI"
+  ],
+  "result": {
+    "count": 4,
+    "id": "etherology:channel_case"
+  }
+}

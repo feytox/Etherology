@@ -7,7 +7,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-import static ru.feytox.etherology.registry.item.EItems.ETHER_SHARD;
+import static ru.feytox.etherology.registry.item.EItems.ETHER;
 
 public interface EtherCounter {
     float getEtherCount();
@@ -25,7 +25,7 @@ public interface EtherCounter {
             int count = Math.min(64, etherValue);
             etherValue -= count;
             if (count > 0) {
-                stack = ETHER_SHARD.getDefaultStack();
+                stack = ETHER.getDefaultStack();
                 stack.setCount(count);
             }
             inv.setStack(i, stack);

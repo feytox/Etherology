@@ -83,7 +83,7 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (state.get(IN_CASE)) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
-        if (!stack.isOf(EBlocks.ETHEREAL_CHANNEL_CASE.getItem())) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        if (!stack.isOf(EBlocks.CHANNEL_CASE.getItem())) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 
         if (!player.isCreative()) stack.decrement(1);
         world.setBlockState(pos, state.with(IN_CASE, true));

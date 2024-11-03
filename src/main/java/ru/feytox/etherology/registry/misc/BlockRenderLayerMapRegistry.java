@@ -20,8 +20,8 @@ public class BlockRenderLayerMapRegistry {
         registerCutout(BEAMER);
         registerCutout(PEACH_SAPLING);
         registerCutout(PEACH_LEAVES);
-        registerCutout(ETHEREAL_METRONOME);
-        registerCutout(ETHEREAL_SPINNER);
+        registerCutout(METRONOME);
+        registerCutout(SPINNER);
         registerCutout(ETHEREAL_STORAGE);
         registerCutout(BREWING_CAULDRON);
         registerCutout(PEDESTAL_BLOCK);

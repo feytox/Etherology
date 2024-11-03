@@ -17,7 +17,7 @@ import ru.feytox.etherology.registry.misc.ComponentTypes;
 import java.util.List;
 import java.util.Optional;
 
-import static ru.feytox.etherology.registry.item.EItems.ETHER_SHARD;
+import static ru.feytox.etherology.registry.item.EItems.ETHER;
 
 @Getter
 public class GlintItem extends Item {
@@ -39,7 +39,7 @@ public class GlintItem extends Item {
         for (int i = 0; i < slots && etherValue > 0; i++) {
             int count = Math.min(64, etherValue);
             etherValue -= count;
-            ItemStack etherStack = ETHER_SHARD.getDefaultStack();
+            ItemStack etherStack = ETHER.getDefaultStack();
             etherStack.setCount(count);
             defaultedList.add(etherStack);
         }
