@@ -132,10 +132,14 @@ public class TuningFork extends FacingBlock implements RegistrableBlock, BlockEn
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
+        var neighborState = ctx.getWorld().getBlockState(ctx.getBlockPos().offset(ctx.getSide().getOpposite()));
+        var neighborFacing = neighborState.isOf(this) ? neighborState.get(VERTICAL_FACING) : null;
+        var verticalFacing = neighborFacing == ctx.getSide() ? ctx.getSide().getOpposite() : ctx.getSide();
+        
         var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
         var power = ctx.getWorld().getReceivedRedstonePower(ctx.getBlockPos());
         var powered = power > 0;
-        return getDefaultState().with(VERTICAL_FACING, ctx.getSide())
+        return getDefaultState().with(VERTICAL_FACING, verticalFacing)
                 .with(HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite())
                 .with(POWERED, powered).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
