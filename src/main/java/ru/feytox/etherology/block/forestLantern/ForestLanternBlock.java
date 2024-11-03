@@ -3,8 +3,10 @@ package ru.feytox.etherology.block.forestLantern;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -12,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
@@ -26,6 +29,7 @@ public class ForestLanternBlock extends HorizontalFacingBlock implements Registr
 
     private static final MapCodec<ForestLanternBlock> CODEC = MapCodec.unit(ForestLanternBlock::new);
     private static final Map<Direction, VoxelShape> SHAPES;
+    private static final float BREAK_CHANCE = 0.4f;
 
     public ForestLanternBlock() {
         super(Settings.copy(Blocks.BROWN_MUSHROOM_BLOCK).notSolid().sounds(BlockSoundGroup.FUNGUS).luminance(value -> 8).postProcess((a, b, c) -> true).emissiveLighting((a, b, c) -> true));
@@ -35,6 +39,17 @@ public class ForestLanternBlock extends HorizontalFacingBlock implements Registr
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPES.get(state.get(FACING));
+    }
+
+    @Override
+    public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+        super.onLandedUpon(world, state, pos, entity, fallDistance);
+
+        if (world.isClient || world.getRandom().nextFloat() >= BREAK_CHANCE)
+            return;
+
+        world.playSound(null, pos, this.getSoundGroup(state).getBreakSound(), SoundCategory.BLOCKS, 0.7F, 0.9F);
+        world.breakBlock(pos, false);
     }
 
     @Override
