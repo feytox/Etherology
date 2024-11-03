@@ -195,9 +195,9 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(IRON_SHIELD, "Железный щит");
         builder.add(OCULUS, "Окулус");
         builder.add(CORRUPTION_BUCKET, "Ведро с мутной водой");
-        builder.add(CLOSET_SLAB, "Шкаф");
-        builder.add(SHELF_SLAB, "Полка");
-        builder.add(FURNITURE_SLAB, "Мебель");
+        builder.add(CLOSET_SLAB, "Шкаф [WIP]");
+        builder.add(SHELF_SLAB, "Полка [WIP]");
+        builder.add(FURNITURE_SLAB, "Мебель [WIP]");
         builder.add(PEDESTAL_BLOCK, "Пьедестал");
         builder.add(ETHEREAL_CHANNEL, "Эфирный канал");
         builder.add(ETHEREAL_FORK, "Эфирная развилка");

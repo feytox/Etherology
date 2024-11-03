@@ -2,7 +2,6 @@ package ru.feytox.etherology.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.data.family.BlockFamily;
@@ -123,13 +122,6 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("W W")
                 .pattern("WSW")
                 .pattern(" I ").criterion(has(RESONATING_WAND), from(RESONATING_WAND)).offerTo(exporter);
-
-        // furniture
-        ShapelessRecipeJsonBuilder.create(MISC, SHELF_SLAB).input(Items.ITEM_FRAME).input(FURNITURE_SLAB).criterion(has(FURNITURE_SLAB), from(FURNITURE_SLAB)).offerTo(exporter);
-        ShapelessRecipeJsonBuilder.create(MISC, CLOSET_SLAB).input(Items.CHEST).input(FURNITURE_SLAB).criterion(has(FURNITURE_SLAB), from(FURNITURE_SLAB)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(MISC, FURNITURE_SLAB, 2).input('#', ItemTags.WOODEN_SLABS).input('I', ConventionalItemTags.WOODEN_RODS)
-                .pattern("I#I")
-                .pattern("I#I").criterion("has_wooden_slab", conditionsFromTag(ItemTags.WOODEN_SLABS)).offerTo(exporter);
 
         // ebony vanilla items
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, EBONY_HELMET).input('X', EBONY_INGOT).pattern("XXX").pattern("X X").criterion(has(EBONY_INGOT), from(EBONY_INGOT)).offerTo(exporter);
