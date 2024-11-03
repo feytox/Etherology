@@ -68,7 +68,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ru.feytox.etherology.block.matrix.MatrixState.*;
-import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_SPHERE_BLOCK_ENTITY;
 
 public class MatrixBlockEntity extends TickableBlockEntity implements ImplementedInventory, SidedInventory, EGeo2BlockEntity, UniqueProvider, RevelationAspectProvider {
 
@@ -121,7 +121,7 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     private boolean animationsRefreshed = false;
 
     public MatrixBlockEntity(BlockPos pos, BlockState state) {
-        super(ARMILLARY_MATRIX_BLOCK_ENTITY, pos, state);
+        super(ARMILLARY_SPHERE_BLOCK_ENTITY, pos, state);
     }
 
     /**

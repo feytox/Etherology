@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "etherology:essence_detector"
+        "recipe": "etherology:arcanelight_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "etherology:essence_detector"
+      "etherology:arcanelight_detector"
     ]
   }
 }

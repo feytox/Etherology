@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.essenceDetector;
+package ru.feytox.etherology.block.arcanelightDetector;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,16 +12,16 @@ import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.Optional;
 
-import static ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlock.POWER;
-import static ru.feytox.etherology.registry.block.EBlocks.ESSENCE_DETECTOR_BLOCK_ENTITY;
+import static ru.feytox.etherology.block.arcanelightDetector.ArcanelightDetectorBlock.POWER;
+import static ru.feytox.etherology.registry.block.EBlocks.ARCANELIGHT_DETECTOR_BLOCK_ENTITY;
 
-public class EssenceDetectorBlockEntity extends TickableBlockEntity implements EssenceDetector {
+public class ArcanelightDetectorBlockEntity extends TickableBlockEntity implements EssenceDetector {
 
     @Nullable
     private EssenceSupplier cachedSeal;
 
-    public EssenceDetectorBlockEntity(BlockPos pos, BlockState state) {
-        super(ESSENCE_DETECTOR_BLOCK_ENTITY, pos, state);
+    public ArcanelightDetectorBlockEntity(BlockPos pos, BlockState state) {
+        super(ARCANELIGHT_DETECTOR_BLOCK_ENTITY, pos, state);
     }
 
     @Override

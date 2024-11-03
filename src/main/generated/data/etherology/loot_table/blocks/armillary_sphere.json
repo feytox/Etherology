@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "etherology:essence_detector"
+          "name": "etherology:armillary_sphere"
         }
       ],
       "rolls": 1.0

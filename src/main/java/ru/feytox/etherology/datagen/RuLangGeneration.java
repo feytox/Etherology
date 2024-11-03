@@ -36,7 +36,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
         langCode = "ru_ru";
     }
 
-
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         RuTranslationBuilder builder = new RuTranslationBuilder(translationBuilder);
@@ -151,7 +150,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(UNADJUSTED_LENS, "Ненастроенная линза");
         builder.add(REDSTONE_LENS, "Линза красного камня");
 
-        builder.add(EBlocks.ESSENCE_DETECTOR_BLOCK, "Датчик незримого света");
+        builder.add(EBlocks.ARCANELIGHT_DETECTOR_BLOCK, "Датчик незримого света");
 
         builder.add(ETHEROSCOPE, "Эфироскоп");
         builder.add(THUJA_OIL, "Хвойное масло");
@@ -185,7 +184,7 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(EffectsRegistry.VITAL_ENERGY_POTION, "духовного восстановления");
 
         builder.add(TELDECORE, "Телдекор [WIP]");
-        builder.add(ARMILLARY_MATRIX, "Армиллярная сфера [WIP]");
+        builder.add(ARMILLARY_SPHERE, "Армиллярная сфера [WIP]");
         builder.add(CLAY_JUG, "Форма сосуда для хранения");
         builder.add(PRIMOSHARD_KETA, "Первичный осколок");
         builder.add(PRIMOSHARD_RELLA, "Первичный осколок");

@@ -26,12 +26,12 @@ public class MatrixCategory implements DisplayCategory<MatrixDisplay> {
 
     @Override
     public Text getTitle() {
-        return Text.translatable(EBlocks.ARMILLARY_MATRIX.getTranslationKey());
+        return Text.translatable(EBlocks.ARMILLARY_SPHERE.getTranslationKey());
     }
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(EBlocks.ARMILLARY_MATRIX);
+        return EntryStacks.of(EBlocks.ARMILLARY_SPHERE);
     }
 
     @Override

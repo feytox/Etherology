@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.block.EBlocks;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_MATRIX_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ARMILLARY_SPHERE_BLOCK_ENTITY;
 
 public class MatrixBlock extends Block implements RegistrableBlock, BlockEntityProvider {
 
@@ -61,14 +61,14 @@ public class MatrixBlock extends Block implements RegistrableBlock, BlockEntityP
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (!type.equals(ARMILLARY_MATRIX_BLOCK_ENTITY)) return null;
+        if (!type.equals(ARMILLARY_SPHERE_BLOCK_ENTITY)) return null;
 
         return world.isClient ? MatrixBlockEntity::clientTicker : MatrixBlockEntity::serverTicker;
     }
 
     @Override
     public String getBlockId() {
-        return "armillary_base";
+        return "armillary_sphere";
     }
 
     @Nullable

@@ -30,7 +30,7 @@ public class BlockRenderersRegistry {
         register(CRATE_BLOCK_ENTITY, CrateBlockRenderer::new);
         register(BREWING_CAULDRON_BLOCK_ENTITY, BrewingCauldronRenderer::new);
         register(PEDESTAL_BLOCK_ENTITY, PedestalRenderer::new);
-        register(ARMILLARY_MATRIX_BLOCK_ENTITY, MatrixRenderer::new);
+        register(ARMILLARY_SPHERE_BLOCK_ENTITY, MatrixRenderer::new);
         register(JEWELRY_TABLE_BLOCK_ENTITY, JewelryTableRenderer::new);
     }
 

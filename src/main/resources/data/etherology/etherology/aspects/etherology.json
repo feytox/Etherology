@@ -81,7 +81,7 @@
     "etherology:brewing_cauldron": {"talo": 6, "area": 2, "alchema": 3},
     "etherology:pedestal": {"gema": 2, "materra": 6},
     "etherology:sedimentary_stone": {"mounta": 4, "frado": 2},
-    "etherology:essence_detector": {"clos": 2, "viter": 2, "mounta": 4},
+    "etherology:arcanelight_detector": {"clos": 2, "viter": 2, "mounta": 4},
     "etherology:furniture_slab": {"mounta": 2},
     "etherology:closet_slab": {"mounta": 2, "area": 2},
     "etherology:shelf_slab": {"mounta": 2, "area": 2},
@@ -99,7 +99,7 @@
     "etherology:crate": {"area": 2, "mounta": 2},
     "etherology:levitator": {"alchema": 4, "gravia": 6, "mounta": 6},
 
-    "etherology:armillary_base": {"materra": 8},
+    "etherology:armillary_sphere": {"materra": 8},
 
     "etherology:inventor_table": {"talo": 4, "iskil": 2, "mounta": 3},
     "etherology:jewelry_table": {"solista": 6, "frado": 2, "mounta": 4},

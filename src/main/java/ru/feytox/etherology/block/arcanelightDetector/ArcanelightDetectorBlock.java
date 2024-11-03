@@ -1,4 +1,4 @@
-package ru.feytox.etherology.block.essenceDetector;
+package ru.feytox.etherology.block.arcanelightDetector;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,14 +15,14 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
-import static ru.feytox.etherology.registry.block.EBlocks.ESSENCE_DETECTOR_BLOCK_ENTITY;
+import static ru.feytox.etherology.registry.block.EBlocks.ARCANELIGHT_DETECTOR_BLOCK_ENTITY;
 
-public class EssenceDetectorBlock extends Block implements BlockEntityProvider, RegistrableBlock {
+public class ArcanelightDetectorBlock extends Block implements BlockEntityProvider, RegistrableBlock {
 
     public static final IntProperty POWER = Properties.POWER;
     private static final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
 
-    public EssenceDetectorBlock() {
+    public ArcanelightDetectorBlock() {
         super(Settings.copy(Blocks.DAYLIGHT_DETECTOR));
         setDefaultState(getDefaultState().with(POWER, 0));
     }
@@ -30,7 +30,7 @@ public class EssenceDetectorBlock extends Block implements BlockEntityProvider, 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return EssenceDetectorBlockEntity.getTicker(world, type, ESSENCE_DETECTOR_BLOCK_ENTITY);
+        return ArcanelightDetectorBlockEntity.getTicker(world, type, ARCANELIGHT_DETECTOR_BLOCK_ENTITY);
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -58,11 +58,11 @@ public class EssenceDetectorBlock extends Block implements BlockEntityProvider, 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new EssenceDetectorBlockEntity(pos, state);
+        return new ArcanelightDetectorBlockEntity(pos, state);
     }
 
     @Override
     public String getBlockId() {
-        return "essence_detector";
+        return "arcanelight_detector";
     }
 }

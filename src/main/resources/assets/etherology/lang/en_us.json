@@ -1,6 +1,6 @@
 {
   "biome.etherology.golden_forest": "Golden Forest",
-  "block.etherology.armillary_base": "Armillary Sphere [WIP]",
+  "block.etherology.armillary_sphere": "Armillary Sphere [WIP]",
   "block.etherology.attrahite": "Attrahite",
   "block.etherology.attrahite_brick_slab": "Attrahite Brick Slab",
   "block.etherology.attrahite_brick_stairs": "Attrahite Brick Stairs",
@@ -17,7 +17,7 @@
   "block.etherology.ebony_block": "Ebony Block",
   "block.etherology.empowerment_table": "Empowerment Table",
   "block.etherology.empowerment_table.title": "Empowerment",
-  "block.etherology.essence_detector": "Arcanelight Detector",
+  "block.etherology.arcanelight_detector": "Arcanelight Detector",
   "block.etherology.ethereal_channel": "Ethereal Channel",
   "block.etherology.ethereal_channel_case": "Channel Case",
   "block.etherology.ethereal_fork": "Ethereal Fork",

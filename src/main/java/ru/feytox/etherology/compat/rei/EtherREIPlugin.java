@@ -75,7 +75,7 @@ public class EtherREIPlugin implements REIClientPlugin {
         registry.addWorkstations(JEWELRY_MODIFIER, EntryStacks.of(EBlocks.JEWELRY_TABLE));
         registry.addWorkstations(ASPECTION, EntryStacks.of(ToolItems.OCULUS));
         registry.addWorkstations(ALCHEMY, EntryStacks.of(EBlocks.BREWING_CAULDRON));
-        registry.addWorkstations(MATRIX, EntryStacks.of(EBlocks.ARMILLARY_MATRIX));
+        registry.addWorkstations(MATRIX, EntryStacks.of(EBlocks.ARMILLARY_SPHERE));
 
         for (CraftingRecipeFiller<?> filler : CRAFTING_RECIPE_FILLERS) {
             filler.registerCategories(registry);

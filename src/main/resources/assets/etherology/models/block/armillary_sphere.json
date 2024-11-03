@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"particle": "etherology:block/armillary_base",
-		"base": "etherology:block/armillary_base",
+		"particle": "etherology:block/armillary_sphere",
+		"base": "etherology:block/armillary_sphere",
 		"bricks": "etherology:block/polished_ether_stone",
 		"top": "etherology:block/pedestal_ethereal_top"
 	},

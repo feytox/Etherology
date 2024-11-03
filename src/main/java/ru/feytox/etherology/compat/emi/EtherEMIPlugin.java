@@ -40,7 +40,7 @@ public class EtherEMIPlugin implements EmiPlugin {
     public static final FeyEmiCategory INVENTOR = FeyEmiCategory.of("inventor", EBlocks.INVENTOR_TABLE);
     public static final FeyEmiCategory ALCHEMY = FeyEmiCategory.of("alchemy", EBlocks.BREWING_CAULDRON);
     public static final FeyEmiCategory ASPECTION = FeyEmiCategory.of("aspection", ToolItems.OCULUS, "gui.etherology.aspects");
-    public static final FeyEmiCategory MATRIX = FeyEmiCategory.of("matrix", EBlocks.ARMILLARY_MATRIX);
+    public static final FeyEmiCategory MATRIX = FeyEmiCategory.of("matrix", EBlocks.ARMILLARY_SPHERE);
     public static final FeyEmiCategory JEWELRY_LENS = FeyEmiCategory.of("jewelry", EBlocks.JEWELRY_TABLE);
     public static final FeyEmiCategory JEWELRY_MODIFIER = FeyEmiCategory.of("jewelry", EBlocks.JEWELRY_TABLE);
 

@@ -7,6 +7,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import ru.feytox.etherology.block.arcanelightDetector.ArcanelightDetectorBlock;
+import ru.feytox.etherology.block.arcanelightDetector.ArcanelightDetectorBlockEntity;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlock;
 import ru.feytox.etherology.block.brewingCauldron.BrewingCauldronBlockEntity;
 import ru.feytox.etherology.block.closet.ClosetSlabBlock;
@@ -14,8 +16,6 @@ import ru.feytox.etherology.block.crate.CrateBlock;
 import ru.feytox.etherology.block.crate.CrateBlockEntity;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlock;
 import ru.feytox.etherology.block.empowerTable.EmpowerTableBlockEntity;
-import ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlock;
-import ru.feytox.etherology.block.essenceDetector.EssenceDetectorBlockEntity;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannel;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelCase;
@@ -89,11 +89,11 @@ public class EBlocks {
             BlockEntityType.Builder.create(SedimentaryStoneBlockEntity::new, SEDIMENTARY_STONES).build()
     );
 
-    public static final EssenceDetectorBlock ESSENCE_DETECTOR_BLOCK = (EssenceDetectorBlock) new EssenceDetectorBlock().registerAll();
-    public static final BlockEntityType<EssenceDetectorBlockEntity> ESSENCE_DETECTOR_BLOCK_ENTITY = Registry.register(
+    public static final ArcanelightDetectorBlock ARCANELIGHT_DETECTOR_BLOCK = (ArcanelightDetectorBlock) new ArcanelightDetectorBlock().registerAll();
+    public static final BlockEntityType<ArcanelightDetectorBlockEntity> ARCANELIGHT_DETECTOR_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("essence_detector_block_entity"),
-            BlockEntityType.Builder.create(EssenceDetectorBlockEntity::new, ESSENCE_DETECTOR_BLOCK).build()
+            EIdentifier.of("arcanelight_detector_block_entity"),
+            BlockEntityType.Builder.create(ArcanelightDetectorBlockEntity::new, ARCANELIGHT_DETECTOR_BLOCK).build()
     );
 
     public static final FurSlabBlock FURNITURE_SLAB = (FurSlabBlock) new FurSlabBlock().registerAll();
@@ -192,11 +192,11 @@ public class EBlocks {
             BlockEntityType.Builder.create(LevitatorBlockEntity::new, LEVITATOR).build()
     );
 
-    public static final MatrixBlock ARMILLARY_MATRIX = (MatrixBlock) new MatrixBlock().registerAll();
-    public static final BlockEntityType<MatrixBlockEntity> ARMILLARY_MATRIX_BLOCK_ENTITY = Registry.register(
+    public static final MatrixBlock ARMILLARY_SPHERE = (MatrixBlock) new MatrixBlock().registerAll();
+    public static final BlockEntityType<MatrixBlockEntity> ARMILLARY_SPHERE_BLOCK_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            EIdentifier.of("armillary_matrix_block_entity"),
-            BlockEntityType.Builder.create(MatrixBlockEntity::new, ARMILLARY_MATRIX).build()
+            EIdentifier.of("armillary_sphere_block_entity"),
+            BlockEntityType.Builder.create(MatrixBlockEntity::new, ARMILLARY_SPHERE).build()
     );
 
     public static final InventorTable INVENTOR_TABLE = (InventorTable) new InventorTable().registerAll();

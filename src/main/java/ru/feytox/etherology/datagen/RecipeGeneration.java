@@ -169,7 +169,7 @@ public class RecipeGeneration extends FabricRecipeProvider {
                 .pattern("S#S")
                 .pattern("# #")
                 .pattern("S#S").criterion("has_planks", conditionsFromTag(ItemTags.PLANKS)).offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(REDSTONE, ESSENCE_DETECTOR_BLOCK).input('G', GLASS).input('A', Items.AMETHYST_SHARD).input('P', ItemTags.WOODEN_SLABS)
+        ShapedRecipeJsonBuilder.create(REDSTONE, ARCANELIGHT_DETECTOR_BLOCK).input('G', GLASS).input('A', Items.AMETHYST_SHARD).input('P', ItemTags.WOODEN_SLABS)
                 .pattern("GGG")
                 .pattern("AAA")
                 .pattern("PPP").criterion(has(Items.AMETHYST_SHARD), from(Items.AMETHYST_SHARD)).offerTo(exporter);

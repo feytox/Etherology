@@ -1,6 +1,7 @@
 {
   "biome.etherology.golden_forest": "Златолесье",
-  "block.etherology.armillary_base": "Армиллярная сфера [WIP]",
+  "block.etherology.arcanelight_detector": "Датчик незримого света",
+  "block.etherology.armillary_sphere": "Армиллярная сфера [WIP]",
   "block.etherology.attrahite": "Аттрахит",
   "block.etherology.attrahite_brick_slab": "Плита из аттрахитовых кирпичей",
   "block.etherology.attrahite_brick_stairs": "Ступеньки из аттрахитовых кирпичей",
@@ -17,7 +18,6 @@
   "block.etherology.ebony_block": "Эбонитовый блок",
   "block.etherology.empowerment_table": "Стол великоестествия",
   "block.etherology.empowerment_table.title": "Великоестествие",
-  "block.etherology.essence_detector": "Датчик незримого света",
   "block.etherology.ethereal_channel": "Эфирный канал",
   "block.etherology.ethereal_channel_case": "Обшивка канала",
   "block.etherology.ethereal_fork": "Эфирная развилка",
