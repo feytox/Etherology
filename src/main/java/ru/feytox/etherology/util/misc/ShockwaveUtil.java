@@ -57,7 +57,7 @@ public class ShockwaveUtil {
         float damage = ((PlayerEntityAccessor) attacker).callGetDamageAgainst(target, baseDamage, damageSource) - baseDamage;
         if (moreDamage) damage *= 1.2f;
 
-        float knockback = ((LivingEntityAccessor) attacker).callGetKnockbackAgainst(target, damageSource);
+        float knockback = 2 + ((LivingEntityAccessor) attacker).callGetKnockbackAgainst(target, damageSource);
         if (attacker.isSprinting()) knockback++;
 
         damage += baseDamage;
@@ -93,7 +93,7 @@ public class ShockwaveUtil {
             tryAttack(attacker, attackTarget, damage, knockback, attackVec, vecLen, attackK, oldVelocity);
         }
 
-        trySchedulePeal(world, attacker, targetForPeal, shockPos);
+        trySchedulePeal(world, attacker, targetForPeal, shockPos, 0.5 * knockback);
         postShockWave(attacker, firstTarget, world, damageSource, firstTargetHealth);
         return true;
     }
@@ -106,7 +106,7 @@ public class ShockwaveUtil {
         attacker.onAttacking(firstTarget);
         ItemStack handStack = attacker.getMainHandStack();
         if (!world.isClient && !handStack.isEmpty()) {
-            handStack.postHit(firstTarget, attacker);
+            handStack.postDamageEntity(firstTarget, attacker);
             if (handStack.isEmpty()) {
                 attacker.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
             }
@@ -128,17 +128,21 @@ public class ShockwaveUtil {
         boolean wasDamaged = target.damage(attacker.getDamageSources().playerAttack(attacker), (float) damage);
         if (!wasDamaged) return;
 
-        if (knockback > 0) {
-            double knockSin = attackVec.x / vecLen;
-            double knockCos = attackVec.z / vecLen;
-            target.takeKnockback(0.6 * knockback * attackK, knockSin, knockCos);
-        }
+        takeKnockback(target, knockback * attackK, attackVec, vecLen);
 
         if (target instanceof ServerPlayerEntity serverPlayerTarget && target.velocityModified) {
             serverPlayerTarget.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(target));
             target.velocityModified = false;
             target.setVelocity(oldVelocity);
         }
+    }
+
+    private static void takeKnockback(LivingEntity target, double strength, Vec3d attackVec, double vecLen) {
+        if (!(strength > 0))
+            return;
+        double knockSin = attackVec.x / vecLen;
+        double knockCos = attackVec.z / vecLen;
+        target.takeKnockback(0.6 * strength, knockSin, knockCos);
     }
 
     private static void spawnResonationParticle(World world, Entity target) {
@@ -157,18 +161,18 @@ public class ShockwaveUtil {
         world.playSound(null, x, y, z, EtherSounds.TUNING_MACE, attacker.getSoundCategory(), 0.5f, pitch);
     }
 
-    private static void trySchedulePeal(World world, PlayerEntity attacker, Entity target, Vec3d shockPos) {
+    private static void trySchedulePeal(World world, PlayerEntity attacker, Entity target, Vec3d shockPos, double knockbackStrength) {
 
         int pealLevel = EtherEnchantments.getLevel(world, EtherEnchantments.PEAL, attacker);
         if (world.isClient || pealLevel <= 0) return;
 
         DelayedTask.createTaskWithMs(world, 600, () -> {
-            boolean result = activatePeal((ServerWorld) world, attacker, target.getType(), shockPos, pealLevel);
+            boolean result = activatePeal((ServerWorld) world, attacker, target.getType(), shockPos, pealLevel, knockbackStrength);
             if (result) world.playSound(null, target.getBlockPos(), EtherSounds.THUNDER_ZAP, attacker.getSoundCategory(), 1.0f, 1f);
         });
     }
 
-    private static <T extends Entity> boolean activatePeal(ServerWorld world, PlayerEntity attacker, EntityType<T> targetType, Vec3d shockPos, int pealLevel) {
+    private static <T extends Entity> boolean activatePeal(ServerWorld world, PlayerEntity attacker, EntityType<T> targetType, Vec3d shockPos, int pealLevel, double knockbackStrength) {
         double diameter = pealLevel / 0.3d;
         int maxCount = pealLevel + 2;
         Box pealBox = Box.of(shockPos, diameter, 3, diameter);
@@ -182,6 +186,9 @@ public class ShockwaveUtil {
         pealEntities.forEach(target -> {
             spawnLightningParticle(world, target);
             target.damage(target.getDamageSources().playerAttack(attacker), pealLevel);
+            var attackVec = attacker.getPos().subtract(target.getPos());
+            if (target instanceof LivingEntity livingEntity)
+                takeKnockback(livingEntity, knockbackStrength, attackVec, attackVec.length());
         });
         return true;
     }
