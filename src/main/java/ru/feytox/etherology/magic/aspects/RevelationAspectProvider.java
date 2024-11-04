@@ -11,8 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.aspects.AspectsLoader;
-
-import java.util.List;
+import ru.feytox.etherology.item.revelationView.RevelationViewData;
 
 public interface RevelationAspectProvider {
 
@@ -24,14 +23,14 @@ public interface RevelationAspectProvider {
     }
 
     @Nullable
-    static List<Pair<Aspect, Integer>> getSortedAspects(World world, HitResult hitResult) {
+    static RevelationViewData.Aspects getSortedAspects(World world, HitResult hitResult) {
         val data = getData(world, hitResult);
         if (data == null) return null;
         val aspects = data.getFirst();
         Integer limit = data.getSecond();
         if (aspects == null || limit == null) return null;
 
-        return aspects.sorted(true, limit);
+        return new RevelationViewData.Aspects(aspects.sorted(true, limit));
     }
 
     @Nullable

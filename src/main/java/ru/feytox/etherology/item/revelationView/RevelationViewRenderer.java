@@ -1,15 +1,10 @@
 package ru.feytox.etherology.item.revelationView;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.datafixers.util.Pair;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,24 +13,17 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.aspects.Aspect;
-import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
-import ru.feytox.etherology.mixin.TessellatorAccessor;
-import ru.feytox.etherology.util.misc.RenderUtils;
-
-import java.util.List;
+import ru.feytox.etherology.magic.ether.EtherStorage;
 
 @UtilityClass
 public class RevelationViewRenderer {
 
-    // constants
-    private static final int ROW_SIZE = 5;
     private static final int DATA_TICK_RATE = 5;
 
-    // aspects cache
+    // data cache
     private static @Nullable BlockPos lastTargetPos = null;
-    private static @Nullable List<Pair<Aspect, Integer>> aspects = null;
+    private static @Nullable RevelationViewData data = null;
     private static @Nullable Vec3d targetPos = null;
     private static @Nullable Vec3d offsetVec = null;
     private static float progress = 0.0f;
@@ -47,7 +35,7 @@ public class RevelationViewRenderer {
         MinecraftClient client = MinecraftClient.getInstance();
         HitResult hitResult = client.crosshairTarget;
         if (hitResult == null) {
-            aspects = null;
+            data = null;
             targetPos = null;
             offsetVec = null;
             return;
@@ -57,7 +45,10 @@ public class RevelationViewRenderer {
     }
 
     private static void refreshData(World world, PlayerEntity player, HitResult hitResult) {
-        aspects = RevelationAspectProvider.getSortedAspects(world, hitResult);
+        data = RevelationAspectProvider.getSortedAspects(world, hitResult);
+        if (data == null)
+            data = getChannelData(world, hitResult);
+
         targetPos = getPosFromTarget(hitResult);
         offsetVec = getOffset(world, player, hitResult);
     }
@@ -67,7 +58,7 @@ public class RevelationViewRenderer {
     }
 
     private static void renderAspects(WorldRenderContext context) {
-        if (aspects == null || aspects.isEmpty() || targetPos == null || offsetVec == null) return;
+        if (data == null || data.isEmpty() || targetPos == null || offsetVec == null) return;
         MinecraftClient client = MinecraftClient.getInstance();
         ClientWorld world = context.world();
         HitResult hitResult = client.crosshairTarget;
@@ -78,9 +69,9 @@ public class RevelationViewRenderer {
             refreshData(world, client.player, hitResult);
         }
 
-        progress = MathHelper.lerp(0.1f*context.tickCounter().getTickDelta(false), progress, 1.0f);
+        progress = MathHelper.lerp(0.1f * context.tickCounter().getTickDelta(false), progress, 1.0f);
         MatrixStack matrices = context.matrixStack();
-        if (aspects == null || aspects.isEmpty() || targetPos == null || offsetVec == null || matrices == null) return;
+        if (data == null || data.isEmpty() || targetPos == null || offsetVec == null || matrices == null) return;
 
         matrices.push();
 
@@ -91,50 +82,20 @@ public class RevelationViewRenderer {
         matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(camera.getYaw()));
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
 
-        int lastRowIndex = (aspects.size() / ROW_SIZE) * ROW_SIZE;
-        int lastRowSize = aspects.size() % ROW_SIZE;
-        lastRowSize = lastRowSize == 0 ? ROW_SIZE : lastRowSize;
-
-        int i = 0;
-        for (Pair<Aspect, Integer> pair : aspects) {
-            int row = i / ROW_SIZE;
-            int col = i % ROW_SIZE;
-
-            int r = i >= lastRowIndex ? lastRowSize : ROW_SIZE;
-            float startOffset = r * 0.5f * 0.25f;
-
-            renderAspect(matrices, pair.getFirst(), -col * 0.25f + startOffset, row * 0.275f);
-            renderCount(client, matrices, pair.getSecond(), col, row, startOffset);
-            i++;
-        }
-
+        data.render(client, matrices, progress);
         matrices.pop();
     }
 
-    private static void renderAspect(MatrixStack matrices, Aspect aspect, float dx, float dy) {
-        matrices.push();
-        RenderSystem.setShaderTexture(0, Aspect.TEXTURE);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.disableCull();
-        RenderSystem.disableDepthTest();
-        matrices.scale(progress, progress, progress);
-        matrices.translate(dx, dy, 0);
-        RenderUtils.renderTexture(matrices, 0, 0, 0, aspect.getTextureMinX(), aspect.getTextureMinY(), 0.25f, 0.25f, aspect.getWidth(), aspect.getHeight(), EtherologyAspect.TEXTURE_WIDTH, EtherologyAspect.TEXTURE_HEIGHT);
-        matrices.pop();
+    @Nullable
+    private static RevelationViewData getChannelData(World world, HitResult hitResult) {
+        if (!(hitResult instanceof BlockHitResult blockHit))
+            return null;
 
-        RenderSystem.enableCull();
-    }
+        var blockEntity = world.getBlockEntity(blockHit.getBlockPos());
+        if (!(blockEntity instanceof EtherStorage pipe))
+            return null;
 
-    private static void renderCount(MinecraftClient client, MatrixStack matrices, Integer count, int col, int row, float startOffset) {
-        matrices.push();
-        matrices.scale(progress, progress, progress);
-        matrices.translate(-col * 0.25f + startOffset - 0.18f, row * 0.275f - 0.18f, -0.0001);
-        matrices.scale(-0.008F, -0.008F, 0.025F);
-        VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(((TessellatorAccessor)Tessellator.getInstance()).getAllocator());
-        client.textRenderer.draw(count.toString(), 0, 0, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), immediate, TextRenderer.TextLayerType.SEE_THROUGH, 0, 15728880);
-        immediate.draw();
-        matrices.pop();
+        return new RevelationViewData.Channel(pipe.getStoredEther(), pipe.getMaxEther());
     }
 
     @Nullable
