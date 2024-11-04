@@ -3,12 +3,16 @@
   "id": "etherology",
   "version": "${version}",
   "name": "Etherology",
-  "description": "",
+  "description": "Science is indistinguishable from magic!",
   "authors": [
     "Faradey",
     "Feytox"
   ],
-  "contact": {},
+  "contact": {
+    "homepage": "https://modrinth.com/mod/etherology",
+    "sources": "https://github.com/feytox/etherology",
+    "issues": "https://github.com/feytox/etherology/issues"
+  },
   "license": "MIT",
   "icon": "assets/etherology/icon.png",
   "environment": "*",
