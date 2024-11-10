@@ -31,8 +31,8 @@ public class SealBlockRenderer {
     private static final Map<BlockPos, Data> sealsData = new Object2ObjectOpenHashMap<>();
     private static final int VISIBLE_COOLDOWN = 4;
     public static final int LIFETIME = 100;
-    private static long oculusLastTick;
-    private static long revelationLastTick;
+    private static long oculusLastTick = -VISIBLE_COOLDOWN;
+    private static long revelationLastTick = -VISIBLE_COOLDOWN;
     private static World lastWorld;
 
     public static void refreshOculus(long time) {
@@ -60,6 +60,8 @@ public class SealBlockRenderer {
 
         lastWorld = client.world;
         sealsData.clear();
+        oculusLastTick = -VISIBLE_COOLDOWN;
+        revelationLastTick = -VISIBLE_COOLDOWN;
     }
 
     private static void render(WorldRenderContext context) {
