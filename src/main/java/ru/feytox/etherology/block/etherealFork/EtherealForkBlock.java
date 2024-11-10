@@ -73,18 +73,16 @@ public class EtherealForkBlock extends Block implements RegistrableBlock, BlockE
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-        return getForkState(ctx.getWorld(), this.getDefaultState(), ctx.getBlockPos())
-                .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+        return getForkState(ctx.getWorld(), getDefaultState(), ctx.getBlockPos());
     }
 
     public BlockState getForkState(BlockView world, BlockState state, BlockPos pos) {
-        List<Direction> directions = new ArrayList<>();
+        var directions = new ArrayList<Direction>();
         directions.addAll(Direction.Type.HORIZONTAL.stream().toList());
         directions.addAll(Direction.Type.VERTICAL.stream().toList());
 
-        for (Direction direction: directions) {
-            BlockPos checkPos = pos.add(direction.getVector());
+        for (var direction: directions) {
+            var checkPos = pos.add(direction.getVector());
             if (!(world.getBlockEntity(checkPos) instanceof EtherPipe pipe)) continue;
             if (pipe instanceof EtherFork) continue;
 
@@ -97,7 +95,8 @@ public class EtherealForkBlock extends Block implements RegistrableBlock, BlockE
             }
         }
 
-        return state;
+        var fluid = world.getFluidState(pos).getFluid();
+        return state.with(WATERLOGGED, fluid == Fluids.WATER);
     }
 
     @Override

@@ -102,12 +102,10 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        var fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
         var playerDirection = ctx.getPlayerLookDirection();
         var playerPlacementState = getDefaultState().with(FACING, playerDirection);
 
-        return getChannelState(ctx.getWorld(), playerPlacementState, ctx.getBlockPos())
-                .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+        return getChannelState(ctx.getWorld(), playerPlacementState, ctx.getBlockPos());
     }
 
     @Override
@@ -123,21 +121,26 @@ public class EtherealChannel extends Block implements RegistrableBlock, BlockEnt
     }
 
     public BlockState getChannelState(BlockView world, BlockState state, BlockPos pos) {
-        Direction pipeDirection = state.get(FACING);
-        boolean inCase = state.get(IN_CASE);
-        state = getDefaultState().with(FACING, pipeDirection).with(IN_CASE, inCase);
-        List<Direction> directions = new ArrayList<>();
+        var pipeDirection = state.get(FACING);
+        var inCase = state.get(IN_CASE);
+        var fluid = world.getFluidState(pos).getFluid();
+        state = getDefaultState()
+                .with(FACING, pipeDirection)
+                .with(IN_CASE, inCase)
+                .with(WATERLOGGED, fluid == Fluids.WATER);
+
+        var directions = new ArrayList<Direction>();
         directions.addAll(Direction.Type.HORIZONTAL.stream().toList());
         directions.addAll(Direction.Type.VERTICAL.stream().toList());
 
-        int inputCount = 0;
+        var inputCount = 0;
         for (Direction direction: directions) {
             boolean result = isNeighborOutput(world, pos, direction);
             if (!result || state.get(FACING).equals(direction)) continue;
 
             inputCount++;
-            EnumProperty<PipeSide> inSide = getAsIn(direction.getOpposite());
-            state = state.with(inSide, PipeSide.IN);
+            var inSideProperty = getAsIn(direction.getOpposite());
+            state = state.with(inSideProperty, PipeSide.IN);
         }
 
         return getFacingState(state, inputCount);
