@@ -10,6 +10,7 @@ import ru.feytox.etherology.registry.item.EItems;
 public class TradeOffersModificationRegistry {
 
     public static void registerAll() {
-        TradeOfferHelper.registerVillagerOffers(VillagerProfession.TOOLSMITH, 2, factories -> factories.add(new TradeOffers.BuyItemFactory(EItems.TRADITIONAL_PATTERN_TABLET, 1, 8, 1, 12)));
+        TradeOfferHelper.registerVillagerOffers(VillagerProfession.TOOLSMITH, 2, factories ->
+                factories.add(new TradeOffers.SellItemFactory(EItems.TRADITIONAL_PATTERN_TABLET, 12, 1, 8, 1)));
     }
 }
