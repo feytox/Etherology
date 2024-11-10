@@ -30,7 +30,7 @@ public class DecoBlockItems {
     public static final Item EBONY_NUGGET = registerSimpleItem("ebony_nugget");
 
     // attrahite
-    public static final Item ENRICHED_ATTRAHITE = registerSimpleItem("enriched_attrahite");
+    public static final Item ENRICHED_ATTRAHITE = registerSimpleItem("enriched_attrahite", new Item.Settings().maxCount(16));
     public static final Item RAW_AZEL = registerSimpleItem("raw_azel");
     public static final Item ATTRAHITE_BRICK = registerSimpleItem("attrahite_brick");
 
@@ -39,7 +39,11 @@ public class DecoBlockItems {
     public static final Item RESONATING_WAND = registerSimpleItem("resonating_wand");
 
     private static Item registerSimpleItem(String id) {
-        return Registry.register(Registries.ITEM, EIdentifier.of(id), new Item(new Item.Settings()));
+        return registerSimpleItem(id, new Item.Settings());
+    }
+
+    private static Item registerSimpleItem(String id, Item.Settings settings) {
+        return Registry.register(Registries.ITEM, EIdentifier.of(id), new Item(settings));
     }
 
     private static Item registerBlockItem(BlockItem blockItem) {
