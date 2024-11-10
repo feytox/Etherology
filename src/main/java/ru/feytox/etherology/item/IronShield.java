@@ -10,7 +10,8 @@ import java.util.Optional;
 
 public class IronShield extends FabricShieldItem {
 
-    private static final double SHIELD_COS_ANGLE = 0.5;
+    // если "направить" камеру по -OX, то этот угол - граница защиты
+    private static final double SHIELD_COS_ANGLE = -0.135;
 
     public IronShield(Settings settings, int coolDownTicks, int enchantability, Item... repairItems) {
         super(settings, coolDownTicks, enchantability, repairItems);
