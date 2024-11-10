@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import ru.feytox.etherology.block.forestLantern.ForestLanternBlock;
 import ru.feytox.etherology.commands.DevCommands;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;
@@ -54,6 +55,7 @@ public class Etherology implements ModInitializer {
         LensModifier.registerAll();
         EffectsRegistry.registerAll();
         ComponentTypes.registerAll();
+        ForestLanternBlock.registerJumpEvent();
 
         ServerWorldEvents.LOAD.register((server, world) -> loadedWorlds.add(world));
         ServerWorldEvents.UNLOAD.register((server, world) -> loadedWorlds.remove(world));

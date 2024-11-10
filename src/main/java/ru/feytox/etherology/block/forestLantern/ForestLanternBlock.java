@@ -3,20 +3,21 @@ package ru.feytox.etherology.block.forestLantern;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import ru.feytox.etherology.registry.block.DecoBlocks;
+import ru.feytox.etherology.util.event.PlayerJumpCallback;
 import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 import java.util.EnumMap;
@@ -41,15 +42,24 @@ public class ForestLanternBlock extends HorizontalFacingBlock implements Registr
         return SHAPES.get(state.get(FACING));
     }
 
-    @Override
-    public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-        super.onLandedUpon(world, state, pos, entity, fallDistance);
+    public static void registerJumpEvent() {
+        PlayerJumpCallback.BEFORE_JUMP.register(player -> {
+            var world = player.getWorld();
+            if (world.isClient)
+                return ActionResult.PASS;
 
-        if (world.isClient || world.getRandom().nextFloat() >= BREAK_CHANCE)
-            return;
+            var pos = player.getBlockPos().down();
+            var blockState = world.getBlockState(pos);
+            if (!blockState.isOf(DecoBlocks.FOREST_LANTERN))
+                return ActionResult.PASS;
 
-        world.playSound(null, pos, this.getSoundGroup(state).getBreakSound(), SoundCategory.BLOCKS, 0.7F, 0.9F);
-        world.breakBlock(pos, false);
+            if (world.getRandom().nextFloat() > BREAK_CHANCE)
+                return ActionResult.PASS;
+
+            world.playSound(null, pos, DecoBlocks.FOREST_LANTERN.getSoundGroup(blockState).getBreakSound(), SoundCategory.BLOCKS, 0.7F, 0.9F);
+            world.breakBlock(pos, true);
+            return ActionResult.PASS;
+        });
     }
 
     @Override

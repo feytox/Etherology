@@ -44,7 +44,5 @@ public class EtherologyClient implements ClientModInitializer {
             if (player == null) return;
             if (!OculusItem.isInHands(player)) OculusItem.getDisplayedHud().clearChildren();
         }));
-
-
     }
 }

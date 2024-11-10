@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.item.BattlePickaxe;
 import ru.feytox.etherology.item.BroadSwordItem;
 import ru.feytox.etherology.registry.item.ToolItems;
+import ru.feytox.etherology.util.event.PlayerJumpCallback;
 import ru.feytox.etherology.util.misc.ShockwaveUtil;
 
 @Mixin(PlayerEntity.class)
@@ -70,5 +71,10 @@ public class PlayerEntityMixin {
         if (!(entity.getMainHandStack().getItem() instanceof BattlePickaxe pick)) return;
 
         amountRef.set(Math.round(amount * (1.5 + pick.getDamagePercent())));
+    }
+
+    @Inject(method = "jump", at = @At("HEAD"))
+    private void injectBeforeJumpEvent(CallbackInfo ci) {
+        PlayerJumpCallback.BEFORE_JUMP.invoker().beforeJump((PlayerEntity) (Object) this);
     }
 }
