@@ -85,7 +85,7 @@ public abstract class RevelationViewData {
     }
 
     @RequiredArgsConstructor
-    public static class Channel extends RevelationViewData {
+    public static class Ether extends RevelationViewData {
 
         private static final Identifier ETHER_TEXTURE = EIdentifier.of("textures/item/ether.png");
 

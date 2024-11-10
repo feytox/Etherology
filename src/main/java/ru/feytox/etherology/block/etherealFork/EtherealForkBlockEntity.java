@@ -7,6 +7,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
+import ru.feytox.etherology.magic.ether.EtherDisplay;
 import ru.feytox.etherology.magic.ether.EtherFork;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
@@ -16,7 +17,7 @@ import java.util.List;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.ACTIVATED;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_FORK_BLOCK_ENTITY;
 
-public class EtherealForkBlockEntity extends TickableBlockEntity implements EtherFork {
+public class EtherealForkBlockEntity extends TickableBlockEntity implements EtherFork, EtherDisplay {
 
     private float storedEther = 0;
     private List<Direction> cachedOutputSides = new ArrayList<>();
@@ -93,5 +94,15 @@ public class EtherealForkBlockEntity extends TickableBlockEntity implements Ethe
         super.readNbt(nbt, registryLookup);
 
         storedEther = nbt.getFloat("stored_ether");
+    }
+
+    @Override
+    public float getDisplayEther() {
+        return getStoredEther();
+    }
+
+    @Override
+    public float getDisplayMaxEther() {
+        return getMaxEther();
     }
 }

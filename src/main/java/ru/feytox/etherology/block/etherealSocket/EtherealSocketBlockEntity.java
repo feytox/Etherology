@@ -25,6 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.item.glints.GlintItem;
+import ru.feytox.etherology.magic.ether.EtherDisplay;
 import ru.feytox.etherology.magic.ether.EtherGlint;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
@@ -38,7 +39,7 @@ import static net.minecraft.block.FacingBlock.FACING;
 import static ru.feytox.etherology.block.etherealSocket.EtherealSocketBlock.WITH_GLINT;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_ENTITY;
 
-public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, ImplementedInventory, SidedInventory {
+public class EtherealSocketBlockEntity extends TickableBlockEntity implements EtherStorage, EtherDisplay, ImplementedInventory, SidedInventory {
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private Boolean wasWithGlint = null;
@@ -283,5 +284,15 @@ public class EtherealSocketBlockEntity extends TickableBlockEntity implements Et
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
         return false;
+    }
+
+    @Override
+    public float getDisplayEther() {
+        return getStoredEther();
+    }
+
+    @Override
+    public float getDisplayMaxEther() {
+        return getMaxEther();
     }
 }

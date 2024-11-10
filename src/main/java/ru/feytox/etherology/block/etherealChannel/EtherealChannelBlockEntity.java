@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
+import ru.feytox.etherology.magic.ether.EtherDisplay;
 import ru.feytox.etherology.magic.ether.EtherPipe;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.MovingParticleEffect;
@@ -25,7 +26,7 @@ import java.util.List;
 import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
-public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe {
+public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe, EtherDisplay {
     private float storedEther = 0;
     @Setter
     private boolean isEvaporating = false;
@@ -139,5 +140,15 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
         storedEther = nbt.getFloat("stored_ether");
         isEvaporating = nbt.getBoolean("evaporating");
         isCrossEvaporating = nbt.getBoolean("cross_evaporating");
+    }
+
+    @Override
+    public float getDisplayEther() {
+        return getStoredEther();
+    }
+
+    @Override
+    public float getDisplayMaxEther() {
+        return getMaxEther();
     }
 }

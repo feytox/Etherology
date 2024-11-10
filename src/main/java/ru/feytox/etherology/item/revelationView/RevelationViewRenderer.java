@@ -14,7 +14,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
-import ru.feytox.etherology.magic.ether.EtherStorage;
+import ru.feytox.etherology.magic.ether.EtherDisplay;
 
 @UtilityClass
 public class RevelationViewRenderer {
@@ -92,10 +92,10 @@ public class RevelationViewRenderer {
             return null;
 
         var blockEntity = world.getBlockEntity(blockHit.getBlockPos());
-        if (!(blockEntity instanceof EtherStorage pipe))
+        if (!(blockEntity instanceof EtherDisplay display))
             return null;
 
-        return new RevelationViewData.Channel(pipe.getStoredEther(), pipe.getMaxEther());
+        return new RevelationViewData.Ether(display.getDisplayEther(), display.getDisplayMaxEther());
     }
 
     @Nullable
