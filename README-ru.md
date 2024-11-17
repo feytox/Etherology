@@ -27,6 +27,9 @@
 ## Contributing
 Этот проект находится на стадии разработки, многое может измениться. Увидели баг, проблему или хотите исправить/отрефакторить что-нибудь? Мы всегда рады любому вкладу в развитие **Etherology**
 
+## Гайд по игре
+[Туториал по моду](https://docs.google.com/document/d/1JTn1c6AlU_WKassemnvZt8rly2BBrj96/edit?usp=sharing&ouid=115962004552308323235&rtpof=true&sd=true), в будущем он будет перенесён на Github Wiki
+
 ## Discord
 - [Сервер разработчика](https://discord.gg/U23C6ewP2X)
 - [Сервер автора](https://discord.gg/HruRuhw)
