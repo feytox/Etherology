@@ -19,6 +19,11 @@ public class BrewingCauldronSoundInstance extends MovingSoundInstance {
         attenuationType = AttenuationType.NONE;
         repeat = false;
         repeatDelay = 0;
+
+        var pos = cauldron.getPos();
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
     }
 
     @Override

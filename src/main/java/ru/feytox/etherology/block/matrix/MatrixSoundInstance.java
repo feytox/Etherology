@@ -19,6 +19,11 @@ public class MatrixSoundInstance extends MovingSoundInstance {
         this.attenuationType = AttenuationType.NONE;
         this.repeat = true;
         this.repeatDelay = 0;
+
+        var centerPos = armillary.getCenterPos();
+        this.x = centerPos.getX();
+        this.y = centerPos.getY();
+        this.z = centerPos.getZ();
     }
 
     @Override
