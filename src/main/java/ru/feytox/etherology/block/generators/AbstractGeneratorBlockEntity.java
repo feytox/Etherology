@@ -10,6 +10,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -42,7 +44,7 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float storedEther;
-    private int nextGenTime = 40*20;
+    private int nextGenTime = 40 * 20;
     private boolean isLaunched = false;
     private boolean isMess = false;
     private CompletableFuture<Boolean> messCheck = null;
@@ -60,6 +62,8 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
 
     public void unstall(ServerWorld world, BlockState state) {
         world.setBlockState(pos, state.with(STALLED, false));
+        world.playSound(null, pos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS,
+                1.0f, 0.9f + world.getRandom().nextFloat() * 0.2f);
         spinAnim();
     }
 
@@ -148,7 +152,7 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
             if (isInSeal && random.nextDouble() <= 0.5) nextGenTime -= random.nextBetween(0, 1);
             return;
         }
-        incrementEssence(1);
+        increment(1);
 
         if (getCachedState().getBlock() instanceof AbstractGenerator generator) {
             int min = generator.getMinCooldown();
@@ -235,6 +239,7 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
     }
 
     public abstract RawAnimation getSpinAnimation();
+
     public abstract RawAnimation getStalledAnimation();
 
     @Override
