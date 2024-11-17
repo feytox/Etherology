@@ -99,12 +99,15 @@ public class SedimentaryStone extends Block implements BlockEntityProvider {
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!essenceLevel.isFull() || !(stack.getItem() instanceof AxeItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!essenceLevel.isPresent() || !(stack.getItem() instanceof AxeItem))
+            return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        boolean result = false;
-        BlockEntity be = world.getBlockEntity(pos);
-        if (be instanceof SedimentaryStoneBlockEntity sedimentaryBlock) {
-            result = sedimentaryBlock.onUseAxe(state, world, sealType, hit.getSide().getVector());
+        var result = false;
+        var blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof SedimentaryStoneBlockEntity sedimentaryBlock) {
+            var minFullness = EssenceLevel.getFullnessDelta() * 2;
+            var dropItem = essenceLevel.toFullness() >= minFullness;
+            result = sedimentaryBlock.onUseAxe(state, world, sealType, hit.getSide().getVector(), dropItem);
         }
         return result ? ItemActionResult.SUCCESS : ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

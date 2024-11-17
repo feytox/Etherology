@@ -1,6 +1,7 @@
 package ru.feytox.etherology.block.sedimentary;
 
 import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.math.MathHelper;
 
 public enum EssenceLevel implements StringIdentifiable {
     EMPTY,
@@ -13,10 +14,6 @@ public enum EssenceLevel implements StringIdentifiable {
         return !this.equals(EMPTY);
     }
 
-    public boolean isFull() {
-        return this.equals(FULL);
-    }
-
     @Override
     public String asString() {
         return name().toLowerCase();
@@ -26,11 +23,13 @@ public enum EssenceLevel implements StringIdentifiable {
         return ordinal() / (values().length - 1f);
     }
 
+    public static float getFullnessDelta() {
+        return 1f / (values().length - 1);
+    }
+
     public static EssenceLevel fromFullness(float fullness) {
-        if (fullness < 0.25f) return EMPTY;
-        if (fullness < 0.50f) return LOW;
-        if (fullness < 0.75f) return MEDIUM;
-        if (fullness < 1.00f) return HIGH;
-        return FULL;
+        var delta = getFullnessDelta();
+        var index = MathHelper.floor(fullness / delta);
+        return values()[index];
     }
 }

@@ -26,6 +26,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.SEDIMENTARY_BLOCK_ENTI
 public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements EssenceConsumer {
 
     private static final float MAX_POINTS = 32.0f;
+    private static final float POINTS_DELTA = MAX_POINTS * EssenceLevel.getFullnessDelta();
     private static final float CONSUME_CHANCE = 0.85f;
     @Nullable
     private EssenceSupplier cachedSeal;
@@ -43,7 +44,7 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
         markDirty();
     }
 
-    public boolean onUseAxe(BlockState state, World world, SealType sealType, Vec3i sideVector) {
+    public boolean onUseAxe(BlockState state, World world, SealType sealType, Vec3i sideVector, boolean dropItem) {
         world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f, true);
 
         if (!(world instanceof ServerWorld serverWorld)) {
@@ -51,14 +52,16 @@ public class SedimentaryStoneBlockEntity extends TickableBlockEntity implements 
             return true;
         }
 
-        points = 0;
+        points = Math.max(0, points - POINTS_DELTA);
         syncData(serverWorld);
-        updateBlockState(serverWorld, state, SealType.EMPTY);
+        updateBlockState(serverWorld, state, points < 1e-9 ? SealType.EMPTY : sealType);
+
+        if (!dropItem)
+            return true;
 
         BlockPos itemPos = pos.add(sideVector);
         Optional<Item> match = sealType.getPrimoShard();
         match.ifPresent(item -> ItemScatterer.spawn(serverWorld, itemPos.getX(), itemPos.getY(), itemPos.getZ(), item.getDefaultStack()));
-
         return true;
     }
 
