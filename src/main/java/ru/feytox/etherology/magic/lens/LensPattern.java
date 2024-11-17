@@ -93,7 +93,7 @@ public class LensPattern {
         return new Mutable(cracks.clone(), softCells.clone());
     }
 
-    // TODO: 08.07.2024 consider adding toImmutable again
+    // TODO: 08.07.2024 add toImmutable again
     public static class Mutable extends LensPattern {
 
         public Mutable(@NonNull IntArraySet cracks, @NonNull IntArraySet softCells) {

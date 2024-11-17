@@ -63,7 +63,7 @@ public class JewelryTableScreen extends HandledScreen<JewelryTableScreenHandler>
         RenderUtils.renderTexture(context, x0, y, 176, v, 8, height, 8, height, 256, 256);
     }
 
-    // TODO: 29.07.2024 consider combining renderButtons and renderGrid
+    // TODO: 29.07.2024 combine renderButtons and renderGrid
     private void renderButtons(DrawContext context, int x0, int y0, int mouseX, int mouseY) {
         if (handler.getTableInv().isEmpty()) return;
 

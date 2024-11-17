@@ -37,7 +37,7 @@ public record StaffMenuSelectionC2S(LensSelectionType selected, ItemStack staffS
         });
     }
 
-    // TODO: 15.07.2024 consider using different methods of validating item stacks.
+    // TODO: 15.07.2024 use different methods of validating item stacks.
     @Nullable
     private static ItemStack findOriginal(Inventory inventory, ItemStack copyStack) {
         for (int i = 0; i < inventory.size(); i++) {

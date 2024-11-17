@@ -59,7 +59,7 @@ public abstract class AbstractJewelryRecipe implements FeyRecipe<JewelryTableInv
             return fromData(pattern).getOrThrow();
         }
 
-        // TODO: 11.07.2024 consider adding error on wrong pattern
+        // TODO: 11.07.2024 add error on wrong pattern
         private static DataResult<Pattern> fromData(List<String> data) {
             String flatPattern = String.join("", data);
             if (flatPattern.length() != 64) throw new IllegalArgumentException("Jewelry Pattern must have 8x8 size");

@@ -99,7 +99,7 @@ public class RecipeContent extends AbstractContent {
         registerDisplays();
     }
 
-    // TODO: 04.08.2024 consider replacing with something else
+    // TODO: 04.08.2024 replace with something else
     private static class DisplayRegistry {
         private final Map<RecipeType<?>, Pair<DisplaySize, DisplayFiller<?>>> typeToDisplay = new Object2ObjectOpenHashMap<>();
 

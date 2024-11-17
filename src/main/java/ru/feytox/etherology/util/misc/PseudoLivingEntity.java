@@ -18,7 +18,7 @@ import net.minecraft.world.World;
  */
 public class PseudoLivingEntity extends LivingEntity {
 
-    // TODO: 17.06.2024 consider replacing this class with something BETTER
+    // TODO: 17.06.2024 replace this class with something BETTER
 
     public PseudoLivingEntity(World world, BlockPos blockPos) {
         super(EntityType.FOX, world);

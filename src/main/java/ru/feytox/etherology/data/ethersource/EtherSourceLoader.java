@@ -18,7 +18,7 @@ import static ru.feytox.etherology.Etherology.ELOGGER;
 
 public class EtherSourceLoader extends JsonDataLoader implements IdentifiableResourceReloadListener {
 
-    // TODO: 11.07.2024 consider using codecs... before it's too late :skull:
+    // TODO: 11.07.2024 use codecs... before it's too late :skull:
 
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
     public static final EtherSourceLoader INSTANCE = new EtherSourceLoader();

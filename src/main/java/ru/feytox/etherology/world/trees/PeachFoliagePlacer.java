@@ -29,7 +29,7 @@ public class PeachFoliagePlacer extends FoliagePlacer {
         return TreesRegistry.PEACH_FOLIAGE_PLACER;
     }
 
-    // TODO: 18.06.2024 consider simplifying
+    // TODO: 18.06.2024 simplify
     // giantTrunk in this case: true = tree top, false = branch
     @Override
     protected void generate(TestableWorld world, BlockPlacer placer, Random random, TreeFeatureConfig config, int trunkHeight, TreeNode treeNode, int foliageHeight, int radius, int offset) {

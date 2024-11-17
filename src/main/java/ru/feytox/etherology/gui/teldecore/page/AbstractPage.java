@@ -92,6 +92,6 @@ public abstract class AbstractPage extends ParentedWidget {
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
-        // TODO: 30.07.2024 consider adding narrations
+        // TODO: 30.07.2024 add narrations (???)
     }
 }

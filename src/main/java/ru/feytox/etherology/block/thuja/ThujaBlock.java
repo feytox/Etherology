@@ -24,7 +24,7 @@ import ru.feytox.etherology.util.misc.RegistrableBlock;
 
 public class ThujaBlock extends AbstractPlantStemBlock implements RegistrableBlock, ThujaShapeController {
 
-    // TODO: 02.03.2024 Consider combining code from ThujaBlock and ThujaPlantBlock to avoid copy-pasting
+    // TODO: 02.03.2024 combine code from ThujaBlock and ThujaPlantBlock to avoid copy-pasting
 
     private static final MapCodec<ThujaBlock> CODEC = MapCodec.unit(ThujaBlock::new);
     public static final EnumProperty<ThujaShape> SHAPE = EnumProperty.of("shape", ThujaShape.class);

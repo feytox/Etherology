@@ -31,7 +31,7 @@ public class PeachLanternDecorator extends TreeDecorator {
         if (count == 0) return;
 
         int bottomY = generator.getLogPositions().getFirst().getY();
-        // TODO: 19.06.2024 consider optimizing and combining with same method in BirchBranchesDecorator
+        // TODO: 19.06.2024 optimize and combine with same method in BirchBranchesDecorator
         List<LogSidePos> poses = generator.getLogPositions().stream()
                 .filter(pos -> pos.getY()-bottomY < 6)
                 .mapMulti((pos, consumer) -> {

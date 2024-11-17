@@ -67,7 +67,7 @@ public class StaffLensesScreen extends Screen {
     private LensMode lensMode = null;
     @Nullable
     private ItemStack staffStack = null;
-    private float ticks; // TODO: 12.05.2024 consider replacing with smth else
+    private float ticks; // TODO: 12.05.2024 replace with smth else
     private float progressTicks; // I use two variables to ensure that the circle rotation does not reset when the ticks are reset.
     private boolean isClosing = false;
 

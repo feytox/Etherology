@@ -64,7 +64,7 @@ public class Etherology implements ModInitializer {
         ServerTickEvents.END_WORLD_TICK.register(world -> RedstoneLensEffects.getServerState(world).tick(world));
     }
 
-    // TODO: 16.07.2024 consider using something else
+    // TODO: 16.07.2024 use something else
     @Nullable
     public static ServerWorld getAnyServerWorld() {
         return loadedWorlds.isEmpty() ? null : loadedWorlds.getFirst();

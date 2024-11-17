@@ -51,7 +51,7 @@ public class PedestalBlockEntity extends TickableBlockEntity
         return !getStack(0).isEmpty();
     }
 
-    // TODO: 24.03.2024 consider simplifying so PedestalDispenserBehavior can use simpler code
+    // TODO: 24.03.2024 simplify so PedestalDispenserBehavior can use simpler code
     public void interact(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
         ItemStack pedestalStack = getStack(0);

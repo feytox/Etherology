@@ -22,7 +22,7 @@ import java.util.function.Function;
 
 public class EntityComponentC2SType<C extends Component, V> extends AbstractC2SPacket.PacketType<EntityComponentC2SType.Packet<V>> {
 
-    // TODO: 02.08.2024 consider using smth else... idk
+    // TODO: 02.08.2024 use smth else... idk
     public static final EntityComponentC2SType<TeldecoreComponent, Identifier> TELDECORE_SELECTED;
     public static final EntityComponentC2SType<TeldecoreComponent, Integer> TELDECORE_PAGE;
     public static final EntityComponentC2SType<TeldecoreComponent, Identifier> TELDECORE_TAB;

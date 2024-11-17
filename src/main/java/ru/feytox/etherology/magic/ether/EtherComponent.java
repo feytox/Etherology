@@ -27,7 +27,7 @@ import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
-// TODO: 15.06.2024 consider splitting into multiple files
+// TODO: 15.06.2024 split into multiple files
 @RequiredArgsConstructor
 public class EtherComponent implements ComponentV3, CopyableComponent<EtherComponent>, ServerTickingComponent, AutoSyncedComponent {
 

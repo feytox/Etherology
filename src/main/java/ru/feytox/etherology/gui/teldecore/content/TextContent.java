@@ -40,7 +40,7 @@ public class TextContent extends AbstractContent {
         return TEXT_HEIGHT * size + TEXT_SPACE * (size - 1);
     }
 
-    // TODO: 30.07.2024 consider caching rows
+    // TODO: 30.07.2024 cache rows
     private List<OrderedText> wrapText(TextRenderer textRenderer) {
         return textRenderer.wrapLines(Text.translatable(textKey), TEXT_WIDTH);
     }
