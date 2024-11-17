@@ -1,0 +1,57 @@
+name: publish to Modrinth and CurseForge
+on:
+  [ workflow_dispatch ]
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        java: [ 21 ]
+        os: [ ubuntu-22.04 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v3
+
+      - name: setup jdk ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'microsoft'
+
+      - name: make gradle wrapper executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: build
+        run: ./gradlew build
+
+      - name: publish to Modrinth and CurseForge
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: MGHiBUyJ
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: 1015414
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          name: "Etherology 0.1.2"
+          changelog-file: CHANGELOG.*
+          game-versions: |
+            1.21
+
+          dependencies: |
+            fabric-api
+            owo-lib
+            cardinal-components-api
+            geckolib
+            trinkets
+            biolith
+            fabricshieldlib
+            modmenu(optional)
+            rei(optional)
