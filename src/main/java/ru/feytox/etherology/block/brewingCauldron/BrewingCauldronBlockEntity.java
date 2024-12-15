@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
@@ -14,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
@@ -69,8 +66,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
     private int mixItemsTicks = 0;
     @Getter
     private boolean wasWithAspects = false;
-    @Nullable
-    private BrewingCauldronSoundInstance soundInstance = null;
 
     public BrewingCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BREWING_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -82,45 +77,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         tickMixingItems(world, state);
         tickAspects(world, state);
         tickTemperature(world, blockPos);
-    }
-
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (!BrewingCauldronBlock.isFilled(state)) return;
-
-        tickBubbleParticles(world, state);
-        tickCorruptionParticles(world, state);
-        tickSound(world);
-    }
-
-    private void tickSound(ClientWorld world) {
-        if (temperature < 100) return;
-        val client = MinecraftClient.getInstance();
-        if (client.player == null) return;
-        if (world.getTime() % 3 != 0) return;
-        if (world.getRandom().nextFloat() > 0.25f) return;
-
-        if (soundInstance == null && client.player.squaredDistanceTo(pos.toCenterPos()) < 36) {
-            soundInstance = new BrewingCauldronSoundInstance(this, client.player);
-            client.getSoundManager().play(soundInstance);
-            return;
-        }
-
-        if (soundInstance == null) return;
-        if (soundInstance.isDone() || !client.getSoundManager().isPlaying(soundInstance)) soundInstance = null;
-    }
-
-    private void tickBubbleParticles(ClientWorld world, BlockState state) {
-        if (world.getTime() % 3 != 0) return;
-        if (temperature < 100) return;
-
-        Random random = world.getRandom();
-        for (int i = 0; i < random.nextBetween(1, 4); i++) {
-            SimpleParticleType effect = random.nextBoolean() ? ParticleTypes.BUBBLE : ParticleTypes.BUBBLE_POP;
-            Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
-            start = start.add(FeyParticleEffect.getRandomPos(random, 0.25, 0.05, 0.25));
-            world.addParticle(effect, start.x, start.y, start.z, 0, 0.001, 0);
-        }
     }
 
     private void tickMixingItems(ServerWorld world, BlockState state) {
@@ -167,18 +123,6 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         if (state.get(BrewingCauldronBlock.ASPECTS_LVL) == aspectsLvl) return;
 
         world.setBlockState(pos, state.with(BrewingCauldronBlock.ASPECTS_LVL, aspectsLvl));
-    }
-
-    private void tickCorruptionParticles(ClientWorld world, BlockState state) {
-        if (temperature < 100) return;
-        int count = aspects.sum().orElse(0);
-        if (count == 0) return;
-        if (world.getTime() % Math.max(MathHelper.floor(250.0f / count + 2), 1) != 0) return;
-        if (world.getRandom().nextFloat() < 0.5) return;
-
-        Vec3d start = getWaterPos(state).add(Vec3d.of(pos));
-        val effect = new SimpleParticleEffect(EtherParticleTypes.HAZE);
-        effect.spawnParticles(world, 1, 0.1, start);
     }
 
     private void tickTemperature(ServerWorld world, BlockPos blockPos) {

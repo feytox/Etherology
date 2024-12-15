@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.UseAction;
-import ru.feytox.etherology.enums.EArmPose;
+import ru.feytox.etherology.enums.EUseAction;
 
 public class TuningMaceItem extends TwoHandheldSword {
 
@@ -17,7 +17,7 @@ public class TuningMaceItem extends TwoHandheldSword {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return EArmPose.TWOHANDHELD_ETHEROLOGY.getUseAction();
+        return EUseAction.TWOHANDHELD_ETHEROLOGY.getUseAction();
     }
 
     @Override

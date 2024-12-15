@@ -2,19 +2,16 @@ package ru.feytox.etherology.block.closet;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -33,6 +30,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.CLOSET_SLAB;
 
 public class ClosetData extends FurnitureData implements ImplementedInventory, NamedScreenHandlerFactory {
 
+    // TODO: 18.12.2024 refactor, use something else
     private World cachedWorld = null;
     private BlockState cachedState = null;
     private BlockPos cachedPos = null;
@@ -43,14 +41,12 @@ public class ClosetData extends FurnitureData implements ImplementedInventory, N
     }
 
     @Override
-    public void clientUse(ClientWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
+    public void onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
         cache(world, state, pos);
-    }
+        if (world.isClient)
+            return;
 
-    @Override
-    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
-        cache(world, state, pos);
-        NamedScreenHandlerFactory factory = createScreenFactory(this, isBottom);
+        var factory = createScreenFactory(this, isBottom);
         player.openHandledScreen(factory);
     }
 

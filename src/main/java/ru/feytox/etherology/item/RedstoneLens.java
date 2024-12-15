@@ -11,7 +11,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import ru.feytox.etherology.entity.redstoneBlob.RedstoneChargeEntity;
+import ru.feytox.etherology.entity.RedstoneChargeEntity;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.lens.LensModifier;
 import ru.feytox.etherology.magic.lens.RedstoneLensEffects;

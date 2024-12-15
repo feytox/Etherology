@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
@@ -20,14 +19,15 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.ElectricityParticleEffect;
 import ru.feytox.etherology.particle.effects.SimpleParticleEffect;
 import ru.feytox.etherology.particle.effects.SparkParticleEffect;
-import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
-import ru.feytox.etherology.particle.subtypes.SparkSubtype;
+import ru.feytox.etherology.particle.subtype.ElectricitySubtype;
+import ru.feytox.etherology.particle.subtype.SparkSubtype;
 import ru.feytox.etherology.recipes.jewelry.AbstractJewelryRecipe;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.delayedTask.DelayedTask;
@@ -41,6 +41,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
     private static final int TICK_RATE = 10;
     private static final int IDLE_TICK_RATE = 7;
 
+    @Getter
     private final JewelryTableInventory inventory;
     private float storedEther = 0;
     @Getter @Setter
@@ -82,15 +83,6 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
         effect.spawnParticles(world, 6, 0.25d, particlePos);
     }
 
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (!inventory.hasRecipe()) return;
-        if (world.getTime() % 4 != 0 || storedEther == 0) return;
-
-        val effect = ElectricityParticleEffect.of(world.getRandom(), ElectricitySubtype.JEWELRY);
-        effect.spawnParticles(world, 2, 0.2d, blockPos.toCenterPos().add(0, 0.75d, 0));
-    }
-
     public void applyCorruption() {
         if (!(world instanceof ServerWorld serverWorld)) return;
         Corruption corruption = new Corruption(1.0f);
@@ -107,7 +99,7 @@ public class JewelryBlockEntity extends TickableBlockEntity implements EtherStor
     }
 
     @Override
-    public boolean spawnCrossParticles(BlockPos pos, ClientWorld world, Direction direction) {
+    public boolean spawnCrossParticles(BlockPos pos, World world, Direction direction) {
         if (inventory.isEmpty()) return false;
         if (world.getTime() % 4 != 0) return true;
 

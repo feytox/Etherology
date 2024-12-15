@@ -1,10 +1,7 @@
 package ru.feytox.etherology.block.furniture;
 
+import lombok.Getter;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
@@ -12,9 +9,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.world.World;
 
+@Getter
 public abstract class FurnitureData {
-    public final boolean isBottom;
+
+    protected final boolean isBottom;
 
     public FurnitureData(boolean isBottom) {
         this.isBottom = isBottom;
@@ -25,11 +25,7 @@ public abstract class FurnitureData {
         world.getChunkManager().markForUpdate(pos);
     }
 
-    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {}
-
-    public void clientUse(ClientWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {}
-
-    public void render(BlockEntityRendererFactory.Context ctx, FurSlabBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {}
+    public void onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {}
 
     public abstract void readNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registryLookup);
 

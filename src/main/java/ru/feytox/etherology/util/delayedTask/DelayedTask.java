@@ -38,6 +38,7 @@ public class DelayedTask {
      * @param  taskBody   the code to be executed as the task
      * @return created task
      */
+    // TODO: 19.12.2024 refactor
     public static DelayedTask createTask(World world, int ticks, @NonNull Runnable taskBody) {
         DelayedTask task = new DelayedTask(ticks, taskBody);
         AbstractTaskManager taskManager = world.isClient() ? ClientTaskManager.INSTANCE : ServerTaskManager.INSTANCE;

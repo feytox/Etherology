@@ -2,7 +2,6 @@ package ru.feytox.etherology.block.seal;
 
 import lombok.Getter;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
@@ -20,7 +19,6 @@ public class SealBlockEntity extends TickableBlockEntity implements EssenceSuppl
     private static final float MAX_POINTS = 256.0f;
     private static final int MIN_RADIUS = 8;
     public static final int MAX_RADIUS = 24;
-    private static final int REFRESH_TIME = SealBlockRenderer.LIFETIME / 4;
 
     private final SealType sealType;
     private int radius;
@@ -41,11 +39,6 @@ public class SealBlockEntity extends TickableBlockEntity implements EssenceSuppl
         this.maxPoints = percent * (MAX_POINTS - MIN_POINTS) + MIN_POINTS;
         this.points = maxPoints;
         this.radius = (int) (percent * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS);
-    }
-
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (world.getTime() % REFRESH_TIME == 0) SealBlockRenderer.refreshSeal(this, pos, sealType, world.getTime());
     }
 
     @Override

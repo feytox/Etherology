@@ -1,15 +1,14 @@
 package ru.feytox.etherology.gui.teldecore.task;
 
 import com.mojang.serialization.MapCodec;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.gui.teldecore.misc.FeySlot;
-import ru.feytox.etherology.gui.teldecore.misc.VisitedComponent;
-import ru.feytox.etherology.gui.teldecore.page.TaskType;
+import ru.feytox.etherology.gui.teldecore.data.VisitedComponent;
 
 @RequiredArgsConstructor
+@Getter
 public class BiomeTask extends AbstractTask {
 
     public static final MapCodec<BiomeTask> CODEC;
@@ -44,12 +43,6 @@ public class BiomeTask extends AbstractTask {
     @Override
     public TaskType getTaskType() {
         return TaskType.SEARCH;
-    }
-
-    @Override
-    public FeySlot toSlot(float x, float y, float width, float height) {
-        Text biomeText = Text.translatable(biomeId.toTranslationKey("biome"));
-        return new FeySlot.SearchTask(biomeText, isClientCompleted(), x, y, width, height);
     }
 
     static {

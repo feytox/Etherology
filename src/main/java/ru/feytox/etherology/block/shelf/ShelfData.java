@@ -2,13 +2,6 @@ package ru.feytox.etherology.block.shelf;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
@@ -17,9 +10,9 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.world.World;
-import ru.feytox.etherology.block.furniture.FurSlabBlockEntity;
 import ru.feytox.etherology.block.furniture.FurnitureData;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
 
@@ -32,8 +25,9 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
     }
 
     @Override
-    public void serverUse(ServerWorld world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
-        if (hand.equals(Hand.OFF_HAND)) return;
+    public void onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Vec2f hitPos, Hand hand) {
+        if (hand.equals(Hand.OFF_HAND) || !(world instanceof ServerWorld serverWorld))
+            return;
 
         boolean isLeft = hitPos.x < 0.5;
         int slot = isLeft ? 0 : 1;
@@ -49,8 +43,8 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
             player.setStackInHand(hand, playerStack);
             setStack(slot, currentStack);
-            updateData(world, pos);
-            PedestalBlockEntity.playItemPlaceSound(world, pos);
+            updateData(serverWorld, pos);
+            PedestalBlockEntity.playItemPlaceSound(serverWorld, pos);
 
         } else if (!currentStack.isEmpty() && !playerStack.isEmpty()) {
             // кладём предмет на НЕПУСТУЮ полку
@@ -59,8 +53,8 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
 
             playerStack.decrement(takingStack.getCount());
             currentStack.increment(takingStack.getCount());
-            updateData(world, pos);
-            PedestalBlockEntity.playItemPlaceSound(world, pos);
+            updateData(serverWorld, pos);
+            PedestalBlockEntity.playItemPlaceSound(serverWorld, pos);
 
         } else if (!currentStack.isEmpty()) {
             // берём предмет ПУСТОЙ рукой с НЕПУСТОЙ полки
@@ -68,46 +62,9 @@ public class ShelfData extends FurnitureData implements ImplementedInventory {
             currentStack.setCount(0);
 
             player.setStackInHand(hand, takingStack);
-            updateData(world, pos);
-            PedestalBlockEntity.playItemTakeSound(world, pos);
+            updateData(serverWorld, pos);
+            PedestalBlockEntity.playItemTakeSound(serverWorld, pos);
         }
-    }
-
-    @Override
-    public void render(BlockEntityRendererFactory.Context ctx, FurSlabBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        World world = entity.getWorld();
-        if (world == null) return;
-
-        ItemRenderer itemRenderer = ctx.getItemRenderer();
-        ItemStack leftStack = getStack(0);
-        ItemStack rightStack = getStack(1);
-
-        Direction facing = entity.getCachedState().get(HorizontalFacingBlock.FACING);
-        light = WorldRenderer.getLightmapCoordinates(world, entity.getPos().add(facing.getVector()));
-        float degrees = 180 - facing.asRotation();
-        float rads = degrees * MathHelper.PI / 180;
-
-        // нахождение "уголка"
-        Vec3d northPoint = new Vec3d(-0.5, 0, -0.5);
-        Vec3d diffVec = northPoint.rotateY(rads).subtract(northPoint);
-
-        double y = isBottom ? 0.25 : 0.75;
-        Vec3d leftItemVec = new Vec3d(0.75, y, 0.05).rotateY(rads).add(diffVec);
-        Vec3d rightItemVec = new Vec3d(0.25, y, 0.05).rotateY(rads).add(diffVec);
-
-        matrices.push();
-        matrices.translate(leftItemVec.x, leftItemVec.y, leftItemVec.z);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(degrees));
-        matrices.scale(0.25f, 0.25f, 0.25f);
-        itemRenderer.renderItem(leftStack, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, world, 621);
-        matrices.pop();
-
-        matrices.push();
-        matrices.translate(rightItemVec.x, rightItemVec.y, rightItemVec.z);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(degrees));
-        matrices.scale(0.25f, 0.25f, 0.25f);
-        itemRenderer.renderItem(rightStack, ModelTransformationMode.FIXED, light, overlay, matrices, vertexConsumers, world, 621);
-        matrices.pop();
     }
 
     @Override

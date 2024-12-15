@@ -2,69 +2,16 @@ package ru.feytox.etherology.gui.teldecore.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.gui.teldecore.content.AbstractContent;
-import ru.feytox.etherology.gui.teldecore.page.ResearchTreePage;
-import ru.feytox.etherology.gui.teldecore.page.TitlePage;
-import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 import ru.feytox.etherology.util.misc.Color;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.function.Function;
 
-@RequiredArgsConstructor
-public class Tab {
+public record Tab(int tabId, Identifier icon, String titleKey, Color color, boolean show,
+                  List<AbstractContent> contents, ResearchTree tree) {
 
     public static final Codec<Tab> CODEC;
-
-    @Getter
-    private final int tabId;
-    @Getter
-    private final Identifier icon;
-    private final String titleKey;
-    @Getter
-    private final Color color;
-    @Getter
-    private final boolean show;
-    private final List<AbstractContent> contents;
-    private final ResearchTree tree;
-
-    @Environment(EnvType.CLIENT)
-    public void addPages(TeldecoreScreen screen) {
-        Registry<Chapter> chapterRegistry = screen.getRegistry(RegistriesRegistry.CHAPTERS);
-        if (chapterRegistry == null) {
-            Etherology.ELOGGER.error("Failed to load chapters registry.");
-            return;
-        }
-
-        Text text = Text.translatable(titleKey);
-        TitlePage left = new TitlePage(screen, text, true, true);
-        contents.forEach(content -> {
-            if (!left.addContent(content, 10)) Etherology.ELOGGER.error("Failed to fit all contents on tab \"{}\" ", text.getString());
-        });
-
-        Function<Identifier, Chapter> idToChapter = id -> {
-            Chapter chapter = chapterRegistry.get(id);
-            if (chapter != null) return chapter;
-            Etherology.ELOGGER.error("Failed to load chapter \"{}\". Closing screen to prevent errors.", text.getString());
-            screen.close();
-            return null;
-        };
-        TeldecoreComponent data = TeldecoreComponent.maybeGetClient().orElseThrow(() -> new NoSuchElementException("Failed to get teldecore data for client player"));
-
-        screen.addDrawableChild(new ResearchTreePage(screen, data, tree, idToChapter, false));
-        screen.addDrawableChild(left);
-        left.initContent();
-    }
 
     static {
         CODEC = RecordCodecBuilder.create(instance -> instance.group(

@@ -4,26 +4,19 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.val;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentV3;
 import org.ladysnake.cca.api.v3.component.CopyableComponent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
-import ru.feytox.etherology.mixin.InGameHudAccessor;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
@@ -31,10 +24,10 @@ import ru.feytox.etherology.util.misc.EIdentifier;
 @RequiredArgsConstructor
 public class EtherComponent implements ComponentV3, CopyableComponent<EtherComponent>, ServerTickingComponent, AutoSyncedComponent {
 
-    private static final float EXHAUSTION_1 = 5.0f;
-    private static final float EXHAUSTION_2 = 3.0f;
-    private static final float EXHAUSTION_3 = 2.0f;
-    private static final float EXHAUSTION_4 = 0.1f;
+    public static final float EXHAUSTION_1 = 5.0f;
+    public static final float EXHAUSTION_2 = 3.0f;
+    public static final float EXHAUSTION_3 = 2.0f;
+    public static final float EXHAUSTION_4 = 0.1f;
     private static final float EX_1_CHANCE = 1.0f / (100*20);
     private static final float EX_2_CHANCE = 1.0f / (80*20);
     private static final float EX_3_CHANCE = 1.0f / (60*20);
@@ -45,16 +38,6 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
 
     private static final Identifier HEALTH_MODIFIER_ID = EIdentifier.of("devastating_health");
     private static final Identifier SPEED_MODIFIER_ID = EIdentifier.of("devastating_speed");
-    private static final Identifier OUTLINE = EIdentifier.of("textures/misc/corruption_outline.png");
-
-    private static final Identifier FULL_HEART = EIdentifier.of("hud/heart/devastating_full");
-    private static final Identifier FULL_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_full_blinking");
-    private static final Identifier HALF_HEART = EIdentifier.of("hud/heart/devastating_half");
-    private static final Identifier HALF_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_half_blinking");
-    private static final Identifier HARDCORE_FULL_HEART = EIdentifier.of("hud/heart/devastating_hardcore_full");
-    private static final Identifier HARDCORE_FULL_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_hardcore_full_blinking");
-    private static final Identifier HARDCORE_HALF_HEART = EIdentifier.of("hud/heart/devastating_hardcore_half");
-    private static final Identifier HARDCORE_HALF_BLINKING_HEART = EIdentifier.of("hud/heart/devastating_hardcore_half_blinking");
 
     private final LivingEntity entity;
     @Getter @Setter
@@ -63,6 +46,7 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
     private float maxPoints = 20.0f;
     @Getter @Setter
     private float pointsRegen = 0.001f;
+    @Getter
     private boolean hasCurse = false;
     private float healthModifier = 1.0f;
 
@@ -185,44 +169,6 @@ public class EtherComponent implements ComponentV3, CopyableComponent<EtherCompo
 
     private boolean checkRand(World world, float chance) {
         return world.getRandom().nextFloat() <= chance * EX_TICKS;
-    }
-
-    public static void renderOverlay(DrawContext context, InGameHud hud) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        PlayerEntity player = client.player;
-
-        Float opacity = getOverlayOpacity(player);
-        if (opacity == null) return;
-        ((InGameHudAccessor) hud).callRenderOverlay(context, OUTLINE, opacity);
-    }
-
-    private static Float getOverlayOpacity(PlayerEntity player) {
-        return EtherologyComponents.ETHER.maybeGet(player)
-                .map(EtherComponent::getPoints)
-                .filter(points -> points <= EXHAUSTION_3)
-                .map(points -> 1 - points / EXHAUSTION_3)
-                .orElse(null);
-    }
-
-    private static boolean hasCurse(PlayerEntity player) {
-        return EtherologyComponents.ETHER.maybeGet(player)
-                .map(etherComponent -> etherComponent.hasCurse).orElse(false);
-    }
-
-    @Nullable
-    public static Identifier getDevastatingTexture(InGameHud.HeartType originalHeart, boolean hardcore, boolean half, boolean blinking) {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (originalHeart.equals(InGameHud.HeartType.CONTAINER) || player == null) return null;
-        if (originalHeart.equals(InGameHud.HeartType.ABSORBING)) return null;
-        if (!EtherComponent.hasCurse(player)) return null;
-
-        if (hardcore) {
-            if (half) return blinking ? HARDCORE_HALF_BLINKING_HEART :  HARDCORE_HALF_HEART;
-            return blinking ?  HARDCORE_FULL_BLINKING_HEART :  HARDCORE_FULL_HEART;
-        }
-
-        if (half) return blinking ? HALF_BLINKING_HEART : HALF_HEART;
-        return blinking ? FULL_BLINKING_HEART : FULL_HEART;
     }
 
     private void sync() {

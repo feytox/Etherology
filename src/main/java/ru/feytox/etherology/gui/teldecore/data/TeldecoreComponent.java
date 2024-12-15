@@ -4,9 +4,6 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -19,20 +16,21 @@ import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentV3;
 import org.ladysnake.cca.api.v3.component.CopyableComponent;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
 import ru.feytox.etherology.network.interaction.EntityComponentC2SType;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.util.misc.EIdentifier;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor @Getter
 public class TeldecoreComponent implements ComponentV3, CopyableComponent<TeldecoreComponent>, AutoSyncedComponent {
 
+    // static
+    public static final Identifier CHAPTER_MENU = EIdentifier.of("chapter_menu");
     private final PlayerEntity player;
     @Setter
-    private Identifier selected = TeldecoreScreen.CHAPTER_MENU;
+    private Identifier selected = CHAPTER_MENU;
     @Nullable @Setter
     private Identifier tab = null;
     @Setter
@@ -43,7 +41,7 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
 
     public void addCompletedQuest(Identifier chapterId) {
         completedQuests.add(chapterId);
-        sync();
+        saveOnServer();
     }
 
     public boolean wasOpened(Identifier chapterId) {
@@ -66,7 +64,7 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
 
     public void switchTab(Identifier tab) {
         setChapterPage(0);
-        setSelected(TeldecoreScreen.CHAPTER_MENU);
+        setSelected(CHAPTER_MENU);
         this.tab = tab;
         sendToServer(EntityComponentC2SType.TELDECORE_TAB);
     }
@@ -132,7 +130,7 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
         tag.put("opened", quests);
     }
 
-    private void sync() {
+    private void saveOnServer() {
         EtherologyComponents.TELDECORE.sync(player);
     }
 
@@ -148,14 +146,9 @@ public class TeldecoreComponent implements ComponentV3, CopyableComponent<Teldec
     public void resetAllData() {
         tab = null;
         page = 0;
-        selected = TeldecoreScreen.CHAPTER_MENU;
+        selected = CHAPTER_MENU;
         completedQuests.clear();
         openedChapters.clear();
-        sync();
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static Optional<TeldecoreComponent> maybeGetClient() {
-        return Optional.ofNullable(MinecraftClient.getInstance().player).flatMap(EtherologyComponents.TELDECORE::maybeGet);
+        saveOnServer();
     }
 }

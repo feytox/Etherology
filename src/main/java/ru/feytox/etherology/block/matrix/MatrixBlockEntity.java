@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -44,11 +42,12 @@ import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.ether.EtherComponent;
-import ru.feytox.etherology.particle.effects.*;
+import ru.feytox.etherology.particle.effects.ItemParticleEffect;
+import ru.feytox.etherology.particle.effects.LightParticleEffect;
+import ru.feytox.etherology.particle.effects.SparkParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
-import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
-import ru.feytox.etherology.particle.subtypes.SparkSubtype;
+import ru.feytox.etherology.particle.subtype.LightSubtype;
+import ru.feytox.etherology.particle.subtype.SparkSubtype;
 import ru.feytox.etherology.recipes.matrix.MatrixRecipe;
 import ru.feytox.etherology.recipes.matrix.MatrixRecipeSerializer;
 import ru.feytox.etherology.registry.item.ToolItems;
@@ -56,6 +55,7 @@ import ru.feytox.etherology.registry.misc.RecipesRegistry;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.gecko.EGeo2BlockEntity;
 import ru.feytox.etherology.util.gecko.EGeoAnimation;
+import ru.feytox.etherology.util.misc.EtherProxy;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -78,7 +78,7 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     private static final int DOWN_RADIUS = 1;
 
     // animations
-    private static final EGeoAnimation IDLE_ANIM;
+    public static final EGeoAnimation IDLE_ANIM;
     private static final EGeoAnimation RUNE_0;
     private static final EGeoAnimation RUNE_1;
     private static final EGeoAnimation RUNE_2;
@@ -101,6 +101,7 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     private List<Item> decryptedItems = new ObjectArrayList<>();
     @Nullable
     private Identifier recipeId = null;
+    @Getter
     private Set<String> activeAnimations = new ObjectOpenHashSet<>();
     private float storedEther;
 
@@ -111,14 +112,9 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     private List<BlockPos> pedestalsCache = null;
     @Nullable
     private PedestalBlockEntity cachedTargetPedestal = null;
-
-    // client cache
     @Getter
     @Setter
     private Float cachedUniqueOffset = null;
-    @Nullable
-    private MatrixSoundInstance soundInstance = null;
-    private boolean animationsRefreshed = false;
 
     public MatrixBlockEntity(BlockPos pos, BlockState state) {
         super(ARMILLARY_SPHERE_BLOCK_ENTITY, pos, state);
@@ -127,64 +123,13 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Updates the server-side tick logic for a block.
      *
-     * @param  world     the server world
-     * @param  blockPos  the position of the block
-     * @param  state     the block state
+     * @param world    the server world
+     * @param blockPos the position of the block
+     * @param state    the block state
      */
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         tickMatrixState(world, state);
-    }
-
-    /**
-     * Updates the client-side tick logic for a block.
-     *
-     * @param  world     the client world
-     * @param  blockPos  the position of the block
-     * @param  state     the block state
-     */
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        tickSound();
-        tickAnimations(state);
-        tickClientParticles(world, state);
-    }
-
-    private void tickClientParticles(ClientWorld world, BlockState state) {
-        val matrixState = getMatrixState(state);
-        Vec3d centerPos = getCenterPos();
-        switch (matrixState) {
-            case CONSUMING -> {
-                Optional<? extends LivingEntity> match = findClosestEntity(world, centerPos);
-                match.ifPresent(entity -> spawnConsumingParticle(world, entity, centerPos));
-                if (world.getTime() % 2 == 0 && world.getRandom().nextBoolean()) {
-                    world.playSound(centerPos.x, centerPos.y, centerPos.z, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.066f, 0.7f * world.getRandom().nextFloat() + 0.55f, true);
-                }
-            }
-            case RESETTING -> spawnSphereParticles(world);
-            case DECRYPTING_START, RESULTING -> spawnElectricityParticles(world);
-            case DECRYPTING -> {
-                spawnElectricityParticles(world);
-                spawnSphereParticles(world);
-            }
-        }
-    }
-
-    private void spawnSphereParticles(ClientWorld world) {
-        Random random = world.getRandom();
-        Vec3d centerPos = getCenterPos();
-        Vec3d randomVec = new Vec3d(0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4, 0.4 + random.nextDouble()*0.4);
-        randomVec = randomVec.multiply(random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1, random.nextInt(2)*2 - 1);
-        Vec3d startPos = centerPos.add(randomVec);
-
-        val effect = new MovingParticleEffect(EtherParticleTypes.ARMILLARY_SPHERE, randomVec);
-        effect.spawnParticles(world, 2, 0, startPos);
-    }
-
-    private void spawnElectricityParticles(ClientWorld world) {
-        Random random = world.getRandom();
-        val effect = ElectricityParticleEffect.of(random, ElectricitySubtype.MATRIX);
-        effect.spawnParticles(world, 1, 0.45, getCenterPos());
     }
 
     private void spawnResultingParticles(ServerWorld world) {
@@ -195,9 +140,9 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Handles server-side the event when the player uses their hand on a matrix base.
      *
-     * @param  world   the server world
-     * @param  state   the block state
-     * @param  player  the player entity
+     * @param world  the server world
+     * @param state  the block state
+     * @param player the player entity
      */
     public void onHandUse(ServerWorld world, BlockState state, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getMainHandStack();
@@ -224,7 +169,8 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
                 syncData(world);
                 return;
             }
-            case IDLE -> {}
+            case IDLE -> {
+            }
             default -> {
                 return;
             }
@@ -242,11 +188,12 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
         if (!handStack.isEmpty()) {
             if (!matrixStack.isEmpty()) {
                 // item take to stack
-                if (!ItemStack.areItemsAndComponentsEqual(matrixStack, handStack) || handStack.getCount() >= handStack.getMaxCount()) return;
+                if (!ItemStack.areItemsAndComponentsEqual(matrixStack, handStack) || handStack.getCount() >= handStack.getMaxCount())
+                    return;
                 setStack(0, ItemStack.EMPTY);
                 handStack.increment(1);
                 player.setStackInHand(hand, handStack);
-                PedestalBlockEntity.playItemTakeSound(world,  pos);
+                PedestalBlockEntity.playItemTakeSound(world, pos);
                 return;
             }
 
@@ -277,7 +224,7 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
         }
         val container = stackStream
                 .filter(stack -> !stack.isEmpty())
-                .map(stack -> AspectsLoader.getAspects(world ,stack, false))
+                .map(stack -> AspectsLoader.getAspects(world, stack, false))
                 .filter(Optional::isPresent).map(Optional::get)
                 .reduce(AspectContainer::add).orElse(null);
 
@@ -308,10 +255,10 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
         if (recipeId == null) return null;
 
         return RecipesRegistry.maybeGet(world, recipeId).map(entry -> {
-                    if (!(entry.value() instanceof MatrixRecipe matrixRecipe)) return null;
-                    recipeCache = matrixRecipe;
-                    return matrixRecipe;
-                }).orElse(null);
+            if (!(entry.value() instanceof MatrixRecipe matrixRecipe)) return null;
+            recipeCache = matrixRecipe;
+            return matrixRecipe;
+        }).orElse(null);
     }
 
     private static EGeoAnimation getRandomRuneAnimation(World world) {
@@ -320,38 +267,11 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
         return runes.get(random.nextInt(runes.size()));
     }
 
-    private void tickAnimations(BlockState state) {
-        if (animationsRefreshed) return;
-
-        val matrixState = getMatrixState(state);
-        if (matrixState.equals(IDLE)) IDLE_ANIM.triggerOnce(this);
-        else activeAnimations.forEach(this::triggerOnce);
-
-        animationsRefreshed = true;
-    }
-
-    /**
-     * Tick the sound if matrix is working.
-     */
-    private void tickSound() {
-        val client = MinecraftClient.getInstance();
-        if (client.player == null) return;
-
-        if (soundInstance == null && client.player.squaredDistanceTo(getCenterPos()) < 36) {
-            soundInstance = new MatrixSoundInstance(this, client.player);
-            client.getSoundManager().play(soundInstance);
-            return;
-        }
-
-        if (soundInstance == null) return;
-        if (soundInstance.isDone()) soundInstance = null;
-    }
-
     /**
      * Executes the tick behavior related to the matrix state.
      *
-     * @param  world  the server world
-     * @param  state  the block state
+     * @param world the server world
+     * @param state the block state
      */
     private void tickMatrixState(ServerWorld world, BlockState state) {
         val matrixState = getMatrixState(state);
@@ -439,7 +359,7 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
         Optional<? extends LivingEntity> entityMatch = findClosestEntity(world, centerPos);
         if (entityMatch.isEmpty()) return true;
         LivingEntity entity = entityMatch.get();
-        consumeEther(entity, entity.isPlayer() ? 0.75f: 0.5f);
+        consumeEther(entity, entity.isPlayer() ? 0.75f : 0.5f);
         return true;
     }
 
@@ -474,9 +394,9 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Finds the closest mob; otherwise - the closest player.
      *
-     * @param  world     the world to search in
-     * @param  centerPos the matrix center position to search from
-     * @return           an Optional containing the closest living entity, or empty if no entity is found
+     * @param world     the world to search in
+     * @param centerPos the matrix center position to search from
+     * @return an Optional containing the closest living entity, or empty if no entity is found
      */
     public Optional<? extends LivingEntity> findClosestEntity(World world, Vec3d centerPos) {
         Optional<LivingEntity> match = findClosestMob(world);
@@ -487,8 +407,8 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Finds the closest mob.
      *
-     * @param  world  the world to search in
-     * @return        an Optional containing the closest mob, or empty if no entity is found
+     * @param world the world to search in
+     * @return an Optional containing the closest mob, or empty if no entity is found
      */
     private Optional<LivingEntity> findClosestMob(World world) {
         Box entitiesBox = Box.enclosing(pos.add(-HORIZONTAL_RADIUS, -DOWN_RADIUS, -HORIZONTAL_RADIUS), pos.add(HORIZONTAL_RADIUS, UP_RADIUS, HORIZONTAL_RADIUS));
@@ -499,9 +419,9 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Finds the closest player.
      *
-     * @param  world       the world to search in
-     * @param  centerPos   the matrix center position to search from
-     * @return             an Optional containing the closest PlayerEntity, or empty if no player is found
+     * @param world     the world to search in
+     * @param centerPos the matrix center position to search from
+     * @return an Optional containing the closest PlayerEntity, or empty if no player is found
      */
     private Optional<PlayerEntity> findClosestPlayer(World world, Vec3d centerPos) {
         return Optional.ofNullable(world.getClosestPlayer(centerPos.x, centerPos.y, centerPos.z, 2 * HORIZONTAL_RADIUS, false));
@@ -510,34 +430,20 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Consumes ether from the given entity.
      *
-     * @param  entity  the entity from which ether is consumed
-     * @param  value   the amount of ether to consume
+     * @param entity the entity from which ether is consumed
+     * @param value  the amount of ether to consume
      */
     private void consumeEther(LivingEntity entity, float value) {
         if (entity.isPlayer()) {
             if (!EtherComponent.decrement(entity, value)) return;
-        }
-        else entity.damage(entity.getDamageSources().magic(), value);
+        } else entity.damage(entity.getDamageSources().magic(), value);
         storedEther += value;
-    }
-
-    /**
-     * Spawns a consuming particle effect from a given entity at a specific position.
-     *
-     * @param  world      the world in which to spawn the particles
-     * @param  entity     the entity from which to spawn the particles
-     * @param  centerPos  the matrix center position
-     */
-    private void spawnConsumingParticle(World world, LivingEntity entity, Vec3d centerPos) {
-        if (world.getTime() % 2 == 0) return;
-        val effect = new MovingParticleEffect(EtherParticleTypes.VITAL, centerPos);
-        effect.spawnParticles(world, 1, 0.1, entity.getBoundingBox().getCenter());
     }
 
     /**
      * Calculates and returns the matrix center position for the given matrix state.
      *
-     * @return              the matrix center position
+     * @return the matrix center position
      */
     public Vec3d getCenterPos() {
         return getCenterBlockPos().toCenterPos();
@@ -638,13 +544,8 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
 
     private AnimationController<?> registerRuneController(EGeoAnimation animation) {
         return animation.forceGenerateController(this)
-                .setSoundKeyframeHandler(state -> {
-                    PlayerEntity player = MinecraftClient.getInstance().player;
-                    if (player == null || player.getWorld() == null) return;
-
-                    Vec3d pos = getCenterPos();
-                    player.getWorld().playSound(pos.x, pos.y, pos.z, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.75f, 1.0f, true);
-                });
+                .setSoundKeyframeHandler(state ->
+                        EtherProxy.getInstance().playSound(getCenterPos(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.75f, 1.0f, true));
     }
 
     @Nullable
@@ -676,15 +577,16 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Retrieves the cached server-side list of Pedestals.
      *
-     * @param  world  the ServerWorld
-     * @return        the list of Pedestals
+     * @param world the ServerWorld
+     * @return the list of Pedestals
      */
     public List<PedestalBlockEntity> getCachedPedestals(ServerWorld world) {
         if (pedestalsCache == null) return getAndCachePedestals(world);
 
         List<PedestalBlockEntity> result = new ObjectArrayList<>();
         for (BlockPos cachedPos : pedestalsCache) {
-            if (!(world.getBlockEntity(cachedPos) instanceof PedestalBlockEntity pedestal)) return getAndCachePedestals(world);
+            if (!(world.getBlockEntity(cachedPos) instanceof PedestalBlockEntity pedestal))
+                return getAndCachePedestals(world);
             result.add(pedestal);
         }
 
@@ -694,8 +596,8 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Finds and caches server-side the list of Pedestals.
      *
-     * @param  world  the ServerWorld
-     * @return        the list of Pedestals
+     * @param world the ServerWorld
+     * @return the list of Pedestals
      */
     private List<PedestalBlockEntity> getAndCachePedestals(World world) {
         val result = new ObjectArrayList<PedestalBlockEntity>();
@@ -712,8 +614,8 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Gets the ArmillaryState of a given BlockState.
      *
-     * @param  blockState  the BlockState to get the ArmillaryState from
-     * @return             the ArmillaryState of the BlockState
+     * @param blockState the BlockState to get the ArmillaryState from
+     * @return the ArmillaryState of the BlockState
      */
     public MatrixState getMatrixState(BlockState blockState) {
         return blockState.get(MatrixBlock.MATRIX_STATE);
@@ -722,10 +624,10 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
     /**
      * Sets the matrix state of a block.
      *
-     * @param  world         the server world in which the block is located
-     * @param  state         the current block state
-     * @param  matrixState   the new matrix state to set
-     * @return               the updated block state with the new matrix state
+     * @param world       the server world in which the block is located
+     * @param state       the current block state
+     * @param matrixState the new matrix state to set
+     * @return the updated block state with the new matrix state
      */
     public BlockState setMatrixState(ServerWorld world, BlockState state, MatrixState matrixState) {
         state = state.with(MatrixBlock.MATRIX_STATE, matrixState);

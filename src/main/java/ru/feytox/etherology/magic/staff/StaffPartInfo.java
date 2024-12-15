@@ -5,11 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.NonNull;
-import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.util.Identifier;
-import ru.feytox.etherology.model.EtherologyModels;
-import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,21 +29,6 @@ public record StaffPartInfo(@NonNull StaffPart part, @NonNull StaffPattern first
                                 .map(secondPattern -> new StaffPartInfo(part, firstPattern, secondPattern))))
                 .flatMap(Function.identity())
                 .collect(Collectors.toCollection(ObjectArrayList::new));
-    }
-
-    public ModelIdentifier toModelId() {
-        String suffix = part.getName();
-        if (!firstPattern.isEmpty()) suffix += "_" + firstPattern.getName();
-        if (!secondPattern.isEmpty()) suffix += "_" + secondPattern.getName();
-        return EtherologyModels.createItemModelId("item/staff_" + suffix);
-    }
-
-    public Identifier toTextureId() {
-        String prefix = part.isStyled() ? "trims/textures/" : "item/";
-        String suffix = part.isStyled() ? "style" : part.getName();
-        if (!firstPattern.isEmpty()) suffix += "_" + firstPattern.getName();
-        if (!secondPattern.isEmpty()) suffix += "_" + secondPattern.getName();
-        return EIdentifier.of(prefix + "staff_" + suffix);
     }
 
     static {

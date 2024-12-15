@@ -8,7 +8,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.Vec3d;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
+import ru.feytox.etherology.particle.subtype.LightSubtype;
 import ru.feytox.etherology.util.misc.CodecUtil;
 
 @Getter

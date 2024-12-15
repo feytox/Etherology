@@ -1,12 +1,8 @@
 package ru.feytox.etherology.item;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lombok.NonNull;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -16,17 +12,15 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.EArmPose;
-import ru.feytox.etherology.gui.staff.StaffLensesScreen;
+import ru.feytox.etherology.enums.EUseAction;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.magic.lens.LensComponent;
 import ru.feytox.etherology.magic.staff.StaffComponent;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
-import ru.feytox.etherology.registry.misc.KeybindsRegistry;
+import ru.feytox.etherology.util.misc.EtherProxy;
 import ru.feytox.etherology.util.misc.ItemComponent;
 import ru.feytox.etherology.util.misc.ItemData;
 
-import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
@@ -52,7 +46,7 @@ public class StaffItem extends Item {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return EArmPose.STAFF_ETHEROLOGY.getUseAction();
+        return EUseAction.STAFF_ETHEROLOGY.getUseAction();
     }
 
     @Override
@@ -122,56 +116,13 @@ public class StaffItem extends Item {
         LensItem.spawnLensBrakeParticles(serverWorld, lensItem, pos, user.getPitch(), user.getYaw());
     }
 
-    private static void tickLensesMenu(@NonNull MinecraftClient client) {
-        boolean isPressed = KeybindsRegistry.isPressed(KeybindsRegistry.STAFF_INTERACTION);
-        boolean isSneakPressed = KeybindsRegistry.isPressed(client.options.sneakKey);
-
-        if (!(client.currentScreen instanceof StaffLensesScreen screen)) {
-            if (isSneakPressed) return;
-            if (isPressed && client.currentScreen == null) {
-                client.setScreen(new StaffLensesScreen(null));
-            }
-            return;
-        }
-
-        if (!isPressed) {
-            screen.tryClose();
-            return;
-        }
-
-        screen.tryOpen();
-    }
-
-    public static List<ItemStack> getPlayerLenses(@NonNull MinecraftClient client) {
-        List<ItemStack> result = new ObjectArrayList<>();
-        if (client.player == null) return result;
-
-        PlayerInventory inventory = client.player.getInventory();
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (!(stack.getItem() instanceof LensItem lensItem)) continue;
-            if (lensItem.isUnadjusted()) continue;
-            result.add(stack);
-        }
-
-        return result;
-    }
-
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
         if (!world.isClient) return;
         if (!(entity instanceof PlayerEntity player)) return;
-        MinecraftClient client = MinecraftClient.getInstance();
 
-        ItemStack selectedStack = getStaffInHands(player);
-        if (stack == null) {
-            if (client.currentScreen instanceof StaffLensesScreen screen) screen.tryClose();
-            return;
-        }
-        if (!stack.equals(selectedStack)) return;
-
-        tickLensesMenu(client);
+        EtherProxy.getInstance().tickStaff(stack, player);
     }
 
     @Override

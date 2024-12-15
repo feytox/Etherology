@@ -1,9 +1,7 @@
 package ru.feytox.etherology.network.animation;
 
 import lombok.val;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -21,18 +19,6 @@ public record SwitchBlockAnimS2C(BlockPos pos, String stopAnim, String startAnim
     public static <T extends BlockEntity & EGeo2BlockEntity> void sendForTracking(T blockEntity, String stopAnim, String startAnim) {
         val packet = new SwitchBlockAnimS2C(blockEntity.getPos(), stopAnim, startAnim);
         packet.sendForTracking(blockEntity);
-    }
-
-    public static void receive(SwitchBlockAnimS2C packet, ClientPlayNetworking.Context context) {
-        MinecraftClient client = context.client();
-
-        client.execute(() -> {
-            if (client.world == null) return;
-            if (!(client.world.getBlockEntity(packet.pos) instanceof EGeo2BlockEntity animatable)) return;
-
-            animatable.stopClientAnim(packet.stopAnim);
-            animatable.triggerAnimByName(packet.startAnim);
-        });
     }
 
     @Override

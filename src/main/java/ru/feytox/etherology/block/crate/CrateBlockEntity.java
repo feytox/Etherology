@@ -59,7 +59,7 @@ public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, Im
         viewers += 1;
         if (world == null || world.isClient || isOpen) return;
         ServerWorld serverWorld = (ServerWorld) world;
-        StopBlockAnimS2C.sendForTracking(this, "close");
+        StopBlockAnimS2C.sendForTrackingOld(this, "close");
         StartBlockAnimS2C.sendForTracking(this, "open");
         serverWorld.playSound(null, pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5f, 0.9f);
         isOpen = true;
@@ -70,7 +70,7 @@ public class CrateBlockEntity extends BlockEntity implements EGeoBlockEntity, Im
         viewers -= 1;
         if (world == null || world.isClient || !isOpen || viewers > 0) return;
         ServerWorld serverWorld = (ServerWorld) world;
-        StopBlockAnimS2C.sendForTracking(this, "open");
+        StopBlockAnimS2C.sendForTrackingOld(this, "open");
         StartBlockAnimS2C.sendForTracking(this, "close");
         serverWorld.playSound(null, pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5f, 0.9f);
         isOpen = false;

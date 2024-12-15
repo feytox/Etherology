@@ -12,7 +12,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Util;
 import ru.feytox.etherology.item.EbonyArmorItem;
-import ru.feytox.etherology.item.revelationView.RevelationViewItem;
+import ru.feytox.etherology.item.RevelationViewItem;
 import ru.feytox.etherology.util.misc.EIdentifier;
 
 import java.util.EnumMap;

@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ru.feytox.etherology.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "BipedEntityModelMixin",
+    "GameRendererMixin",
+    "HandledScreenMixin",
+    "HeldItemRendererMixin",
+    "InGameHudAccessor",
+    "InGameHudMixin",
+    "ItemRendererMixin",
+    "KeyBindingAccessor",
+    "ModelLoaderMixin",
+    "PlayerEntityRendererMixin",
+    "PlayerHeldItemFeatureRendererMixin",
+    "ScreenAccessor",
+    "StickyKeyBindingAccessor",
+    "TessellatorAccessor",
+    "TooltipComponentMixin",
+    "WorldRendererAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "FabricShieldLibClientMixin"
+  ]
+}

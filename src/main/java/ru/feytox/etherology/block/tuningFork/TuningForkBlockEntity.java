@@ -1,9 +1,7 @@
 package ru.feytox.etherology.block.tuningFork;
 
 import lombok.Getter;
-import lombok.val;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.VibrationParticleEffect;
 import net.minecraft.registry.RegistryWrapper;
@@ -19,10 +17,8 @@ import net.minecraft.world.event.BlockPositionSource;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.event.listener.GameEventListener;
 import ru.feytox.etherology.mixin.VibrationListenerAccessor;
-import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
 import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.misc.EventsRegistry;
-import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import static ru.feytox.etherology.registry.block.EBlocks.TUNING_FORK_BLOCK_ENTITY;
@@ -30,7 +26,6 @@ import static ru.feytox.etherology.registry.block.EBlocks.TUNING_FORK_BLOCK_ENTI
 public class TuningForkBlockEntity extends TickableBlockEntity implements GameEventListener {
 
     private static final int RESONANCE_COOLDOWN = 30;
-    private static final int PARTICLE_TICK_RATE = 15;
     @Getter
     private final BlockPositionSource positionSource;
     private int resonatingTicks = 0;
@@ -47,19 +42,6 @@ public class TuningForkBlockEntity extends TickableBlockEntity implements GameEv
         tickDelay(world, state);
         boolean shouldSync = tickReloading(world, blockPos, state);
         if (shouldSync) syncData(world);
-    }
-
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        tickParticles(world, blockPos, state);
-    }
-
-    private void tickParticles(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (!isResonating() || world.getTime() % PARTICLE_TICK_RATE != 0) return;
-
-        Vec3d offset = Vec3d.of(state.get(TuningFork.VERTICAL_FACING).getVector()).multiply(0.25d);
-        val effect = new ScalableParticleEffect(EtherParticleTypes.RESONATION, 0.5f);
-        effect.spawnParticles(world, 1, 0, blockPos.toCenterPos().add(offset));
     }
 
     public void tryActivate(ServerWorld world, BlockState state, boolean isResonance, int sourceNote) {
@@ -109,7 +91,7 @@ public class TuningForkBlockEntity extends TickableBlockEntity implements GameEv
         receivedNote = -1;
     }
 
-    private boolean isResonating() {
+    public boolean isResonating() {
         return resonatingTicks > 0;
     }
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.network.animation.Stop2BlockAnimS2C;
+import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
 import ru.feytox.etherology.network.animation.SwitchBlockAnimS2C;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
@@ -55,7 +55,7 @@ public class EGeoAnimation {
     }
     
     public <T extends BlockEntity & EGeo2BlockEntity> void stop(T animatable) {
-        Stop2BlockAnimS2C.sendForTracking(animatable, animName);
+        StopBlockAnimS2C.sendForTracking(animatable, animName);
         markStop(animatable);
     }
 

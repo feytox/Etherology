@@ -2,14 +2,9 @@ package ru.feytox.etherology.gui.teldecore.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import lombok.Getter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec2f;
-import ru.feytox.etherology.gui.teldecore.TeldecoreScreen;
-import ru.feytox.etherology.gui.teldecore.button.ChapterButton;
 import ru.feytox.etherology.gui.teldecore.misc.TreeLine;
 
 import java.util.List;
@@ -19,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Getter
 public class ResearchTree {
 
     private static final Codec<ChapterInfo> INFO_CODEC;
@@ -31,36 +27,9 @@ public class ResearchTree {
         this.infoMap = chapterInfos.stream().collect(Collectors.toMap(ChapterInfo::id, Function.identity()));
     }
 
-    public List<ChapterButton> toButtons(TeldecoreScreen parent, TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, float rootX, float rootY, float scale) {
-        return chapterInfos.stream().map(info -> info.toButton(parent, data, idToChapter, rootX, rootY, scale))
-                .filter(Optional::isPresent).map(Optional::get).toList();
-    }
+    public record ChapterInfo(Identifier id, List<Identifier> after, float x, float y) {
 
-    public List<TreeLine> toLines(TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, float scale) {
-        return chapterInfos.stream().map(info -> info.toLines(data, idToChapter, infoMap, scale))
-                .filter(Optional::isPresent).flatMap(Optional::get)
-                .filter(line -> !line.start().equals(line.end())).toList();
-    }
-
-    private record ChapterInfo(Identifier id, List<Identifier> after, float x, float y) {
-
-        Optional<ChapterButton> toButton(TeldecoreScreen parent, TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, float rootX, float rootY, float scale) {
-            Chapter chapter = idToChapter.apply(id);
-            if (chapter == null || !chapter.isAvailable(data)) return Optional.empty();
-
-            Identifier texture = chapter.getType().getTexture();
-            ItemStack icon = Registries.ITEM.get(chapter.getIcon()).getDefaultStack();
-            Text title = Text.translatable(chapter.getTitleKey()).formatted(Formatting.WHITE);
-            Text desc = Text.translatable(chapter.getDescKey()).formatted(Formatting.GRAY);
-            boolean wasOpened = data.wasOpened(id);
-            boolean isSubTab = chapter.getSubTab().isPresent();
-            boolean glowing = chapter.getQuest().isPresent() && !data.isCompleted(id);
-            Identifier target = chapter.getSubTab().orElse(id);
-
-            return Optional.of(new ChapterButton(parent, texture, target, icon, List.of(title, desc), wasOpened, isSubTab, glowing, rootX, rootY, x*scale, y*scale));
-        }
-
-        Optional<Stream<TreeLine>> toLines(TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, Map<Identifier, ChapterInfo> infoMap, float scale) {
+        public Optional<Stream<TreeLine>> toLines(TeldecoreComponent data, Function<Identifier, Chapter> idToChapter, Map<Identifier, ChapterInfo> infoMap, float scale) {
             Chapter chapter = idToChapter.apply(id);
             if (!chapter.isAvailable(data)) return Optional.empty();
 

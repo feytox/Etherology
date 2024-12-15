@@ -1,24 +1,18 @@
 package ru.feytox.etherology.block.etherealChannel;
 
+import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.enums.PipeSide;
 import ru.feytox.etherology.magic.ether.EtherDisplay;
 import ru.feytox.etherology.magic.ether.EtherPipe;
-import ru.feytox.etherology.magic.ether.EtherStorage;
-import ru.feytox.etherology.particle.effects.MovingParticleEffect;
-import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
 import java.util.List;
@@ -27,10 +21,11 @@ import static ru.feytox.etherology.block.etherealChannel.EtherealChannel.*;
 import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_CHANNEL_BLOCK_ENTITY;
 
 public class EtherealChannelBlockEntity extends TickableBlockEntity implements EtherPipe, EtherDisplay {
+
     private float storedEther = 0;
-    @Setter
+    @Getter @Setter
     private boolean isEvaporating = false;
-    @Setter
+    @Getter @Setter
     private boolean isCrossEvaporating = false;
 
     public EtherealChannelBlockEntity(BlockPos pos, BlockState state) {
@@ -40,34 +35,6 @@ public class EtherealChannelBlockEntity extends TickableBlockEntity implements E
     @Override
     public void serverTick(ServerWorld world, BlockPos blockPos, BlockState state) {
         transferTick(world);
-    }
-
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (state.get(ACTIVATED)) return;
-
-        Direction outputDirection = getOutputSide();
-        if (outputDirection == null) return;
-
-        BlockPos outputPos = isCrossEvaporating ? pos.up() : pos;
-        if (!isEvaporating) return;
-
-        if (isCrossEvaporating && world.getBlockEntity(outputPos) instanceof EtherStorage consumer) {
-            if (consumer.spawnCrossParticles(outputPos, world, outputDirection)) return;
-        }
-
-        spawnParticles(outputPos, world, outputDirection);
-    }
-
-    public static void spawnParticles(BlockPos pos, ClientWorld world, Direction direction) {
-        if (world.getTime() % 4 != 0) return;
-        Random random = world.getRandom();
-
-        Vec3d channelVec = Vec3d.of(direction.getVector());
-        Vec3d startPos = pos.toCenterPos().add(channelVec.multiply(0.5d));
-        val particleType = random.nextFloat() < 0.25 ? EtherParticleTypes.ETHER_STAR : EtherParticleTypes.ETHER_DOT;
-        val effect = new MovingParticleEffect(particleType, channelVec);
-        effect.spawnParticles(world, random.nextBetween(1, 2), 0, startPos);
     }
 
     @Override

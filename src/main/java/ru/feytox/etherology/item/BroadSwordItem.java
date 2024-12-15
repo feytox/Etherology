@@ -20,7 +20,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.enums.EArmPose;
+import ru.feytox.etherology.enums.EUseAction;
 import ru.feytox.etherology.particle.effects.ScalableParticleEffect;
 import ru.feytox.etherology.registry.misc.EtherSounds;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
@@ -44,7 +44,7 @@ public class BroadSwordItem extends TwoHandheldSword implements DoubleModel {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return EArmPose.TWOHANDHELD_ETHEROLOGY.getUseAction();
+        return EUseAction.TWOHANDHELD_ETHEROLOGY.getUseAction();
     }
 
     public static void replaceSweepParticle(ServerWorld world, double x, double y, double z) {

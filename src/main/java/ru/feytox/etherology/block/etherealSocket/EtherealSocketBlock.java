@@ -32,7 +32,7 @@ import static ru.feytox.etherology.registry.block.EBlocks.ETHEREAL_SOCKET_BLOCK_
 public class EtherealSocketBlock extends FacingBlock implements RegistrableBlock, BlockEntityProvider, Waterloggable {
 
     private static final MapCodec<EtherealSocketBlock> CODEC = MapCodec.unit(EtherealSocketBlock::new);
-    protected static final BooleanProperty WITH_GLINT = BooleanProperty.of("with_glint");
+    public static final BooleanProperty WITH_GLINT = BooleanProperty.of("with_glint");
     private static final VoxelShape DOWN_SHAPE;
     private static final VoxelShape UP_SHAPE;
     private static final VoxelShape NORTH_SHAPE;

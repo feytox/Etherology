@@ -2,9 +2,6 @@ package ru.feytox.etherology.data.aspects;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.val;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
@@ -50,9 +47,7 @@ public class AspectsLoader {
         return Optional.of(itemAspects);
     }
 
-    @Environment(EnvType.CLIENT)
-    public static void forEach(BiConsumer<AspectContainerId, AspectContainer> consumer) {
-        World world = MinecraftClient.getInstance().world;
+    public static void forEach(@Nullable World world, BiConsumer<AspectContainerId, AspectContainer> consumer) {
         if (world != null) {
             Map<AspectContainerId, AspectContainer> cache = getCache(world, true);
             if (cache != null) {
@@ -60,7 +55,7 @@ public class AspectsLoader {
                 return;
             }
         }
-        Etherology.ELOGGER.warn("Aspects were not loaded during the addition of REI entries.");
+        Etherology.ELOGGER.warn("Aspects were not loaded during the addition of REI/EMI entries.");
     }
 
     private static Optional<AspectContainer> getAspects(World world, ItemStack stack) {

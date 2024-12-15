@@ -1,8 +1,6 @@
 package ru.feytox.etherology.util.misc;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.serialization.Codec;
-import net.minecraft.client.gui.DrawContext;
 import org.jetbrains.annotations.Nullable;
 
 public record Color(float red, float green, float blue) {
@@ -23,14 +21,6 @@ public record Color(float red, float green, float blue) {
 
     private static Color of(String hexStr) {
         return of(Integer.parseInt(hexStr, 16));
-    }
-
-    public void applyColor(DrawContext context) {
-        context.setShaderColor(red, green, blue, 1.0f);
-    }
-
-    public void applyColor(float alpha) {
-        RenderSystem.setShaderColor(red, green, blue, alpha);
     }
 
     @Override

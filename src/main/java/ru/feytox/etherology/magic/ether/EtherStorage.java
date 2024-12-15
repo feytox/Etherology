@@ -1,10 +1,10 @@
 package ru.feytox.etherology.magic.ether;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
@@ -12,7 +12,9 @@ import ru.feytox.etherology.block.etherealChannel.EtherealChannelBlockEntity;
 // TODO: 29.01.2024 translate docs
 public interface EtherStorage {
     float getMaxEther();
+
     float getStoredEther();
+
     float getTransferSize();
 
     /**
@@ -20,10 +22,14 @@ public interface EtherStorage {
      */
     @ApiStatus.OverrideOnly
     void setStoredEther(float value);
+
     boolean isInputSide(Direction side);
+
     @Nullable
     Direction getOutputSide();
+
     BlockPos getStoragePos();
+
     void transferTick(ServerWorld world);
 
     default float getTransportableEther() {
@@ -34,7 +40,9 @@ public interface EtherStorage {
         return false;
     }
 
-    default boolean spawnCrossParticles(BlockPos pos, ClientWorld world, Direction direction) { return false; }
+    default boolean spawnCrossParticles(BlockPos pos, World world, Direction direction) {
+        return false;
+    }
 
     default boolean isOutputSide(Direction direction) {
         Direction outputSide = getOutputSide();

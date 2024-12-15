@@ -3,7 +3,10 @@ package ru.feytox.etherology.block.generators.spinner;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import ru.feytox.etherology.block.generators.AbstractGeneratorBlockEntity;
+import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.Optional;
 
 import static ru.feytox.etherology.registry.block.EBlocks.SPINNER_BLOCK_ENTITY;
 
@@ -24,5 +27,10 @@ public class SpinnerBlockEntity extends AbstractGeneratorBlockEntity {
     @Override
     public RawAnimation getStalledAnimation() {
         return STALLED_ANIM;
+    }
+
+    @Override
+    public Optional<Class<? extends TickableBlockEntity>> getClientTickerProvider() {
+        return Optional.of(AbstractGeneratorBlockEntity.class);
     }
 }

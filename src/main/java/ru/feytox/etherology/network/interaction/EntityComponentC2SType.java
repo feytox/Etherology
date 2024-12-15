@@ -15,6 +15,7 @@ import ru.feytox.etherology.Etherology;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
 import ru.feytox.etherology.network.util.AbstractC2SPacket;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
+import ru.feytox.etherology.util.misc.EtherProxy;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -36,7 +37,7 @@ public class EntityComponentC2SType<C extends Component, V> extends AbstractC2SP
     }
 
     public void sendToServer(C component) {
-        createPacket(getId()).apply(getter.apply(component)).sendToServer();
+        EtherProxy.getInstance().sendToServer(createPacket(getId()).apply(getter.apply(component)));
     }
 
     public static <C extends Component, V> EntityComponentC2SType<C, V> of(ComponentKey<C> componentKey, String valueName, Function<C, V> getter, BiConsumer<C, V> setter, PacketCodec<ByteBuf, V> valueCodec) {
@@ -59,7 +60,6 @@ public class EntityComponentC2SType<C extends Component, V> extends AbstractC2SP
 
     @RequiredArgsConstructor
     public abstract static class Packet<V> implements AbstractC2SPacket {
-
         private final V value;
     }
 

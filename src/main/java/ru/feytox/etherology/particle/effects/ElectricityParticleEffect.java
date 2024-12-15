@@ -8,7 +8,7 @@ import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.random.Random;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleEffect;
 import ru.feytox.etherology.particle.effects.misc.FeyParticleType;
-import ru.feytox.etherology.particle.subtypes.ElectricitySubtype;
+import ru.feytox.etherology.particle.subtype.ElectricitySubtype;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 
 public class ElectricityParticleEffect extends FeyParticleEffect<ElectricityParticleEffect> {

@@ -18,10 +18,10 @@
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "ru.feytox.etherology.datagen.DataGeneration"
+      "ru.feytox.etherology.client.datagen.DataGeneration"
     ],
     "client": [
-      "ru.feytox.etherology.EtherologyClient"
+      "ru.feytox.etherology.client.EtherologyClient"
     ],
     "main": [
       "ru.feytox.etherology.Etherology"
@@ -36,14 +36,18 @@
       "ru.feytox.etherology.mixin.EMixinCanceller"
     ],
     "rei_client": [
-      "ru.feytox.etherology.compat.rei.EtherREIPlugin"
+      "ru.feytox.etherology.client.compat.rei.EtherREIPlugin"
     ],
     "emi": [
-      "ru.feytox.etherology.compat.emi.EtherEMIPlugin"
+      "ru.feytox.etherology.client.compat.emi.EtherEMIPlugin"
     ]
   },
   "mixins": [
-    "etherology.mixins.json"
+    "etherology.mixins.json",
+    {
+      "config": "etherology.client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
     "fabricloader": "*",

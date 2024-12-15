@@ -10,7 +10,7 @@ import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
-import ru.feytox.etherology.gui.teldecore.misc.VisitedComponent;
+import ru.feytox.etherology.gui.teldecore.data.VisitedComponent;
 import ru.feytox.etherology.magic.corruption.CorruptionComponent;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.util.misc.EIdentifier;

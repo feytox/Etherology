@@ -1,7 +1,6 @@
 package ru.feytox.etherology.block.levitator;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
@@ -13,7 +12,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
+import ru.feytox.etherology.particle.subtype.LightSubtype;
 import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 
@@ -41,11 +40,6 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
         markDirty();
     }
 
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        tickLevitation(world, pos, state);
-    }
-
     private boolean tickFuel(ServerWorld world, BlockPos blockPos, BlockState state) {
         fuel = Math.max(0, fuel - 1);
         if (fuel > 0) return true;
@@ -64,7 +58,7 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
         return false;
     }
 
-    private void tickLevitation(World world, BlockPos pos, BlockState state) {
+    public void tickLevitation(World world, BlockPos pos, BlockState state) {
         boolean hasFuel = state.get(LevitatorBlock.WITH_FUEL);
         if (!hasFuel) return;
         int power = state.get(POWER);
@@ -79,7 +73,7 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
         if (world.isClient && world.getTime() % 10 == 0) {
             BlockPos startPos = isPushing ? pos.add(directionVec) : pos.add(directionVec.multiply(length));
             BlockPos targetPos = isPushing ? pos.add(directionVec.multiply(length+1)) : pos;
-            tickParticles((ClientWorld) world, startPos, targetPos, isPushing);
+            tickParticles(world, startPos, targetPos, isPushing);
         }
 
         List<Entity> entities = world.getNonSpectatingEntities(Entity.class, levitationBox);
@@ -110,7 +104,7 @@ public class LevitatorBlockEntity extends TickableBlockEntity implements EtherSt
         }
     }
 
-    private void tickParticles(ClientWorld world, BlockPos startPos, BlockPos targetPos, boolean isPushing) {
+    private void tickParticles(World world, BlockPos startPos, BlockPos targetPos, boolean isPushing) {
         LightSubtype lightType = isPushing ? LightSubtype.PUSHING : LightSubtype.ATTRACT;
         Vec3d target = targetPos.toCenterPos();
 

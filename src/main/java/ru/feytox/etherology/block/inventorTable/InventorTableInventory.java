@@ -2,7 +2,6 @@ package ru.feytox.etherology.block.inventorTable;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
@@ -30,7 +29,8 @@ public class InventorTableInventory implements UpdatableInventory {
 
         markDirty();
 
-        if (!(player instanceof ClientPlayerEntity)) return;
+        if (!player.getWorld().isClient)
+            return;
         player.playSound(SoundEvents.BLOCK_SMITHING_TABLE_USE, 1.0f, player.getWorld().random.nextFloat() * 0.1F + 0.9F);
     }
 

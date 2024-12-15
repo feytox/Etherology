@@ -1,7 +1,6 @@
 package ru.feytox.etherology.magic.aspects;
 
 import com.mojang.datafixers.util.Pair;
-import lombok.val;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.util.hit.BlockHitResult;
@@ -11,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.data.aspects.AspectsLoader;
-import ru.feytox.etherology.item.revelationView.RevelationViewData;
 
 public interface RevelationAspectProvider {
 
@@ -20,17 +18,6 @@ public interface RevelationAspectProvider {
 
     default int getRevelationAspectsLimit() {
         return -1;
-    }
-
-    @Nullable
-    static RevelationViewData.Aspects getSortedAspects(World world, HitResult hitResult) {
-        val data = getData(world, hitResult);
-        if (data == null) return null;
-        val aspects = data.getFirst();
-        Integer limit = data.getSecond();
-        if (aspects == null || limit == null) return null;
-
-        return new RevelationViewData.Aspects(aspects.sorted(true, limit));
     }
 
     @Nullable

@@ -1,12 +1,8 @@
 package ru.feytox.etherology.block.generators;
 
-import lombok.val;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
@@ -14,20 +10,15 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.item.OculusItem;
 import ru.feytox.etherology.magic.ether.EtherStorage;
 import ru.feytox.etherology.magic.seal.EssenceDetector;
 import ru.feytox.etherology.magic.seal.EssenceSupplier;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
 import ru.feytox.etherology.network.animation.StopBlockAnimS2C;
-import ru.feytox.etherology.particle.effects.LightParticleEffect;
-import ru.feytox.etherology.particle.subtypes.LightSubtype;
-import ru.feytox.etherology.registry.particle.EtherParticleTypes;
 import ru.feytox.etherology.util.gecko.EGeoBlockEntity;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -45,7 +36,6 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private float storedEther;
     private int nextGenTime = 40 * 20;
-    private boolean isLaunched = false;
     private boolean isMess = false;
     private CompletableFuture<Boolean> messCheck = null;
     @Nullable
@@ -55,8 +45,13 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
         super(type, pos, state);
     }
 
+    public abstract RawAnimation getSpinAnimation();
+    public abstract RawAnimation getStalledAnimation();
+    @Override
+    public abstract Optional<Class<? extends TickableBlockEntity>> getClientTickerProvider();
+
     public void spinAnim() {
-        StopBlockAnimS2C.sendForTracking(this, "stalled");
+        StopBlockAnimS2C.sendForTrackingOld(this, "stalled");
         StartBlockAnimS2C.sendForTracking(this, "spin");
     }
 
@@ -68,33 +63,13 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
     }
 
     public void stallAnim() {
-        StopBlockAnimS2C.sendForTracking(this, "spin");
+        StopBlockAnimS2C.sendForTrackingOld(this, "spin");
         StartBlockAnimS2C.sendForTracking(this, "stalled");
     }
 
     public void stall(ServerWorld world, BlockState state) {
         world.setBlockState(pos, state.with(STALLED, true));
         stallAnim();
-    }
-
-    @Override
-    public void clientTick(ClientWorld world, BlockPos blockPos, BlockState state) {
-        if (!isLaunched) {
-            triggerAnim(state.get(STALLED) ? "stalled" : "spin");
-            isLaunched = true;
-        }
-
-        if (world.getTime() % 10 != 0) return;
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) return;
-        if (!OculusItem.isInHands(player)) return;
-        if (state.get(STALLED)) return;
-
-        Vec3d targetPos = blockPos.toCenterPos();
-        Direction direction = state.get(AbstractGenerator.FACING).getOpposite();
-        Vec3d particlePos = blockPos.add(direction.getVector()).toCenterPos();
-        val effect = new LightParticleEffect(EtherParticleTypes.LIGHT, LightSubtype.GENERATOR, targetPos);
-        effect.spawnParticles(world, 4, 1.0d, particlePos);
     }
 
     @Override
@@ -237,10 +212,6 @@ public abstract class AbstractGeneratorBlockEntity extends TickableBlockEntity i
         nextGenTime = nbt.getInt("next_gen_time");
         isMess = nbt.getBoolean("is_mess");
     }
-
-    public abstract RawAnimation getSpinAnimation();
-
-    public abstract RawAnimation getStalledAnimation();
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {

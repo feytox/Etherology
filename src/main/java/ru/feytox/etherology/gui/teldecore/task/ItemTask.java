@@ -3,16 +3,15 @@ package ru.feytox.etherology.gui.teldecore.task;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-import ru.feytox.etherology.gui.teldecore.misc.FeySlot;
-import ru.feytox.etherology.gui.teldecore.page.TaskType;
 
 @RequiredArgsConstructor
+@Getter
 public class ItemTask extends AbstractTask {
 
     public static final MapCodec<ItemTask> CODEC;
@@ -44,11 +43,6 @@ public class ItemTask extends AbstractTask {
     @Override
     public TaskType getTaskType() {
         return TaskType.ITEM;
-    }
-
-    @Override
-    public FeySlot toSlot(float x, float y, float width, float height) {
-        return new FeySlot.ItemTask(new ItemStack(item, count), isClientCompleted(), x, y, width, height);
     }
 
     static {

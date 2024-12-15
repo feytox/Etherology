@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id 'maven-publish'
     id "io.freefair.lombok" version "8.6"
 }
@@ -99,10 +99,6 @@ publishing {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/etherology.accesswidener")
-}
-
-loom {
     runs {
         //
         // This adds a new gradle task that runs the datagen API: "gradlew runDatagenClient"
@@ -117,11 +113,20 @@ loom {
             runDir "build/datagen"
         }
     }
+
+    accessWidenerPath = file("src/main/resources/etherology.accesswidener")
+
+    splitEnvironmentSourceSets()
+
+    mods {
+        etherology {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
 }
 
-//
 // Adds the generated files into the jar you distribute to players.
-//
 sourceSets {
     main {
         resources {

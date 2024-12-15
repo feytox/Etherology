@@ -1,8 +1,6 @@
 package ru.feytox.etherology.network.animation;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -24,19 +22,6 @@ public record StartBlockAnimS2C(BlockPos pos, String animName) implements Abstra
 
     public static <T extends BlockEntity & EGeoBlockEntity> void sendForTracking(T blockEntity, String animName, PlayerEntity except) {
         new StartBlockAnimS2C(blockEntity.getPos(), animName).sendForTracking(blockEntity, except.getId());
-    }
-
-    public static void receive(StartBlockAnimS2C packet, ClientPlayNetworking.Context context) {
-        MinecraftClient client = context.client();
-
-        client.execute(() -> {
-            if (client.world == null) return;
-            BlockEntity be = client.world.getBlockEntity(packet.pos);
-
-            if (be instanceof EGeoBlockEntity eGeoBlock) {
-                eGeoBlock.triggerAnim(packet.animName);
-            }
-        });
     }
 
     @Override

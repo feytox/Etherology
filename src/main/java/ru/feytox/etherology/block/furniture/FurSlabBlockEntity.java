@@ -2,14 +2,12 @@ package ru.feytox.etherology.block.furniture;
 
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
@@ -23,6 +21,7 @@ import static ru.feytox.etherology.block.furniture.AbstractFurSlabBlock.TOP_TYPE
 import static ru.feytox.etherology.registry.block.EBlocks.FURNITURE_BLOCK_ENTITY;
 
 public class FurSlabBlockEntity extends TickableBlockEntity {
+
     private FurnitureType bottomType = FurnitureType.EMPTY;
     private FurnitureType topType = FurnitureType.EMPTY;
     @Nullable
@@ -84,13 +83,8 @@ public class FurSlabBlockEntity extends TickableBlockEntity {
     }
 
     private void onUse(FurnitureData furData, World world, BlockState state, PlayerEntity player, Vec2f hitPos, Hand hand) {
-        if (furData == null) return;
-
-        if (world.isClient) {
-            furData.clientUse((ClientWorld) world, state, pos, player, hitPos, hand);
-        } else {
-            furData.serverUse((ServerWorld) world, state, pos, player, hitPos, hand);
-        }
+        if (furData != null)
+            furData.onUse(world, state, pos, player, hitPos, hand);
     }
 
     @Override

@@ -9,7 +9,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import ru.feytox.etherology.gui.teldecore.data.TeldecoreComponent;
-import ru.feytox.etherology.gui.teldecore.misc.VisitedComponent;
+import ru.feytox.etherology.gui.teldecore.data.VisitedComponent;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.registry.misc.EtherologyComponents;
