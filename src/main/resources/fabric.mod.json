@@ -51,8 +51,17 @@
   ],
   "depends": {
     "fabricloader": "*",
-    "fabric": "*",
-    "minecraft": "1.21"
+    "fabric-api": "*",
+    "minecraft": "1.21.x",
+
+    "biolith": "*",
+    "fabricshieldlib": "*",
+    "owo": "*",
+    "trinkets": "*",
+    "geckolib": "*",
+    "cardinal-components-base": "*",
+    "cardinal-components-entity": "*",
+    "cardinal-components-chunk": "*"
   },
   "custom": {
     "cardinal-components": [
