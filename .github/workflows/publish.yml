@@ -40,7 +40,7 @@ jobs:
           curseforge-id: 1015414
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
-          name: "Etherology 0.1.2"
+          name: "Etherology 0.1.3"
           changelog-file: CHANGELOG.*
           game-versions: |
             1.21
