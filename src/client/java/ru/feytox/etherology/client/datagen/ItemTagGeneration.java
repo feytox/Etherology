@@ -60,17 +60,17 @@ public class ItemTagGeneration extends FabricTagProvider.ItemTagProvider {
         addItems(EItemTags.TUNING_MACES, TUNING_MACE);
         addItems(EItemTags.IRON_SHIELDS, IRON_SHIELD);
 
-        addItems(AXES, ETHRIL_AXE, EBONY_AXE);
-        addItems(HOES, ETHRIL_HOE, EBONY_HOE);
-        addItems(PICKAXES, ETHRIL_PICKAXE, EBONY_PICKAXE);
+        addItems(AXES, EBONY_AXE);
+        addItems(HOES, EBONY_HOE);
+        addItems(PICKAXES, EBONY_PICKAXE);
         addItems(PICKAXES, BATTLE_PICKAXES);
-        addItems(SHOVELS, ETHRIL_SHOVEL, EBONY_SHOVEL);
-        addItems(SWORDS, ETHRIL_SWORD, EBONY_SWORD, BROADSWORD, TUNING_MACE);
+        addItems(SHOVELS, EBONY_SHOVEL);
+        addItems(SWORDS, EBONY_SWORD, BROADSWORD, TUNING_MACE);
         addItems(SWORDS, BATTLE_PICKAXES);
-        addItems(HEAD_ARMOR, ETHRIL_HELMET, EBONY_HELMET);
-        addItems(CHEST_ARMOR, ETHRIL_CHESTPLATE, EBONY_CHESTPLATE);
-        addItems(LEG_ARMOR, ETHRIL_LEGGINGS, EBONY_LEGGINGS);
-        addItems(FOOT_ARMOR, ETHRIL_BOOTS, EBONY_BOOTS);
+        addItems(HEAD_ARMOR, EBONY_HELMET);
+        addItems(CHEST_ARMOR, EBONY_CHESTPLATE);
+        addItems(LEG_ARMOR, EBONY_LEGGINGS);
+        addItems(FOOT_ARMOR, EBONY_BOOTS);
 
         addItems(BOATS, PEACH_BOAT);
         addItems(CHEST_BOATS, PEACH_CHEST_BOAT);

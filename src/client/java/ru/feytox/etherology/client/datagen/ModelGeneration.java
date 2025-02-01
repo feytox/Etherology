@@ -73,7 +73,7 @@ public class ModelGeneration extends FabricModelProvider {
         registerItems(generator, Models.GENERATED, LENSES);
         registerItems(generator, Models.GENERATED, EBlocks.SEALS);
         // handheld (swords, pickaxe etc.)
-        registerItems(generator, Models.HANDHELD, ETHRIL_AXE, ETHRIL_PICKAXE, ETHRIL_HOE, ETHRIL_SHOVEL, ETHRIL_SWORD, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD, STREAM_KEY, BROADSWORD);
+        registerItems(generator, Models.HANDHELD, EBONY_AXE, EBONY_PICKAXE, EBONY_HOE, EBONY_SHOVEL, EBONY_SWORD, STREAM_KEY, BROADSWORD);
         registerItems(generator, Models.HANDHELD, BATTLE_PICKAXES);
         registerItems(generator, Models.HANDHELD, RESONATING_WAND);
         // staff parts

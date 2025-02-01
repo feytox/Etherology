@@ -100,12 +100,6 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(PEACH_LEAVES, "Персиковые листья");
         builder.add(WEEPING_PEACH_LOG, "Плакучее персиковое бревно");
 
-        builder.add(ETHRIL_AXE, "Эфриловый топор");
-        builder.add(ETHRIL_HOE, "Эфриловая мотыга");
-        builder.add(ETHRIL_PICKAXE, "Эфриловая кирка");
-        builder.add(ETHRIL_SHOVEL, "Эфриловая лопата");
-        builder.add(ETHRIL_SWORD, "Эфриловый меч");
-
         builder.add(EBONY_AXE, "Эбонитовый топор");
         builder.add(EBONY_HOE, "Эбонитовая мотыга");
         builder.add(EBONY_PICKAXE, "Эбонитовая кирка");
@@ -118,16 +112,11 @@ public class RuLangGeneration extends FabricLanguageProvider {
         builder.add(GOLDEN_BATTLE_PICKAXE, "Золотое кайло");
         builder.add(DIAMOND_BATTLE_PICKAXE, "Алмазное кайло");
         builder.add(NETHERITE_BATTLE_PICKAXE, "Незеритовое кайло");
-        builder.add(ETHRIL_BATTLE_PICKAXE, "Эфриловое кайло");
         builder.add(EBONY_BATTLE_PICKAXE, "Эбонитовое кайло");
 
         builder.add(TUNING_MACE, "Тональная булава");
         builder.add(BROADSWORD, "Палаш");
 
-        builder.add(ETHRIL_HELMET, "Эфриловый шлем");
-        builder.add(ETHRIL_CHESTPLATE, "Эфриловый нагрудник");
-        builder.add(ETHRIL_LEGGINGS, "Эфриловые поножи");
-        builder.add(ETHRIL_BOOTS, "Эфриловые ботинки");
         builder.add(EBONY_HELMET, "Эбонитовый шлем");
         builder.add(EBONY_CHESTPLATE, "Эбонитовый нагрудник");
         builder.add(EBONY_LEGGINGS, "Эбонитовые поножи");
