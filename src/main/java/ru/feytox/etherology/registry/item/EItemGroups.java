@@ -70,6 +70,9 @@ public class EItemGroups {
         etherItems.with(AZEL_INGOT, ETHRIL_INGOT, EBONY_INGOT, AZEL_NUGGET, ETHRIL_NUGGET, EBONY_NUGGET);
         etherItems.with(AZEL_BLOCK, ETHRIL_BLOCK, EBONY_BLOCK);
         // armor
+        etherItems.with(EBONY_HELMET, EBONY_CHESTPLATE, EBONY_LEGGINGS, EBONY_BOOTS);
+        // tools
+        etherItems.with(EBONY_PICKAXE, EBONY_AXE, EBONY_SWORD, EBONY_SHOVEL, EBONY_HOE);
         etherItems.with(BATTLE_PICKAXES);
         etherItems.with(TUNING_MACE, BROADSWORD, IRON_SHIELD, STREAM_KEY, WARP_COUNTER);
         // patterns
