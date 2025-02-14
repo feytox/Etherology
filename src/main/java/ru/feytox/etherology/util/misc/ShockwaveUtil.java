@@ -155,8 +155,6 @@ public class ShockwaveUtil {
     }
 
     private static void trySchedulePeal(World world, PlayerEntity attacker, Entity target, Vec3d shockPos, double knockbackStrength) {
-        if (target == null) return;
-
         int pealLevel = EtherEnchantments.getLevel(world, EtherEnchantments.PEAL, attacker);
         if (world.isClient || pealLevel <= 0) return;
 
