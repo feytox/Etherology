@@ -26,9 +26,13 @@ import java.util.stream.IntStream;
 
 public class SealBlockRenderer {
 
-    private static final Map<BlockPos, Data> sealsData = new Object2ObjectOpenHashMap<>();
     private static final int VISIBLE_COOLDOWN = 1;
     public static final int LIFETIME = 100;
+    private static final int MIN_SIMPLIFIED_DISTANCE = 2 * 16;
+    private static final int MID_SIMPLIFIED_DISTANCE = 4 * 16;
+    private static final int MAX_DISTANCE = 16 * 16;
+
+    private static final Map<BlockPos, Data> sealsData = new Object2ObjectOpenHashMap<>();
     private static long seeSealsLastTick = -VISIBLE_COOLDOWN;
     private static long seeThroughLastTick = -VISIBLE_COOLDOWN;
     private static long simplifiedLastTick = -VISIBLE_COOLDOWN;
@@ -43,11 +47,12 @@ public class SealBlockRenderer {
     }
 
     public static void refreshSeal(SealBlockEntity blockEntity, BlockPos pos, SealType sealType, long time) {
-        sealsData.merge(pos, new Data(blockEntity, sealType).setTime(time), (oldData, data) -> {
-            if (!oldData.sealType.equals(data.sealType)) return data;
-            oldData.setTime(data.lastTime);
-            return oldData;
-        });
+        if (sealsData.containsKey(pos)) {
+            sealsData.get(pos).refresh(time);
+            return;
+        }
+
+        sealsData.put(pos, new Data(blockEntity, sealType).refresh(time));
     }
 
     public static void registerRendering() {
@@ -72,7 +77,7 @@ public class SealBlockRenderer {
         var seeThrough = canSeeThrough(time);
         var isSimplified = isSimplified(time);
 
-        sealsData.entrySet().removeIf(entry -> entry.getValue().seal.isRemoved() || time - entry.getValue().lastTime > LIFETIME);
+        sealsData.entrySet().removeIf(entry -> entry.getValue().shouldRemove(time));
         sealsData.forEach((pos, data) -> data.render(context, pos, time, seeThrough, isSimplified));
     }
 
@@ -105,11 +110,22 @@ public class SealBlockRenderer {
         private final SealType sealType;
         private long lastTime;
         private long lastLightTime;
+        private int manhattanPlayerDistance;
         private final List<SealLight> sealLights = new ObjectArrayList<>();
 
-        private Data setTime(long lastTime) {
+        private Data refresh(long lastTime) {
             this.lastTime = lastTime;
+            refreshDistance();
             return this;
+        }
+
+        private boolean shouldRemove(long time) {
+            return seal.isRemoved() || time - lastTime > LIFETIME || manhattanPlayerDistance > MAX_DISTANCE;
+        }
+
+        private void refreshDistance() {
+            var player = MinecraftClient.getInstance().player;
+            manhattanPlayerDistance = player == null ? 0 : player.getBlockPos().getManhattanDistance(seal.getPos());
         }
 
         private void render(WorldRenderContext context, BlockPos pos, long time, boolean seeThrough, boolean simplified) {
@@ -136,7 +152,8 @@ public class SealBlockRenderer {
         }
 
         private void applyTransform(WorldRenderContext context, BlockPos pos, boolean simplified, MatrixStack matrices) {
-            var scale = 1 / 100f * MathHelper.lerp(seal.getScale(), 1.0f, 2.0f);
+            var baseScale = simplified ? 2.1f * seal.getRadius() : MathHelper.lerp(seal.getMaxPointsScale(), 1.0f, 2.0f);
+            var scale = 1 / 100f * baseScale;
             var camera = context.camera();
             var coreVec = pos.toCenterPos().subtract(camera.getPos());
 
@@ -151,6 +168,8 @@ public class SealBlockRenderer {
         }
 
         private void renderSimplifiedSeal(MatrixStack matrices, long time, float tickDelta, boolean seeThrough) {
+            var alpha = seal.getFillPercent() * getDistancePercent();
+
             matrices.push();
             matrices.multiply(RotationAxis.POSITIVE_Y.rotation(MathHelper.PI));
             matrices.translate(64, 64, 0);
@@ -159,11 +178,21 @@ public class SealBlockRenderer {
             if (seeThrough) RenderSystem.disableDepthTest();
 
             RenderSystem.setShaderTexture(0, getAuraTexture(time, tickDelta));
-            setSimpleSealColor();
+            setSimpleSealColor(alpha);
             RenderUtils.renderTexture(matrices, 0, 0, 0, 0, 0, 64, 64, 64, 64);
 
             if (seeThrough) RenderSystem.enableDepthTest();
             matrices.pop();
+        }
+
+        private float getDistancePercent() {
+            if (manhattanPlayerDistance > MID_SIMPLIFIED_DISTANCE)
+                return 1.0f;
+
+            if (manhattanPlayerDistance < MIN_SIMPLIFIED_DISTANCE)
+                return 0.0f;
+
+            return (float) (manhattanPlayerDistance - MIN_SIMPLIFIED_DISTANCE) / (MID_SIMPLIFIED_DISTANCE - MIN_SIMPLIFIED_DISTANCE);
         }
 
         private Identifier getAuraTexture(long time, float tickDelta) {
@@ -172,12 +201,12 @@ public class SealBlockRenderer {
             return AURA_TEXTURES[index];
         }
 
-        private void setSimpleSealColor() {
+        private void setSimpleSealColor(float alpha) {
             switch (sealType) {
-                case RELLA -> RenderUtils.applyColor(0x00FF00);
-                case CLOS -> RenderUtils.applyColor(0xFFCC00);
-                case VIA -> RenderUtils.applyColor(0xFF0033);
-                case KETA -> RenderUtils.applyColor(0x0099FF);
+                case RELLA -> RenderUtils.applyColor(0x00FF00, alpha);
+                case CLOS -> RenderUtils.applyColor(0xFFCC00, alpha);
+                case VIA -> RenderUtils.applyColor(0xFF0033, alpha);
+                case KETA -> RenderUtils.applyColor(0x0099FF, alpha);
             }
         }
 

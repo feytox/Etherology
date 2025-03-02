@@ -51,7 +51,7 @@ public class SealBlockEntity extends TickableBlockEntity implements EssenceSuppl
         return points / maxPoints;
     }
 
-    public float getScale() {
+    public float getMaxPointsScale() {
         return (maxPoints - MIN_POINTS) / (MAX_POINTS - MIN_POINTS);
     }
 
