@@ -16,6 +16,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
 import ru.feytox.etherology.block.seal.SealBlockEntity;
+import ru.feytox.etherology.client.gui.OcularOverlay;
 import ru.feytox.etherology.client.util.RenderUtils;
 import ru.feytox.etherology.magic.seal.SealType;
 import ru.feytox.etherology.util.misc.EIdentifier;
@@ -69,6 +70,8 @@ public class SealBlockRenderer {
     }
 
     private static void render(WorldRenderContext context) {
+        OcularOverlay.renderShader(context.tickCounter().getLastFrameDuration());
+
         var time = context.world().getTime();
         if (!canSeeSeal(time)) return;
 

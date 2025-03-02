@@ -70,7 +70,7 @@ public class RenderUtils {
     }
 
     /**
-     * @see DrawContext#drawHorizontalLine(RenderLayer, int, int, int, int) 
+     * @see DrawContext#drawHorizontalLine(RenderLayer, int, int, int, int)
      */
     public void drawHorizontalLine(DrawContext context, float x1, float x2, float y, float width, int color) {
         if (x2 < x1) {
@@ -79,7 +79,7 @@ public class RenderUtils {
             x2 = i;
         }
 
-        fill(context, x1 - width/2, y - width/2, x2 + width/2, y + width/2, color);
+        fill(context, x1 - width / 2, y - width / 2, x2 + width / 2, y + width / 2, color);
     }
 
     /**
@@ -92,9 +92,9 @@ public class RenderUtils {
             y2 = i;
         }
 
-        fill(context, x - width/2, y1 + width/2, x + width/2, y2 - width/2, color);
+        fill(context, x - width / 2, y1 + width / 2, x + width / 2, y2 - width / 2, color);
     }
-    
+
     /**
      * @see DrawContext#fill(RenderLayer, int, int, int, int, int, int)
      */

@@ -7,7 +7,6 @@
     "AbstractClientPlayerEntityMixin",
     "BipedEntityModelMixin",
     "DrawContextAccessor",
-    "GameRendererAccessor",
     "GameRendererMixin",
     "HandledScreenMixin",
     "HeldItemRendererMixin",

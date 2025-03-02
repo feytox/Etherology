@@ -42,7 +42,7 @@ public class ClientEtherProxy extends EtherProxy {
 
     @Override
     public void onOcularStopUsing() {
-        OcularOverlay.disableShader(MinecraftClient.getInstance());
+        OcularOverlay.disableShader();
     }
 
     @Override

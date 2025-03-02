@@ -1,21 +1,29 @@
 package ru.feytox.etherology.client.gui;
 
+import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import ru.feytox.etherology.client.mixin.GameRendererAccessor;
+import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.registry.item.ToolItems;
 import ru.feytox.etherology.util.misc.EIdentifier;
+
+import java.io.IOException;
+
+import static ru.feytox.etherology.Etherology.ELOGGER;
 
 public class OcularOverlay {
 
     private static final Identifier OCULAR_SCOPE = EIdentifier.of("textures/misc/ocular_scope.png");
     private static final Identifier OCULAR_SHADER = EIdentifier.of("post_effect/ocular.json");
 
+    @Nullable
+    private static PostEffectProcessor postProcessor = null;
     private static boolean shaderEnabled;
 
     public static boolean shouldRenderOverlay() {
@@ -51,25 +59,52 @@ public class OcularOverlay {
 
         var client = MinecraftClient.getInstance();
         if (!shouldRenderOverlay() || !client.options.getPerspective().isFirstPerson())
-            disableShader(client);
+            disableShader();
     }
 
-    public static void enableShader(MinecraftClient client) {
-        var postProcessor = client.gameRenderer.getPostProcessor();
+    public static void enableShader() {
         if (postProcessor != null)
             return;
 
-        ((GameRendererAccessor) client.gameRenderer).callLoadPostProcessor(OCULAR_SHADER);
-        shaderEnabled = true;
+        loadPostProcessor(OCULAR_SHADER);
     }
 
-    public static void disableShader(MinecraftClient client) {
-        var postProcessor = client.gameRenderer.getPostProcessor();
+    public static void disableShader() {
         if (postProcessor == null)
             return;
 
         postProcessor.close();
-        ((GameRendererAccessor) client.gameRenderer).setPostProcessor(null);
+        postProcessor = null;
         shaderEnabled = false;
+    }
+
+    public static void renderShader(float tickDelta) {
+        if (postProcessor == null || !shaderEnabled)
+            return;
+
+        postProcessor.render(tickDelta);
+    }
+
+    /**
+     * @see net.minecraft.client.render.GameRenderer#loadPostProcessor(Identifier)
+     */
+    private static void loadPostProcessor(Identifier id) {
+        if (postProcessor != null) {
+            postProcessor.close();
+        }
+
+        var client = MinecraftClient.getInstance();
+
+        try {
+            postProcessor = new PostEffectProcessor(client.getTextureManager(), client.getResourceManager(), client.getFramebuffer(), id);
+            postProcessor.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
+            shaderEnabled = true;
+        } catch (IOException var3) {
+            ELOGGER.warn("Failed to load shader: {}", id);
+            shaderEnabled = false;
+        } catch (JsonSyntaxException var4) {
+            ELOGGER.warn("Failed to parse shader: {}", id);
+            shaderEnabled = false;
+        }
     }
 }

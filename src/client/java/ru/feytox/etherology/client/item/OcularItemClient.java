@@ -14,9 +14,9 @@ public class OcularItemClient {
 
         if (client.options.getPerspective().isFirstPerson()) {
             SealBlockRenderer.refreshSeeSealsAbility(world.getTime(), true, true);
-            OcularOverlay.enableShader(client);
+            OcularOverlay.enableShader();
         } else
-            OcularOverlay.disableShader(client);
+            OcularOverlay.disableShader();
     }
 
 }
