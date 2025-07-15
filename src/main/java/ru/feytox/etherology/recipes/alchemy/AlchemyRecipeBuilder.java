@@ -12,8 +12,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.aspects.Aspect;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
 
 @RequiredArgsConstructor
 public class AlchemyRecipeBuilder implements CraftingRecipeJsonBuilder {

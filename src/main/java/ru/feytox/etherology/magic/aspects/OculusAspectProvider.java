@@ -8,7 +8,8 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 
 public interface OculusAspectProvider {
 
@@ -17,17 +18,17 @@ public interface OculusAspectProvider {
         if (hitResult instanceof BlockHitResult blockHitResult) {
             var pos = blockHitResult.getBlockPos();
             var state = world.getBlockState(pos);
-            return AspectsLoader.getAspects(world, state.getBlock().asItem().getDefaultStack(), false, false).orElse(null);
+            return AspectContainerLoader.getAspects(world, state.getBlock().asItem().getDefaultStack(), false, false).orElse(null);
         }
 
         if (!(hitResult instanceof EntityHitResult entityHitResult)) return null;
 
         var entity = entityHitResult.getEntity();
         if (entity instanceof ItemEntity itemEntity) {
-            return AspectsLoader.getAspects(world, itemEntity.getStack(), false, false).orElse(null);
+            return AspectContainerLoader.getAspects(world, itemEntity.getStack(), false, false).orElse(null);
         }
 
-        return AspectsLoader.getEntityAspects(world, entity, false).orElse(null);
+        return AspectContainerLoader.getEntityAspects(world, entity, false).orElse(null);
     }
 
     @Nullable

@@ -14,8 +14,8 @@ import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.client.compat.rei.EtherREIPlugin;
 import ru.feytox.etherology.client.compat.rei.misc.AspectPair;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
-import ru.feytox.etherology.magic.aspects.AspectContainerId;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainerId;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ public class AspectionDisplay extends BasicDisplay {
     }
 
     public static void registerFillers(DisplayRegistry registry) {
-        AspectsLoader.forEach(MinecraftClient.getInstance().world, (id, container) -> {
+        AspectContainerLoader.forEach(MinecraftClient.getInstance().world, (id, container) -> {
             EntryStack<?> holder = getHolder(id);
             if (holder == null) return;
             List<EntryIngredient> input = Collections.singletonList(EntryIngredient.of(holder));

@@ -22,8 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.util.misc.TickableBlockEntity;
 import ru.feytox.etherology.util.misc.UniqueProvider;
@@ -178,7 +178,7 @@ public class PedestalBlockEntity extends TickableBlockEntity
     @Override
     public AspectContainer getRevelationAspects(World world) {
         if (items.getFirst().isEmpty()) return null;
-        return AspectsLoader.getAspects(world, items.getFirst(), false, false).orElse(null);
+        return AspectContainerLoader.getAspects(world, items.getFirst(), false, false).orElse(null);
     }
 
     @Override

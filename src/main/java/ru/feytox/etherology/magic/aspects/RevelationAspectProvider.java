@@ -9,7 +9,8 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 
 public interface RevelationAspectProvider {
 
@@ -33,6 +34,6 @@ public interface RevelationAspectProvider {
         Entity entity = entityHitResult.getEntity();
         if (!(entity instanceof ItemFrameEntity itemFrame)) return null;
 
-        return Pair.of(AspectsLoader.getAspects(world, itemFrame.getHeldItemStack(), false, false).orElse(null), -1);
+        return Pair.of(AspectContainerLoader.getAspects(world, itemFrame.getHeldItemStack(), false, false).orElse(null), -1);
     }
 }

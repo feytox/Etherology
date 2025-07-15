@@ -17,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.client.compat.emi.EtherEMIPlugin;
 import ru.feytox.etherology.client.compat.emi.misc.AspectStack;
 import ru.feytox.etherology.client.compat.emi.misc.FeyEmiRecipe;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
-import ru.feytox.etherology.magic.aspects.AspectContainerId;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainerId;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +30,7 @@ public class AspectionERecipe extends FeyEmiRecipe {
     }
 
     public static void registerRecipes(EmiRegistry registry) {
-        AspectsLoader.forEach(MinecraftClient.getInstance().world, (id, container) -> {
+        AspectContainerLoader.forEach(MinecraftClient.getInstance().world, (id, container) -> {
             EmiStack holder = getHolder(id);
             if (holder == null) return;
             List<EmiIngredient> input = Collections.singletonList(holder);

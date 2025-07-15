@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.feytox.etherology.client.gui.oculus.AspectTooltipComponent;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
 import ru.feytox.etherology.item.OculusItem;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class HandledScreenMixin {
         if (focusedSlot == null || !focusedSlot.hasStack() || !(cursorStack.getItem() instanceof OculusItem)) return;
 
         ItemStack focusedStack = focusedSlot.getStack();
-        AspectContainer aspects = AspectsLoader.getAspects(client.world, focusedStack, false, false).orElse(null);
+        AspectContainer aspects = AspectContainerLoader.getAspects(client.world, focusedStack, false, false).orElse(null);
         if (aspects == null || aspects.isEmpty()) return;
 
         List<TooltipComponent> tooltipComponents = new ArrayList<>();

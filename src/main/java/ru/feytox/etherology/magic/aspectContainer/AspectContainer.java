@@ -1,4 +1,4 @@
-package ru.feytox.etherology.magic.aspects;
+package ru.feytox.etherology.magic.aspectContainer;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
@@ -16,6 +16,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.util.StringIdentifiable;
 import org.slf4j.helpers.CheckReturnValue;
+import ru.feytox.etherology.magic.aspects.Aspect;
 import ru.feytox.etherology.util.misc.CodecUtil;
 
 import java.util.Comparator;

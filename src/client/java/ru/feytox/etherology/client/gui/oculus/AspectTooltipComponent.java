@@ -4,8 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.aspects.Aspect;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.EtherologyAspect;
 
 import java.util.Map;

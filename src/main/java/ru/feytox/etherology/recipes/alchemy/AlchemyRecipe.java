@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.aspects.Aspect;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.recipes.FeyInputRecipe;
 import ru.feytox.etherology.recipes.FeyRecipeSerializer;
 

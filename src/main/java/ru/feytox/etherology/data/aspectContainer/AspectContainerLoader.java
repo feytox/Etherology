@@ -1,4 +1,4 @@
-package ru.feytox.etherology.data.aspects;
+package ru.feytox.etherology.data.aspectContainer;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.val;
@@ -12,10 +12,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.Etherology;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
-import ru.feytox.etherology.magic.aspects.AspectContainerId;
-import ru.feytox.etherology.magic.aspects.AspectContainerType;
-import ru.feytox.etherology.magic.aspects.AspectRegistryPart;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainerId;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainerRegistryPart;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainerType;
 import ru.feytox.etherology.registry.misc.RegistriesRegistry;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class AspectsLoader {
+public class AspectContainerLoader {
 
     // TODO: load aspects on client/server load
     @Nullable
@@ -113,10 +113,10 @@ public class AspectsLoader {
             return cache;
         }
 
-        cacheFuture = CompletableFuture.supplyAsync(() -> world.getRegistryManager().get(RegistriesRegistry.ASPECTS))
+        cacheFuture = CompletableFuture.supplyAsync(() -> world.getRegistryManager().get(RegistriesRegistry.ASPECT_CONTAINER))
                 .thenApplyAsync(Registry::stream)
-                .thenApplyAsync(s -> s.reduce(AspectRegistryPart::merge))
-                .thenApplyAsync(s -> s.map(AspectRegistryPart::applyParents))
+                .thenApplyAsync(s -> s.reduce(AspectContainerRegistryPart::merge))
+                .thenApplyAsync(s -> s.map(AspectContainerRegistryPart::applyParents))
                 .thenApplyAsync(o -> o.map(ImmutableMap::copyOf).orElseThrow());
 
         if (!cacheFuture.isDone() && !force) return null;

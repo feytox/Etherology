@@ -24,8 +24,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.network.animation.StartBlockAnimS2C;
@@ -184,7 +184,7 @@ public class BrewingCauldronBlockEntity extends TickableBlockEntity implements I
         AtomicInteger count = new AtomicInteger();
         items.stream()
                 .filter(stack -> !stack.isEmpty())
-                .map(stack -> AspectsLoader.getAspects(world, stack, true, true).orElse(null))
+                .map(stack -> AspectContainerLoader.getAspects(world, stack, true, true).orElse(null))
                 .filter(Objects::nonNull)
                 .forEach(itemAspects -> {
                     count.addAndGet(1);

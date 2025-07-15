@@ -37,9 +37,9 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import ru.feytox.etherology.block.pedestal.PedestalBlockEntity;
-import ru.feytox.etherology.data.aspects.AspectsLoader;
+import ru.feytox.etherology.data.aspectContainer.AspectContainerLoader;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.aspects.Aspect;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
 import ru.feytox.etherology.magic.aspects.RevelationAspectProvider;
 import ru.feytox.etherology.magic.ether.EtherComponent;
 import ru.feytox.etherology.particle.effects.ItemParticleEffect;
@@ -224,7 +224,7 @@ public class MatrixBlockEntity extends TickableBlockEntity implements Implemente
         }
         val container = stackStream
                 .filter(stack -> !stack.isEmpty())
-                .map(stack -> AspectsLoader.getAspects(world, stack, false, true))
+                .map(stack -> AspectContainerLoader.getAspects(world, stack, false, true))
                 .filter(Optional::isPresent).map(Optional::get)
                 .reduce(AspectContainer::add).orElse(null);
 

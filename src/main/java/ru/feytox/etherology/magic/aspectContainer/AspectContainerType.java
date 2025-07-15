@@ -1,4 +1,4 @@
-package ru.feytox.etherology.magic.aspects;
+package ru.feytox.etherology.magic.aspectContainer;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

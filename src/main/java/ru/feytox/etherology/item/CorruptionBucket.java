@@ -12,7 +12,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import ru.feytox.etherology.magic.aspects.AspectContainer;
+import ru.feytox.etherology.magic.aspectContainer.AspectContainer;
 import ru.feytox.etherology.magic.corruption.Corruption;
 import ru.feytox.etherology.registry.item.EItems;
 import ru.feytox.etherology.registry.misc.ComponentTypes;
